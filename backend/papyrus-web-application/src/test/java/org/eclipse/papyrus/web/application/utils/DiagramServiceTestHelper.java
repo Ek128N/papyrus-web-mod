@@ -127,8 +127,34 @@ public class DiagramServiceTestHelper {
     public Node assertChildCreation(Node visualParent, EClass type, EReference containementRef, String expectedNodeDescriptionId, EObject expectedSemanticOwner) {
         EObject semanticOwner = this.diagramHelper.getSemanticElement(visualParent);
 
+        return this.assertChildCreation(visualParent, semanticOwner, type, containementRef, expectedNodeDescriptionId, expectedSemanticOwner);
+    }
+
+    /**
+     * Checks the behavior of creation on parent visual node.
+     *
+     * <p>
+     * This code use the
+     * {@link AbstractDiagramService#create(EObject, String, String, Node, org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext, java.util.Map)}
+     * service to create a new element on a Node. Then check the the semantic creation occurred and the a new node has
+     * been added inside the parent node with given EReference.
+     * </p>
+     *
+     * @param visualParent
+     *            the visual parent
+     * @param type
+     *            the type of the element to be created
+     * @param containementRef
+     *            the containment reference
+     * @param expectedNodeDescriptionId
+     *            the name of the {@link NodeDescription} used to new {@link Node}
+     * @param expectedSemanticOwner
+     *            expected semantic owner of the creation
+     * @return the newly created node
+     */
+    public Node assertChildCreation(Node visualParent, EObject self, EClass type, EReference containementRef, String expectedNodeDescriptionId, EObject expectedSemanticOwner) {
         EObject newElement = this.diagramHelper.modify(context -> {
-            EObject aNewElement = this.diagramService.create(semanticOwner, type.getName(), containementRef.getName(), visualParent, context, this.diagramHelper.getConvertedNodes());
+            EObject aNewElement = this.diagramService.create(self, type.getName(), containementRef.getName(), visualParent, context, this.diagramHelper.getConvertedNodes());
             assertTrue(type.isInstance(aNewElement));
             assertEquals(expectedSemanticOwner, aNewElement.eContainer());
             if (containementRef.isMany()) {

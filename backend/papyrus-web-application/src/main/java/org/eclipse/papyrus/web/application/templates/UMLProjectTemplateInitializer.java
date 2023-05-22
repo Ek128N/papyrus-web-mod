@@ -24,6 +24,7 @@ import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.services.template.TemplateInitializer;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -53,14 +54,17 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
 
     private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
+    private IRepresentationPersistenceService representationPersistenceService;
+
     public UMLProjectTemplateInitializer(TemplateInitializer initializerHelper, //
             IDiagramBuilderService diagramBuilderService, //
             PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, //
-            GenericDiagramService packageDiagramService) {
+            GenericDiagramService packageDiagramService, IRepresentationPersistenceService representationPersistenceService) {
         this.initializerHelper = initializerHelper;
         this.diagramBuilderService = diagramBuilderService;
         this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
         this.packageDiagramService = packageDiagramService;
+        this.representationPersistenceService = representationPersistenceService;
     }
 
     @Override
@@ -103,7 +107,12 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                         this.packageDiagramService.drop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
                     });
                 })//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext));
+                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
+                .flatMap(diagram -> {
+                    this.representationPersistenceService.save(editingContext, diagram);
+                    return Optional.of(diagram);
+                });
+
     }
 
 }

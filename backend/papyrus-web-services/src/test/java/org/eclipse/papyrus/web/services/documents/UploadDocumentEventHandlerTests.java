@@ -36,13 +36,11 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.papyrus.web.services.api.accounts.Profile;
 import org.eclipse.papyrus.web.services.api.document.Document;
 import org.eclipse.papyrus.web.services.api.document.IDocumentService;
 import org.eclipse.papyrus.web.services.api.document.UploadDocumentInput;
 import org.eclipse.papyrus.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.eclipse.papyrus.web.services.editingcontext.IEditingDomainFactoryService;
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 import org.eclipse.papyrus.web.services.projects.NoOpServicesMessageService;
@@ -162,7 +160,7 @@ public class UploadDocumentEventHandlerTests {
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
+                return Optional.of(new Document(UUID.randomUUID(), new Project(UUID.fromString(projectId), ""), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
@@ -174,7 +172,7 @@ public class UploadDocumentEventHandlerTests {
 
         AdapterFactoryEditingDomain editingDomain = new EditingDomainFactory().create();
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();
@@ -242,7 +240,7 @@ public class UploadDocumentEventHandlerTests {
 
             @Override
             public Optional<Document> createDocument(String projectId, String name, String content) {
-                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, content));
+                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), ""), name, content));
             }
         };
         IServicesMessageService messageService = new NoOpServicesMessageService();
@@ -251,7 +249,7 @@ public class UploadDocumentEventHandlerTests {
 
         var input = new UploadDocumentInput(UUID.randomUUID(), UUID.randomUUID().toString(), file, false);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

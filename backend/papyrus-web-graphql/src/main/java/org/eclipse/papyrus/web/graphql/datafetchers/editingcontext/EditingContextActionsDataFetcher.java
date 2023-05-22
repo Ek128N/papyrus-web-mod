@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.web.graphql.pagination.PageInfoWithCount;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -68,13 +67,13 @@ public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCo
 
     private Connection<EditingContextAction> toConnection(GetEditingContextActionsSuccessPayload payload) {
         // @formatter:off
-        List<Edge<EditingContextAction>> representationDescriptionEdges = payload.getEditingContextActions().stream()
+        List<Edge<EditingContextAction>> representationDescriptionEdges = payload.editingContextActions().stream()
                 .map(representationDescription -> {
                     String value = Base64.getEncoder().encodeToString(representationDescription.getId().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(representationDescription, cursor);
+                    return (Edge<EditingContextAction>) new DefaultEdge<>(representationDescription, cursor);
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = representationDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
@@ -82,7 +81,7 @@ public class EditingContextActionsDataFetcher implements IDataFetcherWithFieldCo
         if (!representationDescriptionEdges.isEmpty()) {
             endCursor = representationDescriptionEdges.get(representationDescriptionEdges.size() - 1).getCursor();
         }
-        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.getEditingContextActions().size());
+        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.editingContextActions().size());
         return new DefaultConnection<>(representationDescriptionEdges, pageInfo);
     }
 

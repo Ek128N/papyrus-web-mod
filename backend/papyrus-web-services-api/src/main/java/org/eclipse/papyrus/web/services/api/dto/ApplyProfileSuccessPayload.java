@@ -32,7 +32,7 @@ public final class ApplyProfileSuccessPayload implements IPayload {
     }
 
     @Override
-    public UUID getId() {
+    public UUID id() {
         return this.id;
     }
 

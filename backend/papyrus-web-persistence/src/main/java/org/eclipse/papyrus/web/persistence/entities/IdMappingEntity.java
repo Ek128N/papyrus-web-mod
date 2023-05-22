@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,9 @@ package org.eclipse.papyrus.web.persistence.entities;
 
 import java.text.MessageFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * IdMapping entity used by the persistence layer.
@@ -50,7 +50,7 @@ public class IdMappingEntity {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}, externalId: {2}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}, externalId: {2}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.externalId);
     }
 

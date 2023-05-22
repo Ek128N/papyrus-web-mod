@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.InvokeEditingContextActionInput;
@@ -35,7 +34,8 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @MutationDataFetcher(type = "Mutation", field = "invokeEditingContextAction")
 public class MutationInvokeEditingContextActionDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
-    public static final String ARRANGE_ALL_FIELD = "arrangeAll"; //$NON-NLS-1$
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -51,7 +51,7 @@ public class MutationInvokeEditingContextActionDataFetcher implements IDataFetch
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, InvokeEditingContextActionInput.class);
 
         // @formatter:off

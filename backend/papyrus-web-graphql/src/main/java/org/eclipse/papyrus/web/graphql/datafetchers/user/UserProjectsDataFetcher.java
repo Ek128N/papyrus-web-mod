@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,8 @@ package org.eclipse.papyrus.web.graphql.datafetchers.user;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.web.graphql.pagination.PageInfoWithCount;
-import org.eclipse.papyrus.web.graphql.schema.ProjectTypeProvider;
-import org.eclipse.papyrus.web.graphql.schema.ViewerTypeProvider;
 import org.eclipse.papyrus.web.services.api.projects.IProjectService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -48,7 +45,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.PROJECTS_FIELD)
+@QueryDataFetcher(type = "User", field = "projects")
 public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<Project>> {
 
     private final IProjectService projectService;
@@ -62,11 +59,12 @@ public class UserProjectsDataFetcher implements IDataFetcherWithFieldCoordinates
         // @formatter:off
         List<Edge<Project>> projectEdges = this.projectService.getProjects().stream()
                 .map(project -> {
-                    String value = new Relay().toGlobalId(ProjectTypeProvider.TYPE, project.getId().toString());
+                    String value = new Relay().toGlobalId("Project", project.getId().toString());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(project, cursor);
+                    Edge<Project> edge = new DefaultEdge<>(project, cursor);
+                    return edge;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = projectEdges.stream().findFirst().map(Edge::getCursor).orElse(null);

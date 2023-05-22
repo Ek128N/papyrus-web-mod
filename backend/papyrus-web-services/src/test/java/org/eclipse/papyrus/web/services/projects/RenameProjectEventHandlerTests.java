@@ -18,12 +18,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.papyrus.web.services.api.accounts.Profile;
 import org.eclipse.papyrus.web.services.api.projects.IProjectService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
 import org.eclipse.papyrus.web.services.api.projects.RenameProjectInput;
 import org.eclipse.papyrus.web.services.api.projects.RenameProjectSuccessPayload;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -42,7 +40,7 @@ import reactor.core.publisher.Sinks.One;
 public class RenameProjectEventHandlerTests {
     @Test
     public void testRenameProject() {
-        Project project = new Project(UUID.randomUUID(), "newName", new Profile(UUID.randomUUID(), "system"), Visibility.PUBLIC); //$NON-NLS-1$ //$NON-NLS-2$
+        Project project = new Project(UUID.randomUUID(), "newName");
 
         AtomicBoolean hasBeenCalled = new AtomicBoolean();
         IProjectService projectService = new IProjectService.NoOp() {
@@ -54,7 +52,7 @@ public class RenameProjectEventHandlerTests {
         };
 
         RenameProjectEventHandler handler = new RenameProjectEventHandler(new NoOpServicesMessageService(), projectService);
-        var input = new RenameProjectInput(UUID.randomUUID(), UUID.randomUUID(), "newName"); //$NON-NLS-1$
+        var input = new RenameProjectInput(UUID.randomUUID(), UUID.randomUUID(), "newName");
         IEditingContext editingContext = () -> UUID.randomUUID().toString();
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

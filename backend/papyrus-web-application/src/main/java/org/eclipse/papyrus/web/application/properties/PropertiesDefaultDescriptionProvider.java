@@ -106,7 +106,6 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
-                .groupDescriptions(groupDescriptions)
                 .build();
         // @formatter:on
     }

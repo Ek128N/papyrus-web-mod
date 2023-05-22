@@ -13,9 +13,7 @@
 package org.eclipse.papyrus.web.services.projects;
 
 import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
-import org.eclipse.papyrus.web.services.api.accounts.Profile;
 import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 
 /**
  * Class used to convert project entities to project data transfer objects and vice versa.
@@ -24,8 +22,6 @@ import org.eclipse.papyrus.web.services.api.projects.Visibility;
  */
 public class ProjectMapper {
     public Project toDTO(ProjectEntity projectEntity) {
-        var user = new Profile(projectEntity.getOwner().getId(), projectEntity.getOwner().getUsername());
-        var visibility = Visibility.valueOf(projectEntity.getVisibility().name());
-        return new Project(projectEntity.getId(), projectEntity.getName(), user, visibility);
+        return new Project(projectEntity.getId(), projectEntity.getName());
     }
 }

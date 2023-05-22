@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,17 +25,17 @@ import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import {
   NewProjectCard,
   ProjectTemplateCard,
   UploadProjectCard,
-} from 'views/project-template-card/ProjectTemplateCard';
+} from '../../views/project-template-card/ProjectTemplateCard';
 import {
   GQLCreateProjectFromTemplateMutationData,
   GQLCreateProjectFromTemplatePayload,
   GQLCreateProjectFromTemplateSuccessPayload,
-} from 'views/projects/ProjectsView.types';
+  ProjectTemplate,
+} from '../../views/projects/ProjectsView.types';
 import { GQLErrorPayload, ProjectTemplatesModalProps } from './ProjectTemplatesModal.types';
 import {
   ChangePageEvent,
@@ -120,9 +120,9 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
   const { page, templates, templatesCount, runningTemplate, redirectURL, message } = context;
 
   // Index of the last page, including all templates *and* the 2 special cards
-  const lastPage = templatesCount ? Math.ceil((templatesCount + 2) / 12) : 0;
+  const lastPage: number = templatesCount ? Math.ceil((templatesCount + 2) / 12) : 0;
   // Index of the last page which actually contains templates (and not just special cards)
-  const lastPageWithTemplates = templatesCount ? Math.ceil(templatesCount / 12) : 0;
+  const lastPageWithTemplates: number = templatesCount ? Math.ceil(templatesCount / 12) : 0;
 
   const { loading, data, error, refetch } = useQuery(getProjectTemplatesQuery, {
     variables: { page: page - 1 },
@@ -174,10 +174,10 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
     return <Redirect to={redirectURL} />;
   }
 
-  const cards = [];
+  const cards: JSX.Element[] = [];
   if (page <= lastPageWithTemplates) {
     templates
-      .map((template) => (
+      .map((template: ProjectTemplate) => (
         <ProjectTemplateCard
           key={template.id}
           disabled={!!runningTemplate}
@@ -188,7 +188,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
             dispatch(event);
             const variables = {
               input: {
-                id: uuid(),
+                id: crypto.randomUUID(),
                 templateId: template.id,
               },
             };
@@ -196,7 +196,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
           }}
         />
       ))
-      .forEach((card) => cards.push(card));
+      .forEach((card: JSX.Element) => cards.push(card));
     if (cards.length < 12) {
       cards.push(<NewProjectCard key="new-project" />);
     }
@@ -210,7 +210,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
     cards.push(<UploadProjectCard key="upload-project" />);
   }
 
-  let content;
+  let content: JSX.Element;
   if (projectTemplatesModal === 'loading') {
     content = <Typography>Loading...</Typography>;
   } else {
@@ -223,7 +223,7 @@ export const ProjectTemplatesModal = ({ onClose }: ProjectTemplatesModalProps) =
           className={styles.navigation}
           page={page}
           count={lastPage}
-          onChange={(event, value) => {
+          onChange={(_, value: number) => {
             const newPage = value;
             const changePageEvent: ChangePageEvent = { type: 'CHANGE_PAGE', page: newPage };
             dispatch(changePageEvent);

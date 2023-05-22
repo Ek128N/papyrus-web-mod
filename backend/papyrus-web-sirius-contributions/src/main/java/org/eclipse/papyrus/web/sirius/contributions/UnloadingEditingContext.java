@@ -12,14 +12,17 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.sirius.contributions;
 
+import java.util.Map;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
 public class UnloadingEditingContext extends EditingContext {
 
-    public UnloadingEditingContext(String id, AdapterFactoryEditingDomain editingDomain) {
-        super(id, editingDomain);
+    public UnloadingEditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions) {
+        super(id, editingDomain, representationDescriptions);
     }
 
     @Override

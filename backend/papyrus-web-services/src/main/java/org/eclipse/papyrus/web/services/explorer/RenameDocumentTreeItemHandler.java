@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,6 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
             // @formatter:on
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

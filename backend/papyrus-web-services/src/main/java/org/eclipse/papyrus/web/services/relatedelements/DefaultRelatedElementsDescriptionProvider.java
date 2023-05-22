@@ -1,8 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
- *
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -41,13 +39,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultRelatedElementsDescriptionProvider implements IRelatedElementsDescriptionProvider {
 
-    public static final UUID FORM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("defaultRelatedElementsForm".getBytes()); //$NON-NLS-1$
+    public static final UUID FORM_DESCRIPTION_ID = UUID.nameUUIDFromBytes("defaultRelatedElementsForm".getBytes());
 
-    private static final String GROUP_DESCRIPTION_ID = "defaultRelatedElementsGroup"; //$NON-NLS-1$
+    private static final String GROUP_DESCRIPTION_ID = "defaultRelatedElementsGroup";
 
-    private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage"; //$NON-NLS-1$
+    private static final String PAGE_DESCRIPTION_ID = "defaultRelatedElementsPage";
 
-    private static final String FORM_TITLE = "Related Elements"; //$NON-NLS-1$
+    private static final String FORM_TITLE = "Related Elements";
 
     private final IObjectService objectService;
 
@@ -77,7 +75,6 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(List.of(this.getPageDescription(groupDescriptions)))
-                .groupDescriptions(groupDescriptions)
                 .build();
         // @formatter:on
     }
@@ -93,7 +90,7 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                 .idProvider(variableManager -> FORM_TITLE)
                 .labelProvider(variableManager -> FORM_TITLE)
                 .displayModeProvider(variableManager -> GroupDisplayMode.TOGGLEABLE_AREAS)
-                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList()))
+                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList())
                 .controlDescriptions(controlDescriptions)
                 .build();
         // @formatter:on
@@ -107,8 +104,8 @@ public class DefaultRelatedElementsDescriptionProvider implements IRelatedElemen
                                                               .orElseGet(() -> UUID.randomUUID().toString()))
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                                                                  .map(this.objectService::getLabel)
-                                                                 .orElse("")) //$NON-NLS-1$
-                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().collect(Collectors.toList()))
+                                                                 .orElse(""))
+                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList())
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
                 .build();

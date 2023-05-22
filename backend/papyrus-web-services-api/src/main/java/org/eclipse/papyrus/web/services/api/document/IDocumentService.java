@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,9 +23,9 @@ import java.util.UUID;
  */
 public interface IDocumentService {
 
-    String RESOURCE_KIND_JSON = "json"; //$NON-NLS-1$
+    String RESOURCE_KIND_JSON = "json";
 
-    String RESOURCE_KIND_XMI = "xmi"; //$NON-NLS-1$
+    String RESOURCE_KIND_XMI = "xmi";
 
     Optional<Document> createDocument(String projectId, String name, String content);
 

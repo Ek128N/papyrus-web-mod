@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
@@ -68,7 +69,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         createCommentDescription(diagramDescription);
 
         // There is a unique DropTool for the DiagramDescription
-        diagramDescription.setOnDrop(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
     }
 
     private NodeDescription createStateMachineNodeDescription(DiagramDescription diagramDescription) {
@@ -85,18 +86,23 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // workaround to overcome missing enhancement https://github.com/PapyrusSirius/papyrus-web/issues/121
         // It is not possible to define that there is no delete tool.
         // The only way is to define a delete tool that does nothing
-        smdStateMachineNodeDesc.setDeleteTool(ViewFactory.eINSTANCE.createDeleteTool());
+        smdStateMachineNodeDesc.getPalette().setDeleteTool(ViewFactory.eINSTANCE.createDeleteTool());
 
         String specializedDomainNodeName = getIdBuilder().getSpecializedDomainNodeName(umlPackage.getPseudostate(), "BorderNode_InStateMachine"); //$NON-NLS-1$
         createPseudostateBorderNodeDescription(smdStateMachineNodeDesc, umlPackage.getStateMachine_ConnectionPoint(), specializedDomainNodeName);
 
-        NodeDescription regionNodeDescription = createRegionNodeDescription(smdStateMachineNodeDesc);
+        NodeDescription regionNodeDescription = createRegionNodeDescription(smdStateMachineNodeDesc, diagramDescription);
+
         registerNodeAsCommentOwner(regionNodeDescription, diagramDescription);
 
+        Supplier<List<NodeDescription>> stateMachineDescs = () -> collectNodesWithDomain(diagramDescription, umlPackage.getStateMachine());
+        registerCallback(smdStateMachineNodeDesc, () -> {
+            CreationToolsUtil.addNodeCreationTool(stateMachineDescs, getViewBuilder().createCreationTool(UMLPackage.eINSTANCE.getStateMachine_Region(), UMLPackage.eINSTANCE.getRegion()));
+        });
         return smdStateMachineNodeDesc;
     }
 
-    private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription) {
+    private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription, DiagramDescription diagramDescription) {
 
         NodeDescription regionNodeDesc = newNodeBuilder(umlPackage.getRegion(), getViewBuilder().createRectangularNodeStyle(false, false))//
                 .layoutStrategyDescription(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
@@ -104,7 +110,6 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(umlPackage.getRegion().getName()))//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
-                .createTools(List.of(getViewBuilder().createCreationTool(UMLPackage.eINSTANCE.getStateMachine_Region(), UMLPackage.eINSTANCE.getRegion())))//
                 .build();
 
         stateMachineNodeDescription.getChildrenDescriptions().add(regionNodeDesc);
@@ -112,7 +117,12 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         createStateNodeDescription(regionNodeDesc);
         createFinalStateNodeDescription(regionNodeDesc);
         createPseudostateInRegionNodeDescription(regionNodeDesc);
-
+        
+        Supplier<List<NodeDescription>> regionDescs = () -> collectNodesWithDomain(diagramDescription, umlPackage.getRegion());
+        registerCallback(regionNodeDesc, () -> {
+            CreationToolsUtil.addNodeCreationTool(regionDescs, getViewBuilder().createCreationTool(umlPackage.getRegion_Subvertex(), umlPackage.getState()));
+            CreationToolsUtil.addNodeCreationTool(regionDescs, getViewBuilder().createCreationTool(umlPackage.getRegion_Subvertex(), umlPackage.getFinalState()));
+        });
         return regionNodeDesc;
     }
 
@@ -125,7 +135,6 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(umlPackage.getState().getName()))//
-                .createTools(List.of(getViewBuilder().createCreationTool(umlPackage.getRegion_Subvertex(), umlPackage.getState())))//
                 .reusedNodeDescriptions(List.of(regionNodeDescription))//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .build();
@@ -148,7 +157,6 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(umlPackage.getFinalState().getName()))//
-                .createTools(List.of(getViewBuilder().createCreationTool(umlPackage.getRegion_Subvertex(), umlPackage.getFinalState())))//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .build();
 
@@ -160,7 +168,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         pseudostateKinds.removeAll(List.of(PseudostateKind.ENTRY_POINT_LITERAL, PseudostateKind.EXIT_POINT_LITERAL));
 
         String specializedDomainNodeName = getIdBuilder().getSpecializedDomainNodeName(umlPackage.getPseudostate(), "InRegion"); //$NON-NLS-1$
-        NodeDescription pseudostateNodeDesc = createPseudoStateNodeDescription(umlPackage.getRegion_Subvertex(), pseudostateKinds, specializedDomainNodeName);
+        NodeDescription pseudostateNodeDesc = createPseudoStateNodeDescription(regionNodeDescription, umlPackage.getRegion_Subvertex(), pseudostateKinds, specializedDomainNodeName);
 
         regionNodeDescription.getChildrenDescriptions().add(pseudostateNodeDesc);
     }
@@ -168,12 +176,12 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private void createPseudostateBorderNodeDescription(NodeDescription parentNodeDescription, EReference containmentFeature, String name) {
         List<PseudostateKind> pseudostateKinds = List.of(PseudostateKind.ENTRY_POINT_LITERAL, PseudostateKind.EXIT_POINT_LITERAL);
 
-        NodeDescription pseudostateBorderNodeDesc = createPseudoStateNodeDescription(containmentFeature, pseudostateKinds, name);
+        NodeDescription pseudostateBorderNodeDesc = createPseudoStateNodeDescription(parentNodeDescription, containmentFeature, pseudostateKinds, name);
 
         parentNodeDescription.getBorderNodesDescriptions().add(pseudostateBorderNodeDesc);
     }
 
-    private NodeDescription createPseudoStateNodeDescription(EReference containmentFeature, List<PseudostateKind> pseudostateKinds, String name) {
+    private NodeDescription createPseudoStateNodeDescription(NodeDescription parentDesc, EReference containmentFeature, List<PseudostateKind> pseudostateKinds, String name) {
         List<ConditionalNodeStyle> conditionalNodeStyles = new ArrayList<>();
         List<NodeTool> creationTools = new ArrayList<>();
         for (PseudostateKind pseudostateKind : pseudostateKinds) {
@@ -217,10 +225,13 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(containmentFeature))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(umlPackage.getPseudostate().getName()))//
-                .createTools(creationTools)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .conditionalStyles(conditionalNodeStyles)//
                 .build();
+        registerCallback(pseudostateBorderNodeDesc, () -> {
+            parentDesc.getPalette().getNodeTools().addAll(creationTools);
+        });
+
         return pseudostateBorderNodeDesc;
     }
 
@@ -228,9 +239,11 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         Supplier<List<NodeDescription>> vertexNodeDescriptions = () -> collectNodesWithDomain(diagramDescription, umlPackage.getVertex());
         EdgeDescription transitionEdgeDescription = getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(umlPackage.getTransition(),
                 getQueryBuilder().queryAllReachableExactType(umlPackage.getTransition()), vertexNodeDescriptions, vertexNodeDescriptions);
-        transitionEdgeDescription.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(transitionEdgeDescription, umlPackage.getRegion_Transition()));
         transitionEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        transitionEdgeDescription.setLabelEditTool(null);
+        transitionEdgeDescription.getPalette().setCenterLabelEditTool(null);
+        registerCallback(transitionEdgeDescription, () -> {
+            CreationToolsUtil.addEdgeCreationTool(vertexNodeDescriptions, getViewBuilder().createDefaultDomainBasedEdgeTool(transitionEdgeDescription, umlPackage.getRegion_Transition()));
+        });
 
         diagramDescription.getEdgeDescriptions().add(transitionEdgeDescription);
 

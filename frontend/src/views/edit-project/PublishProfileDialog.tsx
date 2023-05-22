@@ -26,7 +26,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   ErrorPayload,
   GQLGetProfileLastVersionQueryData,
@@ -213,7 +212,7 @@ export const PublishProfileDialog = ({ editingContextId, item, onClose }: Publis
     }
     const variables: PublishProfileVariables = {
       input: {
-        id: uuid(),
+        id: crypto.randomUUID(),
         editingContextId,
         objectId: item.id,
         version: version,

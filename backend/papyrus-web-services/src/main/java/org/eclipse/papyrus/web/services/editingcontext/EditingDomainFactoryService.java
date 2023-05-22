@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.services.editingcontext;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EPackage;
@@ -27,6 +28,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
+import org.eclipse.papyrus.web.services.projects.api.IEditingContextMetadataProvider;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.util.UMLUtil.ProfileApplicationHelper;
@@ -50,31 +52,45 @@ public class EditingDomainFactoryService implements IEditingDomainFactoryService
 
     private final Optional<Registry> resourceFactoryRegistryOpt;
 
+    private final Optional<Registry> optionalResourceFactoryRegistry;
+
     private IStaticPathmapResourceRegistry pathMapRegistry;
 
     private final IProfileRepository profileRepository;
 
-    public EditingDomainFactoryService(IEditingContextEPackageService editingContextEPackageService, ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry,
-            Optional<Resource.Factory.Registry> resourceFactoryRegistryOpt, IStaticPathmapResourceRegistry pathMapRegistry, IProfileRepository profileRepository) {
+    private IEditingContextMetadataProvider editingContextMetadataProvider;
+
+    // CHECKSTYLE:OFF For now
+    public EditingDomainFactoryService(IEditingContextEPackageService editingContextEPackageService, IEditingContextMetadataProvider editingContextMetadataProvider,
+            ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry, Optional<Resource.Factory.Registry> resourceFactoryRegistryOpt,
+            IStaticPathmapResourceRegistry pathMapRegistry, IProfileRepository profileRepository, Optional<Resource.Factory.Registry> optionalResourceFactoryRegistry) {
         this.pathMapRegistry = Objects.requireNonNull(pathMapRegistry);
         this.profileRepository = Objects.requireNonNull(profileRepository);
         this.editingContextEPackageService = Objects.requireNonNull(editingContextEPackageService);
+        this.editingContextMetadataProvider = Objects.requireNonNull(editingContextMetadataProvider);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.resourceFactoryRegistryOpt = resourceFactoryRegistryOpt;
+        this.optionalResourceFactoryRegistry = optionalResourceFactoryRegistry;
     }
+    // CHECKSTYLE:ON For now
 
     @Override
     public AdapterFactoryEditingDomain createEditingDomain(String editingContextId) {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
+        // Remove for now since we need to visualize the view model.
+        // For final product this could be reintegrated
+        // var isStudioProjectNature =
+        // this.editingContextMetadataProvider.getMetadata(editingContextId).natures().stream().map(Nature::natureId)
+        // .anyMatch("siriusComponents://nature?kind=studio"::equals);
 
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
-        this.globalEPackageRegistry.forEach(ePackageRegistry::put);
         List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
-        additionalEPackages.forEach(ePackage -> {
-            ePackageRegistry.put(ePackage.getNsURI(), ePackage);
-        });
+        Stream.concat(this.findGlobalEPackages(), additionalEPackages.stream())
+                // .filter(ePackage -> isStudioProjectNature || !List.of(DomainPackage.eNS_URI,
+                // ViewPackage.eNS_URI).contains(ePackage.getNsURI()))
+                .forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
 
         resourceSet.setPackageRegistry(ePackageRegistry);
 
@@ -101,6 +117,12 @@ public class EditingDomainFactoryService implements IEditingDomainFactoryService
         ProfileApplicationHelper.setInstance(resourceSet, new ProfileApplicationHelper());
         StereotypeApplicationHelper.setInstance(resourceSet, new StereotypeApplicationHelper());
 
+        this.optionalResourceFactoryRegistry.ifPresent(resourceSet::setResourceFactoryRegistry);
+
         return editingDomain;
+    }
+
+    private Stream<EPackage> findGlobalEPackages() {
+        return this.globalEPackageRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast);
     }
 }

@@ -26,10 +26,11 @@ import org.eclipse.sirius.components.view.DeleteTool;
 import org.eclipse.sirius.components.view.LabelEditTool;
 import org.eclipse.sirius.components.view.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodePalette;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.provider.DefaultToolsFactory;
 
 /**
  * The builder used to create a NodeDescription.
@@ -58,8 +59,6 @@ public final class NodeDescriptionBuilder {
 
     private List<NodeDescription> reusedNodeDescriptions = new ArrayList<>();
 
-    private List<NodeTool> createTools = new ArrayList<>();
-
     private LabelEditTool labelEditTool;
 
     private String name;
@@ -72,12 +71,15 @@ public final class NodeDescriptionBuilder {
 
     private IDomainHelper metamodelHelper;
 
+    private NodePalette nodePalette;
+
     public NodeDescriptionBuilder(IdBuilder idBuilder, QueryHelper queryHelper, EClass domainEntity, NodeStyleDescription style, IDomainHelper metamodelHelper) {
         this.idBuilder = idBuilder;
         this.queryHelper = queryHelper;
         this.domainEntity = domainEntity;
         this.style = style;
         this.metamodelHelper = metamodelHelper;
+        this.nodePalette = new DefaultToolsFactory().createDefaultNodePalette();
     }
 
     public NodeDescriptionBuilder name(String name) {
@@ -120,11 +122,6 @@ public final class NodeDescriptionBuilder {
         return this;
     }
 
-    public NodeDescriptionBuilder createTools(List<NodeTool> createTools) {
-        this.createTools = Objects.requireNonNull(createTools);
-        return this;
-    }
-
     public NodeDescriptionBuilder labelEditTool(LabelEditTool labelEditTool) {
         this.labelEditTool = Objects.requireNonNull(labelEditTool);
         return this;
@@ -157,11 +154,11 @@ public final class NodeDescriptionBuilder {
         node.setSynchronizationPolicy(synchronizationPolicy);
         node.setStyle(style);
         node.setChildrenLayoutStrategy(layoutStrategyDescription);
-        node.setDeleteTool(deleteTool);
         node.getConditionalStyles().addAll(conditionalNodeStyles);
         node.getReusedChildNodeDescriptions().addAll(reusedNodeDescriptions);
-        node.getNodeTools().addAll(createTools);
-        node.setLabelEditTool(labelEditTool);
+        nodePalette.setDeleteTool(deleteTool);
+        nodePalette.setLabelEditTool(labelEditTool);
+        node.setPalette(nodePalette);
         node.setCollapsible(collapsible);
 
         return node;

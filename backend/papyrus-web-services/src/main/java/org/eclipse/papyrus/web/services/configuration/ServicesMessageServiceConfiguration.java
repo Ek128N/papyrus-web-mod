@@ -23,8 +23,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  * @author sbegaudeau
  */
 @Configuration
+// Custom code
 public class ServicesMessageServiceConfiguration {
-    private static final String PATH = "messages/papyrus-web-services"; //$NON-NLS-1$
+    private static final String PATH = "messages/papyrus-web-services";
 
     @Bean
     public MessageSourceAccessor servicesMessageSourceAccessor() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public class CustomImagesLoader implements CommandLineRunner {
             Resource[] resources = this.patternResolver.getResources(this.imagesPathPattern);
             for (Resource resource : resources) {
                 Optional<String> contentType = this.getContentType(resource);
-                if (contentType.isPresent() && contentType.get().startsWith("image/")) { //$NON-NLS-1$
+                if (contentType.isPresent() && contentType.get().startsWith("image/")) {
                     this.importImageFromResource(resource, contentType.get());
                 }
             }
@@ -68,18 +68,18 @@ public class CustomImagesLoader implements CommandLineRunner {
         try {
             CustomImageEntity customImageEntity = new CustomImageEntity();
             // No project set: these are global images
-            customImageEntity.setLabel(Optional.ofNullable(resource.getFilename()).map(this::trimFileExtension).orElse("")); //$NON-NLS-1$
+            customImageEntity.setLabel(Optional.ofNullable(resource.getFilename()).map(this::trimFileExtension).orElse(""));
             customImageEntity.setContentType(contentType);
             try (BufferedInputStream stream = new BufferedInputStream(resource.getInputStream())) {
                 customImageEntity.setContent(stream.readAllBytes());
             }
-            customImageEntity.setId(UUID.nameUUIDFromBytes(resource.getFilename().getBytes()));
+            customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
 
-            this.logger.debug(resource.getFilename() + ": " + customImageEntity.getId().toString()); //$NON-NLS-1$
+            this.logger.debug(resource.getFilename() + ": " + customImageEntity.getId().toString());
 
             this.customImageRepository.save(customImageEntity);
         } catch (IOException e) {
-            this.logger.warn("Error loading resource {}: {}", resource, e.getMessage()); //$NON-NLS-1$
+            this.logger.warn("Error loading resource {}: {}", resource, e.getMessage());
         }
     }
 

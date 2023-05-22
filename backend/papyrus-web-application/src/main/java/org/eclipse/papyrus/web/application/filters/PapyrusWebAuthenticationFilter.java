@@ -18,18 +18,18 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 /**
  * Filter used to provide the authentication support.
@@ -43,9 +43,9 @@ public class PapyrusWebAuthenticationFilter extends GenericFilterBean {
     private final String authorizationHeader;
 
     public PapyrusWebAuthenticationFilter() {
-        String rawCredentials = "system:012345678910"; //$NON-NLS-1$
+        String rawCredentials = "system:012345678910";
         String credentials = Base64.getEncoder().encodeToString(rawCredentials.getBytes());
-        this.authorizationHeader = "Basic " + credentials; //$NON-NLS-1$
+        this.authorizationHeader = "Basic " + credentials;
     }
 
     @Override

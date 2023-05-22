@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,9 +41,9 @@ import graphql.schema.DataFetchingEnvironment;
  */
 @QueryDataFetcher(type = "User", field = "projectTemplates")
 public class UserProjectTemplatesDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<ProjectTemplate>> {
-    private static final String PAGE_ARGUMENT = "page"; //$NON-NLS-1$
+    private static final String PAGE_ARGUMENT = "page";
 
-    private static final String LIMIT_ARGUMENT = "limit"; //$NON-NLS-1$
+    private static final String LIMIT_ARGUMENT = "limit";
 
     private final List<IProjectTemplateProvider> projectTemplateProviders;
 
@@ -64,7 +64,7 @@ public class UserProjectTemplatesDataFetcher implements IDataFetcherWithFieldCoo
 
         List<Edge<ProjectTemplate>> projectTemplateEdges = allProjectTemplates.subList(page * limit, Math.min((page + 1) * limit, allProjectTemplates.size())).stream()
                 .map(projectTemplate -> {
-                    String value = new Relay().toGlobalId("ProjectTemplate", projectTemplate.getId()); //$NON-NLS-1$
+                    String value = new Relay().toGlobalId("ProjectTemplate", projectTemplate.getId());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
                     return new DefaultEdge<>(projectTemplate, cursor);
                 })

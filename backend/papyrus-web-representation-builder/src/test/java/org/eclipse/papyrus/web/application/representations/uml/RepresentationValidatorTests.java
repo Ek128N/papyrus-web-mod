@@ -24,6 +24,7 @@ import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,7 @@ public class RepresentationValidatorTests {
 
     @Test
     public void validateCompositeStructure() {
-        DiagramDescription diagram = new CSDDiagramDescriptionBuilder().createDiagramDescription();
+        DiagramDescription diagram = new CSDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         List<Status> validations = buildeDefaultValidator().validate(diagram);
 
@@ -57,7 +58,7 @@ public class RepresentationValidatorTests {
 
     @Test
     public void validatePackageDiagram() {
-        DiagramDescription diagram = new PADDiagramDescriptionBuilder().createDiagramDescription();
+        DiagramDescription diagram = new PADDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         List<Status> validations = buildeDefaultValidator().validate(diagram);
 
@@ -70,7 +71,7 @@ public class RepresentationValidatorTests {
 
     @Test
     public void validateClassDiagram() {
-        DiagramDescription diagram = new CDDiagramDescriptionBuilder().createDiagramDescription();
+        DiagramDescription diagram = new CDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         List<Status> validations = buildeDefaultValidator().validate(diagram);
 
@@ -83,7 +84,7 @@ public class RepresentationValidatorTests {
 
     @Test
     public void validateStateMachineDiagram() {
-        DiagramDescription diagram = new SMDDiagramDescriptionBuilder().createDiagramDescription();
+        DiagramDescription diagram = new SMDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         DiagramDescriptionDescriptionValidator validator = buildeDefaultValidator();
         // Exclude the direct edit tool check on transition since it is a complex semantic and we do not have yet a way

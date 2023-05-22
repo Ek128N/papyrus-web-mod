@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -182,6 +182,17 @@ public class RepresentationService implements IRepresentationService, IRepresent
     }
 
     @Override
+    public Optional<RepresentationMetadata> findByRepresentationId(String representationId) {
+        return new IDParser().parse(representationId)
+                .flatMap(this.representationRepository::findById)
+                .map(new RepresentationMapper(this.objectMapper)::toDTO)
+                .map(RepresentationDescriptor::getRepresentation)
+                .filter(ISemanticRepresentation.class::isInstance)
+                .map(ISemanticRepresentation.class::cast)
+                .map(representation -> new RepresentationMetadata(representation.getId(), representation.getKind(), representation.getLabel(), representation.getDescriptionId(), representation.getTargetObjectId()));
+    }
+
+    @Override
     public Optional<RepresentationMetadata> findByRepresentation(IRepresentation representation) {
         // @formatter:off
         String targetObjectId = Optional.of(representation)
@@ -200,7 +211,7 @@ public class RepresentationService implements IRepresentationService, IRepresent
                 .map(new RepresentationMapper(this.objectMapper)::toDTO)
                 .map(RepresentationDescriptor::getRepresentation)
                 .map(representation -> this.findByRepresentation(representation).get())
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 }

@@ -14,16 +14,15 @@ package org.eclipse.papyrus.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.api.accounts.Profile;
 import org.eclipse.papyrus.web.services.api.document.Document;
 import org.eclipse.papyrus.web.services.api.document.IDocumentService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.eclipse.papyrus.web.services.projects.NoOpServicesMessageService;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -48,7 +47,7 @@ public class DeleteDocumentEventHandlerTests {
     @Test
     public void testDeleteDocument() {
         UUID projectId = UUID.randomUUID();
-        Document document = new Document(UUID.randomUUID(), new Project(projectId, "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), "name", "content"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        Document document = new Document(UUID.randomUUID(), new Project(projectId, ""), "name", "content");
 
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
@@ -64,7 +63,7 @@ public class DeleteDocumentEventHandlerTests {
 
         Resource resource = new JSONResourceFactory().createResourceFromPath(document.getId().toString());
         editingDomain.getResourceSet().getResources().add(resource);
-        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

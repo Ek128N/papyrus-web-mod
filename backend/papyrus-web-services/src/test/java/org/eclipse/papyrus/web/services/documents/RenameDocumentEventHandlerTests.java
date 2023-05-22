@@ -14,16 +14,15 @@ package org.eclipse.papyrus.web.services.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.api.accounts.Profile;
 import org.eclipse.papyrus.web.services.api.document.Document;
 import org.eclipse.papyrus.web.services.api.document.IDocumentService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.eclipse.papyrus.web.services.projects.NoOpServicesMessageService;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -47,16 +46,17 @@ import reactor.core.publisher.Sinks.One;
  * @author fbarbin
  */
 public class RenameDocumentEventHandlerTests {
-    private static final String OLD_NAME = "oldName"; //$NON-NLS-1$
 
-    private static final String NEW_NAME = "newName"; //$NON-NLS-1$
+    private static final String OLD_NAME = "oldName";
+
+    private static final String NEW_NAME = "newName";
 
     @Test
     public void testRenameDocument() {
         IDocumentService noOpDocumentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> rename(UUID documentId, String newName) {
-                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), newName, "noContent")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                return Optional.of(new Document(documentId, new Project(UUID.randomUUID(), ""), newName, "noContent"));
             }
         };
         RenameDocumentEventHandler handler = new RenameDocumentEventHandler(noOpDocumentService, new NoOpServicesMessageService(), new SimpleMeterRegistry());
@@ -74,7 +74,7 @@ public class RenameDocumentEventHandlerTests {
         assertThat(editingDomain.getResourceSet().getResources().size()).isEqualTo(1);
         assertThat(adapter.getName()).isEqualTo(OLD_NAME);
 
-        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain);
+        IEditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of());
 
         Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
         One<IPayload> payloadSink = Sinks.one();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,8 +63,8 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
 
             return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
         } else {
-            this.logger.warn("The object with the id {} does not exist", treeItem.getId()); //$NON-NLS-1$
+            this.logger.warn("The object with the id {} does not exist", treeItem.getId());
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

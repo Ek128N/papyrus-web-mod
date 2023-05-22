@@ -37,6 +37,7 @@ import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescrip
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -46,6 +47,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Registers a diagram definition from a statically loaded View model.
@@ -76,8 +79,8 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         this.ePackagesRegistry = Objects.requireNonNull(ePackagesRegistry);
     }
 
-    @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
+    @PostConstruct
+    public void buildPapyrusDescription() {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
 
@@ -87,31 +90,39 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
                 .map(EPackage.class::cast)
                 .collect(Collectors.toList());
         // @formatter:on
-
-        this.register(resourceSet, staticEPackages, new CSDDiagramDescriptionBuilder().createDiagramDescription(), registry);
-        this.register(resourceSet, staticEPackages, new PADDiagramDescriptionBuilder().createDiagramDescription(), registry);
-        this.register(resourceSet, staticEPackages, new SMDDiagramDescriptionBuilder().createDiagramDescription(), registry);
-        this.register(resourceSet, staticEPackages, new CDDiagramDescriptionBuilder().createDiagramDescription(), registry);
+        this.register(resourceSet, staticEPackages, new CSDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CSDDiagramDescriptionBuilder.CSD_REP_NAME)));
+        this.register(resourceSet, staticEPackages, new PADDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, PADDiagramDescriptionBuilder.PD_REP_NAME)));
+        this.register(resourceSet, staticEPackages, new SMDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, SMDDiagramDescriptionBuilder.SMD_REP_NAME)));
+        this.register(resourceSet, staticEPackages, new CDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CDDiagramDescriptionBuilder.CD_REP_NAME)));
     }
 
-    private void register(ResourceSet resourceSet, List<EPackage> staticEPackages, DiagramDescription diagramDescription, IRepresentationDescriptionRegistry registry) {
+    @Override
+    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
+        this.viewRegistry.getApiDiagrams().forEach(registry::add);
+    }
 
+    private View createView(ResourceSet resourceSet, String representatioName) {
         // Required to have a unique URIs - workaround https://github.com/eclipse-sirius/sirius-components/issues/1345
         View view = ViewFactory.eINSTANCE.createView();
-        JsonResourceImpl impl = new JsonResourceImpl(URI.createURI("papyrus-rep:///papyrus-web-" + diagramDescription.getName()), this.ePackagesRegistry); //$NON-NLS-1$
+        JsonResourceImpl impl = new JsonResourceImpl(URI.createURI("papyrus-rep:///papyrus-web-" + URI.encodeOpaquePart(representatioName, false)), this.ePackagesRegistry); //$NON-NLS-1$
         resourceSet.getResources().add(impl);
         impl.getContents().add(view);
 
-        view.getDescriptions().add(diagramDescription);
+        return view;
+    }
 
-        var representationDescriptions = this.viewConverter.convert(view, staticEPackages);
+    private void register(ResourceSet resourceSet, List<EPackage> staticEPackages, DiagramDescription diagramDescription) {
+
+        View view = (View) diagramDescription.eContainer();
+        List<IRepresentationDescription> representationDescriptions = this.viewConverter.convert(Collections.singletonList(view), staticEPackages);
 
         // Workaround https://github.com/eclipse-sirius/sirius-components/issues/1345
         for (var description : representationDescriptions) {
-            this.viewRegistry.add(diagramDescription, description);
-            LOGGER.info(MessageFormat.format("Contributing representation {0} with id{1}", description.getLabel(), description.getId())); //$NON-NLS-1$
+            if (description instanceof org.eclipse.sirius.components.diagrams.description.DiagramDescription) {
+                this.viewRegistry.add(diagramDescription, (org.eclipse.sirius.components.diagrams.description.DiagramDescription) description);
+                LOGGER.info(MessageFormat.format("Contributing representation {0} with id{1}", description.getLabel(), description.getId())); //$NON-NLS-1$
+            }
         }
-        representationDescriptions.forEach(registry::add);
 
         if (this.saveViewModel) {
             this.printAndSaveViewModel(view);

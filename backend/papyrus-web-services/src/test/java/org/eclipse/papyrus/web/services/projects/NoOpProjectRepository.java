@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.entities.AccessLevelEntity;
 import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
 import org.eclipse.papyrus.web.persistence.repositories.IProjectRepository;
 import org.springframework.data.domain.Page;
@@ -47,8 +46,8 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public <S extends ProjectEntity> Iterable<S> saveAll(Iterable<S> entities) {
-        return entities;
+    public <S extends ProjectEntity> List<S> saveAll(Iterable<S> entities) {
+        return List.of();
     }
 
     @Override
@@ -62,7 +61,7 @@ public class NoOpProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public Iterable<ProjectEntity> findAllById(Iterable<UUID> ids) {
+    public List<ProjectEntity> findAllById(Iterable<UUID> ids) {
         return new ArrayList<>();
     }
 
@@ -95,30 +94,4 @@ public class NoOpProjectRepository implements IProjectRepository {
     public List<ProjectEntity> findAll() {
         return new ArrayList<>();
     }
-
-    @Override
-    public boolean existsByIdAndIsVisibleBy(UUID id, String userName) {
-        return false;
-    }
-
-    @Override
-    public List<ProjectEntity> findAllVisibleBy(String userName) {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public Optional<ProjectEntity> findByIdIfVisibleBy(UUID projectId, String currentUserName) {
-        return Optional.empty();
-    }
-
-    @Override
-    public boolean isOwner(String username, UUID projectId) {
-        return false;
-    }
-
-    @Override
-    public AccessLevelEntity getUserAccessLevel(UUID projectId, String userName) {
-        return AccessLevelEntity.READ;
-    }
-
 }

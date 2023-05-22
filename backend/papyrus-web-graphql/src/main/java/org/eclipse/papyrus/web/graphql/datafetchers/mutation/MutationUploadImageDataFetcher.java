@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.images.ICustomImageImportService;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -42,16 +41,18 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = "uploadImage")
+@MutationDataFetcher(type = "Mutation", field = "uploadImage")
 public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    private static final String FILE = "file"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
-    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String FILE = "file";
 
-    private static final String LABEL = "label"; //$NON-NLS-1$
+    private static final String ID = "id";
 
-    private static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
+    private static final String LABEL = "label";
+
+    private static final String EDITING_CONTEXT_ID = "editingContextId";
 
     private final ICustomImageImportService customImageImportService;
 
@@ -61,7 +62,7 @@ public class MutationUploadImageDataFetcher implements IDataFetcherWithFieldCoor
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Map<Object, Object> inputArgument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Map<Object, Object> inputArgument = environment.getArgument(INPUT_ARGUMENT);
 
         // We cannot use directly UploadImageInput, the objectMapper cannot handle the file stream.
 

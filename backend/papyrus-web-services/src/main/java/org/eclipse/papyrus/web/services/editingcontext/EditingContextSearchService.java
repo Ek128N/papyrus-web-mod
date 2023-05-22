@@ -14,7 +14,9 @@ package org.eclipse.papyrus.web.services.editingcontext;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -28,14 +30,17 @@ import org.eclipse.papyrus.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.papyrus.web.persistence.repositories.IProjectRepository;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.documents.DocumentMetadataAdapter;
+import org.eclipse.papyrus.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
+import org.eclipse.papyrus.web.services.representations.RepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.UnloadingEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -49,7 +54,7 @@ import io.micrometer.core.instrument.Timer;
 @Service
 public class EditingContextSearchService implements IEditingContextSearchService {
 
-    private static final String TIMER_NAME = "papyrusweb_editingcontext_load"; //$NON-NLS-1$
+    private static final String TIMER_NAME = "papyrusweb_editingcontext_load";
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextSearchService.class);
 
@@ -59,29 +64,33 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
     private final EditingDomainFactoryService editingDomainFactoryService;
 
+    private final List<IRepresentationDescriptionRegistryConfigurer> configurers;
+
+    private final IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService;
+
     private final Timer timer;
 
     public EditingContextSearchService(IProjectRepository projectRepository, IDocumentRepository documentRepository, EditingDomainFactoryService editingDomainFactoryService,
-            MeterRegistry meterRegistry) {
+            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService, MeterRegistry meterRegistry) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
+        this.configurers = Objects.requireNonNull(configurers);
+        this.dynamicRepresentationDescriptionService = Objects.requireNonNull(dynamicRepresentationDescriptionService);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
     @Override
     public boolean existsById(String editingContextId) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return new IDParser().parse(editingContextId).map(editingContextUUID -> this.projectRepository.existsByIdAndIsVisibleBy(editingContextUUID, username)).orElse(false);
-
+        return new IDParser().parse(editingContextId).map(editingContextUUID -> this.projectRepository.existsById(editingContextUUID)).orElse(false);
     }
 
     @Override
     public Optional<IEditingContext> findById(String editingContextId) {
         long start = System.currentTimeMillis();
 
-        this.logger.debug("Loading the editing context {}", editingContextId); //$NON-NLS-1$
+        this.logger.debug("Loading the editing context {}", editingContextId);
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactoryService.createEditingDomain(editingContextId);
         ResourceSet resourceSet = editingDomain.getResourceSet();
@@ -97,7 +106,7 @@ public class EditingContextSearchService implements IEditingContextSearchService
 
                 resource.eAdapters().add(new DocumentMetadataAdapter(documentEntity.getName()));
             } catch (IOException | IllegalArgumentException exception) {
-                this.logger.warn("An error occured while loading document {}: {}.", documentEntity.getId(), exception.getMessage()); //$NON-NLS-1$
+                this.logger.warn("An error occured while loading document {}: {}.", documentEntity.getId(), exception.getMessage());
                 resourceSet.getResources().remove(resource);
             }
         }
@@ -107,13 +116,20 @@ public class EditingContextSearchService implements IEditingContextSearchService
         // of inter-resources references
         resourceSet.eAdapters().add(new NonUMLEditingContextCrossReferenceAdapter());
 
-        this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId); //$NON-NLS-1$
+        this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId);
+
+        Map<String, IRepresentationDescription> representationDescriptions = new LinkedHashMap<>();
+        var registry = new RepresentationDescriptionRegistry();
+        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
+        registry.getRepresentationDescriptions().forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
+        this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptions(editingContextId, editingDomain)
+                .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
 
         // Need this customization to be able to unload the UML resources and so clear the CacheAdapter
-        return Optional.of(new UnloadingEditingContext(editingContextId, editingDomain));
+        return Optional.of(new UnloadingEditingContext(editingContextId, editingDomain, representationDescriptions));
     }
 
 }

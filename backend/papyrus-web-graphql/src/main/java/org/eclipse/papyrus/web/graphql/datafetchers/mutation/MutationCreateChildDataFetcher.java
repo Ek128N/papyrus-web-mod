@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
@@ -43,10 +42,12 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  * @author pcdavid
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateChildDataFetcher.CREATE_CHILD_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationCreateChildDataFetcher.CREATE_CHILD_FIELD)
 public class MutationCreateChildDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String CREATE_CHILD_FIELD = "createChild"; //$NON-NLS-1$
+    public static final String CREATE_CHILD_FIELD = "createChild";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -62,7 +63,7 @@ public class MutationCreateChildDataFetcher implements IDataFetcherWithFieldCoor
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, CreateChildInput.class);
 
         // @formatter:off

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { OnboardArea } from '@eclipse-sirius/sirius-components';
 import { Representation, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
@@ -24,8 +23,8 @@ import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import CloseIcon from '@material-ui/icons/Close';
 import Filter from '@material-ui/icons/Filter';
@@ -33,30 +32,27 @@ import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
 import { useMachine } from '@xstate/react';
-import { NavigationBar } from 'navigationBar/NavigationBar';
-import { UMLModelTreeItemContextMenuContribution } from 'profile/apply-profile/UMLModelTreeItemContextMenuContribution';
-import { UMLElementTreeItemContextMenuContribution } from 'profile/apply-stereotype/UMLElementTreeItemContextMenuContribution';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
-import { DocumentTreeItemContextMenuContribution } from 'views/edit-project/DocumentTreeItemContextMenuContribution';
-import { EditProjectNavbar } from 'views/edit-project/EditProjectNavbar/EditProjectNavbar';
-import {
-  EditProjectViewParams,
-  GQLGetProjectQueryData,
-  GQLGetProjectQueryVariables,
-} from 'views/edit-project/EditProjectView.types';
+import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { OnboardArea } from '../../onboarding/OnboardArea';
+import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
+import { UMLModelTreeItemContextMenuContribution } from '../../profile/apply-profile/UMLModelTreeItemContextMenuContribution';
+import { UMLElementTreeItemContextMenuContribution } from '../../profile/apply-stereotype/UMLElementTreeItemContextMenuContribution';
+import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
+import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
+import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariables } from './EditProjectView.types';
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
-  editProjectViewMachine,
   HandleFetchedProjectEvent,
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
   ShowToastEvent,
-} from 'views/edit-project/EditProjectViewMachine';
-import { ObjectTreeItemContextMenuContribution } from 'views/edit-project/ObjectTreeItemContextMenuContribution';
-import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
+  editProjectViewMachine,
+} from './EditProjectViewMachine';
+import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 
 const getProjectQuery = gql`
   query getRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {

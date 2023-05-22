@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -331,7 +331,7 @@ const ImageRow = ({ image, onTriggerRename, onTriggerDelete }: ImageRowProps) =>
             <ImagePreviewTooltip
               enterDelay={250}
               interactive
-              title={<img src={httpOrigin + '/api/images' + image.url} width={120} alt="" />}>
+              title={<img src={httpOrigin + '/api/images' + image.url} width={120} />}>
               <IconButton>
                 <ImageOutlinedIcon fontSize="small" />
               </IconButton>

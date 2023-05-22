@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import org.eclipse.papyrus.web.graphql.datafetchers.IViewerProvider;
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.projects.DeleteProjectInput;
 import org.eclipse.papyrus.web.services.api.projects.DeleteProjectSuccessPayload;
 import org.eclipse.papyrus.web.services.api.projects.IProjectService;
@@ -45,10 +44,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author fbarbin
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteProjectDataFetcher.DELETE_PROJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationDeleteProjectDataFetcher.DELETE_PROJECT_FIELD)
 public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String DELETE_PROJECT_FIELD = "deleteProject"; //$NON-NLS-1$
+    public static final String DELETE_PROJECT_FIELD = "deleteProject";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -71,7 +72,7 @@ public class MutationDeleteProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteProjectInput.class);
 
         var optionalViewer = this.viewerProvider.getViewer(environment);

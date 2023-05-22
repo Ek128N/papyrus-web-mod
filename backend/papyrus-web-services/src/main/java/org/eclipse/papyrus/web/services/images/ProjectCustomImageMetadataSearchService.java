@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ package org.eclipse.papyrus.web.services.images;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.web.persistence.entities.CustomImageMetadataEntity;
 import org.eclipse.papyrus.web.persistence.repositories.ICustomImageMetadataRepository;
@@ -44,12 +43,12 @@ public class ProjectCustomImageMetadataSearchService implements IProjectCustomIm
                 .orElse(List.of())
                 .stream()
                 .map(this::toDTO)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 
     private CustomImageMetadata toDTO(CustomImageMetadataEntity customImageMetadataEntity) {
-        String url = String.format("/custom/%s", customImageMetadataEntity.getId().toString()); //$NON-NLS-1$
+        String url = String.format("/custom/%s", customImageMetadataEntity.getId().toString());
         return new CustomImageMetadata(customImageMetadataEntity.getId(), customImageMetadataEntity.getLabel(), url, customImageMetadataEntity.getContentType());
     }
 

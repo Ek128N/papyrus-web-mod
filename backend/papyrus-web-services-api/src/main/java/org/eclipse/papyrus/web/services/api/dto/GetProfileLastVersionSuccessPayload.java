@@ -36,7 +36,7 @@ public final class GetProfileLastVersionSuccessPayload implements IPayload {
     }
 
     @Override
-    public UUID getId() {
+    public UUID id() {
         return this.id;
     }
 

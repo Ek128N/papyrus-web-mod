@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectInput;
 import org.eclipse.papyrus.web.services.api.projects.IProjectService;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -39,10 +38,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationCreateProjectDataFetcher.CREATE_PROJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationCreateProjectDataFetcher.CREATE_PROJECT_FIELD)
 public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String CREATE_PROJECT_FIELD = "createProject"; //$NON-NLS-1$
+    public static final String CREATE_PROJECT_FIELD = "createProject";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -55,7 +56,7 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, CreateProjectInput.class);
         return this.projectService.createProject(input);
     }

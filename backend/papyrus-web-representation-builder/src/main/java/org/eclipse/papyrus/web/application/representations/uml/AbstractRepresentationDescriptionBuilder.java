@@ -18,10 +18,12 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Opera
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_OTHER_END;
 
 import java.text.MessageFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -51,6 +53,8 @@ import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.components.view.NodeStyleDescription;
+import org.eclipse.sirius.components.view.Tool;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -71,7 +75,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
-    private final ViewBuilder viewBuilder;
+    private ViewBuilder viewBuilder;
 
     private final QueryHelper queryBuilder;
 
@@ -83,13 +87,15 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     private final IDomainHelper umlMetaModelHelper = new UMLMetamodelHelper();
 
+    private StyleProvider styleProvider;
+
     public AbstractRepresentationDescriptionBuilder(String diagramPrefix, String representationName, EClass domainClass) {
         super();
         this.representationName = representationName;
         this.representationDomainClass = domainClass;
         this.queryBuilder = new QueryHelper(umlMetaModelHelper);
         this.idBuilder = new IdBuilder(diagramPrefix, umlMetaModelHelper);
-        this.viewBuilder = new ViewBuilder(queryBuilder, createDefaultStyle(), idBuilder, umlMetaModelHelper);
+
     }
 
     protected NodeDescriptionBuilder newNodeBuilder(EClass semanticDomain, NodeStyleDescription style) {
@@ -104,29 +110,28 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         return umlMetaModelHelper;
     }
 
-    protected StyleProvider createDefaultStyle() {
-        StyleProvider styleProvider = new StyleProvider();
-        styleProvider.setEdgeColor(Colors.DEFAULT_NODE_BORDER_COLOR);
-        styleProvider.setNodeColor(Colors.DEFAULT_NODE_BACKGROUND_COLOR);
-        styleProvider.setBorderNodeColor(Colors.DEFAULT_NODE_BORDER_COLOR);
-        styleProvider.setNodeLabelColor(Colors.DEFAULT_NODE_BORDER_COLOR);
-        return styleProvider;
-    }
-
     protected void registerCallback(EObject owner, Runnable r) {
         owner.eAdapters().add(new CallbackAdapter(r));
     }
 
-    public DiagramDescription createDiagramDescription() {
+    public DiagramDescription createDiagramDescription(View view) {
+
+        this.styleProvider = new StyleProvider(view);
+        this.viewBuilder = new ViewBuilder(queryBuilder, styleProvider, idBuilder, umlMetaModelHelper);
 
         DiagramDescription diagramDescription = getViewBuilder().buildDiagramDescription(representationName, representationDomainClass);
 
         diagramDescription.setTitleExpression(MessageFormat.format("aql:''{0}''", representationName)); //$NON-NLS-1$
+
         fillDescription(diagramDescription);
 
         EMFUtils.allContainedObjectOfType(diagramDescription, DiagramElementDescription.class).forEach(this::addConditionalLabelStyle);
 
         runCallbacks(diagramDescription);
+
+        sortPaletteTools(diagramDescription);
+
+        view.getDescriptions().add(diagramDescription);
 
         return diagramDescription;
     }
@@ -283,9 +288,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) commentDescription.getStyle();
         style.setShowIcon(false);
-        style.setColor(Colors.DEFAULT_NOTE_COLOR);
+        style.setColor(styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);
-        commentDescription.getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
+        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
 
         EdgeDescription annotedElementEdge = getViewBuilder().createFeatureEdgeDescription(//
                 getIdBuilder().getFeatureBaseEdgeId(pack.getComment_AnnotatedElement()), //
@@ -301,7 +306,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 .setExpression(CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, getQueryBuilder().aqlString(pack.getComment_AnnotatedElement().getName()), Variables.SEMANTIC_EDGE_TARGET));
         deleteTool.getBody().add(createElement);
 
-        annotedElementEdge.setDeleteTool(deleteTool);
+        annotedElementEdge.getPalette().setDeleteTool(deleteTool);
 
         addAnnotatedElementReconnectionTools(annotedElementEdge);
 
@@ -310,28 +315,32 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         diagramDescription.getEdgeDescriptions().add(annotedElementEdge);
 
         EdgeTool creationTool = getViewBuilder().createFeatureBasedEdgeTool("Link", //$NON-NLS-1$
-                getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET));
-        annotedElementEdge.getEdgeTools().add(creationTool);
+                getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET), //
+                collectNodesWithDomain(diagramDescription, pack.getElement()));
+        commentDescription.getPalette().getEdgeTools().add(creationTool);
 
     }
 
     private void addAnnotatedElementReconnectionTools(EdgeDescription annotedElementEdge) {
         ChangeContext sourceReconnectionOperation = getViewBuilder().createChangeContextOperation(new CallQuery(SEMANTIC_OTHER_END)
                 .callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, Variables.SEMANTIC_RECONNECTION_TARGET));
-        annotedElementEdge.getReconnectEdgeTools().add(getViewBuilder().createSourceReconnectionTool(annotedElementEdge, //
+        annotedElementEdge.getPalette().getEdgeReconnectionTools().add(getViewBuilder().createSourceReconnectionTool(annotedElementEdge, //
                 getIdBuilder().getSourceReconnectionToolId(annotedElementEdge), //
                 List.of(sourceReconnectionOperation)));
 
         ChangeContext targetReconnectionOperation = getViewBuilder().createChangeContextOperation(//
                 new CallQuery(Variables.EDGE_SEMANTIC_ELEMENT).callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, // $NON-NLS-1$
                         Variables.SEMANTIC_RECONNECTION_TARGET));
-        annotedElementEdge.getReconnectEdgeTools().add(getViewBuilder().createTargetReconnectionTool(annotedElementEdge, //
+        annotedElementEdge.getPalette().getEdgeReconnectionTools().add(getViewBuilder().createTargetReconnectionTool(annotedElementEdge, //
                 getIdBuilder().getTargetReconnectionToolId(annotedElementEdge), //
                 List.of(targetReconnectionOperation)));
     }
 
     protected void registerNodeAsCommentOwner(NodeDescription node, DiagramDescription diagramDescription) {
-        registerCallback(node, () -> node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getComment())));
+        registerCallback(node, () -> {
+            node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getComment()));
+            node.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
+        });
     }
 
     /**
@@ -363,9 +372,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected void createModelDescription(DiagramDescription diagramDescription) {
         NodeDescription padModel = getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(pack.getModel(), getQueryBuilder().queryAllReachable(pack.getModel()));
         diagramDescription.getNodeDescriptions().add(padModel);
-        padModel.getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
+        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
 
-        padModel.getStyle().setColor(Colors.MODEL_COLOR);
+        padModel.getStyle().setColor(styleProvider.getModelColor());
         collectAndReusedChildNodes(padModel, pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
 
         registerNodeAsCommentOwner(padModel, diagramDescription);
@@ -374,9 +383,15 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected void createPackageDescription(DiagramDescription diagramDescription) {
         NodeDescription padPackage = getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(pack.getPackage(), getQueryBuilder().queryAllReachable(pack.getPackage()));
         diagramDescription.getNodeDescriptions().add(padPackage);
-        padPackage.getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getPackage()));
+
+        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getPackage()));
 
         registerCallback(padPackage, () -> {
+            List<NodeDescription> packages = collectNodesWithDomain(diagramDescription, pack.getPackage());
+            packages.forEach(p -> {
+                p.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getPackage()));
+                p.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
+            });
             String childrenCandidateExpression = CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getPackage_PackagedElement());
             List<NodeDescription> copiedClassifier = diagramDescription.getNodeDescriptions().stream().filter(n -> isValidNodeDescription(n, false, false, pack.getPackageableElement()))
                     .map(n -> transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
@@ -398,4 +413,39 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         }
         return n;
     }
+
+    class ToolComparator implements Comparator<Tool> {
+        public int compare(Tool obj1, Tool obj2) {
+            int res;
+            if (obj1 == obj2) {
+                res = 0;
+            } else if (obj1 == null) {
+                res = -1;
+            } else if (obj2 == null) {
+                res = 1;
+            } else {
+                res = obj1.getName().compareTo(obj2.getName());
+            }
+            return res;
+        }
+    }
+
+    private void sortPaletteTools(DiagramDescription diagramDescription) {
+        ToolComparator comparator = new ToolComparator();
+        // diagram palette first
+        ECollections.sort(diagramDescription.getPalette().getNodeTools(), comparator);
+        diagramDescription.getNodeDescriptions().forEach(node -> sortPaletteTools(node, comparator));
+        diagramDescription.getEdgeDescriptions().forEach(edge -> {
+            ECollections.sort(edge.getPalette().getNodeTools(), comparator);
+        });
+    }
+
+    private void sortPaletteTools(NodeDescription nodeDescription, ToolComparator comparator) {
+
+        ECollections.sort(nodeDescription.getPalette().getNodeTools(), comparator);
+        ECollections.sort(nodeDescription.getPalette().getEdgeTools(), comparator);
+        nodeDescription.getChildrenDescriptions().forEach(node -> sortPaletteTools(node, comparator));
+        nodeDescription.getBorderNodesDescriptions().forEach(node -> sortPaletteTools(node, comparator));
+    }
+
 }

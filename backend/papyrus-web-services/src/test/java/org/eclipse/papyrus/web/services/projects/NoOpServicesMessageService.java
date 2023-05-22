@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 
+
 /**
  * Implementation of the services message service which does nothing.
  *
@@ -25,32 +26,32 @@ public class NoOpServicesMessageService implements IServicesMessageService {
 
     @Override
     public String invalidInput(String expectedInputTypeName, String receivedInputTypeName) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String invalidProjectName() {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String projectNotFound() {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String unexpectedError() {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String invalidDocumentName(String name) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     @Override
     public String stereotypeDescriptionNotFound(UUID stereotypeDescriptionId) {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
 }

@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.dto.ApplyProfileInput;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
@@ -42,7 +41,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author lfasani
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationApplyProfileDataFetcher.APPLY_PROFILE_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationApplyProfileDataFetcher.APPLY_PROFILE_FIELD)
 public class MutationApplyProfileDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     public static final String APPLY_PROFILE_FIELD = "applyProfile"; //$NON-NLS-1$
@@ -61,7 +60,7 @@ public class MutationApplyProfileDataFetcher implements IDataFetcherWithFieldCoo
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, ApplyProfileInput.class);
 
         // @formatter:off

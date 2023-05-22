@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Link, IconButton } from '@material-ui/core';
-import { makeStyles, emphasize } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import { emphasize, makeStyles } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
 
 const useHelpStyle = makeStyles((theme) => ({

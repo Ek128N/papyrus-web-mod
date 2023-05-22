@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -29,6 +28,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -48,15 +48,15 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * @author pcdavid
  */
 public class OutgoingTreeProvider {
-    private static final String WIDGET_ID = "related/outgoing"; //$NON-NLS-1$
+    private static final String WIDGET_ID = "related/outgoing";
 
-    private static final String TITLE = "Outgoing"; //$NON-NLS-1$
+    private static final String TITLE = "Outgoing";
 
-    private static final String WIDGET_ICON_URL = "/images/east_black_24dp.svg"; //$NON-NLS-1$
+    private static final String WIDGET_ICON_URL = "/images/east_black_24dp.svg";
 
-    private static final String OUTGOING_REFERENCE_ICON_URL = "/images/east_black_24dp.svg"; //$NON-NLS-1$
+    private static final String OUTGOING_REFERENCE_ICON_URL = "/images/east_black_24dp.svg";
 
-    private static final String OUTGOING_REFERENCE_KIND = "siriusWeb://category/outgoing-references"; //$NON-NLS-1$
+    private static final String OUTGOING_REFERENCE_KIND = "siriusWeb://category/outgoing-references";
 
     private final IObjectService objectService;
 
@@ -106,7 +106,7 @@ public class OutgoingTreeProvider {
             var nonContainmentReferences = root.eClass().getEAllReferences().stream()
                     .filter(ref -> !ref.isContainment())
                     .sorted(Comparator.comparing(EStructuralFeature::getName))
-                    .collect(Collectors.toList());
+                    .toList();
             // @formatter:on
             result = nonContainmentReferences.stream().filter(ref -> {
                 if (ref.isMany()) {
@@ -114,7 +114,7 @@ public class OutgoingTreeProvider {
                 } else {
                     return root.eGet(ref) != null;
                 }
-            }).collect(Collectors.toList());
+            }).toList();
         } else if (self instanceof EReference) {
             result = this.readReference(root, (EReference) self);
         }
@@ -126,7 +126,7 @@ public class OutgoingTreeProvider {
         if (ref.isMany()) {
             result = (EList<?>) self.eGet(ref);
         } else {
-            result = Optional.ofNullable(self.eGet(ref)).stream().collect(Collectors.toList());
+            result = Optional.ofNullable(self.eGet(ref)).stream().toList();
         }
         return result;
     }
@@ -135,7 +135,7 @@ public class OutgoingTreeProvider {
         String result = null;
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
         if (self instanceof EReference) {
-            result = "reference/" + ((EReference) self).getName(); //$NON-NLS-1$
+            result = "reference/" + ((EReference) self).getName();
         } else if (self != null) {
             result = this.objectService.getId(self);
         }
@@ -180,7 +180,7 @@ public class OutgoingTreeProvider {
         } else if (self != null) {
             result = this.objectService.getImagePath(self);
         }
-        return result;
+        return Optional.ofNullable(result).orElse(ImageConstants.DEFAULT_SVG);
     }
 
     private String getNodeKind(VariableManager variableManager) {

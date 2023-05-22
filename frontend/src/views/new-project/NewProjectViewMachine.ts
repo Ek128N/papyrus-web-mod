@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020, 2021 Obeo.
+ * Copyright (c) 2020, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { assign, Machine } from 'xstate';
 import {
   GQLCreateProjectMutationData,
   GQLCreateProjectPayload,
   GQLCreateProjectSuccessPayload,
-} from 'views/new-project/NewProjectView.types';
-import { assign, Machine } from 'xstate';
+} from './NewProjectView.types';
 
 export interface NewProjectViewStateSchema {
   states: {
@@ -63,7 +63,7 @@ export type NewProjectEvent =
   | HideToastEvent;
 
 const isChangeNameEvent = (event: NewProjectEvent): event is ChangeNameEvent => !!(event as ChangeNameEvent).name;
-const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 50;
+const isNameInvalid = (name: string) => name.trim().length < 3 || name.trim().length > 1024;
 const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
   payload.__typename === 'CreateProjectSuccessPayload';
 export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectViewStateSchema, NewProjectEvent>(
@@ -72,7 +72,7 @@ export const newProjectViewMachine = Machine<NewProjectViewContext, NewProjectVi
     type: 'parallel',
     context: {
       name: '',
-      nameMessage: 'The name must contain between 3 and 50 characters',
+      nameMessage: 'The name must contain between 3 and 1024 characters',
       nameIsInvalid: false,
       message: null,
       newProjectId: null,

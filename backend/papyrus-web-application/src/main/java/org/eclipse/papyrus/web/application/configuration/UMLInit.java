@@ -14,13 +14,13 @@ package org.eclipse.papyrus.web.application.configuration;
 
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.uml2.uml.UMLPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Mock the start of the plugin <i>org.eclipse.uml2.uml.UMLPlugin</i>.

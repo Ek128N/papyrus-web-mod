@@ -26,7 +26,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 import {
   ApplyStereotypeModalProps,
   GQLApplyStereotypeMutationData,
@@ -164,7 +163,7 @@ export const ApplyStereotypeModal = ({
   const onApplyStereotype = () => {
     dispatch({ type: 'APPLY_STEREOTYPE' } as ApplyStereotypeModalEvent);
     const input = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       elementId: item.id,
       stereotypeId: selectedStereotypeId,

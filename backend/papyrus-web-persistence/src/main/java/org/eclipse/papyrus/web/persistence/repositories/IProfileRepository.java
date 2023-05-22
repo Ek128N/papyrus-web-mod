@@ -15,6 +15,8 @@ package org.eclipse.papyrus.web.persistence.repositories;
 import java.util.UUID;
 
 import org.eclipse.papyrus.web.persistence.entities.ProfileResourceEntity;
+import org.eclipse.sirius.components.annotations.Audited;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,9 @@ import org.springframework.stereotype.Repository;
  * @author sbegaudeau
  */
 @Repository
-public interface IProfileRepository extends PagingAndSortingRepository<ProfileResourceEntity, UUID> {
+public interface IProfileRepository extends PagingAndSortingRepository<ProfileResourceEntity, UUID>, ListCrudRepository<ProfileResourceEntity, UUID> {
 
+    @Override
+    @Audited
+    boolean existsById(UUID id);
 }

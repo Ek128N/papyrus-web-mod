@@ -13,6 +13,7 @@
 package org.eclipse.papyrus.web.services.editingcontext;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,8 +46,8 @@ public class NoOpProfileRepository implements IProfileRepository {
     }
 
     @Override
-    public <S extends ProfileResourceEntity> Iterable<S> saveAll(Iterable<S> entities) {
-        return entities;
+    public <S extends ProfileResourceEntity> List<S> saveAll(Iterable<S> entities) {
+        return Collections.emptyList();
     }
 
     @Override
@@ -60,12 +61,12 @@ public class NoOpProfileRepository implements IProfileRepository {
     }
 
     @Override
-    public Iterable<ProfileResourceEntity> findAll() {
+    public List<ProfileResourceEntity> findAll() {
         return Collections.emptyList();
     }
 
     @Override
-    public Iterable<ProfileResourceEntity> findAllById(Iterable<UUID> ids) {
+    public List<ProfileResourceEntity> findAllById(Iterable<UUID> ids) {
         return Collections.emptyList();
     }
 

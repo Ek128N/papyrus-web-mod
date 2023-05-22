@@ -58,25 +58,25 @@ import org.xml.sax.SAXException;
 @Service
 public class ParametricSVGImageFactory implements IParametricSVGImageFactory {
 
-    private static final String D_ATTRIBUTE = "d"; //$NON-NLS-1$
+    private static final String D_ATTRIBUTE = "d";
 
-    private static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$
+    private static final String ID_ATTRIBUTE = "id";
 
-    private static final String CONTAINS_ID = "//*[contains(@id, '%s')]"; //$NON-NLS-1$
+    private static final String CONTAINS_ID = "//*[contains(@id, '%s')]";
+    
+    private static final String CONTAINS_IDS = CONTAINS_ID + "|" + CONTAINS_ID;
 
-    private static final String CONTAINS_IDS = CONTAINS_ID + "|" + CONTAINS_ID; //$NON-NLS-1$
+    private static final String HEIGHT = "height";
 
-    private static final String HEIGHT = "height"; //$NON-NLS-1$
+    private static final String WIDTH = "width";
+    
+    private static final String RECTANGLE_ELEMENT_LABEL_ID = "labelRectangle";
 
-    private static final String WIDTH = "width"; //$NON-NLS-1$
+    private static final String RECTANGLE_ELEMENT_MAIN_ID = "mainRectangle";
 
-    private static final String RECTANGLE_ELEMENT_LABEL_ID = "labelRectangle"; //$NON-NLS-1$
+    private static final String NOTE_MAIN_ID = "note_main";
 
-    private static final String RECTANGLE_ELEMENT_MAIN_ID = "mainRectangle"; //$NON-NLS-1$
-
-    private static final String NOTE_MAIN_ID = "note_main"; //$NON-NLS-1$
-
-    private static final String NOTE_TRIANGLE_ID = "note_triangle"; //$NON-NLS-1$
+    private static final String NOTE_TRIANGLE_ID = "note_triangle";
 
     private static final Integer PADDING = 5;
 
@@ -108,13 +108,13 @@ public class ParametricSVGImageFactory implements IParametricSVGImageFactory {
             try (InputStream inputStream = classPathResource.getInputStream()) {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true); //$NON-NLS-1$
+                factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                 Document document = factory.newDocumentBuilder().parse(inputStream);
                 XPath xpath = XPathFactory.newInstance().newXPath();
 
                 // change the global size
                 // @formatter:off
-                Node svgNode = Optional.of(xpath.evaluate("/svg", document, XPathConstants.NODESET))//$NON-NLS-1$
+                Node svgNode = Optional.of(xpath.evaluate("/svg", document, XPathConstants.NODESET))
                         .filter(NodeList.class::isInstance)
                         .map(NodeList.class::cast)
                         .filter(nodeList -> nodeList.getLength() > 0)

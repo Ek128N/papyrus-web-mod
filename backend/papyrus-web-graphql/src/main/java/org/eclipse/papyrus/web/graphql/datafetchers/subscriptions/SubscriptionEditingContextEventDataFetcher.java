@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,17 +14,20 @@ package org.eclipse.papyrus.web.graphql.datafetchers.subscriptions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.graphql.schema.SubscriptionTypeProvider;
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.reactivestreams.Publisher;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 import reactor.core.publisher.Flux;
 
@@ -42,10 +45,8 @@ import reactor.core.publisher.Flux;
  *
  * @author arichard
  */
-@SubscriptionDataFetcher(type = SubscriptionTypeProvider.TYPE, field = SubscriptionEditingContextEventDataFetcher.EDITING_CONTEXT_EVENT_FIELD)
-public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<IPayload>> {
-
-    public static final String EDITING_CONTEXT_EVENT_FIELD = "editingContextEvent"; //$NON-NLS-1$
+@SubscriptionDataFetcher(type = "Subscription", field = "editingContextEvent")
+public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private final ObjectMapper objectMapper;
 
@@ -57,15 +58,20 @@ public class SubscriptionEditingContextEventDataFetcher implements IDataFetcherW
     }
 
     @Override
-    public Publisher<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(SubscriptionTypeProvider.INPUT_ARGUMENT);
+    public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
+        Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, EditingContextEventInput.class);
 
-        // @formatter:off
+        Map<String, Object> localContext = new HashMap<>();
+        localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
+
         return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(input.editingContextId())
                 .map(IEditingContextEventProcessor::getOutputEvents)
-                .orElse(Flux.empty());
-        // @formatter:on
+                .orElse(Flux.empty())
+                .map(payload ->  DataFetcherResult.<IPayload>newResult()
+                        .data(payload)
+                        .localContext(localContext)
+                        .build());
     }
 
 }

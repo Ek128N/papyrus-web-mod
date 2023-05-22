@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,8 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
         Predicate<VariableManager> canCreatePredicate = variableManager -> false;
 
         // @formatter:off
-        return ValidationDescription.newValidationDescription(UUID.nameUUIDFromBytes("validation_description".getBytes()).toString()) //$NON-NLS-1$
-                .label("Validation") //$NON-NLS-1$
+        return ValidationDescription.newValidationDescription(UUID.nameUUIDFromBytes("validation_description".getBytes()).toString())
+                .label("Validation")
                 .canCreatePredicate(canCreatePredicate)
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)
@@ -66,21 +66,21 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
     }
 
     private String kindProvider(Object object) {
-        String kind = "Unknown"; //$NON-NLS-1$
+        String kind = "Unknown";
         if (object instanceof Diagnostic) {
             Diagnostic diagnostic = (Diagnostic) object;
             switch (diagnostic.getSeverity()) {
                 case org.eclipse.emf.common.util.Diagnostic.ERROR:
-                    kind = "Error"; //$NON-NLS-1$
+                    kind = "Error";
                     break;
                 case org.eclipse.emf.common.util.Diagnostic.WARNING:
-                    kind = "Warning"; //$NON-NLS-1$
+                    kind = "Warning";
                     break;
                 case org.eclipse.emf.common.util.Diagnostic.INFO:
-                    kind = "Info"; //$NON-NLS-1$
+                    kind = "Info";
                     break;
                 default:
-                    kind = "Unknown"; //$NON-NLS-1$
+                    kind = "Unknown";
                     break;
             }
         }
@@ -92,7 +92,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
             Diagnostic diagnostic = (Diagnostic) object;
             return diagnostic.getMessage();
         }
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
 }

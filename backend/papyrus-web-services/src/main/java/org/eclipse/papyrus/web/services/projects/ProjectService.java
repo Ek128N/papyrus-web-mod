@@ -12,17 +12,16 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.projects;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import org.eclipse.papyrus.web.persistence.entities.AccountEntity;
 import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
-import org.eclipse.papyrus.web.persistence.entities.VisibilityEntity;
-import org.eclipse.papyrus.web.persistence.repositories.IAccountRepository;
+import org.eclipse.papyrus.web.persistence.entities.ProjectNatureEntity;
+import org.eclipse.papyrus.web.persistence.repositories.IProjectNatureRepository;
 import org.eclipse.papyrus.web.persistence.repositories.IProjectRepository;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectFromTemplateInput;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectFromTemplateSuccessPayload;
@@ -32,14 +31,11 @@ import org.eclipse.papyrus.web.services.api.projects.IProjectService;
 import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateProvider;
 import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -55,7 +51,7 @@ public class ProjectService implements IProjectService {
 
     private final IProjectRepository projectRepository;
 
-    private final IAccountRepository accountRepository;
+    private final IProjectNatureRepository projectNatureRepository;
 
     private final IProjectTemplateService projectTemplateService;
 
@@ -65,31 +61,26 @@ public class ProjectService implements IProjectService {
 
     private final ProjectMapper projectMapper;
 
-    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IAccountRepository accountRepository, IProjectTemplateService projectTemplateService,
-            IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
+    public ProjectService(IServicesMessageService messageService, IProjectRepository projectRepository, IProjectNatureRepository projectNatureRepository,
+            IProjectTemplateService projectTemplateService, IEditingContextSearchService editingContextSearchService, IEditingContextPersistenceService editingContextPersistenceService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.projectRepository = Objects.requireNonNull(projectRepository);
-        this.accountRepository = Objects.requireNonNull(accountRepository);
+        this.projectNatureRepository = Objects.requireNonNull(projectNatureRepository);
         this.projectTemplateService = Objects.requireNonNull(projectTemplateService);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextPersistenceService = Objects.requireNonNull(editingContextPersistenceService);
         this.projectMapper = new ProjectMapper();
     }
 
-    private String getCurrentUserName() {
-        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
-        return Optional.ofNullable(principal).map(Principal::getName).orElse("");
-    }
-
     @Override
     public Optional<Project> getProject(UUID projectId) {
-        return this.projectRepository.findByIdIfVisibleBy(projectId, this.getCurrentUserName()).map(this.projectMapper::toDTO);
+        return this.projectRepository.findById(projectId).map(this.projectMapper::toDTO);
     }
 
     @Override
     public List<Project> getProjects() {
         // @formatter:off
-        return this.projectRepository.findAllVisibleBy(this.getCurrentUserName()).stream()
+        return StreamSupport.stream(this.projectRepository.findAll().spliterator(), false)
                 .map(this.projectMapper::toDTO)
                 .collect(Collectors.toUnmodifiableList());
         // @formatter:on
@@ -103,15 +94,12 @@ public class ProjectService implements IProjectService {
         if (!this.isValidProjectName(name)) {
             payload = new ErrorPayload(input.id(), this.messageService.invalidProjectName());
         } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            var optionalOwner = this.accountRepository.findByUsername(authentication.getName());
-            if (!optionalOwner.isEmpty()) {
-                ProjectEntity projectEntity = this.createProjectEntity(name, optionalOwner.get(), input.visibility());
-                projectEntity = this.projectRepository.save(projectEntity);
 
-                Project project = this.projectMapper.toDTO(projectEntity);
-                payload = new CreateProjectSuccessPayload(input.id(), project);
-            }
+            ProjectEntity projectEntity = this.createProjectEntity(name);
+            projectEntity = this.projectRepository.save(projectEntity);
+
+            Project project = this.projectMapper.toDTO(projectEntity);
+            payload = new CreateProjectSuccessPayload(input.id(), project);
         }
         return payload;
     }
@@ -134,11 +122,12 @@ public class ProjectService implements IProjectService {
             var template = optionalTemplate.get();
             var projectTemplateInitializer = optionalProjectTemplateInitializer.get();
 
-            var createProjectInput = new CreateProjectInput(UUID.randomUUID(), template.getLabel(), Visibility.PRIVATE);
+            var createProjectInput = new CreateProjectInput(UUID.randomUUID(), template.getLabel());
             var payload = this.createProject(createProjectInput);
-            if (payload instanceof CreateProjectSuccessPayload) {
-                var createProjectSuccessPayload = (CreateProjectSuccessPayload) payload;
-                var projectId = createProjectSuccessPayload.getProject().getId();
+            if (payload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
+                var projectId = createProjectSuccessPayload.project().getId();
+
+                template.getNatures().stream().map(nature -> this.createProjectNatureEntity(projectId, nature.natureId())).forEach(this.projectNatureRepository::save);
 
                 var optionalEditingContext = this.editingContextSearchService.findById(projectId.toString());
                 if (optionalEditingContext.isPresent()) {
@@ -146,7 +135,7 @@ public class ProjectService implements IProjectService {
                     var representationToOpen = projectTemplateInitializer.handle(input.templateId(), editingContext).orElse(null);
 
                     this.editingContextPersistenceService.persist(editingContext);
-                    result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.getProject(), representationToOpen);
+                    result = new CreateProjectFromTemplateSuccessPayload(createProjectInput.id(), createProjectSuccessPayload.project(), representationToOpen);
                 }
             } else {
                 result = payload;
@@ -155,32 +144,35 @@ public class ProjectService implements IProjectService {
         return result;
     }
 
-    private ProjectEntity createProjectEntity(String projectName, AccountEntity owner, Visibility visibility) {
+    private ProjectNatureEntity createProjectNatureEntity(UUID projectId, String natureName) {
+        ProjectNatureEntity projectNatureEntity = new ProjectNatureEntity();
+        projectNatureEntity.setName(natureName);
+        var projectEntity = new ProjectEntity();
+        projectEntity.setId(projectId);
+        projectNatureEntity.setProject(projectEntity);
+        return projectNatureEntity;
+    }
+
+    private ProjectEntity createProjectEntity(String projectName) {
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setName(projectName);
-        projectEntity.setOwner(owner);
-        if (visibility == Visibility.PUBLIC) {
-            projectEntity.setVisibility(VisibilityEntity.PUBLIC);
-        } else {
-            projectEntity.setVisibility(VisibilityEntity.PRIVATE);
-        }
         return projectEntity;
     }
 
     private boolean isValidProjectName(String name) {
-        return 3 <= name.length() && name.length() <= 20;
+        return 3 <= name.length() && name.length() <= 1024;
     }
 
     @Override
     public void delete(UUID projectId) {
-        if (this.projectRepository.existsByIdAndIsVisibleBy(projectId, this.getCurrentUserName())) {
+        if (this.projectRepository.existsById(projectId)) {
             this.projectRepository.deleteById(projectId);
         }
     }
 
     @Override
     public Optional<Project> renameProject(UUID projectId, String newName) {
-        Optional<ProjectEntity> optionalProjectEntity = this.projectRepository.findByIdIfVisibleBy(projectId, this.getCurrentUserName());
+        Optional<ProjectEntity> optionalProjectEntity = this.projectRepository.findById(projectId);
         if (optionalProjectEntity.isPresent()) {
             ProjectEntity projectEntity = optionalProjectEntity.get();
             projectEntity.setName(newName);

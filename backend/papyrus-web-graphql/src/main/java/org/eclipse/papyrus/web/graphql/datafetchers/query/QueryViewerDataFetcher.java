@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.papyrus.web.graphql.datafetchers.query;
 import java.util.Objects;
 
 import org.eclipse.papyrus.web.graphql.datafetchers.IViewerProvider;
-import org.eclipse.papyrus.web.graphql.schema.QueryTypeProvider;
 import org.eclipse.papyrus.web.services.api.viewer.IViewer;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -36,7 +35,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = QueryTypeProvider.TYPE, field = QueryTypeProvider.VIEWER_FIELD)
+@QueryDataFetcher(type = "Query", field = "viewer")
 public class QueryViewerDataFetcher implements IDataFetcherWithFieldCoordinates<IViewer> {
 
     private final IViewerProvider viewerProvider;

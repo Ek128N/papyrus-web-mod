@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLGetProjectsQueryData, Project, ProjectTemplate } from 'views/projects/ProjectsView.types';
 import { assign, Machine } from 'xstate';
+import { GQLGetProjectsQueryData, Project, ProjectTemplate } from './ProjectsView.types';
 
 export interface ProjectsViewStateSchema {
   states: {
@@ -168,6 +168,16 @@ export const projectsViewMachine = Machine<ProjectsViewContext, ProjectsViewStat
               INVOKE_TEMPLATE: [
                 {
                   actions: 'invokeTemplate',
+                },
+              ],
+              OPEN_MODAL: [
+                {
+                  actions: 'openModal',
+                },
+              ],
+              CLOSE_MODAL: [
+                {
+                  actions: 'closeModal',
                 },
               ],
               REDIRECT: [{ actions: 'redirect' }],

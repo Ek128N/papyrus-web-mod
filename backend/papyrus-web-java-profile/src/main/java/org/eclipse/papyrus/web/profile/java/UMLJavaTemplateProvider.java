@@ -34,6 +34,7 @@ public class UMLJavaTemplateProvider implements IProjectTemplateProvider {
         var umlWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(UML_JAVA_TEMPLATE_ID)
                 .label("Java") //$NON-NLS-1$
                 .imageURL("/images/JavaTemplate.png") //$NON-NLS-1$
+                .natures(List.of())
                 .build();
         // @formatter:on
         return List.of(umlWithPrimitivesTemplate);

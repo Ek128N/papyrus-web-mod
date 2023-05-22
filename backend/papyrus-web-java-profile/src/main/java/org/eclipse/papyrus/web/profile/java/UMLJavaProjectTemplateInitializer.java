@@ -29,6 +29,7 @@ import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher;
 import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher.BorderNodeStatus;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -63,16 +64,20 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
 
     private IDiagramNavigationService diagramNavigationService;
 
+    private IRepresentationPersistenceService representationPersistenceService;
+
     public UMLJavaProjectTemplateInitializer(TemplateInitializer initializerHelper, //
             IDiagramBuilderService diagramBuilderService, //
             IDiagramNavigationService diagramNavigationService, //
             PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, //
-            GenericDiagramService classDiagramService) {
+            GenericDiagramService classDiagramService, //
+            IRepresentationPersistenceService representationPersistenceService) {
         this.initializerHelper = Objects.requireNonNull(initializerHelper);
         this.diagramBuilderService = Objects.requireNonNull(diagramBuilderService);
         this.diagramNavigationService = Objects.requireNonNull(diagramNavigationService);
         this.papyrusRepresentationRegistry = Objects.requireNonNull(papyrusRepresentationRegistry);
         this.classDiagramService = Objects.requireNonNull(classDiagramService);
+        this.representationPersistenceService = representationPersistenceService;
     }
 
     @Override
@@ -106,7 +111,11 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
         Model model = (Model) r.getContents().get(0);
         return this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), model, "Main") //$NON-NLS-1$
                 .flatMap(diagram -> this.dropClassAndComment(editingContext, convertedNodes, model, diagram))//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext));
+                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
+                .flatMap(diagram -> {
+                    this.representationPersistenceService.save(editingContext, diagram);
+                    return Optional.of(diagram);
+                });
     }
 
     private Optional<? extends Diagram> dropClassAndComment(IEditingContext editingContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes,

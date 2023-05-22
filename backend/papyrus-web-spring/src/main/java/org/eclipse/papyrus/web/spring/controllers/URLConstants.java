@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,23 +18,23 @@ package org.eclipse.papyrus.web.spring.controllers;
  * @author sbegaudeau
  */
 public final class URLConstants {
-    public static final String API_BASE_PATH = "/api"; //$NON-NLS-1$
+    public static final String API_BASE_PATH = "/api";
 
-    public static final String GRAPHQL_BASE_PATH = API_BASE_PATH + "/graphql"; //$NON-NLS-1$
+    public static final String GRAPHQL_BASE_PATH = API_BASE_PATH + "/graphql";
 
-    public static final String GRAPHQL_UPLOAD_PATH = API_BASE_PATH + "/graphql/upload"; //$NON-NLS-1$
+    public static final String GRAPHQL_UPLOAD_PATH = API_BASE_PATH + "/graphql/upload";
 
-    public static final String GRAPHQL_SUBSCRIPTION_PATH = "/subscriptions"; //$NON-NLS-1$
+    public static final String GRAPHQL_SUBSCRIPTION_PATH = "/subscriptions";
 
-    public static final String IMAGE_BASE_PATH = API_BASE_PATH + "/images"; //$NON-NLS-1$
+    public static final String IMAGE_BASE_PATH = API_BASE_PATH + "/images";
 
-    public static final String DOCUMENT_BASE_PATH = API_BASE_PATH + "/editingcontexts/{editingContextId}/documents"; //$NON-NLS-1$
+    public static final String DOCUMENT_BASE_PATH = API_BASE_PATH + "/editingcontexts/{editingContextId}/documents";
 
-    public static final String PROJECT_BASE_PATH = API_BASE_PATH + "/projects"; //$NON-NLS-1$
+    public static final String PROJECT_BASE_PATH = API_BASE_PATH + "/projects";
 
-    public static final String REPRESENTATION_BASE_PATH = API_BASE_PATH + "/editingcontexts/{editingContextId}/representations"; //$NON-NLS-1$
+    public static final String REPRESENTATION_BASE_PATH = API_BASE_PATH + "/editingcontexts/{editingContextId}/representations";
 
-    public static final String ANY_PATTERN = "/**"; //$NON-NLS-1$
+    public static final String ANY_PATTERN = "/**";
 
     private URLConstants() {
         // Prevent instantiation

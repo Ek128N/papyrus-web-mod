@@ -21,8 +21,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.images.ICustomImageContentService;
 import org.eclipse.sirius.components.core.api.IImagePathService;
@@ -40,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The entry point of the HTTP API to get images.

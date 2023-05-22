@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.api.projects;
 
-import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,29 +22,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
  *
  * @author fbarbin
  */
-public final class RenameProjectSuccessPayload implements IPayload {
-
-    private final UUID id;
-
-    private final Project project;
-
-    public RenameProjectSuccessPayload(UUID id, Project project) {
-        this.id = Objects.requireNonNull(id);
-        this.project = Objects.requireNonNull(project);
-    }
-
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
-
-    public Project getProject() {
-        return this.project;
-    }
-
-    @Override
-    public String toString() {
-        String pattern = "{0} '{'id: {1}, project: '{'id: {2}, name: {3}'}''}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id, this.project.getId(), this.project.getName());
+public record RenameProjectSuccessPayload(UUID id, Project project) implements IPayload {
+    public RenameProjectSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(project);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.papyrus.web.services.api.representations.IRepresentationService;
 import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -46,8 +45,10 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "representation")
 public class EditingContextRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<RepresentationMetadata>> {
+
+    private static final String REPRESENTATION_ID_ARGUMENT = "representationId";
 
     private final IRepresentationService representationService;
 
@@ -61,7 +62,7 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
     @Override
     public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String representationId = environment.getArgument(EditingContextTypeProvider.REPRESENTATION_ID_ARGUMENT);
+        String representationId = environment.getArgument(REPRESENTATION_ID_ARGUMENT);
 
         Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
         localContext.put(LocalContextConstants.REPRESENTATION_ID, representationId);
@@ -76,14 +77,14 @@ public class EditingContextRepresentationDataFetcher implements IDataFetcherWith
                 .filter(ISemanticRepresentation.class::isInstance)
                 .map(ISemanticRepresentation.class::cast)
                 .map((ISemanticRepresentation representation) -> {
-                    // @formatter:off
                     return new RepresentationMetadata(representation.getId(),
                                                       representation.getKind(),
                                                       representation.getLabel(),
                                                       representation.getDescriptionId(),
                                                       representation.getTargetObjectId());
-                    // @formatter:on
-                }).findFirst();
+
+                })
+                .findFirst();
         // @formatter:on
 
         // @formatter:off

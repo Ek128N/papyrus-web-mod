@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.papyrus.web.services.api.representations.IRepresentationService;
 import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -51,7 +49,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author wpiers
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "representations")
 public class EditingContextRepresentationsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<RepresentationMetadata>> {
 
     private final IRepresentationService representationService;
@@ -68,7 +66,7 @@ public class EditingContextRepresentationsDataFetcher implements IDataFetcherWit
                 .stream()
                 .map(RepresentationDescriptor::getRepresentation)
                 .map(this::toRepresentationMetadata)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         // @formatter:off
@@ -76,9 +74,10 @@ public class EditingContextRepresentationsDataFetcher implements IDataFetcherWit
                 .map(representation -> {
                     String value = Base64.getEncoder().encodeToString(representation.getId().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(representation, cursor);
+                    Edge<RepresentationMetadata> edge = new DefaultEdge<>(representation, cursor);
+                    return edge;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = representationEdges.stream().findFirst().map(Edge::getCursor).orElse(null);

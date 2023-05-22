@@ -21,6 +21,7 @@ import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -56,6 +57,9 @@ public abstract class AbstractDiagramTest extends AbstractWebUMLTest {
     @Autowired
     private IViewDiagramDescriptionService viewDiagramDescriptionService;
 
+    @Autowired
+    private IDiagramIdProvider idProvider;
+
     private DiagramServiceTestHelper diagramServiceTestHelper;
 
     @Override
@@ -63,8 +67,8 @@ public abstract class AbstractDiagramTest extends AbstractWebUMLTest {
     public void before() {
         super.before();
         this.diagramService = this.buildService();
-        this.viewTestHelper = new DiagramTestHelper(this.getEditingContext(), this.getObjectService(), this.viewRegistry, this.diagramBuilderService, this.diagramOpService,
-                this.diagramNavService, this.viewDiagramDescriptionService);
+        this.viewTestHelper = new DiagramTestHelper(this.getEditingContext(), this.getObjectService(), this.viewRegistry, this.diagramBuilderService, this.diagramOpService, this.diagramNavService,
+                this.viewDiagramDescriptionService, this.idProvider);
         this.diagramServiceTestHelper = new DiagramServiceTestHelper(this.viewTestHelper, this.diagramService, this.getEditingContext(), this.getObjectService());
     }
 

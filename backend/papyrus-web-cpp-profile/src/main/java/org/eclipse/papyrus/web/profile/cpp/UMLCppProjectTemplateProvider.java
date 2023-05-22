@@ -36,10 +36,12 @@ public class UMLCppProjectTemplateProvider implements IProjectTemplateProvider {
         var cppTemplate = ProjectTemplate.newProjectTemplate(UML_CPP_TEMPLATE_ID)
                 .label("C++") //$NON-NLS-1$
                 .imageURL("/images/CppTemplate.png") //$NON-NLS-1$
+                .natures(List.of())
                 .build();
         var cppSMProjectTeamplte = ProjectTemplate.newProjectTemplate(UML_CPP_SM_TEMPLATE_ID)
                 .label("C++ SM") //$NON-NLS-1$
                 .imageURL("/images/CppSMTemplate.png") //$NON-NLS-1$
+                .natures(List.of())
                 .build();
         // @formatter:on
         return List.of(cppTemplate, cppSMProjectTeamplte);

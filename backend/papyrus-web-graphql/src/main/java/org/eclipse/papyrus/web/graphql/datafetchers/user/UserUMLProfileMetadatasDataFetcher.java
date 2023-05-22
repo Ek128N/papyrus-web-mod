@@ -15,7 +15,6 @@ package org.eclipse.papyrus.web.graphql.datafetchers.user;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.graphql.schema.ViewerTypeProvider;
 import org.eclipse.papyrus.web.services.api.uml.profile.IUMLProfileService;
 import org.eclipse.papyrus.web.services.api.uml.profile.UMLProfileMetadata;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -38,7 +37,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author lfasani
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.UML_PROFILE_METADATAS_FIELD)
+@QueryDataFetcher(type = "User", field = "profileMetadatas")
 public class UserUMLProfileMetadatasDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<List<UMLProfileMetadata>>> {
 
     private final IUMLProfileService umlProfileService;

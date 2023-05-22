@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.representations.IRepresentationService;
 import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
@@ -48,10 +47,12 @@ import reactor.core.publisher.Mono;
  *
  * @author lfasani
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteRepresentationDataFetcher.DELETE_REPRESENTATION_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationDeleteRepresentationDataFetcher.DELETE_REPRESENTATION_FIELD)
 public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_REPRESENTATION_FIELD = "deleteRepresentation"; //$NON-NLS-1$
+    public static final String DELETE_REPRESENTATION_FIELD = "deleteRepresentation";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -71,7 +72,7 @@ public class MutationDeleteRepresentationDataFetcher implements IDataFetcherWith
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteRepresentationInput.class);
         // @formatter:off
         return new IDParser().parse(input.representationId())

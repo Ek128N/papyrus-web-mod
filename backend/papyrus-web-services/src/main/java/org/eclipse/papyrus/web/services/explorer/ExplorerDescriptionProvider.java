@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.papyrus.web.services.explorer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,8 +33,8 @@ import org.eclipse.sirius.components.collaborative.trees.api.IExplorerDescriptio
 import org.eclipse.sirius.components.compatibility.services.ImageConstants;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IKindParser;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.representations.Failure;
@@ -52,15 +53,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider {
-    public static final String PROTOCOL_PATHMAP = "pathmap"; //$NON-NLS-1$
 
-    public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString(); //$NON-NLS-1$
+    public static final String DESCRIPTION_ID = UUID.nameUUIDFromBytes("explorer_tree_description".getBytes()).toString();
 
     public static final String DOCUMENT_KIND = "papyrusWeb://document"; //$NON-NLS-1$
 
     private final IObjectService objectService;
 
-    private final IKindParser kindParser;
+    private final IURLParser urlParser;
 
     private final IRepresentationService representationService;
 
@@ -70,10 +70,10 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
 
     private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
 
-    public ExplorerDescriptionProvider(IObjectService objectService, IKindParser kindParser, IRepresentationService representationService,
+    public ExplorerDescriptionProvider(IObjectService objectService, IURLParser urlParser, IRepresentationService representationService,
             List<IRepresentationImageProvider> representationImageProviders, List<IRenameTreeItemHandler> renameTreeItemHandlers, List<IDeleteTreeItemHandler> deleteTreeItemHandlers) {
         this.objectService = Objects.requireNonNull(objectService);
-        this.kindParser = Objects.requireNonNull(kindParser);
+        this.urlParser = Objects.requireNonNull(urlParser);
         this.representationService = Objects.requireNonNull(representationService);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.renameTreeItemHandlers = Objects.requireNonNull(renameTreeItemHandlers);
@@ -88,7 +88,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
 
         // @formatter:off
         return TreeDescription.newTreeDescription(DESCRIPTION_ID)
-                .label("Explorer") //$NON-NLS-1$
+                .label("Explorer")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
@@ -122,7 +122,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     }
 
     private String getKind(VariableManager variableManager) {
-        String kind = ""; //$NON-NLS-1$
+        String kind = "";
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         if (self instanceof RepresentationMetadata) {
             RepresentationMetadata representationMetadata = (RepresentationMetadata) self;
@@ -138,27 +138,33 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
     private String getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
 
-        String label = ""; //$NON-NLS-1$
+        String label = "";
         if (self instanceof RepresentationMetadata) {
             label = ((RepresentationMetadata) self).getLabel();
         } else if (self instanceof Resource) {
             Resource resource = (Resource) self;
             // @formatter:off
-            label = resource.eAdapters().stream()
-                    .filter(DocumentMetadataAdapter.class::isInstance)
-                    .map(DocumentMetadataAdapter.class::cast)
-                    .findFirst()
-                    .map(DocumentMetadataAdapter::getName)
-                    .orElse(resource.getURI().lastSegment());
+            label = this.getResourceLabel(resource);
             // @formatter:on
         } else if (self instanceof EObject) {
             label = this.objectService.getLabel(self);
             if (label.isBlank()) {
                 var kind = this.objectService.getKind(self);
-                label = this.kindParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
+                label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
         }
         return label;
+    }
+
+    private String getResourceLabel(Resource resource) {
+        // @formatter:off
+        return resource.eAdapters().stream()
+                .filter(DocumentMetadataAdapter.class::isInstance)
+                .map(DocumentMetadataAdapter.class::cast)
+                .findFirst()
+                .map(DocumentMetadataAdapter::getName)
+                .orElse(resource.getURI().lastSegment());
+        // @formatter:on
     }
 
     private boolean isEditable(VariableManager variableManager) {
@@ -220,7 +226,8 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                     }
                     return false;
                 })
-                .collect(Collectors.toList());
+                    .sorted(Comparator.nullsLast(Comparator.comparing(res -> this.getResourceLabel(res), String.CASE_INSENSITIVE_ORDER)))
+                    .toList();
             // @formatter:on
             return resources;
         }
@@ -297,7 +304,7 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 return deleteTreeItemHandler.handle(editingContext, treeItem);
             }
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 
     private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
@@ -317,6 +324,6 @@ public class ExplorerDescriptionProvider implements IExplorerDescriptionProvider
                 return renameTreeItemHandler.handle(editingContext, treeItem, newLabel);
             }
         }
-        return new Failure(""); //$NON-NLS-1$
+        return new Failure("");
     }
 }

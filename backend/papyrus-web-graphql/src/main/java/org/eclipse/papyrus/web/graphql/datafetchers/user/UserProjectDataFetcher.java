@@ -14,7 +14,6 @@ package org.eclipse.papyrus.web.graphql.datafetchers.user;
 
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.graphql.schema.ViewerTypeProvider;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.projects.IProjectService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
@@ -37,8 +36,10 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = ViewerTypeProvider.USER_TYPE, field = ViewerTypeProvider.PROJECT_FIELD)
+@QueryDataFetcher(type = "User", field = "project")
 public class UserProjectDataFetcher implements IDataFetcherWithFieldCoordinates<Project> {
+
+    private static final String PROJECT_ID_ARGUMENT = "projectId";
 
     private final IProjectService projectService;
 
@@ -48,7 +49,7 @@ public class UserProjectDataFetcher implements IDataFetcherWithFieldCoordinates<
 
     @Override
     public Project get(DataFetchingEnvironment environment) throws Exception {
-        String projectIdArgument = environment.getArgument(ViewerTypeProvider.PROJECT_ID_ARGUMENT);
+        String projectIdArgument = environment.getArgument(PROJECT_ID_ARGUMENT);
         return new IDParser().parse(projectIdArgument).flatMap(this.projectService::getProject).orElse(null);
     }
 

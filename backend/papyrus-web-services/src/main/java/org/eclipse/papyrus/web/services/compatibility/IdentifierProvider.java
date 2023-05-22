@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
+// Custom code??
 public class IdentifierProvider implements IIdentifierProvider {
 
     private final IIdMappingRepository repository;
@@ -57,18 +58,10 @@ public class IdentifierProvider implements IIdentifierProvider {
 
     @Override
     public String getIdentifier(Object element) {
-        // @formatter:off
-        String vsmElementId = Optional.of(element).filter(EObject.class::isInstance)
-                .map(EObject.class::cast)
-                .map(EcoreUtil::getURI)
-                .map(Object::toString)
-                .orElse(""); //$NON-NLS-1$
+        String vsmElementId = Optional.of(element).filter(EObject.class::isInstance).map(EObject.class::cast).map(EcoreUtil::getURI).map(Object::toString).orElse("");
 
         Optional<IdMappingEntity> optional = this.getOrFetchByExternalId(vsmElementId);
-        return optional.orElseGet(() -> this.newIdMapping(vsmElementId))
-               .getId()
-               .toString();
-        // @formatter:on
+        return optional.orElseGet(() -> this.newIdMapping(vsmElementId)).getId().toString();
     }
 
     @Override

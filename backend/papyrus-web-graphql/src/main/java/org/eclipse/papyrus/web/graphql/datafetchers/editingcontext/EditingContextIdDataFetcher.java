@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.graphql.datafetchers.editingcontext;
 
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
-import org.eclipse.papyrus.web.graphql.schema.IdFieldProvider;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
@@ -33,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = IdFieldProvider.ID_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "id")
 public class EditingContextIdDataFetcher implements IDataFetcherWithFieldCoordinates<String> {
 
     @Override

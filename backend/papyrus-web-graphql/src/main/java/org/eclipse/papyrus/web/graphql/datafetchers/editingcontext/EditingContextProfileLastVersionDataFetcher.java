@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.papyrus.web.services.api.dto.GetProfileLastVersionInput;
 import org.eclipse.papyrus.web.services.api.dto.GetProfileLastVersionSuccessPayload;
 import org.eclipse.papyrus.web.services.api.uml.profile.UMLProfileVersion;
@@ -40,7 +39,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author lfasani
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.EDITING_CONTEXT_UML_PROFILE_LAST_VERSION_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "profileLastVersion")
 public class EditingContextProfileLastVersionDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<UMLProfileVersion>> {
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;

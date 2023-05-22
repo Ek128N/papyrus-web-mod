@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -36,23 +35,23 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useMachine } from '@xstate/react';
-import { Footer } from 'footer/Footer';
-import { ProjectTemplatesModal } from 'modals/project-templates/ProjectTemplatesModal';
-import { NavigationBar } from 'navigationBar/NavigationBar';
 import React, { useContext, useEffect } from 'react';
-import { Link as RouterLink, Redirect } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
+import { Redirect, Link as RouterLink } from 'react-router-dom';
+import { Footer } from '../../footer/Footer';
+import { ProjectTemplatesModal } from '../../modals/project-templates/ProjectTemplatesModal';
+import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   NewProjectCard,
   ProjectTemplateCard,
   UploadProjectCard,
-} from 'views/project-template-card/ProjectTemplateCard';
+} from '../../views/project-template-card/ProjectTemplateCard';
 import {
   GQLCreateProjectFromTemplateMutationData,
   GQLCreateProjectFromTemplatePayload,
@@ -62,9 +61,9 @@ import {
   GQLGetProjectsQueryVariables,
   Project,
   ProjectContextMenuProps,
-  ProjectsTableProps,
   ProjectTemplate,
-} from 'views/projects/ProjectsView.types';
+  ProjectsTableProps,
+} from './ProjectsView.types';
 import {
   CloseMenuEvent,
   CloseModalEvent,
@@ -75,10 +74,10 @@ import {
   OpenModalEvent,
   ProjectsViewContext,
   ProjectsViewEvent,
-  projectsViewMachine,
   SchemaValue,
   ShowToastEvent,
-} from 'views/projects/ProjectsViewMachine';
+  projectsViewMachine,
+} from './ProjectsViewMachine';
 
 const getProjectsQuery = gql`
   query getProjects {
@@ -97,7 +96,6 @@ const getProjectsQuery = gql`
           node {
             id
             name
-            visibility
           }
         }
         pageInfo {
@@ -160,8 +158,9 @@ const useProjectsViewStyles = makeStyles((theme) => ({
     },
   },
   projectCardsContainer: {
-    display: 'flex',
-    gap: theme.spacing(6),
+    display: 'grid',
+    gap: theme.spacing(1),
+    gridTemplateColumns: 'repeat(6, 1fr)',
   },
   projectCard: {
     width: theme.spacing(30),
@@ -173,6 +172,9 @@ const useProjectsViewStyles = makeStyles((theme) => ({
     textTransform: 'none',
     fontWeight: 400,
     fontSize: theme.spacing(2),
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
   projectCardIcon: {
     fontSize: theme.spacing(8),
@@ -189,11 +191,14 @@ const useProjectsViewStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  showAlltemplatesCard: {
+  showAllTemplatesCardContent: {
     backgroundColor: theme.palette.divider,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  showAllTemplatesCardActions: {
+    minWidth: 0,
   },
 }));
 
@@ -281,10 +286,10 @@ export const ProjectsView = () => {
     }
   }, [dispatch, templateInvocationResult, templateInvocationError, templateExecuting]);
 
-  let main = null;
+  let main: JSX.Element | null = null;
   if (projectsView === 'loaded') {
-    let contextMenu = null;
-    let modal = null;
+    let contextMenu: JSX.Element | null = null;
+    let modal: JSX.Element | null = null;
 
     if (selectedProject) {
       if (menuAnchor) {
@@ -328,7 +333,22 @@ export const ProjectsView = () => {
       </>
     );
   } else if (projectsView === 'empty') {
-    main = <Message content="No projects available, start by creating one" />;
+    let modal: JSX.Element | null = null;
+    if (modalToDisplay === 'ProjectTemplates') {
+      modal = (
+        <ProjectTemplatesModal
+          onClose={() => {
+            dispatch({ type: 'CLOSE_MODAL' } as CloseModalEvent);
+          }}
+        />
+      );
+    }
+    main = (
+      <>
+        <Message content="No projects available, start by creating one" />
+        {modal}
+      </>
+    );
   }
 
   const onCreateProject = (template: ProjectTemplate) => {
@@ -336,7 +356,7 @@ export const ProjectsView = () => {
       dispatch({ type: 'INVOKE_TEMPLATE', template } as InvokeTemplateEvent);
       const variables = {
         input: {
-          id: uuid(),
+          id: crypto.randomUUID(),
           templateId: template.id,
         },
       };
@@ -378,13 +398,15 @@ export const ProjectsView = () => {
                       }}
                       data-testid="show-all-templates">
                       <Card className={classes.projectCard}>
-                        <CardContent className={classes.showAlltemplatesCard}>
+                        <CardContent className={classes.showAllTemplatesCardContent}>
                           <MoreHorizIcon className={classes.projectCardIcon} htmlColor="white" />
                         </CardContent>
-                        <CardActions>
-                          <Typography variant="h5" className={classes.projectCardLabel}>
-                            Show all templates
-                          </Typography>
+                        <CardActions className={classes.showAllTemplatesCardActions}>
+                          <Tooltip title={'Show all templates'}>
+                            <Typography variant="h5" className={classes.projectCardLabel}>
+                              Show all templates
+                            </Typography>
+                          </Tooltip>
                         </CardActions>
                       </Card>
                     </Button>
@@ -462,7 +484,10 @@ const ProjectsTable = ({ projects, onMore }: ProjectsTableProps) => {
               <TableRow key={project.id} hover>
                 <TableCell>
                   <Link component={RouterLink} to={`/projects/${project.id}/edit`} color="inherit">
-                    {project.name}
+                    <div
+                      style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100ch' }}>
+                      {project.name}
+                    </div>
                   </Link>
                 </TableCell>
                 <TableCell align="right">

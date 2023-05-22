@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ public class GraphQLMessageService implements IGraphQLMessageService {
 
     @Override
     public String unexpectedError() {
-        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR"); //$NON-NLS-1$
+        return this.messageSourceAccessor.getMessage("UNEXPECTED_ERROR");
     }
 
 }

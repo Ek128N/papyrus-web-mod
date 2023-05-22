@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,6 @@ import org.eclipse.papyrus.web.services.api.projects.Project;
 import org.eclipse.papyrus.web.services.api.projects.ProjectManifest;
 import org.eclipse.papyrus.web.services.api.projects.UnzippedProject;
 import org.eclipse.papyrus.web.services.api.projects.UploadProjectSuccessPayload;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
@@ -96,10 +95,10 @@ public class ProjectImportService implements IProjectImportService {
         ProjectManifest manifest = unzippedProject.getProjectManifest();
         String projectName = unzippedProject.getProjectName();
 
-        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName, Visibility.PRIVATE);
+        CreateProjectInput createProjectInput = new CreateProjectInput(inputId, projectName);
         IPayload createProjectPayload = this.projectService.createProject(createProjectInput);
         if (createProjectPayload instanceof CreateProjectSuccessPayload) {
-            Project project = ((CreateProjectSuccessPayload) createProjectPayload).getProject();
+            Project project = ((CreateProjectSuccessPayload) createProjectPayload).project();
             Optional<IEditingContextEventProcessor> optionalEditingContextEventProcessor = this.editingContextEventProcessorRegistry
                     .getOrCreateEditingContextEventProcessor(project.getId().toString());
             if (optionalEditingContextEventProcessor.isPresent()) {

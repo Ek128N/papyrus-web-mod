@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2022 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,14 +76,14 @@ public class ProjectController {
             byte[] zip = this.projectExportService.exportProjectAsZip(projectId);
 
             // @formatter:off
-            ContentDisposition contentDisposition = ContentDisposition.builder("attachment") //$NON-NLS-1$
-                    .filename(project.getName() + ".zip") //$NON-NLS-1$
+            ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                    .filename(project.getName() + ".zip")
                     .build();
             // @formatter:on
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentDisposition(contentDisposition);
-            headers.setContentType(MediaType.parseMediaType("application/zip")); //$NON-NLS-1$
+            headers.setContentType(MediaType.parseMediaType("application/zip"));
             headers.setContentLength(zip.length);
             InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(zip));
             return new ResponseEntity<>(resource, headers, HttpStatus.OK);

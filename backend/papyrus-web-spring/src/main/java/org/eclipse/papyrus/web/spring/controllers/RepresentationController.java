@@ -16,8 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ExportRepresentationInput;
@@ -34,6 +32,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The entry point of the HTTP API to export representations.
@@ -74,10 +74,9 @@ public class RepresentationController {
                 .dispatchEvent(editingContextId, input)
                 .map(payload -> {
                     ResponseEntity<Resource> response;
-                    if (payload instanceof ExportRepresentationPayload) {
-                        ExportRepresentationPayload exportPayload = (ExportRepresentationPayload) payload;
-                        byte[] bytes = exportPayload.getContent().getBytes();
-                        String name = exportPayload.getName();
+                    if (payload instanceof ExportRepresentationPayload exportPayload) {
+                        byte[] bytes = exportPayload.content().getBytes();
+                        String name = exportPayload.name();
                         response = this.toResponseEntity(name, bytes);
                     } else {
                         response = new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
@@ -90,7 +89,7 @@ public class RepresentationController {
 
     private ResponseEntity<Resource> toResponseEntity(String name, byte[] bytes) {
         // @formatter:off
-        ContentDisposition contentDisposition = ContentDisposition.builder("attachment")  //$NON-NLS-1$
+        ContentDisposition contentDisposition = ContentDisposition.builder("attachment") 
                 .filename(name)
                 .build();
         // @formatter:on

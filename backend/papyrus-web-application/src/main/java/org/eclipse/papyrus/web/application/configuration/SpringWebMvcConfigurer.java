@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
+import java.util.Arrays;
+
 import org.eclipse.papyrus.web.spring.configuration.PapyrusWebPathResourceResolver;
 import org.eclipse.papyrus.web.spring.configuration.SpringWebMvcConfigurerConstants;
 import org.eclipse.papyrus.web.spring.controllers.URLConstants;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -30,6 +33,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SpringWebMvcConfigurer implements WebMvcConfigurer {
 
     private static final String[] ALLOWED_ORIGIN_PATTERNS = { "*" }; //$NON-NLS-1$
+
+    /**
+     * The Spring environment.
+     */
+    private Environment environment;
+
+    public SpringWebMvcConfigurer(Environment environment) {
+        this.environment = environment;
+    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -62,12 +74,15 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/graphiql", "/graphiql/index.html"); //$NON-NLS-1$ //$NON-NLS-2$
-        registry.addRedirectViewController("/voyager", "/voyager/index.html"); //$NON-NLS-1$ //$NON-NLS-2$
+        registry.addRedirectViewController("/graphiql", "/graphiql/index.html");
+        registry.addRedirectViewController("/voyager", "/voyager/index.html");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping(URLConstants.API_BASE_PATH + SpringWebMvcConfigurerConstants.ANY_PATTERN).allowedOriginPatterns(ALLOWED_ORIGIN_PATTERNS).allowCredentials(true);
+        boolean inDevMode = Arrays.asList(this.environment.getActiveProfiles()).contains("dev");
+        if (inDevMode) {
+            registry.addMapping(URLConstants.API_BASE_PATH + SpringWebMvcConfigurerConstants.ANY_PATTERN).allowedOriginPatterns(ALLOWED_ORIGIN_PATTERNS).allowCredentials(true);
+        }
     }
 }

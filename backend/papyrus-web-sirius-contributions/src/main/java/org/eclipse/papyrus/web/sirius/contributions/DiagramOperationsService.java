@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class DiagramOperationsService implements IDiagramOperationsService {
     }
 
     @Override
-    public void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription) {
+    public void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription, NodeContainmentKind containmentKind) {
         String targetObjectId = this.objectService.getId(semanticElement);
         String parentElementId = optionalParentNode.map(Node::getId).orElseGet(() -> diagramContext.getDiagram().getId());
         // @formatter:off
@@ -46,6 +47,7 @@ public class DiagramOperationsService implements IDiagramOperationsService {
                 .parentElementId(parentElementId)
                 .targetObjectId(targetObjectId)
                 .descriptionId(nodeDescription.getId())
+                .containmentKind(containmentKind)
                 .build();
         // @formatter:on
         diagramContext.getViewCreationRequests().add(viewCreationRequest);

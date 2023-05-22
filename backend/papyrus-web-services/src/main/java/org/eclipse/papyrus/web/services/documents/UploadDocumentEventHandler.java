@@ -255,9 +255,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             String line = reader.readLine();
             Map<String, Object> options = new HashMap<>();
             if (line != null) {
-                if (line.contains("{")) { //$NON-NLS-1$
+                if (line.contains("{")) {
                     resource = new JSONResourceFactory().createResource(resourceURI);
-                } else if (line.contains("<")) { //$NON-NLS-1$
+                } else if (line.contains("<")) {
                     resource = new XMIResourceImpl(resourceURI);
                     options = new EMFResourceUtils().getXMILoadOptions();
                 }

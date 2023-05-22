@@ -31,7 +31,7 @@ public final class PublishProfileSuccessPayload implements IPayload {
     }
 
     @Override
-    public UUID getId() {
+    public UUID id() {
         return this.id;
     }
 }

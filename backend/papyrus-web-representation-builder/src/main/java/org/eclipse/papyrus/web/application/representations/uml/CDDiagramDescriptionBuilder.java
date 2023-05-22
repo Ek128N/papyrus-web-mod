@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.sirius.components.view.ArrowStyle;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -96,7 +98,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         createCommentDescription(diagramDescription);
 
-        diagramDescription.setOnDrop(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
     }
 
     private void createUsageDescription(DiagramDescription diagramDescription) {
@@ -109,8 +111,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         diagramDescription.getEdgeDescriptions().add(usageDescription);
 
         EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(usageDescription, pack.getPackage_PackagedElement());
-        usageDescription.getEdgeTools().add(creationTool);
-
+        registerCallback(creationTool, () -> {
+            CreationToolsUtil.addEdgeCreationTool(classifierCollector, creationTool);
+        });
         getViewBuilder().addDefaultReconnectionTools(usageDescription);
     }
 
@@ -124,15 +127,19 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         padAssociation.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
         padAssociation.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
 
-        padAssociation.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padAssociation, pack.getPackage_PackagedElement()));
-        padAssociation.getEdgeTools().add(createSpecializedAssociationDomainBasedEdgeTool("New Composite Association", ClassDiagramServices.CREATION_COMPOSITE_ASSOCIATION));
-        padAssociation.getEdgeTools().add(createSpecializedAssociationDomainBasedEdgeTool("New Shared Association", ClassDiagramServices.CREATION_SHARED_ASSOCIATION));
+        registerCallback(padAssociation, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, getViewBuilder().createDefaultDomainBasedEdgeTool(padAssociation, pack.getPackage_PackagedElement()));
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier,
+                    createSpecializedAssociationDomainBasedEdgeTool("New Composite Association", ClassDiagramServices.CREATION_COMPOSITE_ASSOCIATION));
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier,
+                    createSpecializedAssociationDomainBasedEdgeTool("New Shared Association", ClassDiagramServices.CREATION_SHARED_ASSOCIATION));
+        });
 
         padAssociation.setBeginLabelExpression(getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
-        padAssociation.setBeginLabelEditTool(getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_TARGET)));
+        padAssociation.getPalette().setBeginLabelEditTool(getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_TARGET)));
 
         padAssociation.setEndLabelExpression(getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
-        padAssociation.setEndLabelEditTool(getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_SOURCE)));
+        padAssociation.getPalette().setEndLabelEditTool(getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_SOURCE)));
 
         // Can be improve once https://github.com/PapyrusSirius/papyrus-web/issues/208 is closed
         new AssociationEdgeCustomStyleBuilder(padAssociation).addCustomArowStyles();
@@ -187,7 +194,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         ChangeContext changeContext = getViewBuilder().createChangeContextOperation(toolQuery);
         tool.getBody().add(changeContext);
-        containmentLinkEdge.getEdgeTools().add(tool);
+        registerCallback(containmentLinkEdge, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceProvider, tool);
+        });
     }
 
     private void createClassifierContainmentLink(DiagramDescription diagramDescription) {
@@ -216,7 +225,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         ChangeContext changeContext = getViewBuilder().createChangeContextOperation(toolQuery);
         tool.getBody().add(changeContext);
-        containmentLinkEdge.getEdgeTools().add(tool);
+        registerCallback(containmentLinkEdge, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceProvider, tool);
+        });
     }
 
     private void createGeneralizationDescription(DiagramDescription diagramDescription) {
@@ -227,7 +238,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 sourceAndTargetDescriptionsSupplier, sourceAndTargetDescriptionsSupplier);
         padGeneralization.getStyle().setLineStyle(LineStyle.SOLID);
         padGeneralization.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
-        padGeneralization.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padGeneralization, pack.getClassifier_Generalization()));
+        registerCallback(padGeneralization, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, getViewBuilder().createDefaultDomainBasedEdgeTool(padGeneralization, pack.getClassifier_Generalization()));
+        });
 
         diagramDescription.getEdgeDescriptions().add(padGeneralization);
 
@@ -242,8 +255,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 getQueryBuilder().queryAllReachableExactType(pack.getInterfaceRealization()), sourceDescriptionsSupplier, targetDescriptionsSupplier);
         padInterfaceRealization.getStyle().setLineStyle(LineStyle.DASH);
         padInterfaceRealization.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
-        padInterfaceRealization.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padInterfaceRealization, pack.getBehavioredClassifier_InterfaceRealization()));
-
+        registerCallback(padInterfaceRealization, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceDescriptionsSupplier,
+                    getViewBuilder().createDefaultDomainBasedEdgeTool(padInterfaceRealization, pack.getBehavioredClassifier_InterfaceRealization()));
+        });
         diagramDescription.getEdgeDescriptions().add(padInterfaceRealization);
 
         getViewBuilder().addDefaultReconnectionTools(padInterfaceRealization);
@@ -257,7 +272,20 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
-                .createTools(List.of(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), enumerationEClass))).build();
+                .build();
+        NodeTool creationTool = getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), enumerationEClass);
+        Supplier<List<NodeDescription>> packageOwners = () -> collectNodesWithDomain(diagramDescription, pack.getPackage());
+        Supplier<List<NodeDescription>> interfaceOwners = () -> collectNodesWithDomain(diagramDescription, pack.getInterface());
+        Supplier<List<NodeDescription>> compartmentOwners = () -> collectNodesWithDomain(diagramDescription, true, false, pack.getClass_()) //
+                .stream() //
+                .filter(desc -> desc.getName().endsWith(NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX)) //
+                .toList();
+        registerCallback(enumerationLiterals, () -> {
+            CreationToolsUtil.addNodeCreationTool(packageOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(compartmentOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(interfaceOwners, creationTool);
+            diagramDescription.getPalette().getNodeTools().add(creationTool);
+        });
 
         diagramDescription.getNodeDescriptions().add(enumerationLiterals);
 
@@ -272,15 +300,28 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createInterfaceDescription(DiagramDescription diagramDescription) {
 
         EClass interfaceEClass = pack.getInterface();
-        NodeDescription classDescription = newNodeBuilder(interfaceEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription interfaceDescription = newNodeBuilder(interfaceEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
                 .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(interfaceEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(interfaceEClass.getName())) //
-                .createTools(List.of(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), interfaceEClass))).build();
+                .build();
+        NodeTool creationTool = getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), interfaceEClass);
+        Supplier<List<NodeDescription>> packageOwners = () -> collectNodesWithDomain(diagramDescription, pack.getPackage());
+        Supplier<List<NodeDescription>> interfaceOwners = () -> collectNodesWithDomain(diagramDescription, pack.getInterface());
+        Supplier<List<NodeDescription>> compartmentOwners = () -> collectNodesWithDomain(diagramDescription, true, false, pack.getClass_()) //
+                .stream() //
+                .filter(desc -> desc.getName().endsWith(NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX)) //
+                .toList();
+        registerCallback(interfaceDescription, () -> {
+            CreationToolsUtil.addNodeCreationTool(packageOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(compartmentOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(interfaceOwners, creationTool);
+            diagramDescription.getPalette().getNodeTools().add(creationTool);
+        });
 
-        diagramDescription.getNodeDescriptions().add(classDescription);
+        diagramDescription.getNodeDescriptions().add(interfaceDescription);
 
         // Create Attributes Compartment
         newListCompartmentBuilder()//
@@ -288,7 +329,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .withCompartmentNameSuffix(ATTRIBUTES_COMPARTMENT_SUFFIX)//
                 .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(pack.getClassifier__GetAllAttributes()))//
                 .addCreationTools(pack.getInterface_OwnedAttribute(), pack.getProperty())//
-                .buildIn(classDescription);
+                .buildIn(interfaceDescription);
 
         // Create Operation Compartment
         newListCompartmentBuilder()//
@@ -296,7 +337,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .withCompartmentNameSuffix(OPERATIONS_COMPARTMENT_SUFFIX)//
                 .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(pack.getClassifier__GetAllOperations()))//
                 .addCreationTools(pack.getInterface_OwnedOperation(), pack.getOperation())//
-                .buildIn(classDescription);
+                .buildIn(interfaceDescription);
 
         // Create Nested Classifier Compartment
         newListCompartmentBuilder()//
@@ -308,36 +349,48 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .addCreationTools(pack.getInterface_NestedClassifier(), pack.getEnumeration())//
                 .addCreationTools(pack.getInterface_NestedClassifier(), pack.getPrimitiveType())//
                 .addCreationTools(pack.getInterface_NestedClassifier(), pack.getInterface())//
-                .buildIn(classDescription);
+                .buildIn(interfaceDescription);
 
     }
 
     private void createPrimitiveTypeDescription(DiagramDescription diagramDescription) {
 
         EClass primitiveTypeEClass = pack.getPrimitiveType();
-        NodeDescription classDescription = newNodeBuilder(primitiveTypeEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription primitiveTypeDescription = newNodeBuilder(primitiveTypeEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
                 .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(primitiveTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
-                .createTools(List.of(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), primitiveTypeEClass))).build();
-
-        diagramDescription.getNodeDescriptions().add(classDescription);
+                .build();
+        NodeTool creationTool = getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), primitiveTypeEClass);
+        Supplier<List<NodeDescription>> packageOwners = () -> collectNodesWithDomain(diagramDescription, pack.getPackage());
+        Supplier<List<NodeDescription>> interfaceOwners = () -> collectNodesWithDomain(diagramDescription, pack.getInterface());
+        Supplier<List<NodeDescription>> compartmentOwners = () -> collectNodesWithDomain(diagramDescription, true, false, pack.getClass_()) //
+                .stream() //
+                .filter(desc -> desc.getName().endsWith(NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX)) //
+                .toList();
+        registerCallback(primitiveTypeDescription, () -> {
+            CreationToolsUtil.addNodeCreationTool(packageOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(compartmentOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(interfaceOwners, creationTool);
+            diagramDescription.getPalette().getNodeTools().add(creationTool);
+        });
+        diagramDescription.getNodeDescriptions().add(primitiveTypeDescription);
 
         // Create Attributes Compartment
         newListCompartmentBuilder().withChildrenType(pack.getProperty())//
                 .withCompartmentNameSuffix(ATTRIBUTES_COMPARTMENT_SUFFIX)//
                 .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(pack.getClassifier__GetAllAttributes()))//
                 .addCreationTools(pack.getDataType_OwnedAttribute(), pack.getProperty())//
-                .buildIn(classDescription);
+                .buildIn(primitiveTypeDescription);
 
         // Create Operation Compartment
         newListCompartmentBuilder().withChildrenType(pack.getOperation())//
                 .withCompartmentNameSuffix(OPERATIONS_COMPARTMENT_SUFFIX)//
                 .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(pack.getClassifier__GetAllOperations()))//
                 .addCreationTools(pack.getDataType_OwnedOperation(), pack.getOperation())//
-                .buildIn(classDescription);
+                .buildIn(primitiveTypeDescription);
     }
 
     private void createDataTypeDescription(DiagramDescription diagramDescription) {
@@ -349,7 +402,21 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(dataTypeEClass.getName())) //
-                .createTools(List.of(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), dataTypeEClass))).build();
+                .build();
+
+        NodeTool creationTool = getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), dataTypeEClass);
+        Supplier<List<NodeDescription>> packageOwners = () -> collectNodesWithDomain(diagramDescription, pack.getPackage());
+        Supplier<List<NodeDescription>> interfaceOwners = () -> collectNodesWithDomain(diagramDescription, pack.getInterface());
+        Supplier<List<NodeDescription>> compartmentOwners = () -> collectNodesWithDomain(diagramDescription, true, false, pack.getClass_()) //
+                .stream() //
+                .filter(desc -> desc.getName().endsWith(NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX)) //
+                .toList();
+        registerCallback(classDescription, () -> {
+            CreationToolsUtil.addNodeCreationTool(packageOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(compartmentOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(interfaceOwners, creationTool);
+            diagramDescription.getPalette().getNodeTools().add(creationTool);
+        });
 
         diagramDescription.getNodeDescriptions().add(classDescription);
 
@@ -376,8 +443,20 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(pack.getClass_().getName())) //
-                .createTools(List.of(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getClass_()))).build();
-
+                .build();
+        NodeTool creationTool = getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getClass_());
+        Supplier<List<NodeDescription>> packageOwners = () -> collectNodesWithDomain(diagramDescription, pack.getPackage());
+        Supplier<List<NodeDescription>> interfaceOwners = () -> collectNodesWithDomain(diagramDescription, pack.getInterface());
+        Supplier<List<NodeDescription>> compartmentOwners = () -> collectNodesWithDomain(diagramDescription, true, false, pack.getClass_()) //
+                .stream() //
+                .filter(desc -> desc.getName().endsWith(NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX)) //
+                .toList();
+        registerCallback(classDescription, () -> {
+            CreationToolsUtil.addNodeCreationTool(packageOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(compartmentOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(interfaceOwners, creationTool);
+        });
+        diagramDescription.getPalette().getNodeTools().add(creationTool);
         diagramDescription.getNodeDescriptions().add(classDescription);
 
         // Create Attributes Compartment
@@ -413,8 +492,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 namedElementDescriptions, namedElementDescriptions);
         padDependency.getStyle().setLineStyle(LineStyle.DASH);
         padDependency.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        padDependency.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padDependency, pack.getPackage_PackagedElement()));
-
+        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(padDependency, pack.getPackage_PackagedElement());
+        registerCallback(padDependency, () -> {
+            CreationToolsUtil.addEdgeCreationTool(namedElementDescriptions, creationTool);
+        });
         diagramDescription.getEdgeDescriptions().add(padDependency);
 
         getViewBuilder().addDefaultReconnectionTools(padDependency);
@@ -426,8 +507,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 namedElementDescriptions, namedElementDescriptions);
         padAbstraction.getStyle().setLineStyle(LineStyle.DASH);
         padAbstraction.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        padAbstraction.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padAbstraction, pack.getPackage_PackagedElement()));
-
+        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(padAbstraction, pack.getPackage_PackagedElement());
+        registerCallback(padAbstraction, () -> {
+            CreationToolsUtil.addEdgeCreationTool(namedElementDescriptions, creationTool);
+        });
         diagramDescription.getEdgeDescriptions().add(padAbstraction);
 
         getViewBuilder().addDefaultReconnectionTools(padAbstraction);
@@ -439,8 +522,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 packageDescriptions, packageDescriptions);
         padPackageMerge.getStyle().setLineStyle(LineStyle.DASH);
         padPackageMerge.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        padPackageMerge.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageMerge, pack.getPackage_PackageMerge()));
-
+        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageMerge, pack.getPackage_PackageMerge());
+        registerCallback(padPackageMerge, () -> {
+            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, creationTool);
+        });
         diagramDescription.getEdgeDescriptions().add(padPackageMerge);
         getViewBuilder().addDefaultReconnectionTools(padPackageMerge);
     }
@@ -452,7 +537,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         padPackageImport.getStyle().setLineStyle(LineStyle.DASH);
         padPackageImport.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
-        padPackageImport.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageImport, pack.getNamespace_PackageImport()));
+        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageImport, pack.getNamespace_PackageImport());
+        registerCallback(padPackageImport, () -> {
+            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, creationTool);
+        });
         diagramDescription.getEdgeDescriptions().add(padPackageImport);
         getViewBuilder().addDefaultReconnectionTools(padPackageImport);
 

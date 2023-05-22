@@ -15,9 +15,9 @@ package org.eclipse.papyrus.web.persistence.entities;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * Profile entity used by the persistence layer.

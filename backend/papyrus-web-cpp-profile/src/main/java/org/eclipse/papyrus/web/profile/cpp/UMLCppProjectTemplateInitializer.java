@@ -34,6 +34,7 @@ import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher;
 import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher.BorderNodeStatus;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -79,17 +80,21 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
 
     private GenericDiagramService classDiagramService;
 
+    private IRepresentationPersistenceService representationPersistenceService;
+
     public UMLCppProjectTemplateInitializer(TemplateInitializer templateInitializer, //
             StateMachineDiagramService stateMachineDiagramService, //
             GenericDiagramService packageDiagramService, IDiagramBuilderService diagramBuilderService, //
             IDiagramNavigationService diagramNavigationService, //
-            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry) {
+            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, //
+            IRepresentationPersistenceService representationPersistenceService) {
         this.stateMachineDiagramService = Objects.requireNonNull(stateMachineDiagramService);
         this.classDiagramService = Objects.requireNonNull(packageDiagramService);
         this.diagramBuilderService = Objects.requireNonNull(diagramBuilderService);
         this.diagramNavigationService = Objects.requireNonNull(diagramNavigationService);
         this.papyrusRepresentationRegistry = Objects.requireNonNull(papyrusRepresentationRegistry);
         this.initializerHelper = Objects.requireNonNull(templateInitializer);
+        this.representationPersistenceService = representationPersistenceService;
     }
 
     @Override
@@ -125,7 +130,11 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         return this.diagramBuilderService
                 .createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), r.getContents().get(0), "Main") //$NON-NLS-1$
                 .flatMap(diagram -> this.dropMainClassAndComment(editingContext, r, convertedNodes, diagram))//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext));
+                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
+                .flatMap(diagram -> {
+                    this.representationPersistenceService.save(editingContext, diagram);
+                    return Optional.of(diagram);
+                });
 
     }
 
@@ -194,7 +203,11 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         return optDiagram.flatMap(diagram -> this.dropModelAndComment(editingContext, convertedNodes, model, diagram))
                 // Need a refresh to make the package node appear
                 .flatMap(diagram -> this.dropMainClassAndComment(editingContext, convertedNodes, model, diagram))//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext));
+                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
+                .flatMap(diagram -> {
+                    this.representationPersistenceService.save(editingContext, diagram);
+                    return Optional.of(diagram);
+                });
 
     }
 

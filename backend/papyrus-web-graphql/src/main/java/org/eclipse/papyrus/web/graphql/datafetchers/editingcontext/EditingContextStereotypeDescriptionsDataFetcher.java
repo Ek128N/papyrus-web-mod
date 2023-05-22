@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,7 @@ import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.papyrus.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
@@ -48,7 +46,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author hmarchadour
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.STEREOTYPE_DESCRIPTIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "stereotypeDescriptions")
 public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<Connection<StereotypeDescription>> {
 
     private final IStereotypeDescriptionService stereotypeDescriptionService;
@@ -69,9 +67,10 @@ public class EditingContextStereotypeDescriptionsDataFetcher implements IDataFet
                 .map(stereotypeDescription -> {
                     String value = Base64.getEncoder().encodeToString(stereotypeDescription.getId().toString().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(stereotypeDescription, cursor);
+                    Edge<StereotypeDescription> edge = new DefaultEdge<>(stereotypeDescription, cursor);
+                    return edge;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = stereotypeDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);

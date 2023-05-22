@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.graphql.datafetchers.representation;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
@@ -21,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationMetadataSearchServi
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.representations.IRepresentation;
 
+import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.FieldCoordinates;
 
@@ -30,9 +33,9 @@ import graphql.schema.FieldCoordinates;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "Representation", field = "metadata")
-public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldCoordinates<RepresentationMetadata> {
+public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<RepresentationMetadata>> {
 
-    private static final String METADATA_FIELD = "metadata"; //$NON-NLS-1$
+    private static final String METADATA_FIELD = "metadata";
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
@@ -44,22 +47,31 @@ public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldC
     public List<FieldCoordinates> getFieldCoordinates() {
         // @formatter:off
         return List.of(
-                FieldCoordinates.coordinates("Diagram", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("Form", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("FormDescriptionEditor", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("BarChart", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("PieChart", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("Tree", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("Selection", METADATA_FIELD), //$NON-NLS-1$
-                FieldCoordinates.coordinates("Validation", METADATA_FIELD) //$NON-NLS-1$
+                FieldCoordinates.coordinates("Diagram", METADATA_FIELD),
+                FieldCoordinates.coordinates("Form", METADATA_FIELD),
+                FieldCoordinates.coordinates("FormDescriptionEditor", METADATA_FIELD),
+                FieldCoordinates.coordinates("BarChart", METADATA_FIELD),
+                FieldCoordinates.coordinates("PieChart", METADATA_FIELD),
+                FieldCoordinates.coordinates("Tree", METADATA_FIELD),
+                FieldCoordinates.coordinates("Selection", METADATA_FIELD),
+                FieldCoordinates.coordinates("Validation", METADATA_FIELD)
         );
         // @formatter:on
     }
 
     @Override
-    public RepresentationMetadata get(DataFetchingEnvironment environment) throws Exception {
+    public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
         IRepresentation representation = environment.getSource();
-        return this.representationMetadataSearchService.findByRepresentation(representation).orElse(null);
+        var metadata = this.representationMetadataSearchService.findByRepresentation(representation).orElse(null);
+
+        Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
+
+        // @formatter:off
+        return DataFetcherResult.<RepresentationMetadata>newResult()
+                .data(metadata)
+                .localContext(localContext)
+                .build();
+        // @formatter:on
     }
 
 }

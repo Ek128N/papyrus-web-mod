@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.papyrus.web.graphql.datafetchers.project;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.graphql.schema.ProjectTypeProvider;
 import org.eclipse.papyrus.web.services.api.images.CustomImageMetadata;
 import org.eclipse.papyrus.web.services.api.images.IProjectCustomImageMetadataSearchService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
@@ -41,7 +40,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author pcdavid
  */
-@QueryDataFetcher(type = ProjectTypeProvider.TYPE, field = "customImages")
+@QueryDataFetcher(type = "Project", field = "customImages")
 public class ProjectCustomImagesDataFetcher implements IDataFetcherWithFieldCoordinates<List<CustomImageMetadata>> {
     private final IProjectCustomImageMetadataSearchService customImageMetadataSearchService;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.projects.IProjectImportService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
@@ -45,14 +44,16 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author gcoutable
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUploadProjectDataFetcher.UPLOAD_PROJECT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationUploadProjectDataFetcher.UPLOAD_PROJECT_FIELD)
 public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCoordinates<IPayload> {
 
-    public static final String UPLOAD_PROJECT_FIELD = "uploadProject"; //$NON-NLS-1$
+    public static final String UPLOAD_PROJECT_FIELD = "uploadProject";
 
-    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
-    private static final String FILE = "file"; //$NON-NLS-1$
+    private static final String ID = "id";
+
+    private static final String FILE = "file";
 
     private final IGraphQLMessageService messageService;
 
@@ -65,7 +66,7 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        Map<Object, Object> input = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Map<Object, Object> input = environment.getArgument(INPUT_ARGUMENT);
         // @formatter:off
         UUID id = Optional.ofNullable(input.get(ID))
                 .filter(String.class::isInstance)

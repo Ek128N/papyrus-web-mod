@@ -84,7 +84,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
                 .map(self -> (List<?>) self)
                 .flatMap(self -> self.stream().findFirst())
                 .map(this.objectService::getFullLabel)
-                .orElse("Properties"); //$NON-NLS-1$
+                .orElse("Properties");
         // @formatter:on
 
         // @formatter:off
@@ -96,22 +96,21 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
                 .orElse(null);
 
         return FormDescription.newFormDescription(UUID.nameUUIDFromBytes(REPRESENTATIONS_DEFAULT_FORM_DESCRIPTION_ID.getBytes()).toString())
-                .label("Representations default form description") //$NON-NLS-1$
+                .label("Representations default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .pageDescriptions(pageDescriptions)
-                .groupDescriptions(groupDescriptions)
                 .build();
         // @formatter:on
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
         // @formatter:off
-        return PageDescription.newPageDescription("representationPageId") //$NON-NLS-1$
-                .idProvider(variableManager -> "Representations Page") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Representations Page") //$NON-NLS-1$
+        return PageDescription.newPageDescription("representationPageId")
+                .idProvider(variableManager -> "Representations Page")
+                .labelProvider(variableManager -> "Representations Page")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
@@ -124,9 +123,9 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
         Function<VariableManager, IStatus> itemClickHandlerProvider = variableManager -> new Success();
 
         // @formatter:off
-        ListDescription listDescription = ListDescription.newListDescription("RepresentationsList") //$NON-NLS-1$
+        ListDescription listDescription = ListDescription.newListDescription("RepresentationsList")
             .idProvider(new WidgetIdProvider())
-            .labelProvider((variableManager) -> "Representations") //$NON-NLS-1$
+            .labelProvider((variableManager) -> "Representations")
             .itemsProvider(this.getItemsProvider())
             .itemIdProvider(this.getItemIdProvider())
             .itemLabelProvider(this.getItemLabelProvider())
@@ -136,8 +135,8 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
             .itemDeleteHandlerProvider(this.getItemDeleteHandlerProvider())
             .itemKindProvider(this.getItemKindProvider())
             .diagnosticsProvider((variableManager) -> List.of())
-            .kindProvider((object) -> "") //$NON-NLS-1$
-            .messageProvider((object) -> "") //$NON-NLS-1$
+            .kindProvider((object) -> "")
+            .messageProvider((object) -> "")
             .styleProvider(variableManager -> null)
             .build();
         // @formatter:on
@@ -145,9 +144,9 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
         controlDescriptions.add(listDescription);
 
         // @formatter:off
-        return GroupDescription.newGroupDescription("representationsGroupId") //$NON-NLS-1$
-                .idProvider(variableManager -> "Representations Group") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Representations Group") //$NON-NLS-1$
+        return GroupDescription.newGroupDescription("representationsGroupId")
+                .idProvider(variableManager -> "Representations Group")
+                .labelProvider(variableManager -> "Representations Group")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();
@@ -160,7 +159,7 @@ public class RepresentationsDescriptionProvider implements IRepresentationsDescr
             return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                     .map(RepresentationMetadata::getId)
                     .map(this::getSuccessStatus)
-                    .orElse(new Failure("")); //$NON-NLS-1$
+                    .orElse(new Failure(""));
             // @formatter:on
         };
     }

@@ -34,6 +34,7 @@ public class UMLProjectTemplateProvider implements IProjectTemplateProvider {
         var umlWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(UML_WITH_PRIMITIVES_TEMPLATE_ID)
                 .label("UML") //$NON-NLS-1$
                 .imageURL("/images/UML.svg") //$NON-NLS-1$
+                .natures(List.of())
                 .build();
         // @formatter:on
         return List.of(umlWithPrimitivesTemplate);

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.web.persistence.entities.CustomImageMetadataEntity;
 import org.eclipse.papyrus.web.persistence.repositories.ICustomImageMetadataRepository;
@@ -48,7 +47,7 @@ public class CustomImageMetadataSearchService implements ICustomImageMetadataSea
         allImages.addAll(this.customImageMetadataRepository.findAllByProjectId(null));
         // Project-specific images
         allImages.addAll(new IDParser().parse(editingContextId).map(this.customImageMetadataRepository::findAllByProjectId).orElse(List.of()));
-        return allImages.stream().map(this::toDTO).collect(Collectors.toList());
+        return allImages.stream().map(this::toDTO).toList();
     }
 
     private CustomImageMetadata toDTO(CustomImageMetadataEntity customImageMetadataEntity) {

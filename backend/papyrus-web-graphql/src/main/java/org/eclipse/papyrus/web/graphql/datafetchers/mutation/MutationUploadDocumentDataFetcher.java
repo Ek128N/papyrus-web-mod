@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.document.UploadDocumentInput;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -45,16 +44,18 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author smonnier
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationUploadDocumentDataFetcher.UPLOAD_DOCUMENT_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationUploadDocumentDataFetcher.UPLOAD_DOCUMENT_FIELD)
 public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String UPLOAD_DOCUMENT_FIELD = "uploadDocument"; //$NON-NLS-1$
+    public static final String UPLOAD_DOCUMENT_FIELD = "uploadDocument";
 
-    private static final String EDITING_CONTEXT_ID = "editingContextId"; //$NON-NLS-1$
+    private static final String INPUT_ARGUMENT = "input";
 
-    private static final String FILE = "file"; //$NON-NLS-1$
+    private static final String EDITING_CONTEXT_ID = "editingContextId";
 
-    private static final String ID = "id"; //$NON-NLS-1$
+    private static final String FILE = "file";
+
+    private static final String ID = "id";
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
@@ -67,7 +68,7 @@ public class MutationUploadDocumentDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Map<Object, Object> inputArgument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Map<Object, Object> inputArgument = environment.getArgument(INPUT_ARGUMENT);
 
         // We cannot use directly UploadDocumentInput, the objectMapper cannot handle the file stream.
 

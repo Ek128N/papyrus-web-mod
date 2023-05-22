@@ -38,7 +38,7 @@ public final class GetStereotypesSuccessPayload implements IPayload {
     }
 
     @Override
-    public UUID getId() {
+    public UUID id() {
         return this.id;
     }
 

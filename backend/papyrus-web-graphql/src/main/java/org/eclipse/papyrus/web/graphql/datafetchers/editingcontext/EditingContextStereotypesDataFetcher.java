@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.papyrus.web.services.api.dto.GetStereotypesInput;
 import org.eclipse.papyrus.web.services.api.dto.GetStereotypesSuccessPayload;
 import org.eclipse.papyrus.web.services.api.uml.profile.UMLStereotypeMetadata;
@@ -41,7 +40,7 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author lfasani
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.EDITING_CONTEXT_UML_STEREOTYPES_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "stereotypeMetatadas")
 public class EditingContextStereotypesDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<UMLStereotypeMetadata>>> {
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -53,7 +52,7 @@ public class EditingContextStereotypesDataFetcher implements IDataFetcherWithFie
     @Override
     public CompletableFuture<List<UMLStereotypeMetadata>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String elementId = environment.getArgument(EditingContextTypeProvider.ELEMENT_ID_ARGUMENT);
+        String elementId = environment.getArgument("elementId");
 
         // @formatter:off
         GetStereotypesInput input = new GetStereotypesInput(UUID.randomUUID(), elementId);

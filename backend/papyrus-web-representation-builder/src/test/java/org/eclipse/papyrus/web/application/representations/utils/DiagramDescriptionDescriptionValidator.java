@@ -70,9 +70,16 @@ public class DiagramDescriptionDescriptionValidator {
     private Collection<? extends Status> validateDirectEditTool(DiagramDescription description) {
         List<Status> result = new ArrayList<>();
 
-        EMFUtils.allContainedObjectOfType(description, DiagramElementDescription.class)//
+        EMFUtils.allContainedObjectOfType(description, NodeDescription.class)//
                 .filter(excludedFromDirectEditValidation)//
-                .filter(d -> d.getLabelEditTool() == null).forEach(d -> {
+                .filter(d -> d.getPalette().getLabelEditTool() == null).forEach(d -> {
+                    if (d instanceof NodeDescription || isDomainBasedEdge(d)) {
+                        result.add(Status.error("Missing direct edit tool on " + d.getName())); //$NON-NLS-1$
+                    }
+                });
+        EMFUtils.allContainedObjectOfType(description, EdgeDescription.class)//
+                .filter(excludedFromDirectEditValidation)//
+                .filter(d -> d.getPalette().getCenterLabelEditTool() == null).forEach(d -> {
                     if (d instanceof NodeDescription || isDomainBasedEdge(d)) {
                         result.add(Status.error("Missing direct edit tool on " + d.getName())); //$NON-NLS-1$
                     }
@@ -94,7 +101,7 @@ public class DiagramDescriptionDescriptionValidator {
         List<Status> result = new ArrayList<>();
 
         EMFUtils.allContainedObjectOfType(description, NodeDescription.class)//
-                .filter(excludedFromDeleteToolValidation).filter(d -> d.getDeleteTool() == null).forEach(d -> {
+                .filter(excludedFromDeleteToolValidation).filter(d -> d.getPalette().getDeleteTool() == null).forEach(d -> {
                     result.add(Status.error("Missing deletion tool on " + d.getName())); //$NON-NLS-1$
                 });
         return result;

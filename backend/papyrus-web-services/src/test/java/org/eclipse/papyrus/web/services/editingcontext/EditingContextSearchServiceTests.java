@@ -30,7 +30,10 @@ import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
 import org.eclipse.papyrus.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.papyrus.web.persistence.repositories.IProjectRepository;
 import org.eclipse.papyrus.web.services.documents.DocumentMetadataAdapter;
+import org.eclipse.papyrus.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
+import org.eclipse.papyrus.web.services.projects.api.EditingContextMetadata;
+import org.eclipse.papyrus.web.services.projects.api.IEditingContextMetadataProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
@@ -46,34 +49,37 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  * @author sbegaudeau
  */
 public class EditingContextSearchServiceTests {
+
     // @formatter:off
-    private static final String CONTENT = "{" + System.lineSeparator()
-        + "    \"json\": {" + System.lineSeparator()
-        + "      \"version\": \"1.0\"," + System.lineSeparator()
-        + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
-        + "  }," + System.lineSeparator()
-        + "  \"ns\": {" + System.lineSeparator()
-        + "      \"ecore\": \"http://www.eclipse.org/emf/2002/Ecore\"" + System.lineSeparator()
-        + "  }," + System.lineSeparator()
-        + "  \"content\": [" + System.lineSeparator()
-        + "      {" + System.lineSeparator()
-        + "        \"eClass\": \"ecore:EPackage\"," + System.lineSeparator()
-        + "      \"data\": {" + System.lineSeparator()
-        + "          \"name\": \"ecore\"," + System.lineSeparator()
-        + "        \"nsURI\": \"http://www.eclipse.org/emf/2002/Ecore\"," + System.lineSeparator()
-        + "        \"nsPrefix\": \"ecore\"," + System.lineSeparator()
-        + "        \"eClassifiers\": [" + System.lineSeparator()
-        + "            {" + System.lineSeparator()
-        + "              \"eClass\": \"ecore:EClass\"," + System.lineSeparator()
-        + "            \"data\": {" + System.lineSeparator()
-        + "                \"name\": \"AClass\"" + System.lineSeparator()
-        + "            }" + System.lineSeparator()
-        + "          }" + System.lineSeparator()
-        + "        ]" + System.lineSeparator()
-        + "      }" + System.lineSeparator()
-        + "    }" + System.lineSeparator()
-        + "  ]" + System.lineSeparator()
-        + "}" + System.lineSeparator();
+    private static final String CONTENT = """
+        {
+          "json": {
+            "version": "1.0",
+            "encoding": "utf-8"
+          },
+          "ns": {
+            "ecore": "http://www.eclipse.org/emf/2002/Ecore"
+          },
+          "content": [
+            {
+              "eClass": "ecore:EPackage",
+              "data": {
+                "name": "ecore",
+                "nsURI": "http://www.eclipse.org/emf/2002/Ecore",
+                "nsPrefix": "ecore",
+                "eClassifiers": [
+                  {
+                    "eClass": "ecore:EClass",
+                    "data": {
+                      "name": "AClass"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+        """;
     // @formatter:on
 
     @Test
@@ -88,9 +94,13 @@ public class EditingContextSearchServiceTests {
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
 
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty(),
-                new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository());
-        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, new SimpleMeterRegistry());
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+
+        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory,
+                ePackageRegistry, Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
+                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -131,9 +141,14 @@ public class EditingContextSearchServiceTests {
         ePackageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
         IEditingContextEPackageService editingContextEPackageService = editingContextId -> List.of();
-        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, composedAdapterFactory, ePackageRegistry, Optional.empty(),
-                new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository());
-        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, new SimpleMeterRegistry());
+
+        var editingContextMetadata = new EditingContextMetadata(List.of());
+        IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
+
+        EditingDomainFactoryService editingDomainFactoryService = new EditingDomainFactoryService(editingContextEPackageService, editingContextMetadataProvider, composedAdapterFactory,
+                ePackageRegistry, Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
+        IEditingContextSearchService editingContextSearchService = new EditingContextSearchService(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
+                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -152,18 +167,18 @@ public class EditingContextSearchServiceTests {
         assertThat(resource.eAdapters()).hasSize(2);
         // @formatter:off
         var optionalDocumentMetadataAdapter = resource.eAdapters().stream()
-                                                      .filter(DocumentMetadataAdapter.class::isInstance)
-                                                      .map(DocumentMetadataAdapter.class::cast)
-                                                      .findFirst();
+                .filter(DocumentMetadataAdapter.class::isInstance)
+                .map(DocumentMetadataAdapter.class::cast)
+                .findFirst();
         // @formatter:on
         assertThat(optionalDocumentMetadataAdapter).isPresent();
         assertThat(optionalDocumentMetadataAdapter.get().getName()).isEqualTo(documentEntity.getName());
 
         // @formatter:off
         var optionalCrossReferencerAdapter = resource.eAdapters().stream()
-                                                      .filter(ECrossReferenceAdapter.class::isInstance)
-                                                      .map(ECrossReferenceAdapter.class::cast)
-                                                      .findFirst();
+                .filter(ECrossReferenceAdapter.class::isInstance)
+                .map(ECrossReferenceAdapter.class::cast)
+                .findFirst();
         // @formatter:on
         assertThat(optionalCrossReferencerAdapter).isPresent();
     }

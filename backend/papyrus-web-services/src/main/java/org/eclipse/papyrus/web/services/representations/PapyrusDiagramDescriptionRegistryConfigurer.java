@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.representations;
 
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class PapyrusDiagramDescriptionRegistryConfigurer {
 
     @Bean
-    public PapyrusRepresentationDescriptionRegistry viewRegistry() {
-        return new PapyrusRepresentationDescriptionRegistry();
+    public PapyrusRepresentationDescriptionRegistry viewRegistry(IDiagramIdProvider idProvider) {
+        return new PapyrusRepresentationDescriptionRegistry(idProvider);
     }
 }

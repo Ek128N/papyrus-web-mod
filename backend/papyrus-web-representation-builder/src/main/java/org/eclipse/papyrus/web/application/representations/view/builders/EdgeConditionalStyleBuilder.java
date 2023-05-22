@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.ViewPackage;
 
@@ -53,8 +54,8 @@ public class EdgeConditionalStyleBuilder {
         return this;
     }
 
-    public EdgeConditionalStyleBuilder setColor(String value) {
-        newStyle.setColor(value);
+    public EdgeConditionalStyleBuilder setColor(UserColor color) {
+        newStyle.setColor(color);
         return this;
     }
 

@@ -13,7 +13,12 @@
 package org.eclipse.papyrus.web.application.representations.view;
 
 import org.eclipse.sirius.components.view.ArrowStyle;
+import org.eclipse.sirius.components.view.ColorPalette;
+import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.LineStyle;
+import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.ViewFactory;
 
 /**
  * Object in charge of providing styles.
@@ -21,8 +26,6 @@ import org.eclipse.sirius.components.view.LineStyle;
  * @author Arthur Daussy
  */
 public class StyleProvider {
-
-    private static final String BLACK_COLOR = "#000000";
 
     private int fontSize = 14;
 
@@ -36,15 +39,48 @@ public class StyleProvider {
 
     private int edgeWidth = 1;
 
-    private String edgeColor = BLACK_COLOR;
+    private UserColor edgeColor;
 
-    private String nodeColor = BLACK_COLOR;
+    private UserColor nodeColor;
 
-    private String borderNodeColor = BLACK_COLOR;
+    private UserColor borderNodeColor;
 
     private int nodeBorderRadius;
 
-    private String nodeLabelColor = BLACK_COLOR;
+    private UserColor nodeLabelColor;
+
+    private final UserColor noteColor;
+
+    private final UserColor modelColor;
+
+    private ColorPalette colorPalette;
+
+    public StyleProvider(View view) {
+        colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+        view.getColorPalettes().add(colorPalette);
+        nodeColor = createFixedColor("Default Node Background", "#fefefe");
+        borderNodeColor = createFixedColor("Default Node", "#0b006b");
+        nodeLabelColor = createFixedColor("Default Label", "#0b006b");
+        noteColor = createFixedColor("Comment", "#fffff0");
+        modelColor = createFixedColor("Model", "#f1f8fe");
+        edgeColor = borderNodeColor;
+    }
+
+    private FixedColor createFixedColor(String name, String value) {
+        var fixedColor = ViewFactory.eINSTANCE.createFixedColor();
+        fixedColor.setName(name);
+        fixedColor.setValue(value);
+        colorPalette.getColors().add(fixedColor);
+        return fixedColor;
+    }
+
+    public UserColor getNoteColor() {
+        return noteColor;
+    }
+
+    public UserColor getModelColor() {
+        return modelColor;
+    }
 
     public LineStyle getEdgeStyle() {
         return edgeStyle;
@@ -100,29 +136,29 @@ public class StyleProvider {
         return this;
     }
 
-    public String getEdgeColor() {
+    public UserColor getEdgeColor() {
         return edgeColor;
     }
 
-    public StyleProvider setEdgeColor(String anEdgeColor) {
+    public StyleProvider setEdgeColor(UserColor anEdgeColor) {
         this.edgeColor = anEdgeColor;
         return this;
     }
 
-    public String getNodeColor() {
+    public UserColor getNodeColor() {
         return nodeColor;
     }
 
-    public StyleProvider setNodeColor(String aNodeColor) {
+    public StyleProvider setNodeColor(UserColor aNodeColor) {
         this.nodeColor = aNodeColor;
         return this;
     }
 
-    public String getBorderNodeColor() {
+    public UserColor getBorderNodeColor() {
         return borderNodeColor;
     }
 
-    public StyleProvider setBorderNodeColor(String aBorderNodeColor) {
+    public StyleProvider setBorderNodeColor(UserColor aBorderNodeColor) {
         this.borderNodeColor = aBorderNodeColor;
         return this;
     }
@@ -136,11 +172,11 @@ public class StyleProvider {
         return this;
     }
 
-    public String getNodeLabelColor() {
+    public UserColor getNodeLabelColor() {
         return nodeLabelColor;
     }
 
-    public StyleProvider setNodeLabelColor(String aNodeLabelColor) {
+    public StyleProvider setNodeLabelColor(UserColor aNodeLabelColor) {
         this.nodeLabelColor = aNodeLabelColor;
         return this;
     }

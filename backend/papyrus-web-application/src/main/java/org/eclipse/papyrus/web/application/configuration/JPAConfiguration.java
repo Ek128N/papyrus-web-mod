@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @Configuration
 @EntityScan(basePackages = { "org.eclipse.papyrus.web.persistence.entities" })
-@EnableJpaRepositories(basePackages = { "org.eclipse.papyrus.web.persistence.repositories" }, namedQueriesLocation = "classpath:db/papyrus-web-named-queries.properties")
+@EnableJpaRepositories(basePackages = { "org.eclipse.papyrus.web.persistence.repositories" })
 public class JPAConfiguration {
 
 }

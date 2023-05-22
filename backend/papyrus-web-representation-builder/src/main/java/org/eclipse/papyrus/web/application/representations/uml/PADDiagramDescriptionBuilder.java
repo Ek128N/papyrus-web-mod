@@ -21,11 +21,13 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Varia
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;
 import org.eclipse.sirius.components.view.EdgeTool;
 import org.eclipse.sirius.components.view.LineStyle;
@@ -66,7 +68,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         createCommentDescription(diagramDescription);
 
-        diagramDescription.setOnDrop(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
     }
 
     private void createContainmentLink(DiagramDescription diagramDescription) {
@@ -95,7 +97,23 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         ChangeContext changeContext = getViewBuilder().createChangeContextOperation(toolQuery);
         tool.getBody().add(changeContext);
-        containmentLinkEdge.getEdgeTools().add(tool);
+        registerCallback(containmentLinkEdge, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetProvider, tool);
+        });
+    }
+
+    private void addCreationToolOnNamedElement(DiagramDescription diagramDescription, DiagramElementDescription desc, EdgeTool tool) {
+        Supplier<List<NodeDescription>> namedElementDescriptions = () -> collectNodesWithDomain(diagramDescription, pack.getNamedElement());
+        registerCallback(desc, () -> {
+            CreationToolsUtil.addEdgeCreationTool(namedElementDescriptions, tool);
+        });
+    }
+
+    private void addCreationToolOnPackage(DiagramDescription diagramDescription, DiagramElementDescription desc, EdgeTool tool) {
+        Supplier<List<NodeDescription>> packageDescriptions = () -> collectNodesWithDomain(diagramDescription, pack.getPackage());
+        registerCallback(desc, () -> {
+            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, tool);
+        });
     }
 
     private void createDependencyDescription(DiagramDescription diagramDescription) {
@@ -104,7 +122,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 namedElementDescriptions, namedElementDescriptions);
         padDependency.getStyle().setLineStyle(LineStyle.DASH);
         padDependency.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        padDependency.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padDependency, pack.getPackage_PackagedElement()));
+        addCreationToolOnNamedElement(diagramDescription, padDependency, getViewBuilder().createDefaultDomainBasedEdgeTool(padDependency, pack.getPackage_PackagedElement()));
 
         diagramDescription.getEdgeDescriptions().add(padDependency);
 
@@ -117,8 +135,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 namedElementDescriptions, namedElementDescriptions);
         padAbstraction.getStyle().setLineStyle(LineStyle.DASH);
         padAbstraction.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        padAbstraction.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padAbstraction, pack.getPackage_PackagedElement()));
-
+        addCreationToolOnNamedElement(diagramDescription, padAbstraction, getViewBuilder().createDefaultDomainBasedEdgeTool(padAbstraction, pack.getPackage_PackagedElement()));
         diagramDescription.getEdgeDescriptions().add(padAbstraction);
 
         getViewBuilder().addDefaultReconnectionTools(padAbstraction);
@@ -130,7 +147,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 packageDescriptions, packageDescriptions);
         padPackageMerge.getStyle().setLineStyle(LineStyle.DASH);
         padPackageMerge.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        padPackageMerge.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageMerge, pack.getPackage_PackageMerge()));
+        addCreationToolOnPackage(diagramDescription, padPackageMerge, getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageMerge, pack.getPackage_PackageMerge()));
 
         diagramDescription.getEdgeDescriptions().add(padPackageMerge);
         getViewBuilder().addDefaultReconnectionTools(padPackageMerge);
@@ -143,7 +160,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         padPackageImport.getStyle().setLineStyle(LineStyle.DASH);
         padPackageImport.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
-        padPackageImport.getEdgeTools().add(getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageImport, pack.getNamespace_PackageImport()));
+        addCreationToolOnPackage(diagramDescription, padPackageImport, getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageImport, pack.getNamespace_PackageImport()));
         diagramDescription.getEdgeDescriptions().add(padPackageImport);
         getViewBuilder().addDefaultReconnectionTools(padPackageImport);
 

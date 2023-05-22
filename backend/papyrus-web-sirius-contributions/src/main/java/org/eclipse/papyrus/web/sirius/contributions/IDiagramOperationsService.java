@@ -17,6 +17,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 
@@ -30,7 +31,7 @@ import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
  */
 public interface IDiagramOperationsService {
 
-    void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription);
+    void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription, NodeContainmentKind containmentKind);
 
     void deleteView(IDiagramContext diagramContext, Node node);
 
@@ -42,7 +43,7 @@ public interface IDiagramOperationsService {
     class NoOp implements IDiagramOperationsService {
 
         @Override
-        public void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription) {
+        public void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription, NodeContainmentKind containmentKind) {
             // Do nothing
         }
 

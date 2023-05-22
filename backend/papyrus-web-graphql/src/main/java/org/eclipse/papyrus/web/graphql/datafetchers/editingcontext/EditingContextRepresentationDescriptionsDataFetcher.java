@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,10 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.web.graphql.pagination.PageInfoWithCount;
-import org.eclipse.papyrus.web.graphql.schema.EditingContextTypeProvider;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
@@ -45,7 +43,7 @@ import reactor.core.publisher.Mono;
  * @author pcdavid
  * @author sbegaudeau
  */
-@QueryDataFetcher(type = EditingContextTypeProvider.TYPE, field = EditingContextTypeProvider.REPRESENTATION_DESCRIPTIONS_FIELD)
+@QueryDataFetcher(type = "EditingContext", field = "representationDescriptions")
 public class EditingContextRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<RepresentationDescriptionMetadata>>> {
 
     private static final String OBJECT_ID_ARGUMENT = "objectId"; //$NON-NLS-1$
@@ -75,13 +73,14 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
 
     private Connection<RepresentationDescriptionMetadata> toConnection(EditingContextRepresentationDescriptionsPayload payload) {
         // @formatter:off
-        List<Edge<RepresentationDescriptionMetadata>> representationDescriptionEdges = payload.getRepresentationDescriptions().stream()
+        List<Edge<RepresentationDescriptionMetadata>> representationDescriptionEdges = payload.representationDescriptions().stream()
                 .map(representationDescription -> {
                     String value = Base64.getEncoder().encodeToString(representationDescription.getId().getBytes());
                     ConnectionCursor cursor = new DefaultConnectionCursor(value);
-                    return new DefaultEdge<>(representationDescription, cursor);
+                    Edge<RepresentationDescriptionMetadata> edge = new DefaultEdge<>(representationDescription, cursor);
+                    return edge;
                 })
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
 
         ConnectionCursor startCursor = representationDescriptionEdges.stream().findFirst().map(Edge::getCursor).orElse(null);
@@ -89,7 +88,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
         if (!representationDescriptionEdges.isEmpty()) {
             endCursor = representationDescriptionEdges.get(representationDescriptionEdges.size() - 1).getCursor();
         }
-        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.getRepresentationDescriptions().size());
+        PageInfo pageInfo = new PageInfoWithCount(startCursor, endCursor, false, false, payload.representationDescriptions().size());
         return new DefaultConnection<>(representationDescriptionEdges, pageInfo);
     }
 

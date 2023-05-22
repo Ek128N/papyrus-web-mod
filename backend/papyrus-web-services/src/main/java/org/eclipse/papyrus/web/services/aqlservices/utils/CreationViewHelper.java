@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.BiPredicate;
 
 import org.eclipse.emf.ecore.EClass;
@@ -41,8 +40,10 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,9 +137,17 @@ public class CreationViewHelper implements IViewCreationHelper {
     public boolean createView(EObject semanticElement, Node selectedNode, org.eclipse.sirius.components.view.NodeDescription newViewDescription) {
         if (newViewDescription != null) {
 
+            var isBorderedNode = newViewDescription.eContainingFeature() == ViewPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
+            final NodeContainmentKind containmentKind;
+            if (isBorderedNode) {
+                containmentKind = NodeContainmentKind.BORDER_NODE;
+            } else {
+                containmentKind = NodeContainmentKind.CHILD_NODE;
+            }
+
             // Need to check that no other view on this element is already created
             NodeDescription nodeDescription = this.capturedNodeDescriptions.get(newViewDescription);
-            UUID nodeDescriptionId = nodeDescription.getId();
+            String nodeDescriptionId = nodeDescription.getId();
             String semanticId = this.objectService.getId(semanticElement);
 
             // Workaround to avoid java.lang.IllegalStateException: Duplicate key problem -
@@ -147,7 +156,7 @@ public class CreationViewHelper implements IViewCreationHelper {
 
             if (semanticId == null || matchingNodes.isEmpty()) {
 
-                this.diagramOperationsService.createView(this.diagramContext, semanticElement, Optional.ofNullable(selectedNode), nodeDescription);
+                this.diagramOperationsService.createView(this.diagramContext, semanticElement, Optional.ofNullable(selectedNode), nodeDescription, containmentKind);
                 return true;
             } else {
                 LOGGER.warn("A representation of this element alredy exist in the digram"); //$NON-NLS-1$
@@ -157,7 +166,7 @@ public class CreationViewHelper implements IViewCreationHelper {
         return false;
     }
 
-    private boolean matchExistingNode(Node inspectedParent, Node inspectedNode, String searchedSemanticElementID, UUID searchNodeDescription, Node selectedParent) {
+    private boolean matchExistingNode(Node inspectedParent, Node inspectedNode, String searchedSemanticElementID, String searchNodeDescription, Node selectedParent) {
         boolean parentCheck;
         if (selectedParent == null) {
             parentCheck = inspectedParent == null;
@@ -250,7 +259,7 @@ public class CreationViewHelper implements IViewCreationHelper {
         return toTest == expected || toTest.getEAllSuperTypes().contains(expected);
     }
 
-    private Optional<org.eclipse.sirius.components.view.NodeDescription> getViewNodeDescription(UUID descriptionId) {
+    private Optional<org.eclipse.sirius.components.view.NodeDescription> getViewNodeDescription(String descriptionId) {
         return EMFUtils.allContainedObjectOfType(this.diagramDescription, org.eclipse.sirius.components.view.NodeDescription.class).filter(n -> {
             NodeDescription nd = this.capturedNodeDescriptions.get(n);
             return nd != null && descriptionId.equals(nd.getId());

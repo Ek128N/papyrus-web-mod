@@ -14,8 +14,6 @@ package org.eclipse.papyrus.web.profile.cpp;
 
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.papyrus.designer.languages.common.profile.Codegen.CodegenPackage;
@@ -24,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Configuration of the CodeGen profile.

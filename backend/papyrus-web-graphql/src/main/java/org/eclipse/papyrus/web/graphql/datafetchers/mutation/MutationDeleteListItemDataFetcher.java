@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.graphql.messages.IGraphQLMessageService;
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.forms.dto.DeleteListItemInput;
@@ -42,10 +41,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author gcoutable
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteListItemDataFetcher.DELETE_LIST_ITEM)
+@MutationDataFetcher(type = "Mutation", field = MutationDeleteListItemDataFetcher.DELETE_LIST_ITEM)
 public class MutationDeleteListItemDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_LIST_ITEM = "deleteListItem"; //$NON-NLS-1$
+    public static final String DELETE_LIST_ITEM = "deleteListItem";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -61,7 +62,7 @@ public class MutationDeleteListItemDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteListItemInput.class);
 
         // @formatter:off

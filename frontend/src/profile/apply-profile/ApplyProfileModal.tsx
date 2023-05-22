@@ -31,7 +31,7 @@ import {
   GQLErrorPayload,
   GQLGetProfilesQueryData,
   GQLGetProfilesQueryVariables,
-} from 'profile/apply-profile/ApplyProfileModal.types';
+} from './ApplyProfileModal.types';
 import {
   ApplyProfileEvent,
   ApplyProfileModalContext,
@@ -43,9 +43,8 @@ import {
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
-} from 'profile/apply-profile/ApplyProfileModalMachine';
+} from './ApplyProfileModalMachine';
 import { useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
 
 const applyProfileMutation = gql`
   mutation applyProfile($input: ApplyProfileInput!) {
@@ -156,7 +155,7 @@ export const ApplyProfileModal = ({ editingContextId, item, onAppliedProfile, on
   const onApplyProfile = () => {
     dispatch({ type: 'APPLY_PROFILE' } as ApplyProfileEvent);
     const input = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       editingContextId,
       modelId: item.id,
       profileUriPath: selectedProfileId,

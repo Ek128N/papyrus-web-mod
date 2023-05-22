@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.services.api.accounts.Profile;
 import org.eclipse.papyrus.web.services.api.document.Document;
 import org.eclipse.papyrus.web.services.api.document.IDocumentService;
 import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.Visibility;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -49,12 +47,12 @@ public class DocumentControllerTests {
 
     @Test
     public void testDocumentExist() {
-        String name = "Document"; //$NON-NLS-1$
+        String name = "Document";
 
         IDocumentService documentService = new IDocumentService.NoOp() {
             @Override
             public Optional<Document> getDocument(String projectId, UUID documentId) {
-                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), "", new Profile(UUID.randomUUID(), "username"), Visibility.PUBLIC), name, null)); //$NON-NLS-1$ //$NON-NLS-2$
+                return Optional.of(new Document(documentId, new Project(UUID.fromString(projectId), ""), name, null));
             }
 
             @Override

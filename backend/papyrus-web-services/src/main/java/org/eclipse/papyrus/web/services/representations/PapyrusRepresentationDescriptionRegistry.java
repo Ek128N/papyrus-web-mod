@@ -14,23 +14,21 @@ package org.eclipse.papyrus.web.services.representations;
 
 import static org.eclipse.papyrus.uml.domain.services.EMFUtils.allContainedObjectOfType;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
+import java.util.Objects;
+import java.util.Optional;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.RepresentationDescription;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 
 /**
  * Registry that keeps track of all {@link DiagramDescription}s used in Papyrus application.
@@ -39,49 +37,78 @@ import org.slf4j.LoggerFactory;
  */
 public class PapyrusRepresentationDescriptionRegistry {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PapyrusRepresentationDescriptionRegistry.class);
+    private IDiagramIdProvider idProvider;
 
-    // Copied from org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter.idProvider
-    private static final Function<DiagramElementDescription, UUID> ID_PROVIDER = (diagramElementDescription) -> {
-        // DiagramElementDescription should have a proper id.
-        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(diagramElementDescription).toString().getBytes());
-    };
+    private List<Match> diagrams = new ArrayList<>();
 
-    private Map<String, RepresentationDescription> registryByName = new HashMap<>();
+    private Map<String, DiagramDescription> viewDiagramDescriptionById = new HashMap<>();
 
-    private Map<String, IRepresentationDescription> registryById = new HashMap<>();
+    private Map<String, org.eclipse.sirius.components.diagrams.description.DiagramDescription> apiDiagramDescriptionById = new HashMap<>();
 
-    private Map<RepresentationDescription, IRepresentationDescription> viewToConverted = new HashMap<>();
+    private Map<String, DiagramElementDescription> viewDiagramElementDescriptionById = new HashMap<>();
 
-    private Map<String, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription>> convertedNodeByDiagram = new HashMap<>();
+    private Map<String, IDiagramElementDescription> apiDiagramElementDescriptionById = new HashMap<>();
 
-    public void add(RepresentationDescription description, IRepresentationDescription converted) {
-        this.registryByName.put(description.getName(), description);
-        this.registryById.put(converted.getId(), converted);
-        this.viewToConverted.put(description, converted);
-        if (description instanceof DiagramDescription && converted instanceof org.eclipse.sirius.components.diagrams.description.DiagramDescription) {
-            this.convertedNodeByDiagram.put(description.getName(),
-                    this.buildConvertedNodeMap((DiagramDescription) description, (org.eclipse.sirius.components.diagrams.description.DiagramDescription) converted));
+    public PapyrusRepresentationDescriptionRegistry(IDiagramIdProvider idProvider) {
+        this.idProvider = idProvider;
+    }
+
+    public void add(DiagramDescription description, org.eclipse.sirius.components.diagrams.description.DiagramDescription converted) {
+        String viewId = this.idProvider.getId(description);
+        String apiId = converted.getId();
+
+        if (!Objects.equals(apiId, viewId)) {
+            throw new IllegalStateException("Invalid diagram ids. View id =" + viewId + " API id=" + apiId);
         }
+        this.viewDiagramDescriptionById.put(viewId, description);
+        this.apiDiagramDescriptionById.put(apiId, converted);
+
+        EMFUtils.allContainedObjectOfType(description, DiagramElementDescription.class).forEach(de -> this.registerViewDiagramElement(de));
+        Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes = this.buildConvertedNodeMap(description, converted);
+
+        this.diagrams.add(new Match(viewId, description, converted, convertedNodes));
+
+    }
+
+    private DiagramElementDescription registerViewDiagramElement(DiagramElementDescription de) {
+        return this.viewDiagramElementDescriptionById.put(this.idProvider.getId(de), de);
     }
 
     private Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> buildConvertedNodeMap(DiagramDescription diagramDescription,
             org.eclipse.sirius.components.diagrams.description.DiagramDescription converted) {
 
-        Map<UUID, NodeDescription> nodeIdToDescriptions = new HashMap<>();
+        Map<String, NodeDescription> nodeIdToDescriptions = new HashMap<>();
         for (NodeDescription node : converted.getNodeDescriptions()) {
             this.collectNote(node, nodeIdToDescriptions);
         }
 
+        this.apiDiagramElementDescriptionById.putAll(nodeIdToDescriptions);
+
         Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> converterNodes = new HashMap<>();
         allContainedObjectOfType(diagramDescription, org.eclipse.sirius.components.view.NodeDescription.class).forEach(n -> {
-            converterNodes.put(n, nodeIdToDescriptions.get(ID_PROVIDER.apply(n)));
+            converterNodes.put(n, nodeIdToDescriptions.get(this.idProvider.getId(n)));
         });
 
         return converterNodes;
     }
 
-    private void collectNote(NodeDescription node, Map<UUID, NodeDescription> nodeIdToDescriptions) {
+    public Optional<org.eclipse.sirius.components.view.NodeDescription> getViewNodeDescriptionById(String id) {
+        return Optional.ofNullable((org.eclipse.sirius.components.view.NodeDescription) this.viewDiagramElementDescriptionById.get(id));
+    }
+
+    public Optional<EdgeDescription> getViewEdgeDescriptionById(String id) {
+        return Optional.ofNullable((org.eclipse.sirius.components.view.EdgeDescription) this.viewDiagramElementDescriptionById.get(id));
+    }
+
+    public Optional<DiagramDescription> getViewDiagramDescriptionById(String id) {
+        return this.diagrams.stream().filter(m -> m.getId().equals(id)).map(Match::getViewDiagramDescription).findFirst();
+    }
+
+    public Optional<org.eclipse.sirius.components.diagrams.description.DiagramDescription> getApiDiagramDescriptionById(String id) {
+        return this.diagrams.stream().filter(m -> m.getId().equals(id)).map(Match::getApiDiagramDescription).findFirst();
+    }
+
+    private void collectNote(NodeDescription node, Map<String, NodeDescription> nodeIdToDescriptions) {
         if (node != null) {
             nodeIdToDescriptions.put(node.getId(), node);
 
@@ -95,38 +122,59 @@ public class PapyrusRepresentationDescriptionRegistry {
 
     }
 
-    public IRepresentationDescription getRepresentationDescriptionById(String id) {
-        return this.registryById.get(id);
+    public Optional<DiagramDescription> getViewDiagramDescriptionByName(String diagramName) {
+        return this.diagrams.stream().filter(m -> Objects.equals(diagramName, m.getViewDiagramDescription().getName())).map(Match::getViewDiagramDescription).findFirst();
     }
 
-    public DiagramDescription getViewDiagramDescriptionByName(String diagramName) {
-        RepresentationDescription repDescription = this.registryByName.get(diagramName);
-        if (repDescription instanceof DiagramDescription) {
-            return (DiagramDescription) repDescription;
-        }
-        return null;
-    }
-
-    public IRepresentationDescription getRepresentationDescriptionByName(String diagramName) {
-        RepresentationDescription repDescription = this.registryByName.get(diagramName);
-        if (repDescription != null) {
-            return this.viewToConverted.get(repDescription);
-        }
-        return null;
+    public Optional<org.eclipse.sirius.components.diagrams.description.DiagramDescription> getApiDiagramDescriptionByName(String diagramName) {
+        return this.diagrams.stream().filter(m -> Objects.equals(diagramName, m.getViewDiagramDescription().getName())).map(Match::getApiDiagramDescription).findFirst();
     }
 
     public Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> getConvertedNode(String descriptionName) {
-        Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNode = this.convertedNodeByDiagram.get(descriptionName);
-        if (convertedNode != null) {
-            return convertedNode;
-        } else {
-            LOGGER.warn(MessageFormat.format("Unkown description {0}", descriptionName)); //$NON-NLS-1$
-            return Collections.emptyMap();
+        return this.diagrams.stream().filter(m -> Objects.equals(descriptionName, m.getViewDiagramDescription().getName())).map(Match::getConvertedNodes).findFirst().orElse(Collections.emptyMap());
+    }
+
+    public List<DiagramDescription> getViewDiagrams() {
+        return this.diagrams.stream().map(Match::getViewDiagramDescription).toList();
+    }
+
+    public List<org.eclipse.sirius.components.diagrams.description.DiagramDescription> getApiDiagrams() {
+        return this.diagrams.stream().map(Match::getApiDiagramDescription).toList();
+    }
+
+    private final class Match {
+
+        private final DiagramDescription viewDiagramDescription;
+
+        private final org.eclipse.sirius.components.diagrams.description.DiagramDescription apiDiagramDescription;
+
+        private final Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes;
+
+        private final String id;
+
+        private Match(String id, DiagramDescription viewDiagramDescription, org.eclipse.sirius.components.diagrams.description.DiagramDescription apiDiagramDescription,
+                Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> convertedNodes) {
+            super();
+            this.id = Objects.requireNonNull(id);
+            this.viewDiagramDescription = Objects.requireNonNull(viewDiagramDescription);
+            this.apiDiagramDescription = Objects.requireNonNull(apiDiagramDescription);
+            this.convertedNodes = Collections.unmodifiableMap(Objects.requireNonNull(convertedNodes));
+        }
+
+        public DiagramDescription getViewDiagramDescription() {
+            return this.viewDiagramDescription;
+        }
+
+        public String getId() {
+            return this.id;
+        }
+
+        public org.eclipse.sirius.components.diagrams.description.DiagramDescription getApiDiagramDescription() {
+            return this.apiDiagramDescription;
+        }
+
+        public Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> getConvertedNodes() {
+            return this.convertedNodes;
         }
     }
-
-    public List<RepresentationDescription> getAll() {
-        return new ArrayList<>(this.registryByName.values());
-    }
-
 }

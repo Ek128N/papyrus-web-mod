@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -60,7 +59,7 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
 
     @Override
     public boolean canHandle(DiagramDescription diagramDescription) {
-        return this.papyrusViewRegistry.getRepresentationDescriptionById(diagramDescription.getId()) != null;
+        return this.papyrusViewRegistry.getApiDiagramDescriptionById(diagramDescription.getId()).isPresent();
     }
 
     @Override
@@ -110,8 +109,8 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
                 .build();
     }
 
-    private Optional<UUID> mapDiagramElementToDescriptionId(Object object) {
-        Optional<UUID> descriptionId = Optional.empty();
+    private Optional<String> mapDiagramElementToDescriptionId(Object object) {
+        Optional<String> descriptionId = Optional.empty();
         if (object instanceof Node) {
             descriptionId = Optional.of(((Node) object).getDescriptionId());
         } else if (object instanceof Edge) {
@@ -120,7 +119,7 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
         return descriptionId;
     }
 
-    private Optional<Object> mapDescriptionIdToDescription(UUID descriptionId, DiagramDescription diagramDescription, Object diagramElement) {
+    private Optional<Object> mapDescriptionIdToDescription(String descriptionId, DiagramDescription diagramDescription, Object diagramElement) {
         Optional<Object> result = Optional.empty();
         if (diagramElement instanceof Node) {
             var description = this.diagramDescriptionService.findNodeDescriptionById(diagramDescription, descriptionId);

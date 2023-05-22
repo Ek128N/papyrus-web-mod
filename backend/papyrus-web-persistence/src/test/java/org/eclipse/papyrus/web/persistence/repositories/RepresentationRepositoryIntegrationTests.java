@@ -18,10 +18,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.eclipse.papyrus.web.persistence.entities.AccountEntity;
 import org.eclipse.papyrus.web.persistence.entities.DocumentEntity;
 import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
 import org.eclipse.papyrus.web.persistence.entities.RepresentationEntity;
@@ -34,6 +30,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 /**
  * Integration tests of the representation repository.
  *
@@ -44,42 +43,35 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ContextConfiguration(classes = PersistenceTestConfiguration.class)
 public class RepresentationRepositoryIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String DOCUMENT_NAME = "Obsydians"; //$NON-NLS-1$
+    private static final String DOCUMENT_NAME = "Obsydians";
 
-    private static final String OWNER_NAME = "Jyn Erso"; //$NON-NLS-1$
+    private static final String FIRST_PROJECT_NAME = "Cluster Prism";
 
-    private static final String ROLE_USER = "user"; //$NON-NLS-1$
+    private static final String SECOND_PROJECT_NAME = "War Mantle";
 
-    private static final String FIRST_PROJECT_NAME = "Cluster Prism"; //$NON-NLS-1$
+    private static final String FIRST_DIAGRAM_LABEL = "First Diagram";
 
-    private static final String SECOND_PROJECT_NAME = "War Mantle"; //$NON-NLS-1$
+    private static final String SECOND_DIAGRAM_LABEL = "Second Diagram";
 
-    private static final String FIRST_DIAGRAM_LABEL = "First Diagram"; //$NON-NLS-1$
+    private static final String THIRD_DIAGRAM_LABEL = "Third Diagram";
 
-    private static final String SECOND_DIAGRAM_LABEL = "Second Diagram"; //$NON-NLS-1$
+    private static final String FOURTH_DIAGRAM_LABEL = "Fourth Diagram";
 
-    private static final String THIRD_DIAGRAM_LABEL = "Third Diagram"; //$NON-NLS-1$
+    private static final String FIRST_TARGET_OBJECT_ID = "firstTargetObjectId";
 
-    private static final String FOURTH_DIAGRAM_LABEL = "Fourth Diagram"; //$NON-NLS-1$
+    private static final String SECOND_TARGET_OBJECT_ID = "secondTargetObjectId";
 
-    private static final String FIRST_TARGET_OBJECT_ID = "firstTargetObjectId"; //$NON-NLS-1$
-
-    private static final String SECOND_TARGET_OBJECT_ID = "secondTargetObjectId"; //$NON-NLS-1$
-
-    private static final String DOCUMENT_CONTENT_PATTERN = "{ \"id\": \"%1$s\" }"; //$NON-NLS-1$
+    private static final String DOCUMENT_CONTENT_PATTERN = "{ \"id\": \"%1$s\" }";
 
     // @formatter:off
-    private static final String DOCUMENT_CONTENT = "{" + System.lineSeparator() //$NON-NLS-1$
-        + "    \"json\": {" + System.lineSeparator() //$NON-NLS-1$
-        + "      \"version\": \"1.0\"," + System.lineSeparator() //$NON-NLS-1$
-        + "    \"encoding\": \"utf-8\"" + System.lineSeparator() //$NON-NLS-1$
-        + "  }," + System.lineSeparator() //$NON-NLS-1$
-        + "  \"content\": [%1$s]" + System.lineSeparator() //$NON-NLS-1$
-        + "}" + System.lineSeparator(); //$NON-NLS-1$
+    private static final String DOCUMENT_CONTENT = "{" + System.lineSeparator()
+        + "    \"json\": {" + System.lineSeparator()
+        + "      \"version\": \"1.0\"," + System.lineSeparator()
+        + "    \"encoding\": \"utf-8\"" + System.lineSeparator()
+        + "  }," + System.lineSeparator()
+        + "  \"content\": [%1$s]" + System.lineSeparator()
+        + "}" + System.lineSeparator();
     // @formatter:on
-
-    @Autowired
-    private IAccountRepository accountRepository;
 
     @Autowired
     private IProjectRepository projectRepository;
@@ -95,9 +87,9 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
 
     @DynamicPropertySource
     public static void postgresqlProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl); //$NON-NLS-1$
-        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword); //$NON-NLS-1$
-        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername); //$NON-NLS-1$
+        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
+        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
     }
 
     @Test
@@ -123,20 +115,12 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
     @Test
     @Transactional
     public void testFindByIdAndProjectId() {
-        AccountEntity owner = new AccountEntity();
-        owner.setUsername(OWNER_NAME);
-        owner.setPassword(OWNER_NAME);
-        owner.setRole(ROLE_USER);
-        AccountEntity savedOwner = this.accountRepository.save(owner);
-
         ProjectEntity firstProject = new ProjectEntity();
         firstProject.setName(FIRST_PROJECT_NAME);
-        firstProject.setOwner(savedOwner);
         ProjectEntity savedFirstProject = this.projectRepository.save(firstProject);
 
         ProjectEntity secondProject = new ProjectEntity();
         secondProject.setName(SECOND_PROJECT_NAME);
-        secondProject.setOwner(savedOwner);
         ProjectEntity savedSecondProject = this.projectRepository.save(secondProject);
 
         RepresentationEntity firstRepresentationEntity = this.createRepresentationEntity(savedFirstProject, FIRST_DIAGRAM_LABEL, FIRST_TARGET_OBJECT_ID);
@@ -235,15 +219,8 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
     }
 
     private ProjectEntity createAndSaveProjectEntity() {
-        AccountEntity owner = new AccountEntity();
-        owner.setUsername(OWNER_NAME);
-        owner.setPassword(OWNER_NAME);
-        owner.setRole(ROLE_USER);
-        AccountEntity savedOwner = this.accountRepository.save(owner);
-
         ProjectEntity project = new ProjectEntity();
         project.setName(FIRST_PROJECT_NAME);
-        project.setOwner(savedOwner);
         ProjectEntity savedProject = this.projectRepository.save(project);
         return savedProject;
     }
@@ -261,7 +238,7 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
         //@formatter:off
         String documentContentContent = List.of(targetObjectIds).stream()
                 .map(targetObjectId -> String.format(DOCUMENT_CONTENT_PATTERN, targetObjectId))
-                .collect(Collectors.joining(",")); //$NON-NLS-1$
+                .collect(Collectors.joining(","));
         //@formatter:on
 
         return String.format(DOCUMENT_CONTENT, documentContentContent);
@@ -273,9 +250,9 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
         representationEntity.setLabel(label);
         representationEntity.setProject(projectEntity);
         representationEntity.setTargetObjectId(targetObjectId);
-        representationEntity.setKind("siriusComponents://representation?type=Diagram"); //$NON-NLS-1$
+        representationEntity.setKind("siriusComponents://representation?type=Diagram");
         representationEntity.setDescriptionId(UUID.randomUUID().toString());
-        representationEntity.setContent("{ \"nodes\": [], \"edges\": []}"); //$NON-NLS-1$
+        representationEntity.setContent("{ \"nodes\": [], \"edges\": []}");
         return representationEntity;
     }
 
@@ -326,7 +303,7 @@ public class RepresentationRepositoryIntegrationTests extends AbstractIntegratio
         // @formatter:off
         return this.representationRepository.findAllByProjectId(projectId).stream()
                 .map(RepresentationEntity::getId)
-                .collect(Collectors.toList());
+                .toList();
         // @formatter:on
     }
 

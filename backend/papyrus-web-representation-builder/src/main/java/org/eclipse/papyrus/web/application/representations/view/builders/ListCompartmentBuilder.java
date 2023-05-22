@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
@@ -86,7 +86,8 @@ public class ListCompartmentBuilder {
         Objects.requireNonNull(semanticCandidateExpression);
         Objects.requireNonNull(childrenType);
         Objects.requireNonNull(compartmentNameSuffix);
-        NodeDescription attributesCompartement = addCompartementNode(parent, compartmentNameSuffix); // $NON-NLS-1$
+        NodeDescription attributesCompartement = addCompartementNode(parent, compartmentNameSuffix);
+        attributesCompartement.getPalette().getNodeTools().addAll(creationTools.stream().map(pair -> createCreationTool(pair.getFirst(), pair.getSecond())).toList());
         NodeDescription attributeDescription = createLabelIconInsideCompartmentDescription(parent);
         attributesCompartement.getChildrenDescriptions().add(attributeDescription);
         return attributeDescription;
@@ -135,7 +136,7 @@ public class ListCompartmentBuilder {
                 .labelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "false", "true")) // //$NON-NLS-1$ //$NON-NLS-2$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(createDirectEditTool())//
-                .deleteTool(viewBuider.createNodeDeleteTool(childrenType.getName())).createTools(creationTools.stream().map(p -> createCreationTool(p.getFirst(), p.getSecond())).collect(toList()))
+                .deleteTool(viewBuider.createNodeDeleteTool(childrenType.getName()))//
                 .build();
 
         // Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164
@@ -143,8 +144,10 @@ public class ListCompartmentBuilder {
                 .name(idBuilder.getFakeChildNodeId(description)) // $NON-NLS-1$
                 .semanticCandidateExpression("aql:Sequence{}") //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .createTools(creationTools.stream().map(p -> createSiblingCreationTool(p.getFirst(), p.getSecond())).collect(toList())).build();
-
+                .build();
+        registerCallback(fakeNode, () -> {
+            creationTools.forEach(p -> CreationToolsUtil.addNodeCreationTool(() -> List.of(parent), createSiblingCreationTool(p.getFirst(), p.getSecond())));
+        });
         description.getChildrenDescriptions().add(fakeNode);
 
         return description;
@@ -172,6 +175,10 @@ public class ListCompartmentBuilder {
      */
     private NodeTool createSiblingCreationTool(EReference containementRef, EClass newType) {
         return viewBuider.createSiblingCreationTool(idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType); // $NON-NLS-1$
+    }
+
+    private void registerCallback(EObject owner, Runnable r) {
+        owner.eAdapters().add(new CallbackAdapter(r));
     }
 
 }

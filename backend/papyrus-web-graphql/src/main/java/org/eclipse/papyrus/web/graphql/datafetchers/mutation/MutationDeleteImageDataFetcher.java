@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.papyrus.web.graphql.schema.MutationTypeProvider;
 import org.eclipse.papyrus.web.services.api.images.DeleteImageInput;
 import org.eclipse.papyrus.web.services.api.images.ICustomImageEditService;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -41,10 +40,12 @@ import graphql.schema.DataFetchingEnvironment;
  *
  * @author fbarbin
  */
-@MutationDataFetcher(type = MutationTypeProvider.TYPE, field = MutationDeleteImageDataFetcher.DELETE_IMAGE_FIELD)
+@MutationDataFetcher(type = "Mutation", field = MutationDeleteImageDataFetcher.DELETE_IMAGE_FIELD)
 public class MutationDeleteImageDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_IMAGE_FIELD = "deleteImage"; //$NON-NLS-1$
+    public static final String DELETE_IMAGE_FIELD = "deleteImage";
+
+    private static final String INPUT_ARGUMENT = "input";
 
     private final ObjectMapper objectMapper;
 
@@ -57,7 +58,7 @@ public class MutationDeleteImageDataFetcher implements IDataFetcherWithFieldCoor
 
     @Override
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
-        Object argument = environment.getArgument(MutationTypeProvider.INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
         var input = this.objectMapper.convertValue(argument, DeleteImageInput.class);
         this.customImageEditService.delete(input.imageId());
         return CompletableFuture.completedFuture(new SuccessPayload(input.id()));

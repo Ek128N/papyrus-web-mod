@@ -122,10 +122,10 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
         Node propertyNode = this.getDiagramHelper().createNodeInParent(CSD_PROPERTY_ON_CLASSIFIER, property, classNode);
 
         // Port
-        this.getServiceTester().assertChildCreation(propertyNode, UML.getPort(), UML.getStructuredClassifier_OwnedAttribute(), CSD_PORT_ON_PROPERTY, propertyType);
+        this.getServiceTester().assertChildCreation(propertyNode, propertyType, UML.getPort(), UML.getStructuredClassifier_OwnedAttribute(), CSD_PORT_ON_PROPERTY, propertyType);
 
         // Property
-        this.getServiceTester().assertChildCreation(propertyNode, UML.getProperty(), UML.getStructuredClassifier_OwnedAttribute(), CSD_PROPERTY_ON_PROPERTY, propertyType);
+        this.getServiceTester().assertChildCreation(propertyNode, propertyType, UML.getProperty(), UML.getStructuredClassifier_OwnedAttribute(), CSD_PROPERTY_ON_PROPERTY, propertyType);
 
         // Comment
         this.getServiceTester().assertChildCreation(propertyNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT, property);
