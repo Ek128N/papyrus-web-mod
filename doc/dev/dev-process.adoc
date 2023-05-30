@@ -1,0 +1,246 @@
+= Development pull process
+:toc:
+
+This document aims to describe the development process for this project.
+
+== New development
+
+1. For any new feature or bug fix check if a related issue is created or create it.
+A bug discovered on non-released issues or non-closed issues could be associated with that issue.
+Releng (Release Engineering) or documentation commits can be pushed without a related issue.
+2. Create a new branch using the following name pattern: `$devIdentifier/$type/$name`.
+* $devIdentifier : A unique identifier for the developer (usually a trigram)
+* $type: Could either be
+** releng: For Release Engineering commits
+** enh: For enhancements
+** fix: For bug fixes
+** doc: For branch that only contains documentation/specifications
+* $name: I-XX where XX is the number of the issue. A short describing name can be used for a branch that holds more than one related issues.
+
+== Commit messages formatting
+
+```
+[XXXX] Short description <1>
+
+Longer description if needed, explaining the reasons of the change and its
+impact, not paraphrasing the patch. The description should use wrapped line.
+
+Bug: https://github.com/PapyrusSirius/papyrus-web/XXXX <2>
+Signed-off-by: author name<author email> <3>
+```
+<1> Either the numeric bug id or for the few cases where a commit is not directly related to an issue, use a tag like [releng], [doc], [build], [version], [cleanup].
+<2> URL of the related bug.
+In rare cases where a commit impact more than one issue please add one line for each bug.
+<3> First Name and Second name of the author followed by its email.
+
+WARNING: Be sure that the email used in the _signoff_ line is the one linked to your Eclipse CLA.
+
+
+== Create a Pull Request
+
+Once the development is complete, push that branch and create a pull request.
+
+If the pull request contains commit related to one issue, use its name for the name of the pull request.
+You can add a link to the issue in the description of the pull request.
+In case, the pull request is related to more than one issue please a meaningful name and a small description on the pull request.
+
+WARNING: If a pull request is linked to another pull request held by another repository (for example "UML Domain Service") please add a link to it in the description.
+
+If you want to save remotely your work, you can push your branch without creating a pull request.
+If you want to indicate that the pull request is not yet completed but you need a review, add the `[DRAFT]` prefix to the pull name to indicate that it should *not* be integrated.
+
+It is best to create one branch/pull request by issue.
+However closely related issues/feature, multiple commits can be associated with the same branch/pull request in order to avoid resolving conflict afterwards.
+Each commit should compile and should *not* break any test.
+Ideally, it should contain
+
+* A complete feature (or if the feature is too big, atomic pieces of it).
+* Automatic tests that cover the changes introduced by this commit.
+* Documentation (if it needs to be updated)
+
+For *complex* feature, those 3 items could be split into multiple commits but should belong to the same pull request.
+
+
+== Reviewing a Pull Request
+
+When an individual contributes some changes to be reviewed in order to be integrated in the project, the goal of this individual is to convince committers to accept the changes.
+As a reviewer, your goal is to maintain the project and the quality of its code, architecture, documentation and more.
+In order to achieve this goal, it is of paramount importance that you remain skeptical while reviewing a new contribution.
+
+In a code review, you are not supposed to start by considering that you will accept the changes and then look for potential elements which may refrain you from doing so.
+Instead, you are supposed to start by being skeptics and then look for good reasons to accept this contribution.
+This does not mean that because a contribution improves a part of the code that it may not deteriorate something else.
+
+Accepting a contribution should be done when you are sure beyond any reasonable doubt that it will improve the project.
+Do not forget that it comes at a cost, this new code will now be under your responsibility and you and the rest of your team will have to maintain it.
+
+*The default behavior should be to reject a contribution unless convinced otherwise.*
+
+If the pull request contains multiple commits, don't forget that you can review them one by one using by selecting each one in the _change from_ field in the _File Changed_ tab.
+
+As a *reviewer* you are now in charge of integrating the Pull Request.
+If there is no comment or all of them have been _resolved_ you can now merge the pull request.
+To do that use the _Rebase and merge_ button.
+
+WARNING: Merge commit are prohibited on this repository.
+
+
+=== Review checklist
+
+The rest of the document gives more details and justifications, but as a quick reminder of the pull request process and expectations, here is a checklist:
+ 
+* Check the build status. It is the responsibility of the pull request's author to make sure this first "quality gate" passes before expecting others to look at his/her patch. If you find a patch which has been "forgotten" for a while in this state, just ping its author to fix it.
+* When considering a pull request for review, first rebase it on the current master if needed. If the rebase is not trivial (requires to fix non-trivial conflicts), does not build, or does not pass the test, ping the author but do not review it until this is fixed.
+* **Always** checkout the _PatchSet_ locally, launch and test the application. Do *not* trust the very narrow view of the code visible from Github only.
+* The patch/ticket should normally have a test plan. Depending on the case, it could be in the commit message (for very simple cases), in the Github issue ticket, or ideally in the product documentation (completed as part of the pull request). Test the application locally using at least these instructions.
+* Make sure the patch does not create dead code or introduce technical debt.
+* Make sure the code change does not create new warnings.
+* If you have FindBugs/SpotBugs/SonarLint installed in your IDE (which is a good idea), launch them on the new code and review any issue they may find.
+* When reviewing the code, keep an eye on the possible impacts on performance, security, and data migration/compatibility issues.
+* Check that the corresponding tests are either present in the patch or planned for a later one in the series.
+* Check that the documentation is updated (if needed) or planned to be in a later patch in the series.
+
+== Things to look for
+
+There are a couple of things to consider when reviewing some new code.
+
+It is quite complex to perform a code review only in Github.
+Even by retrieving the code locally and using a proper IDE, it is not easy to find all the potential errors in the contribution.
+Even for small contributions, reviewing the code locally is a must.
+Your IDE offers a large amount of tools to help you navigate in the code, to help you debug it and understand its lifecycle. 
+
+*If you are reviewing a non-trivial contribution only in Github, you are doing it wrong.*
+
+Here is a non exhaustive list of things which you should look for in a new code contribution:
+
+=== Casting a value without checking its type
+
+Not a single value should be cast into another type without checking its type first.
+Do not ever trust your ability to predict that a specific piece of code will not change.
+
+Things will change over time and a simple `instanceof` could be the difference between a degraded behavior and a non-working application.
+It is reckless not to test the type and fixing this should not be a burden.
+
+=== Usage of @SuppressWarning
+
+Usage of `@SuppressWarning` is a critical issue since it hides explicitly something wrong with the code.
+Using `@SuppressWarnings("unchecked")` should not be tolerated, it is mostly used instead of proper generics manipulation.
+
+The only usage of `@SuppressWarning` which is currently tolerated in the code is `@SuppressWarnings("checkstyle:HiddenField")` to prevent checkstyle from indicating that we have an error while using our builder pattern in the `@Immutable` classes.
+
+Any other usage of `@SuppressWarning`, including using `@SuppressWarnings("checkstyle:HiddenField")` outside of this builder pattern should be banned.
+
+=== Unused code
+
+The bigger the contribution, the greater the risk of unused code.
+This risk also increases when a contribution modifies both the front-end and the back-end since it is not easy to find out if some server-side code is really used from a new JavaScript code.
+
+Most of the time, developers try multiple potential solutions to tackle an issue.
+Once they are done, they are supposed to clean their code, re-organize it and then submit their contribution but some parts of the code submitted may still be related to old and abandoned solutions.
+Those pieces of code may look like they contribute to the solution but may instead be unused.
+
+The only way to reduce the risk of accepting a contribution with unused code it to review in detail the usages of the new changes.
+Sometimes, it may involve retrieving the code and checking the call hierarchy of each modified methods.
+
+=== Dead code
+
+A new contribution may add some new code which may make some old code dead.
+This old code may not be part of the contribution since it is not modified, it is simply not called anymore.
+
+It is very complex to detect dead code while reviewing a code contribution especially in a application using dependency injection since the coupling between concepts is lower than in a regular application.
+
+Only careful reviewing can help you discover such issues.
+
+=== New concepts or new naming convention
+
+One of the best features of an application is consistency.
+Consistency make the code easy to reason with, easy to navigate and more predictable.
+
+Introducing a new concept, a new naming convention or changing an existing one can thus have a major impact on this consistency.
+Changing a convention can only be done if performed everywhere such convention is used.
+Require architectural tests to enforce such patterns in a consistent manner in the codebase.
+
+The longer a codebase has been developed, the more suspicious you should be of new concepts.
+Before accepting a new concept in the codebase, ask yourself if it's related to the core concern of the issue.
+You should also ask yourself if the new concept has enough meaning to be understandable by other contributors and if it fits properly with the other concepts.
+
+=== New abstractions
+
+Developers love to add new abstractions since they help creating more powerful architectures.
+The addition of a new abstraction also comes at a cost.
+When a new abstraction is added, it may solve all the problems of the previous code but it also make it more rigid.
+When a new issue will arise, this abstraction will now have to be updated while still keeping the previous behavior.
+As time goes on, abstractions are often one of the major pain points of the maintainability of the application since they end up with such a refined and complex behavior that it becomes hard to modify them.
+
+As such, do not introduce new abstractions into the codebase unless it solves an issue that you have.
+
+As an example, do not start creating an abstraction because you have a couple of lines of code in common between two classes.
+A simple copied code is way easier to manage and to reason with than a bad abstraction.
+Even a badly copied code is way easier to fix than a bad abstraction.
+
+The addition of new abstractions should be an issue on its own.
+Wait until you have multiple times the same problem before creating an issue requesting the addition of a new abstraction.
+
+=== Using new language or framework features
+
+New features are awesome, they really are but they also come at a cost.
+All the team members must be familiar with them in order to remain productive with the codebase.
+
+Usage of new features should be evaluated in small non-critical parts of the code.
+Those features can be adopted across the code base only after careful experiments.
+
+=== Code too complex
+
+As said before, the goal of the contributor is to convince the committers to accept the new changes.
+If the change is not understandable, it should be rejected.
+
+Thanks to the addition of `Stream` and `Optional` along with our access to `Mono` and `Flux`, we have the ability to embrace a functional approach to write small but very complex algorithms.
+Do not overuse those features to create unreadable code.
+
+Let your code breathe, sometimes it's best to store intermediary steps in some variables.
+
+=== Bad variable names
+
+Code is supposed to be expressive and easy to reason with.
+We are all watching code on high definition widescreen monitors and thus we have some space to write our code.
+
+Do not use a single character as a variable named or anything meaningless.
+Most of the time, if the name of the variable does not seem to be generated by the IDE, think about why.
+
+If you want to keep your code compact by using single character variable names, your code may be in need of a refactoring.
+
+=== Documentation
+
+Documenting a project properly is a very hard task.
+As a reviewer, if you do not understand a piece of code, ask for more documentation.
+Keep in mind that the contributor has to convince you to accept the changes.
+
+We should all try to do better with regard to the documentation of the project.
+
+=== Tests
+
+Testing a project properly is just as hard as documenting it properly.
+If you have a meaningful piece of behavior in your code, it should be tested.
+
+=== No special use cases
+
+Treat all the code in a similar fashion, the code in your tests should be treated in a similar fashion as the "real" code.
+
+== Modifying you code after a review
+
+For any comment made on the review, add a comment with "Done" when matching change is made the change has been made.
+If you disagree with the comment respond to the comment to start discussion with the reviewer.
+Do not hesitate to contact the reviewer/reviewee to discuss that matter.
+We are not robots.
+Do not click on _Resolve
+
+== Definition of done
+
+A task will only be considered "Done" if all of these have been done (or considered and ignored if they do not make sense for the particular task).
+
+* Code Complete: obviously, the implementation itself of the change/feature must complete, merged and deployed on the staging server. [Developer]
+* Testing and validation [Developer]
+** New features must have automated Unit and/or Integration tests with reasonable code coverage. [Developer]
+** New features which change the UI must also have automated End-to-End tests or entry in the test campaign ([../test-campaign/All.adoc]). [Developer]
+
+Only once the change has been tested on the integrated serveur by the PO/project Manager then the issues is closed.
