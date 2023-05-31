@@ -1,0 +1,9 @@
+= Recipe campaign
+
+* <<SMD-State-Machine-Diagram.adoc#, State Machine Diagram>>
+* <<CD-ClassDiagram.adoc#,Class Diagram>>
+* <<CSD-Composite-Structure-Diagram.adoc#,Composite Structure Diagram>>
+* <<PD-Package-Diagram.adoc#,Package Diagram>>
+* <<Profile.adoc#,Profile>>
+* <<Template.adoc#,Template>>
+* <<Documentation.adoc#,Documentation>>

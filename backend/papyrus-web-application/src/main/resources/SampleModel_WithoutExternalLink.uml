@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_HhvZAPCuEeyjl5-p7b4Wxg" name="SampleModelV1">
+  <packagedElement xmi:type="uml:Package" xmi:id="_Jvg4IPCuEeyjl5-p7b4Wxg" name="Package1">
+    <packagedElement xmi:type="uml:Class" xmi:id="_MBStgPCuEeyjl5-p7b4Wxg" name="Class1">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_NEIqkPCuEeyjl5-p7b4Wxg" name="class2" type="_MO650PCuEeyjl5-p7b4Wxg" association="_NEFnQPCuEeyjl5-p7b4Wxg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_NEIqkfCuEeyjl5-p7b4Wxg"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_NEJRoPCuEeyjl5-p7b4Wxg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_SY5IwPCuEeyjl5-p7b4Wxg" name="Property3" visibility="public" type="_PkZA0PCuEeyjl5-p7b4Wxg"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_OgCn4PCuEeyjl5-p7b4Wxg" name="op1 : MyString">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Z_4vUPCuEeyjl5-p7b4Wxg" name="param1" type="_PkZA0PCuEeyjl5-p7b4Wxg"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_MO650PCuEeyjl5-p7b4Wxg" name="Class2"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_NEFnQPCuEeyjl5-p7b4Wxg" memberEnd="_NEIqkPCuEeyjl5-p7b4Wxg _NEJRofCuEeyjl5-p7b4Wxg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_NEHccPCuEeyjl5-p7b4Wxg" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_NEHccfCuEeyjl5-p7b4Wxg" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_NEJRofCuEeyjl5-p7b4Wxg" name="class1" type="_MBStgPCuEeyjl5-p7b4Wxg" association="_NEFnQPCuEeyjl5-p7b4Wxg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:DataType" xmi:id="_PkZA0PCuEeyjl5-p7b4Wxg" name="MyString"/>
+  </packagedElement>
+</uml:Model>

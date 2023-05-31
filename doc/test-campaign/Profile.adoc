@@ -1,0 +1,75 @@
+= Profile tests
+:toc:
+
+[WARN]
+====
+Do all those tests sequentially
+====
+
+== Profile01 - Publish profiles
+
+.Purpose
+Check that the profiles can be imported published and downloaded
+
+.Recipe
+. create a _profiles_ project 
+. Upload the provided link:resources/profile.uml[profile model] to the web
+. download this model twice
+** [ ] Both files are identical
+. contextual menu on Profile/Publish profile
+** [ ] current version is `0.0.0`. `Dev=0.0.1; Release=0.1.0; major=1.0.0`
+. modify custom version and check that the "Publish" button is enabled only if the version has correct format `<digit>.<digit>.<digit>`
+. enter `1.2.3` in custom version and publish
+** [ ] An annotation is displayed in the Explorer tree under the profile.
+. download the profile
+** [ ] the difference with previous download is the `EAnnotation` containing an `EPackage`
+. Go to the main web page and wait 7s to be sure that data are released on the server
+. Open the _profiles_ project again
+** [ ] The annotation is still displayed in the Explorer tree under the profile.
+
+
+== Profile02 - Use a dynamic profile
+
+.Purpose
+Check that the UML model can use a dynamic profile
+
+.Recipe
+. create an _UML sample self contained.uml_ document in a new project
+. contextual menu on Package1/Apply profile
+. select the published profile
+** [ ] the profile application is visible in the tree
+. contextual menu on Package1/Apply profile
+. select the same published profile
+** [ ] an error is diplayed to inform that this profile is already applied
+. contextual menu on Class1/Apply stereotype
+. select the available Stereotype
+** [ ] the stereotype application is visible in the tree
+
+
+== Profile03 - Update a dynamic profile(profile check)
+
+.Purpose
+Check that the dynamic profile can be updated, that is published in a new version
+
+.Recipe
+. create 
+. open the publish profile dialog again
+** [ ] the current version is `1.2.3` 
+. publish and download the profile
+** [ ] the difference with previous download is a new `EPackage`
+
+
+== Profile04 - Update a dynamic profile (UML model check)
+
+.Purpose
+Check that the UML model using a profile keeps the reference to this profile when the profile is published in a new version.
+
+.Recipe
+. Go to the main web page and wait 7s to be sure that data are released on the server
+. Open the project containing _UML sample self contained.uml_
+. Select the profile application object in the explorer tree
+** [ ] the referenced profile is present in the properties view 
+. Select the stereotype application object in the explorer tree
+** [ ] the referenced stereotype is present in the properties view 
+
+

@@ -1,0 +1,89 @@
+{
+	"json": {
+		"version": "1.0",
+		"encoding": "utf-8"
+	},
+	"ns": {
+		"standard": "http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard",
+		"uml": "http://www.eclipse.org/uml2/5.0.0/UML"
+	},
+	"content": [
+		{
+			"id": "c2343e30-3534-4b94-a5ec-ca4ecd8b85dd",
+			"eClass": "uml:Model",
+			"data": {
+				"name": "UMLModelWithProfile",
+				"packageImport": [
+					{
+						"id": "ff8e8e62-d5f8-40cd-8d1b-9f2a1cca20ab",
+						"eClass": "uml:PackageImport",
+						"data": {
+							"importedPackage": "uml:Model pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"
+						}
+					}
+				],
+				"packagedElement": [
+					{
+						"id": "e636ac9f-fe0a-4df1-9d37-93a35986db80",
+						"eClass": "uml:Class",
+						"data": {
+							"name": "ClassOneStereotype"
+						}
+					},
+					{
+						"id": "5fb40fc3-4519-41f2-a807-25c63b31d218",
+						"eClass": "uml:Class",
+						"data": {
+							"name": "ClassTwoStereotypes"
+						}
+					},
+					{
+						"id": "9f59e21e-3a65-46fb-8fa4-74cfc642aadc",
+						"eClass": "uml:Class",
+						"data": {
+							"name": "ClassZeroStereotype"
+						}
+					}
+				],
+				"profileApplication": [
+					{
+						"id": "ccb10667-0862-4d7f-bf06-6b647ff5d122",
+						"eClass": "uml:ProfileApplication",
+						"data": {
+							"eAnnotations": [
+								{
+									"source": "http://www.eclipse.org/uml2/2.0.0/UML",
+									"references": [
+										"http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"
+									]
+								}
+							],
+							"appliedProfile": "uml:Profile pathmap://UML_PROFILES/Standard.profile.uml#_0"
+						}
+					}
+				]
+			}
+		},
+		{
+			"id": "7ee4b0c5-0d1d-4a9a-8c2f-f3cddb99a192",
+			"eClass": "standard:Utility",
+			"data": {
+				"base_Class": "/0/ClassOneStereotype"
+			}
+		},
+		{
+			"id": "5896e7b5-4f39-4264-b2e4-d8fad9bcc70c",
+			"eClass": "standard:Auxiliary",
+			"data": {
+				"base_Class": "/0/ClassTwoStereotypes"
+			}
+		},
+		{
+			"id": "264055d1-7fff-49a2-be5f-5a8dd70bd634",
+			"eClass": "standard:Focus",
+			"data": {
+				"base_Class": "/0/ClassTwoStereotypes"
+			}
+		}
+	]
+}

@@ -1,0 +1,9 @@
+= papyrus-web-services-api
+
+== Goal
+
+This project provides the APIs of the core components of our project.
+
+== Dependencies
+
+None

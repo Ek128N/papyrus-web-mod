@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:Codegen="http://www.eclipse.org/papyrus/Codegen/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_O6TiIDLUEd26WNosUASSSw" name="JavaTemplate">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_P1ssIMrDEeOpmd7vWBVZJQ" annotatedElement="_l7i4AMq6EeOpmd7vWBVZJQ">
+      <body>Class with main method.
+The UML operation &quot;main&quot; is declared as static and has a string array as parameter.
+It refers to an opaque expression of the same name containing Java code.</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Class" xmi:id="_l7i4AMq6EeOpmd7vWBVZJQ" name="Main">
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_5E_WIHU0Ee2r-sgTb_le9g" name="main" specification="_5E854HU0Ee2r-sgTb_le9g">
+        <language>Java</language>
+        <body>System.out.println(&quot;Hello World&quot;);</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_5E854HU0Ee2r-sgTb_le9g" name="main" isStatic="true" method="_5E_WIHU0Ee2r-sgTb_le9g">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_uW8XsHU3Ee24wJanPs9ZaQ" name="args">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_XxJZwGx-Eey_s9B0BvHgkw"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CjABUHU4Ee24wJanPs9ZaQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Ckz_MHU4Ee24wJanPs9ZaQ" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_O6TiIjLUEd26WNosUASSSw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_O6TiIzLUEd26WNosUASSSw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_rgNcEOG3EeeYoP_1pSyU9w">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rgODIOG3EeeYoP_1pSyU9w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/Codegen/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_HWEOsHTrEe2r-sgTb_le9g">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_HWH5EHTrEe2r-sgTb_le9g" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/PapyrusJava/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw"/>
+    </profileApplication>
+  </uml:Model>
+  <Codegen:GeneratorHint xmi:id="_cUh7IHU3Ee24wJanPs9ZaQ" base_Element="_O6TiIDLUEd26WNosUASSSw" generatorID="Standard Java">
+    <language xmi:type="Codegen:Language" href="pathmap://Codegen_PROFILES/languages.uml#_2Zt6YCjREeayco6FJ_OtTQ"/>
+  </Codegen:GeneratorHint>
+</xmi:XMI>

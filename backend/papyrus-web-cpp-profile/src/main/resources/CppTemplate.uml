@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:C_Cpp="http://www.eclipse.org/papyrus/C_Cpp/1" xmlns:Codegen="http://www.eclipse.org/papyrus/Codegen/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_O6TiIDLUEd26WNosUASSSw" name="CppTemplate">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_P1ssIMrDEeOpmd7vWBVZJQ" annotatedElement="_l7i4AMq6EeOpmd7vWBVZJQ">
+      <body>Class with main function which in turn calls helloWorld.
+The main function is not declared in UML (since it would always be a member function), but directly added via the &lt;&lt;Include>> stereotype.
+The helloWorld operation refers to an opaque behavior with C++ code</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Class" xmi:id="_l7i4AMq6EeOpmd7vWBVZJQ" name="Main">
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_NCZVMHU0Ee2r-sgTb_le9g" name="helloWorld" specification="_2yCuAHUyEe2r-sgTb_le9g" isReentrant="false">
+        <language>C/C++</language>
+        <body>std::cout &lt;&lt; &quot;Hello world&quot; &lt;&lt; std::endl;</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_2yCuAHUyEe2r-sgTb_le9g" name="helloWorld" method="_NCZVMHU0Ee2r-sgTb_le9g">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_NDtj0HU0Ee2r-sgTb_le9g" annotatedElement="_NDtj0HU0Ee2r-sgTb_le9g">
+          <body>**********************************************************
+ Main class body
+ ***********************************************************
+
+// include associated header file
+#include &quot;CppTemplate/Main.h&quot;
+
+// Derived includes directives
+
+// Include from Include declaration (body)
+#include &lt;iostream>
+
+CppTemplate::Main mVar;</body>
+        </ownedComment>
+      </ownedOperation>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_O6TiIjLUEd26WNosUASSSw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_O6TiIzLUEd26WNosUASSSw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_GcC0cAHtEd6HSdiss9GQ0A">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Gd1kMAHtEd6HSdiss9GQ0A" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/C_Cpp/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml#_j9REUByGEduN1bTiWJ0lyw"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_rgNcEOG3EeeYoP_1pSyU9w">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rgODIOG3EeeYoP_1pSyU9w" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/Codegen/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"/>
+    </profileApplication>
+  </uml:Model>
+  <C_Cpp:Include xmi:id="_GzL9QMrYEeOpmd7vWBVZJQ" body="#include &lt;iostream>&#xA;&#xA;CppTemplate::Main mVar;&#xA;&#xA;int main(int argc, const char *args[]) {&#xA;&#x9;// ... add your code here&#xA;&#x9;mVar.helloWorld();&#xA;&#x9;return 0;&#xA;}" base_class="_l7i4AMq6EeOpmd7vWBVZJQ"/>
+  <Codegen:GeneratorHint xmi:id="_rhwUMOG3EeeYoP_1pSyU9w" base_Element="_O6TiIDLUEd26WNosUASSSw" generatorID="Standard C++">
+    <language xmi:type="Codegen:Language" href="pathmap://Codegen_PROFILES/languages.uml#_nya50CjREeayco6FJ_OtTQ"/>
+  </Codegen:GeneratorHint>
+</xmi:XMI>

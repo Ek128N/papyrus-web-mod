@@ -1,0 +1,94 @@
+{
+  "json": {
+    "version": "1.0",
+    "encoding": "utf-8"
+  },
+  "ns": {
+    "uml": "http://www.eclipse.org/uml2/5.0.0/UML"
+  },
+  "content": [
+    {
+      "id": "7420affe-b576-4013-b5d2-02cb0f3c48b1",
+      "eClass": "uml:Profile",
+      "data": {
+        "name": "profileNotGenerated",
+        "elementImport": [
+          {
+            "id": "be1f72cb-0616-42a2-b4d3-cb8ef4a1f380",
+            "eClass": "uml:ElementImport",
+            "data": {
+              "alias": "Class",
+              "importedElement": "uml:Class pathmap://UML_METAMODELS/UML.metamodel.uml#Class"
+            }
+          }
+        ],
+        "packageImport": [
+          {
+            "id": "2a1fe364-d7ee-47b3-a49b-3da552a86d30",
+            "eClass": "uml:PackageImport",
+            "data": {
+              "importedPackage": "uml:Model pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"
+            }
+          },
+          {
+            "id": "1ea957e4-fc40-4a1c-a4a3-c64311c635a7",
+            "eClass": "uml:PackageImport",
+            "data": {
+              "importedPackage": "uml:Model pathmap://UML_METAMODELS/UML.metamodel.uml#_0"
+            }
+          }
+        ],
+        "packagedElement": [
+          {
+            "id": "bf05122a-b690-485e-9675-229a3c0667f1",
+            "eClass": "uml:Stereotype",
+            "data": {
+              "name": "Stereotype3",
+              "ownedAttribute": [
+                {
+                  "id": "b0d70c68-17da-4a72-b423-efb9b49edde0",
+                  "eClass": "uml:Property",
+                  "data": {
+                    "name": "base_Class",
+                    "type": "uml:Class pathmap://UML_METAMODELS/UML.metamodel.uml#Class",
+                    "lowerValue": {
+                      "id": "ac83001a-8196-4f3d-83a8-11cba4f2af8a",
+                      "eClass": "uml:LiteralInteger"
+                    },
+                    "association": "//E_Stereotype3_Class5"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "72fd97a6-3757-4321-9cb4-c4801a534fe3",
+            "eClass": "uml:Extension",
+            "data": {
+              "name": "E_Stereotype3_Class5",
+              "memberEnd": [
+                "//Stereotype3/base_Class",
+                "//E_Stereotype3_Class5/extension_Stereotype3"
+              ],
+              "ownedEnd": [
+                {
+                  "id": "19312bac-3e18-41e6-a93c-f0f3a7c0a3a9",
+                  "eClass": "uml:ExtensionEnd",
+                  "data": {
+                    "name": "extension_Stereotype3",
+                    "type": "//Stereotype3",
+                    "aggregation": "composite",
+                    "association": "//E_Stereotype3_Class5"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "metaclassReference": [
+          "//@elementImport.0"
+        ]
+      }
+    }
+  ]
+}

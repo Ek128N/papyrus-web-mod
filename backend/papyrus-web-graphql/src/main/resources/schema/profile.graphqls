@@ -1,0 +1,80 @@
+extend interface Viewer {
+  profileMetadatas: [UMLProfileMetadata!]!
+}
+
+extend type User {
+  profileMetadatas: [UMLProfileMetadata!]!
+}
+
+type UMLProfileMetadata {
+  label: String!
+  uriPath: String!
+}
+
+extend type EditingContext {
+  stereotypeMetatadas(elementId: ID!): [UMLStereotypeMetadata!]!
+  profileLastVersion(profileId: ID!): UMLProfileVersion
+}
+
+type UMLStereotypeMetadata {
+  id: String!
+  label: String!
+}
+type UMLProfileVersion {
+  major: Int!
+  minor: Int!
+  micro: Int!
+}
+
+extend type Mutation {
+  applyProfile(input: ApplyProfileInput!): ApplyProfilePayload!
+}
+
+input ApplyProfileInput {
+  id: ID!
+  editingContextId: ID!
+  modelId: ID!
+  profileUriPath: ID!
+}
+
+union ApplyProfilePayload = ErrorPayload|ApplyProfileSuccessPayload
+
+type ApplyProfileSuccessPayload {
+  id: ID!
+}
+
+extend type Mutation {
+  applyStereotype(input: ApplyStereotypeInput!): ApplyStereotypePayload!
+  publishProfile(input: PublishProfileInput!): PublishProfilePayload!
+}
+
+input ApplyStereotypeInput {
+  id: ID!
+  editingContextId: ID!
+  elementId: ID!
+  stereotypeId: ID!
+}
+
+union ApplyStereotypePayload = ErrorPayload|ApplyStereotypeSuccessPayload
+
+type ApplyStereotypeSuccessPayload {
+  id: ID!
+}
+
+input PublishProfileInput {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  version: String!
+  comment: String!
+  copyright: String!
+  author: String!
+  date: String!
+  saveOCLConstraint: Boolean!
+}
+
+union PublishProfilePayload = ErrorPayload | PublishProfileSuccessPayload
+
+type PublishProfileSuccessPayload {
+  id: ID!
+}

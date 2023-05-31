@@ -1,0 +1,109 @@
+/*******************************************************************************
+ * Copyright (c) 2022 CEA, Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.papyrus.web.application.templates;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateInitializer;
+import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
+import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.services.template.TemplateInitializer;
+import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
+import org.eclipse.sirius.components.core.RepresentationMetadata;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.Package;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Initializes the contents of projects created from a UML project template.
+ *
+ * @author pcdavid
+ */
+@Configuration
+public class UMLProjectTemplateInitializer implements IProjectTemplateInitializer {
+    private static final String UML_MODEL_TITLE = "Model.uml"; //$NON-NLS-1$
+
+    private final Logger logger = LoggerFactory.getLogger(UMLProjectTemplateInitializer.class);
+
+    private TemplateInitializer initializerHelper;
+
+    private IDiagramBuilderService diagramBuilderService;
+
+    private GenericDiagramService packageDiagramService;
+
+    private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
+
+    public UMLProjectTemplateInitializer(TemplateInitializer initializerHelper, //
+            IDiagramBuilderService diagramBuilderService, //
+            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, //
+            GenericDiagramService packageDiagramService) {
+        this.initializerHelper = initializerHelper;
+        this.diagramBuilderService = diagramBuilderService;
+        this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
+        this.packageDiagramService = packageDiagramService;
+    }
+
+    @Override
+    public boolean canHandle(String templateId) {
+        return List.of(UMLProjectTemplateProvider.UML_WITH_PRIMITIVES_TEMPLATE_ID).contains(templateId);
+    }
+
+    @Override
+    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+        Optional<RepresentationMetadata> result = Optional.empty();
+        if (UMLProjectTemplateProvider.UML_WITH_PRIMITIVES_TEMPLATE_ID.equals(templateId)) {
+            result = this.initializeUMLWithPrimitivesProjectContents(editingContext);
+        }
+        return result;
+    }
+
+    private Optional<RepresentationMetadata> initializeUMLWithPrimitivesProjectContents(IEditingContext editingContext) {
+        try {
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml"); //$NON-NLS-1$
+            return resource.flatMap(r -> this.createPackageDiagram(editingContext, r))//
+                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId()));
+        } catch (IOException e) {
+            this.logger.error("Error while creating template", e); //$NON-NLS-1$
+        }
+        return Optional.empty();
+    }
+
+    private Optional<? extends Diagram> createPackageDiagram(IEditingContext editingContext, Resource r) {
+        Model model = (Model) r.getContents().get(0);
+        Package primitiveTypePackage = model.getImportedPackages().get(0);
+
+        Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
+                .getConvertedNode(PADDiagramDescriptionBuilder.PD_REP_NAME);
+
+        return this.diagramBuilderService
+                .createDiagram(editingContext, diagramDescription -> PADDiagramDescriptionBuilder.PD_REP_NAME.equals(diagramDescription.getLabel()), model, "Root Package Diagram") //$NON-NLS-1$
+                .flatMap(diagram -> {
+                    return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
+                        this.packageDiagramService.drop(model, null, editingContext, diagramContext, convertedNodes);
+                        this.packageDiagramService.drop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
+                    });
+                })//
+                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext));
+    }
+
+}

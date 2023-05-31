@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:C_Cpp="http://www.eclipse.org/papyrus/C_Cpp/1" xmlns:Codegen="http://www.eclipse.org/papyrus/Codegen/1" xmlns:Transformation="http://www.eclipse.org/papyrus/Transformation/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_f0V1kKbqEe2YZoF6zNj_tw" name="CppSMTemplate">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_f0V1kabqEe2YZoF6zNj_tw" annotatedElement="_f0V1kKbqEe2YZoF6zNj_tw">
+      <body>Package with ExecuteTrafoChain stereotype, but unset transformation chain.
+The default chain will be used. Right-click on the package and choose Designer -> Transform and generate code</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_f0V1kqbqEe2YZoF6zNj_tw" annotatedElement="_f0V1lKbqEe2YZoF6zNj_tw">
+      <body>A simple class with a calculation method.
+The main function (calling the run method) is provided via the &quot;Include&quot; stereotype.</body>
+    </ownedComment>
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_f0V1k6bqEe2YZoF6zNj_tw">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_f0V1lKbqEe2YZoF6zNj_tw" name="SimpleSM" classifierBehavior="_f0V1mabqEe2YZoF6zNj_tw">
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_f0V1labqEe2YZoF6zNj_tw" name="add" specification="_f0V1qqbqEe2YZoF6zNj_tw">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_f0V1lqbqEe2YZoF6zNj_tw" name="res" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_f0V1l6bqEe2YZoF6zNj_tw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_f0V1mKbqEe2YZoF6zNj_tw" value="1"/>
+        </ownedParameter>
+        <language>C/C++</language>
+        <body>cout &lt;&lt; &quot;a=&quot; &lt;&lt; a &lt;&lt; &quot; b=&quot; &lt;&lt; b &lt;&lt; &quot; a+b=&quot; &lt;&lt; a+b &lt;&lt; endl;
+return a+b;</body>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_f0V1mabqEe2YZoF6zNj_tw" name="SMSimple">
+        <region xmi:type="uml:Region" xmi:id="_f0V1mqbqEe2YZoF6zNj_tw" name="Region0">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_f0V1m6bqEe2YZoF6zNj_tw" annotatedElement="_f0V1p6bqEe2YZoF6zNj_tw">
+            <body>State &quot;Flip&quot; can be left via a time event (after 50ms, using a MARTE VSL time specification) or a call event:
+ the invocation of the add method triggers the transition</body>
+          </ownedComment>
+          <ownedComment xmi:type="uml:Comment" xmi:id="_f0V1nKbqEe2YZoF6zNj_tw" annotatedElement="_f0V1qKbqEe2YZoF6zNj_tw">
+            <body>The state &quot;Flop&quot; is left after 500ms via a time event.
+The transition has an opaque behavior as effect.</body>
+          </ownedComment>
+          <transition xmi:type="uml:Transition" xmi:id="_f0V1nabqEe2YZoF6zNj_tw" name="Transition0" source="_f0V1pqbqEe2YZoF6zNj_tw" target="_f0V1p6bqEe2YZoF6zNj_tw"/>
+          <transition xmi:type="uml:Transition" xmi:id="_f0V1nqbqEe2YZoF6zNj_tw" name="Transition1" source="_f0V1p6bqEe2YZoF6zNj_tw" target="_f0V1qKbqEe2YZoF6zNj_tw">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_f0V1n6bqEe2YZoF6zNj_tw" name="msg">
+              <language>C++</language>
+              <body>std::cout &lt;&lt;&quot;From Flip to Flop&quot;
+               &lt;&lt; std::endl;</body>
+            </effect>
+            <trigger xmi:type="uml:Trigger" xmi:id="_f0V1oKbqEe2YZoF6zNj_tw" event="_f0V1uabqEe2YZoF6zNj_tw"/>
+          </transition>
+          <transition xmi:type="uml:Transition" xmi:id="_f0V1oabqEe2YZoF6zNj_tw" name="Transition2" source="_f0V1qKbqEe2YZoF6zNj_tw" target="_f0V1p6bqEe2YZoF6zNj_tw">
+            <effect xmi:type="uml:OpaqueBehavior" xmi:id="_f0V1oqbqEe2YZoF6zNj_tw" name="msg">
+              <language>C/C++</language>
+              <body>std::cout &lt;&lt;&quot;From Flop to Flip&quot; &lt;&lt; std::endl;</body>
+            </effect>
+            <trigger xmi:type="uml:Trigger" xmi:id="_f0V1o6bqEe2YZoF6zNj_tw" event="_f0V1sqbqEe2YZoF6zNj_tw"/>
+          </transition>
+          <transition xmi:type="uml:Transition" xmi:id="_f0V1pKbqEe2YZoF6zNj_tw" name="Transition3" source="_f0V1p6bqEe2YZoF6zNj_tw" target="_f0V1qKbqEe2YZoF6zNj_tw">
+            <trigger xmi:type="uml:Trigger" xmi:id="_f0V1pabqEe2YZoF6zNj_tw" event="_f0V1tabqEe2YZoF6zNj_tw"/>
+          </transition>
+          <subvertex xmi:type="uml:Pseudostate" xmi:id="_f0V1pqbqEe2YZoF6zNj_tw" name="Initial0"/>
+          <subvertex xmi:type="uml:State" xmi:id="_f0V1p6bqEe2YZoF6zNj_tw" name="Flip"/>
+          <subvertex xmi:type="uml:State" xmi:id="_f0V1qKbqEe2YZoF6zNj_tw" name="Flop"/>
+        </region>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_f0V1qabqEe2YZoF6zNj_tw" name="run" specification="_f0V1sKbqEe2YZoF6zNj_tw">
+        <language>C/C++</language>
+        <body>cout &lt;&lt; &quot;call add (2, 3);&quot; &lt;&lt; endl;
+cout &lt;&lt; &quot;result: &quot; &lt;&lt; add (2, 3) &lt;&lt; endl;
+cout &lt;&lt; &quot;sleeping for 15 seconds (statemachine remains active);&quot; &lt;&lt; endl;
+sleep(15);
+</body>
+      </ownedBehavior>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_f0V1qqbqEe2YZoF6zNj_tw" name="add" method="_f0V1labqEe2YZoF6zNj_tw">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_f0V1q6bqEe2YZoF6zNj_tw" name="a">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_f0V1rKbqEe2YZoF6zNj_tw" name="b">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_f0V1rabqEe2YZoF6zNj_tw" name="res" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_f0V1rqbqEe2YZoF6zNj_tw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_f0V1r6bqEe2YZoF6zNj_tw" value="1"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_f0V1sKbqEe2YZoF6zNj_tw" name="run" method="_f0V1qabqEe2YZoF6zNj_tw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_f0V1sabqEe2YZoF6zNj_tw" name="events">
+      <packagedElement xmi:type="uml:TimeEvent" xmi:id="_f0V1sqbqEe2YZoF6zNj_tw" name="TE - {value=500, unit=ms}" isRelative="true">
+        <when xmi:type="uml:TimeExpression" xmi:id="_f0V1s6bqEe2YZoF6zNj_tw">
+          <expr xmi:type="uml:OpaqueExpression" xmi:id="_f0V1tKbqEe2YZoF6zNj_tw">
+            <language>Natural language</language>
+            <body>{value=500, unit=ms}</body>
+          </expr>
+        </when>
+      </packagedElement>
+      <packagedElement xmi:type="uml:CallEvent" xmi:id="_f0V1tabqEe2YZoF6zNj_tw" name="CE - CServer_impl - add" operation="_f0V1qqbqEe2YZoF6zNj_tw"/>
+      <packagedElement xmi:type="uml:TimeEvent" xmi:id="_f0V1tqbqEe2YZoF6zNj_tw" name="TE - {value=25, unit=ms}" isRelative="true">
+        <when xmi:type="uml:TimeExpression" xmi:id="_f0V1t6bqEe2YZoF6zNj_tw">
+          <expr xmi:type="uml:OpaqueExpression" xmi:id="_f0V1uKbqEe2YZoF6zNj_tw">
+            <language>Natural language</language>
+            <body>{value=25, unit=ms}</body>
+          </expr>
+        </when>
+      </packagedElement>
+      <packagedElement xmi:type="uml:TimeEvent" xmi:id="_f0V1uabqEe2YZoF6zNj_tw" name="TE - {value=250, unit=ms}" isRelative="true">
+        <when xmi:type="uml:TimeExpression" xmi:id="_f0V1uqbqEe2YZoF6zNj_tw">
+          <expr xmi:type="uml:OpaqueExpression" xmi:id="_f0V1u6bqEe2YZoF6zNj_tw">
+            <language>Natural language</language>
+            <body>{value=250, unit=ms}</body>
+          </expr>
+        </when>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_f0V1vKbqEe2YZoF6zNj_tw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_f0V1vabqEe2YZoF6zNj_tw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_f0V1vqbqEe2YZoF6zNj_tw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_f0V1v6bqEe2YZoF6zNj_tw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/C_Cpp/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml#_j9REUByGEduN1bTiWJ0lyw"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_f0V1wKbqEe2YZoF6zNj_tw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_f0V1wabqEe2YZoF6zNj_tw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/Transformation/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://TRAFO_PROFILE/Transformation.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_f0V1wqbqEe2YZoF6zNj_tw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_f0V1w6bqEe2YZoF6zNj_tw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/Codegen/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"/>
+    </profileApplication>
+  </uml:Model>
+  <C_Cpp:Include xmi:id="_f0V1xKbqEe2YZoF6zNj_tw" body="#include &lt;iostream>&#xA;using namespace std;&#xA;&#xA;int main(int argc, const char* args[]) {&#xA;&#x9;SimpleSM::SimpleSM sm;&#xA;&#x9;sm.run();&#xA;&#x9;return 1;&#xA;}" base_class="_f0V1lKbqEe2YZoF6zNj_tw"/>
+  <Transformation:ExecuteTrafoChain xmi:id="_f0V1xabqEe2YZoF6zNj_tw" base_Package="_f0V1kKbqEe2YZoF6zNj_tw"/>
+  <Codegen:GeneratorHint xmi:id="_f0V1xqbqEe2YZoF6zNj_tw" base_Element="_f0V1kKbqEe2YZoF6zNj_tw" generatorID="Standard C++">
+    <language xmi:type="Codegen:Language" href="pathmap://Codegen_PROFILES/languages.uml#_nya50CjREeayco6FJ_OtTQ"/>
+  </Codegen:GeneratorHint>
+</xmi:XMI>

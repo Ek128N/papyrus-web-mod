@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_elqpgJWzEe2_Wav1ork0Rw" name="dynamicProfile" metaclassReference="_x3uJAJWzEe2_Wav1ork0Rw">
+  <elementImport xmi:type="uml:ElementImport" xmi:id="_x3uJAJWzEe2_Wav1ork0Rw" alias="Class">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+  </elementImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_enaV8JWzEe2_Wav1ork0Rw">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_ena9AJWzEe2_Wav1ork0Rw">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_uiZL8JWzEe2_Wav1ork0Rw" name="Stereotype3">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_1nipsJWzEe2_Wav1ork0Rw" name="base_Class" association="_1ndxMJWzEe2_Wav1ork0Rw">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1nipsZWzEe2_Wav1ork0Rw"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_1ndxMJWzEe2_Wav1ork0Rw" name="E_Stereotype3_Class5" memberEnd="_1niCoJWzEe2_Wav1ork0Rw _1nipsJWzEe2_Wav1ork0Rw">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_1niCoJWzEe2_Wav1ork0Rw" name="extension_Stereotype3" type="_uiZL8JWzEe2_Wav1ork0Rw" aggregation="composite" association="_1ndxMJWzEe2_Wav1ork0Rw"/>
+  </packagedElement>
+</uml:Profile>
