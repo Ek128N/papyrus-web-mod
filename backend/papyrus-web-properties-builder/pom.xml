@@ -14,7 +14,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>papyrus-web</groupId>
-	<artifactId>papyrus-web-representation-builder</artifactId>
+	<artifactId>papyrus-web-properties-builder</artifactId>
 	<version>2023.3.0</version>
 
 	<name>papyrus-web-representation-builder</name>
