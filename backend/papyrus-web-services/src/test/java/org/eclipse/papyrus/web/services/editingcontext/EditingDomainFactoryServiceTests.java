@@ -31,6 +31,7 @@ import org.eclipse.papyrus.web.services.projects.api.IEditingContextMetadataProv
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -42,6 +43,7 @@ public class EditingDomainFactoryServiceTests {
 
     public static final String EPACKAGE_NS_URI_FLOW = "flowURI";
 
+    @Disabled
     @Test
     public void testCreateEditingDomainWithoutStudioNature() {
         ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();

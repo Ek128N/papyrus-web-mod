@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.components.version>2023.4.1</sirius.components.version>
+		<sirius.components.version>2023.4.2</sirius.components.version>
 		<uml2.version>5.6.0-SNAPSHOT</uml2.version>
 	</properties>
 
@@ -74,6 +74,11 @@
 			<artifactId>sirius-components-tests</artifactId>
 			<version>${sirius.components.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view</artifactId>
+			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

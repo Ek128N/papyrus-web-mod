@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.web.persistence.entities.DocumentEntity;
 import org.eclipse.papyrus.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.papyrus.web.services.api.representations.IInMemoryViewRegistry;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -62,6 +63,8 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private final EPackage.Registry ePackageRegistry;
 
+    private final IInMemoryViewRegistry inMemoryViewRegistry;
+
     private final IDiagramIdProvider diagramIdProvider;
 
     private final IURLParser urlParser;
@@ -73,7 +76,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
     private PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescription;
 
     public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser,
-            IFormIdProvider formIdProvider, IObjectService objectService, PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescription) {
+            IFormIdProvider formIdProvider, IObjectService objectService, IInMemoryViewRegistry inMemoryViewRegistry, PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescription) {
         this.papyrusRepresentationDescription = Objects.requireNonNull(papyrusRepresentationDescription);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.documentRepository = Objects.requireNonNull(documentRepository);
@@ -81,6 +84,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
         this.objectService = Objects.requireNonNull(objectService);
+        this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
     }
 
     @Override
@@ -167,6 +171,20 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         return Optional.empty();
     }
 
+    // TODO Not used at the moment. Usage of this part should be evaluated.
+    private List<View> getViewsFromSourceId(String sourceId) {
+        List<View> views = this.inMemoryViewRegistry.findViewById(sourceId).stream().toList();
+        if (views.isEmpty()) {
+            Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId));
+            if (documentEntity.isPresent()) {
+                Resource resource = this.loadDocumentAsEMF(documentEntity.get());
+                views = this.getViewDefinitions(resource).toList();
+            }
+        }
+
+        return views;
+    }
+
     private Resource loadDocumentAsEMF(DocumentEntity documentEntity) {
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.setPackageRegistry(this.ePackageRegistry);
@@ -231,4 +249,5 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         var parameters = this.urlParser.getParameterValues(descriptionId);
         return Optional.ofNullable(parameters.get(IDiagramIdProvider.SOURCE_ID)).orElse(List.of()).stream().findFirst();
     }
+
 }
