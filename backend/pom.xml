@@ -33,6 +33,7 @@
 		<module>papyrus-web-sirius-contributions</module>
 		<module>papyrus-web-application</module>
 		<module>papyrus-web-representation-builder</module>
+		<module>papyrus-web-properties-builder</module>
 		
 		<!--Profiles-->
 		<module>papyrus-web-cpp-profile</module>

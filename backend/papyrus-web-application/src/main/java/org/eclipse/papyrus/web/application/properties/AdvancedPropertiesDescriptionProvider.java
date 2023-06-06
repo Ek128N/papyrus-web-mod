@@ -96,7 +96,7 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("default_form_description".getBytes()).toString())
+        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("UMLAdvancedPropertyViewForm".getBytes()).toString()) //$NON-NLS-1$
                 .label("Default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
@@ -120,7 +120,7 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
         Function<VariableManager, String> labelProvider = variableManager -> "Advanced";
 
         // @formatter:off
-        return PageDescription.newPageDescription("firstPageId")
+        return PageDescription.newPageDescription("UMLAdvancedPropertyViewPage")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))

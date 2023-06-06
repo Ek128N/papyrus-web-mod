@@ -1,0 +1,77 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
+package org.eclipse.papyrus.web.application.properties.pages;
+
+import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
+import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.GroupDisplayMode;
+import org.eclipse.sirius.components.view.PageDescription;
+import org.eclipse.sirius.components.view.WidgetDescription;
+
+public class ConnectorEndUmlPage {
+
+    protected final ViewElementsFactory viewElementFactory;
+
+    public ConnectorEndUmlPage(ViewElementsFactory viewElementFactory) {
+        super();
+        this.viewElementFactory = viewElementFactory;
+    }
+
+    public PageDescription create() {
+
+        PageDescription page = createPage();
+
+        createConnectorEndUmlGroup(page);
+
+        return page;
+
+    }
+
+    protected FormDescription createFrom() {
+        return viewElementFactory.createFormDescription("connectorEnd_uml_pageFrom", "uml::ConnectorEnd", "aql:'UML'", "${formPreconditionExpression}");
+    }
+
+    protected PageDescription createPage() {
+        return viewElementFactory.createPageDescription("connectorEnd_uml_page", "uml::ConnectorEnd", "aql:'UML'", "aql:self", "aql:not(selection->size()>1) and not(self.isMetaclass())");
+    }
+
+    protected void createConnectorEndUmlGroup(PageDescription page) {
+        GroupDescription group = viewElementFactory.createGroupDescription("connectorEnd_uml_group", "", "var:self", GroupDisplayMode.LIST);
+        page.getGroups().add(group);
+
+        addIsOrdered(group);
+        addIsUnique(group);
+        addMultiplicity(group);
+
+    }
+
+    protected void addIsOrdered(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsUnique(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addMultiplicity(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)");
+        group.getWidgets().add(widget);
+    }
+
+}

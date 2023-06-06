@@ -1,0 +1,123 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
+package org.eclipse.papyrus.web.application.properties.pages;
+
+import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
+import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.GroupDisplayMode;
+import org.eclipse.sirius.components.view.PageDescription;
+import org.eclipse.sirius.components.view.WidgetDescription;
+
+public class ExtensionEndUmlPage {
+
+    protected final ViewElementsFactory viewElementFactory;
+
+    public ExtensionEndUmlPage(ViewElementsFactory viewElementFactory) {
+        super();
+        this.viewElementFactory = viewElementFactory;
+    }
+
+    public PageDescription create() {
+
+        PageDescription page = createPage();
+
+        createExtensionEndUmlGroup(page);
+
+        return page;
+
+    }
+
+    protected FormDescription createFrom() {
+        return viewElementFactory.createFormDescription("extensionEnd_uml_pageFrom", "uml::ExtensionEnd", "aql:'UML'", "${formPreconditionExpression}");
+    }
+
+    protected PageDescription createPage() {
+        return viewElementFactory.createPageDescription("extensionEnd_uml_page", "uml::ExtensionEnd", "aql:'UML'", "aql:self", "aql:not(selection->size()>1) and not(self.isMetaclass())");
+    }
+
+    protected void createExtensionEndUmlGroup(PageDescription page) {
+        GroupDescription group = viewElementFactory.createGroupDescription("extensionEnd_uml_group", "", "var:self", GroupDisplayMode.LIST);
+        page.getGroups().add(group);
+
+        addName(group);
+        addIsDerived(group);
+        addIsDerivedUnion(group);
+        addIsOrdered(group);
+        addIsReadOnly(group);
+        addIsStatic(group);
+        addIsUnique(group);
+        addAggregation(group);
+        addVisibility(group);
+        addMultiplicity(group);
+
+    }
+
+    protected void addName(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsDerived(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerived", "aql:'Is derived'", "feature:isDerived", "aql:self.set('isDerived',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsDerivedUnion(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerivedUnion", "aql:'Is derived union'", "feature:isDerivedUnion", "aql:self.set('isDerivedUnion',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsOrdered(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsReadOnly(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReadOnly", "aql:'Is read only'", "feature:isReadOnly", "aql:self.set('isReadOnly',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsStatic(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isStatic", "aql:'Is static'", "feature:isStatic", "aql:self.set('isStatic',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIsUnique(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addAggregation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createSelectDescription("aggregation", "aql:'Aggregation'",
+                "aql:self.eClass().getEStructuralFeature('aggregation').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.aggregation.toString())",
+                "aql:self.set('aggregation',newValue.instance)", "aql:self.eClass().getEStructuralFeature('aggregation').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addVisibility(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
+                "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addMultiplicity(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)");
+        group.getWidgets().add(widget);
+    }
+
+}

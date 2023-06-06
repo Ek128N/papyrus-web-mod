@@ -1,0 +1,64 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
+package org.eclipse.papyrus.web.application.properties.pages;
+
+import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
+import org.eclipse.sirius.components.view.FormDescription;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.GroupDisplayMode;
+import org.eclipse.sirius.components.view.PageDescription;
+import org.eclipse.sirius.components.view.WidgetDescription;
+
+public class CommentUmlPage {
+
+    protected final ViewElementsFactory viewElementFactory;
+
+    public CommentUmlPage(ViewElementsFactory viewElementFactory) {
+        super();
+        this.viewElementFactory = viewElementFactory;
+    }
+
+    public PageDescription create() {
+
+        PageDescription page = createPage();
+
+        createCommentUmlGroup(page);
+
+        return page;
+
+    }
+
+    protected FormDescription createFrom() {
+        return viewElementFactory.createFormDescription("comment_uml_pageFrom", "uml::Comment", "aql:'UML'", "${formPreconditionExpression}");
+    }
+
+    protected PageDescription createPage() {
+        return viewElementFactory.createPageDescription("comment_uml_page", "uml::Comment", "aql:'UML'", "aql:self", "aql:not(selection->size()>1) and not(self.isMetaclass())");
+    }
+
+    protected void createCommentUmlGroup(PageDescription page) {
+        GroupDescription group = viewElementFactory.createGroupDescription("comment_uml_group", "", "var:self", GroupDisplayMode.LIST);
+        page.getGroups().add(group);
+
+        addBody(group);
+
+    }
+
+    protected void addBody(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createTextAreaDescription("body", "aql:'Body'", "feature:body", "aql:self.set('body',newValue)");
+        group.getWidgets().add(widget);
+    }
+
+}

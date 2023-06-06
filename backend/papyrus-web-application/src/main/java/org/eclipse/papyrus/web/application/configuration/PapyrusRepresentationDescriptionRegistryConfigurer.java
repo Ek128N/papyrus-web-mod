@@ -13,10 +13,6 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
@@ -28,12 +24,11 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.utils.ViewSerializer;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
@@ -125,38 +120,9 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         }
 
         if (this.saveViewModel) {
-            this.printAndSaveViewModel(view);
+            new ViewSerializer().printAndSaveViewModel(view);
         }
 
     }
 
-    private void printAndSaveViewModel(View view) {
-        XMIResourceImpl xmiResourceImpl = new XMIResourceImpl();
-        View viewCopy = EcoreUtil.copy(view);
-        viewCopy.getDescriptions().forEach(d -> d.setName(d.getName() + " serialized")); //$NON-NLS-1$
-        xmiResourceImpl.getContents().add(viewCopy);
-
-        try (var fileOutputStream = new ByteArrayOutputStream()) {
-            xmiResourceImpl.save(fileOutputStream, Collections.emptyMap());
-
-            byte[] content = fileOutputStream.toByteArray();
-            String contentString = new String(content, "UTF-8"); //$NON-NLS-1$
-            LOGGER.info(contentString);
-
-            String userHome = System.getProperty("user.home"); //$NON-NLS-1$
-            if (userHome != null) {
-                String[] parts = view.eResource().getURI().toString().split("/"); //$NON-NLS-1$
-                String fileName = parts[parts.length - 1];
-                Path targetFile = Path.of(userHome + "/papyrus-web/" + fileName + ".view"); //$NON-NLS-1$ //$NON-NLS-2$
-
-                if (!targetFile.getParent().toFile().exists()) {
-                    targetFile.getParent().toFile().mkdirs();
-                }
-
-                Files.write(targetFile, content);
-            }
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
 }

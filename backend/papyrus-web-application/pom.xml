@@ -27,6 +27,7 @@
 		<papyrus-uml-domain-services-version>0.13.0-SNAPSHOT</papyrus-uml-domain-services-version>
 	</properties>
 
+
 	<repositories>
 		<repository>
 			<id>Central</id>
@@ -118,6 +119,11 @@
 		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-representation-builder</artifactId>
+			<version>2023.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-properties-builder</artifactId>
 			<version>2023.3.0</version>
 		</dependency>
 		<dependency>

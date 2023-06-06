@@ -1,0 +1,38 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+package org.eclipse.papyrus.web.application.properties.pages;
+
+import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
+import org.eclipse.sirius.components.view.GroupDescription;
+import org.eclipse.sirius.components.view.WidgetDescription;
+
+/**
+ * Custom implementation of LiteralRealUmlPage.
+ * 
+ * @author Jerome Gout
+ */
+public class LiteralRealUmlPageCustomImpl extends LiteralRealUmlPage {
+    public LiteralRealUmlPageCustomImpl(ViewElementsFactory viewElementFactory) {
+        super(viewElementFactory);
+    }
+
+    // This override is because original valueExpression and contextExpression found in VSM contain the Input parameter
+    // which is not needed by services.
+    @Override
+    protected void addValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("value", "aql:'Value'", "aql:self.getLiteralRealValue()",
+                "aql:self.oclAsType(uml::LiteralReal).setLiteralRealValue(newValue)");
+        group.getWidgets().add(widget);
+    }
+}
