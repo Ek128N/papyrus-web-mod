@@ -19,10 +19,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
-import org.eclipse.papyrus.web.persistence.entities.ProjectNatureEntity;
-import org.eclipse.papyrus.web.persistence.repositories.IProjectNatureRepository;
-import org.eclipse.papyrus.web.persistence.repositories.IProjectRepository;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectFromTemplateInput;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectFromTemplateSuccessPayload;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectInput;
@@ -36,6 +32,10 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
+import org.eclipse.sirius.web.persistence.entities.ProjectNatureEntity;
+import org.eclipse.sirius.web.persistence.repositories.IProjectNatureRepository;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.springframework.stereotype.Service;
 
 /**

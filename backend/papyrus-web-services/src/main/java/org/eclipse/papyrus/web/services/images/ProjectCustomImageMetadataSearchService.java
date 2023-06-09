@@ -15,11 +15,11 @@ package org.eclipse.papyrus.web.services.images;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.persistence.entities.CustomImageMetadataEntity;
-import org.eclipse.papyrus.web.persistence.repositories.ICustomImageMetadataRepository;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.images.CustomImageMetadata;
 import org.eclipse.papyrus.web.services.api.images.IProjectCustomImageMetadataSearchService;
+import org.eclipse.sirius.web.persistence.entities.CustomImageMetadataEntity;
+import org.eclipse.sirius.web.persistence.repositories.ICustomImageMetadataRepository;
 import org.springframework.stereotype.Service;
 
 /**

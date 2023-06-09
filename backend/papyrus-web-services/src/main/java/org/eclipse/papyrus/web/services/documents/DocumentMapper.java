@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.documents;
 
-import org.eclipse.papyrus.web.persistence.entities.DocumentEntity;
-import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
 import org.eclipse.papyrus.web.services.api.document.Document;
 import org.eclipse.papyrus.web.services.api.projects.Project;
+import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
+import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 
 /**
  * Class used to convert document entities to document data transfer objects and vice versa.

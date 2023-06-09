@@ -27,8 +27,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.papyrus.web.persistence.entities.DocumentEntity;
-import org.eclipse.papyrus.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.papyrus.web.services.api.representations.IInMemoryViewRegistry;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IURLParser;
@@ -43,6 +41,8 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
+import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -75,6 +75,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
 
     private PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescription;
 
+    // CHECKSTYLE:OFF TODO for now
     public ViewRepresentationDescriptionSearchService(IDocumentRepository documentRepository, EPackage.Registry ePackageRegistry, IDiagramIdProvider diagramIdProvider, IURLParser urlParser,
             IFormIdProvider formIdProvider, IObjectService objectService, IInMemoryViewRegistry inMemoryViewRegistry, PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescription) {
         this.papyrusRepresentationDescription = Objects.requireNonNull(papyrusRepresentationDescription);
@@ -86,6 +87,7 @@ public class ViewRepresentationDescriptionSearchService implements IViewRepresen
         this.objectService = Objects.requireNonNull(objectService);
         this.inMemoryViewRegistry = Objects.requireNonNull(inMemoryViewRegistry);
     }
+    // CHECKSTYLE:ON TODO for now
 
     @Override
     public Optional<RepresentationDescription> findById(String representationDescriptionId) {

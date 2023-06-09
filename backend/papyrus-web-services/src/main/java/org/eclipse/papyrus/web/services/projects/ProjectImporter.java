@@ -21,8 +21,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.entities.IdMappingEntity;
-import org.eclipse.papyrus.web.persistence.repositories.IIdMappingRepository;
 import org.eclipse.papyrus.web.services.api.document.Document;
 import org.eclipse.papyrus.web.services.api.document.RewriteProxiesInput;
 import org.eclipse.papyrus.web.services.api.document.UploadDocumentInput;
@@ -34,6 +32,8 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
+import org.eclipse.sirius.web.persistence.entities.IdMappingEntity;
+import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

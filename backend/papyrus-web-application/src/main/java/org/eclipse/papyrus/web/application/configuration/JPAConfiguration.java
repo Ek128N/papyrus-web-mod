@@ -22,8 +22,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @author sbegaudeau
  */
 @Configuration
-@EntityScan(basePackages = { "org.eclipse.papyrus.web.persistence.entities" })
-@EnableJpaRepositories(basePackages = { "org.eclipse.papyrus.web.persistence.repositories" })
+@EntityScan(basePackages = { "org.eclipse.papyrus.web.persistence.entities", "org.eclipse.sirius.web.persistence.entities" })
+@EnableJpaRepositories(basePackages = { "org.eclipse.papyrus.web.persistence.repositories", "org.eclipse.sirius.web.persistence.repositories" })
 public class JPAConfiguration {
 
 }

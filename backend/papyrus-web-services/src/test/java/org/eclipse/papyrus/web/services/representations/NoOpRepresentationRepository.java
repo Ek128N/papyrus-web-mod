@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.entities.RepresentationEntity;
-import org.eclipse.papyrus.web.persistence.repositories.IRepresentationRepository;
+import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
+import org.eclipse.sirius.web.persistence.repositories.IRepresentationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

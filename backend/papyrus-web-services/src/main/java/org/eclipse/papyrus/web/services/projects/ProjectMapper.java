@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.projects;
 
-import org.eclipse.papyrus.web.persistence.entities.ProjectEntity;
 import org.eclipse.papyrus.web.services.api.projects.Project;
+import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 
 /**
  * Class used to convert project entities to project data transfer objects and vice versa.

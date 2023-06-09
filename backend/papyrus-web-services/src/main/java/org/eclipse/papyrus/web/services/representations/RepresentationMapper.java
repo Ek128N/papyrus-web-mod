@@ -17,9 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.persistence.entities.RepresentationEntity;
 import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.web.persistence.entities.RepresentationEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -16,9 +16,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.entities.CustomImageEntity;
-import org.eclipse.papyrus.web.persistence.repositories.ICustomImageRepository;
 import org.eclipse.papyrus.web.services.api.images.ICustomImageContentService;
+import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
+import org.eclipse.sirius.web.persistence.repositories.ICustomImageRepository;
 import org.springframework.stereotype.Service;
 
 /**

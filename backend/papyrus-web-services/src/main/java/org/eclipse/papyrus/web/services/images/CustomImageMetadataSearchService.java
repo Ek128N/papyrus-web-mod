@@ -18,13 +18,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.entities.CustomImageMetadataEntity;
-import org.eclipse.papyrus.web.persistence.repositories.ICustomImageMetadataRepository;
 import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.api.projects.Project;
 import org.eclipse.papyrus.web.services.projects.ProjectMapper;
 import org.eclipse.sirius.components.view.emf.CustomImageMetadata;
 import org.eclipse.sirius.components.view.emf.ICustomImageMetadataSearchService;
+import org.eclipse.sirius.web.persistence.entities.CustomImageMetadataEntity;
+import org.eclipse.sirius.web.persistence.repositories.ICustomImageMetadataRepository;
 import org.springframework.stereotype.Service;
 
 /**

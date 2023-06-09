@@ -4,7 +4,8 @@
 	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-	<changeSet author="sbegaudeau" id="schema">
+	<include file="classpath:db/changelog/sirius-web.db.changelog.xml" relativeToChangelogFile="false" />
+	<changeSet author="papyrus" id="papyrus-schema">
 		<sqlFile path="db/changelog/papyrus-web-schema.sql" />
 	</changeSet>
 

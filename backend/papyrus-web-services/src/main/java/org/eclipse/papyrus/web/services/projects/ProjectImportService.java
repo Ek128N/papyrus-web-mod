@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.repositories.IIdMappingRepository;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectInput;
 import org.eclipse.papyrus.web.services.api.projects.CreateProjectSuccessPayload;
 import org.eclipse.papyrus.web.services.api.projects.IProjectImportService;
@@ -36,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
+import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
 import org.springframework.stereotype.Service;
 
 /**

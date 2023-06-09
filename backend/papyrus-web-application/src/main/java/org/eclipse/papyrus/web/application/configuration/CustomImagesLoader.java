@@ -18,8 +18,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.persistence.entities.CustomImageEntity;
-import org.eclipse.papyrus.web.persistence.repositories.ICustomImageRepository;
+import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
+import org.eclipse.sirius.web.persistence.repositories.ICustomImageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

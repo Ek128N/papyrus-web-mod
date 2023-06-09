@@ -25,9 +25,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 @SpringBootConfiguration
 @EnableAutoConfiguration
-@ComponentScan(basePackages = { "org.eclipse.papyrus.web.persistence" })
+@ComponentScan(basePackages = { "org.eclipse.papyrus.web.persistence.entities", "org.eclipse.sirius.web.persistence.entities" })
 @EntityScan(basePackages = { "org.eclipse.papyrus.web.persistence.entities" })
-@EnableJpaRepositories(basePackages = { "org.eclipse.papyrus.web.persistence.repositories" }, namedQueriesLocation = "classpath:db/papyrus-web-named-queries.properties")
+@EnableJpaRepositories(basePackages = { "org.eclipse.papyrus.web.persistence.repositories", "org.eclipse.sirius.web.persistence.repositories" })
 public class PersistenceTestConfiguration {
 
 }
