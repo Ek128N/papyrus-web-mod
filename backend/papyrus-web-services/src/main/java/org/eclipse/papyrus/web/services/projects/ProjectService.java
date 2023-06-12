@@ -19,14 +19,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.papyrus.web.services.api.projects.CreateProjectFromTemplateInput;
-import org.eclipse.papyrus.web.services.api.projects.CreateProjectFromTemplateSuccessPayload;
-import org.eclipse.papyrus.web.services.api.projects.CreateProjectInput;
-import org.eclipse.papyrus.web.services.api.projects.CreateProjectSuccessPayload;
-import org.eclipse.papyrus.web.services.api.projects.IProjectService;
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateService;
-import org.eclipse.papyrus.web.services.api.projects.Project;
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
@@ -36,6 +28,14 @@ import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectNatureEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectNatureRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectFromTemplateInput;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectFromTemplateSuccessPayload;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
+import org.eclipse.sirius.web.services.api.projects.Project;
 import org.springframework.stereotype.Service;
 
 /**

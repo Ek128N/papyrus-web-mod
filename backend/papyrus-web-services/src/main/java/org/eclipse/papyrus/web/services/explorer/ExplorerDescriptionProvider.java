@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.papyrus.web.services.api.representations.IRepresentationService;
 import org.eclipse.papyrus.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.papyrus.web.services.explorer.api.IDeleteTreeItemHandler;
 import org.eclipse.papyrus.web.services.explorer.api.IRenameTreeItemHandler;
@@ -44,6 +43,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
 import org.springframework.stereotype.Service;
 
 /**

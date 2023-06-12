@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.eclipse.papyrus.web.services.api.representations.IInMemoryViewRegistry;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.springframework.stereotype.Service;
 
 /**

@@ -19,9 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.services.api.id.IDParser;
-import org.eclipse.papyrus.web.services.api.images.ICustomImageImportService;
-import org.eclipse.papyrus.web.services.api.images.UploadImageSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
@@ -29,6 +26,9 @@ import org.eclipse.sirius.web.persistence.entities.CustomImageEntity;
 import org.eclipse.sirius.web.persistence.entities.ProjectEntity;
 import org.eclipse.sirius.web.persistence.repositories.ICustomImageRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.services.api.id.IDParser;
+import org.eclipse.sirius.web.services.api.images.ICustomImageImportService;
+import org.eclipse.sirius.web.services.api.images.UploadImageSuccessPayload;
 import org.springframework.stereotype.Service;
 
 /**

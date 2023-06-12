@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateInitializer;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.services.template.TemplateInitializer;
@@ -29,6 +28,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
 import org.slf4j.Logger;

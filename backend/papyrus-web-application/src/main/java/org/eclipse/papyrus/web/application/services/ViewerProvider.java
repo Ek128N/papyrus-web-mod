@@ -15,9 +15,9 @@ package org.eclipse.papyrus.web.application.services;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.graphql.datafetchers.IViewerProvider;
-import org.eclipse.papyrus.web.services.api.viewer.IViewer;
-import org.eclipse.papyrus.web.services.api.viewer.User;
+import org.eclipse.sirius.web.graphql.datafetchers.IViewerProvider;
+import org.eclipse.sirius.web.services.api.viewer.IViewer;
+import org.eclipse.sirius.web.services.api.viewer.User;
 import org.springframework.stereotype.Service;
 
 import graphql.schema.DataFetchingEnvironment;

@@ -17,9 +17,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.services.api.projects.IProjectExportService;
-import org.eclipse.papyrus.web.services.api.projects.IProjectService;
-import org.eclipse.papyrus.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.projects.IProjectExportService;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.Project;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;

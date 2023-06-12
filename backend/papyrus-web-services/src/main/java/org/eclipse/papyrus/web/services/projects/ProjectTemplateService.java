@@ -15,9 +15,9 @@ package org.eclipse.papyrus.web.services.projects;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateInitializer;
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateService;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateService;
 import org.springframework.stereotype.Service;
 
 /**

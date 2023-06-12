@@ -18,14 +18,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.papyrus.web.services.api.projects.IProjectService;
-import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.RenameProjectInput;
-import org.eclipse.papyrus.web.services.api.projects.RenameProjectSuccessPayload;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.projects.RenameProjectInput;
+import org.eclipse.sirius.web.services.api.projects.RenameProjectSuccessPayload;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Sinks;

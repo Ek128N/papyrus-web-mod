@@ -14,8 +14,8 @@ package org.eclipse.papyrus.web.profile.cpp;
 
 import java.util.List;
 
-import org.eclipse.papyrus.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.papyrus.web.services.api.projects.ProjectTemplate;
+import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
+import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
 import org.springframework.context.annotation.Configuration;
 
 /**

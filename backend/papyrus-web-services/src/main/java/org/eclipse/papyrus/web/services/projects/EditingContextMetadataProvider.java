@@ -15,12 +15,12 @@ package org.eclipse.papyrus.web.services.projects;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.services.api.id.IDParser;
-import org.eclipse.papyrus.web.services.api.projects.Nature;
 import org.eclipse.papyrus.web.services.projects.api.EditingContextMetadata;
 import org.eclipse.papyrus.web.services.projects.api.IEditingContextMetadataProvider;
 import org.eclipse.sirius.web.persistence.entities.ProjectNatureEntity;
 import org.eclipse.sirius.web.persistence.repositories.IProjectNatureRepository;
+import org.eclipse.sirius.web.services.api.id.IDParser;
+import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.springframework.stereotype.Service;
 
 /**

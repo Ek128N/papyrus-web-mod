@@ -20,9 +20,6 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.api.document.Document;
-import org.eclipse.papyrus.web.services.api.document.IDocumentService;
-import org.eclipse.papyrus.web.services.api.projects.Project;
 import org.eclipse.papyrus.web.services.projects.NoOpServicesMessageService;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -33,6 +30,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.web.services.api.document.Document;
+import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.projects.Project;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;

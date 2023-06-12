@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2022, 2023 CEA LIST, Obeo. This program and the accompanying materials 
-	are made available under the terms of the Eclipse Public License v2.0 which 
-	accompanies this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/ 
+<!-- Copyright (c) 2022, 2023 CEA LIST, Obeo. This program and the accompanying 
+	materials are made available under the terms of the Eclipse Public License 
+	v2.0 which accompanies this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/ 
 	SPDX-License-Identifier: EPL-2.0 Contributors: Obeo - initial API and implementation -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -91,6 +91,11 @@
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-services-api</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-graphql</artifactId>
 			<version>2023.3.0</version>
@@ -142,7 +147,7 @@
 			<!-- Workaround for https://stackoverflow.com/questions/72625637/maven-build-failed-due-to-jdt-dependencies-no-versions-available-for-org-osgi -->
 			<exclusions>
 				<exclusion>
-					<groupId>org.osgi</groupId> 
+					<groupId>org.osgi</groupId>
 					<artifactId>org.osgi.service.prefs</artifactId>
 				</exclusion>
 			</exclusions>
@@ -167,8 +172,10 @@
 			<artifactId>sirius-components-domain-edit</artifactId>
 			<version>${sirius.components.version}</version>
 		</dependency>
-		
-		<!-- START - Temporary dependency used to unplug default property view logic to avoid latency. Once a proper implementation is available remove this -->
+
+		<!-- START - Temporary dependency used to unplug default property view 
+			logic to avoid latency. Once a proper implementation is available remove 
+			this -->
 		<!-- https://github.com/PapyrusSirius/papyrus-web/issues/58 -->
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -176,8 +183,9 @@
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<!-- https://github.com/PapyrusSirius/papyrus-web/issues/58 -->
-		<!-- END - Temporary dependency used to unplug default property view logic to avoid latency. Once a proper implementation is available remove this -->
-		
+		<!-- END - Temporary dependency used to unplug default property view logic 
+			to avoid latency. Once a proper implementation is available remove this -->
+
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-design</artifactId>
@@ -200,7 +208,8 @@
 			<version>${sirius.components.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency><groupId>org.eclipse.sirius</groupId>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
 			<version>${sirius.components.version}</version>
 			<scope>test</scope>
@@ -220,7 +229,7 @@
 			<artifactId>sirius-web-customwidgets</artifactId>
 			<version>${sirius.components.version}</version>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-customwidgets-edit</artifactId>
 			<version>${sirius.components.version}</version>

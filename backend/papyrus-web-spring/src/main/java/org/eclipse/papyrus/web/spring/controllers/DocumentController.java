@@ -16,9 +16,9 @@ import java.io.ByteArrayInputStream;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.papyrus.web.services.api.document.Document;
-import org.eclipse.papyrus.web.services.api.document.IDocumentService;
-import org.eclipse.papyrus.web.services.api.id.IDParser;
+import org.eclipse.sirius.web.services.api.document.Document;
+import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -79,7 +79,7 @@ public class DocumentController {
                 byte[] bytes = optionalBytes.get();
 
                 // @formatter:off
-                ContentDisposition contentDisposition = ContentDisposition.builder("attachment") 
+                ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
                         .filename(document.getName())
                         .build();
                 // @formatter:on

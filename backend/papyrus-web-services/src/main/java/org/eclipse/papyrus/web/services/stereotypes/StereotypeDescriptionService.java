@@ -17,8 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 
 /**
  * Service used to query the stereotype descriptions available.

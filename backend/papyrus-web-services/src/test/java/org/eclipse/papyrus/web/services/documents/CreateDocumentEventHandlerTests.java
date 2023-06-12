@@ -20,12 +20,6 @@ import java.util.UUID;
 
 import org.assertj.core.api.Condition;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.api.document.CreateDocumentInput;
-import org.eclipse.papyrus.web.services.api.document.CreateDocumentSuccessPayload;
-import org.eclipse.papyrus.web.services.api.document.Document;
-import org.eclipse.papyrus.web.services.api.document.IDocumentService;
-import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 import org.eclipse.papyrus.web.services.projects.NoOpServicesMessageService;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -33,6 +27,12 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.web.services.api.document.CreateDocumentInput;
+import org.eclipse.sirius.web.services.api.document.CreateDocumentSuccessPayload;
+import org.eclipse.sirius.web.services.api.document.Document;
+import org.eclipse.sirius.web.services.api.document.IDocumentService;
+import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.stereotypes.IStereotypeDescriptionService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;

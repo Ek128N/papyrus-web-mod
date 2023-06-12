@@ -20,11 +20,11 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.papyrus.web.services.api.representations.IRepresentationService;
-import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.papyrus.web.services.explorer.api.IExplorerNavigationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.web.services.api.representations.IRepresentationService;
+import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.springframework.stereotype.Service;
 
 /**

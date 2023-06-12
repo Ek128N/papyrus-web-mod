@@ -21,9 +21,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.papyrus.web.services.api.id.IDParser;
-import org.eclipse.papyrus.web.services.api.images.ICustomImageContentService;
 import org.eclipse.sirius.components.core.api.IImagePathService;
+import org.eclipse.sirius.web.services.api.id.IDParser;
+import org.eclipse.sirius.web.services.api.images.ICustomImageContentService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

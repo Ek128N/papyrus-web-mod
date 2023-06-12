@@ -15,7 +15,7 @@ package org.eclipse.papyrus.web.services.projects.api;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.papyrus.web.services.api.projects.Nature;
+import org.eclipse.sirius.web.services.api.projects.Nature;
 
 /**
  * The metadata of a project.

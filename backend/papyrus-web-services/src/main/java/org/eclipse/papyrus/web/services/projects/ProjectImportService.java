@@ -20,15 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.services.api.projects.CreateProjectInput;
-import org.eclipse.papyrus.web.services.api.projects.CreateProjectSuccessPayload;
-import org.eclipse.papyrus.web.services.api.projects.IProjectImportService;
-import org.eclipse.papyrus.web.services.api.projects.IProjectService;
-import org.eclipse.papyrus.web.services.api.projects.Project;
-import org.eclipse.papyrus.web.services.api.projects.ProjectManifest;
-import org.eclipse.papyrus.web.services.api.projects.UnzippedProject;
-import org.eclipse.papyrus.web.services.api.projects.UploadProjectSuccessPayload;
-import org.eclipse.papyrus.web.services.api.representations.RepresentationDescriptor;
 import org.eclipse.papyrus.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
@@ -36,6 +27,15 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.web.persistence.repositories.IIdMappingRepository;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectInput;
+import org.eclipse.sirius.web.services.api.projects.CreateProjectSuccessPayload;
+import org.eclipse.sirius.web.services.api.projects.IProjectImportService;
+import org.eclipse.sirius.web.services.api.projects.IProjectService;
+import org.eclipse.sirius.web.services.api.projects.Project;
+import org.eclipse.sirius.web.services.api.projects.ProjectManifest;
+import org.eclipse.sirius.web.services.api.projects.UnzippedProject;
+import org.eclipse.sirius.web.services.api.projects.UploadProjectSuccessPayload;
+import org.eclipse.sirius.web.services.api.representations.RepresentationDescriptor;
 import org.springframework.stereotype.Service;
 
 /**

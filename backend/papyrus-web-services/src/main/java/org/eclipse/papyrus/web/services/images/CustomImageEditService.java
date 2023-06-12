@@ -16,12 +16,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.papyrus.web.services.api.images.ICustomImageEditService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.persistence.entities.CustomImageMetadataEntity;
 import org.eclipse.sirius.web.persistence.repositories.ICustomImageMetadataRepository;
+import org.eclipse.sirius.web.services.api.images.ICustomImageEditService;
 import org.springframework.stereotype.Service;
 
 /**

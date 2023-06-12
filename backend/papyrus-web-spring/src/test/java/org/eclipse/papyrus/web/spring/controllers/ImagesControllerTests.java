@@ -21,8 +21,8 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.papyrus.web.services.api.images.ICustomImageContentService;
 import org.eclipse.sirius.components.core.api.IImagePathService;
+import org.eclipse.sirius.web.services.api.images.ICustomImageContentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;

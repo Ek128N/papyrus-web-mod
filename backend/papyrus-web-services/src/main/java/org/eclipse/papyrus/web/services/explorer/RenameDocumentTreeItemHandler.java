@@ -18,7 +18,6 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.papyrus.web.services.explorer.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -30,6 +29,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
+import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.springframework.stereotype.Service;
 
 /**

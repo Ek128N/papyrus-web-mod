@@ -20,7 +20,6 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.api.id.IDParser;
 import org.eclipse.papyrus.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.papyrus.web.sirius.contributions.StereotypeBuilder;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -30,6 +29,7 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
