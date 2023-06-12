@@ -1,0 +1,10 @@
+= Development FAQ
+:toc:
+
+=== How overidde a Sirius Web service
+
+In some cases you will need to override service to provided by Sirius Web.
+To do so, create a custom implementation of the service and use the annotation `org.eclipse.papyrus.web.sirius.contributions.ServiceOverride`.
+You need to specify the overridden service in the annotation.
+This information is only here to keep tracks.
+It is important when bumping _sirius component_ version in order to keeps tracks of the changes applied to the overridden services.

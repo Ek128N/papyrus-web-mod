@@ -83,7 +83,7 @@ public class NonDerivedMultiValuedNonContainmentReferenceIfDescriptionProvider {
 
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
-            var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+            var optionalEReference = variableManager.get(AdvancedPropertiesDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             return optionalEReference.filter(eReference -> {
                 boolean isCandidate = true;
                 isCandidate = isCandidate && eReference.isMany();
@@ -115,7 +115,7 @@ public class NonDerivedMultiValuedNonContainmentReferenceIfDescriptionProvider {
         return (variableManager, newValues) -> {
             IStatus status = new Failure(""); //$NON-NLS-1$
             var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+            var optionalEReference = variableManager.get(AdvancedPropertiesDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
 
             if (optionalEObject.isPresent() && optionalEReference.isPresent()) {
@@ -154,13 +154,13 @@ public class NonDerivedMultiValuedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(AdvancedPropertiesDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private Function<VariableManager, List<String>> getValuesProvider() {
         return variableManager -> {
             Object object = variableManager.getVariables().get(VariableManager.SELF);
-            Object eStructuralFeature = variableManager.getVariables().get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE);
+            Object eStructuralFeature = variableManager.getVariables().get(AdvancedPropertiesDescriptionProvider.ESTRUCTURAL_FEATURE);
 
             if (object instanceof EObject && eStructuralFeature instanceof EReference) {
                 EObject eObject = (EObject) object;
@@ -176,7 +176,7 @@ public class NonDerivedMultiValuedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, List<?>> getOptionsProvider() {
-        return new EStructuralFeatureChoiceOfValueProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureChoiceOfValueProvider(AdvancedPropertiesDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private Function<VariableManager, String> getOptionIdProvider() {

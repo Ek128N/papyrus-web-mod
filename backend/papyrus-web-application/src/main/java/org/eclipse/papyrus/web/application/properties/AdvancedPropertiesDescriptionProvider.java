@@ -27,10 +27,12 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.EEnumIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.NumberIfDescriptionProvider;
+import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
@@ -43,7 +45,6 @@ import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.uml2.uml.Element;
-import org.springframework.stereotype.Service;
 
 /**
  * Temporary modification of
@@ -54,8 +55,9 @@ import org.springframework.stereotype.Service;
  *
  * @author Arthur Daussy
  */
-@Service
-public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultDescriptionProvider {
+
+@ServiceOverride(PropertiesDefaultDescriptionProvider.class)
+public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefaultDescriptionProvider {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature"; //$NON-NLS-1$
 
@@ -67,7 +69,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
 
     private final IEMFMessageService emfMessageService;
 
-    public PropertiesDefaultDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IEMFMessageService emfMessageService) {
+    public AdvancedPropertiesDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IEMFMessageService emfMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = new IPropertiesValidationProvider.NoOp(); // Unplug live validation
@@ -120,14 +122,7 @@ public class PropertiesDefaultDescriptionProvider implements IPropertiesDefaultD
             return UUID.randomUUID().toString();
         };
 
-        Function<VariableManager, String> labelProvider = variableManager -> {
-            var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
-            if (optionalSelf.isPresent()) {
-                Object self = optionalSelf.get();
-                return this.objectService.getLabel(self);
-            }
-            return UUID.randomUUID().toString();
-        };
+        Function<VariableManager, String> labelProvider = variableManager -> "Advanced";
 
         // @formatter:off
         return PageDescription.newPageDescription("firstPageId") //$NON-NLS-1$
