@@ -13,7 +13,6 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices;
 
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.AqlServiceClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author Arthur Daussy
  */
-@AqlServiceClass
 public class DebugService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DebugService.class);

@@ -13,7 +13,6 @@
 package org.eclipse.papyrus.web.services.aqlservices.utils;
 
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.AqlServiceClass;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
  *
  * @author Arthur Daussy
  */
-@AqlServiceClass
 @Service
 public class GenericDiagramService extends AbstractDiagramService {
 

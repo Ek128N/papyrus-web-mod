@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.FactoryMethod;
+import org.eclipse.papyrus.web.sirius.contributions.FactoryMethod;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;

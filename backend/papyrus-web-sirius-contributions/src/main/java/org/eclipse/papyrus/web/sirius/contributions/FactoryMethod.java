@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.services.annotations.aqlservices.utils;
+package org.eclipse.papyrus.web.sirius.contributions;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,12 +18,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Special annotation used to tag AQL Service classes.
+ * Annotation that tags factory methods.
  *
  * @author Arthur Daussy
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AqlServiceClass {
+public @interface FactoryMethod {
 
 }

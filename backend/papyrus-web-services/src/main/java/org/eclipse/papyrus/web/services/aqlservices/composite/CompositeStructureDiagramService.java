@@ -25,7 +25,6 @@ import org.eclipse.papyrus.uml.domain.services.create.diagrams.CompositeStructur
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeInitializer;
 import org.eclipse.papyrus.uml.domain.services.edges.diagrams.CompositeStructureDomainBasedEdgeContainerProvider;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.AqlServiceClass;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
@@ -52,7 +51,6 @@ import org.eclipse.uml2.uml.Property;
  *
  * @author Arthur Daussy
  */
-@AqlServiceClass
 public class CompositeStructureDiagramService extends AbstractDiagramService {
 
     public CompositeStructureDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService,

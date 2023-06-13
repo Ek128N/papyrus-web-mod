@@ -17,7 +17,6 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.labels.ElementDefaultNameProvider;
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.AqlServiceClass;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
@@ -41,7 +40,6 @@ import org.springframework.stereotype.Service;
  *
  * @author Laurent Fasani
  */
-@AqlServiceClass
 @Service
 public class StateMachineDiagramService extends AbstractDiagramService {
 

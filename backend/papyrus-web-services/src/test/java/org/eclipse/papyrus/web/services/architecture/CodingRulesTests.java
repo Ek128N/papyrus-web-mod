@@ -28,8 +28,8 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.AqlServiceClass;
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.FactoryMethod;
+import org.eclipse.papyrus.web.sirius.contributions.AqlServiceClass;
+import org.eclipse.papyrus.web.sirius.contributions.FactoryMethod;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.tests.architecture.AbstractCodingRulesTests;
 import org.junit.jupiter.api.Test;

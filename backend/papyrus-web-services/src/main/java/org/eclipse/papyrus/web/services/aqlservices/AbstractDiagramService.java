@@ -72,11 +72,11 @@ import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeR
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.uml.domain.services.status.Status;
-import org.eclipse.papyrus.web.services.annotations.aqlservices.utils.AqlServiceClass;
 import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebExternalDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.WebRepresentationQuerier;
+import org.eclipse.papyrus.web.sirius.contributions.AqlServiceClass;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramElementHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
