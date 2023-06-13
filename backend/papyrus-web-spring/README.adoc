@@ -1,8 +1,0 @@
-= papyrus-web-spring
-
-== Goal
-
-This project provides some core Spring components for a Papyrus Web server.
-
-== Dependencies
-

@@ -14,9 +14,9 @@ package org.eclipse.papyrus.web.application.configuration;
 
 import java.util.Arrays;
 
-import org.eclipse.papyrus.web.spring.configuration.PapyrusWebPathResourceResolver;
-import org.eclipse.papyrus.web.spring.configuration.SpringWebMvcConfigurerConstants;
-import org.eclipse.papyrus.web.spring.controllers.URLConstants;
+import org.eclipse.sirius.components.graphql.api.URLConstants;
+import org.eclipse.sirius.web.spring.configuration.SiriusWebPathResourceResolver;
+import org.eclipse.sirius.web.spring.configuration.SpringWebMvcConfigurerConstants;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -67,7 +67,7 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
             SpringWebMvcConfigurerConstants.ANY_PATTERN
         ).addResourceLocations(SpringWebMvcConfigurerConstants.INDEX_HTML_PATH)
         .resourceChain(true)
-        .addResolver(new PapyrusWebPathResourceResolver(URLConstants.API_BASE_PATH));
+        .addResolver(new SiriusWebPathResourceResolver(URLConstants.API_BASE_PATH));
 
         // @formatter:on
     }

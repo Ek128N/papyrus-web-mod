@@ -30,7 +30,6 @@
 		<module>papyrus-web-services-api</module>
 		<module>papyrus-web-services</module>
 		<module>papyrus-web-graphql</module>
-		<module>papyrus-web-spring</module>
 		<module>papyrus-web-sirius-contributions</module>
 		<module>papyrus-web-application</module>
 		<module>papyrus-web-representation-builder</module>

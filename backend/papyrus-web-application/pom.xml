@@ -96,6 +96,11 @@
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-spring</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-graphql</artifactId>
 			<version>2023.3.0</version>
@@ -108,11 +113,6 @@
 		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-services</artifactId>
-			<version>2023.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-spring</artifactId>
 			<version>2023.3.0</version>
 		</dependency>
 		<dependency>
