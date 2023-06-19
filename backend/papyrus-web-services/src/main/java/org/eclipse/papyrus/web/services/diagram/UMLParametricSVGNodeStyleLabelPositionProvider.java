@@ -17,20 +17,23 @@ import java.util.UUID;
 
 import org.eclipse.elk.core.math.ElkPadding;
 import org.eclipse.elk.core.options.CoreOptions;
-import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.ParametricSVGNodeStyle;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.layout.ISiriusWebLayoutConfigurator;
 import org.eclipse.sirius.components.diagrams.layout.incremental.provider.ICustomNodeLabelPositionProvider;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Service;
 
 /**
  * Customize the label position for parametric SVG node styled nodes.
  *
  * @author lfasani
  */
-@ServiceOverride(org.eclipse.sirius.web.services.diagram.ParametricSVGNodeStyleLabelPositionProvider.class)
+@Service
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class UMLParametricSVGNodeStyleLabelPositionProvider implements ICustomNodeLabelPositionProvider {
 
     @Override

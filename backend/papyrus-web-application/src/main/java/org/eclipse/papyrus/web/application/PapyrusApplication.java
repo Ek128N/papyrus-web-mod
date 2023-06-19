@@ -36,7 +36,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 // Keep in sync with org.eclipse.papyrus.web.application.utils.IntegrationTestConfiguration
 @ComponentScan(basePackages = { "org.eclipse.papyrus.web", "org.eclipse.sirius.components", "org.eclipse.sirius.web" })
-public class SampleApplication {
+public class PapyrusApplication {
 
     /**
      * The entry point of the server.
@@ -45,6 +45,6 @@ public class SampleApplication {
      *            The command line arguments
      */
     public static void main(String[] args) {
-        SpringApplication.run(SampleApplication.class, args);
+        SpringApplication.run(PapyrusApplication.class, args);
     }
 }

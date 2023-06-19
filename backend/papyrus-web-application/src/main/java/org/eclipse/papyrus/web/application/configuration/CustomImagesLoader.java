@@ -45,7 +45,7 @@ public class CustomImagesLoader implements CommandLineRunner {
 
     private final PathMatchingResourcePatternResolver patternResolver;
 
-    public CustomImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.papyrus.web.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
+    public CustomImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.sirius.web.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
         this.customImageRepository = Objects.requireNonNull(customImageRepository);
         this.imagesPathPattern = imagesPathPattern;
         this.patternResolver = new PathMatchingResourcePatternResolver(Objects.requireNonNull(resourceLoader));

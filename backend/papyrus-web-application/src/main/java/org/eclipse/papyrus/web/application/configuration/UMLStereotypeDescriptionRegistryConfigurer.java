@@ -35,7 +35,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Configuration
-public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+public class UMLStereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
 
     public static final UUID EMPTY_ID = UUID.nameUUIDFromBytes("empty".getBytes()); //$NON-NLS-1$
 
@@ -59,7 +59,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final boolean studiosEnabled;
 
-    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
+    public UMLStereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
         this.studiosEnabled = studiosEnabled;
     }
