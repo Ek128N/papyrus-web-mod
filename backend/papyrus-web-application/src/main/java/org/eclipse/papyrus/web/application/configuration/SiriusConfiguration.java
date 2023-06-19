@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 public class SiriusConfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.papyrus.web.features", name = "studioDefinition")
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public ISiriusConfiguration domainModelerDefinition() {
         return () -> List.of("description/domain.odesign"); //$NON-NLS-1$
     }

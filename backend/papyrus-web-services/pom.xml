@@ -121,7 +121,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
-			<version>2023.4.2</version>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-services</artifactId>
+			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>

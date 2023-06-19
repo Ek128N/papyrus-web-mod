@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistry;
+import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.StyleProvider;
@@ -271,15 +271,15 @@ public class ViewBuilder {
     }
 
     private ImageNodeStyleDescription createClassNodeStyle(boolean showIcon) {
-        return createImageNodeStyle(ParametricSVGImageRegistry.PARAMETRIC_CLASS_IMAGE_ID.toString(), showIcon);
+        return createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_CLASS_IMAGE_ID.toString(), showIcon);
     }
 
     private ImageNodeStyleDescription createNoteNodeStyle() {
-        return createImageNodeStyle(ParametricSVGImageRegistry.PARAMETRIC_NOTE_IMAGE_ID.toString(), true);
+        return createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_NOTE_IMAGE_ID.toString(), true);
     }
 
     private ImageNodeStyleDescription createPackageNodeStyle() {
-        ImageNodeStyleDescription packageNodeStyle = createImageNodeStyle(ParametricSVGImageRegistry.PARAMETRIC_PACKAGE_IMAGE_ID.toString(), true);
+        ImageNodeStyleDescription packageNodeStyle = createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_PACKAGE_IMAGE_ID.toString(), true);
         packageNodeStyle.setWidthComputationExpression("300");
         packageNodeStyle.setHeightComputationExpression("150");
         return packageNodeStyle;

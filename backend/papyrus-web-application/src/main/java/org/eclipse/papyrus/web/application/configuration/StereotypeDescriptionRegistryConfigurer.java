@@ -59,7 +59,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final boolean studiosEnabled;
 
-    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.papyrus.web.features.studioDefinition:false}") boolean studiosEnabled) {
+    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry, @Value("${org.eclipse.sirius.web.features.studioDefinition:false}") boolean studiosEnabled) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
         this.studiosEnabled = studiosEnabled;
     }

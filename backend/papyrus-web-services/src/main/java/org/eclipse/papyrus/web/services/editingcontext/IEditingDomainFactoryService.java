@@ -13,7 +13,7 @@
 package org.eclipse.papyrus.web.services.editingcontext;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.documents.EditingDomainFactory;
+import org.eclipse.sirius.web.services.documents.EditingDomainFactory;
 
 /**
  * This interface is used to create the editing domain used as editing context.</br>
@@ -21,6 +21,7 @@ import org.eclipse.papyrus.web.services.documents.EditingDomainFactory;
  *
  * @author lfasani
  */
+// See https://github.com/eclipse-sirius/sirius-components/issues/2076
 public interface IEditingDomainFactoryService {
     AdapterFactoryEditingDomain createEditingDomain(String editingContextId);
 

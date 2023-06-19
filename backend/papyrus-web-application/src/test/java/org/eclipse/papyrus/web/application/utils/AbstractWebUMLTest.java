@@ -23,8 +23,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.papyrus.web.application.configuration.JPAConfiguration;
-import org.eclipse.papyrus.web.services.editingcontext.EditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.ObjectService;
@@ -58,7 +58,7 @@ public class AbstractWebUMLTest {
     private ObjectService objectService;
 
     @Autowired
-    private EditingContextSearchService editingContextSearchService;
+    private IEditingContextSearchService editingContextSearchService;
 
     private IEditingContext editingContext;
 

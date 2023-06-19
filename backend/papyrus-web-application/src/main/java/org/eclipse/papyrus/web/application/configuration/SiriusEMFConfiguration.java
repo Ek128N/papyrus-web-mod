@@ -33,25 +33,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SiriusEMFConfiguration {
     @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.papyrus.web.features", name = "studioDefinition")
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public EPackage domainEPackage() {
         return DomainPackage.eINSTANCE;
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.papyrus.web.features", name = "studioDefinition")
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public AdapterFactory domainAdapterFactory() {
         return new DomainItemProviderAdapterFactory();
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.papyrus.web.features", name = "studioDefinition")
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public EPackage viewEPackage() {
         return ViewPackage.eINSTANCE;
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "org.eclipse.papyrus.web.features", name = "studioDefinition")
+    @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public AdapterFactory viewAdapterFactory() {
         return new ViewItemProviderAdapterFactory();
     }

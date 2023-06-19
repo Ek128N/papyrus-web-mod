@@ -81,6 +81,16 @@
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-services</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-sirius-contributions</artifactId>
+			<version>2023.3.0</version>
+		</dependency>
+		<dependency>
 			<groupId>papyrus-uml-domain-services</groupId>
 			<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>
 			<version>${papyrus-uml-domain-services-version}</version>
