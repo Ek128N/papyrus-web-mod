@@ -24,7 +24,7 @@
 		<java.version>17</java.version>
 		<uml2.version>5.6.0-SNAPSHOT</uml2.version>
 		<sirius.components.version>2023.6.1</sirius.components.version>
-		<papyrus-uml-domain-services-version>0.12.0-SNAPSHOT</papyrus-uml-domain-services-version>
+		<papyrus-uml-domain-services-version>0.13.0-SNAPSHOT</papyrus-uml-domain-services-version>
 	</properties>
 
 	<repositories>
