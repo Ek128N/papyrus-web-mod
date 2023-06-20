@@ -127,7 +127,6 @@ public class ViewRepresentationDescriptionSearchServiceCustomImpl implements IVi
         Optional<String> sourceId = this.getSourceId(nodeDescriptionId);
         Optional<String> sourceElementId = this.getSourceElementId(nodeDescriptionId);
 
-        // this.papyrusRepresentationDescription.getViewDiagramDescriptionById(sourceId.get())
         if (sourceId.isPresent() && sourceElementId.isPresent()) {
             Optional<DocumentEntity> documentEntity = this.documentRepository.findById(UUID.fromString(sourceId.get()));
             if (documentEntity.isPresent()) {

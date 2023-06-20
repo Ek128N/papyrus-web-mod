@@ -23,8 +23,8 @@ import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,
   UploadProjectEvent,
-  UploadProjectViewContext,
   uploadProjectMachine,
+  UploadProjectViewContext,
 } from './UploadProjectViewMachine';
 
 const uploadProjectMutation = gql`

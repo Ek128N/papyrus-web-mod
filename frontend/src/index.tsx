@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,23 @@ import {
   RepresentationContext,
   ServerContext,
   theme,
+  ToastContext,
 } from '@eclipse-sirius/sirius-components-core';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import {
+  FormRepresentation,
+  GQLWidget,
+  PropertySectionContext,
+  WidgetContribution,
+} from '@eclipse-sirius/sirius-components-forms';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import IconButton from '@material-ui/core/IconButton';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
@@ -32,6 +43,8 @@ import { Main } from './main/Main';
 import './reset.css';
 import './Sprotty.css';
 import './variables.css';
+import { SliderPreview } from './widgets/SliderPreview';
+import { SliderPropertySection } from './widgets/SliderPropertySection';
 
 const baseTheme = createTheme({
   ...theme,
@@ -77,7 +90,7 @@ const baseTheme = createTheme({
   },
 });
 
-const papyrusWebTheme = createTheme(
+const siriusWebTheme = createTheme(
   {
     overrides: {
       MuiAvatar: {
@@ -102,7 +115,9 @@ const registry = {
     const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
     const params = new URLSearchParams(query);
     const type = params.get('type');
-    if (type === 'Diagram') {
+    if (type === 'Diagram' && representation.label.endsWith('__REACT_FLOW')) {
+      return ReactFlowDiagramRepresentation;
+    } else if (type === 'Diagram') {
       return DiagramRepresentation;
     } else if (type === 'Form') {
       return FormRepresentation;
@@ -117,17 +132,71 @@ const representationContextValue = {
   registry,
 };
 
+const propertySectionsRegistry = {
+  getComponent: (widget: GQLWidget) => {
+    if (widget.__typename === 'Slider') {
+      return SliderPropertySection;
+    }
+  },
+  getPreviewComponent: (widget: GQLWidget) => {
+    if (widget.__typename === 'Slider') {
+      return SliderPreview;
+    }
+  },
+  getWidgetContributions: () => {
+    const sliderWidgetContribution: WidgetContribution = {
+      name: 'Slider',
+      fields: `label iconURL minValue maxValue currentValue`,
+      icon: <LinearScaleOutlinedIcon />,
+    };
+    return [sliderWidgetContribution];
+  },
+};
+
+const propertySectionRegistryValue = {
+  propertySectionsRegistry,
+};
+
+const ToastCloseButton = ({ toastKey }) => {
+  const { closeSnackbar } = useSnackbar();
+
+  return (
+    <IconButton size="small" aria-label="close" color="inherit" onClick={() => closeSnackbar(toastKey)}>
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
+};
+
 ReactDOM.render(
   <ApolloProvider client={ApolloGraphQLClient}>
     <BrowserRouter>
-      <ThemeProvider theme={papyrusWebTheme}>
+      <ThemeProvider theme={siriusWebTheme}>
         <CssBaseline />
         <ServerContext.Provider value={{ httpOrigin }}>
-          <RepresentationContext.Provider value={representationContextValue}>
-            <div style={style}>
-              <Main />
-            </div>
-          </RepresentationContext.Provider>
+          <SnackbarProvider
+            maxSnack={5}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            action={(key) => <ToastCloseButton toastKey={key} />}
+            autoHideDuration={10000}
+            data-testid="toast">
+            <ToastContext.Provider
+              value={{
+                useToast: () => {
+                  return useSnackbar();
+                },
+              }}>
+              <RepresentationContext.Provider value={representationContextValue}>
+                <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+                  <div style={style}>
+                    <Main />
+                  </div>
+                </PropertySectionContext.Provider>
+              </RepresentationContext.Provider>
+            </ToastContext.Provider>
+          </SnackbarProvider>
         </ServerContext.Provider>
       </ThemeProvider>
     </BrowserRouter>

@@ -30,12 +30,12 @@ import {
 import {
   DeleteImageModalContext,
   DeleteImageModalEvent,
+  deleteImageModalMachine,
   HandleResponseEvent,
   HideToastEvent,
   RequestImageDeletionEvent,
   SchemaValue,
   ShowToastEvent,
-  deleteImageModalMachine,
 } from './DeleteImageModalMachine';
 
 const deleteImageMutation = gql`
@@ -124,8 +124,8 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
         </DialogActions>
       </Dialog>
       <Toast
-        open={toast === 'visible'}
         message={message}
+        open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
     </>

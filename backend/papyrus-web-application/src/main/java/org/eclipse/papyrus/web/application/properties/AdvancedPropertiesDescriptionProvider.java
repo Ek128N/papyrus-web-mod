@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,9 +47,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.uml2.uml.Element;
 
 /**
- * Temporary modification of
- * _org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider used to avoid
- * latency in the application while waiting for a proper property view implementation.
+ * Custom implemenation of {@link PropertiesDefaultDescriptionProvider} to display an advanced view for UML properties.
  *
  * @see https://github.com/PapyrusSirius/papyrus-web/issues/58
  *
@@ -59,7 +57,7 @@ import org.eclipse.uml2.uml.Element;
 @ServiceOverride(PropertiesDefaultDescriptionProvider.class)
 public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefaultDescriptionProvider {
 
-    public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature"; //$NON-NLS-1$
+    public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
     private final IObjectService objectService;
 
@@ -90,19 +88,16 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
         pageDescriptions.add(firstPageDescription);
 
         // @formatter:off
-        Function<VariableManager, String> labelProvider = variableManager -> "Properties"; //$NON-NLS-1$
+        Function<VariableManager, String> labelProvider = variableManager -> "Properties";
         // @formatter:on
 
         // @formatter:off
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(self -> self instanceof List<?>)
-                .map(self -> (List<?>) self)
-                .flatMap(self -> self.stream().findFirst())
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("default_form_description".getBytes()).toString()) //$NON-NLS-1$
-                .label("Default form description") //$NON-NLS-1$
+        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("default_form_description".getBytes()).toString())
+                .label("Default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
@@ -125,7 +120,7 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
         Function<VariableManager, String> labelProvider = variableManager -> "Advanced";
 
         // @formatter:off
-        return PageDescription.newPageDescription("firstPageId") //$NON-NLS-1$
+        return PageDescription.newPageDescription("firstPageId")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
@@ -158,7 +153,7 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
 
     }
 
-    public List<Element> getSelfElement(VariableManager varMan) {
+    private List<Element> getSelfElement(VariableManager varMan) {
         return varMan.get(VariableManager.SELF, Element.class).map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
@@ -223,7 +218,7 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
         }
 
         // @formatter:off
-        ForDescription forDescription = ForDescription.newForDescription("forId") //$NON-NLS-1$
+        ForDescription forDescription = ForDescription.newForDescription("forId")
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .ifDescriptions(ifDescriptions)
@@ -233,9 +228,9 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
         controlDescriptions.add(forDescription);
 
         // @formatter:off
-        return GroupDescription.newGroupDescription("groupId") //$NON-NLS-1$
-                .idProvider(variableManager -> "Core Properties") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Core Properties") //$NON-NLS-1$
+        return GroupDescription.newGroupDescription("groupId")
+                .idProvider(variableManager -> "Core Properties")
+                .labelProvider(variableManager -> "Core Properties")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();

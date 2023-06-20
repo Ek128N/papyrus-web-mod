@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.papyrus.web.services.editingcontext.IEditingDomainFactoryService;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -58,6 +57,7 @@ import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.documents.EObjectRandomIDManager;
+import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +85,8 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
 
     private final IEditingDomainFactoryService editingDomainFactoryService;
 
-    public UploadDocumentEventHandlerCustomImpl(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry, IEditingDomainFactoryService editingDomainFactoryService) {
+    public UploadDocumentEventHandlerCustomImpl(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry,
+            IEditingDomainFactoryService editingDomainFactoryService) {
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);

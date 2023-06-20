@@ -16,8 +16,8 @@ import { Toast } from '@eclipse-sirius/sirius-components-core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import Pagination from '@material-ui/lab/Pagination';
 import { useMachine } from '@xstate/react';
 import gql from 'graphql-tag';
@@ -42,10 +42,10 @@ import {
   InvokeTemplateEvent,
   ProjectTemplatesModalContext,
   ProjectTemplatesModalEvent,
+  projectTemplatesModalMachine,
   RedirectEvent,
   SchemaValue,
   ShowToastEvent,
-  projectTemplatesModalMachine,
 } from './ProjectTemplatesModalMachine';
 
 export const getProjectTemplatesQuery = gql`

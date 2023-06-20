@@ -30,6 +30,7 @@ import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
+import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.util.UMLUtil.ProfileApplicationHelper;
 import org.eclipse.uml2.uml.util.UMLUtil.StereotypeApplicationHelper;

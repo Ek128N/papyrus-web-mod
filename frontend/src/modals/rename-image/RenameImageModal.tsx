@@ -33,10 +33,10 @@ import {
   HideToastEvent,
   RenameImageModalContext,
   RenameImageModalEvent,
+  renameImageModalMachine,
   RequestImageRenamingEvent,
   SchemaValue,
   ShowToastEvent,
-  renameImageModalMachine,
 } from './RenameImageModalMachine';
 
 const renameImageMutation = gql`
