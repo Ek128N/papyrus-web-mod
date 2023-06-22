@@ -58,13 +58,13 @@ public class LiteralRealUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("value", "aql:'Value'", "aql:self.getLiteralRealValue(input)",
-                "aql:self.oclAsType(uml::LiteralReal).setLiteralRealValue(newValue,input)");
+                "aql:self.oclAsType(uml::LiteralReal).setLiteralRealValue(newValue,input)", "aql:self.getFeatureDescription('value')");
         group.getWidgets().add(widget);
     }
 

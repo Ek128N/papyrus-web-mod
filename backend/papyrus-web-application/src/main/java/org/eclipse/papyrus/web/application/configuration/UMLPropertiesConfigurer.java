@@ -31,8 +31,10 @@ import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescript
 import org.eclipse.papyrus.web.application.properties.UMLDetailViewBuilder;
 import org.eclipse.papyrus.web.application.utils.ViewSerializer;
 import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesMemberEndServicesWrapper;
+import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.services.EditingContext;
@@ -65,14 +67,18 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
     private AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider;
 
+    private UMLDocumentationService documentationService;
+
     public UMLPropertiesConfigurer(ViewFormDescriptionConverter converter, EPackage.Registry globalEPackageRegistry, AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider,
-            @Value("${org.eclipse.papyrus.web.application.configuration.save.view.model:false}") boolean saveViewModel, IEditableChecker checker, ServiceLogger aqlLogger) {
+            @Value("${org.eclipse.papyrus.web.application.configuration.save.view.model:false}") boolean saveViewModel, IEditableChecker checker, ServiceLogger aqlLogger,
+            UMLDocumentationService docService) {
         this.defaultPropertyViewProvider = Objects.requireNonNull(defaultPropertyViewProvider);
         this.serviceLogger = Objects.requireNonNull(aqlLogger);
         this.checker = Objects.requireNonNull(checker);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.saveViewModel = saveViewModel;
         this.converter = Objects.requireNonNull(converter);
+        this.documentationService = Objects.requireNonNull(docService);
     }
 
     @Override
@@ -100,7 +106,8 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
                 new PropertiesMultiplicityServices(this.serviceLogger, this.checker), //
                 new PropertiesProfileDefinitionServices(this.serviceLogger), //
                 new PropertiesUMLServices(this.serviceLogger), //
-                new PropertiesValueSpecificationServices(this.serviceLogger, this.checker));
+                new PropertiesValueSpecificationServices(this.serviceLogger, this.checker), //
+                new PropertiesHelpContentServices(this.documentationService));
 
         List<EPackage> allEPackages = this.findGlobalEPackages();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), services, allEPackages);

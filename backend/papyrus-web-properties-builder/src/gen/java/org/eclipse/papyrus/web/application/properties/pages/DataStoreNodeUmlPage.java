@@ -60,26 +60,28 @@ public class DataStoreNodeUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsControlType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isControlType", "aql:'Is control type'", "feature:isControlType", "aql:self.set('isControlType',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isControlType", "aql:'Is control type'", "feature:isControlType", "aql:self.set('isControlType',newValue)",
+                "aql:self.getFeatureDescription('isControlType')");
         group.getWidgets().add(widget);
     }
 
     protected void addOrdering(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("ordering", "aql:'Ordering'",
                 "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.ordering.toString())", "aql:self.set('ordering',newValue.instance)",
-                "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('ordering')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 

@@ -59,13 +59,13 @@ public class LiteralUnlimitedNaturalUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("value", "aql:'Value'", "aql:self.getLiteralUnlimitedNaturalValue(input)",
-                "aql:self.oclAsType(uml::LiteralUnlimitedNatural).setLiteralUnlimitedNaturalValue(newValue,input)");
+                "aql:self.oclAsType(uml::LiteralUnlimitedNatural).setLiteralUnlimitedNaturalValue(newValue,input)", "aql:self.getFeatureDescription('value')");
         group.getWidgets().add(widget);
     }
 

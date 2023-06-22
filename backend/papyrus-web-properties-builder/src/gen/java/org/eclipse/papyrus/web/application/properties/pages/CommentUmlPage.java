@@ -57,7 +57,7 @@ public class CommentUmlPage {
     }
 
     protected void addBody(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextAreaDescription("body", "aql:'Body'", "feature:body", "aql:self.set('body',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextAreaDescription("body", "aql:'Body'", "feature:body", "aql:self.set('body',newValue)", "aql:self.getFeatureDescription('body')");
         group.getWidgets().add(widget);
     }
 

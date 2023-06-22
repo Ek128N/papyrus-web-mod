@@ -58,14 +58,15 @@ public class MessageUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addMessageSort(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("messageSort", "aql:'Message sort'",
                 "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.messageSort.toString())",
-                "aql:self.set('messageSort',newValue.instance)", "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('messageSort',newValue.instance)", "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('messageSort')");
         group.getWidgets().add(widget);
     }
 

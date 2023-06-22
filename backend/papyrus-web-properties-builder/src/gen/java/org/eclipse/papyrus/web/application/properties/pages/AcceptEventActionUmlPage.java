@@ -60,19 +60,21 @@ public class AcceptEventActionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsUnmarshall(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnmarshall", "aql:'Is unmarshall'", "feature:isUnmarshall", "aql:self.set('isUnmarshall',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnmarshall", "aql:'Is unmarshall'", "feature:isUnmarshall", "aql:self.set('isUnmarshall',newValue)",
+                "aql:self.getFeatureDescription('isUnmarshall')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 

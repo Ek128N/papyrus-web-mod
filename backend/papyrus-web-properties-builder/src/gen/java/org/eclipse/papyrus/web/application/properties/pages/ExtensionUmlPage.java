@@ -58,12 +58,13 @@ public class ExtensionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsRequired(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isRequired", "Is required", "feature:isRequired", "aql:self.set('isRequired',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isRequired", "Is required", "feature:isRequired", "aql:self.set('isRequired',newValue)",
+                "aql:self.getFeatureDescription('isRequired')");
         group.getWidgets().add(widget);
     }
 

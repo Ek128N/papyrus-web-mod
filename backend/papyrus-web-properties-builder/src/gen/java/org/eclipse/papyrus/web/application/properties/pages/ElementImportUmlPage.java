@@ -58,14 +58,15 @@ public class ElementImportUmlPage {
     }
 
     protected void addAlias(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("alias", "aql:'Alias'", "feature:alias", "aql:self.set('alias',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("alias", "aql:'Alias'", "feature:alias", "aql:self.set('alias',newValue)", "aql:self.getFeatureDescription('alias')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 

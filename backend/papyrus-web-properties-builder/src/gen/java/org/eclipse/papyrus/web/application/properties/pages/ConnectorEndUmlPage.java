@@ -59,18 +59,20 @@ public class ConnectorEndUmlPage {
     }
 
     protected void addIsOrdered(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)",
+                "aql:self.getFeatureDescription('isOrdered')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsUnique(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)",
+                "aql:self.getFeatureDescription('isUnique')");
         group.getWidgets().add(widget);
     }
 
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
-                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)");
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()");
         group.getWidgets().add(widget);
     }
 

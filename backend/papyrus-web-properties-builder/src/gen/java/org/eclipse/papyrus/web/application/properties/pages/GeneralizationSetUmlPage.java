@@ -60,24 +60,27 @@ public class GeneralizationSetUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsCovering(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isCovering", "Is covering", "feature:isCovering", "aql:self.set('isCovering',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isCovering", "Is covering", "feature:isCovering", "aql:self.set('isCovering',newValue)",
+                "aql:self.getFeatureDescription('isCovering')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDisjoint(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDisjoint", "Is disjoint", "feature:isDisjoint", "aql:self.set('isDisjoint',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDisjoint", "Is disjoint", "feature:isDisjoint", "aql:self.set('isDisjoint',newValue)",
+                "aql:self.getFeatureDescription('isDisjoint')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 

@@ -58,12 +58,13 @@ public class MetaclassUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addQualifiedName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("qualifiedName", "aql:'Qualified name'", "aql:self.getQualifiedName()", "var:self");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("qualifiedName", "aql:'Qualified name'", "aql:self.getQualifiedName()", "var:self",
+                "A name which allows the NamedElement to be identified within a hierarchy of nested Namespaces. It is constructed from the names of the containing namespaces starting at the root of the hierarchy and ending with the name of the NamedElement itself.");
         group.getWidgets().add(widget);
     }
 

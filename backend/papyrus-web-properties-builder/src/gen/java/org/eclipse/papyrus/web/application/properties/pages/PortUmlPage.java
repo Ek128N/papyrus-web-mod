@@ -65,50 +65,57 @@ public class PortUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsBehavior(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isBehavior", "Is behavior", "feature:isBehavior", "aql:self.set('isBehavior',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isBehavior", "Is behavior", "feature:isBehavior", "aql:self.set('isBehavior',newValue)",
+                "aql:self.getFeatureDescription('isBehavior')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDerived(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerived", "aql:'Is derived'", "feature:isDerived", "aql:self.set('isDerived',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerived", "aql:'Is derived'", "feature:isDerived", "aql:self.set('isDerived',newValue)",
+                "aql:self.getFeatureDescription('isDerived')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDerivedUnion(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerivedUnion", "aql:'Is derived union'", "feature:isDerivedUnion", "aql:self.set('isDerivedUnion',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerivedUnion", "aql:'Is derived union'", "feature:isDerivedUnion", "aql:self.set('isDerivedUnion',newValue)",
+                "aql:self.getFeatureDescription('isDerivedUnion')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsOrdered(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)",
+                "aql:self.getFeatureDescription('isOrdered')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsService(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isService", "aql:'Is service'", "feature:isService", "aql:self.set('isService',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isService", "aql:'Is service'", "feature:isService", "aql:self.set('isService',newValue)",
+                "aql:self.getFeatureDescription('isService')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsConjugated(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isConjugated", "aql:'Is conjugated'", "feature:isConjugated", "aql:self.set('isConjugated',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isConjugated", "aql:'Is conjugated'", "feature:isConjugated", "aql:self.set('isConjugated',newValue)",
+                "aql:self.getFeatureDescription('isConjugated')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
-                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)");
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()");
         group.getWidgets().add(widget);
     }
 

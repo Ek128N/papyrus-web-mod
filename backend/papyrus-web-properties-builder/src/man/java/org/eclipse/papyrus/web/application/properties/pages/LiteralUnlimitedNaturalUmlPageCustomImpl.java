@@ -32,7 +32,7 @@ public class LiteralUnlimitedNaturalUmlPageCustomImpl extends LiteralUnlimitedNa
     @Override
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("value", "aql:'Value'", "aql:self.getLiteralUnlimitedNaturalValue()",
-                "aql:self.oclAsType(uml::LiteralUnlimitedNatural).setLiteralUnlimitedNaturalValue(newValue)");
+                "aql:self.oclAsType(uml::LiteralUnlimitedNatural).setLiteralUnlimitedNaturalValue(newValue)", "aql:self.getFeatureDescription('value')");
         group.getWidgets().add(widget);
     }
 }

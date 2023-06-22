@@ -36,16 +36,14 @@ public class LiteralBooleanUmlPageCustomImpl extends LiteralBooleanUmlPage {
         FlexboxContainerDescription widget = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
         widget.setFlexDirection(FlexDirection.ROW);
         widget.setLabelExpression("aql:'Value'");
+        // widget.setHelpExpression("aql:self.getFeatureDescription('value')");
         widget.setName("value");
-        WidgetDescription trueCheck = viewElementFactory.createCheckboxDescription("isTrue", "aql:'True'", "feature:value", "aql:self.set('value',newValue)");
-        WidgetDescription falseCheck = viewElementFactory.createCheckboxDescription("isFalse", "aql:'False'", "aql:not self.value", "aql:self.set('value',not newValue)");
+        WidgetDescription trueCheck = viewElementFactory.createCheckboxDescription("isTrue", "aql:'True'", "feature:value", "aql:self.set('value',newValue)",
+                "aql:self.getFeatureDescription('value')");
+        WidgetDescription falseCheck = viewElementFactory.createCheckboxDescription("isFalse", "aql:'False'", "aql:not self.value", "aql:self.set('value',not newValue)",
+                "aql:self.getFeatureDescription('value')");
         widget.getChildren().add(trueCheck);
         widget.getChildren().add(falseCheck);
-
-        // alternative just a checkbox
-        // WidgetDescription widget = viewElementFactory.createCheckboxDescription("value", "aql:'Value'",
-        // "feature:value", "aql:self.set('value', newValue)");
-
         group.getWidgets().add(widget);
     }
 }

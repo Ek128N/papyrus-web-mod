@@ -58,7 +58,8 @@ public class LinkEndCreationDataUmlPage {
     }
 
     protected void addIsReplaceAll(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReplaceAll", "aql:'Is replace all'", "feature:isReplaceAll", "aql:self.set('isReplaceAll',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReplaceAll", "aql:'Is replace all'", "feature:isReplaceAll", "aql:self.set('isReplaceAll',newValue)",
+                "aql:self.getFeatureDescription('isReplaceAll')");
         group.getWidgets().add(widget);
     }
 

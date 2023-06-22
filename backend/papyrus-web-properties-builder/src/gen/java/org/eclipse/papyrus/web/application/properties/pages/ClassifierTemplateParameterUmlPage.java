@@ -59,7 +59,7 @@ public class ClassifierTemplateParameterUmlPage {
 
     protected void addAllowSubstitutable(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("allowSubstitutable", "aql:'Allow substitutable'", "feature:allowSubstitutable",
-                "aql:self.set('allowSubstitutable',newValue)");
+                "aql:self.set('allowSubstitutable',newValue)", "aql:self.getFeatureDescription('allowSubstitutable')");
         group.getWidgets().add(widget);
     }
 

@@ -59,7 +59,7 @@ public class LinkEndDestructionDataUmlPage {
 
     protected void addIsDestroyDuplicates(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDestroyDuplicates", "aql:'Is destroy duplicates'", "feature:isDestroyDuplicates",
-                "aql:self.set('isDestroyDuplicates',newValue)");
+                "aql:self.set('isDestroyDuplicates',newValue)", "aql:self.getFeatureDescription('isDestroyDuplicates')");
         group.getWidgets().add(widget);
     }
 

@@ -62,34 +62,39 @@ public class ImageUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "aql:self.getImageName()", "aql:self.oclAsType(uml::Image).setImageName(newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "aql:self.getImageName()", "aql:self.oclAsType(uml::Image).setImageName(newValue)",
+                "aql:'The image\'s name. This is a virtual property, used only for label display.'");
         group.getWidgets().add(widget);
     }
 
     protected void addKind(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("kind", "aql:'Kind'", "aql:self.getImageKind()",
-                "aql:self.oclAsType(uml::Image).setImageKind(newValue.oclAsType(ecore::EString))", "aql:self.getImageKindEnumerations()", "aql:candidate.toString()");
+                "aql:self.oclAsType(uml::Image).setImageKind(newValue.oclAsType(ecore::EString))", "aql:self.getImageKindEnumerations()", "aql:candidate.toString()",
+                "aql:'The kind of image to be used. If icon is set, the image will be displayed on the stereotyped element. If shape is used, the image will be used as the graphical element. '");
         group.getWidgets().add(widget);
     }
 
     protected void addExpression(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextAreaDescription("expression", "aql:'Expression'", "aql:self.getImageExpression()",
-                "aql:self.oclAsType(uml::Image).setImageExpression(newValue)");
+                "aql:self.oclAsType(uml::Image).setImageExpression(newValue)", "aql:'A boolean expression to determine under which condition this image should be displayed.'");
         group.getWidgets().add(widget);
     }
 
     protected void addLocation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "feature:location", "aql:self.set('location',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "feature:location", "aql:self.set('location',newValue)",
+                "aql:self.getFeatureDescription('location')");
         group.getWidgets().add(widget);
     }
 
     protected void addFormat(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("format", "aql:'Format'", "feature:format", "aql:self.set('format',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("format", "aql:'Format'", "feature:format", "aql:self.set('format',newValue)",
+                "aql:self.getFeatureDescription('format')");
         group.getWidgets().add(widget);
     }
 
     protected void addContent(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("content", "aql:'Content'", "feature:content", "aql:self.set('content',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("content", "aql:'Content'", "feature:content", "aql:self.set('content',newValue)",
+                "aql:self.getFeatureDescription('content')");
         group.getWidgets().add(widget);
     }
 

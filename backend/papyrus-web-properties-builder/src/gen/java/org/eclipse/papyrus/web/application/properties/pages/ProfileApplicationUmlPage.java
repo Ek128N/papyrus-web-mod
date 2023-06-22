@@ -57,7 +57,8 @@ public class ProfileApplicationUmlPage {
     }
 
     protected void addIsStrict(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isStrict", "aql:'Is strict'", "feature:isStrict", "aql:self.set('isStrict',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isStrict", "aql:'Is strict'", "feature:isStrict", "aql:self.set('isStrict',newValue)",
+                "aql:self.getFeatureDescription('isStrict')");
         group.getWidgets().add(widget);
     }
 

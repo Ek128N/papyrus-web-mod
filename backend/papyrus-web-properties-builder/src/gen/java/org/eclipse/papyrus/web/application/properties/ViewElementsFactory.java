@@ -35,44 +35,48 @@ public class ViewElementsFactory {
         return changeCtxt;
     }
 
-    public TextfieldDescription createTextfieldDescription(String name, String labelExp, String valueExp, String contextExp) {
+    public TextfieldDescription createTextfieldDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression) {
         TextfieldDescription description = ViewFactory.eINSTANCE.createTextfieldDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
         description.getBody().add(createChangeContext(contextExp));
+        description.setHelpExpression(helpExpression);
         return description;
     }
 
-    public TextAreaDescription createTextAreaDescription(String name, String labelExp, String valueExp, String contextExp) {
+    public TextAreaDescription createTextAreaDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression) {
         TextAreaDescription description = ViewFactory.eINSTANCE.createTextAreaDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
         description.getBody().add(createChangeContext(contextExp));
+        description.setHelpExpression(helpExpression);
         return description;
     }
 
-    public CheckboxDescription createCheckboxDescription(String name, String labelExp, String valueExp, String contextExp) {
+    public CheckboxDescription createCheckboxDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression) {
         CheckboxDescription description = ViewFactory.eINSTANCE.createCheckboxDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
         description.getBody().add(createChangeContext(contextExp));
+        description.setHelpExpression(helpExpression);
         return description;
     }
 
-    public ListDescription createListDescription(String name, String labelExp, String valueExp, String contextExp, String isDeletableExp) {
+    public ListDescription createListDescription(String name, String labelExp, String valueExp, String contextExp, String isDeletableExp, String helpExpression) {
         ListDescription description = ViewFactory.eINSTANCE.createListDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
         description.setIsDeletableExpression(isDeletableExp);
         description.getBody().add(createChangeContext(contextExp));
+        description.setHelpExpression(helpExpression);
         return description;
     }
 
-    public RadioDescription createRadioDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp) {
+    public RadioDescription createRadioDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp, String helpExpression) {
         RadioDescription description = ViewFactory.eINSTANCE.createRadioDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
@@ -80,10 +84,11 @@ public class ViewElementsFactory {
         description.setCandidatesExpression(candidatesExp);
         description.setCandidateLabelExpression(candidateLabelExp);
         description.getBody().add(createChangeContext(contextExp));
+        description.setHelpExpression(helpExpression);
         return description;
     }
 
-    public SelectDescription createSelectDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp) {
+    public SelectDescription createSelectDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp, String helpExpression) {
         SelectDescription description = ViewFactory.eINSTANCE.createSelectDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
@@ -91,6 +96,7 @@ public class ViewElementsFactory {
         description.setCandidatesExpression(candidatesExp);
         description.setCandidateLabelExpression(candidateLabelExp);
         description.getBody().add(createChangeContext(contextExp));
+        description.setHelpExpression(helpExpression);
         return description;
     }
 

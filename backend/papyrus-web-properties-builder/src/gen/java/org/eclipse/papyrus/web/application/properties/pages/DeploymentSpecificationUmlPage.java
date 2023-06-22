@@ -63,36 +63,39 @@ public class DeploymentSpecificationUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addDeploymentLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("deploymentLocation", "aql:'Deployment location'", "feature:deploymentLocation",
-                "aql:self.set('deploymentLocation',newValue)");
+                "aql:self.set('deploymentLocation',newValue)", "aql:self.getFeatureDescription('deploymentLocation')");
         group.getWidgets().add(widget);
     }
 
     protected void addExecutionLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("executionLocation", "aql:'Execution location'", "feature:executionLocation",
-                "aql:self.set('executionLocation',newValue)");
+                "aql:self.set('executionLocation',newValue)", "aql:self.getFeatureDescription('executionLocation')");
         group.getWidgets().add(widget);
     }
 
     protected void addFileName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("fileName", "aql:'File name'", "feature:fileName", "aql:self.set('fileName',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("fileName", "aql:'File name'", "feature:fileName", "aql:self.set('fileName',newValue)",
+                "aql:self.getFeatureDescription('fileName')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsAbstract(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
+                "aql:self.getFeatureDescription('isAbstract')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 

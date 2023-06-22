@@ -63,40 +63,45 @@ public class ActivityUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsAbstract(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
+                "aql:self.getFeatureDescription('isAbstract')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsActive(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isActive", "aql:'Is active'", "feature:isActive", "aql:self.set('isActive',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isActive", "aql:'Is active'", "feature:isActive", "aql:self.set('isActive',newValue)",
+                "aql:self.getFeatureDescription('isActive')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsReadOnly(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReadOnly", "aql:'Is read only'", "feature:isReadOnly", "aql:self.set('isReadOnly',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReadOnly", "aql:'Is read only'", "feature:isReadOnly", "aql:self.set('isReadOnly',newValue)",
+                "aql:self.getFeatureDescription('isReadOnly')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsReentrant(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReentrant", "aql:'Is reentrant'", "feature:isReentrant", "aql:self.set('isReentrant',newValue)");
+        WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReentrant", "aql:'Is reentrant'", "feature:isReentrant", "aql:self.set('isReentrant',newValue)",
+                "aql:self.getFeatureDescription('isReentrant')");
         group.getWidgets().add(widget);
     }
 
     protected void addIsSingleExecution(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isSingleExecution", "aql:'Is single execution'", "feature:isSingleExecution",
-                "aql:self.set('isSingleExecution',newValue)");
+                "aql:self.set('isSingleExecution',newValue)", "aql:self.getFeatureDescription('isSingleExecution')");
         group.getWidgets().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
-                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name");
+                "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
+                "aql:self.getFeatureDescription('visibility')");
         group.getWidgets().add(widget);
     }
 
