@@ -244,7 +244,10 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
                                                                                                           // elements
                 .flatMap(diagram -> this.diagramBuilderService.updateDiagram(diagram, editingContext,
                         diagramContext -> this.fillStateMachineDiagram(stateMachine, editingContext, diagram, diagramContext)))
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext));
+                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext)).flatMap(diagram -> {
+                    this.representationPersistenceService.save(editingContext, diagram);
+                    return Optional.of(diagram);
+                });
     }
 
     private void fillStateMachineDiagram(StateMachine stateMachine, IEditingContext editingContext, Diagram diagram, IDiagramContext diagramContext) {
