@@ -31,6 +31,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class SpringWebMvcConfigurer implements WebMvcConfigurer {
+    public static final String PNG_PATTERN = "/**/*.png";
+
     private static final String[] ALLOWED_ORIGIN_PATTERNS = { "*" };
 
     /**
@@ -56,7 +58,8 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
             SpringWebMvcConfigurerConstants.JSON_PATTERN,
             SpringWebMvcConfigurerConstants.ICO_PATTERN,
             SpringWebMvcConfigurerConstants.TTF_PATTERN,
-            SpringWebMvcConfigurerConstants.MEDIA_PATTERN
+            SpringWebMvcConfigurerConstants.MEDIA_PATTERN,
+            SpringWebMvcConfigurer.PNG_PATTERN
         ).addResourceLocations(SpringWebMvcConfigurerConstants.STATIC_ASSETS_PATH);
 
         // Make sure that all other requests are redirected to index.html, the React router will handle it
