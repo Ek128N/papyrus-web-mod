@@ -27,8 +27,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
-import org.eclipse.sirius.components.collaborative.forms.api.IPropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.EEnumIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.NumberIfDescriptionProvider;
@@ -45,6 +43,7 @@ import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.uml2.uml.Element;
+import org.springframework.stereotype.Service;
 
 /**
  * Custom implemenation of {@link PropertiesDefaultDescriptionProvider} to display an advanced view for UML properties.
@@ -54,8 +53,8 @@ import org.eclipse.uml2.uml.Element;
  * @author Arthur Daussy
  */
 
-@ServiceOverride(PropertiesDefaultDescriptionProvider.class)
-public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefaultDescriptionProvider {
+@Service
+public class AdvancedPropertiesDescriptionProvider {
 
     public static final String ESTRUCTURAL_FEATURE = "eStructuralFeature";
 
@@ -75,7 +74,6 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
     }
 
-    @Override
     public FormDescription getFormDescription() {
         List<GroupDescription> groupDescriptions = new ArrayList<>();
         GroupDescription groupDescription = this.getGroupDescription();
@@ -101,10 +99,18 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(targetObjectIdProvider)
-                .canCreatePredicate(variableManager -> false)
+                .canCreatePredicate(variableManager -> this.canCreatePage(variableManager))
                 .pageDescriptions(pageDescriptions)
                 .build();
         // @formatter:on
+    }
+
+    private boolean canCreatePage(VariableManager variableManager) {
+        var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+        if (optionalSelf.isPresent()) {
+            return optionalSelf.get() instanceof Element;
+        }
+        return false;
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
@@ -125,7 +131,7 @@ public class AdvancedPropertiesDescriptionProvider implements IPropertiesDefault
                 .labelProvider(labelProvider)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .groupDescriptions(groupDescriptions)
-                .canCreatePredicate(variableManager -> true)
+                .canCreatePredicate(variableManager -> this.canCreatePage(variableManager))
                 .build();
         // @formatter:on
     }
