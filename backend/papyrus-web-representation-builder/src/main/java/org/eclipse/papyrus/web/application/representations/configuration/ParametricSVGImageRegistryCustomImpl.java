@@ -26,25 +26,23 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.ParametricSVGIma
  */
 @ServiceOverride(org.eclipse.sirius.web.services.diagram.ParametricSVGImageRegistry.class)
 public class ParametricSVGImageRegistryCustomImpl implements IParametricSVGImageRegistry {
-    public static final UUID PARAMETRIC_CLASS_IMAGE_ID = UUID.nameUUIDFromBytes("Class".getBytes()); //$NON-NLS-1$
+    public static final UUID PARAMETRIC_CLASS_IMAGE_ID = UUID.nameUUIDFromBytes("Class".getBytes());
 
-    public static final UUID PARAMETRIC_PACKAGE_IMAGE_ID = UUID.nameUUIDFromBytes("Package".getBytes()); //$NON-NLS-1$
+    public static final UUID PARAMETRIC_PACKAGE_IMAGE_ID = UUID.nameUUIDFromBytes("Package".getBytes());
 
-    public static final UUID PARAMETRIC_NOTE_IMAGE_ID = UUID.nameUUIDFromBytes("Note".getBytes()); //$NON-NLS-1$
+    public static final UUID PARAMETRIC_NOTE_IMAGE_ID = UUID.nameUUIDFromBytes("Note".getBytes());
 
-    public static final UUID PARAMETRIC_FORK_IMAGE_ID = UUID.nameUUIDFromBytes("Fork.svg".getBytes()); //$NON-NLS-1$
+    public static final UUID PARAMETRIC_FORK_IMAGE_ID = UUID.nameUUIDFromBytes("Fork.svg".getBytes());
 
-    public static final UUID PARAMETRIC_JOIN_IMAGE_ID = UUID.nameUUIDFromBytes("Join.svg".getBytes()); //$NON-NLS-1$
+    public static final UUID PARAMETRIC_JOIN_IMAGE_ID = UUID.nameUUIDFromBytes("Join.svg".getBytes());
 
-    public static final UUID PARAMETRIC_CHOICE_IMAGE_ID = UUID.nameUUIDFromBytes("Choice.svg".getBytes()); //$NON-NLS-1$
+    public static final UUID PARAMETRIC_CHOICE_IMAGE_ID = UUID.nameUUIDFromBytes("Choice.svg".getBytes());
 
     @Override
     public List<ParametricSVGImage> getImages() {
-        return List.of(new ParametricSVGImage(PARAMETRIC_PACKAGE_IMAGE_ID, "Package", "parametricSVGs/package.svg"), //$NON-NLS-1$ //$NON-NLS-2$
-                new ParametricSVGImage(PARAMETRIC_CLASS_IMAGE_ID, "Class", "parametricSVGs/class.svg"), //$NON-NLS-1$ //$NON-NLS-2$
-                new ParametricSVGImage(PARAMETRIC_NOTE_IMAGE_ID, "Note", "parametricSVGs/note.svg"), //$NON-NLS-1$ //$NON-NLS-2$
-                new ParametricSVGImage(PARAMETRIC_FORK_IMAGE_ID, "Fork", "parametricSVGs/Fork.svg"), //$NON-NLS-1$ //$NON-NLS-2$
-                new ParametricSVGImage(PARAMETRIC_JOIN_IMAGE_ID, "Join", "parametricSVGs/Fork.svg"), //$NON-NLS-1$ //$NON-NLS-2$
-                new ParametricSVGImage(PARAMETRIC_CHOICE_IMAGE_ID, "Choice", "parametricSVGs/Choice.svg")); //$NON-NLS-1$ //$NON-NLS-2$
+        return List.of(new ParametricSVGImage(PARAMETRIC_PACKAGE_IMAGE_ID, "Package", "parametricSVGs/package.svg"),
+                new ParametricSVGImage(PARAMETRIC_CLASS_IMAGE_ID, "Class", "parametricSVGs/class.svg"), new ParametricSVGImage(PARAMETRIC_NOTE_IMAGE_ID, "Note", "parametricSVGs/note.svg"),
+                new ParametricSVGImage(PARAMETRIC_FORK_IMAGE_ID, "Fork", "parametricSVGs/Fork.svg"), new ParametricSVGImage(PARAMETRIC_JOIN_IMAGE_ID, "Join", "parametricSVGs/Fork.svg"),
+                new ParametricSVGImage(PARAMETRIC_CHOICE_IMAGE_ID, "Choice", "parametricSVGs/Choice.svg"));
     }
 }

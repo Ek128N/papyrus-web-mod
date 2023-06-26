@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.services.diagram;
+package org.eclipse.papyrus.web.application.representations.configuration;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,7 +35,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageFactory;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IParametricSVGImageRegistry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ParametricSVGImage;

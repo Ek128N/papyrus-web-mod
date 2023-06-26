@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.application.configuration;
+package org.eclipse.papyrus.web.application.representations.configuration;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -35,9 +35,9 @@ import org.springframework.stereotype.Component;
  * @author pcdavid
  */
 @Component
-public class CustomImagesLoader implements CommandLineRunner {
+public class UMLImagesLoader implements CommandLineRunner {
 
-    private final Logger logger = LoggerFactory.getLogger(CustomImagesLoader.class);
+    private final Logger logger = LoggerFactory.getLogger(UMLImagesLoader.class);
 
     private final ICustomImageRepository customImageRepository;
 
@@ -45,7 +45,7 @@ public class CustomImagesLoader implements CommandLineRunner {
 
     private final PathMatchingResourcePatternResolver patternResolver;
 
-    public CustomImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.sirius.web.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
+    public UMLImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.sirius.web.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
         this.customImageRepository = Objects.requireNonNull(customImageRepository);
         this.imagesPathPattern = imagesPathPattern;
         this.patternResolver = new PathMatchingResourcePatternResolver(Objects.requireNonNull(resourceLoader));
@@ -73,7 +73,7 @@ public class CustomImagesLoader implements CommandLineRunner {
             try (BufferedInputStream stream = new BufferedInputStream(resource.getInputStream())) {
                 customImageEntity.setContent(stream.readAllBytes());
             }
-            customImageEntity.setId(UUID.nameUUIDFromBytes(customImageEntity.getContent()));
+            customImageEntity.setId(UUID.nameUUIDFromBytes(resource.getFilename().getBytes()));
 
             this.logger.debug(resource.getFilename() + ": " + customImageEntity.getId().toString());
 
