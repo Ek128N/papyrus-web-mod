@@ -34,6 +34,7 @@
 		<module>papyrus-web-application</module>
 		<module>papyrus-web-representation-builder</module>
 		<module>papyrus-web-properties-builder</module>
+		<module>papyrus-web-tests</module>
 		
 		<!--Profiles-->
 		<module>papyrus-web-cpp-profile</module>

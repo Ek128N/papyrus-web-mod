@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.papyrus.web.tests.utils.Status;
 import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.DiagramElementDescription;
 import org.eclipse.sirius.components.view.EdgeDescription;

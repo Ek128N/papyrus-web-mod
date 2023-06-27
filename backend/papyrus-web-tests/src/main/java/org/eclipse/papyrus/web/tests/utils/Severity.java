@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.application.representations.utils;
+package org.eclipse.papyrus.web.tests.utils;
 
 /**
  * Severity.
