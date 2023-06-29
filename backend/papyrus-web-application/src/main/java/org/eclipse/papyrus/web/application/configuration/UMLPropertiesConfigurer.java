@@ -28,7 +28,6 @@ import org.eclipse.papyrus.uml.domain.services.properties.PropertiesProfileDefin
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
 import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescriptionProvider;
-import org.eclipse.papyrus.web.application.properties.UMLDetailViewBuilder;
 import org.eclipse.papyrus.web.application.utils.ViewSerializer;
 import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
@@ -42,7 +41,6 @@ import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -88,13 +86,8 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
         URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(UMLPropertiesConfigurer.class.getCanonicalName().getBytes()));
         Resource resource = new XMIResourceImpl(uri);
-        View view = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createView();
+        View view = new UMLDetailViewFromBuilder("UML Detail View").build();
         resource.getContents().add(view);
-
-        FormDescription form = this.createFormDescription();
-        view.getDescriptions().add(form);
-
-        form.getPages().addAll(new UMLDetailViewBuilder().createPages());
 
         if (this.saveViewModel) {
             new ViewSerializer().printAndSaveViewModel(view);
@@ -120,16 +113,6 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
         // Register the "Advance Property View"
         this.defaultPropertyViewProvider.getFormDescription().getPageDescriptions().forEach(registry::add);
-    }
-
-    private FormDescription createFormDescription() {
-        FormDescription form = ViewFactory.eINSTANCE.createFormDescription();
-        form.setName("UML Detail View");
-        // Not really used
-        // The form is only here to own PageDescriptions
-        form.setDomainType("uml::Element");
-        return form;
-
     }
 
     private List<EPackage> findGlobalEPackages() {

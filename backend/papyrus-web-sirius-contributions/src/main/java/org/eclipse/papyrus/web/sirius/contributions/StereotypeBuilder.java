@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2023 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -52,13 +53,13 @@ public class StereotypeBuilder {
         this.timer = Timer.builder(timerName).register(meterRegistry);
     }
 
-    public String getStereotypeBody(EObject rootEObject) {
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory"); //$NON-NLS-1$
-        if (rootEObject != null) {
-            resource.getContents().add(rootEObject);
+    public String getStereotypeBody(List<EObject> rootEObjects) {
+        JsonResource resource = new JSONResourceFactory().createResourceFromPath("inmemory");
+        if (rootEObjects != null) {
+            resource.getContents().addAll(rootEObjects);
         }
 
-        String content = ""; //$NON-NLS-1$
+        String content = "";
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             Map<String, Object> options = new HashMap<>();
             options.put(JsonResource.OPTION_ENCODING, JsonResource.ENCODING_UTF_8);
@@ -76,7 +77,7 @@ public class StereotypeBuilder {
     public String getStereotypeBody(ClassPathResource classPathResource) {
         long start = System.currentTimeMillis();
 
-        String content = ""; //$NON-NLS-1$
+        String content = "";
         try (var inputStream = classPathResource.getInputStream()) {
             URI uri = new JSONResourceFactory().createResourceURI(classPathResource.getFilename());
             Resource inputResource = this.loadFromXMI(uri, inputStream);

@@ -97,8 +97,8 @@ public class EditingContextSearchServiceCustomImplTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        EditingDomainFactoryServiceCustomImpl editingDomainFactoryService = new EditingDomainFactoryServiceCustomImpl(editingContextEPackageService, composedAdapterFactory, ePackageRegistry,
-                Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
+        EditingDomainFactoryServiceCustomImpl editingDomainFactoryService = new EditingDomainFactoryServiceCustomImpl(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory, ePackageRegistry, Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchServiceCustomImpl(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
                 new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
@@ -145,8 +145,8 @@ public class EditingContextSearchServiceCustomImplTests {
         var editingContextMetadata = new EditingContextMetadata(List.of());
         IEditingContextMetadataProvider editingContextMetadataProvider = editingContextId -> editingContextMetadata;
 
-        EditingDomainFactoryServiceCustomImpl editingDomainFactoryService = new EditingDomainFactoryServiceCustomImpl(editingContextEPackageService, composedAdapterFactory, ePackageRegistry,
-                Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
+        EditingDomainFactoryServiceCustomImpl editingDomainFactoryService = new EditingDomainFactoryServiceCustomImpl(editingContextEPackageService, editingContextMetadataProvider,
+                composedAdapterFactory, ePackageRegistry, Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchServiceCustomImpl(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
                 new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
