@@ -60,7 +60,7 @@ public class PropertiesMemberEndServicesWrapper {
     }
 
     /**
-     * Replacement of {@link PropertiesMemberEndServices#setOwner(Property, String)}.
+     * Replacement of {@link PropertiesMemberEndServices#setOwner(Property, String)}.<br>
      */
     public Property setOwner(Property memberEnd, String owner) {
         this.delegate.setOwner(memberEnd, owner);

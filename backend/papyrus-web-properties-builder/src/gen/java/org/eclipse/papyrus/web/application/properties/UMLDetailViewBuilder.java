@@ -40,8 +40,8 @@ public class UMLDetailViewBuilder {
         pages.add(new AddVariableValueActionUmlPage(factory).create());
         pages.add(new AnyReceiveEventUmlPage(factory).create());
         pages.add(new ArtifactUmlPage(factory).create());
-        pages.add(new AssociationUmlPage(factory).create());
-        pages.add(new AssociationClassUmlPage(factory).create());
+        pages.add(new AssociationUmlPageCustomImpl(factory).create());
+        pages.add(new AssociationClassUmlPageCustomImpl(factory).create());
         pages.add(new BehaviorExecutionSpecificationUmlPage(factory).create());
         pages.add(new BroadcastSignalActionUmlPage(factory).create());
         pages.add(new CallBehaviorActionUmlPage(factory).create());
