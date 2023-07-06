@@ -41,7 +41,7 @@ public class PseudoStateUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("pseudoState_uml_pageFrom", "uml::Pseudostate", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("pseudoState_uml_pageFrom", "uml::Pseudostate", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -57,7 +57,8 @@ public class PseudoStateUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 

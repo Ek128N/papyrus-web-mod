@@ -41,7 +41,7 @@ public class LinkEndCreationDataUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("linkEndCreationData_uml_pageFrom", "uml::LinkEndCreationData", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("linkEndCreationData_uml_pageFrom", "uml::LinkEndCreationData", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -59,7 +59,7 @@ public class LinkEndCreationDataUmlPage {
 
     protected void addIsReplaceAll(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReplaceAll", "aql:'Is replace all'", "feature:isReplaceAll", "aql:self.set('isReplaceAll',newValue)",
-                "aql:self.getFeatureDescription('isReplaceAll')");
+                "aql:self.getFeatureDescription('isReplaceAll')", "aql:self.eClass().getEStructuralFeature('isReplaceAll').changeable");
         group.getWidgets().add(widget);
     }
 

@@ -40,7 +40,7 @@ public class ClauseUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("clause_uml_pageFrom", "uml::Clause", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("clause_uml_pageFrom", "uml::Clause", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

@@ -41,7 +41,7 @@ public class DestroyObjectActionUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("destroyObjectAction_uml_pageFrom", "uml::DestroyObjectAction", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("destroyObjectAction_uml_pageFrom", "uml::DestroyObjectAction", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -61,19 +61,21 @@ public class DestroyObjectActionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDestroyLinks(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDestroyLinks", "aql:'Is destroy links'", "feature:isDestroyLinks", "aql:self.set('isDestroyLinks',newValue)",
-                "aql:self.getFeatureDescription('isDestroyLinks')");
+                "aql:self.getFeatureDescription('isDestroyLinks')", "aql:self.eClass().getEStructuralFeature('isDestroyLinks').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDestroyOwnedObjects(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDestroyOwnedObjects", "aql:'Is destroy owned objects'", "feature:isDestroyOwnedObjects",
-                "aql:self.set('isDestroyOwnedObjects',newValue)", "aql:self.getFeatureDescription('isDestroyOwnedObjects')");
+                "aql:self.set('isDestroyOwnedObjects',newValue)", "aql:self.getFeatureDescription('isDestroyOwnedObjects')",
+                "aql:self.eClass().getEStructuralFeature('isDestroyOwnedObjects').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -81,7 +83,7 @@ public class DestroyObjectActionUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

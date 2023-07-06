@@ -41,7 +41,7 @@ public class DeviceUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("device_uml_pageFrom", "uml::Device", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("device_uml_pageFrom", "uml::Device", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -60,19 +60,20 @@ public class DeviceUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsAbstract(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
-                "aql:self.getFeatureDescription('isAbstract')");
+                "aql:self.getFeatureDescription('isAbstract')", "aql:self.eClass().getEStructuralFeature('isAbstract').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsActive(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isActive", "aql:'Is active'", "feature:isActive", "aql:self.set('isActive',newValue)",
-                "aql:self.getFeatureDescription('isActive')");
+                "aql:self.getFeatureDescription('isActive')", "aql:self.eClass().getEStructuralFeature('isActive').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -80,7 +81,7 @@ public class DeviceUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

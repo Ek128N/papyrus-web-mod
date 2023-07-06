@@ -40,7 +40,7 @@ public class TemplateParameterSubstitutionUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("templateParameterSubstitution_uml_pageFrom", "uml::TemplateParameterSubstitution", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("templateParameterSubstitution_uml_pageFrom", "uml::TemplateParameterSubstitution", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

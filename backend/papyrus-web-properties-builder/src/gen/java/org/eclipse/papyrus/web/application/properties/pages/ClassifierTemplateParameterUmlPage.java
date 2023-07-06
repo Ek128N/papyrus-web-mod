@@ -41,7 +41,7 @@ public class ClassifierTemplateParameterUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("classifierTemplateParameter_uml_pageFrom", "uml::ClassifierTemplateParameter", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("classifierTemplateParameter_uml_pageFrom", "uml::ClassifierTemplateParameter", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -59,7 +59,7 @@ public class ClassifierTemplateParameterUmlPage {
 
     protected void addAllowSubstitutable(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("allowSubstitutable", "aql:'Allow substitutable'", "feature:allowSubstitutable",
-                "aql:self.set('allowSubstitutable',newValue)", "aql:self.getFeatureDescription('allowSubstitutable')");
+                "aql:self.set('allowSubstitutable',newValue)", "aql:self.getFeatureDescription('allowSubstitutable')", "aql:self.eClass().getEStructuralFeature('allowSubstitutable').changeable");
         group.getWidgets().add(widget);
     }
 

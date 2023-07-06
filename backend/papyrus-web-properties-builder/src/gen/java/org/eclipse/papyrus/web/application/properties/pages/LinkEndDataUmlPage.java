@@ -40,7 +40,7 @@ public class LinkEndDataUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("linkEndData_uml_pageFrom", "uml::LinkEndData", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("linkEndData_uml_pageFrom", "uml::LinkEndData", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

@@ -40,7 +40,7 @@ public class PackageMergeUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("packageMerge_uml_pageFrom", "uml::PackageMerge", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("packageMerge_uml_pageFrom", "uml::PackageMerge", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

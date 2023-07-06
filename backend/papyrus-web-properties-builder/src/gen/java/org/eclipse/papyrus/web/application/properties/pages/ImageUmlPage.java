@@ -41,7 +41,7 @@ public class ImageUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("image_uml_pageFrom", "uml::Image", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("image_uml_pageFrom", "uml::Image", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -63,38 +63,39 @@ public class ImageUmlPage {
 
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "aql:self.getImageName()", "aql:self.oclAsType(uml::Image).setImageName(newValue)",
-                "aql:'The image\'s name. This is a virtual property, used only for label display.'");
+                "aql:'The image\'s name. This is a virtual property, used only for label display.'", "");
         group.getWidgets().add(widget);
     }
 
     protected void addKind(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("kind", "aql:'Kind'", "aql:self.getImageKind()",
                 "aql:self.oclAsType(uml::Image).setImageKind(newValue.oclAsType(ecore::EString))", "aql:self.getImageKindEnumerations()", "aql:candidate.toString()",
-                "aql:'The kind of image to be used. If icon is set, the image will be displayed on the stereotyped element. If shape is used, the image will be used as the graphical element. '");
+                "aql:'The kind of image to be used. If icon is set, the image will be displayed on the stereotyped element. If shape is used, the image will be used as the graphical element. '", "");
         group.getWidgets().add(widget);
     }
 
     protected void addExpression(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextAreaDescription("expression", "aql:'Expression'", "aql:self.getImageExpression()",
-                "aql:self.oclAsType(uml::Image).setImageExpression(newValue)", "aql:'A boolean expression to determine under which condition this image should be displayed.'");
+                "aql:self.oclAsType(uml::Image).setImageExpression(newValue)", "aql:'A boolean expression to determine under which condition this image should be displayed.'",
+                "aql:self.eClass().getEStructuralFeature('expression').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "feature:location", "aql:self.set('location',newValue)",
-                "aql:self.getFeatureDescription('location')");
+                "aql:self.getFeatureDescription('location')", "aql:self.eClass().getEStructuralFeature('location').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addFormat(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("format", "aql:'Format'", "feature:format", "aql:self.set('format',newValue)",
-                "aql:self.getFeatureDescription('format')");
+                "aql:self.getFeatureDescription('format')", "aql:self.eClass().getEStructuralFeature('format').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addContent(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("content", "aql:'Content'", "feature:content", "aql:self.set('content',newValue)",
-                "aql:self.getFeatureDescription('content')");
+                "aql:self.getFeatureDescription('content')", "aql:self.eClass().getEStructuralFeature('content').changeable");
         group.getWidgets().add(widget);
     }
 

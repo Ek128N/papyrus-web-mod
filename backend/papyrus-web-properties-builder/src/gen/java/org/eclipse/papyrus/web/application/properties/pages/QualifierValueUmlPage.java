@@ -40,7 +40,7 @@ public class QualifierValueUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("qualifierValue_uml_pageFrom", "uml::QualifierValue", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("qualifierValue_uml_pageFrom", "uml::QualifierValue", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

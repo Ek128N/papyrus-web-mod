@@ -41,7 +41,7 @@ public class ConnectionPointReferenceUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("connectionPointReference_uml_pageFrom", "uml::ConnectionPointReference", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("connectionPointReference_uml_pageFrom", "uml::ConnectionPointReference", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,7 +58,8 @@ public class ConnectionPointReferenceUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 

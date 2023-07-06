@@ -41,7 +41,7 @@ public class ConnectorEndUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("connectorEnd_uml_pageFrom", "uml::ConnectorEnd", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("connectorEnd_uml_pageFrom", "uml::ConnectorEnd", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -60,19 +60,20 @@ public class ConnectorEndUmlPage {
 
     protected void addIsOrdered(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)",
-                "aql:self.getFeatureDescription('isOrdered')");
+                "aql:self.getFeatureDescription('isOrdered')", "aql:self.eClass().getEStructuralFeature('isOrdered').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsUnique(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)",
-                "aql:self.getFeatureDescription('isUnique')");
+                "aql:self.getFeatureDescription('isUnique')", "aql:self.eClass().getEStructuralFeature('isUnique').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
-                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()");
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
+                "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
         group.getWidgets().add(widget);
     }
 

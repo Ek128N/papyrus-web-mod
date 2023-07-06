@@ -40,7 +40,7 @@ public class SlotUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("slot_uml_pageFrom", "uml::Slot", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("slot_uml_pageFrom", "uml::Slot", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

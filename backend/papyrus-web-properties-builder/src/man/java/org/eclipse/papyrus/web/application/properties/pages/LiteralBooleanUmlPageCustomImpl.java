@@ -36,12 +36,12 @@ public class LiteralBooleanUmlPageCustomImpl extends LiteralBooleanUmlPage {
         FlexboxContainerDescription widget = FormFactory.eINSTANCE.createFlexboxContainerDescription();
         widget.setFlexDirection(FlexDirection.ROW);
         widget.setLabelExpression("aql:'Value'");
-        // widget.setHelpExpression("aql:self.getFeatureDescription('value')");
+        widget.setHelpExpression("aql:self.getFeatureDescription('value')");
         widget.setName("value");
-        WidgetDescription trueCheck = viewElementFactory.createCheckboxDescription("isTrue", "aql:'True'", "feature:value", "aql:self.set('value',newValue)",
-                "aql:self.getFeatureDescription('value')");
-        WidgetDescription falseCheck = viewElementFactory.createCheckboxDescription("isFalse", "aql:'False'", "aql:not self.value", "aql:self.set('value',not newValue)",
-                "aql:self.getFeatureDescription('value')");
+        WidgetDescription trueCheck = viewElementFactory.createCheckboxDescription("isTrue", "aql:'True'", "feature:value", "aql:self.set('value',newValue)", "",
+                "aql:self.eClass().getEStructuralFeature('value').changeable");
+        WidgetDescription falseCheck = viewElementFactory.createCheckboxDescription("isFalse", "aql:'False'", "aql:not self.value", "aql:self.set('value',not newValue)", "",
+                "aql:self.eClass().getEStructuralFeature('value').changeable");
         widget.getChildren().add(trueCheck);
         widget.getChildren().add(falseCheck);
         group.getWidgets().add(widget);

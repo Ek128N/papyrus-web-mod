@@ -41,7 +41,7 @@ public class PackageImportUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("packageImport_uml_pageFrom", "uml::PackageImport", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("packageImport_uml_pageFrom", "uml::PackageImport", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -60,7 +60,7 @@ public class PackageImportUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

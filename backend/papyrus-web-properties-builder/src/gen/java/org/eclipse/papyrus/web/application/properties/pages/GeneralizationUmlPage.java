@@ -41,7 +41,7 @@ public class GeneralizationUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("generalization_uml_pageFrom", "uml::Generalization", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("generalization_uml_pageFrom", "uml::Generalization", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,7 +58,7 @@ public class GeneralizationUmlPage {
 
     protected void addIsSubstitutable(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isSubstitutable", "Is substitutable", "feature:isSubstitutable", "aql:self.set('isSubstitutable',newValue)",
-                "aql:self.getFeatureDescription('isSubstitutable')");
+                "aql:self.getFeatureDescription('isSubstitutable')", "aql:self.eClass().getEStructuralFeature('isSubstitutable').changeable");
         group.getWidgets().add(widget);
     }
 

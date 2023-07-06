@@ -41,7 +41,7 @@ public class TimeObservationUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("timeObservation_uml_pageFrom", "uml::TimeObservation", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("timeObservation_uml_pageFrom", "uml::TimeObservation", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -59,13 +59,14 @@ public class TimeObservationUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addFirstEvent(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("firstEvent", "aql:'First event'", "feature:firstEvent", "aql:self.set('firstEvent',newValue)",
-                "aql:self.getFeatureDescription('firstEvent')");
+                "aql:self.getFeatureDescription('firstEvent')", "aql:self.eClass().getEStructuralFeature('firstEvent').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -73,7 +74,7 @@ public class TimeObservationUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

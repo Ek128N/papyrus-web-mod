@@ -41,7 +41,7 @@ public class ProfileDefinitionDefinitionPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("profileDefinition_definition_pageFrom", "ecore::EPackage", "aql:'Definition'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("profileDefinition_definition_pageFrom", "ecore::EPackage", "aql:'Definition'", "");
     }
 
     protected PageDescription createPage() {
@@ -61,27 +61,27 @@ public class ProfileDefinitionDefinitionPage {
     }
 
     protected void addVersion(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("version", "aql:'Version'", "aql:self.getProfileDefinitionVersion()", "var:self", "aql:'Version'");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("version", "aql:'Version'", "aql:self.getProfileDefinitionVersion()", "var:self", "aql:'Version'", "aql:false");
         group.getWidgets().add(widget);
     }
 
     protected void addDate(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("date", "aql:'Date'", "aql:self.getProfileDefinitionDate()", "var:self", "aql:'Date'");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("date", "aql:'Date'", "aql:self.getProfileDefinitionDate()", "var:self", "aql:'Date'", "aql:false");
         group.getWidgets().add(widget);
     }
 
     protected void addAuthor(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("author", "aql:'Author'", "aql:self.getProfileDefinitionAuthor()", "var:self", "aql:'Author'");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("author", "aql:'Author'", "aql:self.getProfileDefinitionAuthor()", "var:self", "aql:'Author'", "aql:false");
         group.getWidgets().add(widget);
     }
 
     protected void addCopyright(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextAreaDescription("copyright", "aql:'Copyright'", "aql:self.getProfileDefinitionCopyright()", "var:self", "aql:'Copyright'");
+        WidgetDescription widget = viewElementFactory.createTextAreaDescription("copyright", "aql:'Copyright'", "aql:self.getProfileDefinitionCopyright()", "var:self", "aql:'Copyright'", "aql:false");
         group.getWidgets().add(widget);
     }
 
     protected void addComment(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextAreaDescription("comment", "aql:'Comment'", "aql:self.getProfileDefinitionComment()", "var:self", "aql:'Comment'");
+        WidgetDescription widget = viewElementFactory.createTextAreaDescription("comment", "aql:'Comment'", "aql:self.getProfileDefinitionComment()", "var:self", "aql:'Comment'", "aql:false");
         group.getWidgets().add(widget);
     }
 

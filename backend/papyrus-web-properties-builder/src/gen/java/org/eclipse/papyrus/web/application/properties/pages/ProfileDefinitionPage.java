@@ -40,7 +40,7 @@ public class ProfileDefinitionPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("profile_definition_pageFrom", "uml::Profile", "aql:'Definition'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("profile_definition_pageFrom", "uml::Profile", "aql:'Definition'", "");
     }
 
     protected PageDescription createPage() {

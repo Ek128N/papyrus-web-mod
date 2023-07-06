@@ -41,7 +41,7 @@ public class RegionUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("region_uml_pageFrom", "uml::Region", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("region_uml_pageFrom", "uml::Region", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -57,7 +57,8 @@ public class RegionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 

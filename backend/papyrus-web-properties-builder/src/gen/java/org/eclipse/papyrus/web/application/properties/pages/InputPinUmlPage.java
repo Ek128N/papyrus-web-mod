@@ -41,7 +41,7 @@ public class InputPinUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("inputPin_uml_pageFrom", "uml::InputPin", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("inputPin_uml_pageFrom", "uml::InputPin", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -65,38 +65,40 @@ public class InputPinUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsControl(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isControl", "aql:'Is control'", "feature:isControl", "aql:self.set('isControl',newValue)",
-                "aql:self.getFeatureDescription('isControl')");
+                "aql:self.getFeatureDescription('isControl')", "aql:self.eClass().getEStructuralFeature('isControl').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsControlType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isControlType", "aql:'Is control type'", "feature:isControlType", "aql:self.set('isControlType',newValue)",
-                "aql:self.getFeatureDescription('isControlType')");
+                "aql:self.getFeatureDescription('isControlType')", "aql:self.eClass().getEStructuralFeature('isControlType').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsOrdered(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)",
-                "aql:self.getFeatureDescription('isOrdered')");
+                "aql:self.getFeatureDescription('isOrdered')", "aql:self.eClass().getEStructuralFeature('isOrdered').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsUnique(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)",
-                "aql:self.getFeatureDescription('isUnique')");
+                "aql:self.getFeatureDescription('isUnique')", "aql:self.eClass().getEStructuralFeature('isUnique').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addOrdering(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createSelectDescription("ordering", "aql:'Ordering'",
                 "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.ordering.toString())", "aql:self.set('ordering',newValue.instance)",
-                "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('ordering')");
+                "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('ordering')",
+                "aql:self.eClass().getEStructuralFeature('ordering').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -104,13 +106,14 @@ public class InputPinUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
-                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()");
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
+                "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
         group.getWidgets().add(widget);
     }
 

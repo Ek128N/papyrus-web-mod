@@ -41,7 +41,7 @@ public class CommentUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("comment_uml_pageFrom", "uml::Comment", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("comment_uml_pageFrom", "uml::Comment", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -57,7 +57,8 @@ public class CommentUmlPage {
     }
 
     protected void addBody(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextAreaDescription("body", "aql:'Body'", "feature:body", "aql:self.set('body',newValue)", "aql:self.getFeatureDescription('body')");
+        WidgetDescription widget = viewElementFactory.createTextAreaDescription("body", "aql:'Body'", "feature:body", "aql:self.set('body',newValue)", "aql:self.getFeatureDescription('body')",
+                "aql:self.eClass().getEStructuralFeature('body').changeable");
         group.getWidgets().add(widget);
     }
 

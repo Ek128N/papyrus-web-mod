@@ -41,7 +41,7 @@ public class InterruptibleActivityRegionUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("interruptibleActivityRegion_uml_pageFrom", "uml::InterruptibleActivityRegion", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("interruptibleActivityRegion_uml_pageFrom", "uml::InterruptibleActivityRegion", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,7 +58,8 @@ public class InterruptibleActivityRegionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 

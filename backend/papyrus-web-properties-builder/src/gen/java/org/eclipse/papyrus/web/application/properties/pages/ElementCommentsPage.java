@@ -40,7 +40,7 @@ public class ElementCommentsPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("element_comments_pageFrom", "uml::Element", "aql:'Comments'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("element_comments_pageFrom", "uml::Element", "aql:'Comments'", "");
     }
 
     protected PageDescription createPage() {

@@ -40,7 +40,7 @@ public class ExceptionHandlerUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("exceptionHandler_uml_pageFrom", "uml::ExceptionHandler", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("exceptionHandler_uml_pageFrom", "uml::ExceptionHandler", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

@@ -41,7 +41,7 @@ public class GeneralizationSetUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("generalizationSet_uml_pageFrom", "uml::GeneralizationSet", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("generalizationSet_uml_pageFrom", "uml::GeneralizationSet", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -60,19 +60,20 @@ public class GeneralizationSetUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsCovering(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isCovering", "Is covering", "feature:isCovering", "aql:self.set('isCovering',newValue)",
-                "aql:self.getFeatureDescription('isCovering')");
+                "aql:self.getFeatureDescription('isCovering')", "aql:self.eClass().getEStructuralFeature('isCovering').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDisjoint(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDisjoint", "Is disjoint", "feature:isDisjoint", "aql:self.set('isDisjoint',newValue)",
-                "aql:self.getFeatureDescription('isDisjoint')");
+                "aql:self.getFeatureDescription('isDisjoint')", "aql:self.eClass().getEStructuralFeature('isDisjoint').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -80,7 +81,7 @@ public class GeneralizationSetUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

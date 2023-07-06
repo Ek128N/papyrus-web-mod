@@ -40,7 +40,7 @@ public class OperationTemplateParameterUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("operationTemplateParameter_uml_pageFrom", "uml::OperationTemplateParameter", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("operationTemplateParameter_uml_pageFrom", "uml::OperationTemplateParameter", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

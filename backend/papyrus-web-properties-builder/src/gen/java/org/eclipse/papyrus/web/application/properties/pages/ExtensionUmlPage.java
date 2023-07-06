@@ -41,7 +41,7 @@ public class ExtensionUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("extension_uml_pageFrom", "uml::Extension", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("extension_uml_pageFrom", "uml::Extension", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,13 +58,14 @@ public class ExtensionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsRequired(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isRequired", "Is required", "feature:isRequired", "aql:self.set('isRequired',newValue)",
-                "aql:self.getFeatureDescription('isRequired')");
+                "aql:self.getFeatureDescription('isRequired')", "aql:self.eClass().getEStructuralFeature('isRequired').changeable");
         group.getWidgets().add(widget);
     }
 

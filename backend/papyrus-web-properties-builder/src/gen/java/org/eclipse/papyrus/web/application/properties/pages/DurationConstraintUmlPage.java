@@ -41,7 +41,7 @@ public class DurationConstraintUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("durationConstraint_uml_pageFrom", "uml::DurationConstraint", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("durationConstraint_uml_pageFrom", "uml::DurationConstraint", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -59,7 +59,8 @@ public class DurationConstraintUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -67,12 +68,13 @@ public class DurationConstraintUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addFirstEvent(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createListDescription("firstEvent", "First event", "feature:firstEvent", "", "aql:false", "aql:self.getFeatureDescription('firstEvent')");
+        WidgetDescription widget = viewElementFactory.createListDescription("firstEvent", "First event", "feature:firstEvent", "", "aql:false", "aql:self.getFeatureDescription('firstEvent')",
+                "aql:self.eClass().getEStructuralFeature('firstEvent').changeable");
         group.getWidgets().add(widget);
     }
 

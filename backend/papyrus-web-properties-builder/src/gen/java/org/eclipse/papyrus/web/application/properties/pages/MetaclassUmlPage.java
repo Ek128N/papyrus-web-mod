@@ -41,7 +41,7 @@ public class MetaclassUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("metaclass_uml_pageFrom", "uml::Class", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("metaclass_uml_pageFrom", "uml::Class", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,13 +58,15 @@ public class MetaclassUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:false");
         group.getWidgets().add(widget);
     }
 
     protected void addQualifiedName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("qualifiedName", "aql:'Qualified name'", "aql:self.getQualifiedName()", "var:self",
-                "A name which allows the NamedElement to be identified within a hierarchy of nested Namespaces. It is constructed from the names of the containing namespaces starting at the root of the hierarchy and ending with the name of the NamedElement itself.");
+                "A name which allows the NamedElement to be identified within a hierarchy of nested Namespaces. It is constructed from the names of the containing namespaces starting at the root of the hierarchy and ending with the name of the NamedElement itself.",
+                "aql:false");
         group.getWidgets().add(widget);
     }
 

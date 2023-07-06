@@ -32,7 +32,7 @@ public class LiteralRealUmlPageCustomImpl extends LiteralRealUmlPage {
     @Override
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("value", "aql:'Value'", "aql:self.getLiteralRealValue()",
-                "aql:self.oclAsType(uml::LiteralReal).setLiteralRealValue(newValue)", "aql:self.getFeatureDescription('value')");
+                "aql:self.oclAsType(uml::LiteralReal).setLiteralRealValue(newValue)", "aql:self.getFeatureDescription('value')", "aql:self.eClass().getEStructuralFeature('value').changeable");
         group.getWidgets().add(widget);
     }
 }

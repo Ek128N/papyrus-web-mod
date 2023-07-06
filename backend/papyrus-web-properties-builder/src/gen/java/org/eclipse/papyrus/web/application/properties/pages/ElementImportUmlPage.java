@@ -41,7 +41,7 @@ public class ElementImportUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("elementImport_uml_pageFrom", "uml::ElementImport", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("elementImport_uml_pageFrom", "uml::ElementImport", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,7 +58,8 @@ public class ElementImportUmlPage {
     }
 
     protected void addAlias(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("alias", "aql:'Alias'", "feature:alias", "aql:self.set('alias',newValue)", "aql:self.getFeatureDescription('alias')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("alias", "aql:'Alias'", "feature:alias", "aql:self.set('alias',newValue)", "aql:self.getFeatureDescription('alias')",
+                "aql:self.eClass().getEStructuralFeature('alias').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -66,7 +67,7 @@ public class ElementImportUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

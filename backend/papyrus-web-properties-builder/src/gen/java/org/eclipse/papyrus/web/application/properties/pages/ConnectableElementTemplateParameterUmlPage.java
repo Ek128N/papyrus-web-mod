@@ -40,7 +40,7 @@ public class ConnectableElementTemplateParameterUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("connectableElementTemplateParameter_uml_pageFrom", "uml::ConnectableElementTemplateParameter", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("connectableElementTemplateParameter_uml_pageFrom", "uml::ConnectableElementTemplateParameter", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

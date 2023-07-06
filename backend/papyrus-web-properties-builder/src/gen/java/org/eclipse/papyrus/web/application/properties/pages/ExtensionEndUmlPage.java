@@ -41,7 +41,7 @@ public class ExtensionEndUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("extensionEnd_uml_pageFrom", "uml::ExtensionEnd", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("extensionEnd_uml_pageFrom", "uml::ExtensionEnd", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -66,43 +66,44 @@ public class ExtensionEndUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDerived(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerived", "aql:'Is derived'", "feature:isDerived", "aql:self.set('isDerived',newValue)",
-                "aql:self.getFeatureDescription('isDerived')");
+                "aql:self.getFeatureDescription('isDerived')", "aql:self.eClass().getEStructuralFeature('isDerived').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsDerivedUnion(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDerivedUnion", "aql:'Is derived union'", "feature:isDerivedUnion", "aql:self.set('isDerivedUnion',newValue)",
-                "aql:self.getFeatureDescription('isDerivedUnion')");
+                "aql:self.getFeatureDescription('isDerivedUnion')", "aql:self.eClass().getEStructuralFeature('isDerivedUnion').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsOrdered(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)",
-                "aql:self.getFeatureDescription('isOrdered')");
+                "aql:self.getFeatureDescription('isOrdered')", "aql:self.eClass().getEStructuralFeature('isOrdered').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsReadOnly(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReadOnly", "aql:'Is read only'", "feature:isReadOnly", "aql:self.set('isReadOnly',newValue)",
-                "aql:self.getFeatureDescription('isReadOnly')");
+                "aql:self.getFeatureDescription('isReadOnly')", "aql:self.eClass().getEStructuralFeature('isReadOnly').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsStatic(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isStatic", "aql:'Is static'", "feature:isStatic", "aql:self.set('isStatic',newValue)",
-                "aql:self.getFeatureDescription('isStatic')");
+                "aql:self.getFeatureDescription('isStatic')", "aql:self.eClass().getEStructuralFeature('isStatic').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsUnique(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)",
-                "aql:self.getFeatureDescription('isUnique')");
+                "aql:self.getFeatureDescription('isUnique')", "aql:self.eClass().getEStructuralFeature('isUnique').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -110,7 +111,7 @@ public class ExtensionEndUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("aggregation", "aql:'Aggregation'",
                 "aql:self.eClass().getEStructuralFeature('aggregation').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.aggregation.toString())",
                 "aql:self.set('aggregation',newValue.instance)", "aql:self.eClass().getEStructuralFeature('aggregation').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('aggregation')");
+                "aql:self.getFeatureDescription('aggregation')", "aql:false");
         group.getWidgets().add(widget);
     }
 
@@ -118,13 +119,14 @@ public class ExtensionEndUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
-                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()");
+                "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
+                "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
         group.getWidgets().add(widget);
     }
 

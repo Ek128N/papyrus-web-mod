@@ -45,7 +45,8 @@ public final class MemberEndGroupDescriptionBuilder {
         var nameWidget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", //
                 /* valueExpression */"aql:self.name", //
                 /* contextExpression */"aql:self.set('name', newValue)", //
-                /* helpExpression */"aql:self.getFeatureDescription('name')");
+                /* helpExpression */"aql:self.getFeatureDescription('name')", //
+                /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('name')");
 
 // TODO Restore when Primitive Select will be available: https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/20
 //        var ownerWidget = viewElementFactory.createSelectDescription("owner", "aql:'Owner'", //
@@ -53,25 +54,29 @@ public final class MemberEndGroupDescriptionBuilder {
 //                /* contextExpression */"aql:self.setOwner(newValue)", //
 //                /* candidatesExpression */"aql:self.getOwnerEnumerations()", //
 //                /* candidateLabelExpression */"aql:candidate.toString()", //
-//                /* helpExpression */"aql:'The owner of the association.'");
+// /* helpExpression */"aql:'The owner of the association.'", //
+// /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('owner')");
 
 
         var isNavigableWidget = viewElementFactory.createCheckboxDescription("isNavigable", "Navigable", //
                 /* valueExpression */"aql:self.isNavigable()", //
                 /* contextExpression */"aql:self.setNavigable(newValue)", //
-                /* helpExpression */"aql:'Indicates whether it is possible to navigate across the property.'");
+                /* helpExpression */"aql:'Indicates whether it is possible to navigate across the property.'", //
+                /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('isNavigable')");
 
         var aggregationWidget = viewElementFactory.createSelectDescription("aggregation", "aql:'Aggregation'", //
                 /* valueExpression */"aql:self.eClass().getEStructuralFeature('aggregation').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.aggregation.toString())", //
                 /* contextExpression */"aql:self.oclAsType(uml::Property).set('aggregation', newValue.instance)", //
                 /* candidatesExpression */"aql:self.eClass().getEStructuralFeature('aggregation').eType.oclAsType(ecore::EEnum).eLiterals", //
                 /* candidateLabelExpression */"aql:candidate.name", //
-                /* helpExpression */"aql:self.getFeatureDescription('aggregation')");
+                /* helpExpression */"aql:self.getFeatureDescription('aggregation')", //
+                /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('aggregation')");
 
         var multiplicityWidget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", //
                 /* valueExpression */"aql:self.getMultiplicity()", //
                 /* contextExpression */"aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", //
-                /* helpExpression */"aql:self.getMultiplicityHelpContent()");
+                /* helpExpression */"aql:self.getMultiplicityHelpContent()", //
+                /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('lowerValue') and self.isMemberEndPropertyEditable('upperValue')");
 
         container.getChildren().add(nameWidget);
 //        container.getChildren().add(ownerWidget);

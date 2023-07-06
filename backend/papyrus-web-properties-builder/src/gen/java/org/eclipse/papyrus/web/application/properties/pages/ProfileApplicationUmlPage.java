@@ -41,7 +41,7 @@ public class ProfileApplicationUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("profileApplication_uml_pageFrom", "uml::ProfileApplication", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("profileApplication_uml_pageFrom", "uml::ProfileApplication", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,7 +58,7 @@ public class ProfileApplicationUmlPage {
 
     protected void addIsStrict(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isStrict", "aql:'Is strict'", "feature:isStrict", "aql:self.set('isStrict',newValue)",
-                "aql:self.getFeatureDescription('isStrict')");
+                "aql:self.getFeatureDescription('isStrict')", "aql:self.eClass().getEStructuralFeature('isStrict').changeable");
         group.getWidgets().add(widget);
     }
 

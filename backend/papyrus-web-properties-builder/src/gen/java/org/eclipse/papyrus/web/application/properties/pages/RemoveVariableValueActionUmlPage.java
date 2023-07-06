@@ -41,7 +41,7 @@ public class RemoveVariableValueActionUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("removeVariableValueAction_uml_pageFrom", "uml::RemoveVariableValueAction", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("removeVariableValueAction_uml_pageFrom", "uml::RemoveVariableValueAction", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -60,13 +60,14 @@ public class RemoveVariableValueActionUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addIsRemoveDuplicates(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isRemoveDuplicates", "aql:'Is remove duplicates'", "feature:isRemoveDuplicates",
-                "aql:self.set('isRemoveDuplicates',newValue)", "aql:self.getFeatureDescription('isRemoveDuplicates')");
+                "aql:self.set('isRemoveDuplicates',newValue)", "aql:self.getFeatureDescription('isRemoveDuplicates')", "aql:self.eClass().getEStructuralFeature('isRemoveDuplicates').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -74,7 +75,7 @@ public class RemoveVariableValueActionUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

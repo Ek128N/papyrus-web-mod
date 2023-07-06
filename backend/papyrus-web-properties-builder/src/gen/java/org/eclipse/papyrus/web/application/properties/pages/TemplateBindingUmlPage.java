@@ -40,7 +40,7 @@ public class TemplateBindingUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("templateBinding_uml_pageFrom", "uml::TemplateBinding", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("templateBinding_uml_pageFrom", "uml::TemplateBinding", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

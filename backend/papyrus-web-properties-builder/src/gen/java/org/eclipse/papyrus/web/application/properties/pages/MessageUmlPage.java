@@ -41,7 +41,7 @@ public class MessageUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("message_uml_pageFrom", "uml::Message", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("message_uml_pageFrom", "uml::Message", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -58,7 +58,8 @@ public class MessageUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -66,7 +67,7 @@ public class MessageUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("messageSort", "aql:'Message sort'",
                 "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.messageSort.toString())",
                 "aql:self.set('messageSort',newValue.instance)", "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('messageSort')");
+                "aql:self.getFeatureDescription('messageSort')", "aql:self.eClass().getEStructuralFeature('messageSort').changeable");
         group.getWidgets().add(widget);
     }
 

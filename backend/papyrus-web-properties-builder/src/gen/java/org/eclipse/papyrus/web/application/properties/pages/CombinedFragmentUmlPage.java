@@ -41,7 +41,7 @@ public class CombinedFragmentUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("combinedFragment_uml_pageFrom", "uml::CombinedFragment", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("combinedFragment_uml_pageFrom", "uml::CombinedFragment", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -60,7 +60,8 @@ public class CombinedFragmentUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -68,7 +69,7 @@ public class CombinedFragmentUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("interactionOperator", "aql:'Interaction operator'",
                 "aql:self.eClass().getEStructuralFeature('interactionOperator').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.interactionOperator.toString())",
                 "aql:self.set('interactionOperator',newValue.instance)", "aql:self.eClass().getEStructuralFeature('interactionOperator').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('interactionOperator')");
+                "aql:self.getFeatureDescription('interactionOperator')", "aql:self.eClass().getEStructuralFeature('interactionOperator').changeable");
         group.getWidgets().add(widget);
     }
 
@@ -76,7 +77,7 @@ public class CombinedFragmentUmlPage {
         WidgetDescription widget = viewElementFactory.createSelectDescription("visibility", "aql:'Visibility'",
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
-                "aql:self.getFeatureDescription('visibility')");
+                "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
         group.getWidgets().add(widget);
     }
 

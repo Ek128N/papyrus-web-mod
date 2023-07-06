@@ -41,7 +41,7 @@ public class ProfileUmlPage {
     }
 
     protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("profile_uml_pageFrom", "uml::Profile", "aql:'UML'", "${formPreconditionExpression}");
+        return viewElementFactory.createFormDescription("profile_uml_pageFrom", "uml::Profile", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {
@@ -59,17 +59,20 @@ public class ProfileUmlPage {
     }
 
     protected void addName(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
+                "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addUri(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("uri", "aql:'URI'", "aql:self.URI", "aql:self.set('URI',newValue)", "aql:self.getFeatureDescription('URI')");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("uri", "aql:'URI'", "aql:self.URI", "aql:self.set('URI',newValue)", "aql:self.getFeatureDescription('URI')",
+                "aql:self.eClass().getEStructuralFeature('URI').changeable");
         group.getWidgets().add(widget);
     }
 
     protected void addLocation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "aql:self.getLocation()", "var:self", "aql:'The location of imported package'");
+        WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "aql:self.getLocation()", "var:self", "aql:'The location of imported package'",
+                "aql:false");
         group.getWidgets().add(widget);
     }
 
