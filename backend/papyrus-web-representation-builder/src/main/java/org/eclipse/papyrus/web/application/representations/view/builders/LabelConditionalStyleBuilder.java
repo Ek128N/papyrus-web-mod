@@ -14,16 +14,16 @@ package org.eclipse.papyrus.web.application.representations.view.builders;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeStyle;
 import org.eclipse.sirius.components.view.LabelStyle;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
  * Builder of label conditional style.
@@ -48,7 +48,7 @@ public class LabelConditionalStyleBuilder {
         if (element instanceof NodeDescription) {
             NodeDescription nodeDescription = (NodeDescription) element;
             NodeStyleDescription style = nodeDescription.getStyle();
-            ConditionalNodeStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+            ConditionalNodeStyle conditionalStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
             conditionalStyle.setCondition(conditionalExpression);
             nodeDescription.getConditionalStyles().add(conditionalStyle);
             NodeStyleDescription copiedStyle = EcoreUtil.copy(style);
@@ -57,13 +57,13 @@ public class LabelConditionalStyleBuilder {
         } else if (element instanceof EdgeDescription) {
             EdgeDescription edgeDescription = (EdgeDescription) element;
             EdgeStyle style = edgeDescription.getStyle();
-            ConditionalEdgeStyle conditionalStyle = ViewFactory.eINSTANCE.createConditionalEdgeStyle();
+            ConditionalEdgeStyle conditionalStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
             conditionalStyle.setCondition(conditionalExpression);
             edgeDescription.getConditionalStyles().add(conditionalStyle);
             labelStyle = conditionalStyle;
 
             // Copy all common attributes
-            for (EAttribute eAttribute : ViewPackage.eINSTANCE.getEdgeStyle().getEAllAttributes()) {
+            for (EAttribute eAttribute : DiagramPackage.eINSTANCE.getEdgeStyle().getEAllAttributes()) {
                 labelStyle.eSet(eAttribute, style.eGet(eAttribute));
             }
         }

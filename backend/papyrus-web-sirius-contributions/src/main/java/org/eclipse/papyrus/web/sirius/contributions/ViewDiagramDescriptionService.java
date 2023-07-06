@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,8 +45,7 @@ public class ViewDiagramDescriptionService implements IViewDiagramDescriptionSer
 
     @Override
     public Optional<NodeDescription> getNodeDescriptionByName(DiagramDescription diagramDescription, String name) {
-        List<org.eclipse.sirius.components.view.NodeDescription> matchingElements = this.emfNavigationService
-                .allContainedObjectOfType(diagramDescription, org.eclipse.sirius.components.view.NodeDescription.class)//
+        List<NodeDescription> matchingElements = this.emfNavigationService.allContainedObjectOfType(diagramDescription, NodeDescription.class)//
                 .filter(e -> name.equals(e.getName())).collect(toList());
 
         if (matchingElements.size() == 1) {

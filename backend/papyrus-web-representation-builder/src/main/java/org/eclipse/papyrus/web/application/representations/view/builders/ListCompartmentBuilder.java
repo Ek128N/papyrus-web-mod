@@ -26,11 +26,11 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.springframework.data.util.Pair;
 
 public class ListCompartmentBuilder {
@@ -107,7 +107,7 @@ public class ListCompartmentBuilder {
         NodeDescription description = new NodeDescriptionBuilder(idBuilder, queryBuilder, metamodelHelper.toEClass(parent.getDomainType()), viewBuider.createRectangularNodeStyle(false, false),
                 metamodelHelper)//
                 .name(idBuilder.getCompartmentDomainNodeName(metamodelHelper.toEClass(parent.getDomainType()), compartmentSpecialization))
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                        .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(queryBuilder.querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .labelExpression(queryBuilder.emptyString())//
@@ -154,7 +154,7 @@ public class ListCompartmentBuilder {
     }
 
     private LabelEditTool createDirectEditTool() {
-        LabelEditTool directEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        LabelEditTool directEditTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         directEditTool.setInitialDirectEditLabelExpression(CallQuery.queryServiceOnSelf(Services.GET_DIRECT_EDIT_INPUT_VALUE_SERVICE));
         directEditTool.getBody().add(viewBuider.createChangeContextOperation(CallQuery.queryServiceOnSelf(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
         return directEditTool;

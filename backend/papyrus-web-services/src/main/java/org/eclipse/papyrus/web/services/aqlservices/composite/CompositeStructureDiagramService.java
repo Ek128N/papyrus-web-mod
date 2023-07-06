@@ -60,7 +60,7 @@ public class CompositeStructureDiagramService extends AbstractDiagramService {
 
     @Override
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
                 capturedNodeDescriptions);
         IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new CompositeStructureDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),

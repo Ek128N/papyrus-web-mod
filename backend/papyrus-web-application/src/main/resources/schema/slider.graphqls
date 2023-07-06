@@ -4,6 +4,7 @@ type Slider implements Widget {
   hasHelpText: Boolean!
   label: String!
   iconURL: String
+  readOnly: Boolean!
   minValue: Int!
   maxValue: Int!
   currentValue: Int!

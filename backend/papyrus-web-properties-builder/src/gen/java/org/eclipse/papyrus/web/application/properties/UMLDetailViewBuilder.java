@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.papyrus.web.application.properties.pages.*;
-import org.eclipse.sirius.components.view.PageDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 
 public class UMLDetailViewBuilder {
 

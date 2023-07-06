@@ -24,15 +24,15 @@ import java.util.function.Supplier;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
-import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.uml2.uml.UMLPackage;
 
 /**
@@ -90,7 +90,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         // Create containment Link tool
 
-        EdgeTool tool = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName("New Containment Link"); //$NON-NLS-1$
 
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE); // $NON-NLS-1$

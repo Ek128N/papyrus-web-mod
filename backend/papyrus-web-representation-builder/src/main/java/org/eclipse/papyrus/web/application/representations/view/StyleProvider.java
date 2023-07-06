@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view;
 
-import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
  * Object in charge of providing styles.

@@ -83,6 +83,8 @@ public final class Slider extends AbstractWidget {
 
         private Supplier<String> helpTextProvider;
 
+        private boolean readOnly;
+
         private int minValue;
 
         private int maxValue;
@@ -107,6 +109,12 @@ public final class Slider extends AbstractWidget {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
         }
+
+        public Builder readOnly(boolean readOnly) {
+            this.readOnly = readOnly;
+            return this;
+        }
+
         public Builder minValue(int minValue) {
             this.minValue = Objects.requireNonNull(minValue);
             return this;
@@ -137,6 +145,7 @@ public final class Slider extends AbstractWidget {
             slider.id = Objects.requireNonNull(this.id);
             slider.label = Objects.requireNonNull(this.label);
             slider.iconURL = this.iconURL;
+            slider.readOnly = this.readOnly;
             slider.minValue = Objects.requireNonNull(this.minValue);
             slider.maxValue = Objects.requireNonNull(this.maxValue);
             slider.currentValue = Objects.requireNonNull(this.currentValue);

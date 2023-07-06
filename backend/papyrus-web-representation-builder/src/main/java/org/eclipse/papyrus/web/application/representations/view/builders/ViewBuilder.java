@@ -28,26 +28,27 @@ import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.DropTool;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.IconLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeTool;
 import org.eclipse.sirius.components.view.Operation;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.SourceEdgeEndReconnectionTool;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DropTool;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 
 /**
  * Builder in charge of creating elements to fill a {@link DiagramDescription}.
@@ -72,7 +73,7 @@ public class ViewBuilder {
     }
 
     public DropTool createGenericDropTool(String dropToolId) {
-        DropTool dropTool = ViewFactory.eINSTANCE.createDropTool();
+        DropTool dropTool = DiagramFactory.eINSTANCE.createDropTool();
         dropTool.setName(dropToolId);
 
         ChangeContext changeContextOp = ViewFactory.eINSTANCE.createChangeContext();
@@ -88,9 +89,9 @@ public class ViewBuilder {
     }
 
     private DiagramDescription createDiagram(String diagramName) {
-        DiagramDescription diagramDescription = ViewFactory.eINSTANCE.createDiagramDescription();
+        DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         diagramDescription.setName(diagramName);
-        diagramDescription.setPalette(ViewFactory.eINSTANCE.createDiagramPalette());
+        diagramDescription.setPalette(DiagramFactory.eINSTANCE.createDiagramPalette());
         return diagramDescription;
     }
 
@@ -99,7 +100,7 @@ public class ViewBuilder {
     }
 
     public SourceEdgeEndReconnectionTool createSourceReconnectionTool(EdgeDescription description, String name, List<Operation> operations) {
-        SourceEdgeEndReconnectionTool sourceReconnectionTool = ViewFactory.eINSTANCE.createSourceEdgeEndReconnectionTool();
+        SourceEdgeEndReconnectionTool sourceReconnectionTool = DiagramFactory.eINSTANCE.createSourceEdgeEndReconnectionTool();
         sourceReconnectionTool.setName(name);
         sourceReconnectionTool.getBody().addAll(operations);
         return sourceReconnectionTool;
@@ -110,7 +111,7 @@ public class ViewBuilder {
     }
 
     public TargetEdgeEndReconnectionTool createTargetReconnectionTool(EdgeDescription description, String name, List<Operation> operations) {
-        TargetEdgeEndReconnectionTool targetReconnectionTool = ViewFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
+        TargetEdgeEndReconnectionTool targetReconnectionTool = DiagramFactory.eINSTANCE.createTargetEdgeEndReconnectionTool();
         targetReconnectionTool.setName(name);
         targetReconnectionTool.getBody().addAll(operations);
         return targetReconnectionTool;
@@ -122,20 +123,20 @@ public class ViewBuilder {
         node.setDomainType(metamodelHelper.getDomain(domainType));
         node.setSynchronizationPolicy(synchronizationPolicy);
         node.setStyle(style);
-        node.setChildrenLayoutStrategy(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
+        node.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         return node;
     }
 
     private EdgeDescription createSynchonizedDomainBaseEdgeDescription(String id, EClass domainType, String semanticCandidateExpression, Supplier<List<NodeDescription>> sources,
             Supplier<List<NodeDescription>> targets) {
-        org.eclipse.sirius.components.view.EdgeDescription edgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        EdgeDescription edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         edgeDescription.setName(id);
         edgeDescription.setIsDomainBasedEdge(true);
         edgeDescription.setDomainType(metamodelHelper.getDomain(domainType));
         edgeDescription.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         edgeDescription.setLabelExpression(queryBuilder.queryRenderLabel());
         edgeDescription.setSemanticCandidatesExpression(semanticCandidateExpression);
-        edgeDescription.setPalette(ViewFactory.eINSTANCE.createEdgePalette());
+        edgeDescription.setPalette(DiagramFactory.eINSTANCE.createEdgePalette());
 
         edgeDescription.eAdapters().add(new CallbackAdapter(() -> {
             edgeDescription.getSourceNodeDescriptions().addAll(sources.get());
@@ -151,7 +152,7 @@ public class ViewBuilder {
     }
 
     private EdgeStyle createDefaultEdgeStyle() {
-        EdgeStyle edgeStyle = ViewFactory.eINSTANCE.createEdgeStyle();
+        EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         edgeStyle.setColor(styleProvider.getEdgeColor());
         edgeStyle.setFontSize(styleProvider.getFontSize());
         edgeStyle.setLineStyle(styleProvider.getEdgeStyle());
@@ -162,7 +163,7 @@ public class ViewBuilder {
     }
 
     private EdgeTool createDomainBasedEdgeTool(String id, EdgeDescription description, EReference containmentReference) {
-        EdgeTool tool = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(id);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression(queryBuilder.queryCreateDomainBaseEdge(description, containmentReference));
@@ -172,7 +173,7 @@ public class ViewBuilder {
     }
 
     public EdgeTool createFeatureBasedEdgeTool(String id, String serviceExpression, List<? extends DiagramElementDescription> targets) {
-        EdgeTool tool = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(id);
         tool.getTargetElementDescriptions().addAll(targets);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
@@ -208,7 +209,7 @@ public class ViewBuilder {
     }
 
     private NodeTool createCreationTool(String name, String selfValue, EReference containementRef, String newType) {
-        NodeTool nodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(name);
 
         // Create instance and init
@@ -220,7 +221,7 @@ public class ViewBuilder {
     }
 
     public NodeTool createSiblingCreationTool(String name, String selfValue, EReference containementRef, EClass newType) {
-        NodeTool nodeTool = ViewFactory.eINSTANCE.createNodeTool();
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(name);
 
         // Create instance and init
@@ -232,7 +233,7 @@ public class ViewBuilder {
     }
 
     public DeleteTool createNodeDeleteTool(String conceptName) {
-        DeleteTool deleteTool = ViewFactory.eINSTANCE.createDeleteTool();
+        DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
 
         deleteTool.setName("Delete " + conceptName); //$NON-NLS-1$
 
@@ -244,7 +245,7 @@ public class ViewBuilder {
     }
 
     public DeleteTool createEdgeDeleteTool(String conceptName) {
-        DeleteTool deleteTool = ViewFactory.eINSTANCE.createDeleteTool();
+        DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
 
         deleteTool.setName("Delete " + conceptName); //$NON-NLS-1$
 
@@ -256,14 +257,14 @@ public class ViewBuilder {
     }
 
     public ConditionalNodeStyle createConditionalNodeStyle(String condition, NodeStyleDescription nodeStyle) {
-        ConditionalNodeStyle conditionalNodeStyle = ViewFactory.eINSTANCE.createConditionalNodeStyle();
+        ConditionalNodeStyle conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
         conditionalNodeStyle.setCondition(condition);
         conditionalNodeStyle.setStyle(nodeStyle);
         return conditionalNodeStyle;
     }
 
     public RectangularNodeStyleDescription createRectangularNodeStyle(boolean showIcon, boolean showHeader) {
-        RectangularNodeStyleDescription nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         initStyle(nodeStyle);
         nodeStyle.setShowIcon(showIcon);
         nodeStyle.setWithHeader(showHeader);
@@ -286,7 +287,7 @@ public class ViewBuilder {
     }
 
     public ImageNodeStyleDescription createImageNodeStyle(String imageId, boolean showIcon) {
-        ImageNodeStyleDescription nodeStyle = ViewFactory.eINSTANCE.createImageNodeStyleDescription();
+        ImageNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         initStyle(nodeStyle);
         nodeStyle.setShape(imageId);
         nodeStyle.setShowIcon(showIcon);
@@ -296,12 +297,12 @@ public class ViewBuilder {
     public EdgeDescription createFeatureEdgeDescription(String id, String labelExpression, String targetNodeExpression, Supplier<List<NodeDescription>> sourcesProvider,
             Supplier<List<NodeDescription>> targetsProvider) {
 
-        EdgeDescription edgeDescription = ViewFactory.eINSTANCE.createEdgeDescription();
+        EdgeDescription edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         edgeDescription.setName(id);
         edgeDescription.setLabelExpression(labelExpression);
         edgeDescription.setTargetNodesExpression(targetNodeExpression);
         edgeDescription.setStyle(createDefaultEdgeStyle());
-        edgeDescription.setPalette(ViewFactory.eINSTANCE.createEdgePalette());
+        edgeDescription.setPalette(DiagramFactory.eINSTANCE.createEdgePalette());
 
         edgeDescription.eAdapters().add(new CallbackAdapter(() -> {
             edgeDescription.getSourceNodeDescriptions().addAll(sourcesProvider.get());
@@ -319,17 +320,17 @@ public class ViewBuilder {
     }
 
     private RectangularNodeStyleDescription createDefaultRectangularNodeStyle() {
-        RectangularNodeStyleDescription nodeStyle = ViewFactory.eINSTANCE.createRectangularNodeStyleDescription();
+        RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         initStyle(nodeStyle);
         nodeStyle.setShowIcon(false);
         return nodeStyle;
     }
 
     private NodeDescription createNode(String name) {
-        NodeDescription node = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription node = DiagramFactory.eINSTANCE.createNodeDescription();
         node.setName(name);
         node.setLabelExpression(queryBuilder.queryRenderLabel());
-        node.setPalette(ViewFactory.eINSTANCE.createNodePalette());
+        node.setPalette(DiagramFactory.eINSTANCE.createNodePalette());
         return node;
     }
 
@@ -344,7 +345,7 @@ public class ViewBuilder {
     }
 
     public LabelEditTool createDirectEditTool(String selfExpression) {
-        LabelEditTool directEditTool = ViewFactory.eINSTANCE.createLabelEditTool();
+        LabelEditTool directEditTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         directEditTool.setInitialDirectEditLabelExpression(new CallQuery(selfExpression).callService(Services.GET_DIRECT_EDIT_INPUT_VALUE_SERVICE));
         directEditTool.getBody().add(createChangeContextOperation(new CallQuery(selfExpression).callService(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
         return directEditTool;
@@ -435,7 +436,7 @@ public class ViewBuilder {
     }
 
     public NodeStyleDescription createIconAndlabelStyle(boolean showIcon) {
-        IconLabelNodeStyleDescription style = ViewFactory.eINSTANCE.createIconLabelNodeStyleDescription();
+        IconLabelNodeStyleDescription style = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
 
         style.setColor(styleProvider.getNodeColor());
         style.setLabelColor(styleProvider.getNodeLabelColor());

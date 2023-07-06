@@ -29,17 +29,18 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
-import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.UMLPackage;
 
 /**
@@ -150,7 +151,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private EdgeTool createSpecializedAssociationDomainBasedEdgeTool(String specializationName, String serviceName) {
-        EdgeTool tool = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(specializationName);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
 
@@ -187,7 +188,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         // Create containment Link tool
 
-        EdgeTool tool = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(NEW_CONTAINMENT_LINK_TOOL_LABEL); //
 
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, getQueryBuilder().aqlString(pack.getPackage_PackagedElement().getName())); // $NON-NLS-1$
@@ -218,7 +219,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         diagramDescription.getEdgeDescriptions().add(containmentLinkEdge);
 
         // Create containment Link tool
-        EdgeTool tool = ViewFactory.eINSTANCE.createEdgeTool();
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(NEW_CONTAINMENT_LINK_TOOL_LABEL); //
 
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, getQueryBuilder().aqlString(pack.getClass_NestedClassifier().getName())); // $NON-NLS-1$
@@ -267,7 +268,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = pack.getEnumeration();
         NodeDescription enumerationLiterals = newNodeBuilder(enumerationEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
@@ -301,7 +302,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EClass interfaceEClass = pack.getInterface();
         NodeDescription interfaceDescription = newNodeBuilder(interfaceEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(interfaceEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
@@ -357,7 +358,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EClass primitiveTypeEClass = pack.getPrimitiveType();
         NodeDescription primitiveTypeDescription = newNodeBuilder(primitiveTypeEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(primitiveTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
@@ -397,7 +398,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EClass dataTypeEClass = pack.getDataType();
         NodeDescription classDescription = newNodeBuilder(dataTypeEClass, getViewBuilder().createRectangularNodeStyle(true, false))//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(dataTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
@@ -438,7 +439,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private void createClassDescription(DiagramDescription diagramDescription) {
         NodeDescription classDescription = newNodeBuilder(pack.getClass_(), getViewBuilder().createRectangularNodeStyle(true, false))//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(pack.getClass_()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//

@@ -14,8 +14,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * Custom implementation of LiteralUnlimitedNaturalValueUmlPage.

@@ -17,8 +17,8 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Opera
 
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.builders.EdgeConditionalStyleBuilder;
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 
 /**
  * Custom style builder for Association Edge.
@@ -57,7 +57,7 @@ public class AssociationEdgeCustomStyleBuilder {
 
     private static final String TARGET_NO_DECORATOR = and(and(not(TARGET_FILL_DIAMOND), not(TARGET_FILL_DIAMOND)), not(TARGET_ARROW));
 
-    private final org.eclipse.sirius.components.view.EdgeDescription edgeDescription;
+    private final EdgeDescription edgeDescription;
 
     public AssociationEdgeCustomStyleBuilder(EdgeDescription edgeDescription) {
         super();

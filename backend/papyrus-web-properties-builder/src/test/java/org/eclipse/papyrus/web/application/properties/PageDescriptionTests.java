@@ -23,7 +23,7 @@ import java.util.Set;
 import org.eclipse.papyrus.web.application.properties.utils.PageDescriptionValidator;
 import org.eclipse.papyrus.web.tests.utils.Severity;
 import org.eclipse.papyrus.web.tests.utils.Status;
-import org.eclipse.sirius.components.view.PageDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
 import org.junit.jupiter.api.Test;
 
 /**

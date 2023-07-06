@@ -13,14 +13,14 @@
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.ConditionalEdgeStyle;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.LineStyle;
 import org.eclipse.sirius.components.view.UserColor;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
  * Builder of Edge conditional style.
@@ -43,12 +43,12 @@ public class EdgeConditionalStyleBuilder {
 
     public EdgeConditionalStyleBuilder fromExistingStyle() {
         EdgeStyle style = element.getStyle();
-        newStyle = ViewFactory.eINSTANCE.createConditionalEdgeStyle();
+        newStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
         newStyle.setCondition(conditionalExpression);
         element.getConditionalStyles().add(newStyle);
 
         // Copy all common attributes
-        for (EAttribute eAttribute : ViewPackage.eINSTANCE.getEdgeStyle().getEAllAttributes()) {
+        for (EAttribute eAttribute : DiagramPackage.eINSTANCE.getEdgeStyle().getEAllAttributes()) {
             newStyle.eSet(eAttribute, style.eGet(eAttribute));
         }
         return this;

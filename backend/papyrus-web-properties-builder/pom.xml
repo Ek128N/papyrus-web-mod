@@ -23,7 +23,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<uml2.version>5.6.0-SNAPSHOT</uml2.version>
-		<sirius.components.version>2023.6.1</sirius.components.version>
+		<sirius.components.version>2023.6.4</sirius.components.version>
 		<papyrus-uml-domain-services-version>0.13.0-SNAPSHOT</papyrus-uml-domain-services-version>
 	</properties>
 
@@ -73,6 +73,11 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-view-form</artifactId>
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>

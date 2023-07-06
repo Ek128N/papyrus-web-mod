@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Tooling for creation tools creation.

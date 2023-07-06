@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.web.customwidgets.SliderDescription;
 import org.eclipse.sirius.web.customwidgets.util.CustomwidgetsSwitch;
 import org.springframework.stereotype.Service;
@@ -40,11 +41,10 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
                 VariableManager childVariableManager = variableManager.createChild();
                 childVariableManager.put(VariableManager.SELF, sliderDescription);
                 String id = formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-                var builder =  org.eclipse.papyrus.web.application.slider.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
+                var builder = org.eclipse.papyrus.web.application.slider.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
                         .idProvider(vm -> id)
                         .labelProvider(vm -> SliderDescriptionPreviewConverterProvider.this.getWidgetLabel(sliderDescription, "Slider"))
-                        .minValueProvider(vm -> 0)
-                        .maxValueProvider(vm -> 100)
+                        .minValueProvider(vm -> 0).maxValueProvider(vm -> 100)
                         .currentValueProvider(vm -> 50)
                         .newValueHandler(vm -> new Success());
                 if (sliderDescription.getHelpExpression() != null && !sliderDescription.getHelpExpression().isBlank()) {
@@ -56,7 +56,7 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
         };
     }
 
-    public String getWidgetLabel(org.eclipse.sirius.components.view.WidgetDescription widgetDescription, String defaultLabel) {
+    public String getWidgetLabel(WidgetDescription widgetDescription, String defaultLabel) {
         String widgetLabel = defaultLabel;
         String name = widgetDescription.getName();
         String labelExpression = widgetDescription.getLabelExpression();
@@ -68,7 +68,7 @@ public class SliderDescriptionPreviewConverterProvider implements IWidgetPreview
         return widgetLabel;
     }
 
-    public String getWidgetHelpText(org.eclipse.sirius.components.view.WidgetDescription widgetDescription) {
+    public String getWidgetHelpText(WidgetDescription widgetDescription) {
         String helpText = "Help";
         String helpExpression = widgetDescription.getHelpExpression();
         if (helpExpression != null && !helpExpression.isBlank() && !helpExpression.startsWith("aql:")) {

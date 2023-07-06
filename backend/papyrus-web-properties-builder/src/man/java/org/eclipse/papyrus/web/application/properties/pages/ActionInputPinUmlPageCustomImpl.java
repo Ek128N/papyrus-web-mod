@@ -14,8 +14,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * Customization of {@link ActionInputPinUmlPage}.
@@ -31,7 +31,7 @@ public class ActionInputPinUmlPageCustomImpl extends ActionInputPinUmlPage {
     /**
      * AQL has trouble with the following services 'select' | 'reject' | 'collect' | 'any' | 'exists' | 'forAll' |
      * 'isUnique' | 'one' | 'sortedBy' | the use lambda as first parameter. To force AQL to use the feature instead of
-     * the service we need to add a e'closure', due toxtra '_' </br>
+     * the service we need to add a 'closure', due to extra '_' </br>
      * Matching: feature:isUnique -> aql:self._isUnique
      */
     @Override

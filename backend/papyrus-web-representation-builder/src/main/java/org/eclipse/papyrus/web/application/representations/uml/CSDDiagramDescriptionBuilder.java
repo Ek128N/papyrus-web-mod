@@ -24,16 +24,16 @@ import org.eclipse.papyrus.web.application.representations.view.CreationToolsUti
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.IfQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
-import org.eclipse.sirius.components.view.ArrowStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeStyle;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.UMLPackage;
 
 /**
@@ -142,7 +142,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .name(getIdBuilder().getDomainNodeName(pack.getClassifier())) //
                 .semanticCandidateExpression(getQueryBuilder().queryAllReachable(pack.getClassifier()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(pack.getClassifier().getName())) //
                 .build();
@@ -170,7 +170,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .name(getIdBuilder().getSpecializedDomainNodeName(pack.getClassifier(), IN_CLASSIFIER)) //
                 .semanticCandidateExpression(queryAttributeOnSelf(pack.getClass_NestedClassifier()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(pack.getClassifier().getName())) //
                 .build();

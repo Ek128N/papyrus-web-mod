@@ -15,13 +15,13 @@ package org.eclipse.papyrus.web.services.aqlservices.utils;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 public interface IViewCreationHelper {
 
     /**
      * Creates a child view on the selected node. The type of node is deduced from the representation description.
-     * 
+     *
      * @param self
      *            the semantic of the new child
      * @param selectedNode
@@ -32,7 +32,7 @@ public interface IViewCreationHelper {
 
     /**
      * Creates a view on root of the diagram.
-     * 
+     *
      * @param self
      *            the semantic of the new child
      * @return <code>true</code> if a creation request has been made, <code>false</code> otherwise
@@ -41,7 +41,7 @@ public interface IViewCreationHelper {
 
     /**
      * Creates a child view on the selected node.
-     * 
+     *
      * @param semanticElement
      *            the semantic of the new child
      * @param selectedNode
@@ -50,7 +50,7 @@ public interface IViewCreationHelper {
      *            the description of the node to create
      * @return <code>true</code> if a creation request has been made, <code>false</code> otherwise
      */
-    boolean createView(EObject semanticElement, Node selectedNode, org.eclipse.sirius.components.view.NodeDescription newViewDescription);
+    boolean createView(EObject semanticElement, Node selectedNode, NodeDescription newViewDescription);
 
     class NoOp implements IViewCreationHelper {
 

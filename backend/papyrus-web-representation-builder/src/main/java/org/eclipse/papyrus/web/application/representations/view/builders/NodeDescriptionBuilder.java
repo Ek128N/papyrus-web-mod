@@ -21,16 +21,16 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.LabelEditTool;
-import org.eclipse.sirius.components.view.LayoutStrategyDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodePalette;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.provider.DefaultToolsFactory;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * The builder used to create a NodeDescription.
@@ -133,7 +133,7 @@ public final class NodeDescriptionBuilder {
     }
 
     public NodeDescription build() {
-        NodeDescription node = ViewFactory.eINSTANCE.createNodeDescription();
+        NodeDescription node = DiagramFactory.eINSTANCE.createNodeDescription();
         if (name != null) {
             node.setName(name);
         } else {

@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
-import org.eclipse.sirius.components.view.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 
 /**
  * Builder of AQL query used to builder a DiagramDescription.

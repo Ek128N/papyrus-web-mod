@@ -20,7 +20,7 @@ import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Helper used to navigate inside a diagram and/or to its description.

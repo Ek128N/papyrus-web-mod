@@ -46,8 +46,9 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.springframework.data.util.Pair;
 
@@ -69,7 +70,7 @@ public class DiagramTestHelper {
 
     private org.eclipse.sirius.components.diagrams.description.DiagramDescription convertedDiagramDescription;
 
-    private Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> converterNodes;
+    private Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> converterNodes;
 
     private EObject diagramOwner;
 
@@ -177,7 +178,7 @@ public class DiagramTestHelper {
         return this.diagramOwner;
     }
 
-    public Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> getConvertedNodes() {
+    public Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> getConvertedNodes() {
         return this.converterNodes;
     }
 
@@ -215,10 +216,10 @@ public class DiagramTestHelper {
 
     private Node createNode(String nodeDescriptionName, EObject semanticElement, Optional<Node> parent) {
 
-        org.eclipse.sirius.components.view.NodeDescription viewNodeDescription = this.viewDiagramDescriptionService.getNodeDescriptionByName(this.diagramDescription, nodeDescriptionName)
+        org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = this.viewDiagramDescriptionService.getNodeDescriptionByName(this.diagramDescription, nodeDescriptionName)
                 .orElseThrow(() -> new NoSuchElementException("Unable to find node description with name " + nodeDescriptionName));
 
-        var isBorderedNode = viewNodeDescription.eContainingFeature() == ViewPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
+        var isBorderedNode = viewNodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
         final NodeContainmentKind containmentKind;
         if (isBorderedNode) {
             containmentKind = NodeContainmentKind.BORDER_NODE;
@@ -362,12 +363,12 @@ public class DiagramTestHelper {
         return isMatchingSemantic && isMatchingSourceNode && isMatchingTargetNode && isMatchingDescription;
     }
 
-    private NodeDescription getConvertedNodeDescription(org.eclipse.sirius.components.view.NodeDescription viewDescription) {
+    private NodeDescription getConvertedNodeDescription(org.eclipse.sirius.components.view.diagram.NodeDescription viewDescription) {
         return this.getNodeDescriptionById(this.idProvider.getId(viewDescription));
     }
 
-    private org.eclipse.sirius.components.view.EdgeDescription getViewEdgeDescriptionByName(String name) {
-        List<org.eclipse.sirius.components.view.EdgeDescription> matchingElements = allContainedObjectOfType(this.diagramDescription, org.eclipse.sirius.components.view.EdgeDescription.class)//
+    private EdgeDescription getViewEdgeDescriptionByName(String name) {
+        List<EdgeDescription> matchingElements = allContainedObjectOfType(this.diagramDescription, EdgeDescription.class)//
                 .filter(e -> name.equals(e.getName())).collect(toList());
 
         if (matchingElements.isEmpty()) {
@@ -453,7 +454,7 @@ public class DiagramTestHelper {
     public Edge getMatchingEdge(Optional<String> optDescriptionName, Optional<String> optSemanticId, Optional<String> optSourceNodeId, Optional<String> targetNodeId) {
 
         Optional<String> pDescId = optDescriptionName.map(name -> {
-            org.eclipse.sirius.components.view.EdgeDescription description = this.getViewEdgeDescriptionByName(name);
+            EdgeDescription description = this.getViewEdgeDescriptionByName(name);
             return this.edgeIdToDescriptions.get(this.idProvider.getId(description)).getId();
         });
 
@@ -477,7 +478,7 @@ public class DiagramTestHelper {
     public List<Edge> getMatchingEdges(Optional<String> optDescriptionName, Optional<String> optSemanticId, Optional<String> optSourceNodeId, Optional<String> optTargetNodeId) {
 
         Optional<String> pDescId = optDescriptionName.map(name -> {
-            org.eclipse.sirius.components.view.EdgeDescription description = this.getViewEdgeDescriptionByName(name);
+            EdgeDescription description = this.getViewEdgeDescriptionByName(name);
             return this.edgeIdToDescriptions.get(this.idProvider.getId(description)).getId();
         });
 

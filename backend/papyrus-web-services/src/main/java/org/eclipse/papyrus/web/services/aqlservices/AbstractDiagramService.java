@@ -341,13 +341,13 @@ public abstract class AbstractDiagramService {
      * @return self (required for the service to create a view - convention on Sirius component)
      */
     public EObject drop(EObject semanticDroppedElement, Node targetView, IEditingContext editionContext, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         this.buildDropBehaviorProvider(semanticDroppedElement, editionContext, diagramContext, capturedNodeDescriptions).handleDrop(semanticDroppedElement, targetView);
         return semanticDroppedElement;
     }
 
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
         IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext,
                 capturedNodeDescriptions);
         return new GenericWebExternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions));
@@ -543,7 +543,7 @@ public abstract class AbstractDiagramService {
      * @return a new instance or <code>null</code> if the creation failed
      */
     public EObject create(EObject parent, String type, String referenceName, Node targetView, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         final EObject result;
         if (parent == null) {
             LOGGER.warn("Unable to create an element on nothing"); //$NON-NLS-1$
@@ -576,7 +576,7 @@ public abstract class AbstractDiagramService {
     }
 
     public EObject createSibling(EObject sibling, String type, String referenceName, Node siblingView, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         EObject parent = sibling.eContainer();
         return new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions).getParentNode(siblingView).map(parentNode -> {
             return this.create(parent, type, referenceName, parentNode, diagramContext, capturedNodeDescriptions);

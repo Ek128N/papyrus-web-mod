@@ -13,7 +13,7 @@
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.view.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
  * Transforms a node by changing its semantic candidate expression and reusing all its children node.

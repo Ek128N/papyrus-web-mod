@@ -42,8 +42,8 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,10 +65,10 @@ public class CreationViewHelper implements IViewCreationHelper {
 
     private final DiagramDescription diagramDescription;
 
-    private final Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions;
+    private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions;
 
     public CreationViewHelper(IObjectService objectService, IDiagramOperationsService diagramOperationsService, IDiagramContext diagramContext, DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         super();
         this.objectService = objectService;
         this.diagramOperationsService = Objects.requireNonNull(diagramOperationsService);
@@ -99,7 +99,7 @@ public class CreationViewHelper implements IViewCreationHelper {
      */
     @FactoryMethod
     public static IViewCreationHelper create(IObjectService objectService, IViewDiagramDescriptionService viewDiagramService, IDiagramOperationsService diagramOperationsService,
-            IDiagramContext diagramContext, Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+            IDiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         // @formatter:off
         return viewDiagramService.getDiagramDescription(capturedNodeDescriptions)
                                 .map(dd -> (IViewCreationHelper) new CreationViewHelper(objectService, diagramOperationsService, diagramContext, dd, capturedNodeDescriptions))
@@ -110,9 +110,9 @@ public class CreationViewHelper implements IViewCreationHelper {
 
     @Override
     public boolean createChildView(EObject self, org.eclipse.sirius.components.diagrams.Node selectedNode) {
-        org.eclipse.sirius.components.view.NodeDescription targetNodeDescription = this.getViewNodeDescription(selectedNode.getDescriptionId()).orElse(null);
+        org.eclipse.sirius.components.view.diagram.NodeDescription targetNodeDescription = this.getViewNodeDescription(selectedNode.getDescriptionId()).orElse(null);
         if (targetNodeDescription != null) {
-            org.eclipse.sirius.components.view.NodeDescription childrenType = this.getChildrenCandidateOfType(targetNodeDescription, self.eClass());
+            org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = this.getChildrenCandidateOfType(targetNodeDescription, self.eClass());
             if (childrenType != null //
                     && !IdBuilder.isFakeChildNode(
                             childrenType) /* Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164 */) {
@@ -124,7 +124,7 @@ public class CreationViewHelper implements IViewCreationHelper {
 
     @Override
     public boolean createRootView(EObject self) {
-        org.eclipse.sirius.components.view.NodeDescription childrenType = this.getChildrenCandidateOfType(null, self.eClass());
+        org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = this.getChildrenCandidateOfType(null, self.eClass());
         if (childrenType != null) {
             return this.createView(self, null, childrenType);
         } else {
@@ -134,10 +134,10 @@ public class CreationViewHelper implements IViewCreationHelper {
     }
 
     @Override
-    public boolean createView(EObject semanticElement, Node selectedNode, org.eclipse.sirius.components.view.NodeDescription newViewDescription) {
+    public boolean createView(EObject semanticElement, Node selectedNode, org.eclipse.sirius.components.view.diagram.NodeDescription newViewDescription) {
         if (newViewDescription != null) {
 
-            var isBorderedNode = newViewDescription.eContainingFeature() == ViewPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
+            var isBorderedNode = newViewDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
             final NodeContainmentKind containmentKind;
             if (isBorderedNode) {
                 containmentKind = NodeContainmentKind.BORDER_NODE;
@@ -199,9 +199,9 @@ public class CreationViewHelper implements IViewCreationHelper {
         }
     }
 
-    private org.eclipse.sirius.components.view.NodeDescription getChildrenCandidateOfType(org.eclipse.sirius.components.view.NodeDescription parent, EClass eClass) {
+    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenCandidateOfType(org.eclipse.sirius.components.view.diagram.NodeDescription parent, EClass eClass) {
 
-        final List<org.eclipse.sirius.components.view.NodeDescription> descriptions = new ArrayList<>();
+        final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
         final String parentName;
         if (parent == null) {
             parentName = this.diagramDescription.getName();
@@ -215,7 +215,7 @@ public class CreationViewHelper implements IViewCreationHelper {
 
         }
 
-        List<org.eclipse.sirius.components.view.NodeDescription> candidates = descriptions.stream()//
+        List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()//
                 .distinct()//
                 .filter(c -> this.isCompliant(UMLHelper.toEClass(c.getDomainType()), eClass))//
                 // We want to keep the more specialized description type first
@@ -224,7 +224,7 @@ public class CreationViewHelper implements IViewCreationHelper {
             LOGGER.error(MessageFormat.format("No possible children of type {0} on {1}", eClass.getName(), parentName)); //$NON-NLS-1$
             return null;
         } else {
-            org.eclipse.sirius.components.view.NodeDescription byDefault = candidates.get(0);
+            org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = candidates.get(0);
             if (candidates.size() > 1) {
                 LOGGER.info(
                         MessageFormat.format("More than on candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName())); //$NON-NLS-1$
@@ -259,8 +259,8 @@ public class CreationViewHelper implements IViewCreationHelper {
         return toTest == expected || toTest.getEAllSuperTypes().contains(expected);
     }
 
-    private Optional<org.eclipse.sirius.components.view.NodeDescription> getViewNodeDescription(String descriptionId) {
-        return EMFUtils.allContainedObjectOfType(this.diagramDescription, org.eclipse.sirius.components.view.NodeDescription.class).filter(n -> {
+    private Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId) {
+        return EMFUtils.allContainedObjectOfType(this.diagramDescription, org.eclipse.sirius.components.view.diagram.NodeDescription.class).filter(n -> {
             NodeDescription nd = this.capturedNodeDescriptions.get(n);
             return nd != null && descriptionId.equals(nd.getId());
         }).findFirst();

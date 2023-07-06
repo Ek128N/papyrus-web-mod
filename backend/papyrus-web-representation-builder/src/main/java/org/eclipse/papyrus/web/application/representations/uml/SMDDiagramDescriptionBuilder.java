@@ -20,18 +20,18 @@ import java.util.function.Supplier;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
-import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.ConditionalNodeStyle;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.NodeTool;
-import org.eclipse.sirius.components.view.RectangularNodeStyleDescription;
-import org.eclipse.sirius.components.view.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.UMLPackage;
 
@@ -76,7 +76,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         RectangularNodeStyleDescription rectangularNodeStyle = getViewBuilder().createRectangularNodeStyle(false, false);
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
         NodeDescription smdStateMachineNodeDesc = newNodeBuilder(umlPackage.getStateMachine(), rectangularNodeStyle)//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .labelEditTool(getViewBuilder().createDirectEditTool())//
@@ -86,7 +86,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // workaround to overcome missing enhancement https://github.com/PapyrusSirius/papyrus-web/issues/121
         // It is not possible to define that there is no delete tool.
         // The only way is to define a delete tool that does nothing
-        smdStateMachineNodeDesc.getPalette().setDeleteTool(ViewFactory.eINSTANCE.createDeleteTool());
+        smdStateMachineNodeDesc.getPalette().setDeleteTool(DiagramFactory.eINSTANCE.createDeleteTool());
 
         String specializedDomainNodeName = getIdBuilder().getSpecializedDomainNodeName(umlPackage.getPseudostate(), "BorderNode_InStateMachine"); //$NON-NLS-1$
         createPseudostateBorderNodeDescription(smdStateMachineNodeDesc, umlPackage.getStateMachine_ConnectionPoint(), specializedDomainNodeName);
@@ -105,7 +105,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription, DiagramDescription diagramDescription) {
 
         NodeDescription regionNodeDesc = newNodeBuilder(umlPackage.getRegion(), getViewBuilder().createRectangularNodeStyle(false, false))//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(umlPackage.getStateMachine_Region()))//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(umlPackage.getRegion().getName()))//
@@ -131,7 +131,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
 
         NodeDescription stateNodeDesc = newNodeBuilder(umlPackage.getState(), rectangularNodeStyle)//
-                .layoutStrategyDescription(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .deleteTool(getViewBuilder().createNodeDeleteTool(umlPackage.getState().getName()))//
@@ -203,7 +203,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             conditionalNodeStyles.add(conditionalNodeStyle);
 
             // Node creation tool
-            NodeTool creationTool = ViewFactory.eINSTANCE.createNodeTool();
+            NodeTool creationTool = DiagramFactory.eINSTANCE.createNodeTool();
             creationTool.setName("New " + literalName);
 
             // Create instance and init

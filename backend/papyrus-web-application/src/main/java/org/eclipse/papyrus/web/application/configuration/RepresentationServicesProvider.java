@@ -27,9 +27,9 @@ import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
-import org.eclipse.sirius.components.view.DiagramDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.springframework.context.annotation.Configuration;
 

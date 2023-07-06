@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.view.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 
 /**
  * Service used to navigate in {@link DiagramDescription}.
@@ -34,7 +34,7 @@ public interface IViewDiagramDescriptionService {
      *            the searched name
      * @return an optional node
      */
-    Optional<org.eclipse.sirius.components.view.NodeDescription> getNodeDescriptionByName(DiagramDescription diagramDescription, String nodeName);
+    Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getNodeDescriptionByName(DiagramDescription diagramDescription, String nodeName);
 
     /**
      * Gets the {@link DiagramDescription} from the converted node map.
@@ -43,6 +43,6 @@ public interface IViewDiagramDescriptionService {
      *            map of converted nodes
      * @return an optional diagrams
      */
-    Optional<DiagramDescription> getDiagramDescription(Map<org.eclipse.sirius.components.view.NodeDescription, NodeDescription> capturedNodeDescriptions);
+    Optional<DiagramDescription> getDiagramDescription(Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions);
 
 }

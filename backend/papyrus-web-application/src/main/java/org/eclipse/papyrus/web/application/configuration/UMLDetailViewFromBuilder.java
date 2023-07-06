@@ -14,9 +14,9 @@
 package org.eclipse.papyrus.web.application.configuration;
 
 import org.eclipse.papyrus.web.application.properties.UMLDetailViewBuilder;
-import org.eclipse.sirius.components.view.FormDescription;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
 
 /**
  * Build of the full UML Detail view form.
@@ -44,7 +44,7 @@ public class UMLDetailViewFromBuilder {
     }
 
     private FormDescription createFormDescription() {
-        FormDescription form = ViewFactory.eINSTANCE.createFormDescription();
+        FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName(this.formName);
         form.setDomainType("uml::Element");
         return form;

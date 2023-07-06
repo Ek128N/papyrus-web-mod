@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.view.NodeDescription;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
@@ -96,7 +95,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
         Model model = (Model) r.getContents().get(0);
         Package primitiveTypePackage = model.getImportedPackages().get(0);
 
-        Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
+        Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(PADDiagramDescriptionBuilder.PD_REP_NAME);
 
         return this.diagramBuilderService

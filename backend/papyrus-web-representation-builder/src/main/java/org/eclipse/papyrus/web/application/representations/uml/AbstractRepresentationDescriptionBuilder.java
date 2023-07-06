@@ -42,21 +42,22 @@ import org.eclipse.papyrus.web.application.representations.view.builders.ListCom
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
 import org.eclipse.papyrus.web.application.representations.view.builders.ViewBuilder;
-import org.eclipse.sirius.components.view.ArrowStyle;
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.DeleteTool;
-import org.eclipse.sirius.components.view.DiagramDescription;
-import org.eclipse.sirius.components.view.DiagramElementDescription;
-import org.eclipse.sirius.components.view.EdgeDescription;
-import org.eclipse.sirius.components.view.EdgeTool;
-import org.eclipse.sirius.components.view.ImageNodeStyleDescription;
-import org.eclipse.sirius.components.view.LineStyle;
-import org.eclipse.sirius.components.view.NodeDescription;
-import org.eclipse.sirius.components.view.NodeStyleDescription;
-import org.eclipse.sirius.components.view.Tool;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.uml2.uml.UMLPackage;
 
 /**
@@ -299,7 +300,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 () -> collectNodesWithDomain(diagramDescription, pack.getComment()), //
                 () -> collectNodesWithDomain(diagramDescription, pack.getElement()));
 
-        DeleteTool deleteTool = ViewFactory.eINSTANCE.createDeleteTool();
+        DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
         deleteTool.setName("Remove annotated element"); //$NON-NLS-1$
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement
@@ -360,9 +361,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         registerCallback(parent, () -> {
             List<NodeDescription> childrenCandidates = collectNodesWithDomain(diagramDescription, type).stream().filter(filter).collect(toList());
             for (var candidate : childrenCandidates) {
-                if (candidate.eContainingFeature() == ViewPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions()) {
+                if (candidate.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions()) {
                     parent.getReusedBorderNodeDescriptions().addAll(childrenCandidates);
-                } else if (candidate.eContainingFeature() == ViewPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
+                } else if (candidate.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
                     parent.getReusedChildNodeDescriptions().addAll(childrenCandidates);
                 }
             }

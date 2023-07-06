@@ -15,11 +15,11 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.GroupDisplayMode;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.GroupDisplayMode;
+import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class UnmarshallActionUmlPage {
 

@@ -20,9 +20,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.tests.utils.Severity;
 import org.eclipse.papyrus.web.tests.utils.Status;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * A class gathering validation rules for {@link PageDescription}.

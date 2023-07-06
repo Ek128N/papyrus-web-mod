@@ -14,11 +14,11 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
-import org.eclipse.sirius.components.view.FlexDirection;
-import org.eclipse.sirius.components.view.FlexboxContainerDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.ViewFactory;
-import org.eclipse.sirius.components.view.WidgetDescription;
+import org.eclipse.sirius.components.view.form.FlexDirection;
+import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
  * Custom implementation of LiteralBooleanUmlPage.
@@ -33,7 +33,7 @@ public class LiteralBooleanUmlPageCustomImpl extends LiteralBooleanUmlPage {
 
     @Override
     protected void addValue(GroupDescription group) {
-        FlexboxContainerDescription widget = ViewFactory.eINSTANCE.createFlexboxContainerDescription();
+        FlexboxContainerDescription widget = FormFactory.eINSTANCE.createFlexboxContainerDescription();
         widget.setFlexDirection(FlexDirection.ROW);
         widget.setLabelExpression("aql:'Value'");
         // widget.setHelpExpression("aql:self.getFeatureDescription('value')");

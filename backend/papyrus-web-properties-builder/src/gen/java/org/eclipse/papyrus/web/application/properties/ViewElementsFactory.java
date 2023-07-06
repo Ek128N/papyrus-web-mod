@@ -15,17 +15,18 @@
 package org.eclipse.papyrus.web.application.properties;
 
 import org.eclipse.sirius.components.view.ChangeContext;
-import org.eclipse.sirius.components.view.CheckboxDescription;
-import org.eclipse.sirius.components.view.FormDescription;
-import org.eclipse.sirius.components.view.GroupDescription;
-import org.eclipse.sirius.components.view.GroupDisplayMode;
-import org.eclipse.sirius.components.view.ListDescription;
-import org.eclipse.sirius.components.view.PageDescription;
-import org.eclipse.sirius.components.view.RadioDescription;
-import org.eclipse.sirius.components.view.SelectDescription;
-import org.eclipse.sirius.components.view.TextAreaDescription;
-import org.eclipse.sirius.components.view.TextfieldDescription;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.CheckboxDescription;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormFactory;
+import org.eclipse.sirius.components.view.form.GroupDescription;
+import org.eclipse.sirius.components.view.form.GroupDisplayMode;
+import org.eclipse.sirius.components.view.form.ListDescription;
+import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.RadioDescription;
+import org.eclipse.sirius.components.view.form.SelectDescription;
+import org.eclipse.sirius.components.view.form.TextAreaDescription;
+import org.eclipse.sirius.components.view.form.TextfieldDescription;
 
 public class ViewElementsFactory {
 
@@ -36,7 +37,7 @@ public class ViewElementsFactory {
     }
 
     public TextfieldDescription createTextfieldDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression) {
-        TextfieldDescription description = ViewFactory.eINSTANCE.createTextfieldDescription();
+        TextfieldDescription description = FormFactory.eINSTANCE.createTextfieldDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
@@ -46,7 +47,7 @@ public class ViewElementsFactory {
     }
 
     public TextAreaDescription createTextAreaDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression) {
-        TextAreaDescription description = ViewFactory.eINSTANCE.createTextAreaDescription();
+        TextAreaDescription description = FormFactory.eINSTANCE.createTextAreaDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
@@ -56,7 +57,7 @@ public class ViewElementsFactory {
     }
 
     public CheckboxDescription createCheckboxDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression) {
-        CheckboxDescription description = ViewFactory.eINSTANCE.createCheckboxDescription();
+        CheckboxDescription description = FormFactory.eINSTANCE.createCheckboxDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
@@ -66,7 +67,7 @@ public class ViewElementsFactory {
     }
 
     public ListDescription createListDescription(String name, String labelExp, String valueExp, String contextExp, String isDeletableExp, String helpExpression) {
-        ListDescription description = ViewFactory.eINSTANCE.createListDescription();
+        ListDescription description = FormFactory.eINSTANCE.createListDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
@@ -77,7 +78,7 @@ public class ViewElementsFactory {
     }
 
     public RadioDescription createRadioDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp, String helpExpression) {
-        RadioDescription description = ViewFactory.eINSTANCE.createRadioDescription();
+        RadioDescription description = FormFactory.eINSTANCE.createRadioDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
@@ -89,7 +90,7 @@ public class ViewElementsFactory {
     }
 
     public SelectDescription createSelectDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp, String helpExpression) {
-        SelectDescription description = ViewFactory.eINSTANCE.createSelectDescription();
+        SelectDescription description = FormFactory.eINSTANCE.createSelectDescription();
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
@@ -101,7 +102,7 @@ public class ViewElementsFactory {
     }
 
     public PageDescription createPageDescription(String name, String domainType, String labelExpression, String semanticCandidateExpression, String preconditionExpresion) {
-        PageDescription page = ViewFactory.eINSTANCE.createPageDescription();
+        PageDescription page = FormFactory.eINSTANCE.createPageDescription();
         page.setName(name);
         page.setDomainType(domainType);
         page.setLabelExpression(labelExpression);
@@ -112,7 +113,7 @@ public class ViewElementsFactory {
     }
 
     public FormDescription createFormDescription(String name, String domainType, String titleExpression, String preconditionExpression) {
-        FormDescription form = ViewFactory.eINSTANCE.createFormDescription();
+        FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName(name);
         form.setDomainType(domainType);
         form.setPreconditionExpression(preconditionExpression);
@@ -122,7 +123,7 @@ public class ViewElementsFactory {
     }
 
     public GroupDescription createGroupDescription(String name, String labelExpression, String semanticCandidateExpression, GroupDisplayMode groupDisplayMode) {
-        GroupDescription form = ViewFactory.eINSTANCE.createGroupDescription();
+        GroupDescription form = FormFactory.eINSTANCE.createGroupDescription();
         form.setName(name);
         form.setLabelExpression(labelExpression);
         form.setDisplayMode(groupDisplayMode);
