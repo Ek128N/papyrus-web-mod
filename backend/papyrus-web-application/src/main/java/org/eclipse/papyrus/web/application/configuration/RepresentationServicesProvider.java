@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.papyrus.uml.domain.services.services.UMLService;
+import org.eclipse.papyrus.uml.domain.services.internal.helpers.UMLService;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
