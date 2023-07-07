@@ -21,8 +21,8 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Filter from '@material-ui/icons/Filter';
 import LinkIcon from '@material-ui/icons/Link';
@@ -33,6 +33,8 @@ import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { OnboardArea } from '../../onboarding/OnboardArea';
+import { UMLModelTreeItemContextMenuContribution } from '../../profile/apply-profile/UMLModelTreeItemContextMenuContribution';
+import { UMLElementTreeItemContextMenuContribution } from '../../profile/apply-stereotype/UMLElementTreeItemContextMenuContribution';
 import { DiagramTreeItemContextMenuContribution } from './DiagramTreeItemContextMenuContribution';
 import { DocumentTreeItemContextMenuContribution } from './DocumentTreeItemContextMenuContribution';
 import { EditProjectNavbar } from './EditProjectNavbar/EditProjectNavbar';
@@ -40,12 +42,12 @@ import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariab
 import {
   EditProjectViewContext,
   EditProjectViewEvent,
-  editProjectViewMachine,
   HandleFetchedProjectEvent,
   HideToastEvent,
   SchemaValue,
   SelectRepresentationEvent,
   ShowToastEvent,
+  editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
 
@@ -144,6 +146,21 @@ export const EditProjectView = () => {
       <TreeItemContextMenuContribution
         canHandle={(item: GQLTreeItem) => item.kind === 'siriusComponents://representation?type=Diagram'}
         component={DiagramTreeItemContextMenuContribution}
+      />,
+      <TreeItemContextMenuContribution
+        canHandle={(item: GQLTreeItem) => {
+          return (
+            item.kind === 'siriusComponents://semantic?domain=uml&entity=Model' ||
+            item.kind === 'siriusComponents://semantic?domain=uml&entity=Package'
+          );
+        }}
+        component={UMLModelTreeItemContextMenuContribution}
+      />,
+      <TreeItemContextMenuContribution
+        canHandle={(item: GQLTreeItem) => {
+          return item.kind.includes('siriusComponents://semantic?domain=uml');
+        }}
+        component={UMLElementTreeItemContextMenuContribution}
       />,
     ];
 
