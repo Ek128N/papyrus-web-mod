@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.properties.pages;
 
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
@@ -23,8 +24,8 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * @author Jerome Gout
  */
 public class LiteralRealUmlPageCustomImpl extends LiteralRealUmlPage {
-    public LiteralRealUmlPageCustomImpl(ViewElementsFactory viewElementFactory) {
-        super(viewElementFactory);
+    public LiteralRealUmlPageCustomImpl(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {
+        super(viewElementFactory, colorRegistry);
     }
 
     // This override is because original valueExpression and contextExpression found in VSM contain the Input parameter

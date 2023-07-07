@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.properties.pages;
 
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.FlexDirection;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
@@ -27,8 +28,8 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  */
 public class LiteralBooleanUmlPageCustomImpl extends LiteralBooleanUmlPage {
 
-    public LiteralBooleanUmlPageCustomImpl(ViewElementsFactory viewElementFactory) {
-        super(viewElementFactory);
+    public LiteralBooleanUmlPageCustomImpl(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {
+        super(viewElementFactory, colorRegistry);
     }
 
     @Override

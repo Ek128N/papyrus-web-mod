@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.papyrus.web.application.properties.pages.MemberEndGroupDescriptionBuilder;
 import org.eclipse.papyrus.web.application.properties.utils.PageDescriptionValidator;
 import org.eclipse.papyrus.web.tests.utils.Severity;
 import org.eclipse.papyrus.web.tests.utils.Status;
@@ -38,7 +39,9 @@ public class PageDescriptionTests {
     @Test
     public void validateDetailView() {
         List<Status> statuses = new ArrayList<>();
-        List<PageDescription> pages = new UMLDetailViewBuilder().createPages();
+        ColorRegistry colorRegistry = new ColorRegistry();
+        colorRegistry.registerColor(MemberEndGroupDescriptionBuilder.MEMBER_END_BORDER_COLOR_NAME, "#c2c2c2");
+        List<PageDescription> pages = new UMLDetailViewBuilder(colorRegistry).createPages();
         for (PageDescription page : pages) {
             statuses.addAll(validator.validate(page));
         }

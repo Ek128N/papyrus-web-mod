@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.properties.pages;
 
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
@@ -24,8 +25,8 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  */
 public class VariableUmlPageCustomImpl extends VariableUmlPage {
 
-    public VariableUmlPageCustomImpl(ViewElementsFactory viewElementFactory) {
-        super(viewElementFactory);
+    public VariableUmlPageCustomImpl(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {
+        super(viewElementFactory, colorRegistry);
     }
 
     /**

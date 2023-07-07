@@ -13,9 +13,11 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.properties.pages;
 
+import java.util.Optional;
+
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
-import org.eclipse.sirius.components.view.FixedColor;
-import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
@@ -30,10 +32,18 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  */
 public final class MemberEndGroupDescriptionBuilder {
 
+    /**
+     * Color name used for border style of Member end container.
+     */
+    public static final String MEMBER_END_BORDER_COLOR_NAME = "memberEnd.border";
+
     private ViewElementsFactory viewElementFactory;
 
-    public MemberEndGroupDescriptionBuilder(ViewElementsFactory viewElementFactory) {
+    private ColorRegistry colorRegistry;
+
+    public MemberEndGroupDescriptionBuilder(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {
         this.viewElementFactory = viewElementFactory;
+        this.colorRegistry = colorRegistry;
     }
 
     public WidgetDescription build() {
@@ -88,17 +98,11 @@ public final class MemberEndGroupDescriptionBuilder {
 
     private ContainerBorderStyle createBorderStyle() {
         ContainerBorderStyle style = FormFactory.eINSTANCE.createContainerBorderStyle();
-        style.setBorderColor(createFixedColor("border", "#c2c2c2"));
+        Optional<UserColor> color = colorRegistry.getColorByName(MEMBER_END_BORDER_COLOR_NAME);
+        if (color.isPresent()) style.setBorderColor(color.get());
         style.setBorderLineStyle(ContainerBorderLineStyle.SOLID);
         style.setBorderRadius(0);
         return style;
-    }
-
-    private FixedColor createFixedColor(String name, String value) {
-        var fixedColor = ViewFactory.eINSTANCE.createFixedColor();
-        fixedColor.setName(name);
-        fixedColor.setValue(value);
-        return fixedColor;
     }
 
 }

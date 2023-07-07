@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.properties.pages;
 
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -25,14 +26,14 @@ import org.eclipse.sirius.components.view.form.PageDescription;
  */
 public class AssociationUmlPageCustomImpl extends AssociationUmlPage {
 
-    public AssociationUmlPageCustomImpl(ViewElementsFactory viewElementFactory) {
-        super(viewElementFactory);
+    public AssociationUmlPageCustomImpl(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {
+        super(viewElementFactory, colorRegistry);
     }
 
     @Override
     protected void createMemberEndUmlGroup(PageDescription page) {
         GroupDescription group = viewElementFactory.createGroupDescription("memberEnd_uml_group", "", "aql:self.memberEnd", GroupDisplayMode.LIST);
         page.getGroups().add(group);
-        group.getWidgets().add(new MemberEndGroupDescriptionBuilder(viewElementFactory).build());
+        group.getWidgets().add(new MemberEndGroupDescriptionBuilder(viewElementFactory, colorRegistry).build());
     }
 }

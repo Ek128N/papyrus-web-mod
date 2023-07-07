@@ -14,6 +14,7 @@
 
 package org.eclipse.papyrus.web.application.properties.pages;
 
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
@@ -25,9 +26,12 @@ public class AcceptEventActionUmlPage {
 
     protected final ViewElementsFactory viewElementFactory;
 
-    public AcceptEventActionUmlPage(ViewElementsFactory viewElementFactory) {
+    protected final ColorRegistry colorRegistry;
+
+    public AcceptEventActionUmlPage(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {
         super();
         this.viewElementFactory = viewElementFactory;
+        this.colorRegistry = colorRegistry;
     }
 
     public PageDescription create() {

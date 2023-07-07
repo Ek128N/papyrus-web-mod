@@ -13,8 +13,12 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
+import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.UMLDetailViewBuilder;
+import org.eclipse.papyrus.web.application.properties.pages.MemberEndGroupDescriptionBuilder;
+import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.FormFactory;
 
@@ -35,12 +39,23 @@ public class UMLDetailViewFromBuilder {
     public View build() {
         View view = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createView();
 
+        ColorRegistry colorRegistry = new ColorRegistry();
+
+        this.defineGlobalColors(colorRegistry);
+
         FormDescription form = this.createFormDescription();
         view.getDescriptions().add(form);
 
-        form.getPages().addAll(new UMLDetailViewBuilder().createPages());
+        form.getPages().addAll(new UMLDetailViewBuilder(colorRegistry).createPages());
 
+        ColorPalette colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+        view.getColorPalettes().add(colorPalette);
+        colorPalette.getColors().addAll(colorRegistry.getAllColors());
         return view;
+    }
+
+    private void defineGlobalColors(ColorRegistry registry) {
+        registry.registerColor(MemberEndGroupDescriptionBuilder.MEMBER_END_BORDER_COLOR_NAME, "#c2c2c2");
     }
 
     private FormDescription createFormDescription() {
