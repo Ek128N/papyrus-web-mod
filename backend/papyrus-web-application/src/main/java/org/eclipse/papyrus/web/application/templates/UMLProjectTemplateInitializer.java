@@ -84,7 +84,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
         try {
             Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml"); //$NON-NLS-1$
             return resource.flatMap(r -> this.createPackageDiagram(editingContext, r))//
-                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId()));
+                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
             this.logger.error("Error while creating template", e); //$NON-NLS-1$
         }

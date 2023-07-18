@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
@@ -55,7 +56,6 @@ import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.eclipse.sirius.web.services.documents.EObjectRandomIDManager;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
@@ -148,7 +148,7 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
                             this.logger.warn(exception.getMessage(), exception);
                         }
 
-                        resource.eAdapters().add(new DocumentMetadataAdapter(name));
+                        resource.eAdapters().add(new ResourceMetadataAdapter(name));
                         resourceSet.getResources().add(resource);
 
                         payload = new UploadDocumentSuccessPayload(input.id(), document);

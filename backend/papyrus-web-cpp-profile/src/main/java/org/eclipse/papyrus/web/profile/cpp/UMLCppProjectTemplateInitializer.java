@@ -117,7 +117,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         try {
             Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, CPP_TEMPLATE_FILE, CPP_TEMPLATE_FILE);
             return resource.flatMap(r -> this.createMainCppClassDiagram(editingContext, r))//
-                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId()));
+                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
             this.logger.error("Error while creating template", e); //$NON-NLS-1$
         }
@@ -273,7 +273,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
     }
 
     private RepresentationMetadata toMetadata(Diagram diagram) {
-        return new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId(), diagram.getTargetObjectId());
+        return new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId());
     }
 
 }

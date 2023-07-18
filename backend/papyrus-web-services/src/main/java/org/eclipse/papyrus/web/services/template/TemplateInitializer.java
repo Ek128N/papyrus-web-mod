@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.papyrus.web.sirius.contributions.StereotypeBuilder;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -29,7 +30,6 @@ import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
-import org.eclipse.sirius.web.services.documents.DocumentMetadataAdapter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +74,7 @@ public class TemplateInitializer {
                 ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
                 JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
                 resourceSet.getResources().add(resource);
-                resource.eAdapters().add(new DocumentMetadataAdapter(newResourceName));
+                resource.eAdapters().add(new ResourceMetadataAdapter(newResourceName));
                 try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
                     resource.load(inputStream, null);
                     return Optional.of(resource);

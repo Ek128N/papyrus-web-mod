@@ -136,29 +136,36 @@ export const EditProjectView = () => {
 
     const treeItemContextMenuContributions = [
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => item.kind.startsWith('siriusWeb://document')}
+        canHandle={(treeId: string, item: GQLTreeItem) =>
+          treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
+        }
         component={DocumentTreeItemContextMenuContribution}
       />,
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => item.kind.startsWith('siriusComponents://semantic')}
+        canHandle={(treeId: string, item: GQLTreeItem) =>
+          treeId.startsWith('explorer://') && item.kind.startsWith('siriusComponents://semantic')
+        }
         component={ObjectTreeItemContextMenuContribution}
       />,
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => item.kind === 'siriusComponents://representation?type=Diagram'}
+        canHandle={(treeId: string, item: GQLTreeItem) =>
+          treeId.startsWith('explorer://') && item.kind === 'siriusComponents://representation?type=Diagram'
+        }
         component={DiagramTreeItemContextMenuContribution}
       />,
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => {
+        canHandle={(treeId: string, item: GQLTreeItem) => {
           return (
-            item.kind === 'siriusComponents://semantic?domain=uml&entity=Model' ||
-            item.kind === 'siriusComponents://semantic?domain=uml&entity=Package'
+            treeId.startsWith('explorer://') &&
+            (item.kind === 'siriusComponents://semantic?domain=uml&entity=Model' ||
+              item.kind === 'siriusComponents://semantic?domain=uml&entity=Package')
           );
         }}
         component={UMLModelTreeItemContextMenuContribution}
       />,
       <TreeItemContextMenuContribution
-        canHandle={(item: GQLTreeItem) => {
-          return item.kind.includes('siriusComponents://semantic?domain=uml');
+        canHandle={(treeId: string, item: GQLTreeItem) => {
+          return treeId.startsWith('explorer://') && item.kind.includes('siriusComponents://semantic?domain=uml');
         }}
         component={UMLElementTreeItemContextMenuContribution}
       />,
