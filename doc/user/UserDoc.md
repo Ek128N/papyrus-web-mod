@@ -9,15 +9,15 @@ Create a new project in the platform can be done through following ways:
 * Create a project from existing templates
 * Upload a previously exported project
 
-For more details on project creation topic, see [`Create a Project`](https://docs.obeostudio.com/2023.3.0/help_center.html#create-project) section of the documentation.
+For more details on project creation topic, see [`Create a Project`](https://docs.obeostudio.com/2023.6.0/help_center.html#create-project) section of the documentation.
 
 As far as existing projects are concerned, the following actions are available:
 * Open an existing project  
 In order to open an existing project, user has to locate the project in the Project list and click on its name.
 * Delete a project  
-See the [`Delete a Project`](https://docs.obeostudio.com/2023.3.0/help_center.html#_delete_a_project) section of the documentation
+See the [`Delete a Project`](https://docs.obeostudio.com/2023.6.0/help_center.html#_delete_a_project) section of the documentation
 * Rename a project  
-See the [`Rename a Project`](https://docs.obeostudio.com/2023.3.0/help_center.html#_rename_a_project) section of the documentation
+See the [`Rename a Project`](https://docs.obeostudio.com/2023.6.0/help_center.html#_rename_a_project) section of the documentation
 
 Once the project (new or existing one) is chosen, the workbench page is presented.
 
@@ -44,6 +44,7 @@ Diagram elements can be easily recognized by the diagram icon  <img alt="diagram
 From the _Explorer_ view, it is possible to create new semantic elements. To do so, use the contextual menu on any semantic element and choose _New Object_. In the dialog, select the new element to create among all semantic elements listed in the dropdown (names are prefixed by the feature containment).
 
 As far as the representation creation is concerned, it is worth noting that _Representations_ depend of the selected semantic element (the one used to open the contextual menu). Here are available representations and their creation contexts:
+
 | Representation | Context |
 |------------------|---------|
 | _Class Diagram_ | _Package_ |
@@ -62,8 +63,8 @@ The _Explorer toolbar_ contains global _Project_ actions:
 * _Upload model_  
     Add a previously downloaded UML _Model_ into the _Project_. Accepted UML _Model_ files should have the ```.uml``` extension
 * Synchronization with _Representation_ editor  
-    When Synchronization with _Representation_ is **enabled**, selecting a graphical element in the diagram will **_Reveal_** and **_Select_** the semantic element corresponding in the _Expolorer_ tree.  
-    When Synchronization with _Representation_ is **disabled**, selecting a graphical element in the diagram will **_Select_** the semantic element corresponding in the _Expolorer_ tree only if it has already been revealed.
+    When Synchronization with _Representation_ is **enabled**, selecting a graphical element in the diagram will **_Reveal_** and **_Select_** the semantic element corresponding in the _Explorer_ tree.  
+    When Synchronization with _Representation_ is **disabled**, selecting a graphical element in the diagram will **_Select_** the semantic element corresponding in the _Explorer_ tree only if it has already been revealed.
 
 #### Apply profile
 
@@ -90,7 +91,7 @@ To edit the properties of a _Stereotype_, select the matching _Stereotype Applic
 
 ### Validation panel
 
-The _Validation_ panel shares the left area of the workbench page with the _Explorer_. See the [documentation section](https://docs.obeostudio.com/2023.3.0/help_center.html#_validation_view) for more details.
+The _Validation_ panel shares the left area of the workbench page with the _Explorer_. See the [documentation section](https://docs.obeostudio.com/2023.6.0/help_center.html#_validation_view) for more details.
 
 ### Diagram panel
 
@@ -133,13 +134,33 @@ On the right of the page, one can see several stacked views given information ab
 
 #### Details
 
-All properties of the current selection can be seen or edited.
+The Details panel is used to visualize and edit all the features of the selected semantic object (from Explorer or diagrams). The panel is divided into 4 separate tabs:
+* UML: details the main UML features of the semantic element 
+* Comments: displays comments associated to the selected element. Those comments can be owned by the element or applied to it (using a relation between the comment and this element).
+* Profile: focus on applied stereotypes/profiles of this selected element
+* Advanced: this tab displays all features of the semantic element. It uses generic rules to find the best suitable widget to visualize and edit the feature.
+
+In the UML tab, each property is represented by an appropriated widget according of its nature. For instance, a property of type ```ecore::EString``` will be represented by a text widget. It might be, in some situations more appropriated to represent this string by a text area widget which supports multiple lines of text.
+
+Basic widgets
+
+In the following table, we present the mapping between basic types and their associated widgets
+
+| Basic Type | Widget |
+|------------------|---------|
+| _Boolean_ | _Checkbox_ |  
+| _String_ | _Text field_ or _Text area_ |
+| _Number_ | _Text field_ |
+| _Enumeration_ | _Select_ or _Radio_|
+| _List_ | _List_ |
+
+Here is [the Sirius documentation](https://docs.obeostudio.com/2023.6.0/help_center.html#_details_view) of all those widgets.
 
 #### Related Elements
 
-There is a section about the [_Related Elements view_](https://docs.obeostudio.com/2023.3.0/help_center.html#project-editor) in the documentation.
+There is a section about the [_Related Elements view_](https://docs.obeostudio.com/2023.6.0/help_center.html#project-editor) in the documentation.
 
 
 #### Representations 
 
-There is a section about [_Representations view_](https://docs.obeostudio.com/2023.3.0/help_center.html#_representations_view) in the documentation.
+There is a section about [_Representations view_](https://docs.obeostudio.com/2023.6.0/help_center.html#_representations_view) in the documentation.
