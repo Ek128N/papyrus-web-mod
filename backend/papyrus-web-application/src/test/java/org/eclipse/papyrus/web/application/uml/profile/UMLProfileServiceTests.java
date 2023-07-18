@@ -47,6 +47,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Tests the services in charge of using UML Profiles.
+ *
+ * @author Arthur Daussy
+ */
 @SpringBootTest
 @WebAppConfiguration
 @Transactional

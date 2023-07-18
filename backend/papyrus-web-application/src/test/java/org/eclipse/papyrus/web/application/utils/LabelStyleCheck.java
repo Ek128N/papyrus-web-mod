@@ -21,6 +21,11 @@ import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 
+/**
+ * Helper used to check the style of a label.
+ *
+ * @author Arthur Daussy
+ */
 public class LabelStyleCheck {
 
     private final LabelStyle labelStyle;

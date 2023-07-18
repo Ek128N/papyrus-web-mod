@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+ * Copyright (c) 2022, 2023 CEA, Obeo
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -83,6 +83,11 @@ public class CompositeStructureDropBehaviorProvider implements IWebExternalSourc
 
     }
 
+    /**
+     * Switch used for dropping a node on another node.
+     *
+     * @author Arthur Daussy
+     */
     private static final class DropOnNodeSwitch extends GenericDropOnNodeSwitch {
 
         private final Function<String, Object> eObjectResolver;

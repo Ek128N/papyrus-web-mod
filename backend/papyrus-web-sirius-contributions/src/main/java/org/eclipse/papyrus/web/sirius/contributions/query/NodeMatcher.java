@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 CEA, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,11 @@ import org.eclipse.sirius.components.diagrams.Node;
  */
 public class NodeMatcher {
 
+    /**
+     * Type of node to match.
+     *
+     * @author Arthur Daussy
+     */
     public enum BorderNodeStatus {
         /**
          * The searched node is a bordered node.

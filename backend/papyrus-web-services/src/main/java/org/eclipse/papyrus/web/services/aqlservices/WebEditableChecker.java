@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 CEA, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,12 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of {@link IEditableChecker} for the Web. It used the
+ * {@link EditingDomain#isReadOnly(org.eclipse.emf.ecore.resource.Resource)} method to check if an element is editable.
+ *
+ * @author Arthur Daussy
+ */
 @Service
 public class WebEditableChecker implements IEditableChecker {
 

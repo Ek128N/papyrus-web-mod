@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 CEA, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,11 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.springframework.stereotype.Service;
 
+/**
+ * An implementation of {@link IViewDiagramDescriptionService}.
+ *
+ * @author Arthur Daussy
+ */
 @Service
 public class ViewDiagramDescriptionService implements IViewDiagramDescriptionService {
 

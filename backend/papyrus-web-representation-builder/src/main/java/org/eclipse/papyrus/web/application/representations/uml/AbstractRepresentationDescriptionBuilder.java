@@ -415,7 +415,13 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         return n;
     }
 
+    /**
+     * Comparator of {@link Tool} based of alphabetic order of the name of the tool.
+     * 
+     * @author Arthur Daussy
+     */
     class ToolComparator implements Comparator<Tool> {
+        @Override
         public int compare(Tool obj1, Tool obj2) {
             int res;
             if (obj1 == obj2) {

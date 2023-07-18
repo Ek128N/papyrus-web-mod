@@ -37,16 +37,16 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Provides the default description of the widget to use to support mono-valued non-containment reference.
- *
- * @author sbegaudeau
- */
 /*
  * Temporary modification of
  * org.eclipse.sirius.components.compatibility.emf.properties.MonoValuedNonContainmentReferenceIfDescriptionProvider
  * used to avoid latency in the application while waiting for a proper property view implementation.
  * @see https://github.com/PapyrusSirius/papyrus-web/issues/58
+ */
+/**
+ * Provides the default description of the widget to use to support mono-valued non-containment reference.
+ *
+ * @author sbegaudeau
  */
 public class NonDerivedMonoValuedNonContainmentReferenceIfDescriptionProvider {
 

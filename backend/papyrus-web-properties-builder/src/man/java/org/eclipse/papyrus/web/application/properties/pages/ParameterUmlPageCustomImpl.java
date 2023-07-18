@@ -18,6 +18,11 @@ import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
+/**
+ * Customization of {@link ParameterUmlPage}.
+ * 
+ * @author Arthur Daussy
+ */
 public class ParameterUmlPageCustomImpl extends ParameterUmlPage {
 
     public ParameterUmlPageCustomImpl(ViewElementsFactory viewElementFactory, ColorRegistry colorRegistry) {

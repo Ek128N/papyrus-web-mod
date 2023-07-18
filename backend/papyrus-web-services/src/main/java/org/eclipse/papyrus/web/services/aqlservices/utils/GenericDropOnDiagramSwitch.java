@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 CEA, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,11 @@ package org.eclipse.papyrus.web.services.aqlservices.utils;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.util.UMLSwitch;
 
+/**
+ * Default switch used to drop a node on a Diagram.
+ *
+ * @author Arthur Daussy
+ */
 public final class GenericDropOnDiagramSwitch extends UMLSwitch<Void> {
 
     private final IViewCreationHelper viewHelper;

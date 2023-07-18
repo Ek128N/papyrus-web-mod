@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+ * Copyright (c) 2022, 2023 CEA, Obeo
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
+/**
+ * Helper used to create element on a diagram.
+ *
+ * @author Arthur Daussy
+ */
 public interface IViewCreationHelper {
 
     /**
@@ -52,6 +57,11 @@ public interface IViewCreationHelper {
      */
     boolean createView(EObject semanticElement, Node selectedNode, NodeDescription newViewDescription);
 
+    /**
+     * NoOp implementation.
+     *
+     * @author Arthur Daussy
+     */
     class NoOp implements IViewCreationHelper {
 
         @Override

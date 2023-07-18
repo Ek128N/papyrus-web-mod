@@ -26,6 +26,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.junit.jupiter.api.Assertions;
 
+/**
+ * Helper class used to ease the creation of tests with UML elements.
+ *
+ * @author Arthur Daussy
+ */
 public class UMLTestHelper {
 
     /**

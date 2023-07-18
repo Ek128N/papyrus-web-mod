@@ -234,11 +234,10 @@ This link should be replaced by *Reload Target Platform* once it is done
 ----
 https://checkstyle.org/eclipse-cs-update-site
 ----
-* Set up the Checkstyle configuration:
-** Window > Preferences > Checkstyle > Global Check Configuration > New...
-** In dialog set Type as *External Configuration File*
-** Choose a name (e.g Papyrus coding style)
-** Browse location and select the following file from papyrus web local repository:
+
+* Import the project _backend/papyrus-web-resources_ in your workspace.
+This project contains the checkstyle configuration for _Papyrus Web_.
+All projects are configured to point to this configuration file.
 +
 [source]
 ----

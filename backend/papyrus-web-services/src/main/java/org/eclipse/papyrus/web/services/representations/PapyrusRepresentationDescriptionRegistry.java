@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 CEA, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,6 +142,11 @@ public class PapyrusRepresentationDescriptionRegistry {
         return this.diagrams.stream().map(Match::getApiDiagramDescription).toList();
     }
 
+    /**
+     * Represents a match between an API description and a View Description
+     *
+     * @author Arthur Daussy
+     */
     private final class Match {
 
         private final DiagramDescription viewDiagramDescription;

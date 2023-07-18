@@ -14,6 +14,11 @@ package org.eclipse.papyrus.web.application.utils;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * Items used to help the search of an element in a representation.
+ *
+ * @author Arthur Daussy
+ */
 public class ElementMatcher {
 
     private final EObject semanticElement;

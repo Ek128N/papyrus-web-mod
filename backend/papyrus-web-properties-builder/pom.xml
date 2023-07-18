@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2022, 2023 CEA LIST, Obeo. This program and the accompanying materials 
-	are made available under the terms of the Eclipse Public License v2.0 which 
-	accompanies this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/ 
+<!-- Copyright (c) 2022, 2023 CEA LIST, Obeo. This program and the accompanying 
+	materials are made available under the terms of the Eclipse Public License 
+	v2.0 which accompanies this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/ 
 	SPDX-License-Identifier: EPL-2.0 Contributors: Obeo - initial API and implementation -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -164,6 +164,32 @@
 						<id>attach-sources</id>
 						<goals>
 							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<configLocation>../papyrus-web-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<failsOnError>true</failsOnError>
+					<consoleOutput>true</consoleOutput>
+					<!-- Exclude source gen folder from checkstyle -->
+					<sourceDirectories>
+						<sourceDirectory>src/main/java</sourceDirectory>
+						<sourceDirectory>src/man/java</sourceDirectory>
+						<sourceDirectory>src/test/java</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>

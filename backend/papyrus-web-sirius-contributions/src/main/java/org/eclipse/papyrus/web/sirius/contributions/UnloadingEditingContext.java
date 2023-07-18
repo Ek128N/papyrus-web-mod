@@ -19,6 +19,11 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 
+/**
+ * Special EditingContext that unload the Resources on dispose.
+ *
+ * @author Arthur Daussy
+ */
 public class UnloadingEditingContext extends EditingContext {
 
     public UnloadingEditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions) {

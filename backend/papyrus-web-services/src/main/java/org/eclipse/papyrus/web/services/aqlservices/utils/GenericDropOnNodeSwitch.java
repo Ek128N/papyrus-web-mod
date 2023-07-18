@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022, 2023 CEA, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,9 +19,14 @@ import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.util.UMLSwitch;
 
+/**
+ * Default switch used to drop a node on another node.
+ *
+ * @author Arthur Daussy
+ */
 public class GenericDropOnNodeSwitch extends UMLSwitch<Boolean> {
 
-    // Dupllicated from org.eclipse.papyrus.web.application.representations.IdBuilder
+    // Duplicated from org.eclipse.papyrus.web.application.representations.IdBuilder
     // Keep in sync
     // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
     private static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$

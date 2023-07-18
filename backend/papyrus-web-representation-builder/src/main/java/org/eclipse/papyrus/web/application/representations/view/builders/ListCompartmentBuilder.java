@@ -33,8 +33,12 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.springframework.data.util.Pair;
 
+/**
+ * Builder in charge of building a compartment composed of list items.
+ * 
+ * @author Arthur Daussy
+ */
 public class ListCompartmentBuilder {
-
 
     private String compartmentNameSuffix;
 
@@ -106,13 +110,13 @@ public class ListCompartmentBuilder {
     private NodeDescription addCompartementNode(NodeDescription parent, String compartmentSpecialization) {
         NodeDescription description = new NodeDescriptionBuilder(idBuilder, queryBuilder, metamodelHelper.toEClass(parent.getDomainType()), viewBuider.createRectangularNodeStyle(false, false),
                 metamodelHelper)//
-                .name(idBuilder.getCompartmentDomainNodeName(metamodelHelper.toEClass(parent.getDomainType()), compartmentSpecialization))
+                        .name(idBuilder.getCompartmentDomainNodeName(metamodelHelper.toEClass(parent.getDomainType()), compartmentSpecialization))
                         .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
-                .semanticCandidateExpression(queryBuilder.querySelf())//
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
-                .labelExpression(queryBuilder.emptyString())//
-                .collapsible(true)//
-                .build();
+                        .semanticCandidateExpression(queryBuilder.querySelf())//
+                        .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
+                        .labelExpression(queryBuilder.emptyString())//
+                        .collapsible(true)//
+                        .build();
 
         parent.getChildrenDescriptions().add(description);
         return description;

@@ -58,15 +58,15 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* helpExpression */"aql:self.getFeatureDescription('name')", //
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('name')");
 
-// TODO Restore when Primitive Select will be available: https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/20
-//        var ownerWidget = viewElementFactory.createSelectDescription("owner", "aql:'Owner'", //
-//                /* valueExpression */"aql:self.getOwner()", //
-//                /* contextExpression */"aql:self.setOwner(newValue)", //
-//                /* candidatesExpression */"aql:self.getOwnerEnumerations()", //
-//                /* candidateLabelExpression */"aql:candidate.toString()", //
-// /* helpExpression */"aql:'The owner of the association.'", //
-// /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('owner')");
-
+        // TODO Restore when Primitive Select will be available:
+        // https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/20
+        // var ownerWidget = viewElementFactory.createSelectDescription("owner", "aql:'Owner'", //
+        // /* valueExpression */"aql:self.getOwner()", //
+        // /* contextExpression */"aql:self.setOwner(newValue)", //
+        // /* candidatesExpression */"aql:self.getOwnerEnumerations()", //
+        // /* candidateLabelExpression */"aql:candidate.toString()", //
+        // /* helpExpression */"aql:'The owner of the association.'", //
+        // /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('owner')");
 
         var isNavigableWidget = viewElementFactory.createCheckboxDescription("isNavigable", "Navigable", //
                 /* valueExpression */"aql:self.isNavigable()", //
@@ -89,7 +89,7 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('lowerValue') and self.isMemberEndPropertyEditable('upperValue')");
 
         container.getChildren().add(nameWidget);
-//        container.getChildren().add(ownerWidget);
+        // container.getChildren().add(ownerWidget);
         container.getChildren().add(isNavigableWidget);
         container.getChildren().add(aggregationWidget);
         container.getChildren().add(multiplicityWidget);
@@ -99,7 +99,9 @@ public final class MemberEndGroupDescriptionBuilder {
     private ContainerBorderStyle createBorderStyle() {
         ContainerBorderStyle style = FormFactory.eINSTANCE.createContainerBorderStyle();
         Optional<UserColor> color = colorRegistry.getColorByName(MEMBER_END_BORDER_COLOR_NAME);
-        if (color.isPresent()) style.setBorderColor(color.get());
+        if (color.isPresent()) {
+            style.setBorderColor(color.get());
+        }
         style.setBorderLineStyle(ContainerBorderLineStyle.SOLID);
         style.setBorderRadius(0);
         return style;
