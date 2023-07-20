@@ -222,6 +222,66 @@ We should all try to do better with regard to the documentation of the project.
 Testing a project properly is just as hard as documenting it properly.
 If you have a meaningful piece of behavior in your code, it should be tested.
 
+==== Integration tests
+
+As far as integration tests are concerned, we are using the https://docs.cypress.io[Cypress framework]. Integration tests are also known as End to End tests (E2E). The goal of such tests is to mimic the user interactions and guarantee that all different layers (front end, back end, db storage...) are properly used. +
+Integration tests are located in `integration-tests`, a sub directory of Papyrus web repository root.
+
+===== Directory structure
+[source]
+--
+└──cypress <1>
+   ├───e2e <2>
+   │   └─── ...
+   ├───fixtures <3>
+   ├───plugins
+   └───support <4>
+--
+<1> Directory where Cypress look at all parts of test sources (equivalent to `src`)
+<2> The root directory where tests (files with `.cy.js` extension) themselves live. This is the place where new tests should be placed. 
+<3> Fixture directory contains all assets that can be load during tests execution.
+<4> directory containing custom Cypress commands.
+
+===== Launching Test infrastructure
+All following commands should be run inside the `integration-tests` directory.
+
+[start=0]
+. Optional: install all dependencies necessary for running Cypress tests:
+
+[source, shell]
+--
+npm install
+--
+
+. Launch backend (see https://github.com/PapyrusSirius/papyrus-web#development-environment[Backend configuration in Papyrus web README])
+. Launch front end (see https://github.com/PapyrusSirius/papyrus-web#frontend-set-up[Frontend configuration in Papyrus web README])
+. Launch Cypress test launcher:
+
+[source, shell]
+--
+npm run start:dev
+--
+[start=4]
+. In Cypress launcher, select E2E Testing card
+. Select the Chrome browser card
+. Click on _Start E2E Testing in Chrome_ button
+. In Chrome new window, Cypress displays all integration tests found inside the project. Click the test to run.
+
+===== Useful resources for E2E test authoring
+
+- Main Cypress API page https://docs.cypress.io/api/table-of-contents/[🔗]
+- Assertions reference page https://docs.cypress.io/guides/references/assertions[🔗]
+
+===== E2E tests in CI
+
+All integration tests are automatically run when a new remote branch is created in the Papyrus web Github repository.
+Use the _Actions_ tabs of Github site to visualize all workflows that have been run through branches over time.
+Details of build workflow _Build and Publish Papyrus Application_, can be displayed from this page or directly from branches page. 
+Integration tests execution is done during the build step named `Run end to end tests against the application`.
+Results of this execution can be found in summary page in a table called `Cypress Results`. +
+In case of errors, a screenshot of the test step that failed for each individual test can be retrieved as an archive file.
+These images are useful to understand the reasons that lead to the failures.
+
 === No special use cases
 
 Treat all the code in a similar fashion, the code in your tests should be treated in a similar fashion as the "real" code.
@@ -232,7 +292,7 @@ For any comment made on the review, add a comment with "Done" when matching chan
 If you disagree with the comment respond to the comment to start discussion with the reviewer.
 Do not hesitate to contact the reviewer/reviewee to discuss that matter.
 We are not robots.
-Do not click on _Resolve
+Do not click on _Resolve_
 
 == Definition of done
 

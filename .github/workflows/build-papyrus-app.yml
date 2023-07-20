@@ -77,7 +77,31 @@ jobs:
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
           sed -e "s|VERSION|${{ env.app_version_latest }}|" backend/papyrus-web-application/Dockerfile.template > backend/papyrus-web-application/Dockerfile
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest backend/papyrus-web-application
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest -t papyrusweb backend/papyrus-web-application
+
+      - name: Run end to end tests against the application
+        if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
+        uses: cypress-io/github-action@v5
+        with:
+          build: docker-compose -f ../backend/papyrus-web-application/docker-compose.yml up -d
+          start: docker-compose -f ../backend/papyrus-web-application/docker-compose.yml ps
+          wait-on: 'http://localhost:8080/login'
+          wait-on-timeout: 180
+          working-directory: integration-tests
+          record: false
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: papyrus-web
+          IMAGE_TAG: ${{ env.git_describe }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Store Cypress screenshots
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: integration-tests/target/screenshots/**/*.png
+          retention-days: 5
 
       - name: Upload the Docker image to AWS ECR
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
