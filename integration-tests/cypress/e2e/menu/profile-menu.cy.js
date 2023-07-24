@@ -44,7 +44,10 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('Model-more').click();
     cy.getByTestId('expand-all').should('be.visible').click();
     cy.getByTestId('ProfileApplication').should('be.visible').click();
-    cy.activateDetailsTab('Advanced').as('details');
+    // wait until details panel is populated (previous click finished)
+    cy.getByTestId('view-Details').findByTestId('Is strict').should('be.visible');
+    // before to switch to Advanced tab
+    cy.activateDetailsTab('Advanced').should('be.visible').as('details');
     cy.get('@details').contains('Core Properties').should('be.visible');
     cy.get('@details').findByTestId('Applied Profile').should('be.visible').contains('Profile PapyrusJava');
     // Apply stereotype
@@ -59,7 +62,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.get('.MuiDialog-root').findByTestId('apply-stereotype').should('have.prop', 'type', 'button').click(); // TODO: apply-stereotype dup testid
     // Verify stereotype applied
     cy.getByTestId('Model').click();
-    cy.activateDetailsTab('Advanced').as('details');
+    cy.activateDetailsTab('Advanced').should('be.visible').as('details');
     cy.get('@details').find('table.MuiTable-root').contains('PapyrusJava::ExternLibrary').should('be.visible');
     cy.getByTestId('ExternLibrary').should('be.visible');
   });

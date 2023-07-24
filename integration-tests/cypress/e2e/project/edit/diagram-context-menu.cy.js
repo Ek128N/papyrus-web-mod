@@ -25,7 +25,8 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
    * Test validating the deletion of a representation
    */
   it('can delete a representation', () => {
-    cy.getByTestId('SimpleSM.uml').dblclick();
+    cy.getByTestId('SimpleSM.uml-more').should('be.visible').click();
+    cy.getByTestId('expand-all').should('be.visible').click();
     cy.getByTestId('CppSMTemplate-more').should('be.visible').click();
 
     cy.getByTestId('new-representation').click();

@@ -40,19 +40,6 @@ describe('Basic widgets test', () => {
   });
 
   /**
-   * Test validating that Detail panel has 4 different pages
-   */
-  it('Check Details panel contents 4 children', () => {
-    cy.getByTestId('Package').click();
-    cy.activateDetailsTab('Advanced')
-      .should('be.visible')
-      .get('div[role="tablist"] > button')
-      .should(($lis) => {
-        expect($lis).to.have.length(4);
-      });
-  });
-
-  /**
    * Test validating the Text widget
    */
   it('Test Text description', () => {

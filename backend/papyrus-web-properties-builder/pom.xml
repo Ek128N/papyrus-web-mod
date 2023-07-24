@@ -86,6 +86,11 @@
 			<version>${sirius.components.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-forms</artifactId>
+			<version>${sirius.components.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>papyrus-uml-domain-services</groupId>
 			<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>
 			<version>${papyrus-uml-domain-services-version}</version>
