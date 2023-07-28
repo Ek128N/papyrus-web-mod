@@ -80,6 +80,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      */
     public static final String PACKAGE_CHILD = "inPackage";
 
+    public static final Predicate<NodeDescription> PACKAGE_CHILDREN_FILTER = n -> n.getName().endsWith(PACKAGE_CHILD);
+    
     /**
      * The String used to suffix the name of shared {@link NodeDescription}s.
      */
@@ -89,8 +91,6 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * The name of the parent {@link NodeDescription} containing all the shared {@link NodeDescription}s.
      */
     public static final String SHARED_DESCRIPTIONS = "SHARED_DESCRIPTIONS"; //$NON-NLS-1$
-
-    private static final Predicate<NodeDescription> PACKAGE_CHILDREN_FILTER = n -> n.getName().endsWith(PACKAGE_CHILD);
 
     protected StyleProvider styleProvider;
 
@@ -112,21 +112,21 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         super();
         this.representationName = representationName;
         this.representationDomainClass = domainClass;
-        this.queryBuilder = new QueryHelper(umlMetaModelHelper);
-        this.idBuilder = new IdBuilder(diagramPrefix, umlMetaModelHelper);
+        this.queryBuilder = new QueryHelper(this.umlMetaModelHelper);
+        this.idBuilder = new IdBuilder(diagramPrefix, this.umlMetaModelHelper);
 
     }
 
     protected NodeDescriptionBuilder newNodeBuilder(EClass semanticDomain, NodeStyleDescription style) {
-        return new NodeDescriptionBuilder(idBuilder, queryBuilder, semanticDomain, style, umlMetaModelHelper);
+        return new NodeDescriptionBuilder(this.idBuilder, this.queryBuilder, semanticDomain, style, this.umlMetaModelHelper);
     }
 
     protected ListCompartmentBuilder newListCompartmentBuilder() {
-        return new ListCompartmentBuilder(getIdBuilder(), getViewBuilder(), getQueryBuilder(), getUmlMetaModelHelper());
+        return new ListCompartmentBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder(), this.getUmlMetaModelHelper());
     }
 
     protected IDomainHelper getUmlMetaModelHelper() {
-        return umlMetaModelHelper;
+        return this.umlMetaModelHelper;
     }
 
     protected void registerCallback(EObject owner, Runnable r) {
@@ -136,19 +136,19 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     public DiagramDescription createDiagramDescription(View view) {
 
         this.styleProvider = new StyleProvider(view);
-        this.viewBuilder = new ViewBuilder(queryBuilder, styleProvider, idBuilder, umlMetaModelHelper);
+        this.viewBuilder = new ViewBuilder(this.queryBuilder, this.styleProvider, this.idBuilder, this.umlMetaModelHelper);
 
-        DiagramDescription diagramDescription = getViewBuilder().buildDiagramDescription(representationName, representationDomainClass);
+        DiagramDescription diagramDescription = this.getViewBuilder().buildDiagramDescription(this.representationName, this.representationDomainClass);
 
-        diagramDescription.setTitleExpression(MessageFormat.format("aql:''{0}''", representationName)); //$NON-NLS-1$
+        diagramDescription.setTitleExpression(MessageFormat.format("aql:''{0}''", this.representationName)); //$NON-NLS-1$
 
-        fillDescription(diagramDescription);
+        this.fillDescription(diagramDescription);
 
         EMFUtils.allContainedObjectOfType(diagramDescription, DiagramElementDescription.class).forEach(this::addConditionalLabelStyle);
 
-        runCallbacks(diagramDescription);
+        this.runCallbacks(diagramDescription);
 
-        sortPaletteTools(diagramDescription);
+        this.sortPaletteTools(diagramDescription);
 
         view.getDescriptions().add(diagramDescription);
 
@@ -170,7 +170,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     private void addConditionalLabelStyle(DiagramElementDescription description) {
-        if (mayHaveLabelConditionalLabelStyle(description)) {
+        if (this.mayHaveLabelConditionalLabelStyle(description)) {
             EClass domainType = UMLHelper.toEClass(description.getDomainType());
 
             if (domainType != null) {
@@ -233,15 +233,15 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected abstract void fillDescription(DiagramDescription diagramDescription);
 
     protected ViewBuilder getViewBuilder() {
-        return viewBuilder;
+        return this.viewBuilder;
     }
 
     protected QueryHelper getQueryBuilder() {
-        return queryBuilder;
+        return this.queryBuilder;
     }
 
     protected IdBuilder getIdBuilder() {
-        return idBuilder;
+        return this.idBuilder;
     }
 
     /**
@@ -256,7 +256,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @see IdBuilder#isCompartmentNode(NodeDescription)
      */
     protected List<NodeDescription> collectNodesWithDomain(DiagramDescription description, EClass... domains) {
-        return collectNodesWithDomain(description, false, false, domains);
+        return this.collectNodesWithDomain(description, false, false, domains);
     }
 
     /**
@@ -272,7 +272,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @see IdBuilder#isCompartmentNode(NodeDescription)
      */
     protected List<NodeDescription> collectNodesWithDomain(DiagramDescription description, boolean includeCompartment, boolean includeListItem, EClass... domains) {
-        return EMFUtils.allContainedObjectOfType(description, NodeDescription.class).filter(node -> isValidNodeDescription(node, includeCompartment, includeListItem, domains)).collect(toList());
+        return EMFUtils.allContainedObjectOfType(description, NodeDescription.class).filter(node -> this.isValidNodeDescription(node, includeCompartment, includeListItem, domains)).collect(toList());
     }
 
     /**
@@ -291,7 +291,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @return a list of matching {@link NodeDescription}
      */
     protected List<NodeDescription> collectNodesWithDomainAndFilter(DiagramDescription description, List<EClass> domains, List<EClass> forbiddenDomains) {
-        List<NodeDescription> forbiddenDescription = collectNodesWithDomain(description, forbiddenDomains.toArray(EClass[]::new));
+        List<NodeDescription> forbiddenDescription = this.collectNodesWithDomain(description, forbiddenDomains.toArray(EClass[]::new));
         return this.collectNodesWithDomain(description, domains.toArray(EClass[]::new)).stream() //
                 .filter(nd -> !SHARED_DESCRIPTIONS.equals(nd.getName())) //
                 .filter(nd -> !forbiddenDescription.contains(nd)) //
@@ -310,7 +310,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         final boolean result;
         if (!includeCompartment && IdBuilder.isCompartmentNode(node)) {
             result = false;
-        } else if (!includeCompartment && isCompartmentChildren(node)) {
+        } else if (!includeCompartment && this.isCompartmentChildren(node)) {
             result = false;
         } else {
             EClass targetDomain = UMLHelper.toEClass(node.getDomainType());
@@ -335,7 +335,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      */
     @Deprecated
     protected void createCommentDescription(DiagramDescription diagramDescription) {
-        NodeDescription commentDescription = getViewBuilder().createNoteStyleUnsynchonizedNodeDescription(pack.getComment(), getQueryBuilder().queryAllReachable(pack.getComment()));
+        NodeDescription commentDescription = this.getViewBuilder().createNoteStyleUnsynchonizedNodeDescription(this.pack.getComment(),
+                this.getQueryBuilder().queryAllReachable(this.pack.getComment()));
         commentDescription.getStyle().setWidthComputationExpression("200");
         commentDescription.getStyle().setHeightComputationExpression("100");
 
@@ -344,49 +345,49 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         // TODO uncomment next line when setColor is restored possibly in 2023.10.0
         // style.setColor(styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);
-        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
+        diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment()));
 
-        EdgeDescription annotedElementEdge = getViewBuilder().createFeatureEdgeDescription(//
-                getIdBuilder().getFeatureBaseEdgeId(pack.getComment_AnnotatedElement()), //
-                getQueryBuilder().emptyString(), //
-                queryAttributeOnSelf(pack.getComment_AnnotatedElement()), //
-                () -> collectNodesWithDomain(diagramDescription, pack.getComment()), //
-                () -> collectNodesWithDomain(diagramDescription, pack.getElement()));
+        EdgeDescription annotedElementEdge = this.getViewBuilder().createFeatureEdgeDescription(//
+                this.getIdBuilder().getFeatureBaseEdgeId(this.pack.getComment_AnnotatedElement()), //
+                this.getQueryBuilder().emptyString(), //
+                queryAttributeOnSelf(this.pack.getComment_AnnotatedElement()), //
+                () -> this.collectNodesWithDomain(diagramDescription, this.pack.getComment()), //
+                () -> this.collectNodesWithDomain(diagramDescription, this.pack.getElement()));
 
         DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
         deleteTool.setName("Remove annotated element"); //$NON-NLS-1$
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
-        createElement
-                .setExpression(CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, getQueryBuilder().aqlString(pack.getComment_AnnotatedElement().getName()), Variables.SEMANTIC_EDGE_TARGET));
+        createElement.setExpression(
+                CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, this.getQueryBuilder().aqlString(this.pack.getComment_AnnotatedElement().getName()), Variables.SEMANTIC_EDGE_TARGET));
         deleteTool.getBody().add(createElement);
 
         annotedElementEdge.getPalette().setDeleteTool(deleteTool);
 
-        addAnnotatedElementReconnectionTools(annotedElementEdge);
+        this.addAnnotatedElementReconnectionTools(annotedElementEdge);
 
         annotedElementEdge.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
         annotedElementEdge.getStyle().setLineStyle(LineStyle.DASH);
         diagramDescription.getEdgeDescriptions().add(annotedElementEdge);
 
-        EdgeTool creationTool = getViewBuilder().createFeatureBasedEdgeTool("Link", //$NON-NLS-1$
-                getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET), //
-                collectNodesWithDomain(diagramDescription, pack.getElement()));
+        EdgeTool creationTool = this.getViewBuilder().createFeatureBasedEdgeTool("Link", //$NON-NLS-1$
+                this.getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET), //
+                this.collectNodesWithDomain(diagramDescription, this.pack.getElement()));
         commentDescription.getPalette().getEdgeTools().add(creationTool);
 
     }
 
     private void addAnnotatedElementReconnectionTools(EdgeDescription annotedElementEdge) {
-        ChangeContext sourceReconnectionOperation = getViewBuilder().createChangeContextOperation(new CallQuery(SEMANTIC_OTHER_END)
+        ChangeContext sourceReconnectionOperation = this.getViewBuilder().createChangeContextOperation(new CallQuery(SEMANTIC_OTHER_END)
                 .callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, Variables.SEMANTIC_RECONNECTION_TARGET));
-        annotedElementEdge.getPalette().getEdgeReconnectionTools().add(getViewBuilder().createSourceReconnectionTool(annotedElementEdge, //
-                getIdBuilder().getSourceReconnectionToolId(annotedElementEdge), //
+        annotedElementEdge.getPalette().getEdgeReconnectionTools().add(this.getViewBuilder().createSourceReconnectionTool(annotedElementEdge, //
+                this.getIdBuilder().getSourceReconnectionToolId(annotedElementEdge), //
                 List.of(sourceReconnectionOperation)));
 
-        ChangeContext targetReconnectionOperation = getViewBuilder().createChangeContextOperation(//
+        ChangeContext targetReconnectionOperation = this.getViewBuilder().createChangeContextOperation(//
                 new CallQuery(Variables.EDGE_SEMANTIC_ELEMENT).callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, // $NON-NLS-1$
                         Variables.SEMANTIC_RECONNECTION_TARGET));
-        annotedElementEdge.getPalette().getEdgeReconnectionTools().add(getViewBuilder().createTargetReconnectionTool(annotedElementEdge, //
-                getIdBuilder().getTargetReconnectionToolId(annotedElementEdge), //
+        annotedElementEdge.getPalette().getEdgeReconnectionTools().add(this.getViewBuilder().createTargetReconnectionTool(annotedElementEdge, //
+                this.getIdBuilder().getTargetReconnectionToolId(annotedElementEdge), //
                 List.of(targetReconnectionOperation)));
     }
 
@@ -404,9 +405,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the {@link DiagramDescription} containing the node
      */
     protected void registerNodeAsCommentOwner(NodeDescription node, DiagramDescription diagramDescription) {
-        registerCallback(node, () -> {
-            node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getComment()));
-            node.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
+        this.registerCallback(node, () -> {
+            node.getReusedChildNodeDescriptions().addAll(this.collectNodesWithDomain(diagramDescription, this.pack.getComment()));
+            node.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment()));
         });
     }
 
@@ -423,9 +424,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the {@link DiagramDescription} containing the node
      */
     protected void registerNodeAsConstraintOwner(NodeDescription node, DiagramDescription diagramDescription) {
-        registerCallback(node, () -> {
-            node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getConstraint()));
-            node.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getNamespace_OwnedRule(), pack.getConstraint()));
+        this.registerCallback(node, () -> {
+            node.getReusedChildNodeDescriptions().addAll(this.collectNodesWithDomain(diagramDescription, this.pack.getConstraint()));
+            node.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint()));
         });
     }
 
@@ -488,8 +489,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
      */
     public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, List<EClass> owners, List<EClass> forbiddenOwners) {
-        registerCallback(nodeDescription, () -> {
-            Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners);
+        this.registerCallback(nodeDescription, () -> {
+            Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners);
             CreationToolsUtil.addNodeCreationTool(ownerNodeDescriptions, nodeTool);
             for (NodeDescription owner : ownerNodeDescriptions.get()) {
                 // If the owner is the direct parent of the nodeDescription there is no need to add it to its reused
@@ -519,8 +520,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            a extra filter to select the candidates
      */
     protected void collectAndReusedChildNodes(NodeDescription parent, EClass type, DiagramDescription diagramDescription, Predicate<NodeDescription> filter) {
-        registerCallback(parent, () -> {
-            List<NodeDescription> childrenCandidates = collectNodesWithDomain(diagramDescription, type).stream().filter(filter).collect(toList());
+        this.registerCallback(parent, () -> {
+            List<NodeDescription> childrenCandidates = this.collectNodesWithDomain(diagramDescription, type).stream().filter(filter).collect(toList());
             for (var candidate : childrenCandidates) {
                 if (candidate.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions()) {
                     parent.getReusedBorderNodeDescriptions().addAll(childrenCandidates);
@@ -532,40 +533,40 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     protected void createModelDescription(DiagramDescription diagramDescription) {
-        NodeDescription padModel = getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(pack.getModel(), getQueryBuilder().queryAllReachable(pack.getModel()));
+        NodeDescription padModel = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(this.pack.getModel(), this.getQueryBuilder().queryAllReachable(this.pack.getModel()));
         diagramDescription.getNodeDescriptions().add(padModel);
-        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
+        diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getModel()));
 
         // TODO uncomment next line when setColor is restored possibly in 2023.10.0
         // padModel.getStyle().setColor(styleProvider.getModelColor());
-        collectAndReusedChildNodes(padModel, pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
+        this.collectAndReusedChildNodes(padModel, this.pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
 
-        registerNodeAsCommentOwner(padModel, diagramDescription);
+        this.registerNodeAsCommentOwner(padModel, diagramDescription);
     }
 
     protected void createPackageDescription(DiagramDescription diagramDescription) {
-        NodeDescription padPackage = getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(pack.getPackage(), getQueryBuilder().queryAllReachable(pack.getPackage()));
+        NodeDescription padPackage = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(this.pack.getPackage(), this.getQueryBuilder().queryAllReachable(this.pack.getPackage()));
         diagramDescription.getNodeDescriptions().add(padPackage);
 
-        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getPackage()));
+        diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getPackage()));
 
-        registerCallback(padPackage, () -> {
-            List<NodeDescription> packages = collectNodesWithDomain(diagramDescription, pack.getPackage());
+        this.registerCallback(padPackage, () -> {
+            List<NodeDescription> packages = this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
             packages.forEach(p -> {
-                p.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getPackage()));
-                p.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
+                p.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getPackage()));
+                p.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getModel()));
             });
             String childrenCandidateExpression = CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getPackage_PackagedElement());
             List<NodeDescription> copiedClassifier = diagramDescription.getNodeDescriptions().stream()
                     // Filter out NodeDescription representing a constraint. They can be contained by the
                     // Package.packagedElement reference (they are PackageableElements), but we don't want to support
                     // that, we want to support Namespace.ownedRule as the sole containment reference for constraints.
-                    .filter(n -> isValidNodeDescription(n, false, false, pack.getPackageableElement()) && !isValidNodeDescription(n, false, false, pack.getConstraint()))
-                    .map(n -> transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
+                    .filter(n -> this.isValidNodeDescription(n, false, false, this.pack.getPackageableElement()) && !this.isValidNodeDescription(n, false, false, this.pack.getConstraint()))
+                    .map(n -> this.transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
             padPackage.getChildrenDescriptions().addAll(copiedClassifier);
         });
 
-        registerNodeAsCommentOwner(padPackage, diagramDescription);
+        this.registerNodeAsCommentOwner(padPackage, diagramDescription);
         // Do not use registerNodeAsConstraintOwner here, this would have an impact on CDDiagramDescriptionBuilder,
         // CSDDiagramDescriptionBuilder, PADDiagramDescriptionBuilder, and SMDDigramDescriptionBuilder.
     }
@@ -582,7 +583,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @return the created {@link NodeDescription}
      */
     protected NodeDescription createSharedDescription(DiagramDescription diagramDescription) {
-        NodeDescription sharedNodeDescription = newNodeBuilder(UMLPackage.eINSTANCE.getElement(), getViewBuilder().createRectangularNodeStyle(false, false)) //
+        NodeDescription sharedNodeDescription = this.newNodeBuilder(UMLPackage.eINSTANCE.getElement(), this.getViewBuilder().createRectangularNodeStyle(false, false)) //
                 .name(SHARED_DESCRIPTIONS) //
                 .semanticCandidateExpression("aql:Sequence{}") //$NON-NLS-1$
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
@@ -594,12 +595,12 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     private NodeDescription transformIntoPackageChildNode(NodeDescription input, String semanticCandidateExpression, DiagramDescription diagramDescription) {
         EClass eClass = UMLHelper.toEClass(input.getDomainType());
-        String id = getIdBuilder().getSpecializedDomainNodeName(eClass, PACKAGE_CHILD);
+        String id = this.getIdBuilder().getSpecializedDomainNodeName(eClass, PACKAGE_CHILD);
         NodeDescription n = new NodeSemanticCandidateExpressionTransformer().intoNewCanidateExpression(id, input, semanticCandidateExpression);
 
         if (UMLPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass)) {
-            collectAndReusedChildNodes(n, pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
-            registerNodeAsCommentOwner(n, diagramDescription);
+            this.collectAndReusedChildNodes(n, this.pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
+            this.registerNodeAsCommentOwner(n, diagramDescription);
             // Do not use registerNodeAsConstraintOwner here, this would have an impact on CDDiagramDescriptionBuilder,
             // CSDDiagramDescriptionBuilder, PADDiagramDescriptionBuilder, and SMDDigramDescriptionBuilder.
         }
@@ -632,7 +633,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         ToolComparator comparator = new ToolComparator();
         // diagram palette first
         ECollections.sort(diagramDescription.getPalette().getNodeTools(), comparator);
-        diagramDescription.getNodeDescriptions().forEach(node -> sortPaletteTools(node, comparator));
+        diagramDescription.getNodeDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
         diagramDescription.getEdgeDescriptions().forEach(edge -> {
             ECollections.sort(edge.getPalette().getNodeTools(), comparator);
         });
@@ -642,8 +643,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         ECollections.sort(nodeDescription.getPalette().getNodeTools(), comparator);
         ECollections.sort(nodeDescription.getPalette().getEdgeTools(), comparator);
-        nodeDescription.getChildrenDescriptions().forEach(node -> sortPaletteTools(node, comparator));
-        nodeDescription.getBorderNodesDescriptions().forEach(node -> sortPaletteTools(node, comparator));
+        nodeDescription.getChildrenDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
+        nodeDescription.getBorderNodesDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
     }
 
 }

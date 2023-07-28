@@ -78,13 +78,13 @@ public class ViewBuilder {
 
         ChangeContext changeContextOp = ViewFactory.eINSTANCE.createChangeContext();
         dropTool.getBody().add(changeContextOp);
-        changeContextOp.setExpression(queryBuilder.queryDrop());
+        changeContextOp.setExpression(this.queryBuilder.queryDrop());
         return dropTool;
     }
 
     public DiagramDescription buildDiagramDescription(String diagramName, EClass modelType) {
-        DiagramDescription diargamDescription = createDiagram(diagramName);
-        diargamDescription.setDomainType(metamodelHelper.getDomain(modelType));
+        DiagramDescription diargamDescription = this.createDiagram(diagramName);
+        diargamDescription.setDomainType(this.metamodelHelper.getDomain(modelType));
         return diargamDescription;
     }
 
@@ -96,7 +96,7 @@ public class ViewBuilder {
     }
 
     private SourceEdgeEndReconnectionTool createDomainBaseEdgeSourceReconnectionTool(EdgeDescription description, String name) {
-        return createSourceReconnectionTool(description, name, List.of(createChangeContextOperation(queryBuilder.queryDomainBasedSourceReconnection())));
+        return this.createSourceReconnectionTool(description, name, List.of(this.createChangeContextOperation(this.queryBuilder.queryDomainBasedSourceReconnection())));
     }
 
     public SourceEdgeEndReconnectionTool createSourceReconnectionTool(EdgeDescription description, String name, List<Operation> operations) {
@@ -107,7 +107,7 @@ public class ViewBuilder {
     }
 
     private TargetEdgeEndReconnectionTool createDomainBaseEdgeTargetReconnectionTool(EdgeDescription description, String name) {
-        return createTargetReconnectionTool(description, name, List.of(createChangeContextOperation(queryBuilder.queryDomainBasedTargetReconnection())));
+        return this.createTargetReconnectionTool(description, name, List.of(this.createChangeContextOperation(this.queryBuilder.queryDomainBasedTargetReconnection())));
     }
 
     public TargetEdgeEndReconnectionTool createTargetReconnectionTool(EdgeDescription description, String name, List<Operation> operations) {
@@ -118,9 +118,9 @@ public class ViewBuilder {
     }
 
     private NodeDescription createNodeDescription(String id, EClass domainType, String semanticCandidateExpression, NodeStyleDescription style, SynchronizationPolicy synchronizationPolicy) {
-        NodeDescription node = createNode(id);
+        NodeDescription node = this.createNode(id);
         node.setSemanticCandidatesExpression(semanticCandidateExpression);
-        node.setDomainType(metamodelHelper.getDomain(domainType));
+        node.setDomainType(this.metamodelHelper.getDomain(domainType));
         node.setSynchronizationPolicy(synchronizationPolicy);
         node.setStyle(style);
         node.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
@@ -132,9 +132,9 @@ public class ViewBuilder {
         EdgeDescription edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         edgeDescription.setName(id);
         edgeDescription.setIsDomainBasedEdge(true);
-        edgeDescription.setDomainType(metamodelHelper.getDomain(domainType));
+        edgeDescription.setDomainType(this.metamodelHelper.getDomain(domainType));
         edgeDescription.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
-        edgeDescription.setLabelExpression(queryBuilder.queryRenderLabel());
+        edgeDescription.setLabelExpression(this.queryBuilder.queryRenderLabel());
         edgeDescription.setSemanticCandidatesExpression(semanticCandidateExpression);
         edgeDescription.setPalette(DiagramFactory.eINSTANCE.createEdgePalette());
 
@@ -143,22 +143,22 @@ public class ViewBuilder {
             edgeDescription.getTargetNodeDescriptions().addAll(targets.get());
         }));
 
-        edgeDescription.setSourceNodesExpression(queryBuilder.aqlDomainBaseGetSourceQuery());
-        edgeDescription.setTargetNodesExpression(queryBuilder.aqlDomainBaseGetTargetsQuery());
+        edgeDescription.setSourceNodesExpression(this.queryBuilder.aqlDomainBaseGetSourceQuery());
+        edgeDescription.setTargetNodesExpression(this.queryBuilder.aqlDomainBaseGetTargetsQuery());
 
-        edgeDescription.setStyle(createDefaultEdgeStyle());
+        edgeDescription.setStyle(this.createDefaultEdgeStyle());
 
         return edgeDescription;
     }
 
     private EdgeStyle createDefaultEdgeStyle() {
         EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
-        edgeStyle.setColor(styleProvider.getEdgeColor());
-        edgeStyle.setFontSize(styleProvider.getFontSize());
-        edgeStyle.setLineStyle(styleProvider.getEdgeStyle());
-        edgeStyle.setSourceArrowStyle(styleProvider.getSourceArrowStyle());
-        edgeStyle.setTargetArrowStyle(styleProvider.getTargetArrowStyle());
-        edgeStyle.setEdgeWidth(styleProvider.getEdgeWidth());
+        edgeStyle.setColor(this.styleProvider.getEdgeColor());
+        edgeStyle.setFontSize(this.styleProvider.getFontSize());
+        edgeStyle.setLineStyle(this.styleProvider.getEdgeStyle());
+        edgeStyle.setSourceArrowStyle(this.styleProvider.getSourceArrowStyle());
+        edgeStyle.setTargetArrowStyle(this.styleProvider.getTargetArrowStyle());
+        edgeStyle.setEdgeWidth(this.styleProvider.getEdgeWidth());
         return edgeStyle;
     }
 
@@ -166,7 +166,7 @@ public class ViewBuilder {
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(id);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
-        changeContext.setExpression(queryBuilder.queryCreateDomainBaseEdge(description, containmentReference));
+        changeContext.setExpression(this.queryBuilder.queryCreateDomainBaseEdge(description, containmentReference));
         // Configure the tool's target element descriptions once the representation has been fully created. This ensures
         // that description.getTargetNodeDescription has been filled with the descriptions.
         description.eAdapters().add(new CallbackAdapter(() -> {
@@ -190,9 +190,9 @@ public class ViewBuilder {
     }
 
     private NodeDescription createUnsynchonizedPortDescription(String id, EClass domainType, String semanticCandidateExpression) {
-        NodeDescription borderNodeDescription = createNodeDescription(id, domainType, semanticCandidateExpression, createDefaultRectangularNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
-        borderNodeDescription.getStyle().setWidthComputationExpression(String.valueOf(styleProvider.getPortSize()));
-        borderNodeDescription.getStyle().setHeightComputationExpression(String.valueOf(styleProvider.getPortSize()));
+        NodeDescription borderNodeDescription = this.createNodeDescription(id, domainType, semanticCandidateExpression, this.createDefaultRectangularNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
+        borderNodeDescription.getStyle().setWidthComputationExpression(String.valueOf(this.styleProvider.getPortSize()));
+        borderNodeDescription.getStyle().setHeightComputationExpression(String.valueOf(this.styleProvider.getPortSize()));
         return borderNodeDescription;
     }
 
@@ -206,11 +206,11 @@ public class ViewBuilder {
      * @return a new {@link NodeTool}
      */
     public NodeTool createCreationTool(String name, EReference containementRef, EClass newType) {
-        return createCreationTool(name, Variables.SELF, containementRef, newType);
+        return this.createCreationTool(name, Variables.SELF, containementRef, newType);
     }
 
     public NodeTool createCreationTool(String name, String selfValue, EReference containementRef, EClass newType) {
-        return createCreationTool(name, selfValue, containementRef, metamodelHelper.getDomain(newType));
+        return this.createCreationTool(name, selfValue, containementRef, this.metamodelHelper.getDomain(newType));
     }
 
     private NodeTool createCreationTool(String name, String selfValue, EReference containementRef, String newType) {
@@ -219,9 +219,34 @@ public class ViewBuilder {
 
         // Create instance and init
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
-        createElement.setExpression(queryBuilder.createNodeQuery(newType, selfValue, containementRef));
+        createElement.setExpression(this.queryBuilder.createNodeQuery(newType, selfValue, containementRef));
         nodeTool.getBody().add(createElement);
 
+        return nodeTool;
+    }
+
+    /**
+     * Creates a creation {@link NodeTool} that delegates to the provided {@code serviceName}.
+     * <p>
+     * This method is used to create creation tools that rely on diagram-specific creation services. See
+     * {@link ViewBuilder#createCreationTool(EReference, EClass)} to create a creation {@link NodeTool} that relies on
+     * the default creation mechanism.
+     * </p>
+     * 
+     * @param toolName
+     *            the name of the tool to create
+     * @param serviceName
+     *            the name of the service to call
+     * @param serviceParameters
+     *            the parameters provided to the service
+     * @return the created {@link NodeTool}
+     */
+    public NodeTool createCreationTool(String toolName, String serviceName, List<String> serviceParameters) {
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName(toolName);
+        ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
+        createElement.setExpression(CallQuery.queryServiceOnSelf(serviceName, serviceParameters.toArray(String[]::new)));
+        nodeTool.getBody().add(createElement);
         return nodeTool;
     }
 
@@ -231,7 +256,7 @@ public class ViewBuilder {
 
         // Create instance and init
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
-        createElement.setExpression(queryBuilder.createSiblingNodeQuery(metamodelHelper.getDomain(newType), selfValue, containementRef));
+        createElement.setExpression(this.queryBuilder.createSiblingNodeQuery(this.metamodelHelper.getDomain(newType), selfValue, containementRef));
         nodeTool.getBody().add(createElement);
 
         return nodeTool;
@@ -243,7 +268,7 @@ public class ViewBuilder {
         deleteTool.setName("Delete " + conceptName); //$NON-NLS-1$
 
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
-        createElement.setExpression(queryBuilder.queryDestroyNode());
+        createElement.setExpression(this.queryBuilder.queryDestroyNode());
         deleteTool.getBody().add(createElement);
 
         return deleteTool;
@@ -255,7 +280,7 @@ public class ViewBuilder {
         deleteTool.setName("Delete " + conceptName); //$NON-NLS-1$
 
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
-        createElement.setExpression(queryBuilder.queryDestroyEdge());
+        createElement.setExpression(this.queryBuilder.queryDestroyEdge());
         deleteTool.getBody().add(createElement);
 
         return deleteTool;
@@ -270,23 +295,23 @@ public class ViewBuilder {
 
     public RectangularNodeStyleDescription createRectangularNodeStyle(boolean showIcon, boolean showHeader) {
         RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        initStyle(nodeStyle);
-        nodeStyle.setColor(styleProvider.getNodeColor());
+        this.initStyle(nodeStyle);
+        nodeStyle.setColor(this.styleProvider.getNodeColor());
         nodeStyle.setShowIcon(showIcon);
         nodeStyle.setWithHeader(showHeader);
         return nodeStyle;
     }
 
     private ImageNodeStyleDescription createClassNodeStyle(boolean showIcon) {
-        return createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_CLASS_IMAGE_ID.toString(), showIcon);
+        return this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_CLASS_IMAGE_ID.toString(), showIcon);
     }
 
     private ImageNodeStyleDescription createNoteNodeStyle() {
-        return createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_NOTE_IMAGE_ID.toString(), true);
+        return this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_NOTE_IMAGE_ID.toString(), true);
     }
 
-    private ImageNodeStyleDescription createPackageNodeStyle() {
-        ImageNodeStyleDescription packageNodeStyle = createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_PACKAGE_IMAGE_ID.toString(), true);
+    public ImageNodeStyleDescription createPackageNodeStyle() {
+        ImageNodeStyleDescription packageNodeStyle = this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_PACKAGE_IMAGE_ID.toString(), true);
         packageNodeStyle.setWidthComputationExpression("300");
         packageNodeStyle.setHeightComputationExpression("150");
         return packageNodeStyle;
@@ -294,7 +319,7 @@ public class ViewBuilder {
 
     public ImageNodeStyleDescription createImageNodeStyle(String imageId, boolean showIcon) {
         ImageNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
-        initStyle(nodeStyle);
+        this.initStyle(nodeStyle);
         // TODO uncomment next line when setColor is restored possibly in 2023.10.0
         // nodeStyle.setColor(styleProvider.getNoteColor());
         nodeStyle.setShape(imageId);
@@ -309,7 +334,7 @@ public class ViewBuilder {
         edgeDescription.setName(id);
         edgeDescription.setLabelExpression(labelExpression);
         edgeDescription.setTargetNodesExpression(targetNodeExpression);
-        edgeDescription.setStyle(createDefaultEdgeStyle());
+        edgeDescription.setStyle(this.createDefaultEdgeStyle());
         edgeDescription.setPalette(DiagramFactory.eINSTANCE.createEdgePalette());
 
         edgeDescription.eAdapters().add(new CallbackAdapter(() -> {
@@ -321,15 +346,15 @@ public class ViewBuilder {
     }
 
     private void initStyle(NodeStyleDescription nodeStyle) {
-        nodeStyle.setBorderColor(styleProvider.getBorderNodeColor());
-        nodeStyle.setBorderRadius(styleProvider.getNodeBorderRadius());
-        nodeStyle.setLabelColor(styleProvider.getNodeLabelColor());
+        nodeStyle.setBorderColor(this.styleProvider.getBorderNodeColor());
+        nodeStyle.setBorderRadius(this.styleProvider.getNodeBorderRadius());
+        nodeStyle.setLabelColor(this.styleProvider.getNodeLabelColor());
     }
 
     private RectangularNodeStyleDescription createDefaultRectangularNodeStyle() {
         RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        initStyle(nodeStyle);
-        nodeStyle.setColor(styleProvider.getNodeColor());
+        this.initStyle(nodeStyle);
+        nodeStyle.setColor(this.styleProvider.getNodeColor());
         nodeStyle.setShowIcon(false);
         return nodeStyle;
     }
@@ -337,7 +362,7 @@ public class ViewBuilder {
     private NodeDescription createNode(String name) {
         NodeDescription node = DiagramFactory.eINSTANCE.createNodeDescription();
         node.setName(name);
-        node.setLabelExpression(queryBuilder.queryRenderLabel());
+        node.setLabelExpression(this.queryBuilder.queryRenderLabel());
         node.setPalette(DiagramFactory.eINSTANCE.createNodePalette());
         return node;
     }
@@ -349,76 +374,78 @@ public class ViewBuilder {
     }
 
     public LabelEditTool createDirectEditTool() {
-        return createDirectEditTool(Variables.SELF);
+        return this.createDirectEditTool(Variables.SELF);
     }
 
     public LabelEditTool createDirectEditTool(String selfExpression) {
         LabelEditTool directEditTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         directEditTool.setInitialDirectEditLabelExpression(new CallQuery(selfExpression).callService(Services.GET_DIRECT_EDIT_INPUT_VALUE_SERVICE));
-        directEditTool.getBody().add(createChangeContextOperation(new CallQuery(selfExpression).callService(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
+        directEditTool.getBody().add(this.createChangeContextOperation(new CallQuery(selfExpression).callService(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
         return directEditTool;
     }
 
     public EdgeDescription createDefaultSynchonizedDomainBaseEdgeDescription(EClass eClass, String semanticCandidateExpression, Supplier<List<NodeDescription>> source,
             Supplier<List<NodeDescription>> targets) {
-        EdgeDescription result = createSynchonizedDomainBaseEdgeDescription(idBuilder.getDomainBaseEdgeId(eClass), eClass, semanticCandidateExpression, source, targets);
-        addDefaultDeleteTool(result);
-        addDirectEditTool(result);
+        EdgeDescription result = this.createSynchonizedDomainBaseEdgeDescription(this.idBuilder.getDomainBaseEdgeId(eClass), eClass, semanticCandidateExpression, source, targets);
+        this.addDefaultDeleteTool(result);
+        this.addDirectEditTool(result);
         return result;
     }
 
     public void addDefaultDeleteTool(NodeDescription nodeDescription) {
-        nodeDescription.getPalette().setDeleteTool(createNodeDeleteTool(metamodelHelper.toEClass(nodeDescription.getDomainType()).getName()));
+        nodeDescription.getPalette().setDeleteTool(this.createNodeDeleteTool(this.metamodelHelper.toEClass(nodeDescription.getDomainType()).getName()));
     }
 
     public void addDefaultDeleteTool(EdgeDescription edgeDescription) {
         if (edgeDescription.isIsDomainBasedEdge()) {
-            edgeDescription.getPalette().setDeleteTool(createEdgeDeleteTool(metamodelHelper.toEClass(edgeDescription.getDomainType()).getName()));
+            edgeDescription.getPalette().setDeleteTool(this.createEdgeDeleteTool(this.metamodelHelper.toEClass(edgeDescription.getDomainType()).getName()));
         }
     }
 
     public void addDirectEditTool(NodeDescription description) {
-        description.getPalette().setLabelEditTool(createDirectEditTool());
+        description.getPalette().setLabelEditTool(this.createDirectEditTool());
     }
 
     public void addDirectEditTool(EdgeDescription description) {
-        description.getPalette().setCenterLabelEditTool(createDirectEditTool());
+        description.getPalette().setCenterLabelEditTool(this.createDirectEditTool());
     }
 
     public NodeDescription createSpecializedUnsynchonizedNodeDescription(EClass domain, String semanticCandidateExpression, String specialization) {
-        NodeDescription result = createNodeDescription(idBuilder.getSpecializedDomainNodeName(domain, specialization), domain, semanticCandidateExpression, createClassNodeStyle(true),
+        NodeDescription result = this.createNodeDescription(this.idBuilder.getSpecializedDomainNodeName(domain, specialization), domain, semanticCandidateExpression, this.createClassNodeStyle(true),
                 SynchronizationPolicy.UNSYNCHRONIZED);
-        addDefaultDeleteTool(result);
-        addDirectEditTool(result);
+        this.addDefaultDeleteTool(result);
+        this.addDirectEditTool(result);
         return result;
     }
 
     public NodeDescription createClassStyleNodeDescription(EClass domain, String semanticCandidateExpression, boolean showIcon, SynchronizationPolicy synchronizationPolicy) {
-        NodeDescription result = createNodeDescription(idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, createClassNodeStyle(showIcon), synchronizationPolicy);
-        addDefaultDeleteTool(result);
-        addDirectEditTool(result);
+        NodeDescription result = this.createNodeDescription(this.idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, this.createClassNodeStyle(showIcon), synchronizationPolicy);
+        this.addDefaultDeleteTool(result);
+        this.addDirectEditTool(result);
         return result;
     }
 
     public NodeDescription createNoteStyleUnsynchonizedNodeDescription(EClass domain, String semanticCandidateExpression) {
-        NodeDescription result = createNodeDescription(idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, createNoteNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
-        addDefaultDeleteTool(result);
-        addDirectEditTool(result);
+        NodeDescription result = this.createNodeDescription(this.idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, this.createNoteNodeStyle(),
+                SynchronizationPolicy.UNSYNCHRONIZED);
+        this.addDefaultDeleteTool(result);
+        this.addDirectEditTool(result);
         return result;
     }
 
     public NodeDescription createPackageStyleUnsynchonizedNodeDescription(EClass domain, String semanticCandidateExpression) {
-        NodeDescription result = createNodeDescription(idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, createPackageNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
+        NodeDescription result = this.createNodeDescription(this.idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, this.createPackageNodeStyle(),
+                SynchronizationPolicy.UNSYNCHRONIZED);
         result.setCollapsible(true);
-        addDefaultDeleteTool(result);
-        addDirectEditTool(result);
+        this.addDefaultDeleteTool(result);
+        this.addDirectEditTool(result);
         return result;
     }
 
     public NodeDescription createSpecializedPortUnsynchonizedNodeDescription(String suffixId, EClass domain, String semanticCandidateExpression) {
-        NodeDescription result = createUnsynchonizedPortDescription(idBuilder.getSpecializedDomainNodeName(domain, suffixId), domain, semanticCandidateExpression);
-        addDefaultDeleteTool(result);
-        addDirectEditTool(result);
+        NodeDescription result = this.createUnsynchonizedPortDescription(this.idBuilder.getSpecializedDomainNodeName(domain, suffixId), domain, semanticCandidateExpression);
+        this.addDefaultDeleteTool(result);
+        this.addDirectEditTool(result);
         return result;
     }
 
@@ -426,28 +453,28 @@ public class ViewBuilder {
         if (!description.isIsDomainBasedEdge()) {
             throw new IllegalArgumentException("Expecting a domain based edge but got " + description); //$NON-NLS-1$
         }
-        return createDomainBasedEdgeTool(idBuilder.getCreationToolId(description), description, contaimentRef);
+        return this.createDomainBasedEdgeTool(this.idBuilder.getCreationToolId(description), description, contaimentRef);
     }
 
     public NodeTool createCreationTool(EReference containementRef, EClass newType) {
-        return createCreationTool(idBuilder.getCreationToolId(newType), containementRef, newType);
+        return this.createCreationTool(this.idBuilder.getCreationToolId(newType), containementRef, newType);
     }
 
     public NodeTool createCreationTool(NodeDescription node, EReference containementRef) {
-        EClass newElementType = metamodelHelper.toEClass(node.getDomainType());
-        return createCreationTool(idBuilder.getCreationToolId(newElementType), containementRef, newElementType);
+        EClass newElementType = this.metamodelHelper.toEClass(node.getDomainType());
+        return this.createCreationTool(this.idBuilder.getCreationToolId(newElementType), containementRef, newElementType);
     }
 
     public void addDefaultReconnectionTools(EdgeDescription edge) {
-        edge.getPalette().getEdgeReconnectionTools().add(createDomainBaseEdgeSourceReconnectionTool(edge, idBuilder.getSourceReconnectionToolId(edge)));
-        edge.getPalette().getEdgeReconnectionTools().add(createDomainBaseEdgeTargetReconnectionTool(edge, idBuilder.getTargetReconnectionToolId(edge)));
+        edge.getPalette().getEdgeReconnectionTools().add(this.createDomainBaseEdgeSourceReconnectionTool(edge, this.idBuilder.getSourceReconnectionToolId(edge)));
+        edge.getPalette().getEdgeReconnectionTools().add(this.createDomainBaseEdgeTargetReconnectionTool(edge, this.idBuilder.getTargetReconnectionToolId(edge)));
     }
 
     public NodeStyleDescription createIconAndlabelStyle(boolean showIcon) {
         IconLabelNodeStyleDescription style = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
 
-        style.setColor(styleProvider.getNodeColor());
-        style.setLabelColor(styleProvider.getNodeLabelColor());
+        style.setColor(this.styleProvider.getNodeColor());
+        style.setLabelColor(this.styleProvider.getNodeLabelColor());
         style.setShowIcon(showIcon);
         return style;
     }

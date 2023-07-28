@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
 import java.util.ArrayList;
@@ -22,10 +22,12 @@ import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescript
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.services.aqlservices.DebugService;
 import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -71,6 +73,8 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
                         services.add(GenericDiagramService.class);
                     } else if (repName.startsWith(CDDiagramDescriptionBuilder.CD_REP_NAME)) {
                         services.add(ClassDiagramService.class);
+                    } else if (repName.startsWith(UCDDiagramDescriptionBuilder.UCD_REP_NAME)) {
+                        services.add(UseCaseDiagramService.class);
                     }
                 }
 

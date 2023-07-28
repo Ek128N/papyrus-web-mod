@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.configuration;
 
 import java.io.ByteArrayInputStream;
@@ -146,6 +147,8 @@ public class UMLParametricSVGImageFactory implements IParametricSVGImageFactory 
                     this.updateForkSVG(attributesValues, parametricSVGImage, document);
                 } else if (ParametricSVGImageRegistryCustomImpl.PARAMETRIC_CHOICE_IMAGE_ID.equals(parametricSVGImage.getId())) {
                     this.updateChoiceSVG(attributesValues, parametricSVGImage, document);
+                } else if (ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.equals(parametricSVGImage.getId())) {
+                    this.updateUseCaseSVG(attributesValues, document);
                 }
 
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -218,6 +221,56 @@ public class UMLParametricSVGImageFactory implements IParametricSVGImageFactory 
                 node.setAttribute(WIDTH, attributesValues.get(SVGAttribute.WIDTH));
             });
         // @formatter:on
+    }
+
+    /**
+     * Update UseCase SVG figure. For example, size of SVG figure should be updated after resizing the node on the
+     * diagram represented with the SVG figure.
+     * 
+     * @param attributesValues
+     *            generic attributes of the SVG figure
+     * @param document
+     *            the SVG figure
+     * @throws XPathExpressionException
+     *             if an exception occurs
+     */
+    private void updateUseCaseSVG(EnumMap<SVGAttribute, String> attributesValues, Document document) throws XPathExpressionException {
+
+        String expr = String.format(CONTAINS_ID, "ellipse"); //$NON-NLS-1$
+
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        // @formatter:off
+        Optional.of(xpath.evaluate(expr, document, XPathConstants.NODESET))
+                .filter(NodeList.class::isInstance)
+                .map(NodeList.class::cast)
+                .ifPresent(nodes-> {
+                    for (int i = 0; i < nodes.getLength(); i++) {
+                        Element node = (Element) nodes.item(i);
+                        this.updateUseCaseNode(attributesValues, node);
+                    }
+                });
+        // @formatter:on
+    }
+
+    /**
+     * Update an {@link Element} node from the UseCase SVG figure.
+     * 
+     * @param attributesValues
+     *            generic attributes of the SVG figure
+     * @param node
+     *            the {@link Element} to update
+     */
+    private void updateUseCaseNode(EnumMap<SVGAttribute, String> attributesValues, Element node) {
+        this.updateNodeStyle(attributesValues, node);
+        Double svgHeight = Double.valueOf(attributesValues.get(SVGAttribute.HEIGHT));
+        Double ellipseHalfHeight = svgHeight / 2;
+        Double svgWidth = Double.valueOf(attributesValues.get(SVGAttribute.WIDTH));
+        Double ellipseHalfWidth = svgWidth / 2;
+        node.setAttribute("cy", String.valueOf(ellipseHalfHeight)); //$NON-NLS-1$
+        node.setAttribute("cx", String.valueOf(ellipseHalfWidth)); //$NON-NLS-1$
+        node.setAttribute("ry", String.valueOf(ellipseHalfHeight - 2)); //$NON-NLS-1$
+        node.setAttribute("rx", String.valueOf(ellipseHalfWidth - 2)); //$NON-NLS-1$
+
     }
 
     private void updateClassOrPackageSVG(EnumMap<SVGAttribute, String> attributesValues, ParametricSVGImage parametricSVGImage, Document document) throws XPathExpressionException {

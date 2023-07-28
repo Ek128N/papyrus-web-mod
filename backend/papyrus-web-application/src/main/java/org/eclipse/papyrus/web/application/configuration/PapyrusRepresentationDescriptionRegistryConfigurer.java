@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
 import java.text.MessageFormat;
@@ -28,6 +28,7 @@ import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescript
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.utils.ViewSerializer;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
@@ -89,6 +90,7 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         this.register(resourceSet, staticEPackages, new PADDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, PADDiagramDescriptionBuilder.PD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new SMDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, SMDDiagramDescriptionBuilder.SMD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new CDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CDDiagramDescriptionBuilder.CD_REP_NAME)));
+        this.register(resourceSet, staticEPackages, new UCDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, UCDDiagramDescriptionBuilder.UCD_REP_NAME)));
     }
 
     @Override
