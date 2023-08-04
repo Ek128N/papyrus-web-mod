@@ -350,7 +350,11 @@ export const LanguageExpressionSection = ({
     setAddLanguageDialogOpen(true);
   };
 
-  const closeAddLanguageDialog = () => setAddLanguageDialogOpen(false);
+  const closeAddLanguageDialog = () => {
+    setKnownLanguagesSelected(false);
+    setNewLanguageSelected(false);
+    setAddLanguageDialogOpen(false);
+  };
 
   const handlePredefinedLanguageSelected = (_: React.MouseEvent<HTMLDivElement, MouseEvent>, language: string) => {
     setSelectedPredefinedLanguage(language);
@@ -405,7 +409,7 @@ export const LanguageExpressionSection = ({
     };
 
   return (
-    <div>
+    <div data-testid="language-expression-widget">
       <div style={{ display: 'flex' }}>
         <PropertySectionLabel
           editingContextId={editingContextId}
@@ -415,6 +419,7 @@ export const LanguageExpressionSection = ({
           data-testid={widget.label}
         />
         <IconButton
+          data-testid="le-open-add-language-dialog"
           onClick={openAddLanguageDialog}
           disabled={readOnly || widget.readOnly}
           style={{ marginLeft: 'auto' }}>
@@ -428,6 +433,7 @@ export const LanguageExpressionSection = ({
             expanded={expanded === lang.label}
             onChange={handlePanelExpansion(lang.label)}
             square
+            data-testid={`le-language-${lang.label}`}
             elevation={0}>
             <AccordionSummary
               aria-controls="panel1d-content"
@@ -437,6 +443,7 @@ export const LanguageExpressionSection = ({
               <Box sx={{ marginLeft: 'auto' }}>
                 <IconButton
                   size="small"
+                  data-testid={`le-language-${lang.label}-up`}
                   disabled={index === 0 || moveLanguageLoading || readOnly || widget.readOnly}
                   onClick={(event) => {
                     moveLanguageUp(lang);
@@ -446,6 +453,7 @@ export const LanguageExpressionSection = ({
                 </IconButton>
                 <IconButton
                   size="small"
+                  data-testid={`le-language-${lang.label}-down`}
                   disabled={index === widget.languages.length - 1 || moveLanguageLoading || readOnly || widget.readOnly}
                   onClick={(event) => {
                     moveLanguageDown(lang);
@@ -455,6 +463,7 @@ export const LanguageExpressionSection = ({
                 </IconButton>
                 <IconButton
                   size="small"
+                  data-testid={`le-language-${lang.label}-delete`}
                   disabled={readOnly || widget.readOnly}
                   onClick={(event) => {
                     handleDeleteLanguage(lang.label);
@@ -466,6 +475,7 @@ export const LanguageExpressionSection = ({
             </AccordionSummary>
             <AccordionDetails>
               <TextField
+                data-testid={`le-language-${lang.label}-body`}
                 fullWidth
                 id="outlined-multiline-flexible"
                 value={currentBody}
@@ -481,7 +491,11 @@ export const LanguageExpressionSection = ({
           </Accordion>
         );
       })}
-      <Dialog open={addLanguageDialogOpen} onClose={closeAddLanguageDialog} classes={{ paper: classes.paper }}>
+      <Dialog
+        open={addLanguageDialogOpen}
+        data-testid="le-add-language-dialog"
+        onClose={closeAddLanguageDialog}
+        classes={{ paper: classes.paper }}>
         <DialogTitle>Add Language</DialogTitle>
         <DialogContent>
           <DialogContentText>Known languages</DialogContentText>
@@ -490,10 +504,12 @@ export const LanguageExpressionSection = ({
               border: `2px solid ${knownLanguagesSelected ? theme.palette.primary.main : 'rgba(0, 0, 0, .125)'}`,
               borderRadius: '4px',
             }}
+            data-testid="le-add-language-dialog-know-languages"
             onFocus={handleKnownLanguagesFocusGained}>
             {widget.predefinedLanguages.map((lang, index) => (
               <ListItem
                 key={index}
+                data-testid={`le-add-language-dialog-language-${lang}`}
                 button
                 disabled={isAlreadyExisting(lang)}
                 selected={selectedPredefinedLanguage === lang}
@@ -503,6 +519,7 @@ export const LanguageExpressionSection = ({
             ))}
           </List>
           <TextField
+            data-testid="le-add-language-dialog-new-language"
             style={{ marginTop: '1rem' }}
             fullWidth
             variant="outlined"
@@ -517,6 +534,7 @@ export const LanguageExpressionSection = ({
         </DialogContent>
         <DialogActions>
           <Button
+            data-testid="le-add-language-dialog-ok"
             color="primary"
             variant="contained"
             disabled={(selectedPredefinedLanguage === '' && newLanguage === '') || isAlreadyExisting(newLanguage)}

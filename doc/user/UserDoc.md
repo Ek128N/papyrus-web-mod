@@ -156,6 +156,32 @@ In the following table, we present the mapping between basic types and their ass
 
 Here is [the Sirius documentation](https://docs.obeostudio.com/2023.6.0/help_center.html#_details_view) of all those widgets.
 
+Custom widgets
+
+Some UML 2 concepts have properties that need a special UI in order to manage their data. Here is the details of each custom widget.
+
+##### Language Expression
+
+Language expression custom widget has been introduced to manage a couple a connected lists in the following concepts:
+* `FunctionBehavior`
+* `OpaqueAction`
+* `OpaqueBehavior`
+* `OpaqueExpression`
+
+All those concepts manage a couple of lists of `strings` which are weakly connected via their index. The first list, called '`languages`' contains the name of languages, such as `"JAVA"` or `"C++"`. The second one contains the body expression expressed in the language of the same rank in the list. Thus those lists could not be edited in Papyrus UI as separate ordinary lists of text fields. This is the reason why a new custom widget has been developed. 
+
+<p align="center">
+    <img alt="language expression custom widget" src="./imgs/languageexpression.png" width="400">
+</p>
+
+The above image shows the custom widget associated to the virtual property '`language`' of a `FunctionBehavior`. The plus icon in front of the property label can be used to populate the following list by adding whether a predefined language or a new one. This selection of the language to add, is done using a modal dialog.
+
+Each language in the list is shown as a collapsible section with the name of the language as title. On the right part of the header/title section there is the section toolbar containing all actions that can be performed on this language. Once a language is expanded, the body of the language is revealed and user can modify it. Only one language is expanded at a time. An expanded language will be automatically collapsed if user expands another one.
+
+Languages can be reordered using up or down actions of the toolbar. Since the list is not a ring, user is not allowed to move up the first language nor move down the last one.
+
+Removing a language can be done using the trash icon action of its toolbar. No confirmation is required before deleting a language element.
+
 #### Related Elements
 
 There is a section about the [_Related Elements view_](https://docs.obeostudio.com/2023.6.0/help_center.html#project-editor) in the documentation.

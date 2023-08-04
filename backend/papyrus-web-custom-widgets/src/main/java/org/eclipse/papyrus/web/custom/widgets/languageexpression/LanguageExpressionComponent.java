@@ -162,14 +162,14 @@ public class LanguageExpressionComponent implements IComponent {
                 IStatus res = new Success();
                 if ((index == 0 && direction == MoveLanguageDirection.BACKWARD) || (index == languages.size() - 1 && direction == MoveLanguageDirection.FORWARD)) {
                     res =  new Failure("Invalid language move");
+                } else {
+                    int delta = 1;
+                    if (direction == MoveLanguageDirection.BACKWARD) {
+                        delta = -1;
+                    }
+                    ECollections.move(languages, index, index + delta);
+                    ECollections.move(bodies, index, index + delta);
                 }
-
-                int delta = 1;
-                if (direction == MoveLanguageDirection.BACKWARD) {
-                    delta = -1;
-                }
-                ECollections.move(languages, index, index + delta);
-                ECollections.move(bodies, index, index + delta);
                 return res;
             }
         });

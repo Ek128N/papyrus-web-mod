@@ -15,4 +15,5 @@
   </packagedElement>
   <packagedElement xmi:type="uml:DurationObservation" xmi:id="_r06gYCVuEe67ZeuJwTSydw" name="DurationObservation"/>
   <packagedElement xmi:type="uml:LiteralBoolean" xmi:id="_x2Y6oCVuEe67ZeuJwTSydw" name="LiteralBoolean"/>
+  <packagedElement xmi:type="uml:FunctionBehavior" xmi:id="_vpki8Co-Ee67ZeuJwTSydw" name="FunctionBehavior"/>
 </uml:Model>
