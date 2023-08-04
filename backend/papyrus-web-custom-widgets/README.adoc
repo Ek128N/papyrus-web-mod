@@ -1,0 +1,3 @@
+= Papyrus web custom widgets
+
+This project provides a set a custom widgets for the Payrus web project.

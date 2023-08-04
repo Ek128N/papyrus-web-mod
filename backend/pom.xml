@@ -42,6 +42,11 @@
 		<module>papyrus-web-codegen-profile</module>
 		<module>papyrus-web-transformation-profile</module>
 		
+		<!--Custom Widgets-->
+		<module>papyrus-web-custom-widgets</module>
+		<module>papyrus-web-custom-widgets-view</module>
+		<module>papyrus-web-custom-widgets-view-edit</module>
+		
 		<!--Test-->
 		<module>papyrus-web-test-coverage</module>
 		

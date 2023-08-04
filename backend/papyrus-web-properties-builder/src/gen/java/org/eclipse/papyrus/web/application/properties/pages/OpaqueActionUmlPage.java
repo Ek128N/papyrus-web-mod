@@ -58,6 +58,7 @@ public class OpaqueActionUmlPage {
 
         addName(group);
         addVisibility(group);
+        addLanguage(group);
 
     }
 
@@ -72,6 +73,12 @@ public class OpaqueActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLanguage(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createLanguageExpresionDescription("language", "aql:'Language'", "aql:self.getFeatureDescription('language')",
+                "aql:self.eClass().getEStructuralFeature('language').changeable");
         group.getWidgets().add(widget);
     }
 

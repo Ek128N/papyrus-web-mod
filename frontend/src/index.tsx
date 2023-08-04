@@ -48,6 +48,8 @@ import { Main } from './main/Main';
 import './reset.css';
 import './Sprotty.css';
 import './variables.css';
+import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
+import { LanguageExpressionSection } from './widgets/languageExpression/LanguageExpressionSection';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 
@@ -143,6 +145,8 @@ const propertySectionsRegistry = {
       return SliderPropertySection;
     } else if (widget.__typename === 'ReferenceWidget') {
       return ReferencePropertySection;
+    } else if (widget.__typename === 'LanguageExpression') {
+      return LanguageExpressionSection;
     }
   },
   getPreviewComponent: (widget: GQLWidget) => {
@@ -164,7 +168,12 @@ const propertySectionsRegistry = {
         'id label iconURL container manyValued referenceValues { id label kind iconURL hasClickAction }  style { color fontSize italic bold underline strikeThrough }',
       icon: <ReferenceIcon />,
     };
-    return [sliderWidgetContribution, referenceWidget];
+    const languageExpressionWidget: WidgetContribution = {
+      name: 'LanguageExpression',
+      fields: 'id label iconURL languages { id label body } predefinedLanguages',
+      icon: <LanguageExpressionIcon />,
+    };
+    return [sliderWidgetContribution, referenceWidget, languageExpressionWidget];
   },
 };
 

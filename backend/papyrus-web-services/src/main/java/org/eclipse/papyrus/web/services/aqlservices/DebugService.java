@@ -13,6 +13,7 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices;
 
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,18 @@ import org.slf4j.LoggerFactory;
 public class DebugService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DebugService.class);
+
+    private final ServiceLogger feedbackService;
+
+    public DebugService(ServiceLogger feedbackService) {
+        super();
+        this.feedbackService = feedbackService;
+    }
+
+    public Object sendInfoFeedback(Object object, String message) {
+        this.feedbackService.log(message, ILogLevel.INFO);
+        return object;
+    }
 
     public Object logInConsole(Object eObject, String message) {
         LOGGER.info(message);

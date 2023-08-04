@@ -1,0 +1,14 @@
+=== How to open / edit Papyrus Widgets Model without errors
+
+To define new Papyrus custom widgets we need to reference elements from the Sirius components view model.
+Therefore there are dependencies inside the Papyrus custom widgets model (located in src/main/resources/model) to two sirius components models:
+
+- sirius-components-view/src/main/resources/model/view.ecore
+- sirius-components-view-form/src/main/resources/model/form.ecore
+
+In order to open or edit the Papyrus custom widgets model, you need to import at least the following sirius-components packages:
+
+- sirius-components/packages/view/backend/sirius-components-view
+- sirius-components/packages/view/backend/sirius-components-view-form
+
+WARNING: Those two packages are mandatory for editing/seeing the Papyrus custom widget model but they are not sufficient to launch the Papyrus web server application. You need all other sirius-components packages to avoid partial classes definition.

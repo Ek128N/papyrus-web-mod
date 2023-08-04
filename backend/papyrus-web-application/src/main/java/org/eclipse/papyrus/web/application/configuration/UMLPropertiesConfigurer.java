@@ -29,6 +29,7 @@ import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
 import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescriptionProvider;
 import org.eclipse.papyrus.web.application.utils.ViewSerializer;
+import org.eclipse.papyrus.web.services.aqlservices.DebugService;
 import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
@@ -100,6 +101,7 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
                 new PropertiesProfileDefinitionServices(this.serviceLogger), //
                 new PropertiesUMLServices(this.serviceLogger), //
                 new PropertiesValueSpecificationServices(this.serviceLogger, this.checker), //
+                new DebugService(this.serviceLogger), //
                 new PropertiesHelpContentServices(this.documentationService));
 
         List<EPackage> allEPackages = this.findGlobalEPackages();

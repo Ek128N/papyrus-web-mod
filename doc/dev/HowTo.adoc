@@ -20,3 +20,21 @@ In order to locate each concept inside the model, we defined an index giving the
 ComponentRealization -> Model::Activity::CollaborationUse::ComponentRealization
 ```
 This indicates that this concept can be found inside `CollaborationUse` which is a child of `Activity`.
+
+
+=== How to modify the predefined language list of the lanugage expression widget
+
+OpaqueExpressions, OpaqueActions, OpaqueBehaviors and FunctionBehaviors UML elements have a special property `language` that can be edited in the UML tab of the Details panel with a dedicated widget. This widget allows to choose a language among a predefined list. At the moment, this list of language names is hardcoded in the backend code. This is list is located in:
+
+```
+org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionComponent.getPredefinedLanguages()
+```
+
+Here its definition:
+
+[source, java]
+-----
+  private List<String> getPredefinedLanguages() {
+      return List.of("C", "C++", "JAVA", "Natural Language", "OCL");
+  }
+-----

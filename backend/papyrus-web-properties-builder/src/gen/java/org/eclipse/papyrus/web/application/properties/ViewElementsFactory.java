@@ -14,6 +14,8 @@
 
 package org.eclipse.papyrus.web.application.properties;
 
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
@@ -30,10 +32,32 @@ import org.eclipse.sirius.components.view.form.TextfieldDescription;
 
 public class ViewElementsFactory {
 
-    private ChangeContext createChangeContext(String contextExp) {
-        ChangeContext changeCtxt = ViewFactory.eINSTANCE.createChangeContext();
-        changeCtxt.setExpression(contextExp);
-        return changeCtxt;
+    public PageDescription createPageDescription(String name, String domainType, String labelExpression, String semanticCandidateExpression, String preconditionExpresion) {
+        PageDescription page = FormFactory.eINSTANCE.createPageDescription();
+        page.setName(name);
+        page.setDomainType(domainType);
+        page.setLabelExpression(labelExpression);
+        page.setPreconditionExpression(preconditionExpresion);
+        page.setSemanticCandidatesExpression(semanticCandidateExpression);
+        return page;
+    }
+
+    public FormDescription createFormDescription(String name, String domainType, String titleExpression, String preconditionExpression) {
+        FormDescription form = FormFactory.eINSTANCE.createFormDescription();
+        form.setName(name);
+        form.setDomainType(domainType);
+        form.setPreconditionExpression(preconditionExpression);
+        form.setTitleExpression(titleExpression);
+        return form;
+    }
+
+    public GroupDescription createGroupDescription(String name, String labelExpression, String semanticCandidateExpression, GroupDisplayMode groupDisplayMode) {
+        GroupDescription form = FormFactory.eINSTANCE.createGroupDescription();
+        form.setName(name);
+        form.setLabelExpression(labelExpression);
+        form.setDisplayMode(groupDisplayMode);
+        form.setSemanticCandidatesExpression(semanticCandidateExpression);
+        return form;
     }
 
     public TextfieldDescription createTextfieldDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression, String isEnabledExp) {
@@ -41,18 +65,9 @@ public class ViewElementsFactory {
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
-        description.getBody().add(createChangeContext(contextExp));
-        description.setHelpExpression(helpExpression);
-        description.setIsEnabledExpression(isEnabledExp);
-        return description;
-    }
-
-    public TextAreaDescription createTextAreaDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression, String isEnabledExp) {
-        TextAreaDescription description = FormFactory.eINSTANCE.createTextAreaDescription();
-        description.setName(name);
-        description.setLabelExpression(labelExp);
-        description.setValueExpression(valueExp);
-        description.getBody().add(createChangeContext(contextExp));
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
         description.setHelpExpression(helpExpression);
         description.setIsEnabledExpression(isEnabledExp);
         return description;
@@ -63,7 +78,9 @@ public class ViewElementsFactory {
         description.setName(name);
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
-        description.getBody().add(createChangeContext(contextExp));
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
         description.setHelpExpression(helpExpression);
         description.setIsEnabledExpression(isEnabledExp);
         return description;
@@ -75,21 +92,9 @@ public class ViewElementsFactory {
         description.setLabelExpression(labelExp);
         description.setValueExpression(valueExp);
         description.setIsDeletableExpression(isDeletableExp);
-        description.getBody().add(createChangeContext(contextExp));
-        description.setHelpExpression(helpExpression);
-        description.setIsEnabledExpression(isEnabledExp);
-        return description;
-    }
-
-    public RadioDescription createRadioDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp, String helpExpression,
-            String isEnabledExp) {
-        RadioDescription description = FormFactory.eINSTANCE.createRadioDescription();
-        description.setName(name);
-        description.setLabelExpression(labelExp);
-        description.setValueExpression(valueExp);
-        description.setCandidatesExpression(candidatesExp);
-        description.setCandidateLabelExpression(candidateLabelExp);
-        description.getBody().add(createChangeContext(contextExp));
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
         description.setHelpExpression(helpExpression);
         description.setIsEnabledExpression(isEnabledExp);
         return description;
@@ -103,40 +108,49 @@ public class ViewElementsFactory {
         description.setValueExpression(valueExp);
         description.setCandidatesExpression(candidatesExp);
         description.setCandidateLabelExpression(candidateLabelExp);
-        description.getBody().add(createChangeContext(contextExp));
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
         description.setHelpExpression(helpExpression);
         description.setIsEnabledExpression(isEnabledExp);
         return description;
     }
 
-    public PageDescription createPageDescription(String name, String domainType, String labelExpression, String semanticCandidateExpression, String preconditionExpresion) {
-        PageDescription page = FormFactory.eINSTANCE.createPageDescription();
-        page.setName(name);
-        page.setDomainType(domainType);
-        page.setLabelExpression(labelExpression);
-        page.setPreconditionExpression(preconditionExpresion);
-        page.setSemanticCandidatesExpression(semanticCandidateExpression);
-        return page;
-
+    public RadioDescription createRadioDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String candidateLabelExp, String helpExpression,
+            String isEnabledExp) {
+        RadioDescription description = FormFactory.eINSTANCE.createRadioDescription();
+        description.setName(name);
+        description.setLabelExpression(labelExp);
+        description.setValueExpression(valueExp);
+        description.setCandidatesExpression(candidatesExp);
+        description.setCandidateLabelExpression(candidateLabelExp);
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
+        description.setHelpExpression(helpExpression);
+        description.setIsEnabledExpression(isEnabledExp);
+        return description;
     }
 
-    public FormDescription createFormDescription(String name, String domainType, String titleExpression, String preconditionExpression) {
-        FormDescription form = FormFactory.eINSTANCE.createFormDescription();
-        form.setName(name);
-        form.setDomainType(domainType);
-        form.setPreconditionExpression(preconditionExpression);
-        form.setTitleExpression(titleExpression);
-        return form;
-
+    public TextAreaDescription createTextAreaDescription(String name, String labelExp, String valueExp, String contextExp, String helpExpression, String isEnabledExp) {
+        TextAreaDescription description = FormFactory.eINSTANCE.createTextAreaDescription();
+        description.setName(name);
+        description.setLabelExpression(labelExp);
+        description.setValueExpression(valueExp);
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
+        description.setHelpExpression(helpExpression);
+        description.setIsEnabledExpression(isEnabledExp);
+        return description;
     }
 
-    public GroupDescription createGroupDescription(String name, String labelExpression, String semanticCandidateExpression, GroupDisplayMode groupDisplayMode) {
-        GroupDescription form = FormFactory.eINSTANCE.createGroupDescription();
-        form.setName(name);
-        form.setLabelExpression(labelExpression);
-        form.setDisplayMode(groupDisplayMode);
-        form.setSemanticCandidatesExpression(semanticCandidateExpression);
-        return form;
-
+    public LanguageExpressionWidgetDescription createLanguageExpresionDescription(String name, String labelExp, String helpExpression, String isEnabledExp) {
+        LanguageExpressionWidgetDescription description = PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription();
+        description.setName(name);
+        description.setLabelExpression(labelExp);
+        description.setHelpExpression(helpExpression);
+        description.setIsEnabledExpression(isEnabledExp);
+        return description;
     }
 }

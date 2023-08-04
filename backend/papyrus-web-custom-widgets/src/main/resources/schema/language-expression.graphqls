@@ -1,0 +1,70 @@
+type LanguageExpression implements Widget {
+	id: ID!
+	label: String!
+	iconURL: String
+	diagnostics: [Diagnostic!]!
+	hasHelpText: Boolean!
+	readOnly: Boolean!
+	languages: [LanguageElement!]!
+	predefinedLanguages: [String!]!
+}
+
+type LanguageElement {
+	id: ID!
+	label: String!
+	body: String!
+}
+
+extend type Mutation {
+	addLanguage(input: AddLanguageInput!): AddLanguagePayload!
+	deleteLanguage(input: DeleteLanguageInput!): DeleteLanguagePayload!
+	editLanguageBody(input: EditLanguageBodyInput!): EditLanguageBodyPayload!
+	moveLanguage(input: MoveLanguageInput!): MoveLanguagePayload!
+}
+
+input AddLanguageInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	languageExpressionId: ID!
+	language: String!
+}
+
+union AddLanguagePayload = SuccessPayload | ErrorPayload
+
+input DeleteLanguageInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	languageExpressionId: ID!
+	language: String!
+}
+
+union DeleteLanguagePayload = SuccessPayload | ErrorPayload
+
+input EditLanguageBodyInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	languageExpressionId: ID!
+	language: String!
+	newBody: String!
+}
+
+union EditLanguageBodyPayload = SuccessPayload | ErrorPayload
+
+input MoveLanguageInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	languageExpressionId: ID!
+	language: String!
+	direction: MoveLanguageDirection!
+}
+
+enum MoveLanguageDirection {
+  BACKWARD
+  FORWARD
+}
+
+union MoveLanguagePayload = SuccessPayload | ErrorPayload
