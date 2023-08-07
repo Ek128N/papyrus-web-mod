@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.utils.ViewSerializer;
@@ -91,6 +92,7 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         this.register(resourceSet, staticEPackages, new SMDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, SMDDiagramDescriptionBuilder.SMD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new CDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CDDiagramDescriptionBuilder.CD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new UCDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, UCDDiagramDescriptionBuilder.UCD_REP_NAME)));
+        this.register(resourceSet, staticEPackages, new PRDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, PRDDiagramDescriptionBuilder.PRD_REP_NAME)));
     }
 
     @Override
