@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
 import java.util.List;
@@ -167,7 +167,12 @@ public class ViewBuilder {
         tool.setName(id);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression(queryBuilder.queryCreateDomainBaseEdge(description, containmentReference));
-
+        // Configure the tool's target element descriptions once the representation has been fully created. This ensures
+        // that description.getTargetNodeDescription has been filled with the descriptions.
+        description.eAdapters().add(new CallbackAdapter(() -> {
+            List<NodeDescription> targetNodeDescriptions = description.getTargetNodeDescriptions();
+            tool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
+        }));
         tool.getBody().add(changeContext);
         return tool;
     }
