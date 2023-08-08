@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view;
 
 import org.eclipse.sirius.components.view.ColorPalette;
@@ -51,6 +52,8 @@ public class StyleProvider {
 
     private final UserColor noteColor;
 
+    private final UserColor constraintColor;
+
     private final UserColor modelColor;
 
     private ColorPalette colorPalette;
@@ -62,6 +65,7 @@ public class StyleProvider {
         borderNodeColor = createFixedColor("Default Node", "#0b006b");
         nodeLabelColor = createFixedColor("Default Label", "#0b006b");
         noteColor = createFixedColor("Comment", "#fffff0");
+        constraintColor = createFixedColor("Constraint", "#c8ffe6");
         modelColor = createFixedColor("Model", "#f1f8fe");
         edgeColor = borderNodeColor;
     }
@@ -76,6 +80,10 @@ public class StyleProvider {
 
     public UserColor getNoteColor() {
         return noteColor;
+    }
+
+    public UserColor getConstraintColor() {
+        return constraintColor;
     }
 
     public UserColor getModelColor() {

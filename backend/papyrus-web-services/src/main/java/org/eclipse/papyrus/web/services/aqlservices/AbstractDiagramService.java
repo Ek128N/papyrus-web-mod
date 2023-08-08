@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices;
 
 import static java.util.stream.Collectors.joining;
@@ -93,6 +94,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.slf4j.Logger;
@@ -697,6 +699,27 @@ public abstract class AbstractDiagramService {
     }
 
     /**
+     * Target reconnection service for the constrained element feature of a {@link Constraint}.
+     *
+     * @param source
+     *            the current source of the edge
+     * @param oldTarget
+     *            the old target
+     * @param newTarget
+     *            the new target
+     * @return the current source
+     */
+    public EObject reconnectConstraintConstrainedElementEdgeTarget(Constraint source, EObject oldTarget, EObject newTarget) {
+        if (newTarget instanceof Element element) {
+            source.getConstrainedElements().remove(oldTarget);
+            source.getConstrainedElements().add(element);
+        } else {
+            LOGGER.warn("Can't reconnect to the new target. It is not an Element"); //$NON-NLS-1$
+        }
+        return source;
+    }
+
+    /**
      * Move the target element inside the feature owner.
      *
      * <p>
@@ -804,7 +827,7 @@ public abstract class AbstractDiagramService {
      *            the old source
      * @param newSource
      *            the new source
-     * @return the current source
+     * @return the current target
      */
     public EObject reconnectCommentAnnotatedElementEdgeSource(EObject target, Comment oldSource, Comment newSource) {
 
@@ -815,6 +838,27 @@ public abstract class AbstractDiagramService {
             LOGGER.error("The target element should be an eleemnt"); //$NON-NLS-1$
         }
 
+        return target;
+    }
+
+    /**
+     * Source reconnection service for the constrained element feature of a {@link Constraint}.
+     *
+     * @param target
+     *            the current target of the edge
+     * @param oldSource
+     *            the old source
+     * @param newSource
+     *            the new source
+     * @return the current target
+     */
+    public EObject reconnectConstraintConstrainedElementEdgeSource(EObject target, Constraint oldSource, Constraint newSource) {
+        if (target instanceof Element element) {
+            oldSource.getConstrainedElements().remove(element);
+            newSource.getConstrainedElements().add(element);
+        } else {
+            LOGGER.error("The target element should be an Element"); //$NON-NLS-1$
+        }
         return target;
     }
 

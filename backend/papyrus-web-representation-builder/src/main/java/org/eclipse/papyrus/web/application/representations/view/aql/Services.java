@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.aql;
 
 /**
@@ -45,7 +46,11 @@ public class Services {
 
     public static final String RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE = "reconnectCommentAnnotatedElementEdgeSource"; //$NON-NLS-1$
 
-    public static final String RENDER_LABEL_SERVICE = "renderLabel";
+    public static final String RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE = "reconnectConstraintConstrainedElementEdgeTarget"; //$NON-NLS-1$
+
+    public static final String RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE = "reconnectConstraintConstrainedElementEdgeSource"; //$NON-NLS-1$
+
+    public static final String RENDER_LABEL_SERVICE = "renderLabel"; //$NON-NLS-1$
 
     public static final String MOVE_IN = "moveIn"; //$NON-NLS-1$
 

@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
 import static java.util.stream.Collectors.toList;
@@ -41,6 +42,7 @@ import org.eclipse.papyrus.web.application.representations.view.builders.LabelCo
 import org.eclipse.papyrus.web.application.representations.view.builders.ListCompartmentBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
+import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.ViewBuilder;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.View;
@@ -58,6 +60,8 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.UMLPackage;
 
 /**
@@ -74,6 +78,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     private static final Predicate<NodeDescription> PACKAGE_CHILDREN_FILTER = n -> n.getName().endsWith(PACKAGE_CHILD);
 
+    protected StyleProvider styleProvider;
+
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
     private ViewBuilder viewBuilder;
@@ -87,8 +93,6 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     private final EClass representationDomainClass;
 
     private final IDomainHelper umlMetaModelHelper = new UMLMetamodelHelper();
-
-    private StyleProvider styleProvider;
 
     public AbstractRepresentationDescriptionBuilder(String diagramPrefix, String representationName, EClass domainClass) {
         super();
@@ -282,6 +286,17 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         return result && !IdBuilder.isFakeChildNode(node);
     }
 
+    /**
+     * Creates a {@link NodeDescription} representing a {@link Comment} in the provided {@code diagramDescription}.
+     * <p>
+     * This method is <b>deprecated</b>. Use {@link NoteStyleDescriptionBuilder} to create note-style
+     * {@link NodeDescription}.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the {@link NodeDescription}
+     */
+    @Deprecated
     protected void createCommentDescription(DiagramDescription diagramDescription) {
         NodeDescription commentDescription = getViewBuilder().createNoteStyleUnsynchonizedNodeDescription(pack.getComment(), getQueryBuilder().queryAllReachable(pack.getComment()));
         commentDescription.getStyle().setWidthComputationExpression("200");
@@ -338,10 +353,42 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 List.of(targetReconnectionOperation)));
     }
 
+    /**
+     * Configures the provided {@code node} as a {@link Comment} owner.
+     * <p>
+     * This method ensures that the provided {@code node}'s child descriptions contain the {@link NodeDescription}
+     * representing a {@link Comment}, and that the palette allows the creation of {@link Comment} elements inside
+     * {@code node}.
+     * </p>
+     * 
+     * @param node
+     *            the node to configure as a comment owner
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the node
+     */
     protected void registerNodeAsCommentOwner(NodeDescription node, DiagramDescription diagramDescription) {
         registerCallback(node, () -> {
             node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getComment()));
             node.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
+        });
+    }
+
+    /**
+     * Configures the provided {@code node} as a {@link Constraint} owner.
+     * <p>
+     * This method ensures that the provided {@code node}'s child descriptions contain the {@link NodeDescription}
+     * representing a {@link Constraint}, and that the palette allows the creation of {@link Constraint} elements inside
+     * {@code node}.
+     * 
+     * @param node
+     *            the node to configure as a constraint owner
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the node
+     */
+    protected void registerNodeAsConstraintOwner(NodeDescription node, DiagramDescription diagramDescription) {
+        registerCallback(node, () -> {
+            node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getConstraint()));
+            node.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getNamespace_OwnedRule(), pack.getConstraint()));
         });
     }
 
@@ -396,13 +443,18 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 p.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
             });
             String childrenCandidateExpression = CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getPackage_PackagedElement());
-            List<NodeDescription> copiedClassifier = diagramDescription.getNodeDescriptions().stream().filter(n -> isValidNodeDescription(n, false, false, pack.getPackageableElement()))
+            List<NodeDescription> copiedClassifier = diagramDescription.getNodeDescriptions().stream()
+                    // Filter out NodeDescription representing a constraint. They can be contained by the
+                    // Package.packagedElement reference (they are PackageableElements), but we don't want to support
+                    // that, we want to support Namespace.ownedRule as the sole containment reference for constraints.
+                    .filter(n -> isValidNodeDescription(n, false, false, pack.getPackageableElement()) && !isValidNodeDescription(n, false, false, pack.getConstraint()))
                     .map(n -> transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
             padPackage.getChildrenDescriptions().addAll(copiedClassifier);
         });
 
         registerNodeAsCommentOwner(padPackage, diagramDescription);
-
+        // Do not use registerNodeAsConstraintOwner here, this would have an impact on CDDiagramDescriptionBuilder,
+        // CSDDiagramDescriptionBuilder, PADDiagramDescriptionBuilder, and SMDDigramDescriptionBuilder.
     }
 
     private NodeDescription transformIntoPackageChildNode(NodeDescription input, String semanticCandidateExpression, DiagramDescription diagramDescription) {
@@ -413,6 +465,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         if (UMLPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass)) {
             collectAndReusedChildNodes(n, pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
             registerNodeAsCommentOwner(n, diagramDescription);
+            // Do not use registerNodeAsConstraintOwner here, this would have an impact on CDDiagramDescriptionBuilder,
+            // CSDDiagramDescriptionBuilder, PADDiagramDescriptionBuilder, and SMDDigramDescriptionBuilder.
         }
         return n;
     }
