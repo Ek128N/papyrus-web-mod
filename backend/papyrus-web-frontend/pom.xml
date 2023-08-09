@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<sirius.components.version>2023.6.5</sirius.components.version>
+		<sirius.documentation.version>2023.6.0</sirius.documentation.version>
 	</properties>
 
 	<repositories>
@@ -60,6 +61,42 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>2.2.4</version>
+				<executions>
+					<execution>
+						<id>convert-to-html</id>
+						<phase>generate-resources</phase> 
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/../../doc/user/</sourceDirectory>
+							<sourceDocumentName>userdoc.adoc</sourceDocumentName>
+							<outputDirectory>${project.basedir}/src/main/resources/static/doc/</outputDirectory>
+							<attributes> 
+								<imagesdir>./imgs</imagesdir>
+								<sirius-docomentation-version>${sirius.documentation.version}</sirius-docomentation-version>
+							</attributes>
+							<resources>
+								<resource>
+									<!-- (Mandatory) Directory to copy from. Paths are relative to maven's ${baseDir} -->
+									<directory>../../doc/user/imgs</directory>
+									<!-- (Optional) Directory to copy to. By default uses the option `outputDirectory` -->
+									<targetPath>imgs</targetPath>
+									<!-- (Optional) If not set, includes all files but default exceptions mentioned -->
+									<includes>
+										<include>**/*.png</include>
+										<include>**/*.svg</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>

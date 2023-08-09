@@ -33,6 +33,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SpringWebMvcConfigurer implements WebMvcConfigurer {
     public static final String PNG_PATTERN = "/**/*.png";
 
+    public static final String SVG_PATTERN = "/**/*.svg";
+
     private static final String[] ALLOWED_ORIGIN_PATTERNS = { "*" };
 
     /**
@@ -59,6 +61,7 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
             SpringWebMvcConfigurerConstants.ICO_PATTERN,
             SpringWebMvcConfigurerConstants.TTF_PATTERN,
             SpringWebMvcConfigurerConstants.MEDIA_PATTERN,
+            SpringWebMvcConfigurer.SVG_PATTERN,
             SpringWebMvcConfigurer.PNG_PATTERN
         ).addResourceLocations(SpringWebMvcConfigurerConstants.STATIC_ASSETS_PATH);
 

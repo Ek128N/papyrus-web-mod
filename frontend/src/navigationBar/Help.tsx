@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import { emphasize, makeStyles } from '@material-ui/core/styles';
 import HelpIcon from '@material-ui/icons/Help';
+import { httpOrigin } from '../core/URL';
 
 const useHelpStyle = makeStyles((theme) => ({
   onDarkBackground: {
@@ -26,7 +27,12 @@ const useHelpStyle = makeStyles((theme) => ({
 export const Help = () => {
   const classes = useHelpStyle();
   return (
-    <Link href="https://www.eclipse.org/sirius" rel="noopener noreferrer" target="_blank" color="inherit">
+    <Link
+      href={`${httpOrigin}/doc/userdoc.html`}
+      rel="noopener noreferrer"
+      target="_blank"
+      color="inherit"
+      data-testid="help-link">
       <IconButton className={classes.onDarkBackground} color="inherit">
         <HelpIcon />
       </IconButton>
