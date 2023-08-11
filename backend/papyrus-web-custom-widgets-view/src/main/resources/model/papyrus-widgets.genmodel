@@ -15,5 +15,11 @@
     <genClasses ecoreClass="papyrus-widgets.ecore#//LanguageExpressionWidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//LanguageExpressionWidgetDescription/isEnabledExpression"/>
     </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription/isEnabledExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription/candidatesExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription/body"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

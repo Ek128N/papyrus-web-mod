@@ -1,0 +1,24 @@
+type PrimitiveRadio implements Widget {
+	id: ID!
+	label: String!
+	iconURL: String
+	diagnostics: [Diagnostic!]!
+	hasHelpText: Boolean!
+	readOnly: Boolean!
+	candidateList: [String!]!
+	candidateValue: String!
+}
+
+extend type Mutation {
+	newValue(input: NewValueInput!): NewValuePayload!
+}
+
+input NewValueInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	primitiveRadioId: ID!
+	value: String!
+}
+
+union NewValuePayload = SuccessPayload | ErrorPayload

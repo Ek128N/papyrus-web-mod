@@ -20,6 +20,7 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
@@ -79,6 +80,11 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription object) {
+            return PapyrusWidgetsAdapterFactory.this.createPrimitiveRadioWidgetDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseWidgetDescription(WidgetDescription object) {
             return PapyrusWidgetsAdapterFactory.this.createWidgetDescriptionAdapter();
         }
@@ -114,6 +120,21 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLanguageExpressionWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription <em>Primitive Radio
+     * Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription
+     * @generated
+     */
+    public Adapter createPrimitiveRadioWidgetDescriptionAdapter() {
         return null;
     }
 

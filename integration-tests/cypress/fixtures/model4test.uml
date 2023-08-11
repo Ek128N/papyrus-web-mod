@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_JnZjoCVtEe67ZeuJwTSydw" name="model4test">
-  <ownedComment xmi:type="uml:Comment" xmi:id="_TdaKACVuEe67ZeuJwTSydw"/>
-  <packageImport xmi:type="uml:PackageImport" xmi:id="_JrgnkCVtEe67ZeuJwTSydw">
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_doaj8EGSEe6x870_Tg9SnA" name="model4test">
+  <ownedComment xmi:type="uml:Comment" xmi:id="_g1lqkEGSEe6x870_Tg9SnA"/>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_drWjMEGSEe6x870_Tg9SnA">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
-  <packagedElement xmi:type="uml:Package" xmi:id="_YC-cYCVtEe67ZeuJwTSydw" name="Package"/>
-  <packagedElement xmi:type="uml:Abstraction" xmi:id="_s41Q8CVtEe67ZeuJwTSydw" name="Abstraction" client="_JnZjoCVtEe67ZeuJwTSydw" supplier="_YC-cYCVtEe67ZeuJwTSydw"/>
-  <packagedElement xmi:type="uml:Activity" xmi:id="_Yzs5QCVuEe67ZeuJwTSydw" name="Activity"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_cMuqkCVuEe67ZeuJwTSydw" name="Class">
-    <nestedClassifier xmi:type="uml:Association" xmi:id="__MjDcCVuEe67ZeuJwTSydw" name="Association" memberEnd="_DtoB8CVvEe67ZeuJwTSydw _FbJTsCVvEe67ZeuJwTSydw">
-      <ownedEnd xmi:type="uml:Property" xmi:id="_DtoB8CVvEe67ZeuJwTSydw" name="to" association="__MjDcCVuEe67ZeuJwTSydw"/>
-      <ownedEnd xmi:type="uml:Property" xmi:id="_FbJTsCVvEe67ZeuJwTSydw" name="from" association="__MjDcCVuEe67ZeuJwTSydw"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_ifdLYEGSEe6x870_Tg9SnA" name="Package"/>
+  <packagedElement xmi:type="uml:Abstraction" xmi:id="_z-MTIEGSEe6x870_Tg9SnA" name="Abstraction" client="_doaj8EGSEe6x870_Tg9SnA" supplier="_ifdLYEGSEe6x870_Tg9SnA"/>
+  <packagedElement xmi:type="uml:Activity" xmi:id="_8BA6EEGSEe6x870_Tg9SnA" name="Activity"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_j99wwEGSEe6x870_Tg9SnA" name="Class">
+    <nestedClassifier xmi:type="uml:Association" xmi:id="_DFlJAEGTEe6x870_Tg9SnA" name="Association" memberEnd="_GLX1QEGTEe6x870_Tg9SnA _TzHdUEGTEe6x870_Tg9SnA">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_GLX1QEGTEe6x870_Tg9SnA" name="from" type="_8BA6EEGSEe6x870_Tg9SnA" association="_DFlJAEGTEe6x870_Tg9SnA"/>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_TzHdUEGTEe6x870_Tg9SnA" name="to" type="_8BA6EEGSEe6x870_Tg9SnA" association="_DFlJAEGTEe6x870_Tg9SnA"/>
     </nestedClassifier>
   </packagedElement>
   <packagedElement xmi:type="uml:DurationObservation" xmi:id="_r06gYCVuEe67ZeuJwTSydw" name="DurationObservation"/>

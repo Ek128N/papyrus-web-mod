@@ -67,7 +67,7 @@ public class ImageUmlPage {
 
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "aql:self.getImageName()", "aql:self.oclAsType(uml::Image).setImageName(newValue)",
-                "aql:'The image\'s name. This is a virtual property, used only for label display.'", "");
+                "aql:'The image\'s name. This is a virtual property, used only for label display.'", "aql:self.eClass().getEStructuralFeature('name').changeable");
         group.getWidgets().add(widget);
     }
 

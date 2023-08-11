@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
@@ -81,6 +82,15 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION: {
+                PrimitiveRadioWidgetDescription primitiveRadioWidgetDescription = (PrimitiveRadioWidgetDescription) theEObject;
+                T result = this.casePrimitiveRadioWidgetDescription(primitiveRadioWidgetDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(primitiveRadioWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -99,6 +109,21 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseLanguageExpressionWidgetDescription(LanguageExpressionWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Primitive Radio Widget Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Primitive Radio Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription object) {
         return null;
     }
 

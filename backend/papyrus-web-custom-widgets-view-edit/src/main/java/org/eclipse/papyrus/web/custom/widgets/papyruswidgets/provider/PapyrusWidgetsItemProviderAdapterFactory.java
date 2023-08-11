@@ -123,6 +123,31 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PrimitiveRadioWidgetDescriptionItemProvider primitiveRadioWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPrimitiveRadioWidgetDescriptionAdapter() {
+        if (this.primitiveRadioWidgetDescriptionItemProvider == null) {
+            this.primitiveRadioWidgetDescriptionItemProvider = new PrimitiveRadioWidgetDescriptionItemProvider(this);
+        }
+
+        return this.primitiveRadioWidgetDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -227,6 +252,8 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
     public void dispose() {
         if (this.languageExpressionWidgetDescriptionItemProvider != null)
             this.languageExpressionWidgetDescriptionItemProvider.dispose();
+        if (this.primitiveRadioWidgetDescriptionItemProvider != null)
+            this.primitiveRadioWidgetDescriptionItemProvider.dispose();
     }
 
     /**
@@ -280,6 +307,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                 this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS,
                         PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+
                 return null;
             }
 
@@ -293,6 +323,10 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                 this.newChildDescriptors
                         .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                                PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
                 return null;
             }

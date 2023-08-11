@@ -41,6 +41,15 @@ public interface PapyrusWidgetsFactory extends EFactory {
     LanguageExpressionWidgetDescription createLanguageExpressionWidgetDescription();
 
     /**
+     * Returns a new object of class '<em>Primitive Radio Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Primitive Radio Widget Description</em>'.
+     * @generated
+     */
+    PrimitiveRadioWidgetDescription createPrimitiveRadioWidgetDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

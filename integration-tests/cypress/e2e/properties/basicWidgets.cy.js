@@ -205,13 +205,15 @@ describe('Basic widgets test', () => {
       .eq(1)
       .as('memberEnd');
     // Verify that there is a Name section inside MemberEnd group
-    cy.get('@memberEnd').findByTestId('Name').should('be.visible').find('input').should('have.value', 'to');
+    cy.get('@memberEnd').findByTestId('Name').should('be.visible').find('input').should('have.value', 'from');
     // Verify that there is a Navigable section inside MemberEnd group
     cy.get('@memberEnd').findByTestId('Navigable').should('be.visible');
     // Verify that there is a Aggregation section inside MemberEnd group
     cy.get('@memberEnd').findByTestId('Aggregation').should('be.visible');
     // Verify that there is a Multiplicity section inside MemberEnd group
     cy.get('@memberEnd').findByTestId('Multiplicity').should('be.visible');
+    // Verify that there is a Owner section inside MemberEnd group
+    cy.get('@memberEnd').findByTestId('member-end-owner-widget').should('be.visible');
   });
 
   /**

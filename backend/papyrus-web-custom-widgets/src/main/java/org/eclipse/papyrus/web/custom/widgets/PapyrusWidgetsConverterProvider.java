@@ -32,7 +32,7 @@ public class PapyrusWidgetsConverterProvider implements IWidgetConverterProvider
 
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new PapyrusWidgetsConverterSwitch(interpreter);
+        return new PapyrusWidgetsConverterSwitch(interpreter, editService, feedbackMessageService);
     }
 
 }

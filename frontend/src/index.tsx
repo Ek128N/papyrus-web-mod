@@ -50,6 +50,8 @@ import './Sprotty.css';
 import './variables.css';
 import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
 import { LanguageExpressionSection } from './widgets/languageExpression/LanguageExpressionSection';
+import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
+import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 
@@ -147,6 +149,8 @@ const propertySectionsRegistry = {
       return ReferencePropertySection;
     } else if (widget.__typename === 'LanguageExpression') {
       return LanguageExpressionSection;
+    } else if (widget.__typename === 'PrimitiveRadio') {
+      return PrimitiveRadioSection;
     }
   },
   getPreviewComponent: (widget: GQLWidget) => {
@@ -173,7 +177,12 @@ const propertySectionsRegistry = {
       fields: 'id label iconURL languages { id label body } predefinedLanguages',
       icon: <LanguageExpressionIcon />,
     };
-    return [sliderWidgetContribution, referenceWidget, languageExpressionWidget];
+    const primitiveRadioWidget: WidgetContribution = {
+      name: 'PrimitiveRadio',
+      fields: 'id label iconURL candidateList candidateValue',
+      icon: <PrimitiveRadioIcon />,
+    };
+    return [sliderWidgetContribution, referenceWidget, languageExpressionWidget, primitiveRadioWidget];
   },
 };
 

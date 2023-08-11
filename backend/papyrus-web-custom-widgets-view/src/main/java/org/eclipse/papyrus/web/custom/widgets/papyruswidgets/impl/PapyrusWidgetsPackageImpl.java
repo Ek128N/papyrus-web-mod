@@ -17,10 +17,12 @@ package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 
@@ -36,6 +38,13 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     private EClass languageExpressionWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass primitiveRadioWidgetDescriptionEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -129,6 +138,56 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
+    public EClass getPrimitiveRadioWidgetDescription() {
+        return this.primitiveRadioWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveRadioWidgetDescription_IsEnabledExpression() {
+        return (EAttribute) this.primitiveRadioWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveRadioWidgetDescription_CandidatesExpression() {
+        return (EAttribute) this.primitiveRadioWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveRadioWidgetDescription_ValueExpression() {
+        return (EAttribute) this.primitiveRadioWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveRadioWidgetDescription_Body() {
+        return (EReference) this.primitiveRadioWidgetDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public PapyrusWidgetsFactory getPapyrusWidgetsFactory() {
         return (PapyrusWidgetsFactory) this.getEFactoryInstance();
     }
@@ -154,6 +213,12 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         // Create classes and their features
         this.languageExpressionWidgetDescriptionEClass = this.createEClass(LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION);
         this.createEAttribute(this.languageExpressionWidgetDescriptionEClass, LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
+
+        this.primitiveRadioWidgetDescriptionEClass = this.createEClass(PRIMITIVE_RADIO_WIDGET_DESCRIPTION);
+        this.createEAttribute(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
+        this.createEAttribute(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION);
+        this.createEAttribute(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION);
+        this.createEReference(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY);
     }
 
     /**
@@ -189,12 +254,23 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
 
         // Add supertypes to classes
         this.languageExpressionWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
+        this.primitiveRadioWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.languageExpressionWidgetDescriptionEClass, LanguageExpressionWidgetDescription.class, "LanguageExpressionWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getLanguageExpressionWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
                 LanguageExpressionWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.primitiveRadioWidgetDescriptionEClass, PrimitiveRadioWidgetDescription.class, "PrimitiveRadioWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getPrimitiveRadioWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
+                PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPrimitiveRadioWidgetDescription_CandidatesExpression(), theViewPackage.getInterpretedExpression(), "candidatesExpression", null, 0, 1,
+                PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPrimitiveRadioWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, PrimitiveRadioWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPrimitiveRadioWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

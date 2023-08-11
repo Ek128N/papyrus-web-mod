@@ -17,7 +17,11 @@ import java.util.Optional;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.form.ContainerBorderLineStyle;
 import org.eclipse.sirius.components.view.form.ContainerBorderStyle;
 import org.eclipse.sirius.components.view.form.FlexDirection;
@@ -46,11 +50,26 @@ public final class MemberEndGroupDescriptionBuilder {
         this.colorRegistry = colorRegistry;
     }
 
+    public PrimitiveRadioWidgetDescription createMemberEndOwnerDescription(String name, String labelExp, String valueExp, String contextExp, String candidatesExp, String helpExpression,
+            String isEnabledExp) {
+        PrimitiveRadioWidgetDescription description = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription();
+        description.setName(name);
+        description.setLabelExpression(labelExp);
+        description.setValueExpression(valueExp);
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+        changeContext.setExpression(contextExp);
+        description.getBody().add(changeContext);
+        description.setCandidatesExpression(candidatesExp);
+        description.setHelpExpression(helpExpression);
+        description.setIsEnabledExpression(isEnabledExp);
+        return description;
+    }
+    
     public WidgetDescription build() {
         var container = FormFactory.eINSTANCE.createFlexboxContainerDescription();
         container.setFlexDirection(FlexDirection.COLUMN);
         container.setBorderStyle(createBorderStyle());
-        container.setName("aql:'memberEnd");
+        container.setName("aql:'memberEnd'");
         container.setLabelExpression("aql:'Member End'");
         var nameWidget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", //
                 /* valueExpression */"aql:self.name", //
@@ -58,16 +77,13 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* helpExpression */"aql:self.getFeatureDescription('name')", //
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('name')");
 
-        // TODO Restore when Primitive Select will be available:
-        // https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/20
-        // var ownerWidget = viewElementFactory.createSelectDescription("owner", "aql:'Owner'", //
-        // /* valueExpression */"aql:self.getOwner()", //
-        // /* contextExpression */"aql:self.setOwner(newValue)", //
-        // /* candidatesExpression */"aql:self.getOwnerEnumerations()", //
-        // /* candidateLabelExpression */"aql:candidate.toString()", //
-        // /* helpExpression */"aql:'The owner of the association.'", //
-        // /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('owner')");
-
+        var ownerWidget = createMemberEndOwnerDescription("owner", "aql:'Owner'", //
+                /* valueExpression */"aql:self.getOwner()", //
+                /* contextExpression */"aql:self.setOwner(newValue)", //
+                /* candidatesExpression */"aql:self.getOwnerEnumerations()", //
+                /* helpExpression */"aql:'The owner of the association.'", //
+                /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('owner')");
+        
         var isNavigableWidget = viewElementFactory.createCheckboxDescription("isNavigable", "Navigable", //
                 /* valueExpression */"aql:self.isNavigable()", //
                 /* contextExpression */"aql:self.setNavigable(newValue)", //
@@ -89,7 +105,7 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('lowerValue') and self.isMemberEndPropertyEditable('upperValue')");
 
         container.getChildren().add(nameWidget);
-        // container.getChildren().add(ownerWidget);
+        container.getChildren().add(ownerWidget);
         container.getChildren().add(isNavigableWidget);
         container.getChildren().add(aggregationWidget);
         container.getChildren().add(multiplicityWidget);

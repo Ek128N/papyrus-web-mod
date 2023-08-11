@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -65,6 +66,8 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
         switch (eClass.getClassifierID()) {
             case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION:
                 return this.createLanguageExpressionWidgetDescription();
+            case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION:
+                return this.createPrimitiveRadioWidgetDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -79,6 +82,17 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
     public LanguageExpressionWidgetDescription createLanguageExpressionWidgetDescription() {
         LanguageExpressionWidgetDescriptionImpl languageExpressionWidgetDescription = new LanguageExpressionWidgetDescriptionImpl();
         return languageExpressionWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PrimitiveRadioWidgetDescription createPrimitiveRadioWidgetDescription() {
+        PrimitiveRadioWidgetDescriptionImpl primitiveRadioWidgetDescription = new PrimitiveRadioWidgetDescriptionImpl();
+        return primitiveRadioWidgetDescription;
     }
 
     /**
