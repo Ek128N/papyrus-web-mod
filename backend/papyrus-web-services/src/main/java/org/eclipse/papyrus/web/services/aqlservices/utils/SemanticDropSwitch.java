@@ -429,7 +429,7 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
         Boolean success = Boolean.FALSE;
         if (semanticEndContainer != null) {
             EObject semanticDiagram = this.getSemanticDiagram();
-            if (semanticEndContainer.equals(semanticDiagram)) {
+            if (semanticEndContainer.equals(semanticDiagram) && this.getNodeFromDiagramAndItsChildren(semanticDiagram) == null) {
                 success = this.viewHelper.createRootView(semanticEnd);
             } else {
                 Node node = this.getNodeFromDiagramAndItsChildren(semanticEndContainer);

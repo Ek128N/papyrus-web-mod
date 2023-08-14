@@ -24,6 +24,7 @@ import org.eclipse.papyrus.uml.domain.services.properties.PropertiesStereotypeAp
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
@@ -31,6 +32,7 @@ import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.services.aqlservices.DebugService;
 import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.communication.CommunicationDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
@@ -67,9 +69,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
     private List<Class<?>> getRepresentationServicesClass(RepresentationDescription representationDescription) {
         List<Class<?>> services = new ArrayList<>();
         if (representationDescription instanceof DiagramDescription) {
-
             this.registerDiagramServices(representationDescription, services);
-
         } else if (representationDescription instanceof org.eclipse.sirius.components.view.form.FormDescription formDesc) {
             this.registerFormServices(formDesc, services);
         }
@@ -98,6 +98,8 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
                     services.add(UseCaseDiagramService.class);
                 } else if (repName.startsWith(PRDDiagramDescriptionBuilder.PRD_REP_NAME)) {
                     services.add(ProfileDiagramService.class);
+                } else if (repName.startsWith(CODDiagramDescriptionBuilder.COD_REP_NAME)) {
+                    services.add(CommunicationDiagramService.class);
                 }
             }
         }

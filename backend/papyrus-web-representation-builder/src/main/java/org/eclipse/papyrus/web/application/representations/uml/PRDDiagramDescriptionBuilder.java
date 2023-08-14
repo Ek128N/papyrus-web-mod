@@ -138,8 +138,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.prdSharedDescription = this.createSharedDescription(diagramDescription);
         this.createSharedAttributeDescription(diagramDescription);
         this.createSharedClassDescription(diagramDescription);
-        this.createCommentDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, NODES, List.of(this.umlPackage.getPackage()));
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, NODES, List.of(this.umlPackage.getPackage()));
+        this.createCommentDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, NODES,
+                this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX), List.of(this.umlPackage.getPackage()));
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, NODES,
+                this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getConstraint(), SHARED_SUFFIX), List.of(this.umlPackage.getPackage()));
         this.createSharedDataTypeDescription(diagramDescription);
         this.createSharedEnumerationDescription(diagramDescription);
         /*

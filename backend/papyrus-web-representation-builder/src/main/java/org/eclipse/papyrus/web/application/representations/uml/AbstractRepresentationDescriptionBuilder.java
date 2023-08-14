@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -408,9 +408,10 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param owners
      *            the semantic types that can contain a {@link Comment}
      */
-    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, List<EClass> owners) {
+    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, String commentNodeDescriptionName,
+            List<EClass> owners) {
         NodeDescription commentDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getComment(), SHARED_SUFFIX)) //
+                .withName(commentNodeDescriptionName) //
                 .withColor(this.styleProvider.getNoteColor()) //
                 .withDomainType(this.pack.getComment()) //
                 .withAnnotedDomainType(this.pack.getElement()) //
@@ -422,26 +423,6 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment());
         this.reuseNodeAndCreateTool(commentDescription, diagramDescription, nodeTool, toolSectionName, owners.toArray(EClass[]::new));
-    }
-
-    /**
-     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment}.
-     * <p>
-     * This method is used to create a shared {@link Comment} {@link NodeDescription} that is attached to all the
-     * provided {@code owners}. Note that this method replaces {@link #createCommentDescription(DiagramDescription)},
-     * which is deprecated and should be removed. The created {@link NodeDescription} is contained in the given
-     * {@code parentNodeDescription}.
-     * </p>
-     *
-     * @param diagramDescription
-     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     * @param parentNodeDescription
-     *            the {@link NodeDescription} containing the shared {@link Comment} {@link NodeDescription}
-     * @param owners
-     *            the semantic types that can contain a {@link Comment}
-     */
-    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
-        this.createCommentDescriptionInNodeDescription(diagramDescription, parentNodeDescription, null, owners);
     }
 
     /**
@@ -474,22 +455,6 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     /**
-     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment} on
-     * the diagram background.
-     * <p>
-     * This method is used to create a {@link Comment} {@link NodeDescription} that can be represented on the background
-     * of the diagram. The created {@link NodeDescription} can represent any {@link Comment} in the diagram, even if it
-     * isn't contained by the diagram itself. The created {@link NodeDescription} is contained in the provided
-     * {@code diagramDescription}.
-     * 
-     * @param diagramDescription
-     *            the {@link DiagramDescription} containing the {@link Comment} {@link NodeDescription}
-     */
-    protected void createDiagramCommentDescription(DiagramDescription diagramDescription) {
-        this.createDiagramCommentDescription(diagramDescription, null);
-    }
-
-    /**
      * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint}.
      * <p>
      * This method is used to create a shared {@link Constraint} {@link NodeDescription} that is attached to all the
@@ -506,9 +471,10 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param owners
      *            the semantic types that can contain a {@link Constraint}
      */
-    protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, List<EClass> owners) {
+    protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName,
+            String constraintNodeDescriptionName, List<EClass> owners) {
         NodeDescription constraintDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getConstraint(), SHARED_SUFFIX)) //
+                .withName(constraintNodeDescriptionName) //
                 .withColor(this.styleProvider.getConstraintColor()) //
                 .withDomainType(this.pack.getConstraint()) //
                 .withAnnotedDomainType(this.pack.getElement()) //
@@ -520,25 +486,6 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
         this.reuseNodeAndCreateTool(constraintDescription, diagramDescription, nodeTool, toolSectionName, owners.toArray(EClass[]::new));
-    }
-
-    /**
-     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint}.
-     * <p>
-     * This method is used to create a shared {@link Constraint} {@link NodeDescription} that is attached to all the
-     * provided {@code owners}. The created {@link NodeDescription} is contained in the given
-     * {@code parentNodeDescription}.
-     * </p>
-     * 
-     * @param diagramDescription
-     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     * @param parentNodeDescription
-     *            the {@link NodeDescription} containing the shared {@link Constraint} {@link NodeDescription}
-     * @param owners
-     *            the semantic types that can contain a {@link Constraint}
-     */
-    protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, parentNodeDescription, null, owners);
     }
 
     /**
@@ -568,22 +515,6 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 .buildIn(diagramDescription);
         NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
         this.addDiagramToolInToolSection(diagramDescription, nodeTool, toolSectionName);
-    }
-
-    /**
-     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint} on
-     * the diagram background.
-     * <p>
-     * This method is used to create a {@link Constraint} {@link NodeDescription} that can be represented on the
-     * background of the diagram. The created {@link NodeDescription} can represent any {@link Constraint} in the
-     * diagram, even if it isn't contained by the diagram itself. The created {@link NodeDescription} is contained in
-     * the provided {@code diagramDescription}.
-     * 
-     * @param diagramDescription
-     *            the {@link DiagramDescription} containing the {@link Constraint} {@link NodeDescription}
-     */
-    protected void createDiagramConstraintDescription(DiagramDescription diagramDescription) {
-        this.createDiagramConstraintDescription(diagramDescription, null);
     }
 
     private void addAnnotatedElementReconnectionTools(EdgeDescription annotedElementEdge) {
@@ -855,8 +786,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected NodeDescription createSharedDescription(DiagramDescription diagramDescription) {
         NodeDescription sharedNodeDescription = this.newNodeBuilder(UMLPackage.eINSTANCE.getElement(), this.getViewBuilder().createRectangularNodeStyle(false, false)) //
                 .name(SHARED_DESCRIPTIONS) //
-                .semanticCandidateExpression("aql:Sequence{}")
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
+                .semanticCandidateExpression("aql:Sequence{}").synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .build();
         diagramDescription.getNodeDescriptions().add(sharedNodeDescription);

@@ -13,6 +13,13 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DIAGRAM_CONTEXT;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.EDGE_SOURCE;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.EDGE_TARGET;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.EDITING_CONTEXT;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_EDGE_SOURCE;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_EDGE_TARGET;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -578,5 +585,23 @@ public class ViewBuilder {
         style.setLabelColor(this.styleProvider.getNodeLabelColor());
         style.setShowIcon(showIcon);
         return style;
+    }
+
+    public EdgeTool createDomainBasedEdgeToolWithService(String specializationName, String serviceName) {
+        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
+        tool.setName(specializationName);
+        ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
+
+        String query = new CallQuery(SEMANTIC_EDGE_SOURCE)//
+                .callService(serviceName, //
+                        SEMANTIC_EDGE_TARGET, //
+                        EDGE_SOURCE, //
+                        EDGE_TARGET, //
+                        EDITING_CONTEXT, //
+                        DIAGRAM_CONTEXT);
+        changeContext.setExpression(query);
+
+        tool.getBody().add(changeContext);
+        return tool;
     }
 }

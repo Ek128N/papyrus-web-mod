@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -97,22 +97,19 @@ public class RepresentationValidatorTests {
     }
 
     @Test
-    public void validateStateMachineDiagram() {
-        DiagramDescription diagram = new SMDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+    public void validateCommmunicationDiagram() {
+        DiagramDescription diagram = new CODDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
-        // Exclude the direct edit tool check on transition since it is a complex semantic and we do not have yet a way
-        // to implement it
-        validator.excludeFromDirectEditValidation(p -> !this.isTransitionEdge(p));
-        validator.disableReusedNodeDescriptionsValidation();
-        validator.disableSharedDescriptionsValidation();
 
+        Predicate<DiagramElementDescription> isNotInteractionRoot = p -> !p.getName().equals("COD_Interaction");
+        validator.excludeFromDeleteToolValidation(isNotInteractionRoot);
         List<Status> validations = validator.validate(diagram);
 
-        List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Class Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
+            Assertions.fail(MessageFormat.format("Invalid Communication Diagram description \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL))));
         }
     }
 
@@ -134,6 +131,26 @@ public class RepresentationValidatorTests {
 
         if (!errors.isEmpty()) {
             Assertions.fail(MessageFormat.format("Invalid Profile Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
+        }
+    }
+
+    @Test
+    public void validateStateMachineDiagram() {
+        DiagramDescription diagram = new SMDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        // Exclude the direct edit tool check on transition since it is a complex semantic and we do not have yet a way
+        // to implement it
+        validator.excludeFromDirectEditValidation(p -> !this.isTransitionEdge(p));
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
+
+        List<Status> validations = validator.validate(diagram);
+
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Class Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL))));
         }
     }
 

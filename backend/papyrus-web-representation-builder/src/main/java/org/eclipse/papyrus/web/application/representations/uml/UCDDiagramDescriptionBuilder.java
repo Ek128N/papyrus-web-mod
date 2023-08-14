@@ -130,9 +130,11 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createSharedActivityAsSubjectDescription(diagramDescription);
         this.createSharedActorDescription(diagramDescription);
         this.createSharedClassAsSubjectDescription(diagramDescription);
-        this.createCommentDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, NODES, commentAndConstraintOwners);
+        this.createCommentDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, NODES,
+                this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX), commentAndConstraintOwners);
         this.createSharedComponentAsSubjectDescription(diagramDescription);
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, NODES, commentAndConstraintOwners);
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, NODES,
+                this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getConstraint(), SHARED_SUFFIX), commentAndConstraintOwners);
         this.createSharedInteractionAsSubjectDescription(diagramDescription);
         this.createSharedStateMachineAsSubjectDescription(diagramDescription);
         this.createSharedUseCaseDescription(diagramDescription);
