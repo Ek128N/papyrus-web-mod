@@ -1066,12 +1066,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected NodeDescription createNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
             String semanticQuery, EReference semanticRefTool, List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         // CHECKSTYLE:ON
-        String nodeDescriptionName = null;
-        if (SHARED_DESCRIPTIONS.equals(parentNodeDescription.getName())) {
-            nodeDescriptionName = this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX);
-        } else {
-            nodeDescriptionName = this.getIdBuilder().getDomainNodeName(domainType);
-        }
+        String nodeDescriptionName = this.getIdBuilder().getDomainNodeName(domainType);
         NodeDescription createNodeDescriptionInCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createIconAndlabelStyle(true))//
                 .name(nodeDescriptionName) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//

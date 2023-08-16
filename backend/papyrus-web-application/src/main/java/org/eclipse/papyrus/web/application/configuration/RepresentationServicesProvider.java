@@ -26,6 +26,7 @@ import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecifi
 import org.eclipse.papyrus.web.application.representations.uml.ADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.CPDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
@@ -35,6 +36,7 @@ import org.eclipse.papyrus.web.services.aqlservices.DebugService;
 import org.eclipse.papyrus.web.services.aqlservices.activity.ActivityDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.communication.CommunicationDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.component.ComponentDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
@@ -103,6 +105,8 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
                     services.add(CommunicationDiagramService.class);
                 } else if (repName.startsWith(ADDiagramDescriptionBuilder.AD_REP_NAME)) {
                     services.add(ActivityDiagramService.class);
+                } else if (repName.startsWith(CPDDiagramDescriptionBuilder.CPD_REP_NAME)) {
+                    services.add(ComponentDiagramService.class);
                 }
             }
         }

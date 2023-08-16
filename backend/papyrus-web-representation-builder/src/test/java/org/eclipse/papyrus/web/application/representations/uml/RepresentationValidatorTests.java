@@ -133,6 +133,20 @@ public class RepresentationValidatorTests {
     }
 
     @Test
+    public void validateComponentDiagram() {
+        DiagramDescription diagram = new CPDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.excludeFromDirectEditValidation(p -> !this.isCpdDirectEditDisabled(p));
+        List<Status> validations = validator.validate(diagram);
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Component Diagram description \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
+        }
+    }
+
+    @Test
     public void validateProfileDiagram() {
         Predicate<DiagramElementDescription> isNotMetaclassAndNotCompartment = p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS)
                 && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS) && !p.getName().contains(IdBuilder.COMPARTMENT_NODE_SUFFIX);
@@ -189,6 +203,10 @@ public class RepresentationValidatorTests {
 
     private boolean isUcdDirectEditDisabled(DiagramElementDescription p) {
         return "UCD_PackageMerge_DomainEdge".equals(p.getName()) || "UCD_PackageImport_DomainEdge".equals(p.getName()) || "UCD_Generalization_DomainEdge".equals(p.getName());
+    }
+
+    private boolean isCpdDirectEditDisabled(DiagramElementDescription p) {
+        return "CPD_Generalization_DomainEdge".equals(p.getName());
     }
 
     private boolean isPrdDirectEditDisabled(DiagramElementDescription p) {

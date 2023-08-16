@@ -45,7 +45,7 @@ import org.eclipse.uml2.uml.UMLPackage;
 
 /**
  * Builder of the "Profile Diagram" diagram representation.
- * 
+ *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
 public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescriptionBuilder {
@@ -76,6 +76,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     public static final String PRD_PREFIX = "PRD_";
 
     /**
+     * Underscore.
+     */
+    private static final String UNDERSCORE = "_";
+
+    /**
      * AQL expression to set children not draggable from its container.
      */
     private static final String CHILD_NOT_DRAGGABLE_EXPRESSION = "aql:false";
@@ -88,7 +93,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     /**
      * The name of the {@link NodeDescription} representing a metaclass inside another element.
      */
-    public static final String PRD_SHARED_METACLASS = PRD_METACLASS + "_" + SHARED_SUFFIX;
+    public static final String PRD_SHARED_METACLASS = PRD_METACLASS + UNDERSCORE + SHARED_SUFFIX;
 
     private UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
@@ -188,7 +193,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Class} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -198,7 +203,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link DataType} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -208,7 +213,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Enumeration} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -233,7 +238,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Create the {@link NodeDescription} representing an UML Metaclass on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -254,7 +259,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Package} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -287,7 +292,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link PrimitiveType} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -310,7 +315,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Profile} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -338,7 +343,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Stereotype} on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -348,16 +353,17 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates a <i>Property</i> child reused by <i>Attributes</i> compartments.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createSharedAttributeDescription(DiagramDescription diagramDescription) {
         List<EClass> owners = List.of(this.umlPackage.getClass_(), this.umlPackage.getDataType(), this.umlPackage.getStereotype());
         List<EClass> forbiddenOwners = List.of(this.umlPackage.getPrimitiveType(), this.umlPackage.getEnumeration());
-        this.createNodeDescriptionInCompartmentDescription(diagramDescription, this.prdSharedDescription, this.umlPackage.getProperty(), ATTRIBUTES_COMPARTMENT_SUFFIX,
-                CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllAttributes()), this.umlPackage.getStructuredClassifier_OwnedAttribute(), owners, forbiddenOwners,
-                this.excludeMetaclassNodeDescription);
+        NodeDescription attributeNodeDescriptionInCompartmentDescription = this.createNodeDescriptionInCompartmentDescription(diagramDescription, this.prdSharedDescription,
+                this.umlPackage.getProperty(), ATTRIBUTES_COMPARTMENT_SUFFIX, CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllAttributes()),
+                this.umlPackage.getStructuredClassifier_OwnedAttribute(), owners, forbiddenOwners, this.excludeMetaclassNodeDescription);
+        attributeNodeDescriptionInCompartmentDescription.setName(attributeNodeDescriptionInCompartmentDescription.getName() + UNDERSCORE + SHARED_SUFFIX);
     }
 
     /**
@@ -365,7 +371,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -378,7 +384,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param parentNodeDescription
@@ -393,7 +399,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -423,7 +429,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -453,16 +459,17 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates a <i>Operation</i> child reused by <i>Operations</i> compartments.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createSharedOperationDescription(DiagramDescription diagramDescription) {
         List<EClass> owners = List.of(this.umlPackage.getClass_(), this.umlPackage.getDataType(), this.umlPackage.getStereotype());
         List<EClass> forbiddenOwners = List.of(this.umlPackage.getPrimitiveType(), this.umlPackage.getEnumeration());
-        this.createNodeDescriptionInCompartmentDescription(diagramDescription, this.prdSharedDescription, this.umlPackage.getOperation(), OPERATIONS_COMPARTMENT_SUFFIX,
-                CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllOperations()), this.umlPackage.getClass_OwnedOperation(), owners, forbiddenOwners,
-                this.excludeMetaclassNodeDescription);
+        NodeDescription operationNodeDescriptionInCompartmentDescription = this.createNodeDescriptionInCompartmentDescription(diagramDescription, this.prdSharedDescription,
+                this.umlPackage.getOperation(), OPERATIONS_COMPARTMENT_SUFFIX, CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllOperations()),
+                this.umlPackage.getClass_OwnedOperation(), owners, forbiddenOwners, this.excludeMetaclassNodeDescription);
+        operationNodeDescriptionInCompartmentDescription.setName(operationNodeDescriptionInCompartmentDescription.getName() + UNDERSCORE + SHARED_SUFFIX);
     }
 
     /**
@@ -470,7 +477,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -505,7 +512,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -533,7 +540,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -566,7 +573,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -580,7 +587,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
      * diagram.
      * <p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param compartmentName
@@ -603,7 +610,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
      * diagram.
      * <p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param compartmentName
@@ -626,7 +633,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
      * diagram.
      * <p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param compartmentName
@@ -644,10 +651,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Creates a list {@link NodeDescription} representing {@link Classifier} sub-classes on the Diagram.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     * 
+     *
      * @param classifierEClass
      *            the classifier sub-type to represent
      * @return the created {@link NodeDescription}
@@ -677,7 +684,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * <p>
      * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param classifierEClass
@@ -711,7 +718,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
      * diagram.
      * <p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
@@ -741,13 +748,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private NodeDescription createEnumerationLiteralsDescription(DiagramDescription diagramDescription, NodeDescription parent) {
         List<EClass> owners = List.of(this.umlPackage.getEnumeration());
-        return this.createNodeDescriptionInCompartmentDescription(diagramDescription, parent, this.umlPackage.getEnumerationLiteral(), LITERALS_COMPARTMENT_SUFFIX,
-                CallQuery.queryAttributeOnSelf(this.umlPackage.getEnumeration_OwnedLiteral()), this.umlPackage.getEnumeration_OwnedLiteral(), owners, List.of(), this.excludeMetaclassNodeDescription);
+        NodeDescription enumLiteralNodeDescriptionInCompartmentDescription = this.createNodeDescriptionInCompartmentDescription(diagramDescription, parent, this.umlPackage.getEnumerationLiteral(),
+                LITERALS_COMPARTMENT_SUFFIX, CallQuery.queryAttributeOnSelf(this.umlPackage.getEnumeration_OwnedLiteral()), this.umlPackage.getEnumeration_OwnedLiteral(), owners, List.of(),
+                this.excludeMetaclassNodeDescription);
+        enumLiteralNodeDescriptionInCompartmentDescription.setName(enumLiteralNodeDescriptionInCompartmentDescription.getName());
+        return enumLiteralNodeDescriptionInCompartmentDescription;
     }
 
     /**
      * Add graphical dropped tool on Shared compartment {@link NodeDescription}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the Shared {@link NodeDescription}
      * @param compartmentName
@@ -774,7 +784,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Create the {@link EdgeDescription} representing an UML {@link Association}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
@@ -806,7 +816,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Create the {@link EdgeDescription} representing an UML {@link Extension}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
@@ -831,7 +841,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     /**
      * Create the {@link EdgeDescription} representing an UML {@link Generalization}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
