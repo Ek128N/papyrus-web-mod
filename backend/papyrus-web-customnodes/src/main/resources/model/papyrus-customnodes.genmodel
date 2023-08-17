@@ -16,5 +16,7 @@
     <genClasses ecoreClass="papyrus-customnodes.ecore#//PackageNodeStyleDescription"/>
     <genClasses ecoreClass="papyrus-customnodes.ecore#//RectangleWithExternalLabelNodeStyleDescription"/>
     <genClasses ecoreClass="papyrus-customnodes.ecore#//NoteNodeStyleDescription"/>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//InnerFlagNodeStyleDescription"/>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//OuterFlagNodeStyleDescription"/>
   </genPackages>
 </genmodel:GenModel>

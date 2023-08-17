@@ -19,7 +19,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
@@ -73,6 +75,10 @@ public class PapyrusCustomNodesFactoryImpl extends EFactoryImpl implements Papyr
                 return this.createRectangleWithExternalLabelNodeStyleDescription();
             case PapyrusCustomNodesPackage.NOTE_NODE_STYLE_DESCRIPTION:
                 return this.createNoteNodeStyleDescription();
+            case PapyrusCustomNodesPackage.INNER_FLAG_NODE_STYLE_DESCRIPTION:
+                return this.createInnerFlagNodeStyleDescription();
+            case PapyrusCustomNodesPackage.OUTER_FLAG_NODE_STYLE_DESCRIPTION:
+                return this.createOuterFlagNodeStyleDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -120,6 +126,28 @@ public class PapyrusCustomNodesFactoryImpl extends EFactoryImpl implements Papyr
     public NoteNodeStyleDescription createNoteNodeStyleDescription() {
         NoteNodeStyleDescriptionImpl noteNodeStyleDescription = new NoteNodeStyleDescriptionImpl();
         return noteNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public InnerFlagNodeStyleDescription createInnerFlagNodeStyleDescription() {
+        InnerFlagNodeStyleDescriptionImpl innerFlagNodeStyleDescription = new InnerFlagNodeStyleDescriptionImpl();
+        return innerFlagNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public OuterFlagNodeStyleDescription createOuterFlagNodeStyleDescription() {
+        OuterFlagNodeStyleDescriptionImpl outerFlagNodeStyleDescription = new OuterFlagNodeStyleDescriptionImpl();
+        return outerFlagNodeStyleDescription;
     }
 
     /**

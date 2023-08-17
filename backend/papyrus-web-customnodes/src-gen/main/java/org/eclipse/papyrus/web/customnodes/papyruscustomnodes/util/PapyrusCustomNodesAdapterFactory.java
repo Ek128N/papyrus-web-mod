@@ -18,7 +18,9 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
@@ -96,6 +98,16 @@ public class PapyrusCustomNodesAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseNoteNodeStyleDescription(NoteNodeStyleDescription object) {
             return PapyrusCustomNodesAdapterFactory.this.createNoteNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseInnerFlagNodeStyleDescription(InnerFlagNodeStyleDescription object) {
+            return PapyrusCustomNodesAdapterFactory.this.createInnerFlagNodeStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseOuterFlagNodeStyleDescription(OuterFlagNodeStyleDescription object) {
+            return PapyrusCustomNodesAdapterFactory.this.createOuterFlagNodeStyleDescriptionAdapter();
         }
 
         @Override
@@ -191,6 +203,36 @@ public class PapyrusCustomNodesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createNoteNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription <em>Inner Flag Node
+     * Style Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription
+     * @generated
+     */
+    public Adapter createInnerFlagNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription <em>Outer Flag Node
+     * Style Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription
+     * @generated
+     */
+    public Adapter createOuterFlagNodeStyleDescriptionAdapter() {
         return null;
     }
 

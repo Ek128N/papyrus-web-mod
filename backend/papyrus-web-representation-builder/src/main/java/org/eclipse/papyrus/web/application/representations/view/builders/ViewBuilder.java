@@ -93,7 +93,7 @@ public class ViewBuilder {
 
     /**
      * Creates a semantic drop tool with the given {@code semanticDropToolId}.
-     * 
+     *
      * @param semanticDropToolId
      *            identifier of the semantic tool to create
      * @return the new semantic drop tool.
@@ -110,7 +110,7 @@ public class ViewBuilder {
 
     /**
      * Creates a graphical drop tool with the given {@code graphicalDropToolId}.
-     * 
+     *
      * @param graphicalDropToolId
      *            identifier of the graphical tool to create
      * @return the new graphical drop tool.
@@ -273,7 +273,7 @@ public class ViewBuilder {
      * {@link ViewBuilder#createCreationTool(EReference, EClass)} to create a creation {@link NodeTool} that relies on
      * the default creation mechanism.
      * </p>
-     * 
+     *
      * @param toolName
      *            the name of the tool to create
      * @param serviceName
@@ -294,7 +294,7 @@ public class ViewBuilder {
     /**
      * Creates a creation {@link NodeTool} to create {@code newType} elements inside the {@code compartmentName}
      * compartment of the containing element.
-     * 
+     *
      * @param toolName
      *            the name of the tool to create
      * @param compartmentName
@@ -448,7 +448,7 @@ public class ViewBuilder {
 
     /**
      * Create tool section in the diagram palette.
-     * 
+     *
      * @param name
      *            the name of the tool section to create
      * @return the tool section in the diagram palette
@@ -461,7 +461,7 @@ public class ViewBuilder {
 
     /**
      * Create tool section in the given node description palette.
-     * 
+     *
      * @param name
      *            the name of the tool section to create
      * @return the tool section in the given node description palette

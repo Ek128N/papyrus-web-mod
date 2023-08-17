@@ -56,3 +56,21 @@ type NoteNodeStyle {
   borderSize: Int!
   borderStyle: LineStyle!
 }
+
+extend union INodeStyle = InnerFlagNodeStyle
+
+type InnerFlagNodeStyle {
+	color: String!
+	borderColor: String!
+	borderSize: Int!
+	borderStyle: LineStyle!
+}
+
+extend union INodeStyle = OuterFlagNodeStyle
+
+type OuterFlagNodeStyle {
+	color: String!
+	borderColor: String!
+	borderSize: Int!
+	borderStyle: LineStyle!
+}

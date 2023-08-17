@@ -17,7 +17,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
@@ -58,6 +60,20 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     private EClass noteNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass innerFlagNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass outerFlagNodeStyleDescriptionEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -172,6 +188,26 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     @Override
+    public EClass getInnerFlagNodeStyleDescription() {
+        return this.innerFlagNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getOuterFlagNodeStyleDescription() {
+        return this.outerFlagNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public PapyrusCustomNodesFactory getPapyrusCustomNodesFactory() {
         return (PapyrusCustomNodesFactory) this.getEFactoryInstance();
     }
@@ -202,6 +238,10 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.rectangleWithExternalLabelNodeStyleDescriptionEClass = this.createEClass(RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION);
 
         this.noteNodeStyleDescriptionEClass = this.createEClass(NOTE_NODE_STYLE_DESCRIPTION);
+
+        this.innerFlagNodeStyleDescriptionEClass = this.createEClass(INNER_FLAG_NODE_STYLE_DESCRIPTION);
+
+        this.outerFlagNodeStyleDescriptionEClass = this.createEClass(OUTER_FLAG_NODE_STYLE_DESCRIPTION);
     }
 
     /**
@@ -239,6 +279,8 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.packageNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.rectangleWithExternalLabelNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.noteNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
+        this.innerFlagNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
+        this.outerFlagNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -249,6 +291,10 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
                 !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.noteNodeStyleDescriptionEClass, NoteNodeStyleDescription.class, "NoteNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.innerFlagNodeStyleDescriptionEClass, InnerFlagNodeStyleDescription.class, "InnerFlagNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.outerFlagNodeStyleDescriptionEClass, OuterFlagNodeStyleDescription.class, "OuterFlagNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

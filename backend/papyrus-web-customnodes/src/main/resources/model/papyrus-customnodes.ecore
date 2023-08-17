@@ -7,4 +7,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="RectangleWithExternalLabelNodeStyleDescription"
       eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription"/>
   <eClassifiers xsi:type="ecore:EClass" name="NoteNodeStyleDescription" eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InnerFlagNodeStyleDescription" eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="OuterFlagNodeStyleDescription" eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription"/>
 </ecore:EPackage>

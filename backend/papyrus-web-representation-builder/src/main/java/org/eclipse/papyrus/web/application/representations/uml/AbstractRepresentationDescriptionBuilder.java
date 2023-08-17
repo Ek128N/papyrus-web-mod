@@ -72,7 +72,7 @@ import org.eclipse.uml2.uml.UMLPackage;
 
 /**
  * Abstract implementation of a representation builder.
- * 
+ *
  * @author Arthur Daussy
  */
 public abstract class AbstractRepresentationDescriptionBuilder {
@@ -93,6 +93,24 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * The name of the parent {@link NodeDescription} containing all the shared {@link NodeDescription}s.
      */
     public static final String SHARED_DESCRIPTIONS = "SHARED_DESCRIPTIONS";
+
+    /**
+     * The width of the root element.
+     * <p>
+     * This value is typically used to configure the width of the root element on diagrams that represent their root
+     * (e.g. Activity or Communication diagrams).
+     * </p>
+     */
+    public static final String ROOT_ELEMENT_WIDTH = "700";
+
+    /**
+     * The height of the root element.
+     * <p>
+     * This value is typically used to configure the height of the root element on diagrams that represent their root
+     * (e.g. Activity or Communication diagrams).
+     * </p>
+     */
+    public static final String ROOT_ELEMENT_HEIGHT = "550";
 
     /**
      * Nodes tool section name.
@@ -261,7 +279,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     /**
      * Collects all {@link NodeDescription} matching the given domain (<b>By default the compartment nodes and the list
      * item are excluded).
-     * 
+     *
      * @param description
      *            the diagram description
      * @param domains
@@ -275,7 +293,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Collects all {@link NodeDescription} matching the given domain.
-     * 
+     *
      * @param description
      *            the diagram description
      * @param includeCompartment
@@ -295,7 +313,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * <p>
      * This method is typically used to collect a given domain class and exclude some of its sub-classes.
      * </p>
-     * 
+     *
      * @param description
      *            the diagram description
      * @param domains
@@ -343,7 +361,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * This method is <b>deprecated</b>. Use {@link NoteStyleDescriptionBuilder} to create note-style
      * {@link NodeDescription}.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the {@link NodeDescription}
      */
@@ -433,7 +451,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * of the diagram. The created {@link NodeDescription} can represent any {@link Comment} in the diagram, even if it
      * isn't contained by the diagram itself. The created {@link NodeDescription} is contained in the provided
      * {@code diagramDescription}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the {@link Comment} {@link NodeDescription}
      * @param toolSectionName
@@ -461,7 +479,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * provided {@code owners}. The created {@link NodeDescription} is contained in the given
      * {@code parentNodeDescription}.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param parentNodeDescription
@@ -496,7 +514,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * background of the diagram. The created {@link NodeDescription} can represent any {@link Constraint} in the
      * diagram, even if it isn't contained by the diagram itself. The created {@link NodeDescription} is contained in
      * the provided {@code diagramDescription}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the {@link Constraint} {@link NodeDescription}
      * @param toolSectionName
@@ -539,7 +557,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * representing a {@link Comment}, and that the palette allows the creation of {@link Comment} elements inside
      * {@code node}.
      * </p>
-     * 
+     *
      * @param node
      *            the node to configure as a comment owner
      * @param diagramDescription
@@ -558,7 +576,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * This method ensures that the provided {@code node}'s child descriptions contain the {@link NodeDescription}
      * representing a {@link Constraint}, and that the palette allows the creation of {@link Constraint} elements inside
      * {@code node}.
-     * 
+     *
      * @param node
      *            the node to configure as a constraint owner
      * @param diagramDescription
@@ -589,14 +607,14 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
      * descriptions have been created.
      * </p>
-     * 
+     *
      * @param nodeDescription
      *            the {@link NodeDescription} to reuse
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}s
      * @param owners
      *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
-     * 
+     *
      * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
      */
     public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, EClass... owners) {
@@ -621,7 +639,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
      * descriptions have been created.
      * </p>
-     * 
+     *
      * @param nodeDescription
      *            the {@link NodeDescription} to reuse
      * @param diagramDescription
@@ -630,7 +648,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            name of the tool section to add the tool
      * @param owners
      *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
-     * 
+     *
      * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
      */
     public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, String toolSectionName, EClass... owners) {
@@ -653,7 +671,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
      * descriptions have been created.
      * </p>
-     * 
+     *
      * @param nodeDescription
      *            the {@link NodeDescription} to reuse
      * @param diagramDescription
@@ -662,7 +680,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            name of the tool section to add the tool
      * @param owners
      *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
-     * 
+     *
      * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
      */
     public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, String toolSectionName, List<EClass> owners,
@@ -683,8 +701,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * {@link NodeDescription#getReusedChildNodeDescriptions()} or
      * {@link NodeDescription#getReusedBorderNodeDescriptions()}, depending on whether it is a regular node or a border
      * node.
-     * 
-     * 
+     *
+     *
      * @param nodeDescription
      *            the {@link NodeDescription} to reuse
      * @param owners
@@ -709,7 +727,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     /**
      * Collects all {@link NodeDescriptions} with the given type and matching the given predicate. Then add them to the
      * reused children or reused border children feature.
-     * 
+     *
      * @param parent
      *            the parent node
      * @param type
@@ -778,7 +796,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * This node is fake: it is not intended to be visually represented in the diagram. It is used as a way to gather
      * all the shared elements in a common place.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the Activity {@link DiagramDescription} containing the created {@link NodeDescription}
      * @return the created {@link NodeDescription}
@@ -810,7 +828,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Comparator of {@link Tool} based of alphabetic order of the name of the tool.
-     * 
+     *
      * @author Arthur Daussy
      */
     class ToolComparator implements Comparator<Tool> {
@@ -860,7 +878,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Get the tool section from the palette of a given {@link NodeDescription} with the given name.
-     * 
+     *
      * @param nodeDescription
      *            the node description with the palette which contain the tool section
      * @param toolSectionName
@@ -877,7 +895,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Get the tool section from the palette of a given {@link DiagramDescription} with the given name.
-     * 
+     *
      * @param diagramDescription
      *            the diagram description with the palette which contain the tool section
      * @param toolSectionName
@@ -894,7 +912,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Add given {@link EdgeTool} in Edges tool section of list of owners nodes descriptions.
-     * 
+     *
      * @param owners
      *            list of owners which should use the edge tool
      * @param edgeTool
@@ -913,7 +931,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Add given {@link Nodes} in given tool section of list of owners nodes descriptions.
-     * 
+     *
      * @param owners
      *            list of owners which should use the node tool
      * @param nodeTool
@@ -934,7 +952,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Add given {@link Nodes} in given Diagram tool section.
-     * 
+     *
      * @param nodeTool
      *            the node tool to add in tool section
      * @param toolSectionName
@@ -951,7 +969,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Create tools sections "Nodes" and "Edges" in the palette tool of a given {@link NodeDescription}.
-     * 
+     *
      * @param nodeDescription
      *            the node description with the palette to complete with tool sections
      */
@@ -963,7 +981,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     /**
      * Create tools sections "Nodes" and "Edges" in the palette tool of a given {@link DiagramDescription}.
-     * 
+     *
      * @param nodeDescription
      *            the node description with the palette to complete with tool sections
      */
@@ -1091,7 +1109,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * <b>Note</b>: this method relies on the <i>callback</i> mechanism, meaning tools are updated once all the
      * descriptions have been created.
      * </p>
-     * 
+     *
      * @param nodeDescription
      *            the {@link NodeDescription} to reuse
      * @param diagramDescription

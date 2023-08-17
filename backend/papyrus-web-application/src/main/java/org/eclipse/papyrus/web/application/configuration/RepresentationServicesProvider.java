@@ -23,6 +23,7 @@ import org.eclipse.papyrus.uml.domain.services.properties.PropertiesProfileDefin
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesStereotypeApplicationServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
+import org.eclipse.papyrus.web.application.representations.uml.ADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
@@ -31,6 +32,7 @@ import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.services.aqlservices.DebugService;
+import org.eclipse.papyrus.web.services.aqlservices.activity.ActivityDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.communication.CommunicationDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
@@ -82,7 +84,6 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             // Generic services
             services.add(UMLService.class);
             services.add(DebugService.class);
-
             String repName = representationDescription.getName();
             // Handle both in memory and serialized version
             if (repName != null) {
@@ -100,6 +101,8 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
                     services.add(ProfileDiagramService.class);
                 } else if (repName.startsWith(CODDiagramDescriptionBuilder.COD_REP_NAME)) {
                     services.add(CommunicationDiagramService.class);
+                } else if (repName.startsWith(ADDiagramDescriptionBuilder.AD_REP_NAME)) {
+                    services.add(ActivityDiagramService.class);
                 }
             }
         }

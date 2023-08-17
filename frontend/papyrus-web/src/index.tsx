@@ -43,6 +43,12 @@ import { RectangleWithExternalLabelNodeLayoutHandler } from './nodes/rectangleWi
 import { PackageNode } from './nodes/package/PackageNode';
 import { PackageNodeConverter } from './nodes/package/PackageNodeConverter';
 import { PackageNodeLayoutHandler } from './nodes/package/PackageNodeLayoutHandler';
+import { InnerFlagNodeLayoutHandler } from './nodes/innerFlag/InnerFlagNodeLayoutHandler';
+import { InnerFlagNodeConverter } from './nodes/innerFlag/InnerFlagNodeConverter';
+import { InnerFlagNode } from './nodes/innerFlag/InnerFlagNode';
+import { OuterFlagNodeLayoutHandler } from './nodes/outerFlag/OuterFlagNodeLayoutHandler';
+import { OuterFlagNodeConverter } from './nodes/outerFlag/OuterFlagNodeConverter';
+import { OuterFlagNode } from './nodes/outerFlag/OuterFlagNode';
 import { SliderPreview } from './widgets/SliderPreview';
 import { GQLSlider } from './widgets/SliderFragment.types';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
@@ -224,24 +230,38 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
       type: 'NoteNodeStyle',
       fields: `borderColor borderSize borderStyle color`,
     },
+    {
+      type: 'InnerFlagNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+    {
+      type: 'OuterFlagNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
   ],
   nodeLayoutHandlers: [
     new EllipseNodeLayoutHandler(),
     new PackageNodeLayoutHandler(),
     new RectangleWithExternalLabelNodeLayoutHandler(),
     new NoteNodeLayoutHandler(),
+    new InnerFlagNodeLayoutHandler(),
+    new OuterFlagNodeLayoutHandler(),
   ],
   nodeConverters: [
     new EllipseNodeConverter(),
     new PackageNodeConverter(),
     new RectangleWithExternalLabelNodeConverter(),
     new NoteNodeConverter(),
+    new InnerFlagNodeConverter(),
+    new OuterFlagNodeConverter(),
   ],
   nodeTypeContributions: [
     <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
     <NodeTypeContribution component={PackageNode} type={'packageNode'} />,
     <NodeTypeContribution component={RectangleWithExternalLabelNode} type={'rectangleWithExternalLabelNode'} />,
     <NodeTypeContribution component={NoteNode} type={'noteNode'} />,
+    <NodeTypeContribution component={InnerFlagNode} type={'innerFlagNode'} />,
+    <NodeTypeContribution component={OuterFlagNode} type={'outerFlagNode'} />,
   ],
 };
 

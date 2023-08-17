@@ -191,6 +191,56 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected InnerFlagNodeStyleDescriptionItemProvider innerFlagNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createInnerFlagNodeStyleDescriptionAdapter() {
+        if (this.innerFlagNodeStyleDescriptionItemProvider == null) {
+            this.innerFlagNodeStyleDescriptionItemProvider = new InnerFlagNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.innerFlagNodeStyleDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected OuterFlagNodeStyleDescriptionItemProvider outerFlagNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createOuterFlagNodeStyleDescriptionAdapter() {
+        if (this.outerFlagNodeStyleDescriptionItemProvider == null) {
+            this.outerFlagNodeStyleDescriptionItemProvider = new OuterFlagNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.outerFlagNodeStyleDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -298,6 +348,10 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
             this.rectangleWithExternalLabelNodeStyleDescriptionItemProvider.dispose();
         if (this.noteNodeStyleDescriptionItemProvider != null)
             this.noteNodeStyleDescriptionItemProvider.dispose();
+        if (this.innerFlagNodeStyleDescriptionItemProvider != null)
+            this.innerFlagNodeStyleDescriptionItemProvider.dispose();
+        if (this.outerFlagNodeStyleDescriptionItemProvider != null)
+            this.outerFlagNodeStyleDescriptionItemProvider.dispose();
     }
 
     /**
@@ -357,6 +411,12 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
                         PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription()));
 
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createInnerFlagNodeStyleDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createOuterFlagNodeStyleDescription()));
+
                 return null;
             }
 
@@ -378,6 +438,12 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
 
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                         PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createInnerFlagNodeStyleDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createOuterFlagNodeStyleDescription()));
 
                 return null;
             }

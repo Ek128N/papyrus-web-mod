@@ -80,6 +80,23 @@ public class RepresentationValidatorTests {
     }
 
     @Test
+    public void validateActivityDiagram() {
+        DiagramDescription diagram = new ADDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+
+        Predicate<DiagramElementDescription> isNotActivityRoot = p -> !p.getName().equals("AD_Activity");
+        validator.excludeFromDeleteToolValidation(isNotActivityRoot);
+        List<Status> validations = validator.validate(diagram);
+
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Activity Diagram description \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL))));
+        }
+    }
+
+    @Test
     public void validateClassDiagram() {
         DiagramDescription diagram = new CDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 

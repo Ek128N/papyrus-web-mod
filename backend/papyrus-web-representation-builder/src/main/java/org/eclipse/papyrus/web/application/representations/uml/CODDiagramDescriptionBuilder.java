@@ -113,8 +113,8 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interactionEClass.getName()))//
                 .build();
-        codInteractionDescription.setDefaultWidthExpression("700");
-        codInteractionDescription.setDefaultHeightExpression("550");
+        codInteractionDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
+        codInteractionDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
         diagramDescription.getNodeDescriptions().add(codInteractionDescription);
 
         // create Interaction tool sections

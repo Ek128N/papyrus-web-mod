@@ -17,7 +17,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
@@ -137,6 +139,36 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapyrusCustomNodesPackage.INNER_FLAG_NODE_STYLE_DESCRIPTION: {
+                InnerFlagNodeStyleDescription innerFlagNodeStyleDescription = (InnerFlagNodeStyleDescription) theEObject;
+                T result = this.caseInnerFlagNodeStyleDescription(innerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(innerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(innerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(innerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(innerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusCustomNodesPackage.OUTER_FLAG_NODE_STYLE_DESCRIPTION: {
+                OuterFlagNodeStyleDescription outerFlagNodeStyleDescription = (OuterFlagNodeStyleDescription) theEObject;
+                T result = this.caseOuterFlagNodeStyleDescription(outerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(outerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(outerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(outerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(outerFlagNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -200,6 +232,36 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNoteNodeStyleDescription(NoteNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Inner Flag Node Style Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Inner Flag Node Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseInnerFlagNodeStyleDescription(InnerFlagNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Outer Flag Node Style Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Outer Flag Node Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseOuterFlagNodeStyleDescription(OuterFlagNodeStyleDescription object) {
         return null;
     }
 

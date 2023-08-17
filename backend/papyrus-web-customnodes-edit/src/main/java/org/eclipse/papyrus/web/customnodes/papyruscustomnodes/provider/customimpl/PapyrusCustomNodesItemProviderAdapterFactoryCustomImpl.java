@@ -58,4 +58,20 @@ public class PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl extends Papy
 
         return this.rectangleWithExternalLabelNodeStyleDescriptionItemProvider;
     }
+
+    @Override
+    public Adapter createInnerFlagNodeStyleDescriptionAdapter() {
+        if(this.innerFlagNodeStyleDescriptionItemProvider == null) {
+            this.innerFlagNodeStyleDescriptionItemProvider = new InnerFlagNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+        return this.innerFlagNodeStyleDescriptionItemProvider;
+    }
+
+    @Override
+    public Adapter createOuterFlagNodeStyleDescriptionAdapter() {
+        if(this.outerFlagNodeStyleDescriptionItemProvider == null) {
+            this.outerFlagNodeStyleDescriptionItemProvider = new OuterFlagNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+        return this.outerFlagNodeStyleDescriptionItemProvider;
+    }
 }

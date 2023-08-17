@@ -67,6 +67,24 @@ public interface PapyrusCustomNodesFactory extends EFactory {
     NoteNodeStyleDescription createNoteNodeStyleDescription();
 
     /**
+     * Returns a new object of class '<em>Inner Flag Node Style Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Inner Flag Node Style Description</em>'.
+     * @generated
+     */
+    InnerFlagNodeStyleDescription createInnerFlagNodeStyleDescription();
+
+    /**
+     * Returns a new object of class '<em>Outer Flag Node Style Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Outer Flag Node Style Description</em>'.
+     * @generated
+     */
+    OuterFlagNodeStyleDescription createOuterFlagNodeStyleDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
