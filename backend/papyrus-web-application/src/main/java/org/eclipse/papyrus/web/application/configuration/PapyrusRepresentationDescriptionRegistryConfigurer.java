@@ -29,6 +29,7 @@ import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescript
 import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CPDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.DDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
@@ -89,6 +90,7 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         this.register(resourceSet, staticEPackages, new CODDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CODDiagramDescriptionBuilder.COD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new ADDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, ADDiagramDescriptionBuilder.AD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new CPDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CPDDiagramDescriptionBuilder.CPD_REP_NAME)));
+        this.register(resourceSet, staticEPackages, new DDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, DDDiagramDescriptionBuilder.DD_REP_NAME)));
     }
 
     @Override

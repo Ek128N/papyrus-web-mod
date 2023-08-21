@@ -39,44 +39,10 @@ public class RepresentationValidatorTests {
 
     private static final String EOL = "\n";
 
-    @Test
-    public void validateCompositeStructure() {
-        DiagramDescription diagram = new CSDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
-
-        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
-        validator.disableReusedNodeDescriptionsValidation();
-        validator.disableSharedDescriptionsValidation();
-
-        List<Status> validations = validator.validate(diagram);
-
-        List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
-
-        if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Composite Structure Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
-        }
-    }
-
     private DiagramDescriptionDescriptionValidator buildeDefaultValidator() {
         return new DiagramDescriptionDescriptionValidator()//
                 .excludeFromDeleteToolValidation(p -> !IdBuilder.isFakeChildNode(p) && this.isNotCompartment(p))//
                 .excludeFromDirectEditValidation(p -> !IdBuilder.isFakeChildNode(p) && this.isNotCompartment(p));
-    }
-
-    @Test
-    public void validatePackageDiagram() {
-        DiagramDescription diagram = new PADDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
-
-        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
-        validator.disableReusedNodeDescriptionsValidation();
-        validator.disableSharedDescriptionsValidation();
-
-        List<Status> validations = validator.validate(diagram);
-
-        List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
-
-        if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Package Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
-        }
     }
 
     @Test
@@ -147,6 +113,54 @@ public class RepresentationValidatorTests {
     }
 
     @Test
+    public void validateCompositeStructure() {
+        DiagramDescription diagram = new CSDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
+
+        List<Status> validations = validator.validate(diagram);
+
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Composite Structure Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
+        }
+    }
+
+    @Test
+    public void validateDeploymentDiagram() {
+        DiagramDescription diagram = new DDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.excludeFromDirectEditValidation(p -> !this.isDdDirectEditDisabled(p));
+        List<Status> validations = validator.validate(diagram);
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Deployment Diagram description \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
+        }
+    }
+
+    @Test
+    public void validatePackageDiagram() {
+        DiagramDescription diagram = new PADDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
+
+        List<Status> validations = validator.validate(diagram);
+
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Package Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
+        }
+    }
+
+    @Test
     public void validateProfileDiagram() {
         Predicate<DiagramElementDescription> isNotMetaclassAndNotCompartment = p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS)
                 && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS) && !p.getName().contains(IdBuilder.COMPARTMENT_NODE_SUFFIX);
@@ -207,6 +221,10 @@ public class RepresentationValidatorTests {
 
     private boolean isCpdDirectEditDisabled(DiagramElementDescription p) {
         return "CPD_Generalization_DomainEdge".equals(p.getName());
+    }
+
+    private boolean isDdDirectEditDisabled(DiagramElementDescription p) {
+        return "DD_Generalization_DomainEdge".equals(p.getName());
     }
 
     private boolean isPrdDirectEditDisabled(DiagramElementDescription p) {

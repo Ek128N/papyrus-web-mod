@@ -28,6 +28,7 @@ import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescript
 import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CPDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.uml.DDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
@@ -38,6 +39,7 @@ import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.communication.CommunicationDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.component.ComponentDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.deployment.DeploymentDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesCrudServicesWrapper;
@@ -107,6 +109,8 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
                     services.add(ActivityDiagramService.class);
                 } else if (repName.startsWith(CPDDiagramDescriptionBuilder.CPD_REP_NAME)) {
                     services.add(ComponentDiagramService.class);
+                } else if (repName.startsWith(DDDiagramDescriptionBuilder.DD_REP_NAME)) {
+                    services.add(DeploymentDiagramService.class);
                 }
             }
         }
