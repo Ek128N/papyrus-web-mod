@@ -22,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.ECollections;
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
+import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.StyleProvider;
@@ -59,6 +61,7 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.uml2.uml.Comment;
@@ -272,6 +275,29 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         return EMFUtils.allContainedObjectOfType(description, NodeDescription.class).filter(node -> isValidNodeDescription(node, includeCompartment, includeListItem, domains)).collect(toList());
     }
 
+    /**
+     * Collects all the {@link NodeDescription} matching the given {@code domains}, excluding the ones matching the
+     * provided {@code forbiddenDomains}.
+     * <p>
+     * This method is typically used to collect a given domain class and exclude some of its sub-classes.
+     * </p>
+     * 
+     * @param description
+     *            the diagram description
+     * @param domains
+     *            the list of matching domain types
+     * @param forbiddenDomains
+     *            the list of domain types to exclude
+     * @return a list of matching {@link NodeDescription}
+     */
+    protected List<NodeDescription> collectNodesWithDomainAndFilter(DiagramDescription description, List<EClass> domains, List<EClass> forbiddenDomains) {
+        List<NodeDescription> forbiddenDescription = collectNodesWithDomain(description, forbiddenDomains.toArray(EClass[]::new));
+        return this.collectNodesWithDomain(description, domains.toArray(EClass[]::new)).stream() //
+                .filter(nd -> !SHARED_DESCRIPTIONS.equals(nd.getName())) //
+                .filter(nd -> !forbiddenDescription.contains(nd)) //
+                .toList();
+    }
+
     private boolean isCompartmentChildren(NodeDescription n) {
         EObject parent = n.eContainer();
         if (parent instanceof NodeDescription) {
@@ -400,6 +426,82 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         registerCallback(node, () -> {
             node.getReusedChildNodeDescriptions().addAll(collectNodesWithDomain(diagramDescription, pack.getConstraint()));
             node.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getNamespace_OwnedRule(), pack.getConstraint()));
+        });
+    }
+
+    /**
+     * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
+     * {@code owners}.
+     * <p>
+     * This method provides a one-line way to reuse mappings and attach creation tools in a diagram. The provided
+     * {@code nodeDescription} is set as a reused element for each {@link NodeDescription} representing the provided
+     * {@code owners}, and the provided {@code nodeTool} is attached to the owning {@link NodeDescription}s. Note that
+     * the provided {@code nodeDescription} is added to either {@link NodeDescription#getReusedChildNodeDescriptions()}
+     * or {@link NodeDescription#getReusedBorderNodeDescriptions()}, depending on whether it is a regular node or a
+     * border node.
+     * <p>
+     * See {@link #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)} to finely tune the which
+     * {@link NodeDescription}s can own the provided {@code nodeDescription}.
+     * <p>
+     * <b>Note</b>: this method relies on the <i>callback</i> mechanism, meaning the the
+     * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
+     * descriptions have been created.
+     * </p>
+     * 
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription}s
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     * 
+     * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
+     */
+    public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, EClass... owners) {
+        this.reuseNodeAndCreateTool(nodeDescription, diagramDescription, nodeTool, List.of(owners), List.of());
+    }
+
+    /**
+     * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
+     * {@code owners}.
+     * <p>
+     * This method provides a one-line way to reuse mappings and attach creation tools in a diagram. The provided
+     * {@code nodeDescription} is set as a reused element for each {@link NodeDescription} representing the provided
+     * {@code owners}, and the provided {@code nodeTool} is attached to the owning {@link NodeDescription}s. Note that
+     * the provided {@code nodeDescription} is added to either {@link NodeDescription#getReusedChildNodeDescriptions()}
+     * or {@link NodeDescription#getReusedBorderNodeDescriptions()}, depending on whether it is a regular node or a
+     * border node.
+     * </p>
+     * <p>
+     * <b>Note</b>: this method relies on the <i>callback</i> mechanism, meaning the the
+     * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
+     * descriptions have been created.
+     * </p>
+     * 
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription}s
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     * 
+     * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
+     */
+    public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, List<EClass> owners, List<EClass> forbiddenOwners) {
+        registerCallback(nodeDescription, () -> {
+            Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners);
+            CreationToolsUtil.addNodeCreationTool(ownerNodeDescriptions, nodeTool);
+            for (NodeDescription owner : ownerNodeDescriptions.get()) {
+                // If the owner is the direct parent of the nodeDescription there is no need to add it to its reused
+                // descriptions. It is already in the children descriptions of the owner.
+                if (owner != nodeDescription.eContainer()) {
+                    if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions()) {
+                        owner.getReusedBorderNodeDescriptions().add(nodeDescription);
+                    } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
+                        owner.getReusedChildNodeDescriptions().add(nodeDescription);
+                    }
+                }
+            }
         });
     }
 
