@@ -21,7 +21,7 @@ describe('Member end owner test', () => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document').click();
+        cy.getByTestId('upload-document-icon').click();
         cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
         cy.getByTestId('file')
           .selectFile(
@@ -32,7 +32,7 @@ describe('Member end owner test', () => {
             { force: true }
           )
           .then(() => {
-            cy.get(`button[data-testid="upload-document"][type="submit"]`).click(); // TODO testid not unique
+            cy.getByTestId('upload-document-submit').click();
             cy.getByTestId('model4test.uml-more').should('be.visible').click();
             cy.getByTestId('expand-all').should('be.visible').click();
           });

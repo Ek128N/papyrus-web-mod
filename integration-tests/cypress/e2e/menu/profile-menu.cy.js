@@ -40,13 +40,13 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('profile').should('be.visible').contains('Standard'); // need to wait that select is populated
     cy.getByTestId('profile').click();
     cy.get('div#menu-.MuiPopover-root').should('be.visible').find('ul > li').eq(2).click(); // 2 => Java
-    cy.getByTestId('apply-profile').eq(1).click(); // TODO: testid is not unique
+    cy.getByTestId('apply-profile-submit').click();
     cy.getByTestId('Model-more').click();
     cy.getByTestId('expand-all').should('be.visible').click();
     cy.getByTestId('ProfileApplication').should('be.visible').click();
     // wait until details panel is populated (previous click finished)
     cy.getByTestId('view-Details').findByTestId('Is strict').should('be.visible');
-    // before to switch to Advanced tab
+    // before switching to Advanced tab
     cy.activateDetailsTab('Advanced').should('be.visible').as('details');
     cy.get('@details').contains('Core Properties').should('be.visible');
     cy.get('@details').findByTestId('Applied Profile').should('be.visible').contains('Profile PapyrusJava');
@@ -54,16 +54,22 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('Model-more').should('be.visible').click();
     cy.getByTestId('apply-stereotype').should('be.visible').click();
     // Verify stereotype dialog
-    cy.get('.MuiDialog-root').contains('Apply a new stereotype').should('be.visible');
-    cy.get('.MuiDialog-root') // TODO: missing testid for dialogs
+    cy.getByTestId('apply-stereotype-dialog-title').contains('Apply a new stereotype').should('be.visible');
+    cy.getByTestId('apply-stereotype-dialog-content')
       .findByTestId('stereotype-input')
       .should('have.value', 'PapyrusJava.profile.uml#_PmXVQByJEduN1bTiWJ0lyw');
     // Apply the presented stereotype
-    cy.get('.MuiDialog-root').findByTestId('apply-stereotype').should('have.prop', 'type', 'button').click(); // TODO: apply-stereotype dup testid
+    cy.getByTestId('apply-stereotype-dialog')
+      .findByTestId('apply-stereotype-submit')
+      .should('have.prop', 'type', 'button')
+      .click();
     // Verify stereotype applied
     cy.getByTestId('Model').click();
     cy.activateDetailsTab('Advanced').should('be.visible').as('details');
-    cy.get('@details').find('table.MuiTable-root').contains('PapyrusJava::ExternLibrary').should('be.visible');
+    cy.getByTestId('table-Applied stereotypes')
+      .findByTestId('representation-PapyrusJava::ExternLibrary')
+      .contains('PapyrusJava::ExternLibrary')
+      .should('be.visible');
     cy.getByTestId('ExternLibrary').should('be.visible');
   });
 });

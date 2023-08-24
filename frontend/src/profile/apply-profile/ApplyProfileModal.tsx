@@ -24,6 +24,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import { useMachine } from '@xstate/react';
+import { useEffect } from 'react';
 import {
   ApplyProfileModalProps,
   GQLApplyProfileMutationData,
@@ -36,15 +37,14 @@ import {
   ApplyProfileEvent,
   ApplyProfileModalContext,
   ApplyProfileModalEvent,
-  applyProfileModalMachine,
   ChangeProfileEvent,
   FetchedProfilesEvent,
   HandleResponseEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
+  applyProfileModalMachine,
 } from './ApplyProfileModalMachine';
-import { useEffect } from 'react';
 
 const applyProfileMutation = gql`
   mutation applyProfile($input: ApplyProfileInput!) {
@@ -171,9 +171,17 @@ export const ApplyProfileModal = ({ editingContextId, item, onAppliedProfile, on
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Apply a profile</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={true}
+        onClose={onClose}
+        aria-labelledby="dialog-title"
+        maxWidth="xs"
+        fullWidth
+        data-testid="apply-profile-dialog">
+        <DialogTitle id="dialog-title" data-testid="apply-profile-dialog-title">
+          Apply a profile
+        </DialogTitle>
+        <DialogContent data-testid="apply-profile-dialog-content">
           <div className={classes.form}>
             <InputLabel id="applyProfileModalProfileLabel">Object type</InputLabel>
             <Select
@@ -195,7 +203,7 @@ export const ApplyProfileModal = ({ editingContextId, item, onAppliedProfile, on
           <Button
             variant="contained"
             disabled={applyProfileModal !== 'valid'}
-            data-testid="apply-profile"
+            data-testid="apply-profile-submit"
             color="primary"
             onClick={onApplyProfile}>
             Apply

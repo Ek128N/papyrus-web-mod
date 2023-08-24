@@ -20,7 +20,7 @@ describe('Basic widgets test', () => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document').click();
+        cy.getByTestId('upload-document-icon').click();
         cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
         cy.getByTestId('file')
           .selectFile(
@@ -31,7 +31,7 @@ describe('Basic widgets test', () => {
             { force: true }
           )
           .then(() => {
-            cy.get(`button[data-testid="upload-document"][type="submit"]`).click(); // TODO testid not unique
+            cy.getByTestId('upload-document-submit').click();
             cy.getByTestId('model4test.uml-more').should('be.visible').click();
             cy.getByTestId('expand-all').should('be.visible').click();
           });
@@ -194,13 +194,8 @@ describe('Basic widgets test', () => {
     cy.getByTestId('Association').click();
     cy.activateDetailsTab('UML')
       // Verify that there are 3 groups in UML page (1 for properties and 2 memberEnds)
-      .findByTestId('form') // TODO workaround to retrieve member end SC #2183
-      .children()
-      .eq(1)
-      .children()
-      .should(($groups) => {
-        expect($groups).to.have.length(3);
-      })
+      .findByTestId('group-')
+      .should('have.length', 3)
       // Retrieve the first MemberEnd
       .eq(1)
       .as('memberEnd');
@@ -213,7 +208,7 @@ describe('Basic widgets test', () => {
     // Verify that there is a Multiplicity section inside MemberEnd group
     cy.get('@memberEnd').findByTestId('Multiplicity').should('be.visible');
     // Verify that there is a Owner section inside MemberEnd group
-    cy.get('@memberEnd').findByTestId('member-end-owner-widget').should('be.visible');
+    cy.get('@memberEnd').findByTestId('primitive-radio-widget').should('be.visible');
   });
 
   /**
@@ -222,13 +217,7 @@ describe('Basic widgets test', () => {
   it('Test Multiplicity widget', () => {
     cy.getByTestId('Association').click();
     // Retrieve the first MemberEnd
-    cy.activateDetailsTab('UML')
-      .findByTestId('form') // TODO workaround to retrieve member end SC #2183
-      .children()
-      .eq(1)
-      .children()
-      .eq(1)
-      .as('memberEnd');
+    cy.activateDetailsTab('UML').findByTestId('flexbox-Member End').eq(0).as('memberEnd');
     cy.get('@memberEnd').findByTestId('Multiplicity').should('be.visible').find('input').as('multiplicityInput');
     // Change multiplicity value with error
     cy.get('@multiplicityInput').should('have.value', '1').clear().type('WRONG MULTIPLICITY{enter}');

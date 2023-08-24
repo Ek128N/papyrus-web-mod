@@ -37,13 +37,13 @@ import {
 import {
   ApplyStereotypeModalContext,
   ApplyStereotypeModalEvent,
-  applyStereotypeModalMachine,
   ChangeStereotypeEvent,
   FetchedStereotypesEvent,
   HandleResponseEvent,
   HideToastEvent,
   SchemaValue,
   ShowToastEvent,
+  applyStereotypeModalMachine,
 } from './ApplyStereotypeModalMachine';
 
 const applyStereotypeMutation = gql`
@@ -181,9 +181,17 @@ export const ApplyStereotypeModal = ({
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} aria-labelledby="dialog-title" maxWidth="xs" fullWidth>
-        <DialogTitle id="dialog-title">Apply a new stereotype</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={true}
+        onClose={onClose}
+        aria-labelledby="dialog-title"
+        maxWidth="xs"
+        fullWidth
+        data-testid="apply-stereotype-dialog">
+        <DialogTitle id="dialog-title" data-testid="apply-stereotype-dialog-title">
+          Apply a new stereotype
+        </DialogTitle>
+        <DialogContent data-testid="apply-stereotype-dialog-content">
           <div className={classes.form}>
             <InputLabel id="applyStereotypeModalStereotypeLabel">Stereotype</InputLabel>
             <Select
@@ -206,7 +214,7 @@ export const ApplyStereotypeModal = ({
           <Button
             variant="contained"
             disabled={applyStereotypeModal !== 'valid'}
-            data-testid="apply-stereotype"
+            data-testid="apply-stereotype-submit"
             color="primary"
             onClick={onApplyStereotype}>
             Apply

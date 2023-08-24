@@ -18,7 +18,7 @@
  * @param {string} tabName the label of the tab
  */
 Cypress.Commands.add('activateDetailsTab', (tabName) => {
-  cy.get('.MuiTabs-flexContainer, [role="tablist"] > button').contains(tabName).click(); // TODO: page has no testid
+  cy.getByTestId(`page-tab-${tabName}`).click();
   return cy.get('[data-testid="view-Details"]');
 });
 
