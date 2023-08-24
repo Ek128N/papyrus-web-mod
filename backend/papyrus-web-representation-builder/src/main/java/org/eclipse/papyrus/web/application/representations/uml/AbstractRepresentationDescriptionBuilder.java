@@ -59,6 +59,7 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Constraint;
@@ -75,6 +76,16 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * Prefix used to identify children of packages and model.
      */
     public static final String PACKAGE_CHILD = "inPackage";
+
+    /**
+     * The String used to suffix the name of shared {@link NodeDescription}s.
+     */
+    public static final String SHARED_SUFFIX = "SHARED"; //$NON-NLS-1$
+
+    /**
+     * The name of the parent {@link NodeDescription} containing all the shared {@link NodeDescription}s.
+     */
+    public static final String SHARED_DESCRIPTIONS = "SHARED_DESCRIPTIONS"; //$NON-NLS-1$
 
     private static final Predicate<NodeDescription> PACKAGE_CHILDREN_FILTER = n -> n.getName().endsWith(PACKAGE_CHILD);
 
@@ -455,6 +466,28 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         registerNodeAsCommentOwner(padPackage, diagramDescription);
         // Do not use registerNodeAsConstraintOwner here, this would have an impact on CDDiagramDescriptionBuilder,
         // CSDDiagramDescriptionBuilder, PADDiagramDescriptionBuilder, and SMDDigramDescriptionBuilder.
+    }
+
+    /**
+     * Creates the {@link NodeDescription} containing all the <i>shared</i> {@link NodeDescription} of the diagram.
+     * <p>
+     * This node is fake: it is not intended to be visually represented in the diagram. It is used as a way to gather
+     * all the shared elements in a common place.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @return the created {@link NodeDescription}
+     */
+    protected NodeDescription createSharedDescription(DiagramDescription diagramDescription) {
+        NodeDescription sharedNodeDescription = newNodeBuilder(UMLPackage.eINSTANCE.getElement(), getViewBuilder().createRectangularNodeStyle(false, false)) //
+                .name(SHARED_DESCRIPTIONS) //
+                .semanticCandidateExpression("aql:Sequence{}") //$NON-NLS-1$
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
+                .build();
+        diagramDescription.getNodeDescriptions().add(sharedNodeDescription);
+        return sharedNodeDescription;
     }
 
     private NodeDescription transformIntoPackageChildNode(NodeDescription input, String semanticCandidateExpression, DiagramDescription diagramDescription) {
