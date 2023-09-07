@@ -2,6 +2,9 @@ ifndef::imagesdir[:imagesdir: imgs]
 
 = User Documentation
 
+Papyrus web v{papyrus-web-version} +
+Last commit id: https://github.com/PapyrusSirius/papyrus-web/commit/{git-commit-id-full}[`{git-commit-id-abbrev}`]
+
 == Home page
 
 The home page is the starting point of a modeling project. It is where user can initiate a new project or manage an existing one.
