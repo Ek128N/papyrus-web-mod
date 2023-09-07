@@ -62,6 +62,9 @@ public class ClassUmlPage {
         addIsAbstract(group);
         addIsActive(group);
         addVisibility(group);
+        addOwnedAttribute(group);
+        addOwnedOperation(group);
+        addOwnedReception(group);
 
     }
 
@@ -95,6 +98,24 @@ public class ClassUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedAttribute(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
+                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedOperation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
+                "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedReception(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedReception", "aql:'Owned reception'", "aql:self.getFeatureDescription('ownedReception')",
+                "aql:self.eClass().getEStructuralFeature('ownedReception').changeable", "aql:'ownedReception'", "");
         group.getWidgets().add(widget);
     }
 

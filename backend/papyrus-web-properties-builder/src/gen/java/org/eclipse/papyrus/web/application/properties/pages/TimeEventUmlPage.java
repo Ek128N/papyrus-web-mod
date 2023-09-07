@@ -59,6 +59,7 @@ public class TimeEventUmlPage {
         addName(group);
         addIsRelative(group);
         addVisibility(group);
+        addWhen(group);
 
     }
 
@@ -79,6 +80,12 @@ public class TimeEventUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addWhen(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("when", "aql:'When'", "aql:self.getFeatureDescription('when')",
+                "aql:self.eClass().getEStructuralFeature('when').changeable", "aql:'when'", "");
         group.getWidgets().add(widget);
     }
 

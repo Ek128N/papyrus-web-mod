@@ -58,6 +58,7 @@ public class CallEventUmlPage {
 
         addName(group);
         addVisibility(group);
+        addOperation(group);
 
     }
 
@@ -72,6 +73,12 @@ public class CallEventUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOperation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("operation", "aql:'Operation'", "aql:self.getFeatureDescription('operation')",
+                "aql:self.eClass().getEStructuralFeature('operation').changeable", "aql:'operation'", "");
         group.getWidgets().add(widget);
     }
 

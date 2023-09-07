@@ -60,6 +60,7 @@ public class ActivityPartitionUmlPage {
         addIsDimension(group);
         addIsExternal(group);
         addVisibility(group);
+        addRepresents(group);
 
     }
 
@@ -86,6 +87,12 @@ public class ActivityPartitionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRepresents(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("represents", "aql:'Represents'", "aql:self.getFeatureDescription('represents')",
+                "aql:self.eClass().getEStructuralFeature('represents').changeable", "aql:'represents'", "");
         group.getWidgets().add(widget);
     }
 

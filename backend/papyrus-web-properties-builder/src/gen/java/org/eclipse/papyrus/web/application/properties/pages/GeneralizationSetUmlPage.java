@@ -60,6 +60,7 @@ public class GeneralizationSetUmlPage {
         addIsCovering(group);
         addIsDisjoint(group);
         addVisibility(group);
+        addPowerType(group);
 
     }
 
@@ -86,6 +87,12 @@ public class GeneralizationSetUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPowerType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("powerType", "aql:'Powertype'", "aql:self.getFeatureDescription('powertype')",
+                "aql:self.eClass().getEStructuralFeature('powertype').changeable", "aql:'powertype'", "");
         group.getWidgets().add(widget);
     }
 

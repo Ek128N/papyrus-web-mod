@@ -63,7 +63,11 @@ public class OutputPinUmlPage {
         addIsUnique(group);
         addOrdering(group);
         addVisibility(group);
+        addSelection(group);
+        addType(group);
         addMultiplicity(group);
+        addUpperBound(group);
+        addInState(group);
 
     }
 
@@ -113,10 +117,34 @@ public class OutputPinUmlPage {
         group.getWidgets().add(widget);
     }
 
+    protected void addSelection(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("selection", "aql:'Selection'", "aql:self.getFeatureDescription('selection')",
+                "aql:self.eClass().getEStructuralFeature('selection').changeable", "aql:'selection'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
                 "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
                 "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUpperBound(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("upperBound", "aql:'Upper bound'", "aql:self.getFeatureDescription('upperBound')",
+                "aql:self.eClass().getEStructuralFeature('upperBound').changeable", "aql:'upperBound'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addInState(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("inState", "aql:'In state'", "aql:self.getFeatureDescription('inState')",
+                "aql:self.eClass().getEStructuralFeature('inState').changeable", "aql:'inState'", "");
         group.getWidgets().add(widget);
     }
 

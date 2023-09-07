@@ -59,6 +59,7 @@ public class RedefinableTemplateSignatureUmlPage {
 
         addName(group);
         addVisibility(group);
+        addOwnedParameter(group);
 
     }
 
@@ -73,6 +74,12 @@ public class RedefinableTemplateSignatureUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedParameter(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
+                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
         group.getWidgets().add(widget);
     }
 

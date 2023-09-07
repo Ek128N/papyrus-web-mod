@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ExceptionHandlerUmlPage {
 
@@ -55,6 +56,28 @@ public class ExceptionHandlerUmlPage {
         GroupDescription group = viewElementFactory.createGroupDescription("exceptionHandler_uml_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addExceptionInput(group);
+        addHandlerBody(group);
+        addExceptionType(group);
+
+    }
+
+    protected void addExceptionInput(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("exceptionInput", "aql:'Exception Input'", "aql:self.getFeatureDescription('exceptionInput')",
+                "aql:self.eClass().getEStructuralFeature('exceptionInput').changeable", "aql:'exceptionInput'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addHandlerBody(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("handlerBody", "aql:'Handler body'", "aql:self.getFeatureDescription('handlerBody')",
+                "aql:self.eClass().getEStructuralFeature('handlerBody').changeable", "aql:'handlerBody'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addExceptionType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("exceptionType", "aql:'Exception type'", "aql:self.getFeatureDescription('exceptionType')",
+                "aql:self.eClass().getEStructuralFeature('exceptionType').changeable", "aql:'exceptionType'", "");
+        group.getWidgets().add(widget);
     }
 
 }

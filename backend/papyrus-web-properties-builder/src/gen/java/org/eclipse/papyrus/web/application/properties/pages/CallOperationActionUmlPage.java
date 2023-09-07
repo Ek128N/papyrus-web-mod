@@ -60,6 +60,14 @@ public class CallOperationActionUmlPage {
         addName(group);
         addIsSynchronous(group);
         addVisibility(group);
+        addOnPort(group);
+        addOperation(group);
+        addTarget(group);
+        addArgument(group);
+        addResult(group);
+        addLocalPostcondition(group);
+        addLocalPrecondition(group);
+        addHandler(group);
 
     }
 
@@ -80,6 +88,54 @@ public class CallOperationActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOnPort(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("onPort", "aql:'On port'", "aql:self.getFeatureDescription('onPort')",
+                "aql:self.eClass().getEStructuralFeature('onPort').changeable", "aql:'onPort'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOperation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("operation", "aql:'Operation'", "aql:self.getFeatureDescription('operation')",
+                "aql:self.eClass().getEStructuralFeature('operation').changeable", "aql:'operation'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addTarget(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("target", "aql:'Target'", "aql:self.getFeatureDescription('target')",
+                "aql:self.eClass().getEStructuralFeature('target').changeable", "aql:'target'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addArgument(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("argument", "aql:'Argument'", "aql:self.getFeatureDescription('argument')",
+                "aql:self.eClass().getEStructuralFeature('argument').changeable", "aql:'argument'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addResult(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("result", "aql:'Result'", "aql:self.getFeatureDescription('result')",
+                "aql:self.eClass().getEStructuralFeature('result').changeable", "aql:'result'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
+                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
+                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addHandler(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
+                "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
         group.getWidgets().add(widget);
     }
 

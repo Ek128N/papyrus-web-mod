@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ElementCommentsPage {
 
@@ -55,6 +56,21 @@ public class ElementCommentsPage {
         GroupDescription group = viewElementFactory.createGroupDescription("element_comments_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addAppliedComment(group);
+        addOwnedComment(group);
+
+    }
+
+    protected void addAppliedComment(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("appliedComment", "aql:'Applied comments'", "aql:'The list of comments applied to this element'",
+                "aql:self.eClass().getEStructuralFeature('ownedComment').changeable", "aql:'ownedComment'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedComment(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedComment", "aql:'Owned comments'", "aql:self.getFeatureDescription('ownedComment')",
+                "aql:self.eClass().getEStructuralFeature('ownedComment').changeable", "aql:'ownedComment'", "");
+        group.getWidgets().add(widget);
     }
 
 }

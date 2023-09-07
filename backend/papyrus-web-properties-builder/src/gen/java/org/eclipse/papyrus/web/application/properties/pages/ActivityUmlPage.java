@@ -63,6 +63,11 @@ public class ActivityUmlPage {
         addIsReentrant(group);
         addIsSingleExecution(group);
         addVisibility(group);
+        addSpecification(group);
+        addPrecondition(group);
+        addPostcondition(group);
+        addOwnedParameter(group);
+        addVariable(group);
 
     }
 
@@ -107,6 +112,36 @@ public class ActivityUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSpecification(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
+                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("precondition", "aql:'Precondition'", "aql:self.getFeatureDescription('precondition')",
+                "aql:self.eClass().getEStructuralFeature('precondition').changeable", "aql:'precondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("postcondition", "aql:'Postcondition'", "aql:self.getFeatureDescription('postcondition')",
+                "aql:self.eClass().getEStructuralFeature('postcondition').changeable", "aql:'postcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedParameter(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
+                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addVariable(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("variable", "aql:'Variable'", "aql:self.getFeatureDescription('variable')",
+                "aql:self.eClass().getEStructuralFeature('variable').changeable", "aql:'variable'", "");
         group.getWidgets().add(widget);
     }
 

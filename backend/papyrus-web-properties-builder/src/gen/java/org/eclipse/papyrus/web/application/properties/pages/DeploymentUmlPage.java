@@ -58,6 +58,7 @@ public class DeploymentUmlPage {
 
         addName(group);
         addVisibility(group);
+        addConfiguration(group);
 
     }
 
@@ -72,6 +73,12 @@ public class DeploymentUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addConfiguration(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("configuration", "aql:'Configuration'", "aql:self.getFeatureDescription('configuration')",
+                "aql:self.eClass().getEStructuralFeature('configuration').changeable", "aql:'configuration'", "");
         group.getWidgets().add(widget);
     }
 

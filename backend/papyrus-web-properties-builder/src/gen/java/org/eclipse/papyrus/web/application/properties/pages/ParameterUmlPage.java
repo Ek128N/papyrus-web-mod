@@ -64,7 +64,9 @@ public class ParameterUmlPage {
         addDirection(group);
         addEffect(group);
         addVisibility(group);
+        addType(group);
         addMultiplicity(group);
+        addDefaultValue(group);
 
     }
 
@@ -122,10 +124,22 @@ public class ParameterUmlPage {
         group.getWidgets().add(widget);
     }
 
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
                 "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
                 "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addDefaultValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("defaultValue", "aql:'Default value'", "aql:self.getFeatureDescription('defaultValue')",
+                "aql:self.eClass().getEStructuralFeature('defaultValue').changeable", "aql:'defaultValue'", "");
         group.getWidgets().add(widget);
     }
 

@@ -61,6 +61,10 @@ public class ReceptionUmlPage {
         addIsStatic(group);
         addConcurrency(group);
         addVisibility(group);
+        addSignal(group);
+        addMethod(group);
+        addOwnedParameter(group);
+        addRaisedException(group);
 
     }
 
@@ -95,6 +99,30 @@ public class ReceptionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSignal(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("signal", "aql:'Signal'", "aql:self.getFeatureDescription('signal')",
+                "aql:self.eClass().getEStructuralFeature('signal').changeable", "aql:'signal'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addMethod(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("method", "aql:'Method'", "aql:self.getFeatureDescription('method')",
+                "aql:self.eClass().getEStructuralFeature('method').changeable", "aql:'method'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedParameter(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
+                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRaisedException(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("raisedException", "aql:'Raised Exception'", "aql:self.getFeatureDescription('raisedException')",
+                "aql:self.eClass().getEStructuralFeature('raisedException').changeable", "aql:'raisedException'", "");
         group.getWidgets().add(widget);
     }
 

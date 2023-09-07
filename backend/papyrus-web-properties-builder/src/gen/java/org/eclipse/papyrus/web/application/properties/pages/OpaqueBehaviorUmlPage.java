@@ -63,6 +63,8 @@ public class OpaqueBehaviorUmlPage {
         addIsReentrant(group);
         addVisibility(group);
         addLanguage(group);
+        addSpecification(group);
+        addUseCase(group);
 
     }
 
@@ -101,6 +103,18 @@ public class OpaqueBehaviorUmlPage {
     protected void addLanguage(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createLanguageExpresionDescription("language", "aql:'Language'", "aql:self.getFeatureDescription('language')",
                 "aql:self.eClass().getEStructuralFeature('language').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSpecification(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
+                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUseCase(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
+                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
         group.getWidgets().add(widget);
     }
 

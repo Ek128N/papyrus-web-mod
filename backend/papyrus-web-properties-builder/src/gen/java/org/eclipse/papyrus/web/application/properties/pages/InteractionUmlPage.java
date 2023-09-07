@@ -61,6 +61,10 @@ public class InteractionUmlPage {
         addIsActive(group);
         addIsReentrant(group);
         addVisibility(group);
+        addSpecification(group);
+        addPrecondition(group);
+        addPostcondition(group);
+        addUseCase(group);
 
     }
 
@@ -93,6 +97,30 @@ public class InteractionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSpecification(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
+                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("precondition", "aql:'Precondition'", "aql:self.getFeatureDescription('precondition')",
+                "aql:self.eClass().getEStructuralFeature('precondition').changeable", "aql:'precondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("postcondition", "aql:'Postcondition'", "aql:self.getFeatureDescription('postcondition')",
+                "aql:self.eClass().getEStructuralFeature('postcondition').changeable", "aql:'postcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUseCase(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
+                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
         group.getWidgets().add(widget);
     }
 

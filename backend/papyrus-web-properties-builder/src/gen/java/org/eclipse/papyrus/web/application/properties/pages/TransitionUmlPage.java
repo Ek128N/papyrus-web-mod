@@ -59,6 +59,9 @@ public class TransitionUmlPage {
 
         addName(group);
         addKind(group);
+        addTrigger(group);
+        addGuard(group);
+        addEffect(group);
 
     }
 
@@ -73,6 +76,24 @@ public class TransitionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('kind').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.kind.toString())", "aql:self.set('kind',newValue.instance)",
                 "aql:self.eClass().getEStructuralFeature('kind').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('kind')",
                 "aql:self.eClass().getEStructuralFeature('kind').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addTrigger(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("trigger", "aql:'Trigger'", "aql:self.getFeatureDescription('trigger')",
+                "aql:self.eClass().getEStructuralFeature('trigger').changeable", "aql:'trigger'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addGuard(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("guard", "aql:'Guard'", "aql:self.getFeatureDescription('guard')",
+                "aql:self.eClass().getEStructuralFeature('guard').changeable", "aql:'guard'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addEffect(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("effect", "aql:'Effect'", "aql:self.getFeatureDescription('effect')",
+                "aql:self.eClass().getEStructuralFeature('effect').changeable", "aql:'effect'", "");
         group.getWidgets().add(widget);
     }
 

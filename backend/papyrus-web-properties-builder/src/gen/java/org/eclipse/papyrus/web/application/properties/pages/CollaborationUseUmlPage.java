@@ -58,6 +58,8 @@ public class CollaborationUseUmlPage {
 
         addName(group);
         addVisibility(group);
+        addType(group);
+        addRoleBinding(group);
 
     }
 
@@ -72,6 +74,18 @@ public class CollaborationUseUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRoleBinding(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("roleBinding", "aql:'Role binding'", "aql:self.getFeatureDescription('roleBinding')",
+                "aql:self.eClass().getEStructuralFeature('roleBinding').changeable", "aql:'roleBinding'", "");
         group.getWidgets().add(widget);
     }
 

@@ -60,6 +60,12 @@ public class ExpansionNodeUmlPage {
         addIsControlType(group);
         addOrdering(group);
         addVisibility(group);
+        addSelection(group);
+        addRegionAsInput(group);
+        addRegionAsOutput(group);
+        addType(group);
+        addUpperBound(group);
+        addInState(group);
 
     }
 
@@ -88,6 +94,42 @@ public class ExpansionNodeUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSelection(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("selection", "aql:'Selection'", "aql:self.getFeatureDescription('selection')",
+                "aql:self.eClass().getEStructuralFeature('selection').changeable", "aql:'selection'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRegionAsInput(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("regionAsInput", "aql:'Region as input'", "aql:self.getFeatureDescription('regionAsInput')",
+                "aql:self.eClass().getEStructuralFeature('regionAsInput').changeable", "aql:'regionAsInput'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRegionAsOutput(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("regionAsOutput", "aql:'Region as output'", "aql:self.getFeatureDescription('regionAsOutput')",
+                "aql:self.eClass().getEStructuralFeature('regionAsOutput').changeable", "aql:'regionAsOutput'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUpperBound(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("upperBound", "aql:'Upper bound'", "aql:self.getFeatureDescription('upperBound')",
+                "aql:self.eClass().getEStructuralFeature('upperBound').changeable", "aql:'upperBound'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addInState(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("inState", "aql:'In state'", "aql:self.getFeatureDescription('inState')",
+                "aql:self.eClass().getEStructuralFeature('inState').changeable", "aql:'inState'", "");
         group.getWidgets().add(widget);
     }
 

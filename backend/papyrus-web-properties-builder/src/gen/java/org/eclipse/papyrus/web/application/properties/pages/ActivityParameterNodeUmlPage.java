@@ -61,6 +61,11 @@ public class ActivityParameterNodeUmlPage {
         addIsControlType(group);
         addOrdering(group);
         addVisibility(group);
+        addSelection(group);
+        addType(group);
+        addParameter(group);
+        addUpperBound(group);
+        addInState(group);
 
     }
 
@@ -89,6 +94,36 @@ public class ActivityParameterNodeUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSelection(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("selection", "aql:'Selection'", "aql:self.getFeatureDescription('selection')",
+                "aql:self.eClass().getEStructuralFeature('selection').changeable", "aql:'selection'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addParameter(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("parameter", "aql:'Parameter'", "aql:self.getFeatureDescription('parameter')",
+                "aql:self.eClass().getEStructuralFeature('parameter').changeable", "aql:'parameter'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUpperBound(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("upperBound", "aql:'Upper bound'", "aql:self.getFeatureDescription('upperBound')",
+                "aql:self.eClass().getEStructuralFeature('upperBound').changeable", "aql:'upperBound'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addInState(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("inState", "aql:'In state'", "aql:self.getFeatureDescription('inState')",
+                "aql:self.eClass().getEStructuralFeature('inState').changeable", "aql:'inState'", "");
         group.getWidgets().add(widget);
     }
 

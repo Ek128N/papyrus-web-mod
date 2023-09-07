@@ -59,6 +59,9 @@ public class TimeConstraintUmlPage {
         addName(group);
         addFirstEvent(group);
         addVisibility(group);
+        addConstrainedElement(group);
+        addContext(group);
+        addSpecification(group);
 
     }
 
@@ -79,6 +82,24 @@ public class TimeConstraintUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addConstrainedElement(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("constrainedElement", "aql:'Constrained element'", "aql:self.getFeatureDescription('constrainedElement')",
+                "aql:self.eClass().getEStructuralFeature('constrainedElement').changeable", "aql:'constrainedElement'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addContext(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("context", "aql:'Context'", "aql:self.getFeatureDescription('context')",
+                "aql:self.eClass().getEStructuralFeature('context').changeable", "aql:'context'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSpecification(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
+                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
         group.getWidgets().add(widget);
     }
 

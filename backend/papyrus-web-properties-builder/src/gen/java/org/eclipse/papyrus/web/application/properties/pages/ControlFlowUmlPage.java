@@ -58,6 +58,8 @@ public class ControlFlowUmlPage {
 
         addName(group);
         addVisibility(group);
+        addGuard(group);
+        addWeight(group);
 
     }
 
@@ -72,6 +74,18 @@ public class ControlFlowUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addGuard(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("guard", "aql:'Guard'", "aql:self.getFeatureDescription('guard')",
+                "aql:self.eClass().getEStructuralFeature('guard').changeable", "aql:'guard'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addWeight(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("weight", "aql:'Weight'", "aql:self.getFeatureDescription('weight')",
+                "aql:self.eClass().getEStructuralFeature('weight').changeable", "aql:'weight'", "");
         group.getWidgets().add(widget);
     }
 

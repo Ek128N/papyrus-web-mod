@@ -58,6 +58,8 @@ public class MessageUmlPage {
 
         addName(group);
         addMessageSort(group);
+        addSignature(group);
+        addArgument(group);
 
     }
 
@@ -72,6 +74,18 @@ public class MessageUmlPage {
                 "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.messageSort.toString())",
                 "aql:self.set('messageSort',newValue.instance)", "aql:self.eClass().getEStructuralFeature('messageSort').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('messageSort')", "aql:self.eClass().getEStructuralFeature('messageSort').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSignature(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("signature", "aql:'Signature'", "aql:self.getFeatureDescription('signature')",
+                "aql:self.eClass().getEStructuralFeature('signature').changeable", "aql:'signature'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addArgument(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("argument", "aql:'Argument'", "aql:self.getFeatureDescription('argument')",
+                "aql:self.eClass().getEStructuralFeature('argument').changeable", "aql:'argument'", "");
         group.getWidgets().add(widget);
     }
 

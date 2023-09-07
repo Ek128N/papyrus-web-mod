@@ -59,6 +59,7 @@ public class ConnectorEndUmlPage {
         addIsOrdered(group);
         addIsUnique(group);
         addMultiplicity(group);
+        addRole(group);
 
     }
 
@@ -78,6 +79,12 @@ public class ConnectorEndUmlPage {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
                 "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
                 "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRole(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("role", "aql:'Role'", "aql:self.getFeatureDescription('role')",
+                "aql:self.eClass().getEStructuralFeature('role').changeable", "aql:'role'", "");
         group.getWidgets().add(widget);
     }
 

@@ -60,6 +60,8 @@ public class ExpressionUmlPage {
         addName(group);
         addSymbol(group);
         addVisibility(group);
+        addType(group);
+        addOperand(group);
 
     }
 
@@ -80,6 +82,18 @@ public class ExpressionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOperand(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("operand", "aql:'Operand'", "aql:self.getFeatureDescription('operand')",
+                "aql:self.eClass().getEStructuralFeature('operand').changeable", "aql:'operand'", "");
         group.getWidgets().add(widget);
     }
 

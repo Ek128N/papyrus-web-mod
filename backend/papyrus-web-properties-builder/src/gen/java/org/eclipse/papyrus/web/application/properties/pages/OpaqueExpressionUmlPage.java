@@ -59,6 +59,8 @@ public class OpaqueExpressionUmlPage {
         addName(group);
         addVisibility(group);
         addLanguage(group);
+        addBehavior(group);
+        addType(group);
 
     }
 
@@ -79,6 +81,18 @@ public class OpaqueExpressionUmlPage {
     protected void addLanguage(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createLanguageExpresionDescription("language", "aql:'Language'", "aql:self.getFeatureDescription('language')",
                 "aql:self.eClass().getEStructuralFeature('language').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addBehavior(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("behavior", "aql:'Behavior'", "aql:self.getFeatureDescription('behavior')",
+                "aql:self.eClass().getEStructuralFeature('behavior').changeable", "aql:'behavior'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
         group.getWidgets().add(widget);
     }
 

@@ -77,6 +77,12 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* helpExpression */"aql:self.getFeatureDescription('name')", //
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('name')");
 
+        var typeWidget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", //
+                /* helpExpression */"aql:self.getFeatureDescription('type')", //
+                /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('type')", //
+                /* referenceNameExpression */"aql:'type'", //
+                /* referenceOwnerExpression */ "aql:self");
+        
         var ownerWidget = createMemberEndOwnerDescription("owner", "aql:'Owner'", //
                 /* valueExpression */"aql:self.getOwner()", //
                 /* contextExpression */"aql:self.setOwner(newValue)", //
@@ -105,6 +111,7 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('lowerValue') and self.isMemberEndPropertyEditable('upperValue')");
 
         container.getChildren().add(nameWidget);
+        container.getChildren().add(typeWidget);
         container.getChildren().add(ownerWidget);
         container.getChildren().add(isNavigableWidget);
         container.getChildren().add(aggregationWidget);

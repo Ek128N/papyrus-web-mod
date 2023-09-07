@@ -58,6 +58,7 @@ public class ElementImportUmlPage {
 
         addAlias(group);
         addVisibility(group);
+        addImportedElement(group);
 
     }
 
@@ -72,6 +73,12 @@ public class ElementImportUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addImportedElement(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("importedElement", "aql:'Imported element'", "aql:self.getFeatureDescription('importedElement')",
+                "aql:self.eClass().getEStructuralFeature('importedElement').changeable", "aql:'importedElement'", "");
         group.getWidgets().add(widget);
     }
 

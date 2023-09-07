@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ConnectableElementTemplateParameterUmlPage {
 
@@ -56,6 +57,35 @@ public class ConnectableElementTemplateParameterUmlPage {
         GroupDescription group = viewElementFactory.createGroupDescription("connectableElementTemplateParameter_uml_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addDefault(group);
+        addOwnedDefault(group);
+        addOwnedParameteredElement(group);
+        addParameteredElement(group);
+
+    }
+
+    protected void addDefault(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("default", "aql:'Default'", "aql:self.getFeatureDescription('default')",
+                "aql:self.eClass().getEStructuralFeature('default').changeable", "aql:'default'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedDefault(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedDefault", "aql:'Owned default'", "aql:self.getFeatureDescription('ownedDefault')",
+                "aql:self.eClass().getEStructuralFeature('ownedDefault').changeable", "aql:'ownedDefault'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedParameteredElement(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameteredElement", "aql:'Owned parametered element'",
+                "aql:self.getFeatureDescription('ownedParameteredElement')", "aql:self.eClass().getEStructuralFeature('ownedParameteredElement').changeable", "aql:'ownedParameteredElement'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addParameteredElement(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("parameteredElement", "aql:'Parametered element'", "aql:self.getFeatureDescription('parameteredElement')",
+                "aql:self.eClass().getEStructuralFeature('parameteredElement').changeable", "aql:'parameteredElement'", "");
+        group.getWidgets().add(widget);
     }
 
 }

@@ -60,6 +60,12 @@ public class AddVariableValueActionUmlPage {
         addName(group);
         addIsReplaceAll(group);
         addVisibility(group);
+        addInsertAt(group);
+        addValue(group);
+        addVariable(group);
+        addLocalPostcondition(group);
+        addLocalPrecondition(group);
+        addHandler(group);
 
     }
 
@@ -80,6 +86,42 @@ public class AddVariableValueActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addInsertAt(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("insertAt", "aql:'Insert at'", "aql:self.getFeatureDescription('insertAt')",
+                "aql:self.eClass().getEStructuralFeature('insertAt').changeable", "aql:'insertAt'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
+                "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addVariable(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("variable", "aql:'Variable'", "aql:self.getFeatureDescription('variable')",
+                "aql:self.eClass().getEStructuralFeature('variable').changeable", "aql:'variable'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
+                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
+                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addHandler(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
+                "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
         group.getWidgets().add(widget);
     }
 

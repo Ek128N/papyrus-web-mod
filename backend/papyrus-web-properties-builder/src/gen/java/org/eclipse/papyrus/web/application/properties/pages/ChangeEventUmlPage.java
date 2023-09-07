@@ -58,6 +58,7 @@ public class ChangeEventUmlPage {
 
         addName(group);
         addVisibility(group);
+        addChangeExpression(group);
 
     }
 
@@ -72,6 +73,12 @@ public class ChangeEventUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addChangeExpression(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("changeExpression", "aql:'Change expression'", "aql:self.getFeatureDescription('changeExpression')",
+                "aql:self.eClass().getEStructuralFeature('changeExpression').changeable", "aql:'changeExpression'", "");
         group.getWidgets().add(widget);
     }
 

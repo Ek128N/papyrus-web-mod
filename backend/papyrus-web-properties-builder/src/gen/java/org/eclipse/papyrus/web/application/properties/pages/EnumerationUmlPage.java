@@ -59,6 +59,8 @@ public class EnumerationUmlPage {
         addName(group);
         addIsAbstract(group);
         addVisibility(group);
+        addOwnedLiteral(group);
+        addUseCase(group);
 
     }
 
@@ -79,6 +81,18 @@ public class EnumerationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedLiteral(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedLiteral", "aql:'Owned literal'", "aql:self.getFeatureDescription('ownedLiteral')",
+                "aql:self.eClass().getEStructuralFeature('ownedLiteral').changeable", "aql:'ownedLiteral'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUseCase(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
+                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
         group.getWidgets().add(widget);
     }
 

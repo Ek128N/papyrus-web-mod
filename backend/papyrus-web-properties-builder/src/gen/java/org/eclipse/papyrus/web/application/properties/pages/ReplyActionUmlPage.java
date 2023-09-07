@@ -58,6 +58,12 @@ public class ReplyActionUmlPage {
 
         addName(group);
         addVisibility(group);
+        addReplyToCall(group);
+        addReturnInformation(group);
+        addLocalPostcondition(group);
+        addLocalPrecondition(group);
+        addReplyValue(group);
+        addHandler(group);
 
     }
 
@@ -72,6 +78,42 @@ public class ReplyActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addReplyToCall(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("replyToCall", "aql:'Reply to call'", "aql:self.getFeatureDescription('replyToCall')",
+                "aql:self.eClass().getEStructuralFeature('replyToCall').changeable", "aql:'replyToCall'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addReturnInformation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("returnInformation", "aql:'Return information'", "aql:self.getFeatureDescription('returnInformation')",
+                "aql:self.eClass().getEStructuralFeature('returnInformation').changeable", "aql:'returnInformation'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
+                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
+                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addReplyValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("replyValue", "aql:'Reply value'", "aql:self.getFeatureDescription('replyValue')",
+                "aql:self.eClass().getEStructuralFeature('replyValue').changeable", "aql:'replyValue'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addHandler(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
+                "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
         group.getWidgets().add(widget);
     }
 

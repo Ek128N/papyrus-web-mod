@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class TemplateParameterSubstitutionUmlPage {
 
@@ -56,6 +57,28 @@ public class TemplateParameterSubstitutionUmlPage {
         GroupDescription group = viewElementFactory.createGroupDescription("templateParameterSubstitution_uml_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addFormal(group);
+        addActual(group);
+        addOwnedActual(group);
+
+    }
+
+    protected void addFormal(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("formal", "aql:'Formal'", "aql:self.getFeatureDescription('formal')",
+                "aql:self.eClass().getEStructuralFeature('formal').changeable", "aql:'formal'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addActual(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("actual", "aql:'Actual'", "aql:self.getFeatureDescription('actual')",
+                "aql:self.eClass().getEStructuralFeature('actual').changeable", "aql:'actual'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedActual(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedActual", "aql:'Owned actual'", "aql:self.getFeatureDescription('ownedActual')",
+                "aql:self.eClass().getEStructuralFeature('ownedActual').changeable", "aql:'ownedActual'", "");
+        group.getWidgets().add(widget);
     }
 
 }

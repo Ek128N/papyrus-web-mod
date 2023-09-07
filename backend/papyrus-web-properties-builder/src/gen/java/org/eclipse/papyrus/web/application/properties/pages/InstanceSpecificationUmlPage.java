@@ -59,6 +59,7 @@ public class InstanceSpecificationUmlPage {
 
         addName(group);
         addVisibility(group);
+        addClassifier(group);
 
     }
 
@@ -73,6 +74,12 @@ public class InstanceSpecificationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addClassifier(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("classifier", "aql:'Classifier'", "aql:self.getFeatureDescription('classifier')",
+                "aql:self.eClass().getEStructuralFeature('classifier').changeable", "aql:'classifier'", "");
         group.getWidgets().add(widget);
     }
 

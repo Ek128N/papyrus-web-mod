@@ -59,6 +59,7 @@ public class UseCaseUmlPage {
         addName(group);
         addIsAbstract(group);
         addVisibility(group);
+        addSubject(group);
 
     }
 
@@ -79,6 +80,12 @@ public class UseCaseUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSubject(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("subject", "aql:'Subject'", "aql:self.getFeatureDescription('subject')",
+                "aql:self.eClass().getEStructuralFeature('subject').changeable", "aql:'subject'", "");
         group.getWidgets().add(widget);
     }
 

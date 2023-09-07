@@ -59,6 +59,7 @@ public class InteractionUseUmlPage {
 
         addName(group);
         addVisibility(group);
+        addRefersTo(group);
 
     }
 
@@ -73,6 +74,12 @@ public class InteractionUseUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRefersTo(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("refersTo", "aql:'Refers to'", "aql:self.getFeatureDescription('refersTo')",
+                "aql:self.eClass().getEStructuralFeature('refersTo').changeable", "aql:'refersTo'", "");
         group.getWidgets().add(widget);
     }
 

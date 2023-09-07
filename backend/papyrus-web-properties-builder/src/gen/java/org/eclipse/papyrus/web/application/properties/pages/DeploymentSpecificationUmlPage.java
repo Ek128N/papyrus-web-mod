@@ -63,6 +63,10 @@ public class DeploymentSpecificationUmlPage {
         addFileName(group);
         addIsAbstract(group);
         addVisibility(group);
+        addManifestation(group);
+        addOwnedAttribute(group);
+        addOwnedOperation(group);
+        addUseCase(group);
 
     }
 
@@ -101,6 +105,30 @@ public class DeploymentSpecificationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addManifestation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("manifestation", "aql:'Manifestation'", "aql:self.getFeatureDescription('manifestation')",
+                "aql:self.eClass().getEStructuralFeature('manifestation').changeable", "aql:'manifestation'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedAttribute(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
+                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedOperation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
+                "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUseCase(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
+                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
         group.getWidgets().add(widget);
     }
 

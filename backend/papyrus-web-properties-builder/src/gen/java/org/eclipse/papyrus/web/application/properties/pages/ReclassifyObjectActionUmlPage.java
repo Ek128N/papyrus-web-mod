@@ -60,6 +60,12 @@ public class ReclassifyObjectActionUmlPage {
         addName(group);
         addIsReplaceAll(group);
         addVisibility(group);
+        addObject(group);
+        addNewClassifier(group);
+        addOldClassifier(group);
+        addLocalPostcondition(group);
+        addLocalPrecondition(group);
+        addHandler(group);
 
     }
 
@@ -80,6 +86,42 @@ public class ReclassifyObjectActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addObject(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("object", "aql:'Object'", "aql:self.getFeatureDescription('object')",
+                "aql:self.eClass().getEStructuralFeature('object').changeable", "aql:'object'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addNewClassifier(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("newClassifier", "aql:'New classifier'", "aql:self.getFeatureDescription('newClassifier')",
+                "aql:self.eClass().getEStructuralFeature('newClassifier').changeable", "aql:'newClassifier'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOldClassifier(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("oldClassifier", "aql:'Old classifier'", "aql:self.getFeatureDescription('oldClassifier')",
+                "aql:self.eClass().getEStructuralFeature('oldClassifier').changeable", "aql:'oldClassifier'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
+                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
+                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addHandler(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
+                "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
         group.getWidgets().add(widget);
     }
 

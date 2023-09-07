@@ -61,6 +61,9 @@ public class ComponentUmlPage {
         addIsActive(group);
         addIsIndirectlyInstantiated(group);
         addVisibility(group);
+        addProvided(group);
+        addRequired(group);
+        addUseCase(group);
 
     }
 
@@ -94,6 +97,24 @@ public class ComponentUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addProvided(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("provided", "aql:'Provided'", "aql:self.getFeatureDescription('provided')",
+                "aql:self.eClass().getEStructuralFeature('provided').changeable", "aql:'provided'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRequired(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("required", "aql:'Required'", "aql:self.getFeatureDescription('required')",
+                "aql:self.eClass().getEStructuralFeature('required').changeable", "aql:'required'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addUseCase(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
+                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
         group.getWidgets().add(widget);
     }
 

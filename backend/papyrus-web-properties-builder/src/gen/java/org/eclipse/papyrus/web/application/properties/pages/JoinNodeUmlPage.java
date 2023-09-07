@@ -59,6 +59,7 @@ public class JoinNodeUmlPage {
         addName(group);
         addVisibility(group);
         addIsCombineDuplicate(group);
+        addJoinSpec(group);
 
     }
 
@@ -79,6 +80,12 @@ public class JoinNodeUmlPage {
     protected void addIsCombineDuplicate(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isCombineDuplicate", "aql:'Is combine duplicate'", "feature:isCombineDuplicate",
                 "aql:self.set('isCombineDuplicate',newValue)", "aql:self.getFeatureDescription('isCombineDuplicate')", "aql:self.eClass().getEStructuralFeature('isCombineDuplicate').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addJoinSpec(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("joinSpec", "aql:'Join spec'", "aql:self.getFeatureDescription('joinSpec')",
+                "aql:self.eClass().getEStructuralFeature('joinSpec').changeable", "aql:'joinSpec'", "");
         group.getWidgets().add(widget);
     }
 

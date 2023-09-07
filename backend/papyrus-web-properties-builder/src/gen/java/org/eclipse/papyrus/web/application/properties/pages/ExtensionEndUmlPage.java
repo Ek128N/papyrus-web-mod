@@ -65,7 +65,10 @@ public class ExtensionEndUmlPage {
         addIsUnique(group);
         addAggregation(group);
         addVisibility(group);
+        addType(group);
         addMultiplicity(group);
+        addDefaultValue(group);
+        addSubsettedProperty(group);
 
     }
 
@@ -127,10 +130,28 @@ public class ExtensionEndUmlPage {
         group.getWidgets().add(widget);
     }
 
+    protected void addType(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
+                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
+        group.getWidgets().add(widget);
+    }
+
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
                 "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
                 "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addDefaultValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("defaultValue", "aql:'Default value'", "aql:self.getFeatureDescription('defaultValue')",
+                "aql:self.eClass().getEStructuralFeature('defaultValue').changeable", "aql:'defaultValue'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addSubsettedProperty(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("subsettedProperty", "aql:'Subsetted property'", "aql:self.getFeatureDescription('subsettedProperty')",
+                "aql:self.eClass().getEStructuralFeature('subsettedProperty').changeable", "aql:'subsettedProperty'", "");
         group.getWidgets().add(widget);
     }
 

@@ -57,12 +57,19 @@ public class CommentUmlPage {
         page.getGroups().add(group);
 
         addBody(group);
+        addAnnotatedElement(group);
 
     }
 
     protected void addBody(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextAreaDescription("body", "aql:'Body'", "feature:body", "aql:self.set('body',newValue)", "aql:self.getFeatureDescription('body')",
                 "aql:self.eClass().getEStructuralFeature('body').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addAnnotatedElement(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("annotatedElement", "aql:'Annotated element'", "aql:self.getFeatureDescription('annotatedElement')",
+                "aql:self.eClass().getEStructuralFeature('annotatedElement').changeable", "aql:'annotatedElement'", "");
         group.getWidgets().add(widget);
     }
 

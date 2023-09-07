@@ -59,6 +59,10 @@ public class CreateLinkActionUmlPage {
 
         addName(group);
         addVisibility(group);
+        addEndData(group);
+        addInputValue(group);
+        addLocalPostcondition(group);
+        addLocalPrecondition(group);
 
     }
 
@@ -73,6 +77,30 @@ public class CreateLinkActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addEndData(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("endData", "aql:'End data'", "aql:self.getFeatureDescription('endData')",
+                "aql:self.eClass().getEStructuralFeature('endData').changeable", "aql:'endData'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addInputValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("inputValue", "aql:'Input value'", "aql:self.getFeatureDescription('inputValue')",
+                "aql:self.eClass().getEStructuralFeature('inputValue').changeable", "aql:'inputValue'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
+                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
+                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
         group.getWidgets().add(widget);
     }
 

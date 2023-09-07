@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.view.form.RadioDescription;
 import org.eclipse.sirius.components.view.form.SelectDescription;
 import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
+import org.eclipse.sirius.components.widgets.reference.ReferenceFactory;
+import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescription;
 
 public class ViewElementsFactory {
 
@@ -151,6 +153,17 @@ public class ViewElementsFactory {
         description.setLabelExpression(labelExp);
         description.setHelpExpression(helpExpression);
         description.setIsEnabledExpression(isEnabledExp);
+        return description;
+    }
+
+    public ReferenceWidgetDescription createReferenceDescription(String name, String labelExp, String helpExpression, String isEnabledExp, String referenceNameExp, String referenceOwnerExp) {
+        ReferenceWidgetDescription description = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
+        description.setName(name);
+        description.setLabelExpression(labelExp);
+        description.setHelpExpression(helpExpression);
+        description.setIsEnabledExpression(isEnabledExp);
+        description.setReferenceNameExpression(referenceNameExp);
+        description.setReferenceOwnerExpression(referenceOwnerExp);
         return description;
     }
 }

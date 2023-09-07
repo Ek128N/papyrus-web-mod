@@ -58,6 +58,7 @@ public class SubstitutionUmlPage {
 
         addName(group);
         addVisibility(group);
+        addMapping(group);
 
     }
 
@@ -72,6 +73,12 @@ public class SubstitutionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addMapping(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("mapping", "aql:'Mapping'", "aql:self.getFeatureDescription('mapping')",
+                "aql:self.eClass().getEStructuralFeature('mapping').changeable", "aql:'mapping'", "");
         group.getWidgets().add(widget);
     }
 

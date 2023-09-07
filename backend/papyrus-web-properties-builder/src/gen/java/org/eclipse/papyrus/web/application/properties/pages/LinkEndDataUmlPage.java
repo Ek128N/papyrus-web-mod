@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class LinkEndDataUmlPage {
 
@@ -56,6 +57,28 @@ public class LinkEndDataUmlPage {
         GroupDescription group = viewElementFactory.createGroupDescription("linkEndData_uml_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addEnd(group);
+        addValue(group);
+        addQualifier(group);
+
+    }
+
+    protected void addEnd(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("end", "aql:'End'", "aql:self.getFeatureDescription('end')",
+                "aql:self.eClass().getEStructuralFeature('end').changeable", "aql:'end'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addValue(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
+                "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addQualifier(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("qualifier", "aql:'Qualifier'", "aql:self.getFeatureDescription('qualifier')",
+                "aql:self.eClass().getEStructuralFeature('qualifier').changeable", "aql:'qualifier'", "");
+        group.getWidgets().add(widget);
     }
 
 }

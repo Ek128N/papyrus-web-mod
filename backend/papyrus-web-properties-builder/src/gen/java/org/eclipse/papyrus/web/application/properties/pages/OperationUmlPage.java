@@ -62,6 +62,12 @@ public class OperationUmlPage {
         addIsStatic(group);
         addVisibility(group);
         addConcurrency(group);
+        addBodyCondition(group);
+        addMethod(group);
+        addOwnedParameter(group);
+        addPrecondition(group);
+        addPostcondition(group);
+        addRaisedException(group);
 
     }
 
@@ -102,6 +108,42 @@ public class OperationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('concurrency').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.concurrency.toString())",
                 "aql:self.set('concurrency',newValue.instance)", "aql:self.eClass().getEStructuralFeature('concurrency').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('concurrency')", "aql:self.eClass().getEStructuralFeature('concurrency').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addBodyCondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("bodyCondition", "aql:'Body condition'", "aql:self.getFeatureDescription('bodyCondition')",
+                "aql:self.eClass().getEStructuralFeature('bodyCondition').changeable", "aql:'bodyCondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addMethod(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("method", "aql:'Method'", "aql:self.getFeatureDescription('method')",
+                "aql:self.eClass().getEStructuralFeature('method').changeable", "aql:'method'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedParameter(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
+                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("precondition", "aql:'Precondition'", "aql:self.getFeatureDescription('precondition')",
+                "aql:self.eClass().getEStructuralFeature('precondition').changeable", "aql:'precondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("postcondition", "aql:'Postcondition'", "aql:self.getFeatureDescription('postcondition')",
+                "aql:self.eClass().getEStructuralFeature('postcondition').changeable", "aql:'postcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRaisedException(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("raisedException", "aql:'Raised Exception'", "aql:self.getFeatureDescription('raisedException')",
+                "aql:self.eClass().getEStructuralFeature('raisedException').changeable", "aql:'raisedException'", "");
         group.getWidgets().add(widget);
     }
 

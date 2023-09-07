@@ -59,6 +59,9 @@ public class BehaviorExecutionSpecificationUmlPage {
 
         addName(group);
         addVisibility(group);
+        addBehavior(group);
+        addFinish(group);
+        addStart(group);
 
     }
 
@@ -73,6 +76,24 @@ public class BehaviorExecutionSpecificationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addBehavior(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("behavior", "aql:'Behavior'", "aql:self.getFeatureDescription('behavior')",
+                "aql:self.eClass().getEStructuralFeature('behavior').changeable", "aql:'behavior'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addFinish(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("finish", "aql:'Finish'", "aql:self.getFeatureDescription('finish')",
+                "aql:self.eClass().getEStructuralFeature('finish').changeable", "aql:'finish'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addStart(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("start", "aql:'Start'", "aql:self.getFeatureDescription('start')",
+                "aql:self.eClass().getEStructuralFeature('start').changeable", "aql:'start'", "");
         group.getWidgets().add(widget);
     }
 

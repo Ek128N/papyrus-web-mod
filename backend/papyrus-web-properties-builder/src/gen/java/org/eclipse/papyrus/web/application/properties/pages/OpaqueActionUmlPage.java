@@ -59,6 +59,9 @@ public class OpaqueActionUmlPage {
         addName(group);
         addVisibility(group);
         addLanguage(group);
+        addLocalPostcondition(group);
+        addLocalPrecondition(group);
+        addHandler(group);
 
     }
 
@@ -79,6 +82,24 @@ public class OpaqueActionUmlPage {
     protected void addLanguage(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createLanguageExpresionDescription("language", "aql:'Language'", "aql:self.getFeatureDescription('language')",
                 "aql:self.eClass().getEStructuralFeature('language').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPostcondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
+                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addLocalPrecondition(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
+                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addHandler(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
+                "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
         group.getWidgets().add(widget);
     }
 

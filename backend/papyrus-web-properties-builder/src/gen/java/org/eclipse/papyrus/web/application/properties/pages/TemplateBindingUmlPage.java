@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class TemplateBindingUmlPage {
 
@@ -55,6 +56,14 @@ public class TemplateBindingUmlPage {
         GroupDescription group = viewElementFactory.createGroupDescription("templateBinding_uml_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addParameterSubstitution(group);
+
+    }
+
+    protected void addParameterSubstitution(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("parameterSubstitution", "aql:'Parameter substitution'", "aql:self.getFeatureDescription('parameterSubstitution')",
+                "aql:self.eClass().getEStructuralFeature('parameterSubstitution').changeable", "aql:'parameterSubstitution'", "");
+        group.getWidgets().add(widget);
     }
 
 }

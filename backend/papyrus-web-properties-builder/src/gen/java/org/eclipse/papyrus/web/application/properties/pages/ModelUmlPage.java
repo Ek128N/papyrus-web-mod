@@ -60,6 +60,7 @@ public class ModelUmlPage {
         addUri(group);
         addVisibility(group);
         addLocation(group);
+        addPackageMerge(group);
 
     }
 
@@ -86,6 +87,12 @@ public class ModelUmlPage {
     protected void addLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "aql:self.getLocation()", "var:self", "aql:'The location of imported package'",
                 "aql:false");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addPackageMerge(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("packageMerge", "aql:'Package merge'", "aql:self.getFeatureDescription('packageMerge')",
+                "aql:self.eClass().getEStructuralFeature('packageMerge').changeable", "aql:'packageMerge'", "");
         group.getWidgets().add(widget);
     }
 

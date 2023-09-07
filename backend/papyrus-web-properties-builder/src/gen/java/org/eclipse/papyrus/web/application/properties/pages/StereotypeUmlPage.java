@@ -58,6 +58,9 @@ public class StereotypeUmlPage {
 
         addName(group);
         addIsAbstract(group);
+        addIcon(group);
+        addOwnedAttribute(group);
+        addOwnedOperation(group);
 
     }
 
@@ -70,6 +73,24 @@ public class StereotypeUmlPage {
     protected void addIsAbstract(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
                 "aql:self.getFeatureDescription('isAbstract')", "aql:self.eClass().getEStructuralFeature('isAbstract').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addIcon(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("icon", "aql:'Icon'", "aql:self.getFeatureDescription('icon')",
+                "aql:self.eClass().getEStructuralFeature('icon').changeable", "aql:'icon'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedAttribute(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
+                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addOwnedOperation(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
+                "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
         group.getWidgets().add(widget);
     }
 

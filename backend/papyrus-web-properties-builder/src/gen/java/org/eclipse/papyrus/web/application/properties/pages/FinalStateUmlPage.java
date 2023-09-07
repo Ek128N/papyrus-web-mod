@@ -58,6 +58,11 @@ public class FinalStateUmlPage {
 
         addName(group);
         addVisibility(group);
+        addStateInvariant(group);
+        addEntry(group);
+        addDoActivity(group);
+        addExit(group);
+        addDeferrableTrigger(group);
 
     }
 
@@ -72,6 +77,36 @@ public class FinalStateUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addStateInvariant(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("stateInvariant", "aql:'State invariant'", "aql:self.getFeatureDescription('stateInvariant')",
+                "aql:self.eClass().getEStructuralFeature('stateInvariant').changeable", "aql:'stateInvariant'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addEntry(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("entry", "aql:'Entry'", "aql:self.getFeatureDescription('entry')",
+                "aql:self.eClass().getEStructuralFeature('entry').changeable", "aql:'entry'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addDoActivity(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("doActivity", "aql:'Do activity'", "aql:self.getFeatureDescription('doActivity')",
+                "aql:self.eClass().getEStructuralFeature('doActivity').changeable", "aql:'doActivity'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addExit(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("exit", "aql:'Exit'", "aql:self.getFeatureDescription('exit')",
+                "aql:self.eClass().getEStructuralFeature('exit').changeable", "aql:'exit'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addDeferrableTrigger(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("deferrableTrigger", "aql:'Deferrable trigger'", "aql:self.getFeatureDescription('deferrableTrigger')",
+                "aql:self.eClass().getEStructuralFeature('deferrableTrigger').changeable", "aql:'deferrableTrigger'", "");
         group.getWidgets().add(widget);
     }
 

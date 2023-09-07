@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class PackageMergeUmlPage {
 
@@ -55,6 +56,14 @@ public class PackageMergeUmlPage {
         GroupDescription group = viewElementFactory.createGroupDescription("packageMerge_uml_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        addMergedPackage(group);
+
+    }
+
+    protected void addMergedPackage(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("mergedPackage", "aql:'Merged package'", "aql:self.getFeatureDescription('mergedPackage')",
+                "aql:self.eClass().getEStructuralFeature('mergedPackage').changeable", "aql:'mergedPackage'", "");
+        group.getWidgets().add(widget);
     }
 
 }

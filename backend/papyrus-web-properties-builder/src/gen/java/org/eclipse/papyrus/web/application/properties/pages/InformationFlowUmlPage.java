@@ -58,6 +58,11 @@ public class InformationFlowUmlPage {
 
         addName(group);
         addVisibility(group);
+        addConveyed(group);
+        addRealization(group);
+        addRealizingActivityEdge(group);
+        addRealizingConnector(group);
+        addRealizingMessage(group);
 
     }
 
@@ -72,6 +77,36 @@ public class InformationFlowUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addConveyed(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("conveyed", "aql:'Conveyed'", "aql:self.getFeatureDescription('conveyed')",
+                "aql:self.eClass().getEStructuralFeature('conveyed').changeable", "aql:'conveyed'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRealization(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("realization", "aql:'Realization'", "aql:self.getFeatureDescription('realization')",
+                "aql:self.eClass().getEStructuralFeature('realization').changeable", "aql:'realization'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRealizingActivityEdge(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("realizingActivityEdge", "aql:'Realizing activity edge'", "aql:self.getFeatureDescription('realizingActivityEdge')",
+                "aql:self.eClass().getEStructuralFeature('realizingActivityEdge').changeable", "aql:'realizingActivityEdge'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRealizingConnector(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("realizingConnector", "aql:'Realizing connector'", "aql:self.getFeatureDescription('realizingConnector')",
+                "aql:self.eClass().getEStructuralFeature('realizingConnector').changeable", "aql:'realizingConnector'", "");
+        group.getWidgets().add(widget);
+    }
+
+    protected void addRealizingMessage(GroupDescription group) {
+        WidgetDescription widget = viewElementFactory.createReferenceDescription("realizingMessage", "aql:'Realizing message'", "aql:self.getFeatureDescription('realizingMessage')",
+                "aql:self.eClass().getEStructuralFeature('realizingMessage').changeable", "aql:'realizingMessage'", "");
         group.getWidgets().add(widget);
     }
 
