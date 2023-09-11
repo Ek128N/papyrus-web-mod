@@ -1,0 +1,37 @@
+= papyrus-web-graphics
+
+== Goal
+
+This project is providing extended Item providers to provide SVG (scalable vector graphics) for Papyrus Web.
+It is a work in progress of converting all the UML2 edit icons into SVG manually.
+
+My process is the following.
+* pick an `.gif` icon I want to convert as SVG.
+* pick an already converted `SVG` icon which is close enough already so that I start with a good base, copy/paste it and use the `.gif` name
+* open the SVG in inkscape
+* change the SVG unit right away in "px" (select background, and then use the dropdown in the action bar)
+* drag&drop the `gif` icon in inkscape (adding it as "linked mode"), resize it to match the `SVG` document size, and put it on the background, align it in the center (CTRL+MAJ+A)
+* this is used as a guide to "draw" the SVG on top of it.
+* compose the SVG shapes.
+* make sure to use the same colors used in the other existing icons.
+* once the result is good, delete the `gif` image shape from the Inkscape document area.
+* save, close, and repeat.
+
+== Colors used in the icons:
+
+`4d81b4ff` - the dark blue
+`d4e5f2ff` - the light blue
+`2e4f6eff` - the darker dark blue (used for letters for instance)
+
+== life-saving shortcuts in Inkscape
+
+`CTRL+MAJ+F` : to open the fill/colors panel
+`CTRL+MAJ+A` : to open the align/distribute panel
+`CTRL+G` and `CTRL+MAJ+G` : to group/ungroup
+
+
+== References
+
+MDT UML2 (hosting the `.gif` icons) `git clone https://git.eclipse.org/r/uml2/org.eclipse.uml2.git`
+
+See `https://git.eclipse.org/r/plugins/gitiles/uml2/org.eclipse.uml2/+/refs/heads/master/plugins/org.eclipse.uml2.uml.edit/icons/full`

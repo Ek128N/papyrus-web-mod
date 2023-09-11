@@ -184,6 +184,11 @@
 			<version>2023.3.0</version>
 		</dependency>
 		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-graphics</artifactId>
+			<version>2023.3.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphiql</artifactId>
 			<version>${sirius.components.version}</version>

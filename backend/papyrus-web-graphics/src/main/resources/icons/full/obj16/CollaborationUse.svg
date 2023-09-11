@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="18"
+   height="16"
+   viewBox="0 0 4.7624999 4.2333332"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="CollaborationUse.svg">
+  
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="33.008694"
+     inkscape:cx="-13.228347"
+     inkscape:cy="11.836496"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g882"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="false"
+     inkscape:window-width="3840"
+     inkscape:window-height="2107"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     units="px" />
+  
+  <g>
+    <g
+       id="g882">
+      <g
+         id="g835"
+         transform="matrix(0.78255037,0,0,0.78255037,-0.26537564,-0.22698568)">
+        <ellipse
+           style="fill:#bcd6eb;fill-opacity:1;stroke:#4d81b4;stroke-width:0.397;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:3.9;stroke-dasharray:0.794, 0.794;stroke-dashoffset:0.5955"
+           id="path857"
+           cx="3.3820515"
+           cy="2.9947999"
+           rx="2.7599092"
+           ry="1.1931356" />
+        <path
+           style="fill:#4d81b4;fill-opacity:1;stroke:#4d81b4;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 1.5891598,2.9949231 c 3.5663359,0 3.5857833,0 3.5857833,0"
+           id="path832" />
+      </g>
+    </g>
+  </g>
+</svg>

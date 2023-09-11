@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="18"
+   height="16"
+   viewBox="0 0 4.7624999 4.2333332"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="VisibilityKind_public.svg">
+  
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="64.698995"
+     inkscape:cx="14.275562"
+     inkscape:cy="11.734928"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g882"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="false"
+     inkscape:window-width="3840"
+     inkscape:window-height="1995"
+     inkscape:window-x="1"
+     inkscape:window-y="2160"
+     inkscape:window-maximized="1"
+     units="px" />
+  
+  <g>
+    <g
+       id="g882">
+      <path
+         id="rect847"
+         style="opacity:1;fill:#63aa70;fill-opacity:1;stroke:#226e4a;stroke-width:0.222478;stroke-linecap:square;stroke-opacity:1"
+         d="M 3.3032022,2.4180231 V 2.9823297 H 2.6991046 V 3.5523208 H 3.3032022 V 4.110943 H 3.8726765 V 3.5523208 H 4.3925412 V 2.9823297 H 3.8726765 V 2.4180231 Z" />
+    </g>
+  </g>
+</svg>

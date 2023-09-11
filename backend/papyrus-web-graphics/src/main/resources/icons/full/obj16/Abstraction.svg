@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="18"
+   height="16"
+   viewBox="0 0 4.7624999 4.2333332"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="Abstraction.svg">
+  
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="33.008694"
+     inkscape:cx="28.001829"
+     inkscape:cy="9.2415352"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g882"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="false"
+     inkscape:window-width="3840"
+     inkscape:window-height="1995"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     units="px" />
+  
+  <g>
+    <g
+       id="g882">
+      <g
+         id="g845"
+         transform="matrix(0.76436011,0,0,0.76436011,-0.24743128,-0.40534893)">
+        <path
+           style="fill:none;stroke:#4d81b4;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:3.9;stroke-dasharray:1.19062, 1.19062;stroke-dashoffset:0.595312;stroke-opacity:1"
+           d="M 5.5325115,0.95653812 0.80436411,5.5233063"
+           id="path891"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#4d81b4;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 5.6953838,0.78637953 5.7274384,1.8228185"
+           id="path891-3-6-7"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#4d81b4;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 5.6953838,0.78637953 -1.036439,0.032055"
+           id="path891-3-6-7-3"
+           sodipodi:nodetypes="cc" />
+        <g
+           aria-label="&lt;A&gt;"
+           id="text865"
+           style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-opacity:1">
+          <path
+             d="M 3.5064692,5.8384831 2.4677714,5.3868304 V 5.1367161 L 3.5064692,4.6871304 V 4.9816865 L 2.7819645,5.2586726 3.5064692,5.545994 Z"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-opacity:1"
+             id="path853" />
+          <path
+             d="M 5.1260111,6.0110826 H 4.7932143 L 4.6609225,5.6669171 H 4.0552737 L 3.9302166,6.0110826 H 3.6056881 L 4.1958339,4.4959273 H 4.5193288 Z M 4.5627371,5.4116351 4.353964,4.8493947 4.149325,5.4116351 Z"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
+             id="path855" />
+          <path
+             d="M 5.2324646,5.8395166 V 5.5470276 L 5.9580028,5.2617732 5.2324646,4.9796195 V 4.6891975 L 6.272196,5.1387831 v 0.2480473 z"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-opacity:1"
+             id="path857" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
