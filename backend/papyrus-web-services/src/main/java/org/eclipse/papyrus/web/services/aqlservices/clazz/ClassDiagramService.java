@@ -12,10 +12,16 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices.clazz;
 
+import java.util.Map;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;
@@ -23,6 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Property;
@@ -40,6 +47,16 @@ public class ClassDiagramService extends AbstractDiagramService {
     public ClassDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService, IEditableChecker editableChecker,
             IViewDiagramDescriptionService viewDiagramService) {
         super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService);
+    }
+
+    @Override
+    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+        IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
+                capturedNodeDescriptions);
+        IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new ClassDropBehaviorProvider(createViewHelper,
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
+        return dropProvider;
     }
 
     // Only required until: https://github.com/PapyrusSirius/papyrus-web/issues/208

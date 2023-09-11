@@ -27,10 +27,10 @@ import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescrip
 import org.eclipse.papyrus.web.services.aqlservices.DebugService;
 import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -72,7 +72,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
                     } else if (repName.startsWith(SMDDiagramDescriptionBuilder.SMD_REP_NAME)) {
                         services.add(StateMachineDiagramService.class);
                     } else if (repName.startsWith(PADDiagramDescriptionBuilder.PD_REP_NAME)) {
-                        services.add(GenericDiagramService.class);
+                        services.add(PackageDiagramService.class);
                     } else if (repName.startsWith(CDDiagramDescriptionBuilder.CD_REP_NAME)) {
                         services.add(ClassDiagramService.class);
                     } else if (repName.startsWith(UCDDiagramDescriptionBuilder.UCD_REP_NAME)) {

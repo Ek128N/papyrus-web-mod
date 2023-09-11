@@ -1,15 +1,16 @@
-/*******************************************************************************
+/*****************************************************************************
  * Copyright (c) 2022, 2023 CEA LIST, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.services.pack;
 
 import static org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder.CONTAINMENT_LINK_EDGE_ID;
@@ -28,7 +29,7 @@ import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
 import org.eclipse.papyrus.web.application.utils.ElementMatcher;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.Abstraction;
@@ -468,7 +469,7 @@ public class PackageDiagramTests extends AbstractDiagramTest {
 
     @Override
     protected AbstractDiagramService buildService() {
-        return new GenericDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+        return new PackageDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
     }
 
     @Test

@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,9 +9,9 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
-package org.eclipse.papyrus.web.services.aqlservices.composite;
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+package org.eclipse.papyrus.web.services.aqlservices.pakage;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -19,8 +19,8 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
-import org.eclipse.papyrus.uml.domain.services.drop.diagrams.CompositeStructureExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.uml.domain.services.drop.diagrams.CompositeStructureExternalSourceToRepresentationDropChecker;
+import org.eclipse.papyrus.uml.domain.services.drop.diagrams.PackageExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.uml.domain.services.drop.diagrams.PackageExternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
@@ -30,11 +30,11 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 
 /**
- * Provides the behavior on a drop event in the "Composite Structure Diagram".
+ * Provides the behavior on a drop event in the "Package" Diagram.
  *
- * @author Arthur Daussy
+ * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class CompositeStructureDropBehaviorProvider implements IWebExternalSourceToRepresentationDropBehaviorProvider {
+public class PackageDropBehaviorProvider implements IWebExternalSourceToRepresentationDropBehaviorProvider {
 
     private final IEditingContext editionContext;
 
@@ -48,8 +48,24 @@ public class CompositeStructureDropBehaviorProvider implements IWebExternalSourc
 
     private DiagramNavigator diagramNavigator;
 
-    public CompositeStructureDropBehaviorProvider(IEditingContext editionContext, IViewCreationHelper viewHelper, IObjectService objectService, ECrossReferenceAdapter crossRef,
-            IEditableChecker editableChecker, DiagramNavigator diagramNavigator) {
+    /**
+     * Constructor.
+     *
+     * @param editionContext
+     *            editing context used to retrieve semantic target
+     * @param viewHelper
+     *            the helper used to create element on a diagram
+     * @param objectService
+     *            service used to retrieve semantic target according to node id
+     * @param crossRef
+     *            An adapter used to get inverse references
+     * @param editableChecker
+     *            Object that check if an element can be edited
+     * @param diagramNavigator
+     *            the helper used to navigate inside a diagram and/or to its description
+     */
+    public PackageDropBehaviorProvider(IEditingContext editionContext, IViewCreationHelper viewHelper, IObjectService objectService, ECrossReferenceAdapter crossRef, IEditableChecker editableChecker,
+            DiagramNavigator diagramNavigator) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.crossRef = Objects.requireNonNull(crossRef);
         this.editableChecker = Objects.requireNonNull(editableChecker);
@@ -70,8 +86,8 @@ public class CompositeStructureDropBehaviorProvider implements IWebExternalSourc
     public void handleDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
         new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator) //
-                .withDropChecker(new CompositeStructureExternalSourceToRepresentationDropChecker()) //
-                .withDropProvider(new CompositeStructureExternalSourceToRepresentationDropBehaviorProvider()) //
+                .withDropChecker(new PackageExternalSourceToRepresentationDropChecker()) //
+                .withDropProvider(new PackageExternalSourceToRepresentationDropBehaviorProvider()) //
                 .withCrossRef(this.crossRef) //
                 .withEditableChecker(this.editableChecker) //
                 .withEObjectResolver(this::getSemanticObject) //

@@ -1,39 +1,41 @@
 /*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
+ * Copyright (c) 2022 CEA, Obeo
+ *
  * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ *    Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.services.aqlservices.utils;
+package org.eclipse.papyrus.web.services.aqlservices.clazz;
 
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 
 /**
- * Default implementation of a {@link IWebExternalSourceToRepresentationDropBehaviorProvider} that created a view of the
- * dropped element if the Diagram Description model allows it.
+ * Provides the behavior on a drop event in the "Class" Diagram.
  *
- * @author Arthur Daussy
+ * @author Laurent Fasani
  */
-public class GenericWebExternalDropBehaviorProvider implements IWebExternalSourceToRepresentationDropBehaviorProvider {
+public class ClassDropBehaviorProvider implements IWebExternalSourceToRepresentationDropBehaviorProvider {
 
     private final IViewCreationHelper viewHelper;
 
     private DiagramNavigator diagramNavigator;
 
-    public GenericWebExternalDropBehaviorProvider(IViewCreationHelper viewHelper, DiagramNavigator diagramNavigator) {
-        this.diagramNavigator = diagramNavigator;
+    public ClassDropBehaviorProvider(IViewCreationHelper viewHelper, DiagramNavigator diagramNavigator) {
+        this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.viewHelper = Objects.requireNonNull(viewHelper);
     }
 

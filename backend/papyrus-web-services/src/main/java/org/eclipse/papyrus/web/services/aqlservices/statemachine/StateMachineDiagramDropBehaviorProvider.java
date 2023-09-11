@@ -14,11 +14,12 @@
 package org.eclipse.papyrus.web.services.aqlservices.statemachine;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDropOnNodeSwitch;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 
 /**
@@ -48,7 +49,7 @@ public class StateMachineDiagramDropBehaviorProvider implements IWebExternalSour
     @Override
     public void handleDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         if (targetNode != null) {
-            new GenericDropOnNodeSwitch(targetNode, this.viewHelper, this.diagramNavigator).doSwitch(droppedElement);
+            new SemanticDropSwitch(Optional.of(targetNode), this.viewHelper, this.diagramNavigator).doSwitch(droppedElement);
         } else {
             // nothing is something is dropped in the diagram
         }

@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.services.aqlservices.profile;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
@@ -21,12 +22,12 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.ProfileExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.ProfileExternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDropOnDiagramSwitch;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDropOnNodeSwitch;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.Node;
 
 /**
  * Provides the behavior on a drop event in the "Profile" Diagram.
@@ -84,25 +85,14 @@ public class ProfileDropBehaviorProvider implements IWebExternalSourceToRepresen
      */
     @Override
     public void handleDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
-        if (targetNode != null) {
-            new GenericDropOnNodeSwitch(targetNode, this.viewHelper, this.diagramNavigator) //
-                    .withDropChecker(new ProfileExternalSourceToRepresentationDropChecker()) //
-                    .withDropProvider(new ProfileExternalSourceToRepresentationDropBehaviorProvider()) //
-                    .withCrossRef(this.crossRef) //
-                    .withEditableChecker(this.editableChecker) //
-                    .withEObjectResolver(this::getSemanticObject) //
-                    .doSwitch(droppedElement);
-        } else {
-            String rootDiagramId = this.diagramNavigator.getDiagram().getTargetObjectId();
-            EObject semanticRootDiagram = (EObject) this.getSemanticObject(rootDiagramId);
-            new GenericDropOnDiagramSwitch(this.viewHelper) //
-                    .withDropChecker(new ProfileExternalSourceToRepresentationDropChecker()) //
-                    .withDropProvider(new ProfileExternalSourceToRepresentationDropBehaviorProvider()) //
-                    .withCrossRef(this.crossRef) //
-                    .withEditableChecker(this.editableChecker) //
-                    .withSemanticRootDiagram(semanticRootDiagram) //
-                    .doSwitch(droppedElement);
-        }
+        Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
+        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator) //
+                .withDropChecker(new ProfileExternalSourceToRepresentationDropChecker()) //
+                .withDropProvider(new ProfileExternalSourceToRepresentationDropBehaviorProvider()) //
+                .withCrossRef(this.crossRef) //
+                .withEditableChecker(this.editableChecker) //
+                .withEObjectResolver(this::getSemanticObject) //
+                .doSwitch(droppedElement);
     }
 
     private Object getSemanticObject(String id) {
