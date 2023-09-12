@@ -1,69 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (c) 2023 CEA LIST, Obeo. 
+ Copyright (c) 2023 CEA LIST, Obeo.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
 
-This program and the accompanying 
-materials are made available under the terms of the Eclipse Public License 
-v2.0 which accompanies this distribution, and is available at https://www.eclipse.org/legal/epl-2.0/ 
-SPDX-License-Identifier: EPL-2.0
+ SPDX-License-Identifier: EPL-2.0
 
-Contributors: Obeo - initial API and implementation
+ Contributors:
+     Obeo - initial API and implementation
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.6</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>papyrus-web</groupId>
+		<artifactId>papyrus-web-parent</artifactId>
+		<version>2023.3.0</version>
+		<relativePath>../papyrus-web-parent</relativePath>
 	</parent>
-	<groupId>papyrus-web</groupId>
 	<artifactId>papyrus-web-custom-widgets-view</artifactId>
-	<version>2023.3.0</version>
 	<name>papyrus-web-custom-widgets-view</name>
 	<description>View support for the papyrus custom widgets</description>
 
-	<properties>
-		<java.version>17</java.version>
-		<sirius.components.version>2023.8.0</sirius.components.version>
-	</properties>
 
-	<repositories>
-		<repository>
-			<id>Central</id>
-			<url>https://repo.maven.apache.org/maven2</url>
-		</repository>
-		<repository>
-			<id>github-sirius-emfjson</id>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
+
+		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.common</artifactId>
-			<version>2.21.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.ecore</artifactId>
-			<version>2.23.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>${sirius.components.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -71,17 +48,27 @@ Contributors: Obeo - initial API and implementation
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<configLocation>../papyrus-web-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<failsOnError>true</failsOnError>
+					<consoleOutput>true</consoleOutput>
+					<!-- Exclude source gen folder from checkstyle -->
+					<sourceDirectories>
+					</sourceDirectories>
+				</configuration>
 				<executions>
 					<execution>
-						<id>attach-sources</id>
+						<id>validate</id>
+						<phase>validate</phase>
 						<goals>
-							<goal>jar</goal>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

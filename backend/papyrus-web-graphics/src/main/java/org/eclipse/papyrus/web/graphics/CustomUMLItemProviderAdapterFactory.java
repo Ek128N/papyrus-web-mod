@@ -32,13 +32,17 @@ public class CustomUMLItemProviderAdapterFactory extends UMLItemProviderAdapterF
                 return adapter;
             }
         }
+        final Adapter result;
         if (type == IItemLabelProvider.class) {
             final IItemLabelProvider delegate = (IItemLabelProvider) this.createAdapter(target, type);
             ItemProviderAdapter wrapper = new ReplaceGIFtoSVGItemProvider(this, delegate);
             this.associate(wrapper, target);
-            return wrapper;
+            result = wrapper;
+        } else {
+
+            result = this.adaptNew(target, type);
         }
-        return this.adaptNew(target, type);
+        return result;
     }
 
 }
