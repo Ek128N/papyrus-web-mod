@@ -110,27 +110,56 @@ public class CreationViewHelper implements IViewCreationHelper {
 
     @Override
     public boolean createChildView(EObject self, org.eclipse.sirius.components.diagrams.Node selectedNode) {
+        return this.createChildView(self, selectedNode, null);
+    }
+
+    @Override
+    public boolean createChildView(EObject self, Node selectedNode, String mappingName) {
+        boolean result = false;
         org.eclipse.sirius.components.view.diagram.NodeDescription targetNodeDescription = this.getViewNodeDescription(selectedNode.getDescriptionId()).orElse(null);
         if (targetNodeDescription != null) {
-            org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = this.getChildrenCandidateOfType(targetNodeDescription, self.eClass());
-            if (childrenType != null //
-                    && !IdBuilder.isFakeChildNode(
-                            childrenType) /* Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164 */) {
-                return this.createView(self, selectedNode, childrenType);
+            final org.eclipse.sirius.components.view.diagram.NodeDescription childrenType;
+            if (mappingName == null) {
+                childrenType = this.getChildrenNodeDescriptionsOfType(targetNodeDescription, self.eClass());
+            } else {
+                childrenType = this.getChildrenNodeDescriptionsWithName(targetNodeDescription, mappingName);
+            }
+            if (childrenType != null) {
+                if (!IdBuilder.isFakeChildNode(
+                        childrenType)) { /*
+                                          * Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164
+                                          */
+                    result = this.createView(self, selectedNode, childrenType);
+                }
+            } else {
+                LOGGER.warn("No view description with name {0}", mappingName);
+                result = false;
             }
         }
-        return false;
+        return result;
     }
 
     @Override
     public boolean createRootView(EObject self) {
-        org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = this.getChildrenCandidateOfType(null, self.eClass());
-        if (childrenType != null) {
-            return this.createView(self, null, childrenType);
+        return this.createRootView(self, null);
+    }
+
+    @Override
+    public boolean createRootView(EObject self, String mappingName) {
+        boolean result = false;
+        final org.eclipse.sirius.components.view.diagram.NodeDescription childrenType;
+        if (mappingName == null) {
+            childrenType = this.getChildrenNodeDescriptionsOfType(null, self.eClass());
         } else {
-            LOGGER.warn(MessageFormat.format("No root view description for type {0}", self.eClass().getName())); //$NON-NLS-1$
+            childrenType = this.getChildrenNodeDescriptionsWithName(null, mappingName);
         }
-        return false;
+        if (childrenType != null) {
+            result = this.createView(self, null, childrenType);
+        } else {
+            LOGGER.warn(MessageFormat.format("No root view description with name {0}", mappingName));
+            result = false;
+        }
+        return result;
     }
 
     @Override
@@ -199,7 +228,7 @@ public class CreationViewHelper implements IViewCreationHelper {
         }
     }
 
-    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenCandidateOfType(org.eclipse.sirius.components.view.diagram.NodeDescription parent, EClass eClass) {
+    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsOfType(org.eclipse.sirius.components.view.diagram.NodeDescription parent, EClass eClass) {
 
         final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
         final String parentName;
@@ -221,16 +250,46 @@ public class CreationViewHelper implements IViewCreationHelper {
                 // We want to keep the more specialized description type first
                 .sorted(Comparator.comparingInt(n -> -1 * this.computeDistanceToElement(UMLHelper.toEClass(n.getDomainType())))).collect(toList());
         if (candidates.isEmpty()) {
-            LOGGER.error(MessageFormat.format("No possible children of type {0} on {1}", eClass.getName(), parentName)); //$NON-NLS-1$
+            LOGGER.error(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName)); //$NON-NLS-1$
             return null;
         } else {
             org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = candidates.get(0);
             if (candidates.size() > 1) {
                 LOGGER.info(
-                        MessageFormat.format("More than on candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName())); //$NON-NLS-1$
+                        MessageFormat.format("More than one candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName())); //$NON-NLS-1$
             }
             return byDefault;
 
+        }
+    }
+
+    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsWithName(org.eclipse.sirius.components.view.diagram.NodeDescription parent, String mappingName) {
+        final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
+        final String parentName;
+        if (parent == null) {
+            parentName = this.diagramDescription.getName();
+            descriptions.addAll(this.diagramDescription.getNodeDescriptions());
+        } else {
+            parentName = parent.getName();
+            descriptions.addAll(parent.getChildrenDescriptions());
+            descriptions.addAll(parent.getBorderNodesDescriptions());
+            descriptions.addAll(parent.getReusedBorderNodeDescriptions());
+            descriptions.addAll(parent.getReusedChildNodeDescriptions());
+
+        }
+
+        List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()//
+                .distinct()//
+                .filter(c -> c.getName().equals(mappingName)).toList();
+        if (candidates.isEmpty()) {
+            LOGGER.error(MessageFormat.format("No candidate for children with mapping name {0} on {1}", mappingName, parentName));
+            return null;
+        } else {
+            org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = candidates.get(0);
+            if (candidates.size() > 1) {
+                LOGGER.info(MessageFormat.format("More than one candidate for children with mapping name {0} on {1}. By default use the first one", mappingName, parentName));
+            }
+            return byDefault;
         }
     }
 

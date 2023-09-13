@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices.profile;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
@@ -29,6 +30,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Namespace;
 import org.springframework.stereotype.Service;
 
 /**
@@ -68,6 +71,26 @@ public class ProfileDiagramService extends AbstractDiagramService {
                 this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
                 new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
         return dropProvider;
+    }
+
+    /**
+     * Provides Meta{@link Class} candidates.
+     *
+     * @param container
+     *            the current container in which looking for the Meta{@link Class}.
+     * @return the Meta{@link Class} list.
+     */
+    public List<? extends Class> getMetaclassPRD(EObject container) {
+        List<? extends Class> importedElementCandidates = List.of();
+        if (container instanceof Namespace) {
+            importedElementCandidates = ((Namespace) container).getElementImports().stream() //
+                    .map(ei -> ei.getImportedElement()) //
+                    .filter(Class.class::isInstance) //
+                    .map(Class.class::cast)//
+                    .filter(c -> c.isMetaclass()) //
+                    .toList();
+        }
+        return importedElementCandidates;
     }
 
 }

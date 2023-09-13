@@ -36,6 +36,19 @@ public interface IViewCreationHelper {
     boolean createChildView(EObject self, org.eclipse.sirius.components.diagrams.Node selectedNode);
 
     /**
+     * Creates a child {@code mappingName} view representing {@code self} in the provided {@code selectedNode}.
+     *
+     * @param self
+     *            the semantic element to represent
+     * @param selectedNode
+     *            the selected node
+     * @param mappingName
+     *            the name of the mapping to use to create the view
+     * @return {@code true} if a creation request has been made, {@code false} otherwise
+     */
+    boolean createChildView(EObject self, org.eclipse.sirius.components.diagrams.Node selectedNode, String mappingName);
+
+    /**
      * Creates a view on root of the diagram.
      *
      * @param self
@@ -43,6 +56,17 @@ public interface IViewCreationHelper {
      * @return <code>true</code> if a creation request has been made, <code>false</code> otherwise
      */
     boolean createRootView(EObject self);
+
+    /**
+     * Creates a {@code mappingName} view on the root of the diagram.
+     *
+     * @param self
+     *            the semantic element to represent
+     * @param mappingName
+     *            the name of the mapping to use to create the view
+     * @return {@code true} if a creation request has been made, {@code false} otherwise
+     */
+    boolean createRootView(EObject self, String mappingName);
 
     /**
      * Creates a child view on the selected node.
@@ -70,7 +94,17 @@ public interface IViewCreationHelper {
         }
 
         @Override
+        public boolean createChildView(EObject self, Node selectedNode, String mappingName) {
+            return false;
+        }
+
+        @Override
         public boolean createRootView(EObject self) {
+            return false;
+        }
+
+        @Override
+        public boolean createRootView(EObject self, String mappingName) {
             return false;
         }
 

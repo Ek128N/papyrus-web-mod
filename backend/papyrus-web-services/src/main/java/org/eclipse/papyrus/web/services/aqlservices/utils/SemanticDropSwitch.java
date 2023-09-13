@@ -30,6 +30,7 @@ import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeSourc
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeTargetsProvider;
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
+import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -37,6 +38,7 @@ import org.eclipse.uml2.uml.ActivityEdge;
 import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Connector;
+import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.InterruptibleActivityRegion;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Relationship;
@@ -217,6 +219,23 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
         return this.createDnDEdgeView(message);
     }
 
+    // This case is mandatory because ElementImport is a Relationship so it will
+    // work with caseRelationship instead of Default Case
+    @Override
+    public Boolean caseElementImport(ElementImport elementImport) {
+        Boolean isDragAndDropValid = Boolean.FALSE;
+        DnDStatus status = null;
+        if (this.dropChecker != null && this.dropProvider != null) {
+            status = this.semanticDragAndDrop(elementImport);
+            isDragAndDropValid = this.createElementImportDragAndDropView(status);
+        } else {
+            // default case when no dropChecker neither dropProvider are defined
+            // ex. : org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebExternalDropBehaviorProvider
+            isDragAndDropValid = this.createDefaultView(elementImport);
+        }
+        return isDragAndDropValid;
+    }
+
     @Override
     public Boolean defaultCase(EObject object) {
         Boolean isDragAndDropValid = Boolean.FALSE;
@@ -240,7 +259,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
      *
      * @param status
      *            status of the previous DragAndDrop which contains elements to display
-     * @return <code>true</code> if all views have been created, <code>false</code> otherwise
+     * @return {@code true} if all views have been created, {@code false} otherwise
      */
     private Boolean createDragAndDropView(DnDStatus status) {
         Boolean isDragAndDropValid = Boolean.TRUE;
@@ -262,11 +281,35 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
     }
 
     /**
+     * Create views for elements to display after an {@link ElementImport} DragAndDrop.
+     *
+     * @param status
+     *            status of the previous {@link ElementImport} DragAndDrop which contains elements to display
+     * @return <code>true</code> if all views have been created, <code>false</code> otherwise
+     */
+    private Boolean createElementImportDragAndDropView(DnDStatus status) {
+        Boolean isDragAndDropValid = Boolean.FALSE;
+        if (status != null && status.getState() != State.FAILED) {
+            isDragAndDropValid = Boolean.TRUE;
+            for (EObject eObjectToDisplay : status.getElementsToDisplay()) {
+                if (this.selectedNode != null) {
+                    // case DnD on Node
+                    isDragAndDropValid = isDragAndDropValid && this.createChildView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+                } else {
+                    // case DnD on Diagram
+                    isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+                }
+            }
+        }
+        return isDragAndDropValid;
+    }
+
+    /**
      * Create default view for a given element.
      *
      * @param object
      *            the object to represent with a view
-     * @return <code>true</code> if the view has been created, <code>false</code> otherwise
+     * @return {@code true} if the view has been created, {@code false} otherwise
      */
     private Boolean createDefaultView(EObject object) {
         Boolean isDragAndDropValid;
@@ -309,14 +352,39 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
     }
 
     /**
-     * Create view in the selected Node matching with a given semantic Object.
+     * Creates a view in the selected node for the provided {@code eObjectToDisplay}.
+     * <p>
+     * This method computes the best possible mapping for the provided {@code eObjectToDisplay}. See
+     * {@link #createChildView(EObject, String)} to specify which mapping to use to create the view.
+     * </p>
      *
      * @param eObjectToDisplay
      *            the semantic Object to represent on the selected node
-     * @return <code>true</code> if the view has been created, <code>false</code> otherwise
+     * @return {@code true} if the view has been created, {@code false} otherwise
+     *
+     * @see #createChildView(EObject, String)
      */
     private boolean createChildView(EObject eObjectToDisplay) {
-        boolean success = this.viewHelper.createChildView(eObjectToDisplay, this.selectedNode);
+        return this.createChildView(eObjectToDisplay, null);
+    }
+
+    /**
+     * Creates a {@code mappingName} view in the selected node for the provided {@code eObjectToDisplay}.
+     * <p>
+     * This method computes the best possible mapping if the provided {@code mappingName} is {@code null}. See
+     * {@link #createChildView(EObject)} for more information.
+     * </p>
+     *
+     * @param eObjectToDisplay
+     *            the semantic Object to represent on the selected node
+     * @param mappingName
+     *            the name of the mapping to use to create the view
+     * @return {@code true} if the view has been created, {@code false} otherwise
+     *
+     * @see #createChildView(EObject)
+     */
+    private boolean createChildView(EObject eObjectToDisplay, String mappingName) {
+        boolean success = this.viewHelper.createChildView(eObjectToDisplay, this.selectedNode, mappingName);
         if (!success) {
             // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
             // If DnD on an icon label element contained by a compartment then DnD the element in the
@@ -326,7 +394,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
             parentNode//
                     .flatMap(this.diagramNavigator::getDescription)//
                     .filter(desc -> desc.getName().endsWith(COMPARTMENT_NODE_SUFFIX)).ifPresent(parentDescription -> {
-                        this.viewHelper.createChildView(eObjectToDisplay, parentNode.get());
+                        this.viewHelper.createChildView(eObjectToDisplay, parentNode.get(), mappingName);
                     });
         }
         return success;
@@ -347,7 +415,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
     /**
      * Get the semantic target represented by the diagram.
      *
-     * @return the semantic target represented by the diagram.
+     * @return the semantic target represented by the diagram
      */
     private EObject getSemanticDiagram() {
         Diagram diagram = this.diagramNavigator.getDiagram();
@@ -360,7 +428,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
      * @param semanticElementEdge
      *            the semantic element on which the domain based edge is based on
      *
-     * @return <code>true</code> if source or target view of edge have been created, <code>false</code> otherwise
+     * @return {@code true} if source or target view of edge have been created, {@code false} otherwise
      */
     private Boolean createDnDEdgeView(final EObject semanticElementEdge) {
         // edge are synchronized : no view need to be created
@@ -374,7 +442,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
      * @param semanticElementEdge
      *            the semantic element on which the domain based edge is based on
      *
-     * @return <code>true</code> if source or target view have been created, <code>false</code> otherwise
+     * @return {@code true} if source or target view have been created, {@code false} otherwise
      */
     private Boolean createSourceAndTargetView(EObject semanticElementEdge) {
         Boolean success = Boolean.FALSE;
@@ -402,7 +470,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
      * @param semanticEnd
      *            the semantic element to represent by a view
      *
-     * @return <code>true</code> if the semantic element view has been created, <code>false</code> otherwise
+     * @return {@code true} if the semantic element view has been created, {@code false} otherwise
      */
     private Boolean createEndView(EObject semanticEnd) {
         Boolean success = Boolean.FALSE;

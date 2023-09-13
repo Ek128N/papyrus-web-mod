@@ -36,8 +36,10 @@ import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Enumeration;
+import org.eclipse.uml2.uml.Extension;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -74,6 +76,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     public static final String PRD_PREFIX = "PRD_";
 
+    public static final String PRD_METACLASS = PRD_PREFIX + "Metaclass";
+
     private static final Predicate<NodeDescription> PACKAGE_CHILDREN_FILTER = n -> n.getName().endsWith(PACKAGE_CHILD);
 
     private UMLPackage umlPackage = UMLPackage.eINSTANCE;
@@ -99,6 +103,14 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createClassDescription(diagramDescription);
         this.createDataTypeDescription(diagramDescription);
         this.createStereotypeDescription(diagramDescription);
+
+        /*
+         * This call needs to be below createClassDescription: PRD_Class and PRD_Metaclass are defined at the same
+         * level, so the method that selects the best mapping candidate will return the first found. Ensuring PRD_Class
+         * is found first makes view creation/DnD easier to define: we just have to handle the metaclass case, which is
+         * way less common than the class case.
+         */
+        this.createMetaclassDescription(diagramDescription);
 
         this.createPrimitiveTypeDescription(diagramDescription);
         this.createEnumerationDescription(diagramDescription);
@@ -135,8 +147,9 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 p.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), this.umlPackage.getProfile()));
             });
             String childrenCandidateExpression = CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getPackage_PackagedElement());
-            List<NodeDescription> copiedClassifier = diagramDescription.getNodeDescriptions().stream().filter(
-                    n -> this.isValidNodeDescription(n, false, false, this.umlPackage.getPackageableElement()) && !this.isValidNodeDescription(n, false, false, this.umlPackage.getConstraint()))
+            List<NodeDescription> copiedClassifier = diagramDescription
+                    .getNodeDescriptions().stream().filter(n -> this.isValidNodeDescription(n, false, false, this.umlPackage.getPackageableElement())
+                            && !this.isValidNodeDescription(n, false, false, this.umlPackage.getConstraint()) && !n.getName().equals(PRD_METACLASS))
                     .map(n -> this.transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
             prdPackageDescription.getChildrenDescriptions().addAll(copiedClassifier);
         });
@@ -308,6 +321,37 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     /**
+     * Create the {@link NodeDescription} representing an UML {@link PrimitiveType}.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createMetaclassDescription(DiagramDescription diagramDescription) {
+        EClass metaclassEClass = this.umlPackage.getClass_();
+        NodeDescription prdMetaclassDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+                .name(PRD_METACLASS) //
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
+                .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
+                .build();
+
+        diagramDescription.getNodeDescriptions().add(prdMetaclassDescription);
+
+        /*
+         * Reuse the mapping in profile to allow the representation of metaclasses in sub-level profiles.
+         */
+        this.registerCallback(prdMetaclassDescription, () -> {
+            List<NodeDescription> ownerNodeDescriptions = this.collectNodesWithDomain(diagramDescription, this.umlPackage.getProfile());
+            for (NodeDescription ownerNodeDescription : ownerNodeDescriptions) {
+                if (ownerNodeDescription != prdMetaclassDescription.eContainer()) {
+                    ownerNodeDescription.getReusedChildNodeDescriptions().add(prdMetaclassDescription);
+                }
+            }
+        });
+    }
+
+    /**
      * Create the {@link NodeDescription} representing an UML {@link Enumeration}.
      * 
      * @param diagramDescription
@@ -345,7 +389,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
     private void createAssociationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceAndTargetDescriptionSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getClassifier());
+        Supplier<List<NodeDescription>> sourceAndTargetDescriptionSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getClassifier()).stream()
+                .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS)).toList();
 
         EClass association = this.umlPackage.getAssociation();
         EdgeDescription prdAssociationDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(association, this.getQueryBuilder().queryAllReachableExactType(association),
@@ -401,17 +446,19 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
     private void createGeneralizationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceAndTargetDescriptionSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getClassifier());
+        Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getClassifier()).stream()
+                .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS)).toList();
+        Supplier<List<NodeDescription>> targetDescriptionSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getClassifier());
 
         EClass generalization = this.umlPackage.getGeneralization();
         EdgeDescription prdGeneralizationDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(generalization,
-                this.getQueryBuilder().queryAllReachableExactType(generalization), sourceAndTargetDescriptionSupplier, sourceAndTargetDescriptionSupplier);
+                this.getQueryBuilder().queryAllReachableExactType(generalization), sourceDescriptionSupplier, targetDescriptionSupplier);
         prdGeneralizationDescription.getStyle().setLineStyle(LineStyle.SOLID);
         prdGeneralizationDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
         prdGeneralizationDescription.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
         EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(prdGeneralizationDescription, this.umlPackage.getClassifier_Generalization());
         this.registerCallback(prdGeneralizationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionSupplier, creationTool);
+            CreationToolsUtil.addEdgeCreationTool(sourceDescriptionSupplier, creationTool);
         });
 
         diagramDescription.getEdgeDescriptions().add(prdGeneralizationDescription);
