@@ -27,9 +27,7 @@ import org.eclipse.papyrus.uml.domain.services.UMLHelper;
 import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
-import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
-import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -46,7 +44,6 @@ import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.Generalization;
@@ -104,6 +101,14 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         NodeDescription sharedDescription = this.createSharedDescription(diagramDescription);
         this.createSharedUseCaseDescription(diagramDescription, sharedDescription);
+        List<EClass> commentAndConstraintOwners = List.of(this.umlPackage.getPackage(), //
+                this.umlPackage.getActivity(), //
+                this.umlPackage.getClass_(), //
+                this.umlPackage.getComponent(), //
+                this.umlPackage.getInteraction(), //
+                this.umlPackage.getStateMachine());
+        this.createCommentDescriptionInNodeDescription(diagramDescription, sharedDescription, commentAndConstraintOwners);
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, sharedDescription, commentAndConstraintOwners);
 
         this.createAbstractionDescription(diagramDescription);
         this.createAssociationDescription(diagramDescription);
@@ -116,47 +121,10 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createRealizationDescription(diagramDescription);
         this.createUsageDescription(diagramDescription);
 
-        this.createCommentDescription(diagramDescription);
-        this.createConstraintDescription(diagramDescription);
+        this.createCommentDescriptionInDiagramDescription(diagramDescription);
+        this.createConstraintDescriptionInDiagramDescription(diagramDescription);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
-    }
-
-    /**
-     * Creates the {@link NodeDescription} representing an UML {@link Constraint}.
-     * 
-     * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
-     */
-    private void createConstraintDescription(DiagramDescription diagramDescription) {
-        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withColor(this.styleProvider.getConstraintColor()) //
-                .withDomainType(this.umlPackage.getConstraint()) //
-                .withAnnotedDomainType(this.umlPackage.getElement()) //
-                .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
-                .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
-                .withContainmentReference(this.umlPackage.getNamespace_OwnedRule()) //
-                .withNoteToElementReference(this.umlPackage.getConstraint_ConstrainedElement()) //
-                .buildIn(diagramDescription);
-    }
-
-    /**
-     * Creates the {@link NodeDescription} representing an UML {@link Comment}.
-     * 
-     * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
-     */
-    @Override
-    protected void createCommentDescription(DiagramDescription diagramDescription) {
-        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withColor(this.styleProvider.getNoteColor()) //
-                .withDomainType(this.umlPackage.getComment()) //
-                .withAnnotedDomainType(this.umlPackage.getElement()) //
-                .withReconnectSourceService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE) //
-                .withReconnectTargetService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE) //
-                .withContainmentReference(this.umlPackage.getElement_OwnedComment()) //
-                .withNoteToElementReference(this.umlPackage.getComment_AnnotatedElement()) //
-                .buildIn(diagramDescription);
     }
 
     /**
@@ -185,9 +153,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                     .map(n -> this.transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
             ucdPackage.getChildrenDescriptions().addAll(copiedClassifier);
         });
-
-        this.registerNodeAsCommentOwner(ucdPackage, diagramDescription);
-        this.registerNodeAsConstraintOwner(ucdPackage, diagramDescription);
     }
 
     /**
@@ -209,8 +174,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         if (UMLPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass)) {
             // Add Package children into Package_inPackage child
             this.collectAndReusedChildNodes(n, this.umlPackage.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
-            this.registerNodeAsCommentOwner(n, diagramDescription);
-            this.registerNodeAsConstraintOwner(n, diagramDescription);
         }
         return n;
     }
@@ -288,8 +251,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
             CreationToolsUtil.addNodeCreationTool(packageOwners, createUcdClassTool);
             diagramDescription.getPalette().getNodeTools().add(createUcdClassTool);
         });
-        this.registerNodeAsCommentOwner(subjectAsClassifierDescription, diagramDescription);
-        this.registerNodeAsConstraintOwner(subjectAsClassifierDescription, diagramDescription);
     }
 
     /**

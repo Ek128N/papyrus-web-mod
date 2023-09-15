@@ -21,9 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
-import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
-import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -36,8 +34,6 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.Comment;
-import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.Generalization;
@@ -92,6 +88,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
+        NodeDescription prdSharedDescription = this.createSharedDescription(diagramDescription);
+        this.createCommentDescriptionInNodeDescription(diagramDescription, prdSharedDescription, List.of(this.umlPackage.getPackage()));
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, prdSharedDescription, List.of(this.umlPackage.getPackage()));
+
         this.createPackageDescription(diagramDescription);
 
         this.createProfileDescription(diagramDescription);
@@ -107,53 +107,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createExtensionDescription(diagramDescription);
         this.createGeneralizationDescription(diagramDescription);
 
-        this.createCommentDescription(diagramDescription);
-        this.createConstraintDescription(diagramDescription);
+        this.createCommentDescriptionInDiagramDescription(diagramDescription);
+        this.createConstraintDescriptionInDiagramDescription(diagramDescription);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
 
-    }
-
-    /**
-     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment}.
-     * <p>
-     * This method overrides
-     * {@link AbstractRepresentationDescriptionBuilder#createCommentDescription(DiagramDescription)}, which is
-     * deprecated and should be removed.
-     * </p>
-     *
-     * @param diagramDescription
-     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     */
-    @Override
-    protected void createCommentDescription(DiagramDescription diagramDescription) {
-        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withColor(this.styleProvider.getNoteColor()) //
-                .withDomainType(this.umlPackage.getComment()) //
-                .withAnnotedDomainType(this.umlPackage.getElement()) //
-                .withReconnectSourceService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE) //
-                .withReconnectTargetService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE) //
-                .withContainmentReference(this.umlPackage.getElement_OwnedComment()) //
-                .withNoteToElementReference(this.umlPackage.getComment_AnnotatedElement()) //
-                .buildIn(diagramDescription);
-    }
-
-    /**
-     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint}.
-     * 
-     * @param diagramDescription
-     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     */
-    private void createConstraintDescription(DiagramDescription diagramDescription) {
-        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withColor(this.styleProvider.getConstraintColor()) //
-                .withDomainType(this.umlPackage.getConstraint()) //
-                .withAnnotedDomainType(this.umlPackage.getElement()) //
-                .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
-                .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
-                .withContainmentReference(this.umlPackage.getNamespace_OwnedRule()) //
-                .withNoteToElementReference(this.umlPackage.getConstraint_ConstrainedElement()) //
-                .buildIn(diagramDescription);
     }
 
     /**
@@ -182,10 +140,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                     .map(n -> this.transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
             prdPackageDescription.getChildrenDescriptions().addAll(copiedClassifier);
         });
-
-        this.registerNodeAsCommentOwner(prdPackageDescription, diagramDescription);
-        this.registerNodeAsConstraintOwner(prdPackageDescription, diagramDescription);
-
     }
 
     /**
@@ -206,8 +160,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         if (UMLPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass)) {
             this.collectAndReusedChildNodes(n, this.umlPackage.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
-            this.registerNodeAsCommentOwner(n, diagramDescription);
-            this.registerNodeAsConstraintOwner(n, diagramDescription);
         }
         return n;
     }
@@ -227,9 +179,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // TODO uncomment next line when setColor is restored possibly in 2023.10.0
         // prdProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         this.collectAndReusedChildNodes(prdProfileDescription, this.umlPackage.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
-
-        this.registerNodeAsCommentOwner(prdProfileDescription, diagramDescription);
-        this.registerNodeAsConstraintOwner(prdProfileDescription, diagramDescription);
     }
 
     /**

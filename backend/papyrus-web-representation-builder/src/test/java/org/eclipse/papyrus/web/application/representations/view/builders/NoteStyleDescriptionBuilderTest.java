@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -39,7 +40,6 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,11 +112,8 @@ public class NoteStyleDescriptionBuilderTest {
         assertEquals("100", nodeDescription.getStyle().getHeightComputationExpression());
         assertFalse(nodeDescription.getStyle().isShowIcon());
 
-        assertEquals(1, this.diagramDescription.getPalette().getNodeTools().size());
-        NodeTool nodeTool = this.diagramDescription.getPalette().getNodeTools().get(0);
-        assertEquals("New Comment", nodeTool.getName());
-        // Do not test the body of the node tool, this is handled by ViewBuilder.createCreationTool.
-        assertFalse(nodeTool.getBody().isEmpty());
+        // The builder does not create creation tools
+        assertTrue(this.diagramDescription.getPalette().getNodeTools().isEmpty());
 
         assertEquals(1, this.diagramDescription.getEdgeDescriptions().size());
         EdgeDescription edgeDescription = this.diagramDescription.getEdgeDescriptions().get(0);
@@ -175,11 +172,7 @@ public class NoteStyleDescriptionBuilderTest {
         assertEquals("100", childNodeDescription.getStyle().getHeightComputationExpression());
         assertFalse(childNodeDescription.getStyle().isShowIcon());
 
-        assertEquals(1, diagChildNodeDescription.getPalette().getNodeTools().size());
-        NodeTool nodeTool = diagChildNodeDescription.getPalette().getNodeTools().get(0);
-        assertEquals("New Comment", nodeTool.getName());
-        // Do not test the body of the node tool, this is handled by ViewBuilder.createCreationTool.
-        assertFalse(nodeTool.getBody().isEmpty());
+        assertTrue(diagChildNodeDescription.getPalette().getNodeTools().isEmpty());
 
         assertEquals(1, this.diagramDescription.getEdgeDescriptions().size());
         EdgeDescription edgeDescription = this.diagramDescription.getEdgeDescriptions().get(0);

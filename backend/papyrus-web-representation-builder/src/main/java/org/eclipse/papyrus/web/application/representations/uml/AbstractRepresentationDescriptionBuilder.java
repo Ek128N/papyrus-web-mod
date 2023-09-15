@@ -376,6 +376,123 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     }
 
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment}.
+     * <p>
+     * This method is used to create a shared {@link Comment} {@link NodeDescription} that is attached to all the
+     * provided {@code owners}. Note that this method replaces {@link #createCommentDescription(DiagramDescription)},
+     * which is deprecated and should be removed. The created {@link NodeDescription} is contained in the given
+     * {@code parentNodeDescription}.
+     * </p>
+     *
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param parentNodeDescription
+     *            the {@link NodeDescription} containing the shared {@link Comment} {@link NodeDescription}
+     * @param owners
+     *            the semantic types that can contain a {@link Comment}
+     */
+    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
+        NodeDescription commentDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
+                .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getComment(), SHARED_SUFFIX)) //
+                .withColor(this.styleProvider.getNoteColor()) //
+                .withDomainType(this.pack.getComment()) //
+                .withAnnotedDomainType(this.pack.getElement()) //
+                .withReconnectSourceService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE) //
+                .withReconnectTargetService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE) //
+                .withContainmentReference(this.pack.getElement_OwnedComment()) //
+                .withNoteToElementReference(this.pack.getComment_AnnotatedElement()) //
+                .buildIn(diagramDescription, parentNodeDescription);
+
+        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment());
+        this.reuseNodeAndCreateTool(commentDescription, diagramDescription, nodeTool, owners.toArray(EClass[]::new));
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment} on
+     * the diagram background.
+     * <p>
+     * This method is used to create a {@link Comment} {@link NodeDescription} that can be represented on the background
+     * of the diagram. The created {@link NodeDescription} can represent any {@link Comment} in the diagram, even if it
+     * isn't contained by the diagram itself. The created {@link NodeDescription} is contained in the provided
+     * {@code diagramDescription}.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the {@link Comment} {@link NodeDescription}
+     */
+    protected void createCommentDescriptionInDiagramDescription(DiagramDescription diagramDescription) {
+        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
+                .withColor(this.styleProvider.getNoteColor()) //
+                .withDomainType(this.pack.getComment()) //
+                .withAnnotedDomainType(this.pack.getElement()) //
+                .withSemanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getComment())) //
+                .withReconnectSourceService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE) //
+                .withReconnectTargetService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE) //
+                .withContainmentReference(this.pack.getElement_OwnedComment()) //
+                .withNoteToElementReference(this.pack.getComment_AnnotatedElement()) //
+                .buildIn(diagramDescription);
+        NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment());
+        diagramDescription.getPalette().getNodeTools().add(nodeTool);
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint}.
+     * <p>
+     * This method is used to create a shared {@link Constraint} {@link NodeDescription} that is attached to all the
+     * provided {@code owners}. The created {@link NodeDescription} is contained in the given
+     * {@code parentNodeDescription}.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param parentNodeDescription
+     *            the {@link NodeDescription} containing the shared {@link Constraint} {@link NodeDescription}
+     * @param owners
+     *            the semantic types that can contain a {@link Constraint}
+     */
+    protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
+        NodeDescription constraintDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
+                .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getConstraint(), SHARED_SUFFIX)) //
+                .withColor(this.styleProvider.getConstraintColor()) //
+                .withDomainType(this.pack.getConstraint()) //
+                .withAnnotedDomainType(this.pack.getElement()) //
+                .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
+                .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
+                .withContainmentReference(this.pack.getNamespace_OwnedRule()) //
+                .withNoteToElementReference(this.pack.getConstraint_ConstrainedElement()) //
+                .buildIn(diagramDescription, parentNodeDescription);
+
+        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
+        this.reuseNodeAndCreateTool(constraintDescription, diagramDescription, nodeTool, owners.toArray(EClass[]::new));
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint} on
+     * the diagram background.
+     * <p>
+     * This method is used to create a {@link Constraint} {@link NodeDescription} that can be represented on the
+     * background of the diagram. The created {@link NodeDescription} can represent any {@link Constraint} in the
+     * diagram, even if it isn't contained by the diagram itself. The created {@link NodeDescription} is contained in
+     * the provided {@code diagramDescription}.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the {@link Constraint} {@link NodeDescription}
+     */
+    protected void createConstraintDescriptionInDiagramDescription(DiagramDescription diagramDescription) {
+        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
+                .withColor(this.styleProvider.getConstraintColor()) //
+                .withDomainType(this.pack.getConstraint()) //
+                .withAnnotedDomainType(this.pack.getElement()) //
+                .withSemanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getConstraint())) //
+                .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
+                .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
+                .withContainmentReference(this.pack.getNamespace_OwnedRule()) //
+                .withNoteToElementReference(this.pack.getConstraint_ConstrainedElement()) //
+                .buildIn(diagramDescription);
+        NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
+        diagramDescription.getPalette().getNodeTools().add(nodeTool);
+    }
+
     private void addAnnotatedElementReconnectionTools(EdgeDescription annotedElementEdge) {
         ChangeContext sourceReconnectionOperation = this.getViewBuilder().createChangeContextOperation(new CallQuery(SEMANTIC_OTHER_END)
                 .callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, Variables.SEMANTIC_RECONNECTION_TARGET));

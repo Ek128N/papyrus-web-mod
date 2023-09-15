@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
+import org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
@@ -75,6 +76,10 @@ public class NoteStyleDescriptionBuilder {
     private String reconnectTargetService;
 
     private UserColor color;
+
+    private String semanticCandidateExpression;
+
+    private String name;
 
     /**
      * Creates an instance of the builder with the provided parameters.
@@ -198,50 +203,86 @@ public class NoteStyleDescriptionBuilder {
     }
 
     /**
+     * Sets the semantic candidate expression of the {@link NodeDescription} to create.
+     * <p>
+     * This parameter is <b>optional</b>. If it isn't provided, the semantic candidate expression will match the
+     * provided containment reference (see {@link #withContainmentReference(EReference)}).
+     * </p>
+     * 
+     * @param semanticCandidateExpression
+     *            the semantic candidate expression to set in the {@link NodeDescription}
+     * @return this builder
+     */
+    public NoteStyleDescriptionBuilder withSemanticCandidateExpression(String semanticCandidateExpression) {
+        this.semanticCandidateExpression = semanticCandidateExpression;
+        return this;
+    }
+
+    /**
+     * Sets the name of the {@link NodeDescription} to create.
+     * <p>
+     * This parameter is <b>optional</b>. If it isn't provided, the name is computed based on the given
+     * {@code domainType} (see {@link #withDomainType(EClass)}).
+     * </p>
+     * 
+     * @param name
+     *            the name of the {@link NodeDescription}
+     * @return this builder
+     */
+    public NoteStyleDescriptionBuilder withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Builds the {@link NodeDescription} representing the note in the provided {@code diagramDescription} at the
      * diagram level.
      * <p>
-     * This method creates the node description itself, but also the creation/deletion tools, as well as the edge
-     * representation between the note and the annotated elements and its corresponding tools. The
-     * {@link NodeDescription} is then added to parent {@code diagramDescription}.
+     * This method creates the node description itself, but also its deletion tool, as well as the edge representation
+     * between the note and the annotated elements and its corresponding tools. The {@link NodeDescription} is then
+     * added to parent {@code diagramDescription}.
+     * </p>
+     * <p>
+     * This method does not create the creation tool for the {@link NodeDescription}.
      * </p>
      * 
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @return the created {@link NodeDescription}
      * 
      * @throws NullPointerException
      *             if one of the mandatory builder parameters is {@code null}.
      */
-    public void buildIn(DiagramDescription diagramDescription) {
-        NodeDescription noteStyleDescription = createNoteStyleDescription(diagramDescription);
-
-        diagramDescription.getPalette().getNodeTools().add(viewBuilder.createCreationTool(containmentReference, domainType));
+    public NodeDescription buildIn(DiagramDescription diagramDescription) {
+        NodeDescription noteStyleDescription = this.createNoteStyleDescription(diagramDescription);
         diagramDescription.getNodeDescriptions().add(noteStyleDescription);
-
-        createAnnotatedEdge(diagramDescription, noteStyleDescription);
+        this.createAnnotatedEdge(diagramDescription, noteStyleDescription);
+        return noteStyleDescription;
     }
 
     /**
      * Builds the {@link NodeDescription} representing the note and adds it as the child of {@code nodeDescription}.
      * <p>
-     * This method creates the node description itself, but also the creation/deletion tools, as well as the edge
-     * representation between the note and the annotated elements and its corresponding tools. The
-     * {@link NodeDescription} is then added to parent {@code nodeDescription}.
+     * This method creates the node description itself, but also the deletion tool, as well as the edge representation
+     * between the note and the annotated elements and its corresponding tools. The {@link NodeDescription} is then
+     * added to parent {@code nodeDescription}.
+     * </p>
+     * <p>
+     * This method does not create the creation tool for the {@link NodeDescription}.
      * </p>
      * 
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @return the created {@link NodeDescription}
      * 
      * @throws NullPointerException
      *             if one of the mandatory builder parameters is {@code null}.
      */
-    public void buildIn(DiagramDescription diagramDescription, NodeDescription nodeDescription) {
-        NodeDescription noteStyleDescription = createNoteStyleDescription(diagramDescription);
-
+    public NodeDescription buildIn(DiagramDescription diagramDescription, NodeDescription nodeDescription) {
+        NodeDescription noteStyleDescription = this.createNoteStyleDescription(diagramDescription);
         nodeDescription.getChildrenDescriptions().add(noteStyleDescription);
-        nodeDescription.getPalette().getNodeTools().add(viewBuilder.createCreationTool(containmentReference, domainType));
-
-        createAnnotatedEdge(diagramDescription, noteStyleDescription);
+        this.createAnnotatedEdge(diagramDescription, noteStyleDescription);
+        return noteStyleDescription;
     }
 
     /**
@@ -265,7 +306,15 @@ public class NoteStyleDescriptionBuilder {
         Objects.requireNonNull(this.noteToElementReference);
         Objects.requireNonNull(this.reconnectSourceService);
         Objects.requireNonNull(this.reconnectTargetService);
-        NodeDescription noteStyleDescription = this.viewBuilder.createNoteStyleUnsynchonizedNodeDescription(this.domainType, this.queryBuilder.queryAllReachable(this.domainType));
+        if (this.semanticCandidateExpression == null) {
+            this.semanticCandidateExpression = CallQuery.queryAttributeOnSelf(this.containmentReference);
+        }
+
+        NodeDescription noteStyleDescription = this.viewBuilder.createNoteStyleUnsynchonizedNodeDescription(this.domainType, this.semanticCandidateExpression);
+        if (this.name != null) {
+            noteStyleDescription.setName(this.name);
+        }
+
         noteStyleDescription.getStyle().setWidthComputationExpression("200"); //$NON-NLS-1$
         noteStyleDescription.getStyle().setHeightComputationExpression("100"); //$NON-NLS-1$
 
@@ -287,28 +336,30 @@ public class NoteStyleDescriptionBuilder {
      *            the {@link NodeStyleDescription} containing the edge creation tool
      */
     private void createAnnotatedEdge(DiagramDescription diagramDescription, NodeDescription noteStyleDescription) {
-        EdgeDescription annotedElementEdge = this.viewBuilder.createFeatureEdgeDescription(//
-                this.idBuilder.getFeatureBaseEdgeId(this.noteToElementReference), //
-                this.queryBuilder.emptyString(), //
-                CallQuery.queryAttributeOnSelf(this.noteToElementReference), //
-                () -> this.collectNodesWithDomain(diagramDescription, this.domainType), //
-                () -> this.collectNodesWithDomain(diagramDescription, this.annotedDomainType));
+        String featureBaseEdgeId = this.idBuilder.getFeatureBaseEdgeId(this.noteToElementReference);
+        if (diagramDescription.getEdgeDescriptions().stream().noneMatch(edgeDescription -> edgeDescription.getName().equals(featureBaseEdgeId))) {
+            // The diagram doesn't contain the featureBaseEdgeId Edge, we have to create it.
+            EdgeDescription annotedElementEdge = this.viewBuilder.createFeatureEdgeDescription(//
+                    this.idBuilder.getFeatureBaseEdgeId(this.noteToElementReference), //
+                    this.queryBuilder.emptyString(), //
+                    CallQuery.queryAttributeOnSelf(this.noteToElementReference), //
+                    () -> this.collectNodesWithDomain(diagramDescription, this.domainType), //
+                    () -> this.collectNodesWithDomain(diagramDescription, this.annotedDomainType));
+            DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
+            deleteTool.setName("Remove " + this.domainType.getName()); // $NON_NLS-1$
+            ChangeContext deleteToolChangeContext = ViewFactory.eINSTANCE.createChangeContext();
+            deleteToolChangeContext
+                    .setExpression(CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, this.queryBuilder.aqlString(this.noteToElementReference.getName()), Variables.SEMANTIC_EDGE_TARGET));
+            deleteTool.getBody().add(deleteToolChangeContext);
+            annotedElementEdge.getPalette().setDeleteTool(deleteTool);
+            this.addAnnotatedElementReconnectionTools(annotedElementEdge);
+            annotedElementEdge.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
+            annotedElementEdge.getStyle().setLineStyle(LineStyle.DASH);
+            diagramDescription.getEdgeDescriptions().add(annotedElementEdge);
+        }
 
-        DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
-        deleteTool.setName("Remove " + this.domainType.getName()); // $NON_NLS-1$
-        ChangeContext deleteToolChangeContext = ViewFactory.eINSTANCE.createChangeContext();
-        deleteToolChangeContext
-                .setExpression(CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, this.queryBuilder.aqlString(this.noteToElementReference.getName()), Variables.SEMANTIC_EDGE_TARGET));
-        deleteTool.getBody().add(deleteToolChangeContext);
-
-        annotedElementEdge.getPalette().setDeleteTool(deleteTool);
-
-        this.addAnnotatedElementReconnectionTools(annotedElementEdge);
-
-        annotedElementEdge.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
-        annotedElementEdge.getStyle().setLineStyle(LineStyle.DASH);
-        diagramDescription.getEdgeDescriptions().add(annotedElementEdge);
-
+        // Create the edge creation tool and attach it to the noteStyleDescription. This has to be done even if the Edge
+        // already exists in the diagram.
         noteStyleDescription.eAdapters().add(new CallbackAdapter(() -> {
             EdgeTool creationTool = this.viewBuilder.createFeatureBasedEdgeTool("New Link", //$NON-NLS-1$
                     this.queryBuilder.queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.noteToElementReference, Variables.SEMANTIC_EDGE_TARGET), //
@@ -387,7 +438,10 @@ public class NoteStyleDescriptionBuilder {
      */
     protected boolean isValidNodeDescription(NodeDescription node, boolean includeCompartment, boolean includeListItem, EClass... domains) {
         final boolean result;
-        if (!includeCompartment && IdBuilder.isCompartmentNode(node)) {
+        if (node.getName().equals(AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS)) {
+            // Ignore SHARED_DESCRIPTIONS: we don't want to have it be the source/target of any edge.
+            result = false;
+        } else if (!includeCompartment && IdBuilder.isCompartmentNode(node)) {
             result = false;
         } else if (!includeCompartment && this.isCompartmentChildren(node)) {
             result = false;
