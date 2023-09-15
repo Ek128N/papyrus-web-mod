@@ -71,25 +71,25 @@ public class OpaqueBehaviorUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsAbstract(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
                 "aql:self.getFeatureDescription('isAbstract')", "aql:self.eClass().getEStructuralFeature('isAbstract').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsActive(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isActive", "aql:'Is active'", "feature:isActive", "aql:self.set('isActive',newValue)",
                 "aql:self.getFeatureDescription('isActive')", "aql:self.eClass().getEStructuralFeature('isActive').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsReentrant(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReentrant", "aql:'Is reentrant'", "feature:isReentrant", "aql:self.set('isReentrant',newValue)",
                 "aql:self.getFeatureDescription('isReentrant')", "aql:self.eClass().getEStructuralFeature('isReentrant').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -97,25 +97,25 @@ public class OpaqueBehaviorUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addLanguage(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createLanguageExpresionDescription("language", "aql:'Language'", "aql:self.getFeatureDescription('language')",
                 "aql:self.eClass().getEStructuralFeature('language').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addSpecification(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
                 "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addUseCase(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
                 "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

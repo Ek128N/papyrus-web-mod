@@ -74,13 +74,13 @@ public class RemoveStructuralFeatureValueActionUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsRemoveDuplicates(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isRemoveDuplicates", "aql:'Is remove duplicates'", "feature:isRemoveDuplicates",
                 "aql:self.set('isRemoveDuplicates',newValue)", "aql:self.getFeatureDescription('isRemoveDuplicates')", "aql:self.eClass().getEStructuralFeature('isRemoveDuplicates').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -88,55 +88,55 @@ public class RemoveStructuralFeatureValueActionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addObject(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("object", "aql:'Object'", "aql:self.getFeatureDescription('object')",
                 "aql:self.eClass().getEStructuralFeature('object').changeable", "aql:'object'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addRemoveAt(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("removeAt", "aql:'Remove at'", "aql:self.getFeatureDescription('removeAt')",
                 "aql:self.eClass().getEStructuralFeature('removeAt').changeable", "aql:'removeAt'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addResult(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("result", "aql:'Result'", "aql:self.getFeatureDescription('result')",
                 "aql:self.eClass().getEStructuralFeature('result').changeable", "aql:'result'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addStructuralFeature(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("structuralFeature", "aql:'Structural feature'", "aql:self.getFeatureDescription('structuralFeature')",
                 "aql:self.eClass().getEStructuralFeature('structuralFeature').changeable", "aql:'structuralFeature'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
                 "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addLocalPostcondition(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
                 "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addLocalPrecondition(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
                 "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addHandler(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
                 "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

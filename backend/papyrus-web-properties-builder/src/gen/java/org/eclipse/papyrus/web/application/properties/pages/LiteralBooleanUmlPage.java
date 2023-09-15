@@ -64,13 +64,13 @@ public class LiteralBooleanUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createRadioDescription("value", "aql:'Value'", "aql:self.value", "aql:self.set('value',newValue)", "aql:self.getBooleanEnumerations()",
                 "aql:candidate.toString()", "aql:self.getFeatureDescription('value')", "aql:self.eClass().getEStructuralFeature('value').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

@@ -65,19 +65,19 @@ public class ExceptionHandlerUmlPage {
     protected void addExceptionInput(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("exceptionInput", "aql:'Exception Input'", "aql:self.getFeatureDescription('exceptionInput')",
                 "aql:self.eClass().getEStructuralFeature('exceptionInput').changeable", "aql:'exceptionInput'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addHandlerBody(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("handlerBody", "aql:'Handler body'", "aql:self.getFeatureDescription('handlerBody')",
                 "aql:self.eClass().getEStructuralFeature('handlerBody').changeable", "aql:'handlerBody'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addExceptionType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("exceptionType", "aql:'Exception type'", "aql:self.getFeatureDescription('exceptionType')",
                 "aql:self.eClass().getEStructuralFeature('exceptionType').changeable", "aql:'exceptionType'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

@@ -34,6 +34,6 @@ public class LiteralIntegerUmlPageCustomImpl extends LiteralIntegerUmlPage {
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("value", "aql:'Value'", "aql:self.getLiteralIntegerValue()",
                 "aql:self.oclAsType(uml::LiteralInteger).setLiteralIntegerValue(newValue)", "aql:self.getFeatureDescription('value')", "aql:self.eClass().getEStructuralFeature('value').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 }

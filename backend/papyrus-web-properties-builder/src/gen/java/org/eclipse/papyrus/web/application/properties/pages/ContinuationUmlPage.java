@@ -65,13 +65,13 @@ public class ContinuationUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addSetting(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("setting", "aql:'Setting'", "feature:setting", "aql:self.set('setting',newValue)",
                 "aql:self.getFeatureDescription('setting')", "aql:self.eClass().getEStructuralFeature('setting').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -79,7 +79,7 @@ public class ContinuationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

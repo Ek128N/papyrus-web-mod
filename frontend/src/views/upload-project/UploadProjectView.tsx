@@ -11,20 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql } from '@apollo/client';
-import { FileUpload, Form, FormContainer, sendFile } from '@eclipse-sirius/sirius-components';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMachine } from '@xstate/react';
 import { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
+import { FileUpload } from '../../core/file-upload/FileUpload';
+import { sendFile } from '../../core/sendFile';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import {
   SchemaValue,
   UploadProjectEvent,
-  uploadProjectMachine,
   UploadProjectViewContext,
+  uploadProjectMachine,
 } from './UploadProjectViewMachine';
 
 const uploadProjectMutation = gql`
@@ -44,6 +47,11 @@ const uploadProjectMutation = gql`
 `.loc.source.body;
 
 const useUploadProjectViewStyles = makeStyles((theme) => ({
+  uploadProjectViewContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(8),
+  },
   uploadProjectView: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -54,10 +62,25 @@ const useUploadProjectViewStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
   },
+  titleContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingBottom: theme.spacing(2),
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'start',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    '& > *': {
+      marginBottom: theme.spacing(2),
+    },
   },
 }));
 
@@ -67,9 +90,9 @@ export const UploadProjectView = () => {
   const { uploadProjectView, toast } = value as SchemaValue;
   const { file, newProjectId, message } = context;
 
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  const onUploadProject = async (event) => {
+  const onUploadProject = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const variables = {
       input: {
@@ -110,21 +133,31 @@ export const UploadProjectView = () => {
       <NavigationBar />
       <main className={classes.main}>
         <Container maxWidth="sm">
-          <FormContainer title="Upload a project" subtitle="Start with an existing project">
-            <Form onSubmit={onUploadProject} encType="multipart/form-data">
-              <FileUpload onFileSelected={onFileSelected} data-testid="file" />
-              <div className={classes.buttons}>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  disabled={uploadProjectView !== 'fileSelected'}
-                  data-testid="upload-project">
-                  Upload
-                </Button>
-              </div>
-            </Form>
-          </FormContainer>
+          <div className={classes.uploadProjectViewContainer}>
+            <div className={classes.titleContainer}>
+              <Typography variant="h2" align="center" gutterBottom>
+                Upload a project
+              </Typography>
+              <Typography variant="h4" align="center" gutterBottom>
+                Start with an existing project
+              </Typography>
+            </div>
+            <Paper>
+              <form onSubmit={onUploadProject} encType="multipart/form-data" className={classes.form}>
+                <FileUpload onFileSelected={onFileSelected} data-testid="file" />
+                <div className={classes.buttons}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    disabled={uploadProjectView !== 'fileSelected'}
+                    data-testid="upload-project">
+                    Upload
+                  </Button>
+                </div>
+              </form>
+            </Paper>
+          </div>
         </Container>
       </main>
       <Toast message={message} open={toast === 'visible'} onClose={() => dispatch({ type: 'HIDE_TOAST' })} />

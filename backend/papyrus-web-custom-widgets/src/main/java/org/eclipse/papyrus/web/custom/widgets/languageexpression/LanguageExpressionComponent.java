@@ -24,6 +24,7 @@ import java.util.function.Function;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.dto.MoveLanguageDirection;
+import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IComponent;
@@ -180,8 +181,16 @@ public class LanguageExpressionComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         LanguageExpressionDescription languageExpressionDescription = this.props.getLanguageExpressionDescription();
 
-        String id = languageExpressionDescription.getIdProvider().apply(variableManager);
         String label = languageExpressionDescription.getLabelProvider().apply(variableManager);
+
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, languageExpressionDescription.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, languageExpressionDescription.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = languageExpressionDescription.getIdProvider().apply(idVariableManager);
+
+
+
         String iconURL = languageExpressionDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = languageExpressionDescription.getIsReadOnlyProvider().apply(variableManager);
 

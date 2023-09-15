@@ -67,19 +67,19 @@ public class GeneralizationSetUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsCovering(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isCovering", "Is covering", "feature:isCovering", "aql:self.set('isCovering',newValue)",
                 "aql:self.getFeatureDescription('isCovering')", "aql:self.eClass().getEStructuralFeature('isCovering').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsDisjoint(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDisjoint", "Is disjoint", "feature:isDisjoint", "aql:self.set('isDisjoint',newValue)",
                 "aql:self.getFeatureDescription('isDisjoint')", "aql:self.eClass().getEStructuralFeature('isDisjoint').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -87,13 +87,13 @@ public class GeneralizationSetUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addPowerType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("powerType", "aql:'Powertype'", "aql:self.getFeatureDescription('powertype')",
                 "aql:self.eClass().getEStructuralFeature('powertype').changeable", "aql:'powertype'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

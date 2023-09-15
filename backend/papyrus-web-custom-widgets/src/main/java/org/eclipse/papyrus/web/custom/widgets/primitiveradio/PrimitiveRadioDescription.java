@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 
-
 /**
  * Primitive radio widget description.
  *
@@ -105,6 +104,8 @@ public final class PrimitiveRadioDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, IStatus> newValueHandler;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -149,6 +150,11 @@ public final class PrimitiveRadioDescription extends AbstractWidgetDescription {
             return this;
         }
 
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
+            return this;
+        }
+
         public PrimitiveRadioDescription build() {
             PrimitiveRadioDescription primitiveRadioDescription = new PrimitiveRadioDescription();
             primitiveRadioDescription.id = Objects.requireNonNull(this.id);
@@ -160,6 +166,7 @@ public final class PrimitiveRadioDescription extends AbstractWidgetDescription {
             primitiveRadioDescription.candidateValueProvider = Objects.requireNonNull(this.candidateValueProvider);
             primitiveRadioDescription.newValueHandler = Objects.requireNonNull(this.newValueHandler);
             primitiveRadioDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            primitiveRadioDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             return primitiveRadioDescription;
         }
     }

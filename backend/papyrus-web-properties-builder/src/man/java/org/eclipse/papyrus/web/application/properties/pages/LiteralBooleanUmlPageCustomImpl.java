@@ -45,6 +45,6 @@ public class LiteralBooleanUmlPageCustomImpl extends LiteralBooleanUmlPage {
                 "aql:self.eClass().getEStructuralFeature('value').changeable");
         widget.getChildren().add(trueCheck);
         widget.getChildren().add(falseCheck);
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 }

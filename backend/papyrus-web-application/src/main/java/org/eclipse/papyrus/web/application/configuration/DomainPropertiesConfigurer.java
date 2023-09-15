@@ -68,7 +68,7 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
         URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(DomainPropertiesConfigurer.class.getCanonicalName().getBytes()));
         Resource resource = new XMIResourceImpl(uri);
-        View view = ViewFactory.eINSTANCE.createView();
+        View view = org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createView();
         resource.getContents().add(view);
         view.getDescriptions().add(viewFormDescription);
 
@@ -101,11 +101,11 @@ public class DomainPropertiesConfigurer implements IPropertiesDescriptionRegistr
         group.setName("Core Properties");
         group.setLabelExpression("Core Properties");
         group.setSemanticCandidatesExpression("aql:self");
-        group.getWidgets().add(this.createStringAttributeEditWidget("Name", DomainPackage.Literals.NAMED_ELEMENT__NAME.getName()));
-        group.getWidgets().add(this.createTypeSelectorWidget());
-        group.getWidgets().add(this.createBooleanAttributeEditWidget("Optional", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
-        group.getWidgets().add(this.createBooleanAttributeEditWidget("Many", DomainPackage.Literals.FEATURE__MANY.getName()));
-        group.getWidgets().add(this.createCardinalityLabel());
+        group.getChildren().add(this.createStringAttributeEditWidget("Name", DomainPackage.Literals.NAMED_ELEMENT__NAME.getName()));
+        group.getChildren().add(this.createTypeSelectorWidget());
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Optional", DomainPackage.Literals.FEATURE__OPTIONAL.getName()));
+        group.getChildren().add(this.createBooleanAttributeEditWidget("Many", DomainPackage.Literals.FEATURE__MANY.getName()));
+        group.getChildren().add(this.createCardinalityLabel());
         return group;
     }
 

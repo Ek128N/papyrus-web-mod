@@ -68,7 +68,7 @@ public class BehaviorExecutionSpecificationUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -76,25 +76,25 @@ public class BehaviorExecutionSpecificationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addBehavior(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("behavior", "aql:'Behavior'", "aql:self.getFeatureDescription('behavior')",
                 "aql:self.eClass().getEStructuralFeature('behavior').changeable", "aql:'behavior'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addFinish(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("finish", "aql:'Finish'", "aql:self.getFeatureDescription('finish')",
                 "aql:self.eClass().getEStructuralFeature('finish').changeable", "aql:'finish'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addStart(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("start", "aql:'Start'", "aql:self.getFeatureDescription('start')",
                 "aql:self.eClass().getEStructuralFeature('start').changeable", "aql:'start'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

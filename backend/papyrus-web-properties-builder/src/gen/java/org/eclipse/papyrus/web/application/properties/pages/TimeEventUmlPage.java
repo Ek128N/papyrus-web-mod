@@ -66,13 +66,13 @@ public class TimeEventUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsRelative(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isRelative", "aql:'Is relative'", "feature:isRelative", "aql:self.set('isRelative',newValue)",
                 "aql:self.getFeatureDescription('isRelative')", "aql:self.eClass().getEStructuralFeature('isRelative').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -80,13 +80,13 @@ public class TimeEventUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addWhen(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("when", "aql:'When'", "aql:self.getFeatureDescription('when')",
                 "aql:self.eClass().getEStructuralFeature('when').changeable", "aql:'when'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

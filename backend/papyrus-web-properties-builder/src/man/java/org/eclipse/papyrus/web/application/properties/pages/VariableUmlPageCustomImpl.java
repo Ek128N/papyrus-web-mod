@@ -39,7 +39,7 @@ public class VariableUmlPageCustomImpl extends VariableUmlPage {
     protected void addIsUnique(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "aql:self._isUnique", "aql:self.set('isUnique',newValue)",
                 "aql:self.getFeatureDescription('isUnique')", "aql:self.eClass().getEStructuralFeature('isUnique').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

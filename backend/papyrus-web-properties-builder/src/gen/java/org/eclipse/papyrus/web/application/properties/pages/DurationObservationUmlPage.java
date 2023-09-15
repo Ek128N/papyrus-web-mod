@@ -67,7 +67,7 @@ public class DurationObservationUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -75,19 +75,19 @@ public class DurationObservationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addFirstEvent(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createListDescription("firstEvent", "First event", "feature:firstEvent", "", "aql:false", "aql:self.getFeatureDescription('firstEvent')",
                 "aql:self.eClass().getEStructuralFeature('firstEvent').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addEvent(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("event", "aql:'Event'", "aql:self.getFeatureDescription('event')",
                 "aql:self.eClass().getEStructuralFeature('event').changeable", "aql:'event'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

@@ -64,13 +64,13 @@ public class ElementCommentsPage {
     protected void addAppliedComment(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("appliedComment", "aql:'Applied comments'", "aql:'The list of comments applied to this element'",
                 "aql:self.eClass().getEStructuralFeature('ownedComment').changeable", "aql:'ownedComment'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOwnedComment(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedComment", "aql:'Owned comments'", "aql:self.getFeatureDescription('ownedComment')",
                 "aql:self.eClass().getEStructuralFeature('ownedComment').changeable", "aql:'ownedComment'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

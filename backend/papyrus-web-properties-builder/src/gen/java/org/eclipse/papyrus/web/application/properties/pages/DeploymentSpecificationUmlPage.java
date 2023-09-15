@@ -73,31 +73,31 @@ public class DeploymentSpecificationUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addDeploymentLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("deploymentLocation", "aql:'Deployment location'", "feature:deploymentLocation",
                 "aql:self.set('deploymentLocation',newValue)", "aql:self.getFeatureDescription('deploymentLocation')", "aql:self.eClass().getEStructuralFeature('deploymentLocation').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addExecutionLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("executionLocation", "aql:'Execution location'", "feature:executionLocation",
                 "aql:self.set('executionLocation',newValue)", "aql:self.getFeatureDescription('executionLocation')", "aql:self.eClass().getEStructuralFeature('executionLocation').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addFileName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("fileName", "aql:'File name'", "feature:fileName", "aql:self.set('fileName',newValue)",
                 "aql:self.getFeatureDescription('fileName')", "aql:self.eClass().getEStructuralFeature('fileName').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsAbstract(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
                 "aql:self.getFeatureDescription('isAbstract')", "aql:self.eClass().getEStructuralFeature('isAbstract').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -105,31 +105,31 @@ public class DeploymentSpecificationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addManifestation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("manifestation", "aql:'Manifestation'", "aql:self.getFeatureDescription('manifestation')",
                 "aql:self.eClass().getEStructuralFeature('manifestation').changeable", "aql:'manifestation'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
                 "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOwnedOperation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
                 "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addUseCase(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
                 "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

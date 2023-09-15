@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 /**
@@ -79,6 +80,8 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseWidgetDescription(languageExpressionWidgetDescription);
                 if (result == null)
+                    result = this.caseFormElementDescription(languageExpressionWidgetDescription);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -87,6 +90,8 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
                 T result = this.casePrimitiveRadioWidgetDescription(primitiveRadioWidgetDescription);
                 if (result == null)
                     result = this.caseWidgetDescription(primitiveRadioWidgetDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(primitiveRadioWidgetDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -124,6 +129,21 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Element Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Element Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseFormElementDescription(FormElementDescription object) {
         return null;
     }
 

@@ -77,7 +77,8 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
      * Computes the file extension to be used with the key to specify an image
      * resource.
      *
-     * @param key the key for the imagine.
+     * @param key
+     *            the key for the imagine.
      * @return the file extension to be used with the key to specify an image
      *         resource.
      */

@@ -68,31 +68,31 @@ public class LinkEndCreationDataUmlPage {
     protected void addIsReplaceAll(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isReplaceAll", "aql:'Is replace all'", "feature:isReplaceAll", "aql:self.set('isReplaceAll',newValue)",
                 "aql:self.getFeatureDescription('isReplaceAll')", "aql:self.eClass().getEStructuralFeature('isReplaceAll').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addEnd(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("end", "aql:'End'", "aql:self.getFeatureDescription('end')",
                 "aql:self.eClass().getEStructuralFeature('end').changeable", "aql:'end'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addInsertAt(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("insertAt", "aql:'Insert at'", "aql:self.getFeatureDescription('insertAt')",
                 "aql:self.eClass().getEStructuralFeature('insertAt').changeable", "aql:'insertAt'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
                 "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addQualifier(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("qualifier", "aql:'Qualifier'", "aql:self.getFeatureDescription('qualifier')",
                 "aql:self.eClass().getEStructuralFeature('qualifier').changeable", "aql:'qualifier'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

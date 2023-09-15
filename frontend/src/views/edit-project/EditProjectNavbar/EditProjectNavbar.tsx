@@ -11,8 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useSubscription } from '@apollo/client';
-import { DeleteProjectModal, RenameProjectModal } from '@eclipse-sirius/sirius-components';
-import { ServerContext, Toast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, Toast } from '@eclipse-sirius/sirius-components-core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -28,6 +27,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { useMachine } from '@xstate/react';
 import React, { useContext, useEffect } from 'react';
 import { Redirect, Link as RouterLink } from 'react-router-dom';
+import { DeleteProjectModal } from '../../../modals/delete-project/DeleteProjectModal';
+import { RenameProjectModal } from '../../../modals/rename-project/RenameProjectModal';
 import { NavigationBar } from '../../../navigationBar/NavigationBar';
 import { EditProjectNavbarProps, GQLProjectEventSubscription } from './EditProjectNavbar.types';
 
@@ -81,7 +82,7 @@ const useEditProjectViewNavbarStyles = makeStyles((theme) => ({
 
 export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
   const classes = useEditProjectViewNavbarStyles();
-  const { httpOrigin } = useContext(ServerContext);
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   const [{ value, context }, dispatch] = useMachine<EditProjectNavbarContext, EditProjectNavbarEvent>(
     editProjectNavbarMachine,
@@ -103,14 +104,14 @@ export const EditProjectNavbar = ({ project }: EditProjectNavbarProps) => {
     },
     fetchPolicy: 'no-cache',
     skip: navbar === 'complete',
-    onSubscriptionData: ({ subscriptionData }) => {
+    onData: ({ data }) => {
       const handleDataEvent: HandleSubscriptionResultEvent = {
         type: 'HANDLE_SUBSCRIPTION_RESULT',
-        result: subscriptionData,
+        result: data,
       };
       dispatch(handleDataEvent);
     },
-    onSubscriptionComplete: () => {
+    onComplete: () => {
       const completeEvent: HandleCompleteEvent = { type: 'HANDLE_COMPLETE' };
       dispatch(completeEvent);
     },

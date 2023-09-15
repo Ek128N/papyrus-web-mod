@@ -67,7 +67,7 @@ public class TimeIntervalUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -75,25 +75,25 @@ public class TimeIntervalUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addMin(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("min", "aql:'Min'", "aql:self.getFeatureDescription('min')",
                 "aql:self.eClass().getEStructuralFeature('min').changeable", "aql:'min'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addMax(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("max", "aql:'Max'", "aql:self.getFeatureDescription('max')",
                 "aql:self.eClass().getEStructuralFeature('max').changeable", "aql:'max'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
                 "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

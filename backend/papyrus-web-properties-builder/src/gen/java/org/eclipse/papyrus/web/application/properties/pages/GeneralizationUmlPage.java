@@ -63,7 +63,7 @@ public class GeneralizationUmlPage {
     protected void addIsSubstitutable(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isSubstitutable", "Is substitutable", "feature:isSubstitutable", "aql:self.set('isSubstitutable',newValue)",
                 "aql:self.getFeatureDescription('isSubstitutable')", "aql:self.eClass().getEStructuralFeature('isSubstitutable').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

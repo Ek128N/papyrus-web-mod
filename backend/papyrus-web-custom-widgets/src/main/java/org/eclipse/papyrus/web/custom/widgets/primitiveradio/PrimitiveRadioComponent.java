@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -40,8 +41,13 @@ public class PrimitiveRadioComponent implements IComponent {
         VariableManager variableManager = this.props.getVariableManager();
         PrimitiveRadioDescription primitiveRadio = this.props.getPrimitiveRadioDescription();
 
-        String id = primitiveRadio.getIdProvider().apply(variableManager);
         String label = primitiveRadio.getLabelProvider().apply(variableManager);
+        VariableManager idVariableManager = variableManager.createChild();
+        idVariableManager.put(FormComponent.TARGET_OBJECT_ID, primitiveRadio.getTargetObjectIdProvider().apply(variableManager));
+        idVariableManager.put(FormComponent.CONTROL_DESCRIPTION_ID, primitiveRadio.getId());
+        idVariableManager.put(FormComponent.WIDGET_LABEL, label);
+        String id = primitiveRadio.getIdProvider().apply(idVariableManager);
+
         String iconURL = primitiveRadio.getIconURLProvider().apply(variableManager);
         Boolean readOnly = primitiveRadio.getIsReadOnlyProvider().apply(variableManager);
         String value = primitiveRadio.getCandidateValueProvider().apply(variableManager);

@@ -65,13 +65,13 @@ public class InterruptibleActivityRegionUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addInterruptingEdge(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("interruptingEdge", "aql:'Interrupting edge'", "aql:self.getFeatureDescription('interruptingEdge')",
                 "aql:self.eClass().getEStructuralFeature('interruptingEdge').changeable", "aql:'interruptingEdge'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

@@ -67,7 +67,7 @@ public class CombinedFragmentUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addInteractionOperator(GroupDescription group) {
@@ -75,7 +75,7 @@ public class CombinedFragmentUmlPage {
                 "aql:self.eClass().getEStructuralFeature('interactionOperator').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.interactionOperator.toString())",
                 "aql:self.set('interactionOperator',newValue.instance)", "aql:self.eClass().getEStructuralFeature('interactionOperator').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('interactionOperator')", "aql:self.eClass().getEStructuralFeature('interactionOperator').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -83,13 +83,13 @@ public class CombinedFragmentUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addCovered(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("covered", "aql:'Covered'", "aql:self.getFeatureDescription('covered')",
                 "aql:self.eClass().getEStructuralFeature('covered').changeable", "aql:'covered'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

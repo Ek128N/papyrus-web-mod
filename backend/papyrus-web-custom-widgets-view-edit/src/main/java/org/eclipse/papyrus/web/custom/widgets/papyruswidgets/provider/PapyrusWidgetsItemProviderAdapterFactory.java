@@ -41,6 +41,8 @@ import org.eclipse.papyrus.web.custom.widgets.PapyrusWebCustomWidgetsEditPlugin;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsAdapterFactory;
 import org.eclipse.sirius.components.view.form.FlexboxContainerDescription;
+import org.eclipse.sirius.components.view.form.FormElementFor;
+import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.util.FormSwitch;
@@ -89,11 +91,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      * @generated
      */
     public PapyrusWidgetsItemProviderAdapterFactory() {
-        this.supportedTypes.add(IEditingDomainItemProvider.class);
-        this.supportedTypes.add(IStructuredItemContentProvider.class);
-        this.supportedTypes.add(ITreeItemContentProvider.class);
-        this.supportedTypes.add(IItemLabelProvider.class);
-        this.supportedTypes.add(IItemPropertySource.class);
+        supportedTypes.add(IEditingDomainItemProvider.class);
+        supportedTypes.add(IStructuredItemContentProvider.class);
+        supportedTypes.add(ITreeItemContentProvider.class);
+        supportedTypes.add(IItemLabelProvider.class);
+        supportedTypes.add(IItemPropertySource.class);
     }
 
     /**
@@ -114,12 +116,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createLanguageExpressionWidgetDescriptionAdapter() {
-        if (this.languageExpressionWidgetDescriptionItemProvider == null) {
-            this.languageExpressionWidgetDescriptionItemProvider = new LanguageExpressionWidgetDescriptionItemProvider(
-                    this);
+        if (languageExpressionWidgetDescriptionItemProvider == null) {
+            languageExpressionWidgetDescriptionItemProvider = new LanguageExpressionWidgetDescriptionItemProvider(this);
         }
 
-        return this.languageExpressionWidgetDescriptionItemProvider;
+        return languageExpressionWidgetDescriptionItemProvider;
     }
 
     /**
@@ -140,11 +141,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createPrimitiveRadioWidgetDescriptionAdapter() {
-        if (this.primitiveRadioWidgetDescriptionItemProvider == null) {
-            this.primitiveRadioWidgetDescriptionItemProvider = new PrimitiveRadioWidgetDescriptionItemProvider(this);
+        if (primitiveRadioWidgetDescriptionItemProvider == null) {
+            primitiveRadioWidgetDescriptionItemProvider = new PrimitiveRadioWidgetDescriptionItemProvider(this);
         }
 
-        return this.primitiveRadioWidgetDescriptionItemProvider;
+        return primitiveRadioWidgetDescriptionItemProvider;
     }
 
     /**
@@ -155,7 +156,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
+        return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
     }
 
     /**
@@ -176,7 +177,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public boolean isFactoryForType(Object type) {
-        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
+        return supportedTypes.contains(type) || super.isFactoryForType(type);
     }
 
     /**
@@ -197,7 +198,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Object adapt(Object object, Object type) {
-        if (this.isFactoryForType(type)) {
+        if (isFactoryForType(type)) {
             Object adapter = super.adapt(object, type);
             if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
                 return adapter;
@@ -214,7 +215,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.addListener(notifyChangedListener);
+        changeNotifier.addListener(notifyChangedListener);
     }
 
     /**
@@ -224,7 +225,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.removeListener(notifyChangedListener);
+        changeNotifier.removeListener(notifyChangedListener);
     }
 
     /**
@@ -235,10 +236,10 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        this.changeNotifier.fireNotifyChanged(notification);
+        changeNotifier.fireNotifyChanged(notification);
 
-        if (this.parentAdapterFactory != null) {
-            this.parentAdapterFactory.fireNotifyChanged(notification);
+        if (parentAdapterFactory != null) {
+            parentAdapterFactory.fireNotifyChanged(notification);
         }
     }
 
@@ -250,10 +251,10 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void dispose() {
-        if (this.languageExpressionWidgetDescriptionItemProvider != null)
-            this.languageExpressionWidgetDescriptionItemProvider.dispose();
-        if (this.primitiveRadioWidgetDescriptionItemProvider != null)
-            this.primitiveRadioWidgetDescriptionItemProvider.dispose();
+        if (languageExpressionWidgetDescriptionItemProvider != null)
+            languageExpressionWidgetDescriptionItemProvider.dispose();
+        if (primitiveRadioWidgetDescriptionItemProvider != null)
+            primitiveRadioWidgetDescriptionItemProvider.dispose();
     }
 
     /**
@@ -304,10 +305,10 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseGroupDescription(GroupDescription object) {
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS,
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__WIDGETS,
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
                 return null;
@@ -320,13 +321,45 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFlexboxContainerDescription(FlexboxContainerDescription object) {
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                newChildDescriptors
+                        .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                newChildDescriptors
+                        .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+
+                return null;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            @Override
+            public Object caseFormElementFor(FormElementFor object) {
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+
+                return null;
+            }
+
+            /**
+             * <!-- begin-user-doc --> <!-- end-user-doc -->
+             *
+             * @generated
+             */
+            @Override
+            public Object caseFormElementIf(FormElementIf object) {
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
                 return null;
             }

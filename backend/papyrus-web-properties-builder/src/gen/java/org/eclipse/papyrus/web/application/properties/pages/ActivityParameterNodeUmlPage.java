@@ -72,13 +72,13 @@ public class ActivityParameterNodeUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsControlType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isControlType", "aql:'Is control type'", "feature:isControlType", "aql:self.set('isControlType',newValue)",
                 "aql:self.getFeatureDescription('isControlType')", "aql:self.eClass().getEStructuralFeature('isControlType').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOrdering(GroupDescription group) {
@@ -86,7 +86,7 @@ public class ActivityParameterNodeUmlPage {
                 "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.ordering.toString())", "aql:self.set('ordering',newValue.instance)",
                 "aql:self.eClass().getEStructuralFeature('ordering').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('ordering')",
                 "aql:self.eClass().getEStructuralFeature('ordering').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -94,37 +94,37 @@ public class ActivityParameterNodeUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addSelection(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("selection", "aql:'Selection'", "aql:self.getFeatureDescription('selection')",
                 "aql:self.eClass().getEStructuralFeature('selection').changeable", "aql:'selection'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
                 "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addParameter(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("parameter", "aql:'Parameter'", "aql:self.getFeatureDescription('parameter')",
                 "aql:self.eClass().getEStructuralFeature('parameter').changeable", "aql:'parameter'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addUpperBound(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("upperBound", "aql:'Upper bound'", "aql:self.getFeatureDescription('upperBound')",
                 "aql:self.eClass().getEStructuralFeature('upperBound').changeable", "aql:'upperBound'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addInState(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("inState", "aql:'In state'", "aql:self.getFeatureDescription('inState')",
                 "aql:self.eClass().getEStructuralFeature('inState').changeable", "aql:'inState'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

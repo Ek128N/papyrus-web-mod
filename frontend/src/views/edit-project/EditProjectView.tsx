@@ -12,12 +12,22 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import { Representation, Toast, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
+import {
+  DiagramPaletteToolContext,
+  DiagramPaletteToolContextValue,
+  DiagramPaletteToolContribution,
+  NodeData,
+} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
   ExplorerView,
   GQLTreeItem,
   TreeItemContextMenuContext,
+  TreeItemContextMenuContextValue,
   TreeItemContextMenuContribution,
+  TreeToolBarContext,
+  TreeToolBarContextValue,
+  TreeToolBarContribution,
 } from '@eclipse-sirius/sirius-components-trees';
 import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import Grid from '@material-ui/core/Grid';
@@ -31,6 +41,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { OnboardArea } from '../../onboarding/OnboardArea';
 import { UMLModelTreeItemContextMenuContribution } from '../../profile/apply-profile/UMLModelTreeItemContextMenuContribution';
@@ -50,6 +61,9 @@ import {
   editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
+import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
+import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
+import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 
 const getProjectQuery = gql`
   query getRepresentation($projectId: ID!, $representationId: ID!, $includeRepresentation: Boolean!) {
@@ -134,7 +148,7 @@ export const EditProjectView = () => {
       dispatch(selectRepresentationEvent);
     };
 
-    const treeItemContextMenuContributions = [
+    const treeItemContextMenuContributions: TreeItemContextMenuContextValue = [
       <TreeItemContextMenuContribution
         canHandle={(treeId: string, item: GQLTreeItem) =>
           treeId.startsWith('explorer://') && item.kind.startsWith('siriusWeb://document')
@@ -171,30 +185,65 @@ export const EditProjectView = () => {
       />,
     ];
 
+    const treeToolBarContributions: TreeToolBarContextValue = [
+      <TreeToolBarContribution component={NewDocumentModalContribution} />,
+      <TreeToolBarContribution component={UploadDocumentModalContribution} />,
+    ];
+    const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
+      <DiagramPaletteToolContribution
+        canHandle={(_diagramId, diagramElementId) => {
+          const nodes = useNodes<NodeData>();
+          const targetedNode = nodes.find((node) => node.id === diagramElementId);
+          if (targetedNode) {
+            return (
+              targetedNode.data.targetObjectKind ===
+              'siriusComponents://semantic?domain=papaya_operational_analysis&entity=OperationalActivity'
+            );
+          }
+          return false;
+        }}
+        component={PapayaOperationActivityLabelDetailToolContribution}
+      />,
+    ];
+
     main = (
       <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
-        <Workbench
-          editingContextId={project.currentEditingContext.id}
-          initialRepresentationSelected={representation}
-          onRepresentationSelected={onRepresentationSelected}
-          mainAreaComponent={OnboardArea}
-          readOnly={false}>
-          <WorkbenchViewContribution side="left" title="Explorer" icon={<AccountTreeIcon />} component={ExplorerView} />
-          <WorkbenchViewContribution side="left" title="Validation" icon={<WarningIcon />} component={ValidationView} />
-          <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
-          <WorkbenchViewContribution
-            side="right"
-            title="Representations"
-            icon={<Filter />}
-            component={RepresentationsView}
-          />
-          <WorkbenchViewContribution
-            side="right"
-            title="Related Elements"
-            icon={<LinkIcon />}
-            component={RelatedElementsView}
-          />
-        </Workbench>
+        <TreeToolBarContext.Provider value={treeToolBarContributions}>
+          <DiagramPaletteToolContext.Provider value={diagramPaletteToolContributions}>
+            <Workbench
+              editingContextId={project.currentEditingContext.id}
+              initialRepresentationSelected={representation}
+              onRepresentationSelected={onRepresentationSelected}
+              mainAreaComponent={OnboardArea}
+              readOnly={false}>
+              <WorkbenchViewContribution
+                side="left"
+                title="Explorer"
+                icon={<AccountTreeIcon />}
+                component={ExplorerView}
+              />
+              <WorkbenchViewContribution
+                side="left"
+                title="Validation"
+                icon={<WarningIcon />}
+                component={ValidationView}
+              />
+              <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
+              <WorkbenchViewContribution
+                side="right"
+                title="Representations"
+                icon={<Filter />}
+                component={RepresentationsView}
+              />
+              <WorkbenchViewContribution
+                side="right"
+                title="Related Elements"
+                icon={<LinkIcon />}
+                component={RelatedElementsView}
+              />
+            </Workbench>
+          </DiagramPaletteToolContext.Provider>
+        </TreeToolBarContext.Provider>
       </TreeItemContextMenuContext.Provider>
     );
   } else if (editProjectView === 'missing') {

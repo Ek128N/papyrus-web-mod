@@ -67,19 +67,19 @@ public class ActivityPartitionUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsDimension(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isDimension", "Is dimension", "feature:isDimension", "aql:self.set('isDimension',newValue)",
                 "aql:self.getFeatureDescription('isDimension')", "aql:self.eClass().getEStructuralFeature('isDimension').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsExternal(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isExternal", "aql:'Is external'", "feature:isExternal", "aql:self.set('isExternal',newValue)",
                 "aql:self.getFeatureDescription('isExternal')", "aql:self.eClass().getEStructuralFeature('isExternal').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -87,13 +87,13 @@ public class ActivityPartitionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addRepresents(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("represents", "aql:'Represents'", "aql:self.getFeatureDescription('represents')",
                 "aql:self.eClass().getEStructuralFeature('represents').changeable", "aql:'represents'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

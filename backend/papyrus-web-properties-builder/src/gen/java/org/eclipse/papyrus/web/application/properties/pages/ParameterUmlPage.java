@@ -73,31 +73,31 @@ public class ParameterUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsException(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isException", "Is exception", "feature:isException", "aql:self.set('isException',newValue)",
                 "aql:self.getFeatureDescription('isException')", "aql:self.eClass().getEStructuralFeature('isException').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsOrdered(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isOrdered", "aql:'Is ordered'", "feature:isOrdered", "aql:self.set('isOrdered',newValue)",
                 "aql:self.getFeatureDescription('isOrdered')", "aql:self.eClass().getEStructuralFeature('isOrdered').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsStream(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isStream", "aql:'Is stream'", "feature:isStream", "aql:self.set('isStream',newValue)",
                 "aql:self.getFeatureDescription('isStream')", "aql:self.eClass().getEStructuralFeature('isStream').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsUnique(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isUnique", "aql:'Is unique'", "feature:isUnique", "aql:self.set('isUnique',newValue)",
                 "aql:self.getFeatureDescription('isUnique')", "aql:self.eClass().getEStructuralFeature('isUnique').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addDirection(GroupDescription group) {
@@ -105,7 +105,7 @@ public class ParameterUmlPage {
                 "aql:self.eClass().getEStructuralFeature('direction').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.direction.toString())", "aql:self.set('direction',newValue.instance)",
                 "aql:self.eClass().getEStructuralFeature('direction').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('direction')",
                 "aql:self.eClass().getEStructuralFeature('direction').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addEffect(GroupDescription group) {
@@ -113,7 +113,7 @@ public class ParameterUmlPage {
                 "aql:self.eClass().getEStructuralFeature('effect').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.effect.toString())", "aql:self.set('effect',newValue.instance)",
                 "aql:self.eClass().getEStructuralFeature('effect').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('effect')",
                 "aql:self.eClass().getEStructuralFeature('effect').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -121,26 +121,26 @@ public class ParameterUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addType(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
                 "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addMultiplicity(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("multiplicity", "aql:'Multiplicity'", "aql:self.getMultiplicity()",
                 "aql:self.oclAsType(uml::MultiplicityElement).setMultiplicity(newValue)", "aql:self.getMultiplicityHelpContent()",
                 "aql:self.eClass().getEStructuralFeature('lowerValue').changeable and self.eClass().getEStructuralFeature('upperValue').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addDefaultValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("defaultValue", "aql:'Default value'", "aql:self.getFeatureDescription('defaultValue')",
                 "aql:self.eClass().getEStructuralFeature('defaultValue').changeable", "aql:'defaultValue'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

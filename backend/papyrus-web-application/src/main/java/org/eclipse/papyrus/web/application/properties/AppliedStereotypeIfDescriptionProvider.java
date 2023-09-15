@@ -51,16 +51,21 @@ public class AppliedStereotypeIfDescriptionProvider {
 
     private final IObjectService objectService;
 
-    public AppliedStereotypeIfDescriptionProvider(IPropertiesValidationProvider propertiesValidationProvider, IObjectService objectService) {
+    private Function<VariableManager, String> semanticTargetIdProvider;
+
+    public AppliedStereotypeIfDescriptionProvider(IPropertiesValidationProvider propertiesValidationProvider, IObjectService objectService,
+            Function<VariableManager, String> semanticTargetIdProvider) {
         this.objectService = objectService;
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
+        this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
     }
 
     public IfDescription getIfDescription() {
         // @formatter:off
         return IfDescription.newIfDescription(IF_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .predicate(this.getPredicate())
-                .widgetDescription(this.buildListDescription())
+                .controlDescriptions(List.of(this.buildListDescription()))
                 .build();
         // @formatter:on
     }
@@ -88,6 +93,7 @@ public class AppliedStereotypeIfDescriptionProvider {
     private ListDescription buildListDescription() {
         // @formatter:off
         return ListDescription.newListDescription(LIST_DESCRIPTION_ID)
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(this.getLabelProvider())
                 .itemsProvider(this.getItemsProvider())

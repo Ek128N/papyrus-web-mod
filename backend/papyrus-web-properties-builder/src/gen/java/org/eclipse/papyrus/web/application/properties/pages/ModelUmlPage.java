@@ -67,13 +67,13 @@ public class ModelUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addUri(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("uri", "aql:'URI'", "aql:self.URI", "aql:self.set('URI',newValue)", "aql:self.getFeatureDescription('URI')",
                 "aql:self.eClass().getEStructuralFeature('URI').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -81,19 +81,19 @@ public class ModelUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addLocation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("location", "aql:'Location'", "aql:self.getLocation()", "var:self", "aql:'The location of imported package'",
                 "aql:false");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addPackageMerge(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("packageMerge", "aql:'Package merge'", "aql:self.getFeatureDescription('packageMerge')",
                 "aql:self.eClass().getEStructuralFeature('packageMerge').changeable", "aql:'packageMerge'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

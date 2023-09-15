@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
@@ -54,11 +55,14 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
     private final AQLInterpreter interpreter;
     private IFeedbackMessageService feedbackMessageService;
     private IEditService editService;
+    private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public PapyrusWidgetsConverterSwitch(AQLInterpreter interpreter, IEditService editService, IFeedbackMessageService feedbackMessageService) {
+    public PapyrusWidgetsConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+
     }
 
     @Override
@@ -69,6 +73,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> this.getLanguageExpressionLabel(languageExpressionDescription, variableManager))
                 .iconURLProvider(variableManager -> "")
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(languageExpressionDescription.getIsEnabledExpression()));
 
         if (languageExpressionDescription.getHelpExpression() != null && !languageExpressionDescription.getHelpExpression().isBlank()) {
@@ -93,6 +98,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
 
         var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
+                .targetObjectIdProvider(this.semanticTargetIdProvider)//
                 .labelProvider(variableManager -> this.getPrimitiveRadioLabel(primitiveRadioDescription, variableManager))
                 .iconURLProvider(variableManager -> "")
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(primitiveRadioDescription.getIsEnabledExpression()))

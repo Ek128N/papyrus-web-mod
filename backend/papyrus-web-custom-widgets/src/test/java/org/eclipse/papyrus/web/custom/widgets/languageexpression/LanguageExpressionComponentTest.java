@@ -15,6 +15,8 @@ package org.eclipse.papyrus.web.custom.widgets.languageexpression;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.UUID;
+
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.dto.MoveLanguageDirection;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Failure;
@@ -55,17 +57,19 @@ public class LanguageExpressionComponentTest {
 
     @BeforeEach
     public void init() {
-        LanguageExpressionDescription description = LanguageExpressionDescription.newLanguageExpressionDescription(LE_WIDGET_ID)
-                .idProvider(variableManager -> LE_WIDGET_ID)
-                .labelProvider(variableManager -> "")
-                .isReadOnlyProvider(varMan -> false)
-                .helpTextProvider(varMan -> "")
-                .iconURLProvider(var -> "")
-                .build();
-
         VariableManager variableManager = new VariableManager();
         this.ob = UMLFactory.eINSTANCE.createOpaqueBehavior();
         variableManager.put(VariableManager.SELF, this.ob);
+
+        LanguageExpressionDescription description = LanguageExpressionDescription.newLanguageExpressionDescription(LE_WIDGET_ID)
+                .idProvider(varMan -> LE_WIDGET_ID)
+                .labelProvider(varMan -> "")
+                .isReadOnlyProvider(varMan -> false)
+                .helpTextProvider(varMan -> "")
+                .iconURLProvider(var -> "")
+                .targetObjectIdProvider(varMan -> UUID.randomUUID().toString())
+                .build();
+
 
         LanguageExpressionComponent component = new LanguageExpressionComponent(new LanguageExpressionComponentProps(variableManager, description));
         Element elt = component.render();

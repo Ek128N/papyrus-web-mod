@@ -70,7 +70,7 @@ public class ProtocolTransitionUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addKind(GroupDescription group) {
@@ -78,7 +78,7 @@ public class ProtocolTransitionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('kind').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.kind.toString())", "aql:self.set('kind',newValue.instance)",
                 "aql:self.eClass().getEStructuralFeature('kind').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name", "aql:self.getFeatureDescription('kind')",
                 "aql:self.eClass().getEStructuralFeature('kind').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -86,37 +86,37 @@ public class ProtocolTransitionUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addEffect(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("effect", "aql:'Effect'", "aql:self.getFeatureDescription('effect')",
                 "aql:self.eClass().getEStructuralFeature('effect').changeable", "aql:'effect'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addGuard(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("guard", "aql:'Guard'", "aql:self.getFeatureDescription('guard')",
                 "aql:self.eClass().getEStructuralFeature('guard').changeable", "aql:'guard'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addPostCondition(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("postCondition", "aql:'Post condition'", "aql:self.getFeatureDescription('postCondition')",
                 "aql:self.eClass().getEStructuralFeature('postCondition').changeable", "aql:'postCondition'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addPreCondition(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("preCondition", "aql:'Pre condition'", "aql:self.getFeatureDescription('preCondition')",
                 "aql:self.eClass().getEStructuralFeature('preCondition').changeable", "aql:'preCondition'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addTrigger(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("trigger", "aql:'Trigger'", "aql:self.getFeatureDescription('trigger')",
                 "aql:self.eClass().getEStructuralFeature('trigger').changeable", "aql:'trigger'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

@@ -68,37 +68,37 @@ public class ClauseUmlPage {
     protected void addDecider(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("decider", "aql:'Decider'", "aql:self.getFeatureDescription('decider')",
                 "aql:self.eClass().getEStructuralFeature('decider').changeable", "aql:'decider'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addBody(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("body", "aql:'Body'", "aql:self.getFeatureDescription('body')",
                 "aql:self.eClass().getEStructuralFeature('body').changeable", "aql:'body'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addBodyOutput(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("bodyOutput", "aql:'Body output'", "aql:self.getFeatureDescription('bodyOutput')",
                 "aql:self.eClass().getEStructuralFeature('bodyOutput').changeable", "aql:'bodyOutput'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addPredecessorClause(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("predecessorClause", "aql:'Predecessor clause'", "aql:self.getFeatureDescription('predecessorClause')",
                 "aql:self.eClass().getEStructuralFeature('predecessorClause').changeable", "aql:'predecessorClause'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addSuccessorClause(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("successorClause", "aql:'Successor clause'", "aql:self.getFeatureDescription('successorClause')",
                 "aql:self.eClass().getEStructuralFeature('successorClause').changeable", "aql:'successorClause'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addTest(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("test", "aql:'Test'", "aql:self.getFeatureDescription('test')",
                 "aql:self.eClass().getEStructuralFeature('test').changeable", "aql:'test'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

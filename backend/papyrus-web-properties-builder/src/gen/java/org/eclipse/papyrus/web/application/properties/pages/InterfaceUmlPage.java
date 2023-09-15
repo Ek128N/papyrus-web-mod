@@ -69,13 +69,13 @@ public class InterfaceUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addIsAbstract(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createCheckboxDescription("isAbstract", "Is abstract", "feature:isAbstract", "aql:self.set('isAbstract',newValue)",
                 "aql:self.getFeatureDescription('isAbstract')", "aql:self.eClass().getEStructuralFeature('isAbstract').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -83,31 +83,31 @@ public class InterfaceUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addProtocol(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("protocol", "aql:'Protocol'", "aql:self.getFeatureDescription('protocol')",
                 "aql:self.eClass().getEStructuralFeature('protocol').changeable", "aql:'protocol'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOwnedOperation(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
                 "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOwnedReception(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedReception", "aql:'Owned reception'", "aql:self.getFeatureDescription('ownedReception')",
                 "aql:self.eClass().getEStructuralFeature('ownedReception').changeable", "aql:'ownedReception'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
                 "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

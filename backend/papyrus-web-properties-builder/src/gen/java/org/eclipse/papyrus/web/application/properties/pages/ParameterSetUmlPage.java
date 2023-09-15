@@ -66,7 +66,7 @@ public class ParameterSetUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -74,19 +74,19 @@ public class ParameterSetUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addCondition(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("condition", "aql:'Condition'", "aql:self.getFeatureDescription('condition')",
                 "aql:self.eClass().getEStructuralFeature('condition').changeable", "aql:'condition'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addParameter(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("parameter", "aql:'Parameter'", "aql:self.getFeatureDescription('parameter')",
                 "aql:self.eClass().getEStructuralFeature('parameter').changeable", "aql:'parameter'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

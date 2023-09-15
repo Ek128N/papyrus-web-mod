@@ -34,6 +34,6 @@ public class AssociationUmlPageCustomImpl extends AssociationUmlPage {
     protected void createMemberEndUmlGroup(PageDescription page) {
         GroupDescription group = viewElementFactory.createGroupDescription("memberEnd_uml_group", "", "aql:self.memberEnd", GroupDisplayMode.LIST);
         page.getGroups().add(group);
-        group.getWidgets().add(new MemberEndGroupDescriptionBuilder(viewElementFactory, colorRegistry).build());
+        group.getChildren().add(new MemberEndGroupDescriptionBuilder(viewElementFactory, colorRegistry).build());
     }
 }

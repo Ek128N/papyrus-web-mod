@@ -63,7 +63,7 @@ public class ProfileDefinitionPage {
     protected void addDefinitions(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("definitions", "aql:'Definitions'", "aql:'The list of definitions of this Profile'", "aql:true",
                 "aql:'profileApplication'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

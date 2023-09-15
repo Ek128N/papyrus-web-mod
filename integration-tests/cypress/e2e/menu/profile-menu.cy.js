@@ -49,7 +49,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     // before switching to Advanced tab
     cy.activateDetailsTab('Advanced').should('be.visible').as('details');
     cy.get('@details').contains('Core Properties').should('be.visible');
-    cy.get('@details').findByTestId('Applied Profile').should('be.visible').contains('Profile PapyrusJava');
+    cy.get('@details').findByTestId('reference-value-PapyrusJava').should('be.visible').contains('PapyrusJava');
     // Apply stereotype
     cy.getByTestId('Model-more').should('be.visible').click();
     cy.getByTestId('apply-stereotype').should('be.visible').click();

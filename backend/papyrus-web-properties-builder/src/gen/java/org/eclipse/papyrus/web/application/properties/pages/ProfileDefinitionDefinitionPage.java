@@ -66,27 +66,27 @@ public class ProfileDefinitionDefinitionPage {
 
     protected void addVersion(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("version", "aql:'Version'", "aql:self.getProfileDefinitionVersion()", "var:self", "aql:'Version'", "aql:false");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addDate(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("date", "aql:'Date'", "aql:self.getProfileDefinitionDate()", "var:self", "aql:'Date'", "aql:false");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addAuthor(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("author", "aql:'Author'", "aql:self.getProfileDefinitionAuthor()", "var:self", "aql:'Author'", "aql:false");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addCopyright(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextAreaDescription("copyright", "aql:'Copyright'", "aql:self.getProfileDefinitionCopyright()", "var:self", "aql:'Copyright'", "aql:false");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addComment(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextAreaDescription("comment", "aql:'Comment'", "aql:self.getProfileDefinitionComment()", "var:self", "aql:'Comment'", "aql:false");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

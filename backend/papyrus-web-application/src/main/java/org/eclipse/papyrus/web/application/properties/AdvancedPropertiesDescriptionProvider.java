@@ -38,7 +38,6 @@ import org.eclipse.sirius.components.forms.description.AbstractControlDescriptio
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
-import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -66,12 +65,16 @@ public class AdvancedPropertiesDescriptionProvider {
 
     private final IEMFMessageService emfMessageService;
 
+    private final Function<VariableManager, String> semanticTargetIdProvider;
+
     public AdvancedPropertiesDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IEMFMessageService emfMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = new IPropertiesValidationProvider.NoOp(); // Unplug live validation
                                                                                       // validation
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
+        this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+
     }
 
     public FormDescription getFormDescription() {
@@ -141,8 +144,9 @@ public class AdvancedPropertiesDescriptionProvider {
         // @formatter:off
         ForDescription forDescriptionStereotypes = ForDescription.newForDescription("forElement") //$NON-NLS-1$
                 .iterator("element")
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .iterableProvider(varMan -> this.getSelfElement(varMan))
-                .ifDescriptions(List.of(new AppliedStereotypeIfDescriptionProvider(this.propertiesValidationProvider, this.objectService).getIfDescription()))
+                .controlDescriptions(List.of(new AppliedStereotypeIfDescriptionProvider(this.propertiesValidationProvider, this.objectService, this.semanticTargetIdProvider).getIfDescription()))
                 .build();
         // @formatter:on
 
@@ -195,15 +199,12 @@ public class AdvancedPropertiesDescriptionProvider {
             return objects;
         };
 
-        List<IfDescription> ifDescriptions = new ArrayList<>();
-        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider).getIfDescription());
+        List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
+        ifDescriptions.add(new EStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        // Do not display derived feature for the moment
-        ifDescriptions.add(new NonDerivedMonoValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider).getIfDescription());
-        ifDescriptions
-                .add(new NonDerivedMultiValuedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.propertiesValidationProvider).getIfDescription());
+        ifDescriptions.add(new NonDerivedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider).getIfDescription());
 
         // @formatter:off
         var numericDataTypes = List.of(
@@ -220,14 +221,16 @@ public class AdvancedPropertiesDescriptionProvider {
                 );
         // @formatter:on
         for (var dataType : numericDataTypes) {
-            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService).getIfDescription());
+            ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider)
+                    .getIfDescription());
         }
 
         // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId")
+                .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
-                .ifDescriptions(ifDescriptions)
+                .controlDescriptions(ifDescriptions)
                 .build();
         // @formatter:on
 

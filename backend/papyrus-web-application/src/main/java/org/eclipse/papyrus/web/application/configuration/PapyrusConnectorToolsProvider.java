@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -80,13 +80,12 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
             if (optSourceDiagramElementDescription.isPresent() && optTargetDiagramElementDescription.isPresent()) {
                 Object sourceDescription = optSourceDiagramElementDescription.get();
                 Object targetDescription = optTargetDiagramElementDescription.get();
-                result = diagramDescription.getToolSections().stream().flatMap(ts -> ts.getTools().stream())//
-                        .filter(t -> t instanceof SingleClickOnTwoDiagramElementsTool)//
-                        .map(SingleClickOnTwoDiagramElementsTool.class::cast)//
-                        .filter(tool -> {
+                result = diagramDescription.getPalettes().stream()
+                        .flatMap(palette -> Stream.concat(palette.getTools().stream(), palette.getToolSections().stream().flatMap(toolSection -> toolSection.getTools().stream())))
+                        .filter(SingleClickOnTwoDiagramElementsTool.class::isInstance).map(SingleClickOnTwoDiagramElementsTool.class::cast).filter(tool -> {
                             List<SingleClickOnTwoDiagramElementsCandidate> candidates = tool.getCandidates();
-                            return candidates.stream().anyMatch(c -> c.getSources().contains(sourceDescription) && c.getTargets().contains(targetDescription));
-                        }).collect(toList());
+                            return candidates.stream().anyMatch(candidate -> candidate.getSources().contains(sourceDescription) && candidate.getTargets().contains(targetDescription));
+                        }).collect(Collectors.toList());
 
             }
 

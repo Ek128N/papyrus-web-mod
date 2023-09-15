@@ -63,7 +63,7 @@ public class PackageMergeUmlPage {
     protected void addMergedPackage(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("mergedPackage", "aql:'Merged package'", "aql:self.getFeatureDescription('mergedPackage')",
                 "aql:self.eClass().getEStructuralFeature('mergedPackage').changeable", "aql:'mergedPackage'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

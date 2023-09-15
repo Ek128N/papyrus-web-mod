@@ -63,7 +63,7 @@ public class TemplateBindingUmlPage {
     protected void addParameterSubstitution(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("parameterSubstitution", "aql:'Parameter substitution'", "aql:self.getFeatureDescription('parameterSubstitution')",
                 "aql:self.eClass().getEStructuralFeature('parameterSubstitution').changeable", "aql:'parameterSubstitution'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

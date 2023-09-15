@@ -66,13 +66,13 @@ public class PackageImportUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addImportedPackage(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("importedPackage", "aql:'Imported package'", "aql:self.getFeatureDescription('importedPackage')", "aql:false",
                 "aql:'importedPackage'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

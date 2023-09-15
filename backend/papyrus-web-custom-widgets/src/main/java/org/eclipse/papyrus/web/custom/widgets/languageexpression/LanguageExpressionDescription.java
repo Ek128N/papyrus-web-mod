@@ -79,6 +79,8 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
 
         private Function<VariableManager, String> helpTextProvider;
 
+        private Function<VariableManager, String> targetObjectIdProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -107,6 +109,11 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
             this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
             return this;
         }
+        
+        public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
+            this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
+            return this;
+        }
 
         public LanguageExpressionDescription build() {
             LanguageExpressionDescription languageExpressionDescription = new LanguageExpressionDescription();
@@ -116,6 +123,7 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
             languageExpressionDescription.iconURLProvider = Objects.requireNonNull(this.iconURLProvider);
             languageExpressionDescription.isReadOnlyProvider = Objects.requireNonNull(this.isReadOnlyProvider);
             languageExpressionDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
+            languageExpressionDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             return languageExpressionDescription;
         }
     }

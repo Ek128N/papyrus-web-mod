@@ -57,7 +57,6 @@ export const PrimitiveRadioSection = ({
   subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLPrimitiveRadio>) => {
-  const [value, _] = useState(widget.candidateValue);
   const { addErrorMessage, addMessages } = useMultiToast();
 
   const [newValueApi, { loading: newValueLoading, data: newValueData, error: newValueError }] = useMutation<
@@ -110,7 +109,7 @@ export const PrimitiveRadioSection = ({
           row
           aria-label="primitive radio"
           name="primitive-radio"
-          value={value}
+          value={widget.candidateValue}
           onChange={handleChange}
           data-testid="primitive-radio-candidates">
           {widget.candidateList.map((candidate) => (

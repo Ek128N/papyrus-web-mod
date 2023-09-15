@@ -66,7 +66,7 @@ public class DecisionNodeUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -74,19 +74,19 @@ public class DecisionNodeUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addDecisionInput(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("decisionInput", "aql:'Decision input'", "aql:self.getFeatureDescription('decisionInput')",
                 "aql:self.eClass().getEStructuralFeature('decisionInput').changeable", "aql:'decisionInput'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addDecisionInputFlow(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("decisionInputFlow", "aql:'Decision input flow'", "aql:self.getFeatureDescription('decisionInputFlow')",
                 "aql:self.eClass().getEStructuralFeature('decisionInputFlow').changeable", "aql:'decisionInputFlow'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

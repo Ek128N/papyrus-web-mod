@@ -64,13 +64,13 @@ public class SlotUmlPage {
     protected void addDefiningFeature(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("definingFeature", "aql:'Defining feature'", "aql:self.getFeatureDescription('definingFeature')",
                 "aql:self.eClass().getEStructuralFeature('definingFeature').changeable", "aql:'definingFeature'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addValue(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
                 "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }

@@ -66,7 +66,7 @@ public class ManifestationUmlPage {
     protected void addName(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createTextfieldDescription("name", "aql:'Name'", "feature:name", "aql:self.set('name',newValue)", "aql:self.getFeatureDescription('name')",
                 "aql:self.eClass().getEStructuralFeature('name').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addVisibility(GroupDescription group) {
@@ -74,19 +74,19 @@ public class ManifestationUmlPage {
                 "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).getEEnumLiteralByLiteral(self.visibility.toString())",
                 "aql:self.set('visibility',newValue.instance)", "aql:self.eClass().getEStructuralFeature('visibility').eType.oclAsType(ecore::EEnum).eLiterals", "aql:candidate.name",
                 "aql:self.getFeatureDescription('visibility')", "aql:self.eClass().getEStructuralFeature('visibility').changeable");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addMapping(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("mapping", "aql:'Mapping'", "aql:self.getFeatureDescription('mapping')",
                 "aql:self.eClass().getEStructuralFeature('mapping').changeable", "aql:'mapping'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
     protected void addUtilizedElement(GroupDescription group) {
         WidgetDescription widget = viewElementFactory.createReferenceDescription("utilizedElement", "aql:'Utilized element'", "aql:self.getFeatureDescription('utilizedElement')",
                 "aql:self.eClass().getEStructuralFeature('utilizedElement').changeable", "aql:'utilizedElement'", "");
-        group.getWidgets().add(widget);
+        group.getChildren().add(widget);
     }
 
 }
