@@ -23,11 +23,9 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.papyrus.uml.domain.services.UMLHelper;
 import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
-import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -48,6 +46,7 @@ import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interaction;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.PackageMerge;
 import org.eclipse.uml2.uml.Realization;
@@ -83,32 +82,45 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
+    /**
+     * The <i>shared</i> {@link NodeDescription} for the diagram.
+     */
+    private NodeDescription ucdSharedDescription;
+
     public UCDDiagramDescriptionBuilder() {
-        super(UCD_PREFIX, UCD_REP_NAME, UMLPackage.eINSTANCE.getPackageableElement());
+        super(UCD_PREFIX, UCD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
-        this.createActorDescription(diagramDescription);
-        this.createActivityAsSubjectDescription(diagramDescription);
-        this.createClassAsSubjectDescription(diagramDescription);
-        this.createComponentAsSubjectDescription(diagramDescription);
-        this.createInteractionAsSubjectDescription(diagramDescription);
-        this.createStateMachineAsSubjectDescription(diagramDescription);
-        this.createUseCaseDescription(diagramDescription);
-        this.createPackageDescription(diagramDescription);
+        this.createDiagramActorDescription(diagramDescription);
+        this.createDiagramActivityAsSubjectDescription(diagramDescription);
+        this.createDiagramClassAsSubjectDescription(diagramDescription);
+        this.createDiagramComponentAsSubjectDescription(diagramDescription);
+        this.createDiagramInteractionAsSubjectDescription(diagramDescription);
+        this.createDiagramStateMachineAsSubjectDescription(diagramDescription);
+        this.createDiagramUseCaseDescription(diagramDescription);
+        this.createDiagramPackageDescription(diagramDescription);
+        this.createDiagramCommentDescription(diagramDescription);
+        this.createDiagramConstraintDescription(diagramDescription);
 
-        NodeDescription sharedDescription = this.createSharedDescription(diagramDescription);
-        this.createSharedUseCaseDescription(diagramDescription, sharedDescription);
+        this.ucdSharedDescription = this.createSharedDescription(diagramDescription);
+        this.createSharedUseCaseDescription(diagramDescription);
+        this.createSharedActorDescription(diagramDescription);
+        this.createSharedActivityAsSubjectDescription(diagramDescription);
+        this.createSharedClassAsSubjectDescription(diagramDescription);
+        this.createSharedComponentAsSubjectDescription(diagramDescription);
+        this.createSharedInteractionAsSubjectDescription(diagramDescription);
+        this.createSharedStateMachineAsSubjectDescription(diagramDescription);
         List<EClass> commentAndConstraintOwners = List.of(this.umlPackage.getPackage(), //
                 this.umlPackage.getActivity(), //
                 this.umlPackage.getClass_(), //
                 this.umlPackage.getComponent(), //
                 this.umlPackage.getInteraction(), //
                 this.umlPackage.getStateMachine());
-        this.createCommentDescriptionInNodeDescription(diagramDescription, sharedDescription, commentAndConstraintOwners);
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, sharedDescription, commentAndConstraintOwners);
+        this.createCommentDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, commentAndConstraintOwners);
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, commentAndConstraintOwners);
 
         this.createAbstractionDescription(diagramDescription);
         this.createAssociationDescription(diagramDescription);
@@ -121,121 +133,168 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createRealizationDescription(diagramDescription);
         this.createUsageDescription(diagramDescription);
 
-        this.createCommentDescriptionInDiagramDescription(diagramDescription);
-        this.createConstraintDescriptionInDiagramDescription(diagramDescription);
-
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Package}.
+     * Creates the {@link NodeDescription} representing an UML {@link Package} on the Diagram.
      * 
      * @param diagramDescription
      *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    @Override
-    protected void createPackageDescription(DiagramDescription diagramDescription) {
+    private void createDiagramPackageDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.umlPackage.getPackage();
-        NodeDescription ucdPackage = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass, this.getQueryBuilder().queryAllReachable(packageEClass));
-        diagramDescription.getNodeDescriptions().add(ucdPackage);
+        NodeDescription ucdDiagramPackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass, this.getQueryBuilder().queryAllReachable(packageEClass));
+        diagramDescription.getNodeDescriptions().add(ucdDiagramPackageDescription);
 
-        diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass));
+        NodeTool ucdDiagramPackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
+        diagramDescription.getPalette().getNodeTools().add(ucdDiagramPackageCreationTool);
 
-        this.registerCallback(ucdPackage, () -> {
-            List<NodeDescription> packages = this.collectNodesWithDomain(diagramDescription, packageEClass);
-            packages.forEach(p -> {
-                p.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass));
-            });
-            String childrenCandidateExpression = CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getPackage_PackagedElement());
-            List<NodeDescription> copiedClassifier = diagramDescription.getNodeDescriptions().stream()
-                    .filter(n -> this.isValidNodeDescription(n, false, false, this.umlPackage.getPackageableElement())
-                            && !this.isValidNodeDescription(n, false, false, this.umlPackage.getConstraint(), this.umlPackage.getUseCase()))
-                    .map(n -> this.transformIntoPackageChildNode(n, childrenCandidateExpression, diagramDescription)).toList();
-            ucdPackage.getChildrenDescriptions().addAll(copiedClassifier);
-        });
+        this.createPackageDescriptionInNodeDescription(ucdDiagramPackageDescription);
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML input at {@link Package} level.
+     * Creates the {@link NodeDescription} representing an UML {@link Package} in {@code parentNodeDescription}.
      * 
-     * @param input
-     *            UML element to create,
-     * @param semanticCandidateExpression
-     *            aql expression to retrieve list of input to represent
-     * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
-     * @return the {@link NodeDescription} representing an UML input at {@link Package} level.
+     * @param parentNodeDescription
+     *            the parent {@link NodeDescription} which contain definition of the new {@link NodeDescription}
      */
-    private NodeDescription transformIntoPackageChildNode(NodeDescription input, String semanticCandidateExpression, DiagramDescription diagramDescription) {
-        EClass eClass = UMLHelper.toEClass(input.getDomainType());
-        String id = this.getIdBuilder().getSpecializedDomainNodeName(eClass, PACKAGE_CHILD);
-        NodeDescription n = new NodeSemanticCandidateExpressionTransformer().intoNewCanidateExpression(id, input, semanticCandidateExpression);
+    private void createPackageDescriptionInNodeDescription(NodeDescription parentNodeDescription) {
+        EClass packageEClass = this.umlPackage.getPackage();
+        NodeDescription ucdPackagePackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
+                CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
+        ucdPackagePackageDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, PACKAGE_CHILD));
 
-        if (UMLPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass)) {
-            // Add Package children into Package_inPackage child
-            this.collectAndReusedChildNodes(n, this.umlPackage.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
-        }
-        return n;
+        parentNodeDescription.getChildrenDescriptions().add(ucdPackagePackageDescription);
+        NodeTool ucdPackagePackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
+        parentNodeDescription.getPalette().getNodeTools().add(ucdPackagePackageCreationTool);
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Class} as Subject at diagram level.
+     * Creates the {@link NodeDescription} representing an UML {@link Class} as Subject on the Diagram.
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createClassAsSubjectDescription(DiagramDescription diagramDescription) {
-        this.createClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getClass_());
+    private void createDiagramClassAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createDiagramClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getClass_());
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Activity} as Subject at diagram level.
+     * Creates the shared {@link NodeDescription} representing an UML {@link Class} as Subject.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createActivityAsSubjectDescription(DiagramDescription diagramDescription) {
-        this.createClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getActivity());
+    private void createSharedClassAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createSharedClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getClass_());
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Component} as Subject at diagram level.
+     * Creates the {@link NodeDescription} representing an UML {@link Activity} as Subject on the Diagram.
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createComponentAsSubjectDescription(DiagramDescription diagramDescription) {
-        this.createClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getComponent());
+    private void createDiagramActivityAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createDiagramClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getActivity());
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link StateMachine} as Subject at diagram level.
+     * Creates the shared {@link NodeDescription} representing an UML {@link Activity} as Subject.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createStateMachineAsSubjectDescription(DiagramDescription diagramDescription) {
-        this.createClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getStateMachine());
+    private void createSharedActivityAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createSharedClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getActivity());
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Interaction} as Subject at diagram level.
+     * Creates the {@link NodeDescription} representing an UML {@link Component} as Subject on the Diagram.
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createInteractionAsSubjectDescription(DiagramDescription diagramDescription) {
-        this.createClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getInteraction());
+    private void createDiagramComponentAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createDiagramClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getComponent());
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Classifier} as Subject at diagram level.
+     * Creates the shared {@link NodeDescription} representing an UML {@link Component} as Subject.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createClassifierAsSubjectDescription(DiagramDescription diagramDescription, EClass classifierAsSubject) {
-        NodeDescription subjectAsClassifierDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+    private void createSharedComponentAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createSharedClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getComponent());
+    }
+
+    /**
+     * Creates the {@link NodeDescription} representing an UML {@link StateMachine} as Subject on the Diagram.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createDiagramStateMachineAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createDiagramClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getStateMachine());
+    }
+
+    /**
+     * Creates the shared {@link NodeDescription} representing an UML {@link StateMachine} as Subject.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createSharedStateMachineAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createSharedClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getStateMachine());
+    }
+
+    /**
+     * Creates the {@link NodeDescription} representing an UML {@link Interaction} as Subject on the Diagram.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createDiagramInteractionAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createDiagramClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getInteraction());
+    }
+
+    /**
+     * Creates the shared {@link NodeDescription} representing an UML {@link Interaction} as Subject.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createSharedInteractionAsSubjectDescription(DiagramDescription diagramDescription) {
+        this.createSharedClassifierAsSubjectDescription(diagramDescription, this.umlPackage.getInteraction());
+    }
+
+    /**
+     * Creates the {@link NodeDescription} representing an UML {@link Classifier} as Subject on the Diagram.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param classifierAsSubject
+     *            the type of {@link Classifier} to create
+     */
+    private void createDiagramClassifierAsSubjectDescription(DiagramDescription diagramDescription, EClass classifierAsSubject) {
+        NodeDescription ucdDiagramClassifierDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getDomainNodeName(classifierAsSubject)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(classifierAsSubject))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -243,14 +302,37 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool())//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierAsSubject.getName())) //
                 .build();
-        diagramDescription.getNodeDescriptions().add(subjectAsClassifierDescription);
+        diagramDescription.getNodeDescriptions().add(ucdDiagramClassifierDescription);
 
-        NodeTool createUcdClassTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
-        Supplier<List<NodeDescription>> packageOwners = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage());
-        this.registerCallback(subjectAsClassifierDescription, () -> {
-            CreationToolsUtil.addNodeCreationTool(packageOwners, createUcdClassTool);
-            diagramDescription.getPalette().getNodeTools().add(createUcdClassTool);
-        });
+        NodeTool ucdDiagramClassifierCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
+        diagramDescription.getPalette().getNodeTools().add(ucdDiagramClassifierCreationTool);
+    }
+
+    /**
+     * Creates the shared {@link NodeDescription} representing an UML {@link Classifier} as Subject.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param classifierAsSubject
+     *            the type of {@link Classifier} to create
+     */
+    private void createSharedClassifierAsSubjectDescription(DiagramDescription diagramDescription, EClass classifierAsSubject) {
+        NodeDescription ucdPackageClassifierDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(classifierAsSubject, SHARED_SUFFIX)) //
+                .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierAsSubject.getName())) //
+                .build();
+        this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageClassifierDescription);
+
+        NodeTool ucdPackageClassifierCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
+        List<EClass> owners = List.of(this.umlPackage.getPackage());
+        this.reuseNodeAndCreateTool(ucdPackageClassifierDescription, diagramDescription, ucdPackageClassifierCreationTool, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -267,41 +349,43 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link UseCase} at diagram level.
+     * Creates the {@link NodeDescription} representing an UML {@link UseCase} on the Diagram.
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createUseCaseDescription(DiagramDescription diagramDescription) {
+    private void createDiagramUseCaseDescription(DiagramDescription diagramDescription) {
         EClass useCaseEClass = this.umlPackage.getUseCase();
+
         ImageNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.toString(), true);
         useCaseNodeStyle.setWidthComputationExpression("204"); //$NON-NLS-1$
         useCaseNodeStyle.setHeightComputationExpression("104"); //$NON-NLS-1$
 
-        NodeDescription ucdUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
-                .name(this.getIdBuilder().getDomainNodeName(useCaseEClass)) //
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(useCaseEClass))//
+        NodeDescription ucdDiagramUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
+                .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool())//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
 
-        diagramDescription.getNodeDescriptions().add(ucdUseCaseDescription);
+        diagramDescription.getNodeDescriptions().add(ucdDiagramUseCaseDescription);
 
         // create tools
-        NodeTool ucdUseCaseCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), useCaseEClass);
-        diagramDescription.getPalette().getNodeTools().add(ucdUseCaseCreationTool);
+        NodeTool ucdDiagramUseCaseCreationTool = this.getViewBuilder().createCreationTool(NEW + useCaseEClass.getName(), UseCaseDiagramServices.CREATE_USECASE,
+                List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
+        diagramDescription.getPalette().getNodeTools().add(ucdDiagramUseCaseCreationTool);
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link UseCase} at sub-level.
+     * Creates the shared {@link NodeDescription} representing an UML {@link UseCase}.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
-     * @param sharedOwnerDescription
-     *            the parent {@link NodeDescription} which contain definition of the new {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createSharedUseCaseDescription(DiagramDescription diagramDescription, NodeDescription sharedOwnerDescription) {
+    private void createSharedUseCaseDescription(DiagramDescription diagramDescription) {
         EClass useCaseEClass = this.umlPackage.getUseCase();
 
         ImageNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.toString(), true);
@@ -316,14 +400,12 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
 
-        sharedOwnerDescription.getChildrenDescriptions().add(ucdSharedUseCaseDescription);
+        this.ucdSharedDescription.getChildrenDescriptions().add(ucdSharedUseCaseDescription);
 
-        // create tools
         NodeTool ucdSharedUseCaseCreationTool = this.getViewBuilder().createCreationTool(NEW + useCaseEClass.getName(), UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
 
-        List<EClass> owners = List.of(useCaseEClass, //
-                this.umlPackage.getClass_(), //
+        List<EClass> owners = List.of(this.umlPackage.getClass_(), //
                 this.umlPackage.getActivity(), //
                 this.umlPackage.getComponent(), //
                 this.umlPackage.getInteraction(), //
@@ -333,19 +415,19 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     }
 
     /**
-     * Creates the {@link NodeDescription} representing an UML {@link Actor} at diagram level.
+     * Creates the {@link NodeDescription} representing an UML {@link Actor} on the Diagram.
      * 
      * @param diagramDescription
-     *            the UseCase {@link DiagramDescription} containing the created {@link NodeDescription}
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createActorDescription(DiagramDescription diagramDescription) {
+    private void createDiagramActorDescription(DiagramDescription diagramDescription) {
         NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), false); //$NON-NLS-1$
         actorNodeStyle.setBorderSize(0);
         actorNodeStyle.setWidthComputationExpression("70"); //$NON-NLS-1$
         actorNodeStyle.setHeightComputationExpression("100"); //$NON-NLS-1$
 
         EClass actorEClass = this.umlPackage.getActor();
-        NodeDescription ucdActorDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
+        NodeDescription ucdDiagramActorDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(actorEClass)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(actorEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -353,14 +435,40 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
 
-        diagramDescription.getNodeDescriptions().add(ucdActorDescription);
+        diagramDescription.getNodeDescriptions().add(ucdDiagramActorDescription);
 
-        NodeTool createActorTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), actorEClass);
-        Supplier<List<NodeDescription>> packageOwners = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage());
-        this.registerCallback(ucdActorDescription, () -> {
-            CreationToolsUtil.addNodeCreationTool(packageOwners, createActorTool);
-            diagramDescription.getPalette().getNodeTools().add(createActorTool);
-        });
+        NodeTool ucdDiagramActorCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), actorEClass);
+        diagramDescription.getPalette().getNodeTools().add(ucdDiagramActorCreationTool);
+    }
+
+    /**
+     * Creates the shared {@link NodeDescription} representing an UML {@link Actor}.
+     * <p>
+     * The created {@link NodeDescription} is added to the <i>shared</i> {@link NodeDescription} of the diagram.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createSharedActorDescription(DiagramDescription diagramDescription) {
+        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), false); //$NON-NLS-1$
+        actorNodeStyle.setBorderSize(0);
+        actorNodeStyle.setWidthComputationExpression("70"); //$NON-NLS-1$
+        actorNodeStyle.setHeightComputationExpression("100"); //$NON-NLS-1$
+
+        EClass actorEClass = this.umlPackage.getActor();
+        NodeDescription ucdPackageActorDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(actorEClass, SHARED_SUFFIX)) //
+                .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
+                .build();
+        this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageActorDescription);
+
+        NodeTool ucdPackageActorCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), actorEClass);
+        List<EClass> owners = List.of(this.umlPackage.getPackage());
+        this.reuseNodeAndCreateTool(ucdPackageActorDescription, diagramDescription, ucdPackageActorCreationTool, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -389,9 +497,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         ucdAssociationDescription.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
         ucdAssociationDescription.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
 
-        EdgeTool associationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdAssociationDescription, this.umlPackage.getPackage_PackagedElement());
+        EdgeTool ucdAssociationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdAssociationDescription, this.umlPackage.getPackage_PackagedElement());
         this.registerCallback(ucdAssociationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, associationCreationTool);
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, ucdAssociationCreationTool);
         });
 
         ucdAssociationDescription.setBeginLabelExpression(this.getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
@@ -431,9 +539,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         style.setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
         diagramDescription.getEdgeDescriptions().add(ucdExtendDescription);
 
-        EdgeTool createUcdExtendTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdExtendDescription, this.umlPackage.getUseCase_Extend());
+        EdgeTool ucdExtendCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdExtendDescription, this.umlPackage.getUseCase_Extend());
         this.registerCallback(ucdExtendDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(useCaseCollector, createUcdExtendTool);
+            CreationToolsUtil.addEdgeCreationTool(useCaseCollector, ucdExtendCreationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(ucdExtendDescription);
     }
@@ -452,9 +560,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 this.getQueryBuilder().queryAllReachableExactType(generalization), sourceAndTargetDescriptionsSupplier, sourceAndTargetDescriptionsSupplier);
         ucdGeneralizationDescription.getStyle().setLineStyle(LineStyle.SOLID);
         ucdGeneralizationDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdGeneralizationDescription, this.umlPackage.getClassifier_Generalization());
+        EdgeTool ucdGeneralizationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdGeneralizationDescription, this.umlPackage.getClassifier_Generalization());
         this.registerCallback(ucdGeneralizationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, creationTool);
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, ucdGeneralizationCreationTool);
         });
 
         diagramDescription.getEdgeDescriptions().add(ucdGeneralizationDescription);
@@ -477,9 +585,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         style.setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
         diagramDescription.getEdgeDescriptions().add(ucdIncludeDescription);
 
-        EdgeTool createUcdIncludeTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdIncludeDescription, this.umlPackage.getUseCase_Include());
+        EdgeTool ucdIncludeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdIncludeDescription, this.umlPackage.getUseCase_Include());
         this.registerCallback(ucdIncludeDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(useCaseCollector, createUcdIncludeTool);
+            CreationToolsUtil.addEdgeCreationTool(useCaseCollector, ucdIncludeCreationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(ucdIncludeDescription);
     }
@@ -497,9 +605,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         ucdPackageImportDescription.getStyle().setLineStyle(LineStyle.DASH);
         ucdPackageImportDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageImportDescription, this.umlPackage.getNamespace_PackageImport());
+        EdgeTool ucdPackageImportCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageImportDescription, this.umlPackage.getNamespace_PackageImport());
         this.registerCallback(ucdPackageImportDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, creationTool);
+            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, ucdPackageImportCreationTool);
         });
         diagramDescription.getEdgeDescriptions().add(ucdPackageImportDescription);
         this.getViewBuilder().addDefaultReconnectionTools(ucdPackageImportDescription);
@@ -518,9 +626,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 this.getQueryBuilder().queryAllReachable(this.umlPackage.getPackageMerge()), packageDescriptions, packageDescriptions);
         ucdPackageMergeDescription.getStyle().setLineStyle(LineStyle.DASH);
         ucdPackageMergeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageMergeDescription, this.umlPackage.getPackage_PackageMerge());
+        EdgeTool ucdPackageMergeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageMergeDescription, this.umlPackage.getPackage_PackageMerge());
         this.registerCallback(ucdPackageMergeDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, creationTool);
+            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, ucdPackageMergeCreationTool);
         });
         diagramDescription.getEdgeDescriptions().add(ucdPackageMergeDescription);
         this.getViewBuilder().addDefaultReconnectionTools(ucdPackageMergeDescription);
@@ -566,9 +674,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         style.setLineStyle(lineStyle);
         style.setTargetArrowStyle(arrowStyle);
         diagramDescription.getEdgeDescriptions().add(ucdDependencyDescription);
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdDependencyDescription, this.umlPackage.getPackage_PackagedElement());
+        EdgeTool ucdDependencyCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdDependencyDescription, this.umlPackage.getPackage_PackagedElement());
         this.registerCallback(ucdDependencyDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(namedElementCollector, creationTool);
+            CreationToolsUtil.addEdgeCreationTool(namedElementCollector, ucdDependencyCreationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(ucdDependencyDescription);
     }

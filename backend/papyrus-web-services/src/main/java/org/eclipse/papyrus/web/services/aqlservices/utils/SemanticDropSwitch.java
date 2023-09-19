@@ -294,7 +294,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
             for (EObject eObjectToDisplay : status.getElementsToDisplay()) {
                 if (this.selectedNode != null) {
                     // case DnD on Node
-                    isDragAndDropValid = isDragAndDropValid && this.createChildView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+                    isDragAndDropValid = isDragAndDropValid && this.createChildView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
                 } else {
                     // case DnD on Diagram
                     isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);

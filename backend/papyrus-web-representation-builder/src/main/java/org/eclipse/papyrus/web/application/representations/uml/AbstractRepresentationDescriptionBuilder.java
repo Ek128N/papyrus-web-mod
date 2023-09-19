@@ -420,7 +420,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the {@link Comment} {@link NodeDescription}
      */
-    protected void createCommentDescriptionInDiagramDescription(DiagramDescription diagramDescription) {
+    protected void createDiagramCommentDescription(DiagramDescription diagramDescription) {
         new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withColor(this.styleProvider.getNoteColor()) //
                 .withDomainType(this.pack.getComment()) //
@@ -478,7 +478,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the {@link Constraint} {@link NodeDescription}
      */
-    protected void createConstraintDescriptionInDiagramDescription(DiagramDescription diagramDescription) {
+    protected void createDiagramConstraintDescription(DiagramDescription diagramDescription) {
         new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withColor(this.styleProvider.getConstraintColor()) //
                 .withDomainType(this.pack.getConstraint()) //
@@ -617,6 +617,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                         owner.getReusedBorderNodeDescriptions().add(nodeDescription);
                     } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
                         owner.getReusedChildNodeDescriptions().add(nodeDescription);
+                    } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getDiagramDescription_NodeDescriptions()) {
+                        owner.getReusedChildNodeDescriptions().add(nodeDescription);
                     }
                 }
             }
@@ -649,6 +651,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         });
     }
 
+    @Deprecated
     protected void createModelDescription(DiagramDescription diagramDescription) {
         NodeDescription padModel = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(this.pack.getModel(), this.getQueryBuilder().queryAllReachable(this.pack.getModel()));
         diagramDescription.getNodeDescriptions().add(padModel);
@@ -661,6 +664,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         this.registerNodeAsCommentOwner(padModel, diagramDescription);
     }
 
+    @Deprecated
     protected void createPackageDescription(DiagramDescription diagramDescription) {
         NodeDescription padPackage = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(this.pack.getPackage(), this.getQueryBuilder().queryAllReachable(this.pack.getPackage()));
         diagramDescription.getNodeDescriptions().add(padPackage);
@@ -710,6 +714,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         return sharedNodeDescription;
     }
 
+    @Deprecated
     private NodeDescription transformIntoPackageChildNode(NodeDescription input, String semanticCandidateExpression, DiagramDescription diagramDescription) {
         EClass eClass = UMLHelper.toEClass(input.getDomainType());
         String id = this.getIdBuilder().getSpecializedDomainNodeName(eClass, PACKAGE_CHILD);
