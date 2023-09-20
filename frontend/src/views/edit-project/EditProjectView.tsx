@@ -39,7 +39,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import WarningIcon from '@material-ui/icons/Warning';
 import { useMachine } from '@xstate/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
@@ -61,7 +61,7 @@ import {
   editProjectViewMachine,
 } from './EditProjectViewMachine';
 import { ObjectTreeItemContextMenuContribution } from './ObjectTreeItemContextMenuContribution';
-import { PapayaOperationActivityLabelDetailToolContribution } from './ToolContributions/PapayaOperationActivityLabelDetailToolContribution';
+import { PapyrusPopupToolContribution } from './ToolContributions/PapyrusPopupToolContribution';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 
@@ -77,6 +77,7 @@ const getProjectQuery = gql`
             id
             label
             kind
+            isProfileDiagram
           }
         }
       }
@@ -104,6 +105,7 @@ export const EditProjectView = () => {
   );
   const { toast, editProjectView } = value as SchemaValue;
   const { project, representation, message } = context;
+  const [isProfileDiagram, setIsProfileDIagram] = useState(false);
 
   const { loading, data, error } = useQuery<GQLGetProjectQueryData, GQLGetProjectQueryVariables>(getProjectQuery, {
     variables: {
@@ -124,6 +126,7 @@ export const EditProjectView = () => {
       if (data) {
         const fetchProjectEvent: HandleFetchedProjectEvent = { type: 'HANDLE_FETCHED_PROJECT', data };
         dispatch(fetchProjectEvent);
+        setIsProfileDIagram(data?.viewer?.project?.currentEditingContext?.representation?.isProfileDiagram);
       }
     }
   }, [loading, data, error, dispatch]);
@@ -189,20 +192,22 @@ export const EditProjectView = () => {
       <TreeToolBarContribution component={NewDocumentModalContribution} />,
       <TreeToolBarContribution component={UploadDocumentModalContribution} />,
     ];
+
     const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
       <DiagramPaletteToolContribution
         canHandle={(_diagramId, diagramElementId) => {
-          const nodes = useNodes<NodeData>();
-          const targetedNode = nodes.find((node) => node.id === diagramElementId);
-          if (targetedNode) {
-            return (
-              targetedNode.data.targetObjectKind ===
-              'siriusComponents://semantic?domain=papaya_operational_analysis&entity=OperationalActivity'
-            );
+          if (!isProfileDiagram) {
+            return false;
           }
-          return false;
+          if (_diagramId === diagramElementId) {
+            return true;
+          } else {
+            const nodes = useNodes<NodeData>();
+            const targetedNode = nodes.find((node) => node.id === diagramElementId);
+            return targetedNode?.data.targetObjectKind === 'siriusComponents://semantic?domain=uml&entity=Profile';
+          }
         }}
-        component={PapayaOperationActivityLabelDetailToolContribution}
+        component={PapyrusPopupToolContribution}
       />,
     ];
 

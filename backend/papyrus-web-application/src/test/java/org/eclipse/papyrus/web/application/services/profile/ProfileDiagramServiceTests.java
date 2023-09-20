@@ -87,7 +87,8 @@ public class ProfileDiagramServiceTests extends AbstractDiagramTest {
 
     @Override
     protected ProfileDiagramService buildService() {
-        return new ProfileDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+        return new ProfileDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(), null,
+                null);
     }
 
     @Override

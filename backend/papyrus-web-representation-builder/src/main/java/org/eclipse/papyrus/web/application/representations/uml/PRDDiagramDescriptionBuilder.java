@@ -100,7 +100,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     protected void fillDescription(DiagramDescription diagramDescription) {
 
         // create diagram tool sections
-        createDefaultToolSectionInDiagramDescription(diagramDescription);
+        this.createDefaultToolSectionInDiagramDescription(diagramDescription);
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.IS_PROFILE_MODEL));
 
         this.createDiagramPackageDescription(diagramDescription);
@@ -475,7 +475,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         diagramDescription.getNodeDescriptions().add(prdDiagramMetaclassDescription);
         this.createDefaultToolSectionsInNodeDescription(prdDiagramMetaclassDescription);
 
-        // TODO : createTool with "import Metaclass" popup
+        // Custom tool is defined from Frontend nodules :
+        // /frontend/src/views/edit-project/EditProjectView.tsx/diagramPaletteToolContributions
     }
 
     /**

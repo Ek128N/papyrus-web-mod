@@ -14,6 +14,11 @@ type UMLProfileMetadata {
 extend type EditingContext {
   stereotypeMetatadas(elementId: ID!): [UMLStereotypeMetadata!]!
   profileLastVersion(profileId: ID!): UMLProfileVersion
+  metaclassMetadatas: [UMLMetaclassMetadata]
+}
+  
+extend type RepresentationMetadata {  
+  isProfileDiagram: Boolean!
 }
 
 type UMLStereotypeMetadata {
@@ -24,6 +29,12 @@ type UMLProfileVersion {
   major: Int!
   minor: Int!
   micro: Int!
+}
+
+type UMLMetaclassMetadata {
+	id: String!
+	name: String!
+	imagePath: String
 }
 
 extend type Mutation {
@@ -46,6 +57,7 @@ type ApplyProfileSuccessPayload {
 extend type Mutation {
   applyStereotype(input: ApplyStereotypeInput!): ApplyStereotypePayload!
   publishProfile(input: PublishProfileInput!): PublishProfilePayload!
+  createMetaclassImport(input: CreateMetaclassImportInput): CreateMetaclassImportPayload
 }
 
 input ApplyStereotypeInput {
@@ -73,8 +85,22 @@ input PublishProfileInput {
   saveOCLConstraint: Boolean!
 }
 
+input CreateMetaclassImportInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	diagramElementId: ID!
+	metaclassIds: [ID!]!
+}
+
 union PublishProfilePayload = ErrorPayload | PublishProfileSuccessPayload
 
 type PublishProfileSuccessPayload {
   id: ID!
+}
+
+union CreateMetaclassImportPayload = ErrorPayload | CreateMetaclassImportSuccessPayload
+
+type CreateMetaclassImportSuccessPayload {
+	id: ID!
 }

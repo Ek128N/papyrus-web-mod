@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
@@ -882,8 +881,7 @@ public abstract class AbstractDiagramService {
      */
 
     protected boolean isContainedInProfileResource(EObject context) {
-        Resource eResource = context.eResource();
-        if (eResource instanceof JsonResource jsonResource) {
+        if (context != null && context.eResource() instanceof JsonResource jsonResource) {
             for (Adapter adapter : jsonResource.eAdapters()) {
                 if (adapter instanceof ResourceMetadataAdapter resourceMetadataAdapter) {
                     return resourceMetadataAdapter.getName().endsWith(PROFILE_EXT);

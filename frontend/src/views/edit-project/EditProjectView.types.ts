@@ -25,6 +25,7 @@ export type GQLRepresentationMetadata = {
   id: string;
   label: string;
   kind: string;
+  isProfileDiagram: boolean;
 };
 
 export type GQLEditingContext = {
