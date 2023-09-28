@@ -24,11 +24,11 @@ import java.util.function.Supplier;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
-import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Activity;
@@ -78,6 +79,11 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private static final String NEW = "New "; //$NON-NLS-1$
 
     /**
+     * Subject tool section name.
+     */
+    private static final String SUBJECT = "Subject"; //$NON-NLS-1$
+
+    /**
      * Factory used to create UML elements.
      */
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
@@ -94,6 +100,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
+        // create diagram tool sections
+        createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
+
         this.createDiagramActorDescription(diagramDescription);
         this.createDiagramActivityAsSubjectDescription(diagramDescription);
         this.createDiagramClassAsSubjectDescription(diagramDescription);
@@ -102,8 +111,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDiagramStateMachineAsSubjectDescription(diagramDescription);
         this.createDiagramUseCaseDescription(diagramDescription);
         this.createDiagramPackageDescription(diagramDescription);
-        this.createDiagramCommentDescription(diagramDescription);
-        this.createDiagramConstraintDescription(diagramDescription);
+        this.createDiagramCommentDescription(diagramDescription, NODES);
+        this.createDiagramConstraintDescription(diagramDescription, NODES);
 
         this.ucdSharedDescription = this.createSharedDescription(diagramDescription);
         this.createSharedUseCaseDescription(diagramDescription);
@@ -119,8 +128,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 this.umlPackage.getComponent(), //
                 this.umlPackage.getInteraction(), //
                 this.umlPackage.getStateMachine());
-        this.createCommentDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, commentAndConstraintOwners);
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, commentAndConstraintOwners);
+        this.createCommentDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, NODES, commentAndConstraintOwners);
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.ucdSharedDescription, NODES, commentAndConstraintOwners);
 
         this.createAbstractionDescription(diagramDescription);
         this.createAssociationDescription(diagramDescription);
@@ -147,8 +156,10 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         NodeDescription ucdDiagramPackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass, this.getQueryBuilder().queryAllReachable(packageEClass));
         diagramDescription.getNodeDescriptions().add(ucdDiagramPackageDescription);
 
+        this.createToolSectionsWithSubjectInNodeDescription(ucdDiagramPackageDescription);
+
         NodeTool ucdDiagramPackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
-        diagramDescription.getPalette().getNodeTools().add(ucdDiagramPackageCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, ucdDiagramPackageCreationTool, NODES);
 
         this.createPackageDescriptionInNodeDescription(ucdDiagramPackageDescription);
     }
@@ -165,9 +176,11 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
         ucdPackagePackageDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, PACKAGE_CHILD));
 
+        this.createToolSectionsWithSubjectInNodeDescription(ucdPackagePackageDescription);
+
         parentNodeDescription.getChildrenDescriptions().add(ucdPackagePackageDescription);
         NodeTool ucdPackagePackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
-        parentNodeDescription.getPalette().getNodeTools().add(ucdPackagePackageCreationTool);
+        this.getNodeToolSection(parentNodeDescription, NODES).getNodeTools().add(ucdPackagePackageCreationTool);
     }
 
     /**
@@ -304,8 +317,10 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
         diagramDescription.getNodeDescriptions().add(ucdDiagramClassifierDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(ucdDiagramClassifierDescription);
+
         NodeTool ucdDiagramClassifierCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
-        diagramDescription.getPalette().getNodeTools().add(ucdDiagramClassifierCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, ucdDiagramClassifierCreationTool, SUBJECT);
     }
 
     /**
@@ -330,9 +345,11 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageClassifierDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(ucdPackageClassifierDescription);
+
         NodeTool ucdPackageClassifierCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(ucdPackageClassifierDescription, diagramDescription, ucdPackageClassifierCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(ucdPackageClassifierDescription, diagramDescription, ucdPackageClassifierCreationTool, SUBJECT, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -370,10 +387,12 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramUseCaseDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(ucdDiagramUseCaseDescription);
+
         // create tools
         NodeTool ucdDiagramUseCaseCreationTool = this.getViewBuilder().createCreationTool(NEW + useCaseEClass.getName(), UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
-        diagramDescription.getPalette().getNodeTools().add(ucdDiagramUseCaseCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, ucdDiagramUseCaseCreationTool, NODES);
     }
 
     /**
@@ -402,6 +421,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdSharedUseCaseDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(ucdSharedUseCaseDescription);
+
         NodeTool ucdSharedUseCaseCreationTool = this.getViewBuilder().createCreationTool(NEW + useCaseEClass.getName(), UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
 
@@ -411,7 +432,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 this.umlPackage.getInteraction(), //
                 this.umlPackage.getStateMachine(), //
                 this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(ucdSharedUseCaseDescription, diagramDescription, ucdSharedUseCaseCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(ucdSharedUseCaseDescription, diagramDescription, ucdSharedUseCaseCreationTool, NODES, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -437,8 +458,10 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramActorDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(ucdDiagramActorDescription);
+
         NodeTool ucdDiagramActorCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), actorEClass);
-        diagramDescription.getPalette().getNodeTools().add(ucdDiagramActorCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, ucdDiagramActorCreationTool, NODES);
     }
 
     /**
@@ -466,9 +489,13 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageActorDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(ucdPackageActorDescription);
+
+        this.createDefaultToolSectionsInNodeDescription(ucdPackageActorDescription);
+
         NodeTool ucdPackageActorCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), actorEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(ucdPackageActorDescription, diagramDescription, ucdPackageActorCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(ucdPackageActorDescription, diagramDescription, ucdPackageActorCreationTool, NODES, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -499,7 +526,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         EdgeTool ucdAssociationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdAssociationDescription, this.umlPackage.getPackage_PackagedElement());
         this.registerCallback(ucdAssociationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, ucdAssociationCreationTool);
+            this.addEdgeToolInEdgesToolSection(sourceAndTargetDescriptionsSupplier.get(), ucdAssociationCreationTool);
         });
 
         ucdAssociationDescription.setBeginLabelExpression(this.getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
@@ -541,7 +568,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         EdgeTool ucdExtendCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdExtendDescription, this.umlPackage.getUseCase_Extend());
         this.registerCallback(ucdExtendDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(useCaseCollector, ucdExtendCreationTool);
+            this.addEdgeToolInEdgesToolSection(useCaseCollector.get(), ucdExtendCreationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(ucdExtendDescription);
     }
@@ -562,7 +589,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         ucdGeneralizationDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
         EdgeTool ucdGeneralizationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdGeneralizationDescription, this.umlPackage.getClassifier_Generalization());
         this.registerCallback(ucdGeneralizationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, ucdGeneralizationCreationTool);
+            this.addEdgeToolInEdgesToolSection(sourceAndTargetDescriptionsSupplier.get(), ucdGeneralizationCreationTool);
         });
 
         diagramDescription.getEdgeDescriptions().add(ucdGeneralizationDescription);
@@ -587,7 +614,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         EdgeTool ucdIncludeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdIncludeDescription, this.umlPackage.getUseCase_Include());
         this.registerCallback(ucdIncludeDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(useCaseCollector, ucdIncludeCreationTool);
+            this.addEdgeToolInEdgesToolSection(useCaseCollector.get(), ucdIncludeCreationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(ucdIncludeDescription);
     }
@@ -607,7 +634,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         EdgeTool ucdPackageImportCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageImportDescription, this.umlPackage.getNamespace_PackageImport());
         this.registerCallback(ucdPackageImportDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, ucdPackageImportCreationTool);
+            this.addEdgeToolInEdgesToolSection(packageDescriptions.get(), ucdPackageImportCreationTool);
         });
         diagramDescription.getEdgeDescriptions().add(ucdPackageImportDescription);
         this.getViewBuilder().addDefaultReconnectionTools(ucdPackageImportDescription);
@@ -628,7 +655,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         ucdPackageMergeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
         EdgeTool ucdPackageMergeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageMergeDescription, this.umlPackage.getPackage_PackageMerge());
         this.registerCallback(ucdPackageMergeDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(packageDescriptions, ucdPackageMergeCreationTool);
+            this.addEdgeToolInEdgesToolSection(packageDescriptions.get(), ucdPackageMergeCreationTool);
         });
         diagramDescription.getEdgeDescriptions().add(ucdPackageMergeDescription);
         this.getViewBuilder().addDefaultReconnectionTools(ucdPackageMergeDescription);
@@ -676,9 +703,36 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         diagramDescription.getEdgeDescriptions().add(ucdDependencyDescription);
         EdgeTool ucdDependencyCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdDependencyDescription, this.umlPackage.getPackage_PackagedElement());
         this.registerCallback(ucdDependencyDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(namedElementCollector, ucdDependencyCreationTool);
+            this.addEdgeToolInEdgesToolSection(namedElementCollector.get(), ucdDependencyCreationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(ucdDependencyDescription);
+    }
+
+    /**
+     * Create tools sections "Nodes", "Edges" and "Subject" in the palette tool of a given {@link NodeDescription}.
+     * 
+     * @param nodeDescription
+     *            the node description with the palette to complete with tool sections
+     */
+    private void createToolSectionsWithSubjectInNodeDescription(NodeDescription nodeDescription) {
+        NodeToolSection subjectToolSection = this.getViewBuilder().createNodeToolSection(SUBJECT);
+        NodeToolSection nodesToolSection = this.getViewBuilder().createNodeToolSection(NODES);
+        NodeToolSection edgesToolSection = this.getViewBuilder().createNodeToolSection(EDGES);
+        nodeDescription.getPalette().getToolSections().addAll(List.of(subjectToolSection, nodesToolSection, edgesToolSection));
+    }
+
+    /**
+     * Create tools sections "Nodes", "Edges" and "Subject" in the palette tool of a given {@link DiagramDescription}.
+     * 
+     * @param nodeDescription
+     *            the node description with the palette to complete with tool sections
+     */
+    protected void createToolSectionsWithSubjectInDiagramDescription(DiagramDescription diagramDescription) {
+        DiagramToolSection subjectToolSection = this.getViewBuilder().createDiagramToolSection(SUBJECT);
+        DiagramToolSection nodesToolSection = this.getViewBuilder().createDiagramToolSection(NODES);
+        DiagramToolSection edgesToolSection = this.getViewBuilder().createDiagramToolSection(EDGES);
+        diagramDescription.getPalette().getToolSections().addAll(List.of(subjectToolSection, nodesToolSection, edgesToolSection));
+
     }
 
 }

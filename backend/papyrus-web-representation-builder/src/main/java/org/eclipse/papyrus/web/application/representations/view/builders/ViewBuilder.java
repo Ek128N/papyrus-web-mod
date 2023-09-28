@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -362,6 +364,32 @@ public class ViewBuilder {
         node.setLabelExpression(this.queryBuilder.queryRenderLabel());
         node.setPalette(DiagramFactory.eINSTANCE.createNodePalette());
         return node;
+    }
+
+    /**
+     * Create tool section in the diagram palette.
+     * 
+     * @param name
+     *            the name of the tool section to create
+     * @return the tool section in the diagram palette
+     */
+    public DiagramToolSection createDiagramToolSection(String name) {
+        DiagramToolSection diagramToolSection = DiagramFactory.eINSTANCE.createDiagramToolSection();
+        diagramToolSection.setName(name);
+        return diagramToolSection;
+    }
+
+    /**
+     * Create tool section in the given node description palette.
+     * 
+     * @param name
+     *            the name of the tool section to create
+     * @return the tool section in the given node description palette
+     */
+    public NodeToolSection createNodeToolSection(String name) {
+        NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
+        nodeToolSection.setName(name);
+        return nodeToolSection;
     }
 
     public ChangeContext createChangeContextOperation(String string) {

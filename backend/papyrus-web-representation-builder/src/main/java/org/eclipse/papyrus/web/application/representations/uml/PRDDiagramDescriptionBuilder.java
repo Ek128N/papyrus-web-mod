@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -100,6 +99,9 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
+        // create diagram tool sections
+        createDefaultToolSectionInDiagramDescription(diagramDescription);
+
         this.createDiagramPackageDescription(diagramDescription);
         this.createDiagramProfileDescription(diagramDescription);
         this.createDiagramClassDescription(diagramDescription);
@@ -114,12 +116,12 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createDiagramStereotypeDescription(diagramDescription);
         this.createDiagramPrimitiveTypeDescription(diagramDescription);
         this.createDiagramEnumerationDescription(diagramDescription);
-        this.createDiagramCommentDescription(diagramDescription);
-        this.createDiagramConstraintDescription(diagramDescription);
+        this.createDiagramCommentDescription(diagramDescription, NODES);
+        this.createDiagramConstraintDescription(diagramDescription, NODES);
 
         this.prdSharedDescription = this.createSharedDescription(diagramDescription);
-        this.createCommentDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, List.of(this.umlPackage.getPackage()));
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, List.of(this.umlPackage.getPackage()));
+        this.createCommentDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, NODES, List.of(this.umlPackage.getPackage()));
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.prdSharedDescription, NODES, List.of(this.umlPackage.getPackage()));
         this.createSharedPackageDescription(diagramDescription);
         this.createSharedProfileDescription(diagramDescription);
         this.createSharedClassDescription(diagramDescription);
@@ -157,8 +159,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 this.getQueryBuilder().queryAllReachable(this.umlPackage.getPackage()));
         diagramDescription.getNodeDescriptions().add(prdDiagramPackageDescription);
 
+        // create Package tool sections
+        this.createDefaultToolSectionsInNodeDescription(prdDiagramPackageDescription);
+
         NodeTool prdDiagramPackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
-        diagramDescription.getPalette().getNodeTools().add(prdDiagramPackageCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, prdDiagramPackageCreationTool, NODES);
 
         // No direct children for Package: the NodeDescriptions it can contain are all defined as shared descriptions.
     }
@@ -179,9 +184,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         prdSharedPackageDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, SHARED_SUFFIX));
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedPackageDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdSharedPackageDescription);
+
         NodeTool prdSharedPackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(prdSharedPackageDescription, diagramDescription, prdSharedPackageCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(prdSharedPackageDescription, diagramDescription, prdSharedPackageCreationTool, NODES, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -197,8 +204,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // prdDiagramProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         diagramDescription.getNodeDescriptions().add(prdDiagramProfileDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdDiagramProfileDescription);
+
         NodeTool prdDiagramProfileCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), profileEClass);
-        diagramDescription.getPalette().getNodeTools().add(prdDiagramProfileCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, prdDiagramProfileCreationTool, NODES);
+
     }
 
     /**
@@ -219,9 +229,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // prdSharedProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedProfileDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdSharedProfileDescription);
+
         NodeTool prdSharedProfileCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), profileEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(prdSharedProfileDescription, diagramDescription, prdSharedProfileCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(prdSharedProfileDescription, diagramDescription, prdSharedProfileCreationTool, NODES, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -327,8 +339,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramClassifierDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdDiagramClassifierDescription);
+
         NodeTool prdDiagramClassifierCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierEClass);
-        diagramDescription.getPalette().getNodeTools().add(prdDiagramClassifierCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, prdDiagramClassifierCreationTool, NODES);
+
         return prdDiagramClassifierDescription;
     }
 
@@ -356,9 +371,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedClassifierDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdSharedClassifierDescription);
+
         NodeTool prdSharedClassifierCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(prdSharedClassifierDescription, diagramDescription, prdSharedClassifierCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(prdSharedClassifierDescription, diagramDescription, prdSharedClassifierCreationTool, NODES, owners.toArray(EClass[]::new));
         return prdSharedClassifierDescription;
     }
 
@@ -407,8 +424,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramPrimitiveTypeDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdDiagramPrimitiveTypeDescription);
+
         NodeTool prdDiagramPrimitiveTypeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), primitiveTypeEClass);
-        diagramDescription.getPalette().getNodeTools().add(prdDiagramPrimitiveTypeCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, prdDiagramPrimitiveTypeCreationTool, NODES);
     }
 
     /**
@@ -432,9 +451,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdPrimitiveTypeDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdPrimitiveTypeDescription);
+
         NodeTool prdSharedPrimitiveTypeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), primitiveTypeEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(prdPrimitiveTypeDescription, diagramDescription, prdSharedPrimitiveTypeCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(prdPrimitiveTypeDescription, diagramDescription, prdSharedPrimitiveTypeCreationTool, NODES, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -455,6 +476,9 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(metaclassEClass.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramMetaclassDescription);
+        this.createDefaultToolSectionsInNodeDescription(prdDiagramMetaclassDescription);
+
+        // TODO : createTool with "import Metaclass" popup
     }
 
     /**
@@ -477,6 +501,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
 
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedMetaclassDescription);
+
+        this.createDefaultToolSectionsInNodeDescription(prdSharedMetaclassDescription);
 
         // Use reuseNodeAndCreateTool once the tool to create a metaclass is available.
         this.registerCallback(prdSharedMetaclassDescription, () -> {
@@ -506,8 +532,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramEnumerationDescription);
 
+        this.createDefaultToolSectionsInNodeDescription(prdDiagramEnumerationDescription);
+
         NodeTool prdDiagramEnumerationCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), enumerationEClass);
-        diagramDescription.getPalette().getNodeTools().add(prdDiagramEnumerationCreationTool);
+        this.addDiagramToolInToolSection(diagramDescription, prdDiagramEnumerationCreationTool, NODES);
 
         this.createEnumerationLiteralsCompartment(prdDiagramEnumerationDescription);
     }
@@ -532,9 +560,12 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedEnumerationDescription);
+
+        this.createDefaultToolSectionsInNodeDescription(prdSharedEnumerationDescription);
+
         NodeTool prdSharedEnumerationCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), enumerationEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
-        this.reuseNodeAndCreateTool(prdSharedEnumerationDescription, diagramDescription, prdSharedEnumerationCreationTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(prdSharedEnumerationDescription, diagramDescription, prdSharedEnumerationCreationTool, NODES, owners.toArray(EClass[]::new));
 
         this.createEnumerationLiteralsCompartment(prdSharedEnumerationDescription);
     }
@@ -572,7 +603,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         EdgeTool prdAssociationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(prdAssociationDescription, this.umlPackage.getPackage_PackagedElement());
         this.registerCallback(prdAssociationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionSupplier, prdAssociationCreationTool);
+            this.addEdgeToolInEdgesToolSection(sourceAndTargetDescriptionSupplier.get(), prdAssociationCreationTool);
         });
 
         prdAssociationDescription.setBeginLabelExpression(this.getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
@@ -603,7 +634,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         prdExtensionDescription.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
         EdgeTool prdExtensionCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(prdExtensionDescription, this.umlPackage.getPackage_PackagedElement());
         this.registerCallback(prdExtensionDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceDescriptionSupplier, prdExtensionCreationTool);
+            this.addEdgeToolInEdgesToolSection(sourceDescriptionSupplier.get(), prdExtensionCreationTool);
         });
 
         diagramDescription.getEdgeDescriptions().add(prdExtensionDescription);
@@ -629,7 +660,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         prdGeneralizationDescription.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
         EdgeTool prdGeneratlizationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(prdGeneralizationDescription, this.umlPackage.getClassifier_Generalization());
         this.registerCallback(prdGeneralizationDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceDescriptionSupplier, prdGeneratlizationCreationTool);
+            this.addEdgeToolInEdgesToolSection(sourceDescriptionSupplier.get(), prdGeneratlizationCreationTool);
         });
 
         diagramDescription.getEdgeDescriptions().add(prdGeneralizationDescription);

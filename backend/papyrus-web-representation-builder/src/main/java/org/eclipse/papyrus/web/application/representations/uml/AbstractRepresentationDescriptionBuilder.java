@@ -29,9 +29,9 @@ import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
-import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.StyleProvider;
@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -62,6 +63,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.uml2.uml.Comment;
@@ -91,6 +93,16 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * The name of the parent {@link NodeDescription} containing all the shared {@link NodeDescription}s.
      */
     public static final String SHARED_DESCRIPTIONS = "SHARED_DESCRIPTIONS"; //$NON-NLS-1$
+
+    /**
+     * Nodes tool section name.
+     */
+    protected static final String NODES = "Nodes"; //$NON-NLS-1$
+
+    /**
+     * Edges tool section name.
+     */
+    protected static final String EDGES = "Edges"; //$NON-NLS-1$
 
     protected StyleProvider styleProvider;
 
@@ -388,10 +400,12 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the shared {@link Comment} {@link NodeDescription}
+     * @param toolSectionName
+     *            name of the tool section to add the comment tool
      * @param owners
      *            the semantic types that can contain a {@link Comment}
      */
-    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
+    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, List<EClass> owners) {
         NodeDescription commentDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getComment(), SHARED_SUFFIX)) //
                 .withColor(this.styleProvider.getNoteColor()) //
@@ -404,7 +418,56 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 .buildIn(diagramDescription, parentNodeDescription);
 
         NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment());
-        this.reuseNodeAndCreateTool(commentDescription, diagramDescription, nodeTool, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(commentDescription, diagramDescription, nodeTool, toolSectionName, owners.toArray(EClass[]::new));
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment}.
+     * <p>
+     * This method is used to create a shared {@link Comment} {@link NodeDescription} that is attached to all the
+     * provided {@code owners}. Note that this method replaces {@link #createCommentDescription(DiagramDescription)},
+     * which is deprecated and should be removed. The created {@link NodeDescription} is contained in the given
+     * {@code parentNodeDescription}.
+     * </p>
+     *
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param parentNodeDescription
+     *            the {@link NodeDescription} containing the shared {@link Comment} {@link NodeDescription}
+     * @param owners
+     *            the semantic types that can contain a {@link Comment}
+     */
+    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
+        this.createCommentDescriptionInNodeDescription(diagramDescription, parentNodeDescription, null, owners);
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Comment} on
+     * the diagram background.
+     * <p>
+     * This method is used to create a {@link Comment} {@link NodeDescription} that can be represented on the background
+     * of the diagram. The created {@link NodeDescription} can represent any {@link Comment} in the diagram, even if it
+     * isn't contained by the diagram itself. The created {@link NodeDescription} is contained in the provided
+     * {@code diagramDescription}.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the {@link Comment} {@link NodeDescription}
+     * @param toolSectionName
+     *            name of the tool section to add the comment tool
+     */
+    protected void createDiagramCommentDescription(DiagramDescription diagramDescription, String toolSectionName) {
+        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
+                .withColor(this.styleProvider.getNoteColor()) //
+                .withDomainType(this.pack.getComment()) //
+                .withAnnotedDomainType(this.pack.getElement()) //
+                .withSemanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getComment())) //
+                .withReconnectSourceService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE) //
+                .withReconnectTargetService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE) //
+                .withContainmentReference(this.pack.getElement_OwnedComment()) //
+                .withNoteToElementReference(this.pack.getComment_AnnotatedElement()) //
+                .buildIn(diagramDescription);
+        NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment());
+        this.addDiagramToolInToolSection(diagramDescription, nodeTool, toolSectionName);
     }
 
     /**
@@ -420,18 +483,40 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the {@link DiagramDescription} containing the {@link Comment} {@link NodeDescription}
      */
     protected void createDiagramCommentDescription(DiagramDescription diagramDescription) {
-        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withColor(this.styleProvider.getNoteColor()) //
-                .withDomainType(this.pack.getComment()) //
+        this.createDiagramCommentDescription(diagramDescription, null);
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint}.
+     * <p>
+     * This method is used to create a shared {@link Constraint} {@link NodeDescription} that is attached to all the
+     * provided {@code owners}. The created {@link NodeDescription} is contained in the given
+     * {@code parentNodeDescription}.
+     * </p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param parentNodeDescription
+     *            the {@link NodeDescription} containing the shared {@link Constraint} {@link NodeDescription}
+     * @param toolSectionName
+     *            name of the tool section to add the comment tool
+     * @param owners
+     *            the semantic types that can contain a {@link Constraint}
+     */
+    protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, List<EClass> owners) {
+        NodeDescription constraintDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
+                .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getConstraint(), SHARED_SUFFIX)) //
+                .withColor(this.styleProvider.getConstraintColor()) //
+                .withDomainType(this.pack.getConstraint()) //
                 .withAnnotedDomainType(this.pack.getElement()) //
-                .withSemanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getComment())) //
-                .withReconnectSourceService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_SOURCE_SERVICE) //
-                .withReconnectTargetService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE) //
-                .withContainmentReference(this.pack.getElement_OwnedComment()) //
-                .withNoteToElementReference(this.pack.getComment_AnnotatedElement()) //
-                .buildIn(diagramDescription);
-        NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment());
-        diagramDescription.getPalette().getNodeTools().add(nodeTool);
+                .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
+                .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
+                .withContainmentReference(this.pack.getNamespace_OwnedRule()) //
+                .withNoteToElementReference(this.pack.getConstraint_ConstrainedElement()) //
+                .buildIn(diagramDescription, parentNodeDescription);
+
+        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
+        this.reuseNodeAndCreateTool(constraintDescription, diagramDescription, nodeTool, toolSectionName, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -450,19 +535,36 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the semantic types that can contain a {@link Constraint}
      */
     protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, List<EClass> owners) {
-        NodeDescription constraintDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withName(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getConstraint(), SHARED_SUFFIX)) //
+        this.createConstraintDescriptionInNodeDescription(diagramDescription, parentNodeDescription, null, owners);
+    }
+
+    /**
+     * Creates the {@link NodeDescription}, {@link EdgeDescription}, and tools representing an UML {@link Constraint} on
+     * the diagram background.
+     * <p>
+     * This method is used to create a {@link Constraint} {@link NodeDescription} that can be represented on the
+     * background of the diagram. The created {@link NodeDescription} can represent any {@link Constraint} in the
+     * diagram, even if it isn't contained by the diagram itself. The created {@link NodeDescription} is contained in
+     * the provided {@code diagramDescription}.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the {@link Constraint} {@link NodeDescription}
+     * @param toolSectionName
+     *            name of the tool section to add the comment tool
+     */
+    protected void createDiagramConstraintDescription(DiagramDescription diagramDescription, String toolSectionName) {
+        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withColor(this.styleProvider.getConstraintColor()) //
                 .withDomainType(this.pack.getConstraint()) //
                 .withAnnotedDomainType(this.pack.getElement()) //
+                .withSemanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getConstraint())) //
                 .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
                 .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
                 .withContainmentReference(this.pack.getNamespace_OwnedRule()) //
                 .withNoteToElementReference(this.pack.getConstraint_ConstrainedElement()) //
-                .buildIn(diagramDescription, parentNodeDescription);
-
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
-        this.reuseNodeAndCreateTool(constraintDescription, diagramDescription, nodeTool, owners.toArray(EClass[]::new));
+                .buildIn(diagramDescription);
+        NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
+        this.addDiagramToolInToolSection(diagramDescription, nodeTool, toolSectionName);
     }
 
     /**
@@ -478,18 +580,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the {@link DiagramDescription} containing the {@link Constraint} {@link NodeDescription}
      */
     protected void createDiagramConstraintDescription(DiagramDescription diagramDescription) {
-        new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
-                .withColor(this.styleProvider.getConstraintColor()) //
-                .withDomainType(this.pack.getConstraint()) //
-                .withAnnotedDomainType(this.pack.getElement()) //
-                .withSemanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getConstraint())) //
-                .withReconnectSourceService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_SOURCE_SERVICE)
-                .withReconnectTargetService(Services.RECONNECT_CONSTRAINT_CONSTRAINED_ELEMENT_EDGE_TARGET_SERVICE) //
-                .withContainmentReference(this.pack.getNamespace_OwnedRule()) //
-                .withNoteToElementReference(this.pack.getConstraint_ConstrainedElement()) //
-                .buildIn(diagramDescription);
-        NodeTool nodeTool = this.viewBuilder.createCreationTool(this.pack.getNamespace_OwnedRule(), this.pack.getConstraint());
-        diagramDescription.getPalette().getNodeTools().add(nodeTool);
+        this.createDiagramConstraintDescription(diagramDescription, null);
     }
 
     private void addAnnotatedElementReconnectionTools(EdgeDescription annotedElementEdge) {
@@ -575,7 +666,41 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
      */
     public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, EClass... owners) {
-        this.reuseNodeAndCreateTool(nodeDescription, diagramDescription, nodeTool, List.of(owners), List.of());
+        this.reuseNodeAndCreateTool(nodeDescription, diagramDescription, nodeTool, null, List.of(owners), List.of());
+    }
+
+    /**
+     * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
+     * {@code owners}.
+     * <p>
+     * This method provides a one-line way to reuse mappings and attach creation tools in a diagram. The provided
+     * {@code nodeDescription} is set as a reused element for each {@link NodeDescription} representing the provided
+     * {@code owners}, and the provided {@code nodeTool} is attached to the owning {@link NodeDescription}s. Note that
+     * the provided {@code nodeDescription} is added to either {@link NodeDescription#getReusedChildNodeDescriptions()}
+     * or {@link NodeDescription#getReusedBorderNodeDescriptions()}, depending on whether it is a regular node or a
+     * border node.
+     * <p>
+     * See {@link #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)} to finely tune the which
+     * {@link NodeDescription}s can own the provided {@code nodeDescription}.
+     * <p>
+     * <b>Note</b>: this method relies on the <i>callback</i> mechanism, meaning the the
+     * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
+     * descriptions have been created.
+     * </p>
+     * 
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription}s
+     * @param toolSectionName
+     *            name of the tool section to add the tool
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     * 
+     * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
+     */
+    public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, String toolSectionName, EClass... owners) {
+        this.reuseNodeAndCreateTool(nodeDescription, diagramDescription, nodeTool, toolSectionName, List.of(owners), List.of());
     }
 
     /**
@@ -599,15 +724,18 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the {@link NodeDescription} to reuse
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}s
+     * @param toolSectionName
+     *            name of the tool section to add the tool
      * @param owners
      *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
      * 
      * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
      */
-    public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, List<EClass> owners, List<EClass> forbiddenOwners) {
+    public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, String toolSectionName, List<EClass> owners,
+            List<EClass> forbiddenOwners) {
         this.registerCallback(nodeDescription, () -> {
             Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners);
-            CreationToolsUtil.addNodeCreationTool(ownerNodeDescriptions, nodeTool);
+            this.addNodeToolInToolSection(ownerNodeDescriptions.get(), nodeTool, toolSectionName);
             for (NodeDescription owner : ownerNodeDescriptions.get()) {
                 // If the owner is the direct parent of the nodeDescription there is no need to add it to its reused
                 // descriptions. It is already in the children descriptions of the owner.
@@ -765,6 +893,121 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         ECollections.sort(nodeDescription.getPalette().getEdgeTools(), comparator);
         nodeDescription.getChildrenDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
         nodeDescription.getBorderNodesDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
+    }
+
+    /**
+     * Get the tool section from the palette of a given {@link NodeDescription} with the given name.
+     * 
+     * @param nodeDescription
+     *            the node description with the palette which contain the tool section
+     * @param toolSectionName
+     *            the name of the tool section to extract
+     * @return the tool section from the palette of a given {@link NodeDescription} with the given name
+     */
+    public NodeToolSection getNodeToolSection(NodeDescription nodeDescription, String toolSectionName) {
+        NodeToolSection nodeToolSection = null;
+        if (toolSectionName != null) {
+            nodeToolSection = nodeDescription.getPalette().getToolSections().stream().filter(toolSection -> toolSectionName.equals(toolSection.getName())).findFirst().orElse(null);
+        }
+        return nodeToolSection;
+    }
+
+    /**
+     * Get the tool section from the palette of a given {@link DiagramDescription} with the given name.
+     * 
+     * @param diagramDescription
+     *            the diagram description with the palette which contain the tool section
+     * @param toolSectionName
+     *            the name of the tool section to extract
+     * @return the tool section from the palette of a given {@link DiagramDescription} with the given name
+     */
+    public DiagramToolSection getDiagramToolSection(DiagramDescription diagramDescription, String toolSectionName) {
+        DiagramToolSection diagramToolSection = null;
+        if (toolSectionName != null) {
+            diagramToolSection = diagramDescription.getPalette().getToolSections().stream().filter(toolSection -> toolSectionName.equals(toolSection.getName())).findFirst().orElse(null);
+        }
+        return diagramToolSection;
+    }
+
+    /**
+     * Add given {@link EdgeTool} in Edges tool section of list of owners nodes descriptions.
+     * 
+     * @param owners
+     *            list of owners which should use the edge tool
+     * @param edgeTool
+     *            the edge tool to add in tool section
+     */
+    protected void addEdgeToolInEdgesToolSection(List<NodeDescription> owners, EdgeTool edgeTool) {
+        for (NodeDescription owner : owners) {
+            NodeToolSection nodeToolSection = this.getNodeToolSection(owner, EDGES);
+            if (nodeToolSection == null) {
+                owner.getPalette().getEdgeTools().add(EcoreUtil.copy(edgeTool));
+            } else {
+                nodeToolSection.getEdgeTools().add(EcoreUtil.copy(edgeTool));
+            }
+        }
+    }
+
+    /**
+     * Add given {@link Nodes} in given tool section of list of owners nodes descriptions.
+     * 
+     * @param owners
+     *            list of owners which should use the node tool
+     * @param nodeTool
+     *            the node tool to add in tool section
+     * @param toolSectionName
+     *            name of the tool section which contain edge tool
+     */
+    protected void addNodeToolInToolSection(List<NodeDescription> owners, NodeTool nodeTool, String toolSectionName) {
+        for (NodeDescription owner : owners) {
+            NodeToolSection nodeToolSection = this.getNodeToolSection(owner, toolSectionName);
+            if (nodeToolSection == null) {
+                owner.getPalette().getNodeTools().add(EcoreUtil.copy(nodeTool));
+            } else {
+                nodeToolSection.getNodeTools().add(EcoreUtil.copy(nodeTool));
+            }
+        }
+    }
+
+    /**
+     * Add given {@link Nodes} in given Diagram tool section.
+     * 
+     * @param nodeTool
+     *            the node tool to add in tool section
+     * @param toolSectionName
+     *            name of the tool section which contain edge tool
+     */
+    protected void addDiagramToolInToolSection(DiagramDescription diagramDescription, NodeTool nodeTool, String toolSectionName) {
+        DiagramToolSection diagramToolSection = this.getDiagramToolSection(diagramDescription, toolSectionName);
+        if (diagramToolSection == null) {
+            diagramDescription.getPalette().getNodeTools().add(EcoreUtil.copy(nodeTool));
+        } else {
+            diagramToolSection.getNodeTools().add(EcoreUtil.copy(nodeTool));
+        }
+    }
+
+    /**
+     * Create tools sections "Nodes" and "Edges" in the palette tool of a given {@link NodeDescription}.
+     * 
+     * @param nodeDescription
+     *            the node description with the palette to complete with tool sections
+     */
+    protected void createDefaultToolSectionsInNodeDescription(NodeDescription nodeDescription) {
+        NodeToolSection nodesToolSection = this.getViewBuilder().createNodeToolSection(NODES);
+        NodeToolSection edgesToolSection = this.getViewBuilder().createNodeToolSection(EDGES);
+        nodeDescription.getPalette().getToolSections().addAll(List.of(nodesToolSection, edgesToolSection));
+    }
+    
+    /**
+     * Create tools sections "Nodes" and "Edges" in the palette tool of a given {@link DiagramDescription}.
+     * 
+     * @param nodeDescription
+     *            the node description with the palette to complete with tool sections
+     */
+    protected void createDefaultToolSectionInDiagramDescription(DiagramDescription diagramDescription) {
+        DiagramToolSection nodesToolSection = this.getViewBuilder().createDiagramToolSection(NODES);
+        DiagramToolSection edgesToolSection = this.getViewBuilder().createDiagramToolSection(EDGES);
+        diagramDescription.getPalette().getToolSections().addAll(List.of(nodesToolSection, edgesToolSection));
     }
 
 }
