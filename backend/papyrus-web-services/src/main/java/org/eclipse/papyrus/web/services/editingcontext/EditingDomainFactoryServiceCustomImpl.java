@@ -12,32 +12,47 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services.editingcontext;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.ContentHandler;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.sirius.components.domain.DomainPackage;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.adapters.DiagramColorAdapter;
+import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.util.UMLUtil.ProfileApplicationHelper;
 import org.eclipse.uml2.uml.util.UMLUtil.StereotypeApplicationHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * This class is used to create the editing domain used as editing context.</br>
@@ -47,6 +62,8 @@ import org.eclipse.uml2.uml.util.UMLUtil.StereotypeApplicationHelper;
  */
 @ServiceOverride(org.eclipse.sirius.web.services.editingcontext.EditingDomainFactoryService.class)
 public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFactoryService {
+
+    private final Logger logger = LoggerFactory.getLogger(EditingDomainFactoryServiceCustomImpl.class);
 
     private final IEditingContextEPackageService editingContextEPackageService;
 
@@ -83,6 +100,9 @@ public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFact
     public AdapterFactoryEditingDomain createEditingDomain(String editingContextId) {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
+        resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
+        resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
+
         var isStudioProjectNature = this.editingContextMetadataProvider.getMetadata(editingContextId).natures().stream().map(Nature::natureId)
                 .anyMatch("siriusComponents://nature?kind=studio"::equals);
 
@@ -117,6 +137,15 @@ public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFact
         ProfileApplicationHelper.setInstance(resourceSet, new ProfileApplicationHelper());
         StereotypeApplicationHelper.setInstance(resourceSet, new StereotypeApplicationHelper());
 
+        if (isStudioProjectNature) {
+            Optional<View> optionalView = this.loadStudioColorPalettes(resourceSet);
+            if (optionalView.isPresent()) {
+                var colorPalettesView = optionalView.get();
+                resourceSet.eAdapters().add(new DiagramColorAdapter(colorPalettesView));
+                resourceSet.eAdapters().add(new FormColorAdapter(colorPalettesView));
+            }
+        }
+
         this.optionalResourceFactoryRegistry.ifPresent(resourceSet::setResourceFactoryRegistry);
 
         return editingDomain;
@@ -124,5 +153,26 @@ public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFact
 
     private Stream<EPackage> findGlobalEPackages() {
         return this.globalEPackageRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast);
+    }
+
+    private Optional<View> loadStudioColorPalettes(ResourceSet resourceSet) {
+        ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
+        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+        Resource resource = null;
+        Optional<Resource> existingResource = resourceSet.getResources().stream().filter(r -> uri.equals(r.getURI())).findFirst();
+        if (existingResource.isEmpty()) {
+            resource = new JSONResourceFactory().createResource(uri);
+            try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
+                resourceSet.getResources().add(resource);
+                resource.load(inputStream, null);
+                resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes"));
+            } catch (IOException exception) {
+                this.logger.warn("An error occured while loading document studioColorPalettes.json: {}.", exception.getMessage());
+                resourceSet.getResources().remove(resource);
+            }
+        } else {
+            resource = existingResource.get();
+        }
+        return resource.getContents().stream().filter(View.class::isInstance).map(View.class::cast).findFirst();
     }
 }

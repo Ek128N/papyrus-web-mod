@@ -266,6 +266,7 @@ public class ViewBuilder {
     public RectangularNodeStyleDescription createRectangularNodeStyle(boolean showIcon, boolean showHeader) {
         RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         initStyle(nodeStyle);
+        nodeStyle.setColor(styleProvider.getNodeColor());
         nodeStyle.setShowIcon(showIcon);
         nodeStyle.setWithHeader(showHeader);
         return nodeStyle;
@@ -289,6 +290,8 @@ public class ViewBuilder {
     public ImageNodeStyleDescription createImageNodeStyle(String imageId, boolean showIcon) {
         ImageNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         initStyle(nodeStyle);
+        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
+        // nodeStyle.setColor(styleProvider.getNoteColor());
         nodeStyle.setShape(imageId);
         nodeStyle.setShowIcon(showIcon);
         return nodeStyle;
@@ -313,7 +316,6 @@ public class ViewBuilder {
     }
 
     private void initStyle(NodeStyleDescription nodeStyle) {
-        nodeStyle.setColor(styleProvider.getNodeColor());
         nodeStyle.setBorderColor(styleProvider.getBorderNodeColor());
         nodeStyle.setBorderRadius(styleProvider.getNodeBorderRadius());
         nodeStyle.setLabelColor(styleProvider.getNodeLabelColor());
@@ -322,6 +324,7 @@ public class ViewBuilder {
     private RectangularNodeStyleDescription createDefaultRectangularNodeStyle() {
         RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         initStyle(nodeStyle);
+        nodeStyle.setColor(styleProvider.getNodeColor());
         nodeStyle.setShowIcon(false);
         return nodeStyle;
     }

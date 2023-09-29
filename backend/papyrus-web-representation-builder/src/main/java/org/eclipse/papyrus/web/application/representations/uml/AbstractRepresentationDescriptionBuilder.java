@@ -289,7 +289,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) commentDescription.getStyle();
         style.setShowIcon(false);
-        style.setColor(styleProvider.getNoteColor());
+        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
+        // style.setColor(styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);
         diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getElement_OwnedComment(), pack.getComment()));
 
@@ -375,7 +376,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         diagramDescription.getNodeDescriptions().add(padModel);
         diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getModel()));
 
-        padModel.getStyle().setColor(styleProvider.getModelColor());
+        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
+        // padModel.getStyle().setColor(styleProvider.getModelColor());
         collectAndReusedChildNodes(padModel, pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
 
         registerNodeAsCommentOwner(padModel, diagramDescription);
