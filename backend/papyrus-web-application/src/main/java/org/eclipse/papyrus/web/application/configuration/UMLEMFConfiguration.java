@@ -20,12 +20,12 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
-import org.eclipse.papyrus.web.graphics.CustomUMLItemProviderAdapterFactory;
 import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.editingcontext.PathmapResourceFactory;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
 import org.eclipse.uml2.types.TypesPackage;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.eclipse.uml2.uml.profile.standard.StandardPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -44,7 +44,7 @@ public class UMLEMFConfiguration {
 
     @Bean
     public AdapterFactory umlAdapterFactory() {
-        return new CustomUMLItemProviderAdapterFactory();
+        return new UMLItemProviderAdapterFactory();
     }
 
     @Bean

@@ -42,6 +42,11 @@
 			<artifactId>org.eclipse.uml2.uml</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-services-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.uml2.plugins</groupId>
 			<artifactId>org.eclipse.uml2.uml.edit</artifactId>
 		</dependency>
