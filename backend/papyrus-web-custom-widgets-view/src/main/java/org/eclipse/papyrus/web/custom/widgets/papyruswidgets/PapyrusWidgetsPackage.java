@@ -218,6 +218,199 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int PRIMITIVE_RADIO_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl
+     * <em>Primitive List Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION = 2;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__NAME = FormPackage.WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__LABEL_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Help Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__HELP_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Value Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__VALUE_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Display Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Delete Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Add Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
+     * The number of structural features of the '<em>Primitive List Widget Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The number of operations of the '<em>Primitive List Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListDeleteOperationImpl <em>Primitive
+     * List Delete Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListDeleteOperationImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListDeleteOperation()
+     * @generated
+     */
+    int PRIMITIVE_LIST_DELETE_OPERATION = 3;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_DELETE_OPERATION__BODY = 0;
+
+    /**
+     * The number of structural features of the '<em>Primitive List Delete Operation</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_DELETE_OPERATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Primitive List Delete Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_DELETE_OPERATION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListAddOperationImpl <em>Primitive
+     * List Add Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListAddOperationImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListAddOperation()
+     * @generated
+     */
+    int PRIMITIVE_LIST_ADD_OPERATION = 4;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ADD_OPERATION__BODY = 0;
+
+    /**
+     * The number of structural features of the '<em>Primitive List Add Operation</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ADD_OPERATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Primitive List Add Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ADD_OPERATION_OPERATION_COUNT = 0;
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription <em>Language
      * Expression Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -298,6 +491,147 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      */
     EReference getPrimitiveRadioWidgetDescription_Body();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription <em>Primitive List
+     * Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Primitive List Widget Description</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription
+     * @generated
+     */
+    EClass getPrimitiveListWidgetDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getValueExpression
+     * <em>Value Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Value Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getValueExpression()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EAttribute getPrimitiveListWidgetDescription_ValueExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getDisplayExpression
+     * <em>Display Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Display Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getDisplayExpression()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EAttribute getPrimitiveListWidgetDescription_DisplayExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getStyle
+     * <em>Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Style</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getStyle()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EReference getPrimitiveListWidgetDescription_Style();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getConditionalStyles
+     * <em>Conditional Styles</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Conditional Styles</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getConditionalStyles()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EReference getPrimitiveListWidgetDescription_ConditionalStyles();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getIsEnabledExpression
+     * <em>Is Enabled Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Is Enabled Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getIsEnabledExpression()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EAttribute getPrimitiveListWidgetDescription_IsEnabledExpression();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getDeleteOperation
+     * <em>Delete Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Delete Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getDeleteOperation()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EReference getPrimitiveListWidgetDescription_DeleteOperation();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getAddOperation
+     * <em>Add Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Add Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getAddOperation()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EReference getPrimitiveListWidgetDescription_AddOperation();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation <em>Primitive List
+     * Delete Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Primitive List Delete Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation
+     * @generated
+     */
+    EClass getPrimitiveListDeleteOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation#getBody
+     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation#getBody()
+     * @see #getPrimitiveListDeleteOperation()
+     * @generated
+     */
+    EReference getPrimitiveListDeleteOperation_Body();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation <em>Primitive List Add
+     * Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Primitive List Add Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation
+     * @generated
+     */
+    EClass getPrimitiveListAddOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation#getBody <em>Body</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation#getBody()
+     * @see #getPrimitiveListAddOperation()
+     * @generated
+     */
+    EReference getPrimitiveListAddOperation_Body();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -382,6 +716,111 @@ public interface PapyrusWidgetsPackage extends EPackage {
          * @generated
          */
         EReference PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY = eINSTANCE.getPrimitiveRadioWidgetDescription_Body();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl
+         * <em>Primitive List Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListWidgetDescription()
+         * @generated
+         */
+        EClass PRIMITIVE_LIST_WIDGET_DESCRIPTION = eINSTANCE.getPrimitiveListWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Value Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PRIMITIVE_LIST_WIDGET_DESCRIPTION__VALUE_EXPRESSION = eINSTANCE.getPrimitiveListWidgetDescription_ValueExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Display Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION = eINSTANCE.getPrimitiveListWidgetDescription_DisplayExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE = eINSTANCE.getPrimitiveListWidgetDescription_Style();
+
+        /**
+         * The meta object literal for the '<em><b>Conditional Styles</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getPrimitiveListWidgetDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the '<em><b>Is Enabled Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = eINSTANCE.getPrimitiveListWidgetDescription_IsEnabledExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Delete Operation</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION = eINSTANCE.getPrimitiveListWidgetDescription_DeleteOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Add Operation</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION = eINSTANCE.getPrimitiveListWidgetDescription_AddOperation();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListDeleteOperationImpl
+         * <em>Primitive List Delete Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListDeleteOperationImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListDeleteOperation()
+         * @generated
+         */
+        EClass PRIMITIVE_LIST_DELETE_OPERATION = eINSTANCE.getPrimitiveListDeleteOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_DELETE_OPERATION__BODY = eINSTANCE.getPrimitiveListDeleteOperation_Body();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListAddOperationImpl
+         * <em>Primitive List Add Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListAddOperationImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListAddOperation()
+         * @generated
+         */
+        EClass PRIMITIVE_LIST_ADD_OPERATION = eINSTANCE.getPrimitiveListAddOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_ADD_OPERATION__BODY = eINSTANCE.getPrimitiveListAddOperation_Body();
 
     }
 

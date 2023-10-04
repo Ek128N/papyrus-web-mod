@@ -20,6 +20,9 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
@@ -86,6 +89,21 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter casePrimitiveListWidgetDescription(PrimitiveListWidgetDescription object) {
+            return PapyrusWidgetsAdapterFactory.this.createPrimitiveListWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter casePrimitiveListDeleteOperation(PrimitiveListDeleteOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createPrimitiveListDeleteOperationAdapter();
+        }
+
+        @Override
+        public Adapter casePrimitiveListAddOperation(PrimitiveListAddOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createPrimitiveListAddOperationAdapter();
+        }
+
+        @Override
         public Adapter caseFormElementDescription(FormElementDescription object) {
             return PapyrusWidgetsAdapterFactory.this.createFormElementDescriptionAdapter();
         }
@@ -141,6 +159,50 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPrimitiveRadioWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription <em>Primitive List
+     * Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription
+     * @generated
+     */
+    public Adapter createPrimitiveListWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation <em>Primitive List
+     * Delete Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation
+     * @generated
+     */
+    public Adapter createPrimitiveListDeleteOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation <em>Primitive List Add
+     * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation
+     * @generated
+     */
+    public Adapter createPrimitiveListAddOperationAdapter() {
         return null;
     }
 

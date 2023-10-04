@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:papyruswidgets="https://www.eclipse.org/papyrus/widgets/" xmlns:view="http://www.eclipse.org/sirius-web/view">
+  <descriptions xmi:type="form:FormDescription" name="PrimitiveListe.view" domainType="uml::Element" titleExpression="aql:'Comment rep'">
+    <pages xmi:type="form:PageDescription">
+      <groups xmi:type="form:GroupDescription">
+        <children xmi:type="papyruswidgets:PrimitiveListWidgetDescription" name="AppliedComment" labelExpression="Applies Comment" valueExpression="aql:self.ownedComment" displayExpression="aql:candidate.body">
+          <deleteOperation xmi:type="papyruswidgets:PrimitiveListDeleteOperation">
+            <body xmi:type="view:ChangeContext" expression="aql:self.ownedComment->at(candidateIndex+1)">
+              <children xmi:type="view:DeleteElement"/>
+            </body>
+          </deleteOperation>
+          <addOperation xmi:type="papyruswidgets:PrimitiveListAddOperation">
+            <body xmi:type="view:CreateInstance" typeName="uml::Comment" referenceName="ownedComment">
+              <children xmi:type="view:ChangeContext" expression="aql:newInstance">
+                <children xmi:type="view:SetValue" featureName="body" valueExpression="aql:newValue"/>
+              </children>
+            </body>
+          </addOperation>
+        </children>
+      </groups>
+    </pages>
+  </descriptions>
+</view:View>

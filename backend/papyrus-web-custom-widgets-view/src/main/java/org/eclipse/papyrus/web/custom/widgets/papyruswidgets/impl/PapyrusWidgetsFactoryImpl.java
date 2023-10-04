@@ -22,6 +22,9 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 
 /**
@@ -68,6 +71,12 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
                 return this.createLanguageExpressionWidgetDescription();
             case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION:
                 return this.createPrimitiveRadioWidgetDescription();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION:
+                return this.createPrimitiveListWidgetDescription();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_DELETE_OPERATION:
+                return this.createPrimitiveListDeleteOperation();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ADD_OPERATION:
+                return this.createPrimitiveListAddOperation();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -93,6 +102,39 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
     public PrimitiveRadioWidgetDescription createPrimitiveRadioWidgetDescription() {
         PrimitiveRadioWidgetDescriptionImpl primitiveRadioWidgetDescription = new PrimitiveRadioWidgetDescriptionImpl();
         return primitiveRadioWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PrimitiveListWidgetDescription createPrimitiveListWidgetDescription() {
+        PrimitiveListWidgetDescriptionImpl primitiveListWidgetDescription = new PrimitiveListWidgetDescriptionImpl();
+        return primitiveListWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PrimitiveListDeleteOperation createPrimitiveListDeleteOperation() {
+        PrimitiveListDeleteOperationImpl primitiveListDeleteOperation = new PrimitiveListDeleteOperationImpl();
+        return primitiveListDeleteOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PrimitiveListAddOperation createPrimitiveListAddOperation() {
+        PrimitiveListAddOperationImpl primitiveListAddOperation = new PrimitiveListAddOperationImpl();
+        return primitiveListAddOperation;
     }
 
     /**

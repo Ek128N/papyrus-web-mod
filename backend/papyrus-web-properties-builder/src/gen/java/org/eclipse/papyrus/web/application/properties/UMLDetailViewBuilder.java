@@ -90,9 +90,9 @@ public class UMLDetailViewBuilder {
         pages.add(new DestroyObjectActionUmlPage(factory, colorRegistry).create());
         pages.add(new DeviceUmlPage(factory, colorRegistry).create());
         pages.add(new DurationUmlPage(factory, colorRegistry).create());
-        pages.add(new DurationConstraintUmlPage(factory, colorRegistry).create());
+        pages.add(new DurationConstraintUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new DurationIntervalUmlPage(factory, colorRegistry).create());
-        pages.add(new DurationObservationUmlPage(factory, colorRegistry).create());
+        pages.add(new DurationObservationUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new ElementImportUmlPage(factory, colorRegistry).create());
         pages.add(new EnumerationUmlPage(factory, colorRegistry).create());
         pages.add(new EnumerationLiteralUmlPage(factory, colorRegistry).create());

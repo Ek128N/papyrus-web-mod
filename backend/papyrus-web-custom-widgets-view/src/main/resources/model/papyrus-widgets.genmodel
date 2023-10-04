@@ -21,5 +21,20 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription/valueExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveRadioWidgetDescription/body"/>
     </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/displayExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/conditionalStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/isEnabledExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/deleteOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/addOperation"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListDeleteOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListDeleteOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListAddOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListAddOperation/body"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

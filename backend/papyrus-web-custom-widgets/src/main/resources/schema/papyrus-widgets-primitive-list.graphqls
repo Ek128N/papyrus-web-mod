@@ -1,0 +1,35 @@
+type PrimitiveListWidget implements Widget {
+  id: ID!
+  label: String!
+  iconURL: String
+  diagnostics: [Diagnostic!]!
+  hasHelpText: Boolean!
+  readOnly: Boolean!
+  items: [PrimitiveListItem!]!
+  style: ListStyle
+  canAdd : Boolean!
+}
+
+extend type Mutation {
+  deletePrimitiveListItem(input: DeleteListItemInput!): DeleteListItemPayload!
+  addPrimitiveListItem(input: AddPrimitiveListItemInput!): AddPrimitiveListItemPayload!
+}
+
+input AddPrimitiveListItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  listId: ID!
+  newValue: String!
+
+}
+
+union AddPrimitiveListItemPayload = ErrorPayload | SuccessPayload
+
+type PrimitiveListItem {
+  id: ID!
+  label: String!
+  kind: String!
+  imageURL: String!
+  deletable: Boolean!
+}

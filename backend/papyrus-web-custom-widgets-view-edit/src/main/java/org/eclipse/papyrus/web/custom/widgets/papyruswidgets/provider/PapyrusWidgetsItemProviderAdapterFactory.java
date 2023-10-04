@@ -149,6 +149,81 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PrimitiveListWidgetDescriptionItemProvider primitiveListWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPrimitiveListWidgetDescriptionAdapter() {
+        if (primitiveListWidgetDescriptionItemProvider == null) {
+            primitiveListWidgetDescriptionItemProvider = new PrimitiveListWidgetDescriptionItemProvider(this);
+        }
+
+        return primitiveListWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PrimitiveListDeleteOperationItemProvider primitiveListDeleteOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPrimitiveListDeleteOperationAdapter() {
+        if (primitiveListDeleteOperationItemProvider == null) {
+            primitiveListDeleteOperationItemProvider = new PrimitiveListDeleteOperationItemProvider(this);
+        }
+
+        return primitiveListDeleteOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PrimitiveListAddOperationItemProvider primitiveListAddOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPrimitiveListAddOperationAdapter() {
+        if (primitiveListAddOperationItemProvider == null) {
+            primitiveListAddOperationItemProvider = new PrimitiveListAddOperationItemProvider(this);
+        }
+
+        return primitiveListAddOperationItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -255,6 +330,12 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
             languageExpressionWidgetDescriptionItemProvider.dispose();
         if (primitiveRadioWidgetDescriptionItemProvider != null)
             primitiveRadioWidgetDescriptionItemProvider.dispose();
+        if (primitiveListWidgetDescriptionItemProvider != null)
+            primitiveListWidgetDescriptionItemProvider.dispose();
+        if (primitiveListDeleteOperationItemProvider != null)
+            primitiveListDeleteOperationItemProvider.dispose();
+        if (primitiveListAddOperationItemProvider != null)
+            primitiveListAddOperationItemProvider.dispose();
     }
 
     /**
@@ -311,6 +392,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                 newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
                 return null;
             }
 
@@ -329,6 +413,10 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                         .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
+                newChildDescriptors
+                        .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                                PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
                 return null;
             }
 
@@ -345,6 +433,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                 newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
                 return null;
             }
 
@@ -360,6 +451,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
 
                 newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+
+                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
 
                 return null;
             }

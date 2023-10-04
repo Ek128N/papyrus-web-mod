@@ -41,6 +41,7 @@ import {
 } from '@eclipse-sirius/sirius-components-widget-reference';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -56,9 +57,10 @@ import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
 import { LanguageExpressionSection } from './widgets/languageExpression/LanguageExpressionSection';
+import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveListWidgetPreview';
+import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidgetPropertySection';
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
-
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
   loadErrorMessages();
@@ -164,6 +166,8 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       return LanguageExpressionSection;
     } else if (widget.__typename === 'PrimitiveRadio') {
       return PrimitiveRadioSection;
+    } else if (widget.__typename === 'PrimitiveListWidget') {
+      return PrimitiveListSection;
     }
   },
   getPreviewComponent: (widget: GQLWidget) => {
@@ -171,6 +175,8 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       return SliderPreview;
     } else if (widget.__typename === 'ReferenceWidget') {
       return ReferencePreview;
+    } else if (widget.__typename === 'PrimitiveListWidget') {
+      return PrimitiveListWidgetPreview;
     }
   },
   getWidgetContributions: () => {
@@ -224,7 +230,19 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       fields: 'id label iconURL candidateList candidateValue',
       icon: <PrimitiveRadioIcon />,
     };
-    return [sliderWidgetContribution, referenceWidget, languageExpressionWidget, primitiveRadioWidget];
+    const primitiveListWidget: WidgetContribution = {
+      name: 'PrimitiveListWidget',
+      fields:
+        'label iconURL canAdd items { id label deletable } style { color fontSize italic bold underline strikeThrough }',
+      icon: <FormatListBulletedIcon />,
+    };
+    return [
+      sliderWidgetContribution,
+      referenceWidget,
+      languageExpressionWidget,
+      primitiveRadioWidget,
+      primitiveListWidget,
+    ];
   },
 };
 

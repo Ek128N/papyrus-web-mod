@@ -130,19 +130,6 @@ describe('Basic widgets test', () => {
   });
 
   /**
-   * Test validating the List widget
-   */
-  it('Test List description', () => {
-    cy.getByTestId('DurationObservation').click();
-    cy.activateDetailsTab('UML');
-    cy.inDetailsCurrentTab()
-      .find('tbody>tr')
-      .should(($rows) => {
-        expect($rows).to.have.length(1);
-      });
-  });
-
-  /**
    * Test validating the LiteralBoolean custom widget
    */
   it('Test LiteralBoolean concept', () => {

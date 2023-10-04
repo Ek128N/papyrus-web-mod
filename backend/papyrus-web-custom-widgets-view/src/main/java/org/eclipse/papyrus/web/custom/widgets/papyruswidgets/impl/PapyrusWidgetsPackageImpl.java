@@ -22,6 +22,9 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
@@ -45,6 +48,27 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     private EClass primitiveRadioWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass primitiveListWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass primitiveListDeleteOperationEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass primitiveListAddOperationEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -188,6 +212,126 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
+    public EClass getPrimitiveListWidgetDescription() {
+        return this.primitiveListWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveListWidgetDescription_ValueExpression() {
+        return (EAttribute) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveListWidgetDescription_DisplayExpression() {
+        return (EAttribute) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListWidgetDescription_Style() {
+        return (EReference) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListWidgetDescription_ConditionalStyles() {
+        return (EReference) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveListWidgetDescription_IsEnabledExpression() {
+        return (EAttribute) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListWidgetDescription_DeleteOperation() {
+        return (EReference) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListWidgetDescription_AddOperation() {
+        return (EReference) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getPrimitiveListDeleteOperation() {
+        return this.primitiveListDeleteOperationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListDeleteOperation_Body() {
+        return (EReference) this.primitiveListDeleteOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getPrimitiveListAddOperation() {
+        return this.primitiveListAddOperationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListAddOperation_Body() {
+        return (EReference) this.primitiveListAddOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public PapyrusWidgetsFactory getPapyrusWidgetsFactory() {
         return (PapyrusWidgetsFactory) this.getEFactoryInstance();
     }
@@ -219,6 +363,21 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.createEAttribute(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION);
         this.createEAttribute(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION);
         this.createEReference(this.primitiveRadioWidgetDescriptionEClass, PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY);
+
+        this.primitiveListWidgetDescriptionEClass = this.createEClass(PRIMITIVE_LIST_WIDGET_DESCRIPTION);
+        this.createEAttribute(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__VALUE_EXPRESSION);
+        this.createEAttribute(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION);
+        this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE);
+        this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEAttribute(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
+        this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION);
+        this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION);
+
+        this.primitiveListDeleteOperationEClass = this.createEClass(PRIMITIVE_LIST_DELETE_OPERATION);
+        this.createEReference(this.primitiveListDeleteOperationEClass, PRIMITIVE_LIST_DELETE_OPERATION__BODY);
+
+        this.primitiveListAddOperationEClass = this.createEClass(PRIMITIVE_LIST_ADD_OPERATION);
+        this.createEReference(this.primitiveListAddOperationEClass, PRIMITIVE_LIST_ADD_OPERATION__BODY);
     }
 
     /**
@@ -255,6 +414,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         // Add supertypes to classes
         this.languageExpressionWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
         this.primitiveRadioWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
+        this.primitiveListWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.languageExpressionWidgetDescriptionEClass, LanguageExpressionWidgetDescription.class, "LanguageExpressionWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE,
@@ -271,6 +431,30 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveRadioWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.primitiveListWidgetDescriptionEClass, PrimitiveListWidgetDescription.class, "PrimitiveListWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getPrimitiveListWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPrimitiveListWidgetDescription_DisplayExpression(), theViewPackage.getInterpretedExpression(), "displayExpression", null, 0, 1,
+                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPrimitiveListWidgetDescription_Style(), theFormPackage.getListDescriptionStyle(), null, "style", null, 0, 1, PrimitiveListWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPrimitiveListWidgetDescription_ConditionalStyles(), theFormPackage.getConditionalListDescriptionStyle(), null, "conditionalStyles", null, 0, -1,
+                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPrimitiveListWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
+                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPrimitiveListWidgetDescription_DeleteOperation(), this.getPrimitiveListDeleteOperation(), null, "deleteOperation", null, 0, 1, PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPrimitiveListWidgetDescription_AddOperation(), this.getPrimitiveListAddOperation(), null, "addOperation", null, 0, 1, PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.primitiveListDeleteOperationEClass, PrimitiveListDeleteOperation.class, "PrimitiveListDeleteOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getPrimitiveListDeleteOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListDeleteOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.primitiveListAddOperationEClass, PrimitiveListAddOperation.class, "PrimitiveListAddOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getPrimitiveListAddOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListAddOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

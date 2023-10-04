@@ -50,6 +50,33 @@ public interface PapyrusWidgetsFactory extends EFactory {
     PrimitiveRadioWidgetDescription createPrimitiveRadioWidgetDescription();
 
     /**
+     * Returns a new object of class '<em>Primitive List Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Primitive List Widget Description</em>'.
+     * @generated
+     */
+    PrimitiveListWidgetDescription createPrimitiveListWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>Primitive List Delete Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Primitive List Delete Operation</em>'.
+     * @generated
+     */
+    PrimitiveListDeleteOperation createPrimitiveListDeleteOperation();
+
+    /**
+     * Returns a new object of class '<em>Primitive List Add Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Primitive List Add Operation</em>'.
+     * @generated
+     */
+    PrimitiveListAddOperation createPrimitiveListAddOperation();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
