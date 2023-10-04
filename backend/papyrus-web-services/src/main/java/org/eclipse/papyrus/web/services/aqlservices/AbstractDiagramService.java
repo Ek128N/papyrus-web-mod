@@ -26,11 +26,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
@@ -93,6 +95,8 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Element;
@@ -110,6 +114,11 @@ public abstract class AbstractDiagramService {
 
     // Workaround for https://github.com/eclipse-sirius/sirius-components/issues/1343
     public static final EObject FAILURE_OBJECT = EcoreFactory.eINSTANCE.createEObject();
+
+    /**
+     * Profile extension name.
+     */
+    public static final String PROFILE_EXT = ".profile";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDiagramService.class);
 
@@ -860,6 +869,28 @@ public abstract class AbstractDiagramService {
             LOGGER.error("The target element should be an Element"); //$NON-NLS-1$
         }
         return target;
+    }
+
+    /**
+     * Check if the resource of a given {@link Object} is defined with ".profile" extension in its name.
+     *
+     * @param context
+     *            context used to create diagram on
+     *
+     * @return <code>true</code> if the resource is defined with ".profile" extension in its name, <code>false</code>
+     *         otherwise.
+     */
+
+    protected boolean isContainedInProfileResource(EObject context) {
+        Resource eResource = context.eResource();
+        if (eResource instanceof JsonResource jsonResource) {
+            for (Adapter adapter : jsonResource.eAdapters()) {
+                if (adapter instanceof ResourceMetadataAdapter resourceMetadataAdapter) {
+                    return resourceMetadataAdapter.getName().endsWith(PROFILE_EXT);
+                }
+            }
+        }
+        return false;
     }
 
 }

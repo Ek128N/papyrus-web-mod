@@ -101,6 +101,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         // create diagram tool sections
         createDefaultToolSectionInDiagramDescription(diagramDescription);
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.IS_PROFILE_MODEL));
 
         this.createDiagramPackageDescription(diagramDescription);
         this.createDiagramProfileDescription(diagramDescription);
@@ -467,11 +468,9 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeDescription prdDiagramMetaclassDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
                 .name(PRD_METACLASS) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
-                // queryAllReachable here is fine because we manually select which element to display on a DnD.
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(metaclassEClass)) //
+                .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
-                .deleteTool(this.getViewBuilder().createNodeDeleteTool(metaclassEClass.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramMetaclassDescription);
         this.createDefaultToolSectionsInNodeDescription(prdDiagramMetaclassDescription);

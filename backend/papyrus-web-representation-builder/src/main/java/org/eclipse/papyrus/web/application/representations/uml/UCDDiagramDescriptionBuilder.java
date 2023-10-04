@@ -102,6 +102,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         // create diagram tool sections
         createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.IS_NOT_PROFILE_MODEL));
 
         this.createDiagramActorDescription(diagramDescription);
         this.createDiagramActivityAsSubjectDescription(diagramDescription);

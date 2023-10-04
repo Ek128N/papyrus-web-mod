@@ -33,4 +33,9 @@ public class UseCaseDiagramServices extends Services {
      */
     public static final String GET_USECASE_NODE_CANDIDATES = "getUseCaseCandidatesUCD";
 
+    /**
+     * The name of the service that check is the root model is not a Profile model.
+     */
+    public static final String IS_NOT_PROFILE_MODEL = "isNotProfileModel";
+
 }

@@ -117,4 +117,16 @@ public class UseCaseDiagramService extends AbstractDiagramService {
         }
         return useCaseCandidates;
     }
+
+    /**
+     * Check if the resource of a given {@link Object} is not a Profile model.
+     *
+     * @param context
+     *            context used to create diagram on
+     *
+     * @return <code>true</code> if the resource is a profile model, <code>false</code> otherwise.
+     */
+    public boolean isNotProfileModel(EObject context) {
+        return !this.isContainedInProfileResource(context);
+    }
 }
