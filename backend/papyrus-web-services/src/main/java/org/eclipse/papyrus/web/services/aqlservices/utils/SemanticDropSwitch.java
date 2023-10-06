@@ -42,6 +42,7 @@ import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.InterruptibleActivityRegion;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Relationship;
+import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.util.UMLSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,6 +218,11 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
     @Override
     public Boolean caseMessage(Message message) {
         return this.createDnDEdgeView(message);
+    }
+
+    @Override
+    public Boolean caseTransition(Transition transition) {
+        return this.createDnDEdgeView(transition);
     }
 
     // This case is mandatory because ElementImport is a Relationship so it will
