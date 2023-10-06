@@ -106,8 +106,7 @@ public class NoteStyleDescriptionBuilderTest {
         this.triggerCallbacks(this.diagramDescription);
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription nodeDescription = this.diagramDescription.getNodeDescriptions().get(0);
-        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
-        // assertEquals(styleProvider.getNoteColor(), nodeDescription.getStyle().getColor());
+        assertEquals(styleProvider.getNoteColor(), nodeDescription.getStyle().getColor());
         assertEquals("200", nodeDescription.getStyle().getWidthComputationExpression());
         assertEquals("100", nodeDescription.getStyle().getHeightComputationExpression());
         assertFalse(nodeDescription.getStyle().isShowIcon());
@@ -166,8 +165,7 @@ public class NoteStyleDescriptionBuilderTest {
 
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription childNodeDescription = diagChildNodeDescription.getChildrenDescriptions().get(0);
-        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
-        // assertEquals(this.styleProvider.getNoteColor(), childNodeDescription.getStyle().getColor());
+        assertEquals(this.styleProvider.getNoteColor(), childNodeDescription.getStyle().getColor());
         assertEquals("200", childNodeDescription.getStyle().getWidthComputationExpression());
         assertEquals("100", childNodeDescription.getStyle().getHeightComputationExpression());
         assertFalse(childNodeDescription.getStyle().isShowIcon());

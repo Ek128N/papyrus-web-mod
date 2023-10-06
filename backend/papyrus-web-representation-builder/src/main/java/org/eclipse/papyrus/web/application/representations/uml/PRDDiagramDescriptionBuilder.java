@@ -200,8 +200,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private void createDiagramProfileDescription(DiagramDescription diagramDescription) {
         EClass profileEClass = this.umlPackage.getProfile();
         NodeDescription prdDiagramProfileDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(profileEClass, this.getQueryBuilder().queryAllReachable(profileEClass));
-        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
-        // prdDiagramProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
+        prdDiagramProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         diagramDescription.getNodeDescriptions().add(prdDiagramProfileDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdDiagramProfileDescription);
@@ -225,8 +224,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeDescription prdSharedProfileDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(profileEClass,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
         prdSharedProfileDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(profileEClass, SHARED_SUFFIX));
-        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
-        // prdSharedProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
+        prdSharedProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedProfileDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdSharedProfileDescription);

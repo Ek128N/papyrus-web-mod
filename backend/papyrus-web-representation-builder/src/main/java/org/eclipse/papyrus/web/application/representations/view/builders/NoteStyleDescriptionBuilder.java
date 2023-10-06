@@ -320,9 +320,8 @@ public class NoteStyleDescriptionBuilder {
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) noteStyleDescription.getStyle();
         style.setShowIcon(false);
-        // TODO uncomment next line when setColor is restored possibly in 2023.10.0
-        // style.setColor(color);
-        
+        style.setColor(color);
+
         return noteStyleDescription;
     }
 
