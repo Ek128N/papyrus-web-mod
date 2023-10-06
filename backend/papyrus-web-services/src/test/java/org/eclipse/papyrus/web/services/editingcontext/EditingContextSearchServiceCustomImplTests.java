@@ -164,7 +164,7 @@ public class EditingContextSearchServiceCustomImplTests {
 
     private void assertProperResourceLoading(Resource resource, DocumentEntity documentEntity) {
         assertThat(resource).isNotNull();
-        assertThat(resource.eAdapters()).hasSize(2);
+        assertThat(resource.eAdapters()).hasSize(3);
         // @formatter:off
         var optionalDocumentMetadataAdapter = resource.eAdapters().stream()
                 .filter(ResourceMetadataAdapter.class::isInstance)

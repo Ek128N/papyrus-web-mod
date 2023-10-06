@@ -21,9 +21,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.papyrus.web.sirius.contributions.UnloadingEditingContext;
@@ -95,6 +98,9 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
         this.logger.debug("Loading the editing context {}", editingContextId);
 
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactoryService.createEditingDomain(editingContextId);
+
+        // Workaround for bug: https://github.com/eclipse-sirius/sirius-web/issues/1863
+        editingDomain.getResourceSet().eAdapters().add(new SelfPreResolvingProxyAdapter());
         ResourceSet resourceSet = editingDomain.getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
@@ -117,6 +123,7 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
                 resourceSet.getResources().remove(resource);
             }
         }
+
         // DO NOT add the default EditingContextCrossReferenceAdapter for UML resource and UML Element.
         // Everything should be done within the UML Domain Service using the CacheAdapter
         // The ECrossReferenceAdapter must be set after the resource loading because it needs to resolve proxies in case
@@ -137,6 +144,37 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
 
         // Need this customization to be able to unload the UML resources and so clear the CacheAdapter
         return Optional.of(new UnloadingEditingContext(editingContextId, editingDomain, representationDescriptions));
+    }
+
+    /**
+     * Workaround for bug: https://github.com/eclipse-sirius/sirius-web/issues/1863 .
+     *
+     * @author Arthur Daussy
+     */
+    private final class SelfPreResolvingProxyAdapter extends EContentAdapter {
+        @Override
+        public void notifyChanged(Notification notification) {
+            super.notifyChanged(notification);
+            if (notification.getNotifier() instanceof Resource resource //
+                    && notification.getFeatureID(Resource.class) == Resource.RESOURCE__IS_LOADED//
+                    && notification.getEventType() == Notification.SET //
+                    && notification.getNewBooleanValue() /* Only during loading */) {
+                EcoreUtil.resolveAll(resource);
+            }
+        }
+
+        @Override
+        protected void selfAdapt(Notification notification) {
+
+            // Only adapt on ResourceSet and Resources
+            Object notifier = notification.getNotifier();
+            if (notifier instanceof ResourceSet) {
+                if (notification.getFeatureID(ResourceSet.class) == ResourceSet.RESOURCE_SET__RESOURCES) {
+                    this.handleContainment(notification);
+                }
+            }
+
+        }
     }
 
 }
