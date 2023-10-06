@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.web.services.representations.ViewRepresentationDescriptionSearchService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
@@ -76,6 +77,11 @@ public class ViewRepresentationDescriptionSearchServiceCustomImpl implements IVi
             return this.baseViewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescriptionId);
         }
 
+    }
+
+    @Override
+    public Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId) {
+        return this.baseViewRepresentationDescriptionSearchService.findViewFormElementDescriptionById(formDescriptionId);
     }
 
 }

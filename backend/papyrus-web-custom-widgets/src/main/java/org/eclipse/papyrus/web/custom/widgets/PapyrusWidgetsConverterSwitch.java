@@ -23,7 +23,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
@@ -51,6 +50,7 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.ListStyleProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
@@ -71,11 +71,14 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public PapyrusWidgetsConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
+    private final IFormIdProvider widgetIdProvider;
+
+    public PapyrusWidgetsConverterSwitch(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService, IFormIdProvider widgetIdProvider) {
         this.interpreter = Objects.requireNonNull(interpreter);
         this.editService = Objects.requireNonNull(editService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+        this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
 
     }
 
@@ -98,8 +101,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
     }
 
     private String getDescriptionId(EObject description) {
-        String descriptionURI = EcoreUtil.getURI(description).toString();
-        return UUID.nameUUIDFromBytes(descriptionURI.getBytes()).toString();
+        return this.widgetIdProvider.getFormElementDescriptionId(description);
     }
 
     private String getLanguageExpressionLabel(LanguageExpressionWidgetDescription languageExpressionDescription, VariableManager variableManager) {

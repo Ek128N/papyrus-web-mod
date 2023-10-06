@@ -32,7 +32,10 @@ import org.eclipse.sirius.components.compatibility.emf.properties.EStringIfDescr
 import org.eclipse.sirius.components.compatibility.emf.properties.NumberIfDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
@@ -67,13 +70,23 @@ public class AdvancedPropertiesDescriptionProvider {
 
     private final Function<VariableManager, String> semanticTargetIdProvider;
 
-    public AdvancedPropertiesDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IEMFMessageService emfMessageService) {
+    private final IEMFKindService emfKindService;
+
+    private final IFeedbackMessageService feedbackMessageService;
+
+    private final IEditService editService;
+
+    public AdvancedPropertiesDescriptionProvider(IObjectService objectService, ComposedAdapterFactory composedAdapterFactory, IEMFMessageService emfMessageService,
+            IFeedbackMessageService feedbackMessageService, IEMFKindService emfKindService, IEditService editService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = new IPropertiesValidationProvider.NoOp(); // Unplug live validation
                                                                                       // validation
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
         this.semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(objectService::getId).orElse(null);
+        this.emfKindService = Objects.requireNonNull(emfKindService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.editService = Objects.requireNonNull(editService);
 
     }
 
@@ -204,7 +217,8 @@ public class AdvancedPropertiesDescriptionProvider {
         ifDescriptions.add(new EBooleanIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
         ifDescriptions.add(new EEnumIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, this.semanticTargetIdProvider).getIfDescription());
 
-        ifDescriptions.add(new NonDerivedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider).getIfDescription());
+        ifDescriptions.add(new NonDerivedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider, this.propertiesValidationProvider,
+                this.editService, this.feedbackMessageService, this.emfKindService).getIfDescription());
 
         // @formatter:off
         var numericDataTypes = List.of(

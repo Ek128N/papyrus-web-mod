@@ -190,9 +190,9 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       fields: `label
                iconURL
                ownerId
+               descriptionId
                reference {
-                 typeName
-                 referenceName
+                 ownerKind
                  referenceKind
                  containment
                  manyValued
@@ -203,12 +203,6 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
                  kind
                  iconURL
                  hasClickAction
-               }
-               referenceOptions {
-                 id
-                 label
-                 kind
-                 iconURL
                }
                style {
                  color

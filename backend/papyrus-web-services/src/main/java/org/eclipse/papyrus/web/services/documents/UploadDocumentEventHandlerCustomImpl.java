@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.URI;
@@ -56,11 +57,14 @@ import org.eclipse.sirius.web.services.api.document.Document;
 import org.eclipse.sirius.web.services.api.document.IDocumentService;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
+import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.eclipse.sirius.web.services.documents.EObjectRandomIDManager;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
+import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -81,14 +85,17 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
 
     private final IServicesMessageService messageService;
 
+    private final IEditingContextMetadataProvider editingContextMetadataProvider;
+
     private final Counter counter;
 
     private final IEditingDomainFactoryService editingDomainFactoryService;
 
     public UploadDocumentEventHandlerCustomImpl(IDocumentService documentService, IServicesMessageService messageService, MeterRegistry meterRegistry,
-            IEditingDomainFactoryService editingDomainFactoryService) {
+            IEditingDomainFactoryService editingDomainFactoryService, IEditingContextMetadataProvider editingContextMetadataProvider) {
         this.documentService = Objects.requireNonNull(documentService);
         this.messageService = Objects.requireNonNull(messageService);
+        this.editingContextMetadataProvider = Objects.requireNonNull(editingContextMetadataProvider);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
 
         // @formatter:off
@@ -110,24 +117,21 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof UploadDocumentInput) {
+        if (input instanceof UploadDocumentInput uploadDocumentInput) {
 
-            UploadDocumentInput uploadDocumentInput = (UploadDocumentInput) input;
             String projectId = uploadDocumentInput.editingContextId();
             UploadFile file = uploadDocumentInput.file();
 
-            // @formatter:off
             Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getDomain);
-            // @formatter:on
 
             String name = file.getName().trim();
             if (optionalEditingDomain.isPresent()) {
                 AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
 
-                Optional<String> contentOpt = this.getContent(editingContext, adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file, uploadDocumentInput.checkProxies());
+                Optional<String> contentOpt = this.getContent(editingContext, adapterFactoryEditingDomain.getResourceSet().getPackageRegistry(), file, uploadDocumentInput.checkProxies(), projectId);
                 var optionalDocument = contentOpt.flatMap(content -> this.documentService.createDocument(projectId, name, content));
 
                 if (optionalDocument.isPresent()) {
@@ -162,12 +166,17 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private Optional<String> getContent(IEditingContext editingContext, EPackage.Registry registry, UploadFile file, boolean checkProxies) {
+    private Optional<String> getContent(IEditingContext editingContext, EPackage.Registry registry, UploadFile file, boolean checkProxies, String editingContextId) {
+        var isStudioProjectNature = this.editingContextMetadataProvider.getMetadata(editingContextId).natures().stream().map(Nature::natureId)
+                .anyMatch("siriusComponents://nature?kind=studio"::equals);
         String fileName = file.getName();
         Optional<String> content = Optional.empty();
         // Custo: Need fully configure editing domain to resolve pathmap
         ResourceSet resourceSet = this.editingDomainFactoryService.createEditingDomain(editingContext.getId()).getResourceSet();
         resourceSet.setPackageRegistry(registry);
+        if (isStudioProjectNature) {
+            this.loadStudioColorPalettes(resourceSet);
+        }
         try (var inputStream = file.getInputStream()) {
             URI resourceURI = new JSONResourceFactory().createResourceURI(fileName);
             Optional<Resource> optionalInputResource = this.getResource(inputStream, resourceURI, resourceSet);
@@ -200,38 +209,24 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
     }
 
     private boolean containsProxies(Resource resource) {
-
         Iterable<EObject> iterable = () -> EcoreUtil.getAllProperContents(resource, false);
-        // @formatter:off
-        boolean resourceContainsAProxy = StreamSupport.stream(iterable.spliterator(), false)
-            .filter(eObject -> {
-                boolean eObjectcontainsAProxy = eObject.eClass().getEAllReferences().stream()
-                        .filter(ref -> !ref.isContainment() && eObject.eIsSet(ref))
-                        .filter(ref -> {
-                            boolean containsAProxy = false;
-                            Object value = eObject.eGet(ref);
-                            if (ref.isMany()) {
-                                List<?> list = (List<?>) value;
-                                containsAProxy = list.stream()
-                                        .filter(EObject.class::isInstance)
-                                        .map(EObject.class::cast)
-                                        .filter(EObject::eIsProxy)
-                                        .findFirst()
-                                        .isPresent();
-                            } else {
-                                containsAProxy = ((EObject) value).eIsProxy();
-                            }
-                            return containsAProxy;
-                        })
-                        .findFirst()
-                        .isPresent();
-
-                return eObjectcontainsAProxy;
-            })
-            .findFirst()
-            .isPresent();
-        // @formatter:on
-        return resourceContainsAProxy;
+        return StreamSupport.stream(iterable.spliterator(), false)
+            .anyMatch(eObject -> eObject.eClass().getEAllReferences().stream()
+                    .filter(ref -> !ref.isContainment() && eObject.eIsSet(ref))
+                    .anyMatch(ref -> {
+                        boolean containsAProxy = false;
+                        Object value = eObject.eGet(ref);
+                        if (ref.isMany()) {
+                            List<?> list = (List<?>) value;
+                            containsAProxy = list.stream()
+                                    .filter(EObject.class::isInstance)
+                                    .map(EObject.class::cast)
+                                    .anyMatch(EObject::eIsProxy);
+                        } else if (value instanceof EObject eObjectValue) {
+                            containsAProxy = eObjectValue.eIsProxy();
+                        }
+                        return containsAProxy;
+                    }));
     }
 
     /**
@@ -275,6 +270,20 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
             this.logger.warn(exception.getMessage(), exception);
         }
         return Optional.ofNullable(resource);
+    }
+
+    private void loadStudioColorPalettes(ResourceSet resourceSet) {
+        ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
+        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+        Resource resource = new JSONResourceFactory().createResource(uri);
+        try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
+            resourceSet.getResources().add(resource);
+            resource.load(inputStream, null);
+            resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes"));
+        } catch (IOException exception) {
+            this.logger.warn("An error occured while loading document studioColorPalettes.json: {}.", exception.getMessage());
+            resourceSet.getResources().remove(resource);
+        }
     }
 
 }

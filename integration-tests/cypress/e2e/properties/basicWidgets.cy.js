@@ -215,7 +215,7 @@ describe('Basic widgets test', () => {
     // Change multiplicity value with valid one
     cy.get('@multiplicityInput').clear().type('0..1{enter}');
     // Verify the entered multiplicity
-    cy.getByTestId('to').should('be.visible').click();
+    cy.getByTestId('from').should('be.visible').click();
     cy.activateDetailsTab('UML')
       .findByTestId('Multiplicity')
       .eq(0)
