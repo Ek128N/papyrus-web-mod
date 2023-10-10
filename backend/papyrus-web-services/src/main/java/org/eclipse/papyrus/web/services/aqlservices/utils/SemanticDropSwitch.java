@@ -22,6 +22,7 @@ import java.util.function.Function;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.drop.DnDStatus;
 import org.eclipse.papyrus.uml.domain.services.drop.IExternalSourceToRepresentationDropBehaviorProvider;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.ActivityEdge;
 import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Connector;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.InterruptibleActivityRegion;
@@ -464,10 +466,39 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
                 success = this.createEndView(semanticSource);
             }
             if (targetNode == null) {
-                success = this.createEndView(semanticTarget);
+                if (semanticTarget instanceof Class && ((Class) semanticTarget).isMetaclass()) {
+                    ElementImport elementImport = this.getElementImport(semanticElementEdge, semanticTarget);
+                    if (elementImport != null) {
+                        // case : class is a Metaclass used by element Import
+                        // The graphical container of the metaclass is the same as the ElementImport
+                        success = this.createMetaclassEndViewWithContainer(semanticTarget, elementImport.eContainer());
+                    } else {
+                        // case : class is a simple Metaclass, i.e. a Class with Stereotype
+                        success = this.createEndView(semanticTarget);
+                    }
+                } else {
+                    success = this.createEndView(semanticTarget);
+                }
             }
         }
         return success;
+    }
+
+    /**
+     * Get {@link ElementImport} of the given semantic element edge resource which refer to a semantic Metaclass target.
+     *
+     * @param semanticElementEdge
+     *            the semantic element on which the domain based edge is based on
+     * @param semanticTarget
+     *            the semantic target of the Edge to Drag and drop
+     *
+     * @return {@link ElementImport} of the given semantic element edge resource which refer to a semantic Metaclass
+     *         target, null if not found.
+     */
+    private ElementImport getElementImport(EObject semanticElementEdge, EObject semanticTarget) {
+        return EMFUtils.allContainedObjectOfType(semanticElementEdge.eResource(), ElementImport.class)//
+                .filter(elementImport -> elementImport.getImportedElement().equals(semanticTarget))//
+                .findFirst().orElse(null);
     }
 
     /**
@@ -479,7 +510,6 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
      * @return {@code true} if the semantic element view has been created, {@code false} otherwise
      */
     private Boolean createEndView(EObject semanticEnd) {
-        Boolean success = Boolean.FALSE;
         EObject semanticEndContainer = semanticEnd.eContainer();
         if (semanticEnd instanceof ActivityNode acitivityNode) {
             EList<ActivityPartition> inPartitions = acitivityNode.getInPartitions();
@@ -494,6 +524,21 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
 
             }
         }
+        return this.createEndViewWithContainer(semanticEnd, semanticEndContainer);
+    }
+
+    /**
+     * Create semantic element view in the representation of the given semanticEndContainer.
+     *
+     * @param semanticEnd
+     *            the semantic element to represent by a view
+     * @param semanticEndContainer
+     *            the semantic container of the view that will contain the semantic end representation
+     *
+     * @return {@code true} if the semantic element view has been created, {@code false} otherwise
+     */
+    private Boolean createEndViewWithContainer(EObject semanticEnd, EObject semanticEndContainer) {
+        Boolean success = Boolean.FALSE;
         if (semanticEndContainer != null) {
             EObject semanticDiagram = this.getSemanticDiagram();
             if (semanticEndContainer.equals(semanticDiagram)) {
@@ -501,6 +546,31 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
             } else {
                 Node node = this.getNodeFromDiagramAndItsChildren(semanticEndContainer);
                 success = this.viewHelper.createChildView(semanticEnd, node);
+            }
+        }
+        return success;
+    }
+
+    /**
+     * Create semantic element view in the representation of the given semanticEndContainer. The semantic element view
+     * match with METACLASS mapping (and not CLASS mapping given by default)
+     *
+     * @param semanticEnd
+     *            the semantic element to represent by a view
+     * @param semanticEndContainer
+     *            the semantic container of the view that will contain the semantic end representation
+     *
+     * @return {@code true} if the semantic element view has been created, {@code false} otherwise
+     */
+    private Boolean createMetaclassEndViewWithContainer(EObject semanticEnd, EObject semanticEndContainer) {
+        Boolean success = Boolean.FALSE;
+        if (semanticEndContainer != null) {
+            EObject semanticDiagram = this.getSemanticDiagram();
+            if (semanticEndContainer.equals(semanticDiagram)) {
+                success = this.viewHelper.createRootView(semanticEnd, PRDDiagramDescriptionBuilder.PRD_METACLASS);
+            } else {
+                Node node = this.getNodeFromDiagramAndItsChildren(semanticEndContainer);
+                success = this.viewHelper.createChildView(semanticEnd, node, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
             }
         }
         return success;
