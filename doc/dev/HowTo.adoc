@@ -38,3 +38,36 @@ Here its definition:
       return List.of("C", "C++", "JAVA", "Natural Language", "OCL");
   }
 -----
+
+=== How to use Shared Descriptions?
+
+==== What are shared elements?
+
+Shared elements are a reuse mechanism we use to avoid the duplication of NodeDescription in our DSL View. They are defined in a `SHARED_DESCRIPTIONS` NodeDescription, and are reused by all the description that can contain them.
+
+This mechanism ensures that a NodeDescription is defined at a single place, which eases the maintenance and evolution of the DSL View. 
+
+Note that some diagrams contain top-level NodeDescription in addition to shared elements to represent elements on the diagram background. These top-level NodeDescription typically cannot be reused from the `SHARED_DESCRIPTIONS` because their semantic candidate expression is different.
+
+==== When should I use a shared element?
+
+The rules below cover the use cases where a shared element should be used to avoid code duplication.
+1. A shared element is reused by **at least** two other elements (as child node or border node). Note that being reused by the diagram itself doesn't count.
+2. A non-shared element cannot be reused by another element
+3. A shared element is suffixed with `_SHARED` and stored in a common `SHARED_DESCRIPTIONS` NodeDescription at the root of the DSL view.
+4. The `SHARED_DESCRIPTIONS` NodeDescription targets the `UML#Element` metaclass as its semantic domain.
+5. The `SHARED_DESCRIPTIONS` NodeDescription doesn't contain tools.
+6. The `SHARED_DESCRIPTIONS` NodeDescription has the following semantic candidate expression: `aql:Sequence{}` to make sure it is never displayed.
+7. Elements that are used in a single location (e.g. elements inside a Package that cannot be represented anywhere else) should be defined inside their containing element (and not the shared description)
+  - If they are reused in another location (e.g. elements inside a Package and a Profile) they should be defined as shared elements.
+8. Shared elements' `semanticCandidateExpression` should never use `QueryBuilder#getAllReachable`. It should instead contain a semantic expression based on the container, or a call to a service if the semantic candidate expression is complex.
+
+*These rules are validated during the build of Papyrus Web.*
+
+==== Tooling around shared elements
+
+- Use `AbstractRepresentationDescriptionBuilder#createSharedDescription` to create a shared description for a given diagram. This method takes care of the naming of the shared description, setting its semantic domain, and its semantic candidate expression (rules 4, 5, and 6).
+- Use `AbstractRepresentationDescriptionBuilder#createCommentDescriptionInNodeDescription` and `AbstractRepresentationBuilder#createConstraintDescriptionInNodeDescription` to create constraint and comments in the shared description passed as a parameter (rules 3, 8).
+  - Comments and constraints can be represented in various container in most diagrams. These methods provide a common implementation that can be reused as is in new diagrams.
+- Use `IdBuilder.getSpecializedDomainNodeName(eClass, AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)` to create a node description with the `_SHARED` suffix (rule 3).
+- Use `sharedDescriptionNode.getChildrenDescriptions().add(myNodeDescription)` to add a NodeDescription to the `SHARED_DESCRIPTIONS` element. This NodeDescription can be created with the regular creation APIs such as `org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.newNodeBuilder(EClass, NodeStyleDescription)`. In this case it's the user's responsibility to ensure that the NodeDescription complies with the rules defined above. 

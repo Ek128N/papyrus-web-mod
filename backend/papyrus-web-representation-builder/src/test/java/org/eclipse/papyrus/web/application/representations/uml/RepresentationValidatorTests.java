@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
 import static java.util.stream.Collectors.joining;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -41,7 +43,11 @@ public class RepresentationValidatorTests {
     public void validateCompositeStructure() {
         DiagramDescription diagram = new CSDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
-        List<Status> validations = buildeDefaultValidator().validate(diagram);
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
+
+        List<Status> validations = validator.validate(diagram);
 
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
@@ -52,15 +58,19 @@ public class RepresentationValidatorTests {
 
     private DiagramDescriptionDescriptionValidator buildeDefaultValidator() {
         return new DiagramDescriptionDescriptionValidator()//
-                .excludeFromDeleteToolValidation(p -> !IdBuilder.isFakeChildNode(p) && isNotCompartment(p))//
-                .excludeFromDirectEditValidation(p -> !IdBuilder.isFakeChildNode(p) && isNotCompartment(p));
+                .excludeFromDeleteToolValidation(p -> !IdBuilder.isFakeChildNode(p) && this.isNotCompartment(p))//
+                .excludeFromDirectEditValidation(p -> !IdBuilder.isFakeChildNode(p) && this.isNotCompartment(p));
     }
 
     @Test
     public void validatePackageDiagram() {
         DiagramDescription diagram = new PADDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
-        List<Status> validations = buildeDefaultValidator().validate(diagram);
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
+
+        List<Status> validations = validator.validate(diagram);
 
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
@@ -73,7 +83,11 @@ public class RepresentationValidatorTests {
     public void validateClassDiagram() {
         DiagramDescription diagram = new CDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
-        List<Status> validations = buildeDefaultValidator().validate(diagram);
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
+
+        List<Status> validations = validator.validate(diagram);
 
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
@@ -86,10 +100,12 @@ public class RepresentationValidatorTests {
     public void validateStateMachineDiagram() {
         DiagramDescription diagram = new SMDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
-        DiagramDescriptionDescriptionValidator validator = buildeDefaultValidator();
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
         // Exclude the direct edit tool check on transition since it is a complex semantic and we do not have yet a way
         // to implement it
-        validator.excludeFromDirectEditValidation(p -> !isTransitionEdge(p));
+        validator.excludeFromDirectEditValidation(p -> !this.isTransitionEdge(p));
+        validator.disableReusedNodeDescriptionsValidation();
+        validator.disableSharedDescriptionsValidation();
 
         List<Status> validations = validator.validate(diagram);
 
@@ -100,8 +116,39 @@ public class RepresentationValidatorTests {
         }
     }
 
+    @Disabled("Disabled until siblings are reworked")
+    public void validateProfileDiagram() {
+        DiagramDescription diagram = new PRDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        // Exclude the deletion tool check for PRD_METACLASS and PRD_SHARED_METACLASS: these elements have a particular
+        // behavior because they represent a metaclass from the UML metamodel and thus cannot be deleted.
+        validator.excludeFromDeleteToolValidation(p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS) && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS));
+
+        List<Status> validations = validator.validate(diagram);
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Profile Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+        }
+    }
+
+    @Test
+    public void validateUseCaseDiagram() {
+        DiagramDescription diagram = new UCDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
+
+        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+
+        List<Status> validations = validator.validate(diagram);
+        List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
+
+        if (!errors.isEmpty()) {
+            Assertions.fail(MessageFormat.format("Invalid Use Case Diagram description \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+        }
+    }
+
     private boolean isTransitionEdge(DiagramElementDescription p) {
-        return "SMD_Transition_DomainEdge".equals(p.getName());
+        return "SMD_Transition_DomainEdge".equals(p.getName()); //$NON-NLS-1$
     }
 
     private boolean isNotCompartment(DiagramElementDescription diagramelementdescription1) {
