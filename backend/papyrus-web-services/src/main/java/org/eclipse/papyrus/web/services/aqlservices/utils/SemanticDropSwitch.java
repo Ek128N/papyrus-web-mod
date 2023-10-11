@@ -43,6 +43,7 @@ import org.eclipse.uml2.uml.Connector;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.InterruptibleActivityRegion;
 import org.eclipse.uml2.uml.Message;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.util.UMLSwitch;
@@ -300,12 +301,15 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
         if (status != null && status.getState() != State.FAILED) {
             isDragAndDropValid = Boolean.TRUE;
             for (EObject eObjectToDisplay : status.getElementsToDisplay()) {
-                if (this.selectedNode != null) {
+                PackageableElement importedElement = ((ElementImport) eObjectToDisplay).getImportedElement();
+                if (importedElement == null) {
+                    LOGGER.error("Only ElementImport with imported element can be drag and dropped."); //$NON-NLS-1$
+                } else if (this.selectedNode != null) {
                     // case DnD on Node
-                    isDragAndDropValid = isDragAndDropValid && this.createChildView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
+                    isDragAndDropValid = isDragAndDropValid && this.createChildView(importedElement, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
                 } else {
                     // case DnD on Diagram
-                    isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(((ElementImport) eObjectToDisplay).getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+                    isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(importedElement, PRDDiagramDescriptionBuilder.PRD_METACLASS);
                 }
             }
         }

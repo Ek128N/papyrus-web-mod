@@ -114,6 +114,8 @@ The _Validation_ panel shares the left area of the workbench page with the _Expl
 [[diagram-panel]]
 === Diagram panel
 
+==== Generalities
+
 The diagram panel shows _Representation Diagrams_ created in the project. Several _Representations_ can be opened and they appear in separate tabs.
 Diagrams represent graphically a part of your semantic model. Each representation defines its own set of rules regarding its content. +
 Graphical elements can be selected by clicking on elements. The innermost clicked element is selected.
@@ -149,6 +151,40 @@ This toolbar contains the following actions:
 * Share the diagram link
 * Reveal hidden elements of action
 * Reveal faded elements of action
+
+===== Label
+Keywords on Nodes and Edges are displayed on the first separate line of the label. If the semantic element is stereotyped, the stereotype is displayed on a second separate line. Finally, the label will be displayed on the third line.The label can be the simple name of the element, or more complex in some specific cases detailed in the corresponding diagram section.
+Label of UML elements with the _isAbstract_ feature set to true is displayed in italic.
+Label of UML elements with the _isStatic_ feature set to true is displayed underlined.
+
+image::labelsDisplayed.png[Labels Overview,400, align="center"]
+
+===== Edge Creation
+Edges can be created between Nodes whose types match the Edge's source and target types. If the creation of an Edge is not authorized, the mouse cursor will be showing a forbidden sign. It is not possible for now to create an Edge between two Edges or between an Edge and a Node. 
+
+===== Semantic DnD
+Users can select elements in the Explorer view and drag and drop them into their container Nodes in the diagram. This drag and drop doesn't perform any semantic modification, except in specific case detailed in the corresponding diagram section. In addition, some diagrams allow semantic drag and drop of any element from the Explorer view (in the same resourceSet as the diagram) on the background of the diagram.  
+
+Dragging and dropping an element represented as an Edge on the diagram will create the source/target elements of the Edge if they aren't already represented. Note that Edges can be dropped anywhere on the diagram, but they will only appear in their semantic container. 
+
+===== Reconnection
+Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element. 
+
+==== Profile Diagram
+
+image::diagProfile.png[Profile Diagram Overview,800, align="center"]
+
+===== Specific Features on Label
+- The label of an Element Import is the label of the UML metaclass it references as its _imported element_.
+
+===== Specific Features on Direct Edit
+- The direct edit tool doesn't perform any modification on UML metaclasses.
+
+===== Specific Features on Semantic DnD
+- The semantic drag and drop of an Element Import with an UML metaclass as its _imported element_ on the Profile diagram produces a Node with the name of the UML metaclass as its label. Note that it is not possible to drag and drop Element Import with no _imported element_ or with an _imported element_ that is not an UML metaclass. 
+
+===== Specific Features on Reconnection
+- Reconnecting an Extension target to a different Class updates the Stereotype property _type_.
 
 [[right-side-panel]]
 === Right side panel

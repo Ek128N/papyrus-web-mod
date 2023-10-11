@@ -15,7 +15,6 @@ package org.eclipse.papyrus.web.application.templates;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -30,7 +29,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
-import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,19 +129,9 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
 
     private Optional<? extends Diagram> createProfileDiagram(IEditingContext editingContext, Resource r) {
         Profile profile = (Profile) r.getContents().get(0);
-        Package primitiveTypePackage = profile.getImportedPackages().get(0);
-
-        Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
-                .getConvertedNode(PRDDiagramDescriptionBuilder.PRD_REP_NAME);
 
         return this.diagramBuilderService
                 .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram") //$NON-NLS-1$
-                .flatMap(diagram -> {
-                    return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
-                        this.profileDiagramService.drop(profile, null, editingContext, diagramContext, convertedNodes);
-                        this.profileDiagramService.drop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
-                    });
-                })//
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);

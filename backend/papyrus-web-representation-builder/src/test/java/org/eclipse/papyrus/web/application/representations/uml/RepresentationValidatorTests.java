@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.eclipse.papyrus.web.application.representations.utils.DiagramDescriptionDescriptionValidator;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
@@ -117,12 +118,15 @@ public class RepresentationValidatorTests {
 
     @Test
     public void validateProfileDiagram() {
+        Predicate<DiagramElementDescription> isNotMetaclass = p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS)
+                && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
         DiagramDescription diagram = new PRDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
         // Exclude the deletion tool check for PRD_METACLASS and PRD_SHARED_METACLASS: these elements have a particular
         // behavior because they represent a metaclass from the UML metamodel and thus cannot be deleted.
-        validator.excludeFromDeleteToolValidation(p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS) && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS));
+        validator.excludeFromDeleteToolValidation(isNotMetaclass);
+        validator.excludeFromDirectEditValidation(isNotMetaclass);
 
         List<Status> validations = validator.validate(diagram);
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();

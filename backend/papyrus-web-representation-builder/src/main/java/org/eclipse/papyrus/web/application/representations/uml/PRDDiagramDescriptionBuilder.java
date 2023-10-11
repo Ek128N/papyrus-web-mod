@@ -218,7 +218,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private void createDiagramProfileDescription(DiagramDescription diagramDescription) {
         EClass profileEClass = this.umlPackage.getProfile();
         NodeDescription prdDiagramProfileDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(profileEClass, this.getQueryBuilder().queryAllReachable(profileEClass));
-        prdDiagramProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         diagramDescription.getNodeDescriptions().add(prdDiagramProfileDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdDiagramProfileDescription);
@@ -242,7 +241,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeDescription prdSharedProfileDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(profileEClass,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
         prdSharedProfileDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(profileEClass, SHARED_SUFFIX));
-        prdSharedProfileDescription.getStyle().setColor(this.styleProvider.getModelColor());
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedProfileDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdSharedProfileDescription);
@@ -561,7 +559,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramMetaclassDescription);
         this.createDefaultToolSectionsInNodeDescription(prdDiagramMetaclassDescription);
@@ -586,7 +583,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
                 .build();
 
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedMetaclassDescription);
