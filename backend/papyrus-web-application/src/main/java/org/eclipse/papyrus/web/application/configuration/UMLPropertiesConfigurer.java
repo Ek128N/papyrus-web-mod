@@ -34,6 +34,7 @@ import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesMemberEndServicesWrapper;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesProfileServices;
 import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
@@ -102,7 +103,8 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
                 new PropertiesUMLServices(this.serviceLogger), //
                 new PropertiesValueSpecificationServices(this.serviceLogger, this.checker), //
                 new DebugService(this.serviceLogger), //
-                new PropertiesHelpContentServices(this.documentationService));
+                new PropertiesHelpContentServices(this.documentationService), //
+                new PropertiesProfileServices());
 
         List<EPackage> allEPackages = this.findGlobalEPackages();
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), services, allEPackages);

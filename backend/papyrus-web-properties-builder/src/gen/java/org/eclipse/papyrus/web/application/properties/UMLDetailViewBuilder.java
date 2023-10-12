@@ -225,7 +225,7 @@ public class UMLDetailViewBuilder {
         pages.add(new VariableUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new ElementCommentsPage(factory, colorRegistry).create());
         pages.add(new ProfileDefinitionPage(factory, colorRegistry).create());
-        pages.add(new ProfileDefinitionDefinitionPage(factory, colorRegistry).create());
+        pages.add(new ProfileDefinitionDefinitionPageCustomImpl(factory, colorRegistry).create());
         pages.add(new ElementProfilePage(factory, colorRegistry).create());
 
         return pages;
