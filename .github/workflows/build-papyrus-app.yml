@@ -141,3 +141,10 @@ jobs:
           name: papyrus-web-application-latest
           path: backend/papyrus-web-application/target/papyrus-web-application-${{ env.app_version_latest }}.jar
           retention-days: 150
+      - name: Store code coverage as artifact
+        uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        with:
+          name: code-coverage
+          path: papyrus-web-test-coverage/target/site
+          retention-days: 150

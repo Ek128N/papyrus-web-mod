@@ -19,12 +19,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.papyrus.uml.domain.services.UMLHelper;
 import org.eclipse.papyrus.web.application.properties.pages.MemberEndGroupDescriptionBuilder;
 import org.eclipse.papyrus.web.application.properties.utils.PageDescriptionValidator;
 import org.eclipse.papyrus.web.tests.utils.Severity;
 import org.eclipse.papyrus.web.tests.utils.Status;
 import org.eclipse.sirius.components.view.form.PageDescription;
+import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -49,6 +54,35 @@ public class PageDescriptionTests {
 
         List<Status> errorStatus = statuses.stream().filter(e -> e.getSeverity() == Severity.ERROR).toList();
         assertTrue(errorStatus.isEmpty(), errorStatus.stream().map(Status::getMessage).collect(joining("\n")));
+    }
+
+    /**
+     * Check that all non abstract UML Concepts have a matching UML page.
+     */
+    @Test
+    public void validateUMLCompleteness() {
+        Set<EClass> umlConcepts = EMFUtils.allContainedObjectOfType(UMLPackage.eINSTANCE, EClass.class).filter(e -> !e.isAbstract() && !e.isInterface()).collect(Collectors.toSet());
+
+        // Remove the following concepts because by specification they do not need a custom page
+        umlConcepts.remove(UMLPackage.eINSTANCE.getDestructionOccurrenceSpecification());
+        umlConcepts.remove(UMLPackage.eINSTANCE.getTemplateSignature());
+        umlConcepts.remove(UMLPackage.eINSTANCE.getProtocolConformance());
+
+        ColorRegistry colorRegistry = new ColorRegistry();
+        colorRegistry.registerColor(MemberEndGroupDescriptionBuilder.MEMBER_END_BORDER_COLOR_NAME, "#c2c2c2");
+        List<PageDescription> allPages = new UMLDetailViewBuilder(colorRegistry).createPages();
+
+        for (PageDescription page : allPages) {
+            String domainType = page.getDomainType();
+            assertTrue(domainType != null && !domainType.isBlank(), "Invalid domain type for page" + page.getName());
+            EClass domain = UMLHelper.toEClass(domainType);
+            if (domain != null) {
+                umlConcepts.remove(domain);
+            }
+        }
+
+        assertTrue(umlConcepts.isEmpty(), "Missing page for concepts " + umlConcepts.stream().map(EClass::getName).collect(joining(",")));
+
     }
 
     private List<Status> validateUniqueName(List<PageDescription> pageDescriptions) {
