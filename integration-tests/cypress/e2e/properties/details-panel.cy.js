@@ -42,7 +42,7 @@ describe('Basic widgets test', () => {
   /**
    * Test validating that Detail panel has 4 different pages
    */
-  it.skip('Check Details panel contents 4 children', () => {
+  it('Check Details panel contents 4 children', () => {
     cy.getByTestId('Package').click();
     cy.activateDetailsTab('Advanced')
       .should('be.visible')
