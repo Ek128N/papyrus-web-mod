@@ -174,20 +174,23 @@ In the following table, we present the mapping between basic types and their ass
 |===
 | Basic Type | Widget
 
-| _Boolean_
+| _Mono Boolean_
 | _Checkbox_
 
-| _String_
+| _Mono String_
 | _Text field_ or _Text area_
 
-| _Number_
+| _Mono Number_
 | _Text field_
 
-| _Enumeration_
+| _Mono Enumeration_
 | _Select_ or _Radio_
 
-| _List_
-| _List_
+| _Many Boolean, String, Number, Enumeration_
+| _Primitive List_
+
+| _Many and Mono Reference_
+| _Reference_
 |===
 
 Here is https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_details_view[the Sirius documentation] of all those widgets.
@@ -216,6 +219,24 @@ Each language in the list is shown as a collapsible section with the name of the
 Languages can be reordered using up or down actions of the toolbar. Since the list is not a ring, the user is not allowed to move up the first language or move down the last one.
 
 Removing a language can be done using the trash icon action of its toolbar. No confirmation is required before deleting a language element.
+
+===== Primitive List
+
+The primitive list custom widget aims to provide capabilities to visualize and edit _EAttributes_ wich represent more than one value.
+
+image::primitive-list.png[]
+
+The values are represented as list items.
+Each item can be deleted using the _trash_ icon.
+To add a value, the _New item_ input can be used.
+Be aware that the server receives a _String_ value and needs to convert it to the correct _DataType_.
+For widgets used in the default pages of the _Details_ view, Papyrus Web uses pure _EMF_ implementation to convert the given _String_ into the required _DataType_.
+For example, for a _boolean_ feature, the given _String_ is converted to _true_ only if it is equal (ignoring case) to 'true'.
+
+In the context of _UML_, for a more exhaustive list of convertion rule look at:
+
+* _org.eclipse.uml2.uml.internal.impl.UMLFactoryImpl.createFromString(EDataType, String)_
+* _org.eclipse.uml2.types.internal.impl.TypesFactoryImpl.createFromString(EDataType, String)_
 
 ==== Related Elements
 
