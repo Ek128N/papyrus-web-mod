@@ -64,7 +64,7 @@ public final class MemberEndGroupDescriptionBuilder {
         description.setIsEnabledExpression(isEnabledExp);
         return description;
     }
-    
+
     public WidgetDescription build() {
         var container = FormFactory.eINSTANCE.createFlexboxContainerDescription();
         container.setFlexDirection(FlexDirection.COLUMN);
@@ -82,14 +82,14 @@ public final class MemberEndGroupDescriptionBuilder {
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('type')", //
                 /* referenceNameExpression */"aql:'type'", //
                 /* referenceOwnerExpression */ "aql:self");
-        
+
         var ownerWidget = createMemberEndOwnerDescription("owner", "aql:'Owner'", //
                 /* valueExpression */"aql:self.getOwner()", //
                 /* contextExpression */"aql:self.setOwner(newValue)", //
                 /* candidatesExpression */"aql:self.getOwnerEnumerations()", //
                 /* helpExpression */"aql:'The owner of the association.'", //
                 /* isEnabledExpression */"aql:self.isMemberEndPropertyEditable('owner')");
-        
+
         var isNavigableWidget = viewElementFactory.createCheckboxDescription("isNavigable", "Navigable", //
                 /* valueExpression */"aql:self.isNavigable()", //
                 /* contextExpression */"aql:self.setNavigable(newValue)", //

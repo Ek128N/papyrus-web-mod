@@ -16,7 +16,6 @@ package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
-import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
@@ -42,10 +41,6 @@ public class ActionExecutionSpecificationUmlPage {
 
         return page;
 
-    }
-
-    protected FormDescription createFrom() {
-        return viewElementFactory.createFormDescription("actionExecutionSpecification_uml_pageFrom", "uml::ActionExecutionSpecification", "aql:'UML'", "");
     }
 
     protected PageDescription createPage() {

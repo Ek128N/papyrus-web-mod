@@ -93,5 +93,4 @@ public class PageDescriptionValidator {
         return d.eClass().getEAllStructuralFeatures().stream().filter(f -> f.getName().endsWith("Expression")).toList();
     }
 
-
 }
