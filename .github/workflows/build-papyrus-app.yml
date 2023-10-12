@@ -146,5 +146,5 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         with:
           name: code-coverage
-          path: papyrus-web-test-coverage/target/site
+          path: backend/papyrus-web-test-coverage/target/site/
           retention-days: 150
