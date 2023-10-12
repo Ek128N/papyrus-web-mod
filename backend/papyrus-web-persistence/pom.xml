@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>papyrus-web</groupId>
 		<artifactId>papyrus-web-parent</artifactId>
-		<version>2023.3.0</version>
+		<version>2023.10.0</version>
 		<relativePath>../papyrus-web-parent</relativePath>
 	</parent>
 	<artifactId>papyrus-web-persistence</artifactId>
