@@ -38,6 +38,8 @@ public class Services {
 
     public static final String CREATE_SIBLING_SERVICE = "createSibling"; //$NON-NLS-1$
 
+    public static final String CREATE_IN_COMPARTMENT_SERVICE = "createInCompartment"; //$NON-NLS-1$
+
     public static final String DOMAIN_BASED_EDGE_SOURCE_LABEL_SERVICE = "getDomainBasedEdgeSourceLabel"; //$NON-NLS-1$
 
     public static final String DOMAIN_BASED_EDGE_TARGET_LABEL_SERVICE = "getDomainBasedEdgeTargetLabel"; //$NON-NLS-1$

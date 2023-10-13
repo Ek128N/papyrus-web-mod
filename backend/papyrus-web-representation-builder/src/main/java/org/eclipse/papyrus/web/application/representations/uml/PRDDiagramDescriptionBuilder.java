@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.application.representations.uml;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
@@ -90,6 +91,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription prdSharedDescription;
 
     /**
+     * Predicate used to exclude Metaclass Node Description.
+     */
+    private Predicate<NodeDescription> excludeMetaclassNodeDescription = nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS);
+
+    /**
      * Initializes the builder.
      */
     public PRDDiagramDescriptionBuilder() {
@@ -126,6 +132,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createSharedPackageDescription(diagramDescription);
         this.createSharedProfileDescription(diagramDescription);
         this.createSharedClassDescription(diagramDescription);
+        this.createSharedAttributeDescription(diagramDescription);
+        this.createSharedOperationDescription(diagramDescription);
         /*
          * This call needs to be below createClassDescriptionInNodeDescription: shared PRD_Class and PRD_Metaclass are
          * defined at the same level, so the method that selects the best mapping candidate will return the first found.
@@ -139,6 +147,15 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createSharedStereotypeDescription(diagramDescription);
         this.createSharedPrimitiveTypeDescription(diagramDescription);
         this.createSharedEnumerationDescription(diagramDescription);
+
+        // create shared compartments
+        this.createSharedLiteralsCompartmentForEnumerationDescription(diagramDescription);
+        this.createSharedCompartmentForDataTypeDescription(diagramDescription, ATTRIBUTES_COMPARTMENT_SUFFIX);
+        this.createSharedCompartmentDescriptionForClassDescription(diagramDescription, ATTRIBUTES_COMPARTMENT_SUFFIX);
+        this.createSharedCompartmentForStereotypeDescription(diagramDescription, ATTRIBUTES_COMPARTMENT_SUFFIX);
+        this.createSharedCompartmentForDataTypeDescription(diagramDescription, OPERATIONS_COMPARTMENT_SUFFIX);
+        this.createSharedCompartmentDescriptionForClassDescription(diagramDescription, OPERATIONS_COMPARTMENT_SUFFIX);
+        this.createSharedCompartmentForStereotypeDescription(diagramDescription, OPERATIONS_COMPARTMENT_SUFFIX);
 
         this.createAssociationDescription(diagramDescription);
         this.createExtensionDescription(diagramDescription);
@@ -242,9 +259,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createDiagramClassDescription(DiagramDescription diagramDescription) {
-        NodeDescription prdDiagramClassDescription = this.createDiagramNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getClass_());
-        this.createAttributesCompartment(prdDiagramClassDescription);
-        this.createOperationsCompartment(prdDiagramClassDescription);
+        this.createDiagramNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getClass_());
     }
 
     /**
@@ -257,9 +272,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createSharedClassDescription(DiagramDescription diagramDescription) {
-        NodeDescription prdSharedClassDescription = this.createSharedNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getClass_());
-        this.createAttributesCompartment(prdSharedClassDescription);
-        this.createOperationsCompartment(prdSharedClassDescription);
+        this.createSharedNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getClass_());
     }
 
     /**
@@ -269,9 +282,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createDiagramDataTypeDescription(DiagramDescription diagramDescription) {
-        NodeDescription prdDiagramDataTypeDescription = this.createDiagramNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getDataType());
-        this.createAttributesCompartment(prdDiagramDataTypeDescription);
-        this.createOperationsCompartment(prdDiagramDataTypeDescription);
+        this.createDiagramNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getDataType());
     }
 
     /**
@@ -286,9 +297,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the parent {@link NodeDescription} which contain definition of the new {@link NodeDescription}
      */
     private void createSharedDataTypeDescription(DiagramDescription diagramDescription) {
-        NodeDescription prdSharedDataTypeDescription = this.createSharedNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getDataType());
-        this.createAttributesCompartment(prdSharedDataTypeDescription);
-        this.createOperationsCompartment(prdSharedDataTypeDescription);
+        this.createSharedNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getDataType());
     }
 
     /**
@@ -298,9 +307,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createDiagramStereotypeDescription(DiagramDescription diagramDescription) {
-        NodeDescription prdDiagramStereotypeDescription = this.createDiagramNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getStereotype());
-        this.createAttributesCompartment(prdDiagramStereotypeDescription);
-        this.createOperationsCompartment(prdDiagramStereotypeDescription);
+        this.createDiagramNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getStereotype());
     }
 
     /**
@@ -313,9 +320,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createSharedStereotypeDescription(DiagramDescription diagramDescription) {
-        NodeDescription prdSharedStereotypeDescription = this.createSharedNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getStereotype());
-        this.createAttributesCompartment(prdSharedStereotypeDescription);
-        this.createOperationsCompartment(prdSharedStereotypeDescription);
+        this.createSharedNodeDescriptionForClassifier(diagramDescription, this.umlPackage.getStereotype());
     }
 
     /**
@@ -354,7 +359,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * 
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     * 
      * @param classifierEClass
      *            the classifier sub-type to represent
      * @return the created {@link NodeDescription}
@@ -379,31 +383,118 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     /**
-     * Creates an <i>attributes</i> compartment in the provided {@code nodeDescription}.
+     * Creates a shared <i>Literals</i> compartment reused by <i>Enumeration</i> {@link NodeDescription}.
+     * <p>
+     * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
+     * diagram.
+     * <p>
      * 
-     * @param nodeDescription
-     *            the {@link NodeDescription} containing the compartment
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
-    private void createAttributesCompartment(NodeDescription nodeDescription) {
-        this.newListCompartmentBuilder().withChildrenType(this.umlPackage.getProperty())//
-                .withCompartmentNameSuffix(ATTRIBUTES_COMPARTMENT_SUFFIX)//
-                .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllAttributes()))//
-                .addCreationTools(this.umlPackage.getStructuredClassifier_OwnedAttribute(), this.umlPackage.getProperty())//
-                .buildIn(nodeDescription);
+    private void createSharedLiteralsCompartmentForEnumerationDescription(DiagramDescription diagramDescription) {
+        EClass enumerationEClass = this.umlPackage.getEnumeration();
+        List<EClass> owners = List.of(enumerationEClass);
+        NodeDescription prdSharedLiteralsCompartmentDescription = this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, enumerationEClass,
+                LITERALS_COMPARTMENT_SUFFIX, owners, List.of(), this.excludeMetaclassNodeDescription);
+
+        this.createEnumerationLiteralsDescription(diagramDescription, prdSharedLiteralsCompartmentDescription);
     }
 
     /**
-     * Creates an <i>operations</i> compartment in the provided {@code nodeDescription}.
+     * Creates a shared compartment reused by <i>DataType</i> {@link NodeDescription}.
+     * <p>
+     * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
+     * diagram.
+     * <p>
      * 
-     * @param nodeDescription
-     *            the {@link NodeDescription} containing the compartment
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param compartmentName
+     *            the name of the compartment to create
      */
-    private void createOperationsCompartment(NodeDescription nodeDescription) {
-        this.newListCompartmentBuilder().withChildrenType(this.umlPackage.getOperation())//
-                .withCompartmentNameSuffix(OPERATIONS_COMPARTMENT_SUFFIX)//
-                .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllOperations()))//
-                .addCreationTools(this.umlPackage.getClass_OwnedOperation(), this.umlPackage.getOperation())//
-                .buildIn(nodeDescription);
+    private void createSharedCompartmentForDataTypeDescription(DiagramDescription diagramDescription, String compartmentName) {
+        EClass dataTypeEClass = this.umlPackage.getDataType();
+        List<EClass> owners = List.of(dataTypeEClass);
+        List<EClass> forbiddenOwners = List.of(this.umlPackage.getEnumeration(), this.umlPackage.getPrimitiveType());
+        this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, dataTypeEClass, compartmentName, owners, forbiddenOwners, this.excludeMetaclassNodeDescription);
+    }
+
+    /**
+     * Creates a shared compartment reused by <i>Stereotype</i> {@link NodeDescription}.
+     * <p>
+     * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
+     * diagram.
+     * <p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param compartmentName
+     *            the name of the compartment to create
+     */
+    private void createSharedCompartmentForStereotypeDescription(DiagramDescription diagramDescription, String compartmentName) {
+        EClass stereotypeEClass = this.umlPackage.getStereotype();
+        List<EClass> owners = List.of(stereotypeEClass);
+        this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, stereotypeEClass, compartmentName, owners, List.of(), this.excludeMetaclassNodeDescription);
+    }
+
+    /**
+     * Creates a shared compartment reused by <i>Class</i> {@link NodeDescription}.
+     * <p>
+     * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
+     * diagram.
+     * <p>
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param compartmentName
+     *            the name of the compartment to create
+     */
+    private void createSharedCompartmentDescriptionForClassDescription(DiagramDescription diagramDescription, String compartmentName) {
+        EClass classEClass = this.umlPackage.getClass_();
+        List<EClass> owners = List.of(classEClass);
+        List<EClass> forbiddenOwners = List.of(this.umlPackage.getStereotype());
+        this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, classEClass, compartmentName, owners, forbiddenOwners, this.excludeMetaclassNodeDescription);
+    }
+
+    /**
+     * Creates a <i>Property</i> child reused by <i>Attributes</i> compartments.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createSharedAttributeDescription(DiagramDescription diagramDescription) {
+        List<EClass> owners = List.of(this.umlPackage.getClass_(), this.umlPackage.getDataType(), this.umlPackage.getStereotype());
+        List<EClass> forbiddenOwners = List.of(this.umlPackage.getPrimitiveType(), this.umlPackage.getEnumeration());
+        this.createNodeDescriptionInCompartmentDescription(diagramDescription, this.prdSharedDescription, this.umlPackage.getProperty(), ATTRIBUTES_COMPARTMENT_SUFFIX,
+                CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllAttributes()), this.umlPackage.getStructuredClassifier_OwnedAttribute(), owners, forbiddenOwners,
+                this.excludeMetaclassNodeDescription);
+    }
+
+    /**
+     * Creates a <i>Operation</i> child reused by <i>Operations</i> compartments.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createSharedOperationDescription(DiagramDescription diagramDescription) {
+        List<EClass> owners = List.of(this.umlPackage.getClass_(), this.umlPackage.getDataType(), this.umlPackage.getStereotype());
+        List<EClass> forbiddenOwners = List.of(this.umlPackage.getPrimitiveType(), this.umlPackage.getEnumeration());
+        this.createNodeDescriptionInCompartmentDescription(diagramDescription, this.prdSharedDescription, this.umlPackage.getOperation(), OPERATIONS_COMPARTMENT_SUFFIX,
+                CallQuery.queryOperationOnSelf(this.umlPackage.getClassifier__GetAllOperations()), this.umlPackage.getClass_OwnedOperation(), owners, forbiddenOwners,
+                this.excludeMetaclassNodeDescription);
+    }
+
+    /**
+     * Creates a <i>Literals</i> child reused by <i>Literals</i> compartments.
+     *
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     */
+    private void createEnumerationLiteralsDescription(DiagramDescription diagramDescription, NodeDescription parent) {
+        List<EClass> owners = List.of(this.umlPackage.getEnumeration());
+        this.createNodeDescriptionInCompartmentDescription(diagramDescription, parent, this.umlPackage.getEnumerationLiteral(), LITERALS_COMPARTMENT_SUFFIX,
+                CallQuery.queryAttributeOnSelf(this.umlPackage.getEnumeration_OwnedLiteral()), this.umlPackage.getEnumeration_OwnedLiteral(), owners, List.of(), this.excludeMetaclassNodeDescription);
     }
 
     /**
@@ -534,8 +625,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         NodeTool prdDiagramEnumerationCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), enumerationEClass);
         this.addDiagramToolInToolSection(diagramDescription, prdDiagramEnumerationCreationTool, NODES);
-
-        this.createEnumerationLiteralsCompartment(prdDiagramEnumerationDescription);
     }
 
     /**
@@ -564,22 +653,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeTool prdSharedEnumerationCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), enumerationEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(prdSharedEnumerationDescription, diagramDescription, prdSharedEnumerationCreationTool, NODES, owners.toArray(EClass[]::new));
-
-        this.createEnumerationLiteralsCompartment(prdSharedEnumerationDescription);
-    }
-
-    /**
-     * Creates a <i>Literals</i> compartment in the provided {@code nodeDescription}.
-     * 
-     * @param nodeDescription
-     *            the {@link NodeDescription} containing the compartment
-     */
-    private void createEnumerationLiteralsCompartment(NodeDescription nodeDescription) {
-        this.newListCompartmentBuilder().withChildrenType(this.umlPackage.getEnumerationLiteral())//
-                .withCompartmentNameSuffix(LITERALS_COMPARTMENT_SUFFIX)//
-                .withSemanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getEnumeration_OwnedLiteral()))//
-                .addCreationTools(this.umlPackage.getEnumeration_OwnedLiteral(), this.umlPackage.getEnumerationLiteral())//
-                .buildIn(nodeDescription);
     }
 
     /**
@@ -663,7 +736,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         diagramDescription.getEdgeDescriptions().add(prdGeneralizationDescription);
         this.getViewBuilder().addDefaultReconnectionTools(prdGeneralizationDescription);
-
     }
 
 }

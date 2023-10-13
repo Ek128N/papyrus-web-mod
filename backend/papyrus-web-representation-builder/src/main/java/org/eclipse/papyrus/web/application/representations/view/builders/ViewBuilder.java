@@ -218,8 +218,6 @@ public class ViewBuilder {
     private NodeTool createCreationTool(String name, String selfValue, EReference containementRef, String newType) {
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(name);
-
-        // Create instance and init
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(this.queryBuilder.createNodeQuery(newType, selfValue, containementRef));
         nodeTool.getBody().add(createElement);
@@ -249,6 +247,31 @@ public class ViewBuilder {
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(CallQuery.queryServiceOnSelf(serviceName, serviceParameters.toArray(String[]::new)));
         nodeTool.getBody().add(createElement);
+        return nodeTool;
+    }
+
+    /**
+     * Creates a creation {@link NodeTool} to create {@code newType} elements inside the {@code compartmentName}
+     * compartment of the containing element.
+     * 
+     * @param toolName
+     *            the name of the tool to create
+     * @param compartmentName
+     *            the name of the compartment where to create
+     * @param containementRef
+     *            the containment reference used to contained the new element
+     * @param newType
+     *            the new type to create
+     * @return the created {@link NodeTool} used to create {@code newType} elements inside the {@code compartmentName}
+     *         compartment of the containing element
+     */
+    public NodeTool createInCompartmentCreationTool(String toolName, String compartmentName, EReference containementRef, String newType) {
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName(toolName);
+        ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
+        createElement.setExpression(this.queryBuilder.createInCompartmentNodeQuery(newType, compartmentName, containementRef));
+        nodeTool.getBody().add(createElement);
+
         return nodeTool;
     }
 
@@ -345,7 +368,7 @@ public class ViewBuilder {
     }
 
     private void initStyle(NodeStyleDescription nodeStyle) {
-        nodeStyle.setColor(styleProvider.getNodeColor());
+        nodeStyle.setColor(this.styleProvider.getNodeColor());
         nodeStyle.setBorderColor(this.styleProvider.getBorderNodeColor());
         nodeStyle.setBorderRadius(this.styleProvider.getNodeBorderRadius());
         nodeStyle.setLabelColor(this.styleProvider.getNodeLabelColor());

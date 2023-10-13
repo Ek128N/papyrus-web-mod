@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.aql;
 
 import static org.eclipse.papyrus.web.application.representations.view.aql.CallQuery.queryServiceOnSelf;
@@ -97,7 +97,7 @@ public class QueryHelper {
      * @return the query
      */
     public String queryAllReachable(EClass type) {
-        return CallQuery.queryServiceOnSelf(Services.GET_ALL_REACHABLE_SERVICE, aqlString(type.getName()));
+        return CallQuery.queryServiceOnSelf(Services.GET_ALL_REACHABLE_SERVICE, this.aqlString(type.getName()));
     }
 
     /**
@@ -108,7 +108,7 @@ public class QueryHelper {
      * @return the query
      */
     public String queryAllReachableExactType(EClass type) {
-        return CallQuery.queryServiceOnSelf(Services.GET_ALL_REACHABLE_SERVICE, aqlString(type.getName()), "false");
+        return CallQuery.queryServiceOnSelf(Services.GET_ALL_REACHABLE_SERVICE, this.aqlString(type.getName()), "false");
     }
 
     public String createNodeQuery(String domainType, String seflExpression, EReference containementRef) {
@@ -118,9 +118,26 @@ public class QueryHelper {
         } else {
             self = seflExpression;
         }
-        return new CallQuery(self).callService(Services.CREATE_SERVICE, aqlString(domainType), aqlString(containementRef.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES);
+        return new CallQuery(self).callService(Services.CREATE_SERVICE, this.aqlString(domainType), this.aqlString(containementRef.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES);
     }
 
+    /**
+     * Query to create an element in compartment of the given parent.
+     * 
+     * @param domainType
+     *            the type of the element to create
+     * @param compartmentName
+     *            the name of the compartment where element should be created
+     * @param containementRef
+     *            the containment reference which will contain the created element
+     * @return the query
+     */
+    public String createInCompartmentNodeQuery(String domainType, String compartmentName, EReference containementRef) {
+        return new CallQuery(Variables.SELF).callService(Services.CREATE_IN_COMPARTMENT_SERVICE, this.aqlString(domainType), this.aqlString(compartmentName), this.aqlString(containementRef.getName()),
+                SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES);
+    }
+
+    @Deprecated
     public String createSiblingNodeQuery(String domainType, String seflExpression, EReference containementRef) {
         String self;
         if (seflExpression.startsWith(AQL_PREFIX)) {
@@ -129,7 +146,7 @@ public class QueryHelper {
             self = seflExpression;
         }
 
-        return new CallQuery(trimAqlPrefix(self)).callService(Services.CREATE_SIBLING_SERVICE, aqlString(domainType), aqlString(containementRef.getName()), SELECTED_NODE, DIAGRAM_CONTEXT,
+        return new CallQuery(trimAqlPrefix(self)).callService(Services.CREATE_SIBLING_SERVICE, this.aqlString(domainType), this.aqlString(containementRef.getName()), SELECTED_NODE, DIAGRAM_CONTEXT,
                 CONVERTED_NODES);
     }
 
@@ -141,7 +158,7 @@ public class QueryHelper {
         return new CallQuery(SEMANTIC_EDGE_SOURCE)//
                 .callService(Services.CREATE_DOMAIN_BASED_EDGE_SERVICE, //
                         SEMANTIC_EDGE_TARGET, //
-                        S_SEP + metamodelHelper.toEClass(description.getDomainType()).getName() + S_SEP, //
+                        S_SEP + this.metamodelHelper.toEClass(description.getDomainType()).getName() + S_SEP, //
                         S_SEP + containmentReference.getName() + S_SEP, //
                         EDGE_SOURCE, //
                         EDGE_TARGET, //

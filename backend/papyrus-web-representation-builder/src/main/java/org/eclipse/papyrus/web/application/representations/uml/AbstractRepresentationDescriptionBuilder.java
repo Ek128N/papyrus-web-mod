@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
@@ -83,7 +84,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     public static final String PACKAGE_CHILD = "inPackage";
 
     public static final Predicate<NodeDescription> PACKAGE_CHILDREN_FILTER = n -> n.getName().endsWith(PACKAGE_CHILD);
-    
+
     /**
      * The String used to suffix the name of shared {@link NodeDescription}s.
      */
@@ -354,7 +355,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) commentDescription.getStyle();
         style.setShowIcon(false);
-        style.setColor(styleProvider.getNoteColor());
+        style.setColor(this.styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);
         diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment()));
 
@@ -736,20 +737,40 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         this.registerCallback(nodeDescription, () -> {
             Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners);
             this.addNodeToolInToolSection(ownerNodeDescriptions.get(), nodeTool, toolSectionName);
-            for (NodeDescription owner : ownerNodeDescriptions.get()) {
-                // If the owner is the direct parent of the nodeDescription there is no need to add it to its reused
-                // descriptions. It is already in the children descriptions of the owner.
-                if (owner != nodeDescription.eContainer()) {
-                    if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions()) {
-                        owner.getReusedBorderNodeDescriptions().add(nodeDescription);
-                    } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
-                        owner.getReusedChildNodeDescriptions().add(nodeDescription);
-                    } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getDiagramDescription_NodeDescriptions()) {
-                        owner.getReusedChildNodeDescriptions().add(nodeDescription);
-                    }
+            this.reusedNodeDescriptionInOwners(nodeDescription, ownerNodeDescriptions.get());
+        });
+    }
+
+    /**
+     * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
+     * {@code owners}.
+     * <p>
+     * The provided {@code nodeDescription} is set as a reused element for each {@link NodeDescription} representing the
+     * provided {@code owners}. Note that the provided {@code nodeDescription} is added to either
+     * {@link NodeDescription#getReusedChildNodeDescriptions()} or
+     * {@link NodeDescription#getReusedBorderNodeDescriptions()}, depending on whether it is a regular node or a border
+     * node.
+     * 
+     * 
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code owners}
+     */
+    protected void reusedNodeDescriptionInOwners(NodeDescription nodeDescription, List<NodeDescription> owners) {
+        for (NodeDescription owner : owners) {
+            // If the owner is the direct parent of the nodeDescription there is no need to add it to its reused
+            // descriptions. It is already in the children descriptions of the owner.
+            if (owner != nodeDescription.eContainer()) {
+                if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions()) {
+                    owner.getReusedBorderNodeDescriptions().add(nodeDescription);
+                } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
+                    owner.getReusedChildNodeDescriptions().add(nodeDescription);
+                } else if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getDiagramDescription_NodeDescriptions()) {
+                    owner.getReusedChildNodeDescriptions().add(nodeDescription);
                 }
             }
-        });
+        }
     }
 
     /**
@@ -784,7 +805,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         diagramDescription.getNodeDescriptions().add(padModel);
         diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getModel()));
 
-        padModel.getStyle().setColor(styleProvider.getModelColor());
+        padModel.getStyle().setColor(this.styleProvider.getModelColor());
         this.collectAndReusedChildNodes(padModel, this.pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
 
         this.registerNodeAsCommentOwner(padModel, diagramDescription);
@@ -997,7 +1018,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         NodeToolSection edgesToolSection = this.getViewBuilder().createNodeToolSection(EDGES);
         nodeDescription.getPalette().getToolSections().addAll(List.of(nodesToolSection, edgesToolSection));
     }
-    
+
     /**
      * Create tools sections "Nodes" and "Edges" in the palette tool of a given {@link DiagramDescription}.
      * 
@@ -1008,6 +1029,140 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         DiagramToolSection nodesToolSection = this.getViewBuilder().createDiagramToolSection(NODES);
         DiagramToolSection edgesToolSection = this.getViewBuilder().createDiagramToolSection(EDGES);
         diagramDescription.getPalette().getToolSections().addAll(List.of(nodesToolSection, edgesToolSection));
+    }
+
+    /**
+     * Creates a shared compartment reused by the given owners {@code nodeDescription}.
+     * <p>
+     * The created {@link NodeDescription} compartment is added to the <i>shared</i> {@link NodeDescription} of the
+     * diagram.
+     * <p>
+     *
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param parentNodeDescription
+     *            the {@link NodeDescription} used to contain the created {@link NodeDescription} compartment
+     * @param domainType
+     *            the domain type used to define the compartment
+     * @param compartmentName
+     *            the name of the compartment to create
+     * @param owners
+     *            the semantic types that can contain this compartment {@link NodeDescription}
+     * @param forbiddenOwners
+     *            the list of domain types to exclude
+     * @param forbiddenNodeDescriptionPredicate
+     *            predicate on the {@link NodeDescription} to exclude
+     */
+    protected NodeDescription createSharedCompartmentsDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
+            List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
+        NodeDescription sharedCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createRectangularNodeStyle(false, false))//
+                .name(this.getIdBuilder().getCompartmentDomainNodeName(domainType, compartmentName)) //
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
+                .labelExpression(this.getQueryBuilder().emptyString())//
+                .collapsible(true)//
+                .build();
+
+        parentNodeDescription.getChildrenDescriptions().add(sharedCompartmentDescription);
+        this.createDefaultToolSectionsInNodeDescription(sharedCompartmentDescription);
+
+        // add reuse of compartment in its node description parent
+        this.registerCallback(sharedCompartmentDescription, () -> {
+            List<NodeDescription> ownerNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners).stream().filter(forbiddenNodeDescriptionPredicate).toList();
+            this.reusedNodeDescriptionInOwners(sharedCompartmentDescription, ownerNodeDescriptions);
+        });
+        return sharedCompartmentDescription;
+    }
+
+    /**
+     * Creates a {@link NodeDescription} reused in a {@link NodeDescription} compartment.
+     * <p>
+     * The created {@link NodeDescription} is added to the provided {@code parentNodeDescription}
+     * {@link NodeDescription} and reused by the {@code owners} {@link NodeDescription}s.
+     * <p>
+     *
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @param parentNodeDescription
+     *            the {@link NodeDescription} used to contain the created {@link NodeDescription}
+     * @param domainType
+     *            the domain type used to define the new {@link NodeDescription}
+     * @param compartmentName
+     *            the name of the compartment which contain the child {@link NodeDescription} to create
+     * @param semanticQuery
+     *            the semantic candidate expression to get semantic element
+     * @param semanticRefTool
+     *            the containment reference to used for the creation
+     * @param owners
+     *            the semantic types that can contain this {@link NodeDescription}
+     * @param forbiddenOwners
+     *            the list of domain types to exclude
+     * @param forbiddenNodeDescriptionPredicate
+     *            predicate on the {@link NodeDescription} to exclude
+     */
+    // CHECKSTYLE:OFF
+    protected void createNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
+            String semanticQuery, EReference semanticRefTool, List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
+        // CHECKSTYLE:ON
+        NodeDescription createNodeDescriptionInCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createIconAndlabelStyle(true))//
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .semanticCandidateExpression(semanticQuery)//
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
+                .build();
+        parentNodeDescription.getChildrenDescriptions().add(createNodeDescriptionInCompartmentDescription);
+
+        // Tool used to create Node Description in Compartment from the compartment
+        NodeTool prdSharedNodeDescriptionCreationTool = this.getViewBuilder().createCreationTool(semanticRefTool, domainType);
+        String domain = this.getUmlMetaModelHelper().getDomain(domainType);
+        this.registerCallback(createNodeDescriptionInCompartmentDescription, () -> {
+            List<NodeDescription> ownerCompartmentNodeDescriptions = EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class) //
+                    .filter(node -> IdBuilder.isCompartmentNode(node) && node.getName().contains(compartmentName)) //
+                    .toList();
+            this.addNodeToolInToolSection(ownerCompartmentNodeDescriptions, prdSharedNodeDescriptionCreationTool, NODES);
+            this.reusedNodeDescriptionInOwners(createNodeDescriptionInCompartmentDescription, ownerCompartmentNodeDescriptions);
+        });
+
+        // Tool used to create node Node Description in Compartment from the parent of this compartment
+        NodeTool prdSharedNodeDescriptionInCompartmentCreationTool = this.getViewBuilder().createInCompartmentCreationTool(this.getIdBuilder().getCreationToolId(domainType), compartmentName,
+                semanticRefTool, domain);
+        this.reuseTool(createNodeDescriptionInCompartmentDescription, diagramDescription, prdSharedNodeDescriptionInCompartmentCreationTool, owners, forbiddenOwners,
+                forbiddenNodeDescriptionPredicate);
+
+    }
+
+    /**
+     * Reuse the provided {@code nodeTool} in the owning {@link NodeDescription}s according to a given
+     * {@code forbiddenNodeDescriptionPredicate}.
+     * <p>
+     * <b>Note</b>: this method relies on the <i>callback</i> mechanism, meaning tools are updated once all the
+     * descriptions have been created.
+     * </p>
+     * 
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription}s
+     * @param nodeTool
+     *            the {@link NodeTool} to reuse
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     * @param forbiddenOwners
+     *            the type of the {@link NodeDescription} to exclude
+     * @param forbiddenNodeDescriptionPredicate
+     *            predicate on the {@link NodeDescription} to exclude
+     */
+    private void reuseTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, List<EClass> owners, List<EClass> forbiddenOwners,
+            Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
+        // Add tool on the parent of Compartment
+        this.registerCallback(nodeDescription, () -> {
+            List<NodeDescription> ownerToolDescription = this.collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners) //
+                    .stream().filter(forbiddenNodeDescriptionPredicate).toList();
+            this.addNodeToolInToolSection(ownerToolDescription, nodeTool, NODES);
+        });
     }
 
 }

@@ -585,6 +585,42 @@ public abstract class AbstractDiagramService {
 
     }
 
+    /**
+     * Creates a new semantic element inside compartment, initialize and create a view.
+     *
+     * @param parent
+     *            the semantic parent
+     * @param type
+     *            the type of element to create
+     * @param referenceName
+     *            the name of the containment reference
+     * @param compartmentName
+     *            the name of the compartment which will contain the new element
+     * @param targetView
+     *            the view on which the creation has been requested (<code>null</code> if request on the diagram root)
+     * @param diagramContext
+     *            the {@link IDiagramContext}
+     * @param capturedNodeDescriptions
+     *            a map of all converted node descriptions of the current diagram description (
+     *            {@link org.eclipse.sirius.components.view.NodeDescription} -> {@link NodeDescription})
+     * @return a new instance or <code>null</code> if the creation failed
+     */
+    public EObject createInCompartment(EObject parent, String type, String compartmentName, String referenceName, Node targetView, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+
+        DiagramNavigator navigator = new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions);
+        Node compartmentNode = null;
+        for (Node node : targetView.getChildNodes()) {
+            Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeDescription = navigator.getDescription(node);
+            if (nodeDescription.isPresent() && nodeDescription.get().getName().contains(compartmentName)) {
+                compartmentNode = node;
+                break;
+            }
+        }
+        return this.create(parent, type, referenceName, compartmentNode, diagramContext, capturedNodeDescriptions);
+    }
+
+    @Deprecated
     public EObject createSibling(EObject sibling, String type, String referenceName, Node siblingView, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         EObject parent = sibling.eContainer();

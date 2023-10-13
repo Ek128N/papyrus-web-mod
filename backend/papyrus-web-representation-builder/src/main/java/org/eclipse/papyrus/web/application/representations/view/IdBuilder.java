@@ -32,16 +32,15 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * @author Arthur Daussy
  */
 public class IdBuilder {
-
     public static final String SPACE = " "; //$NON-NLS-1$
 
     public static final String NEW = "New "; //$NON-NLS-1$
 
+    public static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$
+
     private static final String FAKE_CHILD_LABEL_NODE = "_FakeChildLabelNode";
 
     private static final String LABEL_NODE_PREFIX = "LabelNode"; //$NON-NLS-1$
-
-    private static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$
 
     private static final String UNDERSTORE = "_"; //$NON-NLS-1$
 

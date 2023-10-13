@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -116,7 +115,7 @@ public class RepresentationValidatorTests {
         }
     }
 
-    @Disabled("Disabled until siblings are reworked")
+    @Test
     public void validateProfileDiagram() {
         DiagramDescription diagram = new PRDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
