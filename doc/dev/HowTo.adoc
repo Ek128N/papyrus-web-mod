@@ -1,4 +1,4 @@
-= Development FAQ
+== Development FAQ
 :toc:
 
 === How to overidde a Sirius Web service
@@ -71,3 +71,37 @@ The rules below cover the use cases where a shared element should be used to avo
   - Comments and constraints can be represented in various container in most diagrams. These methods provide a common implementation that can be reused as is in new diagrams.
 - Use `IdBuilder.getSpecializedDomainNodeName(eClass, AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)` to create a node description with the `_SHARED` suffix (rule 3).
 - Use `sharedDescriptionNode.getChildrenDescriptions().add(myNodeDescription)` to add a NodeDescription to the `SHARED_DESCRIPTIONS` element. This NodeDescription can be created with the regular creation APIs such as `org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.newNodeBuilder(EClass, NodeStyleDescription)`. In this case it's the user's responsibility to ensure that the NodeDescription complies with the rules defined above. 
+
+=== Pages management in Details panel
+
+This section focus upon the API that can be used to manage pages inside the Details panel of Papyrus web.
+
+==== Main API
+
+The entry point to be able to manage pages in the Details panel is:
+
+[source, java]
+--
+org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor
+--
+
+The way to follow is to create a Spring service that implements this API and override the following method:
+
+[source, java]
+--
+Form postProcess(Form form, VariableManager variableManager)
+--
+
+This method will receive an immutable _Form_ instance that represents the Details panel and variables available at this point. 
+Therefore, it is possible to filter/sort/organize pages retrieved from that original _Form_ and return the desired presentation as a *new* _Form_ instance.
+
+==== Papyrus implementation
+
+The Papyrus implementation of this API can be found in the following class:
+
+[source, java]
+--
+org.eclipse.papyrus.web.application.properties.services.PapyrusDetailsPostProcessor
+--
+
+This implementation sorts pages as it was designed in papyrus desktop: starts with the `UML` tab followed by tabs `Comments` and `Profile` and ends with `Advanced` one.

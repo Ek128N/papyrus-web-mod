@@ -1,4 +1,4 @@
-= Development pull process
+= Development process
 :toc:
 
 This document aims to describe the development process for this project.
@@ -286,7 +286,7 @@ These images are useful to understand the reasons that lead to the failures.
 
 Treat all the code in a similar fashion, the code in your tests should be treated in a similar fashion as the "real" code.
 
-== Modifying you code after a review
+== Modifying your code after a review
 
 For any comment made on the review, add a comment with "Done" when matching change is made the change has been made.
 If you disagree with the comment respond to the comment to start discussion with the reviewer.

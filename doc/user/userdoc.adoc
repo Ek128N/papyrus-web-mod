@@ -1,9 +1,10 @@
 ifndef::imagesdir[:imagesdir: imgs]
 
 = User Documentation
+:toc:
 
 Papyrus web v{papyrus-web-version} +
-Last commit id: https://github.com/PapyrusSirius/papyrus-web/commit/{git-commit-id-full}[`{git-commit-id-abbrev}`]
+Last commit id: `{git-commit-id-abbrev}`
 
 == Home page
 

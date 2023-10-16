@@ -90,7 +90,6 @@
 								<sirius-documentation-version>${sirius.documentation.version}</sirius-documentation-version>
 								<papyrus-web-version>${project.version}</papyrus-web-version>
 								<git-commit-id-abbrev>${git.commit.id.abbrev}</git-commit-id-abbrev>
-								<git-commit-id-full>${git.commit.id.full}</git-commit-id-full>
 							</attributes>
 							<resources>
 								<resource>
