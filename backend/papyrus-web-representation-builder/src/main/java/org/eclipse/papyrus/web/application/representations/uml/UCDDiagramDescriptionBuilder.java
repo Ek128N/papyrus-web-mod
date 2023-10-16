@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
+import static java.util.stream.Collectors.joining;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.CONVERTED_NODES;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DIAGRAM_CONTEXT;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SELECTED_NODE;
@@ -24,6 +25,7 @@ import java.util.function.Supplier;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
+import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -66,17 +68,17 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     /**
      * The name of the representation handled by this builder.
      */
-    public static final String UCD_REP_NAME = "Use Case Diagram";
+    public static final String UCD_REP_NAME = "Use Case Diagram"; //$NON-NLS-1$
 
     /**
      * The prefix of the representation handled by this builder.
      */
-    public static final String UCD_PREFIX = "UCD_";
+    public static final String UCD_PREFIX = "UCD_"; //$NON-NLS-1$
 
     /**
-     * The prefix of creation tool.
+     * The suffix of "Classifier as Subject" creation tool
      */
-    private static final String NEW = "New "; //$NON-NLS-1$
+    private static final String AS_SUBJECT = " as Subject"; //$NON-NLS-1$
 
     /**
      * Subject tool section name.
@@ -101,7 +103,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     protected void fillDescription(DiagramDescription diagramDescription) {
 
         // create diagram tool sections
-        createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
+        this.createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.IS_NOT_PROFILE_MODEL));
 
         this.createDiagramActorDescription(diagramDescription);
@@ -363,7 +365,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      * @return the creation tool
      */
     private NodeTool createAsSubjectCreationTool(EReference containementRef, EClass newType) {
-        return this.getViewBuilder().createCreationTool("New " + newType.getName() + " as Subject", containementRef, newType); //$NON-NLS-1$ //$NON-NLS-2$
+        String domainTypeName = this.getIdBuilder().findWordsInMixedCase(newType.getName()).stream().collect(joining(IdBuilder.SPACE));
+        return this.getViewBuilder().createCreationTool(IdBuilder.NEW + domainTypeName + AS_SUBJECT, containementRef, newType);
     }
 
     /**
@@ -391,7 +394,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(ucdDiagramUseCaseDescription);
 
         // create tools
-        NodeTool ucdDiagramUseCaseCreationTool = this.getViewBuilder().createCreationTool(NEW + useCaseEClass.getName(), UseCaseDiagramServices.CREATE_USECASE,
+        String domainTypeName = this.getIdBuilder().findWordsInMixedCase(useCaseEClass.getName()).stream().collect(joining(IdBuilder.SPACE));
+        NodeTool ucdDiagramUseCaseCreationTool = this.getViewBuilder().createCreationTool(IdBuilder.NEW + domainTypeName, UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         this.addDiagramToolInToolSection(diagramDescription, ucdDiagramUseCaseCreationTool, NODES);
     }
@@ -424,7 +428,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         this.createDefaultToolSectionsInNodeDescription(ucdSharedUseCaseDescription);
 
-        NodeTool ucdSharedUseCaseCreationTool = this.getViewBuilder().createCreationTool(NEW + useCaseEClass.getName(), UseCaseDiagramServices.CREATE_USECASE,
+        String domainTypeName = this.getIdBuilder().findWordsInMixedCase(useCaseEClass.getName()).stream().collect(joining(IdBuilder.SPACE));
+        NodeTool ucdSharedUseCaseCreationTool = this.getViewBuilder().createCreationTool(IdBuilder.NEW + domainTypeName, UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
 
         List<EClass> owners = List.of(this.umlPackage.getClass_(), //

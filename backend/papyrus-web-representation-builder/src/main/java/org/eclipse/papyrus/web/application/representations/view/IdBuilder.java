@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view;
 
 import static java.util.stream.Collectors.joining;
@@ -33,6 +33,10 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  */
 public class IdBuilder {
 
+    public static final String SPACE = " "; //$NON-NLS-1$
+
+    public static final String NEW = "New "; //$NON-NLS-1$
+
     private static final String FAKE_CHILD_LABEL_NODE = "_FakeChildLabelNode";
 
     private static final String LABEL_NODE_PREFIX = "LabelNode"; //$NON-NLS-1$
@@ -41,11 +45,7 @@ public class IdBuilder {
 
     private static final String UNDERSTORE = "_"; //$NON-NLS-1$
 
-    private static final String SPACE = " "; //$NON-NLS-1$
-
     private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))"); //$NON-NLS-1$
-
-    private static final String NEW = "New "; //$NON-NLS-1$
 
     private final String diagramPrefix;
 
@@ -57,7 +57,7 @@ public class IdBuilder {
         this.metamodelHelper = metamodelHelper;
     }
 
-    private List<String> findWordsInMixedCase(String text) {
+    public List<String> findWordsInMixedCase(String text) {
         Matcher matcher = WORD_FINDER.matcher(text);
         List<String> words = new ArrayList<>();
         while (matcher.find()) {
@@ -67,11 +67,11 @@ public class IdBuilder {
     }
 
     public String getCreationToolId(EClass newElementType) {
-        return NEW + newElementType.getName();
+        return NEW + this.findWordsInMixedCase(newElementType.getName()).stream().collect(joining(SPACE));
     }
 
     public String getSiblingCreationToolId(EClass newElementType) {
-        return NEW + " Sibling " + newElementType.getName(); //$NON-NLS-1$
+        return NEW + " Sibling " + this.findWordsInMixedCase(newElementType.getName()).stream().collect(joining(SPACE)); //$NON-NLS-1$
     }
 
     /**
@@ -99,48 +99,48 @@ public class IdBuilder {
     }
 
     public String getDomainBaseEdgeId(EClass domain) {
-        return diagramPrefix + domain.getName() + "_DomainEdge"; //$NON-NLS-1$
+        return this.diagramPrefix + domain.getName() + "_DomainEdge"; //$NON-NLS-1$
     }
 
     public String getFeatureBaseEdgeId(EStructuralFeature feature) {
-        return diagramPrefix + feature.getEContainingClass().getName() + UNDERSTORE + feature.getName() + "_FeatureEdge"; //$NON-NLS-1$
+        return this.diagramPrefix + feature.getEContainingClass().getName() + UNDERSTORE + feature.getName() + "_FeatureEdge"; //$NON-NLS-1$
     }
 
     private String getBaseName(DiagramElementDescription description) {
-        String base = findWordsInMixedCase(metamodelHelper.toEClass(description.getDomainType()).getName()).stream().collect(joining(SPACE));
+        String base = this.findWordsInMixedCase(this.metamodelHelper.toEClass(description.getDomainType()).getName()).stream().collect(joining(SPACE));
         return base; // $NON-NLS-1$
     }
 
     public String getDomainNodeName(EClass domain) {
-        return diagramPrefix + domain.getName();
+        return this.diagramPrefix + domain.getName();
     }
 
     public String getSpecializedDomainNodeName(EClass domain, String specialization) {
-        return diagramPrefix + domain.getName() + UNDERSTORE + specialization;
+        return this.diagramPrefix + domain.getName() + UNDERSTORE + specialization;
     }
 
     public String getCompartmentDomainNodeName(EClass domain, String compartmentName) {
-        return diagramPrefix + domain.getName() + UNDERSTORE + compartmentName + COMPARTMENT_NODE_SUFFIX;
+        return this.diagramPrefix + domain.getName() + UNDERSTORE + compartmentName + COMPARTMENT_NODE_SUFFIX;
     }
 
     public String getListItemDomainNodeName(EClass domain, EClass parentContainer) {
-        return diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSTORE + LABEL_NODE_PREFIX; //$NON-NLS-1$
+        return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSTORE + LABEL_NODE_PREFIX; //$NON-NLS-1$
     }
 
     public String getDropToolName(NodeDescription nodeToCreate) {
-        return diagramPrefix + "DropTool_" + getBaseName(nodeToCreate); //$NON-NLS-1$
+        return this.diagramPrefix + "DropTool_" + this.getBaseName(nodeToCreate); //$NON-NLS-1$
     }
 
     public String getDropToolId() {
-        return diagramPrefix + "DropTool"; //$NON-NLS-1$
+        return this.diagramPrefix + "DropTool"; //$NON-NLS-1$
     }
 
     public String getCreationToolId(EdgeDescription description) {
         if (description.isIsDomainBasedEdge()) {
-            return NEW + getBaseName(description);
+            return NEW + this.getBaseName(description);
         }
         // Improve this
-        return diagramPrefix + getBaseName(description) + "_EdgeTool"; //$NON-NLS-1$
+        return this.diagramPrefix + this.getBaseName(description) + "_EdgeTool"; //$NON-NLS-1$
     }
 
     public String getSourceReconnectionToolId(EdgeDescription padPackageMerge) {
