@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.uml.domain.services.internal.helpers.UMLService;
+import org.eclipse.papyrus.uml.domain.services.properties.PropertiesCrudServices;
+import org.eclipse.papyrus.uml.domain.services.properties.PropertiesMultiplicityServices;
+import org.eclipse.papyrus.uml.domain.services.properties.PropertiesProfileDefinitionServices;
+import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
+import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
@@ -29,6 +34,10 @@ import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesMemberEndServicesWrapper;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesProfileServices;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -55,36 +64,57 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
     }
 
     private List<Class<?>> getRepresentationServicesClass(RepresentationDescription representationDescription) {
+        List<Class<?>> services = new ArrayList<>();
         if (representationDescription instanceof DiagramDescription) {
-            String name = representationDescription.getName();
-            if (name != null) {
-                List<Class<?>> services = new ArrayList<>();
 
-                // Generic services
-                services.add(UMLService.class);
-                services.add(DebugService.class);
+            this.registerDiagramServices(representationDescription, services);
 
-                String repName = representationDescription.getName();
-                // Handle both in memory and serialized version
-                if (repName != null) {
-                    if (repName.startsWith(CSDDiagramDescriptionBuilder.CSD_REP_NAME)) {
-                        services.add(CompositeStructureDiagramService.class);
-                    } else if (repName.startsWith(SMDDiagramDescriptionBuilder.SMD_REP_NAME)) {
-                        services.add(StateMachineDiagramService.class);
-                    } else if (repName.startsWith(PADDiagramDescriptionBuilder.PD_REP_NAME)) {
-                        services.add(PackageDiagramService.class);
-                    } else if (repName.startsWith(CDDiagramDescriptionBuilder.CD_REP_NAME)) {
-                        services.add(ClassDiagramService.class);
-                    } else if (repName.startsWith(UCDDiagramDescriptionBuilder.UCD_REP_NAME)) {
-                        services.add(UseCaseDiagramService.class);
-                    } else if (repName.startsWith(PRDDiagramDescriptionBuilder.PRD_REP_NAME)) {
-                        services.add(ProfileDiagramService.class);
-                    }
+        } else if (representationDescription instanceof org.eclipse.sirius.components.view.form.FormDescription formDesc) {
+            this.registerFormServices(formDesc, services);
+        }
+        return services;
+    }
+
+    private void registerDiagramServices(RepresentationDescription representationDescription, List<Class<?>> services) {
+        String name = representationDescription.getName();
+        if (name != null) {
+            // Generic services
+            services.add(UMLService.class);
+            services.add(DebugService.class);
+
+            String repName = representationDescription.getName();
+            // Handle both in memory and serialized version
+            if (repName != null) {
+                if (repName.startsWith(CSDDiagramDescriptionBuilder.CSD_REP_NAME)) {
+                    services.add(CompositeStructureDiagramService.class);
+                } else if (repName.startsWith(SMDDiagramDescriptionBuilder.SMD_REP_NAME)) {
+                    services.add(StateMachineDiagramService.class);
+                } else if (repName.startsWith(PADDiagramDescriptionBuilder.PD_REP_NAME)) {
+                    services.add(PackageDiagramService.class);
+                } else if (repName.startsWith(CDDiagramDescriptionBuilder.CD_REP_NAME)) {
+                    services.add(ClassDiagramService.class);
+                } else if (repName.startsWith(UCDDiagramDescriptionBuilder.UCD_REP_NAME)) {
+                    services.add(UseCaseDiagramService.class);
+                } else if (repName.startsWith(PRDDiagramDescriptionBuilder.PRD_REP_NAME)) {
+                    services.add(ProfileDiagramService.class);
                 }
-
-                return services;
             }
         }
-        return List.of();
+    }
+
+    private void registerFormServices(org.eclipse.sirius.components.view.form.FormDescription formDesc, List<Class<?>> services) {
+        String name = formDesc.getName();
+        if (name != null && name.startsWith(UMLPropertiesConfigurer.UML_DETAIL_VIEW_NAME)) {
+            services.add(PropertiesCrudServices.class);
+            services.add(PropertiesImageServicesWrapper.class);
+            services.add(PropertiesMemberEndServicesWrapper.class);
+            services.add(PropertiesMultiplicityServices.class);
+            services.add(PropertiesProfileDefinitionServices.class);
+            services.add(PropertiesUMLServices.class);
+            services.add(PropertiesValueSpecificationServices.class);
+            services.add(DebugService.class);
+            services.add(PropertiesHelpContentServices.class);
+            services.add(PropertiesProfileServices.class);
+        }
     }
 }

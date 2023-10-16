@@ -62,6 +62,7 @@ public class UMLDetailViewFromBuilder {
         FormDescription form = FormFactory.eINSTANCE.createFormDescription();
         form.setName(this.formName);
         form.setDomainType("uml::Element");
+        form.setTitleExpression("aql:'Details Form'");
         return form;
 
     }

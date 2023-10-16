@@ -21,20 +21,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
-import org.eclipse.papyrus.uml.domain.services.properties.PropertiesCrudServices;
-import org.eclipse.papyrus.uml.domain.services.properties.PropertiesMultiplicityServices;
-import org.eclipse.papyrus.uml.domain.services.properties.PropertiesProfileDefinitionServices;
-import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
-import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
 import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescriptionProvider;
 import org.eclipse.papyrus.web.application.utils.ViewSerializer;
-import org.eclipse.papyrus.web.services.aqlservices.DebugService;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
-import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
-import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
-import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesMemberEndServicesWrapper;
-import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesProfileServices;
 import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
@@ -42,9 +30,15 @@ import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -55,30 +49,33 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryConfigurer {
 
+    public static final String UML_DETAIL_VIEW_NAME = "UML Detail View";
+
+    private static final UUID NAME_UUID_FROM_BYTES = UUID.nameUUIDFromBytes(UMLPropertiesConfigurer.class.getCanonicalName().getBytes());
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UMLPropertiesConfigurer.class);
+
     private final ViewFormDescriptionConverter converter;
 
     private boolean saveViewModel;
 
     private Registry globalEPackageRegistry;
 
-    private IEditableChecker checker;
-
-    private ServiceLogger serviceLogger;
-
     private AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider;
 
-    private UMLDocumentationService documentationService;
+    private final List<IJavaServiceProvider> javaServiceProviders;
+
+    private final ApplicationContext applicationContext;
 
     public UMLPropertiesConfigurer(ViewFormDescriptionConverter converter, EPackage.Registry globalEPackageRegistry, AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider,
-            @Value("${org.eclipse.papyrus.web.application.configuration.save.view.model:false}") boolean saveViewModel, IEditableChecker checker, ServiceLogger aqlLogger,
-            UMLDocumentationService docService) {
+            @Value("${org.eclipse.papyrus.web.application.configuration.save.view.model:false}") boolean saveViewModel, UMLDocumentationService docService, ApplicationContext applicationContext,
+            List<IJavaServiceProvider> javaServiceProviders) {
         this.defaultPropertyViewProvider = Objects.requireNonNull(defaultPropertyViewProvider);
-        this.serviceLogger = Objects.requireNonNull(aqlLogger);
-        this.checker = Objects.requireNonNull(checker);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.saveViewModel = saveViewModel;
         this.converter = Objects.requireNonNull(converter);
-        this.documentationService = Objects.requireNonNull(docService);
+        this.javaServiceProviders = javaServiceProviders;
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -86,28 +83,17 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
         // Build the actual FormDescription
 
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(UMLPropertiesConfigurer.class.getCanonicalName().getBytes()));
+        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + NAME_UUID_FROM_BYTES);
         Resource resource = new XMIResourceImpl(uri);
-        View view = new UMLDetailViewFromBuilder("UML Detail View").build();
+        View view = new UMLDetailViewFromBuilder(UML_DETAIL_VIEW_NAME).build();
         resource.getContents().add(view);
 
         if (this.saveViewModel) {
             new ViewSerializer().printAndSaveViewModel(view);
         }
 
-        List<Object> services = List.of(new PropertiesCrudServices(this.serviceLogger, this.checker), //
-                new PropertiesImageServicesWrapper(), //
-                new PropertiesMemberEndServicesWrapper(this.serviceLogger, this.checker), //
-                new PropertiesMultiplicityServices(this.serviceLogger, this.checker), //
-                new PropertiesProfileDefinitionServices(this.serviceLogger), //
-                new PropertiesUMLServices(this.serviceLogger), //
-                new PropertiesValueSpecificationServices(this.serviceLogger, this.checker), //
-                new DebugService(this.serviceLogger), //
-                new PropertiesHelpContentServices(this.documentationService), //
-                new PropertiesProfileServices());
-
         List<EPackage> allEPackages = this.findGlobalEPackages();
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), services, allEPackages);
+        AQLInterpreter interpreter = this.createInterpreter(view, allEPackages);
 
         // Convert the View-based FormDescription and register the result into the system
         view.getDescriptions().stream()//
@@ -117,6 +103,26 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
         // Register the "Advance Property View"
         this.defaultPropertyViewProvider.getFormDescription().getPageDescriptions().forEach(registry::add);
+    }
+
+    private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
+        AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
+        // @formatter:off
+        List<Object> serviceInstances = this.javaServiceProviders.stream()
+                .flatMap(provider -> provider.getServiceClasses(view).stream())
+                .map(serviceClass -> {
+                    try {
+                        return beanFactory.createBean(serviceClass);
+                    } catch (BeansException beansException) {
+                        LOGGER.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .map(Object.class::cast)
+                .toList();
+        // @formatter:on
+        return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 
     private List<EPackage> findGlobalEPackages() {

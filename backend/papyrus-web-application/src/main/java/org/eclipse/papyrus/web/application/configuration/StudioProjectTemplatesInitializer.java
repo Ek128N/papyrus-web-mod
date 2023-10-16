@@ -266,7 +266,7 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
     }
 
     private String getDetailViewContent() {
-        View view = new UMLDetailViewFromBuilder("UML Detail view Studio").build();
+        View view = new UMLDetailViewFromBuilder(UMLPropertiesConfigurer.UML_DETAIL_VIEW_NAME + " Studio").build();
 
         return this.stereotypeBuilder.getStereotypeBody(Collections.singletonList(view));
     }
