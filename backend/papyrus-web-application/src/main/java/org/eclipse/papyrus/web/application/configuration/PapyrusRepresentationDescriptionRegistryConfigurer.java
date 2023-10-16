@@ -30,7 +30,6 @@ import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
-import org.eclipse.papyrus.web.application.utils.ViewSerializer;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
@@ -42,7 +41,6 @@ import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import jakarta.annotation.PostConstruct;
@@ -61,17 +59,10 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
 
     private final EPackage.Registry ePackagesRegistry;
 
-    /**
-     * Holds true to save and print the view model during start.
-     */
-    private final boolean saveViewModel;
-
     private PapyrusRepresentationDescriptionRegistry viewRegistry;
 
-    public PapyrusRepresentationDescriptionRegistryConfigurer(EPackage.Registry ePackagesRegistry, IViewConverter viewConverter, PapyrusRepresentationDescriptionRegistry viewRegistry,
-            @Value("${org.eclipse.papyrus.web.application.configuration.save.view.model:false}") boolean saveViewModel) {
+    public PapyrusRepresentationDescriptionRegistryConfigurer(EPackage.Registry ePackagesRegistry, IViewConverter viewConverter, PapyrusRepresentationDescriptionRegistry viewRegistry) {
         this.viewRegistry = viewRegistry;
-        this.saveViewModel = saveViewModel;
         this.viewConverter = Objects.requireNonNull(viewConverter);
         this.ePackagesRegistry = Objects.requireNonNull(ePackagesRegistry);
     }
@@ -122,11 +113,6 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
                 LOGGER.info(MessageFormat.format("Contributing representation {0} with id{1}", description.getLabel(), description.getId())); //$NON-NLS-1$
             }
         }
-
-        if (this.saveViewModel) {
-            new ViewSerializer().printAndSaveViewModel(view);
-        }
-
     }
 
 }

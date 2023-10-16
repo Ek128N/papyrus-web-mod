@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescriptionProvider;
-import org.eclipse.papyrus.web.application.utils.ViewSerializer;
 import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
@@ -36,7 +35,6 @@ import org.eclipse.sirius.components.view.form.FormDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -57,8 +55,6 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
     private final ViewFormDescriptionConverter converter;
 
-    private boolean saveViewModel;
-
     private Registry globalEPackageRegistry;
 
     private AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider;
@@ -68,11 +64,9 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
     private final ApplicationContext applicationContext;
 
     public UMLPropertiesConfigurer(ViewFormDescriptionConverter converter, EPackage.Registry globalEPackageRegistry, AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider,
-            @Value("${org.eclipse.papyrus.web.application.configuration.save.view.model:false}") boolean saveViewModel, UMLDocumentationService docService, ApplicationContext applicationContext,
-            List<IJavaServiceProvider> javaServiceProviders) {
+            UMLDocumentationService docService, ApplicationContext applicationContext, List<IJavaServiceProvider> javaServiceProviders) {
         this.defaultPropertyViewProvider = Objects.requireNonNull(defaultPropertyViewProvider);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
-        this.saveViewModel = saveViewModel;
         this.converter = Objects.requireNonNull(converter);
         this.javaServiceProviders = javaServiceProviders;
         this.applicationContext = applicationContext;
@@ -87,10 +81,6 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
         Resource resource = new XMIResourceImpl(uri);
         View view = new UMLDetailViewFromBuilder(UML_DETAIL_VIEW_NAME).build();
         resource.getContents().add(view);
-
-        if (this.saveViewModel) {
-            new ViewSerializer().printAndSaveViewModel(view);
-        }
 
         List<EPackage> allEPackages = this.findGlobalEPackages();
         AQLInterpreter interpreter = this.createInterpreter(view, allEPackages);
