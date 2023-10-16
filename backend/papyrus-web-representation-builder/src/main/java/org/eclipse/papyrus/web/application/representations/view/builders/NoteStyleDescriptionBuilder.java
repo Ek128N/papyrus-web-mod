@@ -319,8 +319,8 @@ public class NoteStyleDescriptionBuilder {
         noteStyleDescription.getStyle().setHeightComputationExpression("100"); //$NON-NLS-1$
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) noteStyleDescription.getStyle();
-        style.setShowIcon(false);
-        style.setColor(color);
+        style.setShowIcon(true);
+        style.setColor(this.color);
 
         return noteStyleDescription;
     }

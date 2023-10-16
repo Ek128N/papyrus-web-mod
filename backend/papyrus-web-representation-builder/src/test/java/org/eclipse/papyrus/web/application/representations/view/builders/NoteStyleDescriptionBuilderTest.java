@@ -15,7 +15,6 @@ package org.eclipse.papyrus.web.application.representations.view.builders;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -106,10 +105,10 @@ public class NoteStyleDescriptionBuilderTest {
         this.triggerCallbacks(this.diagramDescription);
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription nodeDescription = this.diagramDescription.getNodeDescriptions().get(0);
-        assertEquals(styleProvider.getNoteColor(), nodeDescription.getStyle().getColor());
+        assertEquals(this.styleProvider.getNoteColor(), nodeDescription.getStyle().getColor());
         assertEquals("200", nodeDescription.getStyle().getWidthComputationExpression());
         assertEquals("100", nodeDescription.getStyle().getHeightComputationExpression());
-        assertFalse(nodeDescription.getStyle().isShowIcon());
+        assertTrue(nodeDescription.getStyle().isShowIcon());
 
         // The builder does not create creation tools
         assertTrue(this.diagramDescription.getPalette().getNodeTools().isEmpty());
@@ -168,7 +167,7 @@ public class NoteStyleDescriptionBuilderTest {
         assertEquals(this.styleProvider.getNoteColor(), childNodeDescription.getStyle().getColor());
         assertEquals("200", childNodeDescription.getStyle().getWidthComputationExpression());
         assertEquals("100", childNodeDescription.getStyle().getHeightComputationExpression());
-        assertFalse(childNodeDescription.getStyle().isShowIcon());
+        assertTrue(childNodeDescription.getStyle().isShowIcon());
 
         assertTrue(diagChildNodeDescription.getPalette().getNodeTools().isEmpty());
 
