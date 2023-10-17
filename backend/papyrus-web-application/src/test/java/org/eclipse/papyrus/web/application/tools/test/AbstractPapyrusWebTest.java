@@ -1,0 +1,531 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+package org.eclipse.papyrus.web.application.tools.test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.papyrus.web.application.configuration.UMLStereotypeDescriptionRegistryConfigurer;
+import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
+import org.eclipse.papyrus.web.application.utils.AbstractWebUMLTest;
+import org.eclipse.papyrus.web.application.utils.mutations.CreateChildMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.CreateDocumentMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.CreateProjectMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.CreateRepresentationMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.DeleteFromDiagramMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.DiagramEventSubscriptionRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.DropOnDiagramMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.EditLabelMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.GetPaletteToolQueryRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.InvokeSingleClickOnDiagramElementToolRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.InvokeSingleClickOnTwoDiagramElementsToolRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.ReconnectEdgeMutationRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.RootObjectCreateMutationRunner;
+import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
+import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
+import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+/**
+ * Abstract class to define integration tests of tools in Papyrus Web.
+ * <p>
+ * This class defined high-level utility methods that can be reused in concrete Papyrus Web tests to apply tools and
+ * search graphical/semantic elements. It also performs a minimal environment initialization (creation of a project,
+ * root element, initialization of a diagram).
+ * </p>
+ *
+ * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
+ */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
+
+    protected static final String DEFAULT_DOCUMENT = "test.uml";
+
+    protected static final UMLPackage UML = UMLPackage.eINSTANCE;
+
+    protected String projectId;
+
+    protected String rootObjectId;
+
+    protected String representationId;
+
+    protected String documentId;
+
+    protected String representationName;
+
+    protected EClass rootElementEClass;
+
+    protected String documentName;
+
+    @Autowired
+    private CreateProjectMutationRunner projectCreator;
+
+    @Autowired
+    private CreateDocumentMutationRunner documentCreator;
+
+    @Autowired
+    private RootObjectCreateMutationRunner rootElementCreator;
+
+    @Autowired
+    private IProjectRepository projectRepository;
+
+    @Autowired
+    private EditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @Autowired
+    private CreateRepresentationMutationRunner representationCreator;
+
+    @Autowired
+    private IRepresentationSearchService representationSearchService;
+
+    @Autowired
+    private IEditingContextSearchService editingContextSearchService;
+
+    @Autowired
+    private GetPaletteToolQueryRunner getPaletteQueryRunner;
+
+    @Autowired
+    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
+
+    @Autowired
+    private InvokeSingleClickOnDiagramElementToolRunner invokeToolOnOneElementRunner;
+
+    @Autowired
+    private InvokeSingleClickOnTwoDiagramElementsToolRunner invokeToolOnTwoElementsRunner;
+
+    @Autowired
+    private EditLabelMutationRunner editLabelRunner;
+
+    @Autowired
+    private ReconnectEdgeMutationRunner reconnectEdgeRunner;
+
+    @Autowired
+    private DropOnDiagramMutationRunner dropOnDiagramRunner;
+
+    @Autowired
+    private DeleteFromDiagramMutationRunner deleteFromDiagramMutationRunner;
+
+    @Autowired
+    private CreateChildMutationRunner childCreationRunner;
+
+    @Autowired
+    private PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescriptionRegistry;
+
+    /**
+     * Initializes the test with the provided {@code documentName}, {@code representationName}, and
+     * {@code rootElementEClass}.
+     * <p>
+     * The provided {@documentName}, {@code representationName}, and {@code rootElementEClass} are used by the
+     * {@link #setUp()} method to initialize the test environment.
+     *
+     * @param documentName
+     *            the name of the document to create
+     * @param representationName
+     *            the name of the representation to create
+     * @param rootElementEClass
+     *            the type of the root semantic element to create
+     *
+     * @see #setUp()
+     */
+    public AbstractPapyrusWebTest(String documentName, String representationName, EClass rootElementEClass) {
+        this.documentName = documentName;
+        this.representationName = representationName;
+        this.rootElementEClass = rootElementEClass;
+    }
+
+    /**
+     * Initializes the test environment for the provided {@code documentName}, {@code representationName}, and
+     * {@code rootElementEClass}.
+     * <p>
+     * This method creates a new project, document, and root semantic element. The representation matching
+     * {@code representationName} is created on the root semantic element. This method also opens the
+     * <i>subscription</i> for the created diagram, allowing to invoke tools performing graphical operations.
+     * </p>
+     * <p>
+     * The {@code documentName}, {@code representationName}, and {@code rootElementEClass} are provided in this class'
+     * constructor.
+     * </p>
+     *
+     * @see #AbstractPapyrusWebTest(String, String, EClass)
+     */
+    @BeforeEach
+    public void setUp() {
+        this.projectId = this.projectCreator.createProject("Instance");
+        this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeDescriptionRegistryConfigurer.EMPTY_ID);
+        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
+        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, "TEST__REACT_FLOW");
+        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+    }
+
+    /**
+     * Deletes the current project and all its content.
+     */
+    @AfterEach
+    public void tearDown() {
+        this.editingContextEventProcessorRegistry.dispose();
+        this.projectRepository.deleteAll();
+    }
+
+    /**
+     * Creates a node in {@code parentDiagramElementId}.
+     * <p>
+     * This method invokes the {@code invokeSingleClickOnDiagramElementTool} GraphQL mutation to perform the node
+     * creation.
+     *
+     * @param parentDiagramElementId
+     *            the graphical identifier of the parent element of the node to create
+     * @param nodeCreationTool
+     *            the {@link CreationTool} specifying the tool section and name in the palette
+     * @see CreationTool
+     * @see InvokeSingleClickOnDiagramElementToolRunner
+     */
+    protected void applyNodeCreationTool(String parentDiagramElementId, CreationTool nodeCreationTool) {
+        Optional<String> toolId = this.getPaletteQueryRunner.getTool(this.projectId, this.representationId, parentDiagramElementId, nodeCreationTool.getToolSection(), nodeCreationTool.getToolName());
+        assertThat(toolId).as(MessageFormat.format("The tool {0} | {1} doesn't exist", nodeCreationTool.getToolSection(), nodeCreationTool.getToolName())).isPresent();
+        this.invokeToolOnOneElementRunner.invokeTool(this.projectId, this.representationId, parentDiagramElementId, toolId.get());
+    }
+
+    /**
+     * Creates an edge between {@code sourceDiagramElementId} and {@code targetDiagramElementId}.
+     * <p>
+     * This method invokes the {@code invokeSingleClickOnTwoDiagramElementsTool} GraphQL mutation to perform the edge
+     * creation.
+     * </p>
+     *
+     * @param sourceDiagramElementId
+     *            the graphical identifier of the source element of the edge
+     * @param targetDiagramElementId
+     *            the graphical identifier of the target element of the edge
+     * @param edgeCreationTool
+     *            the {@link CreationTool} specifying the tool section and name in the palette
+     * @see CreationTool
+     * @see InvokeSingleClickOnTwoDiagramElementsToolRunner
+     */
+    protected void applyEdgeCreationTool(String sourceDiagramElementId, String targetDiagramElementId, CreationTool edgeCreationTool) {
+        Optional<String> toolId = this.getPaletteQueryRunner.getTool(this.projectId, this.representationId, sourceDiagramElementId, edgeCreationTool.getToolSection(), edgeCreationTool.getToolName());
+        assertThat(toolId).isPresent();
+        this.invokeToolOnTwoElementsRunner.invokeTool(this.projectId, this.representationId, sourceDiagramElementId, targetDiagramElementId, toolId.get());
+    }
+
+    /**
+     * Delete graphically a node matching with {@code diagramElementToDeleteId} identifier.
+     * <p>
+     * This method invokes the {@code deleteFromDiagram} GraphQL mutation to perform the node deletion.
+     *
+     * @param diagramElementToDeleteId
+     *            the graphical identifier of the element to delete
+     * @see GraphicalDeleteNodeFromDiagramMutationRunner
+     */
+    protected void applyNodeGraphicalDeletionTool(String diagramElementToDeleteId) {
+        // TODO : check that "Delete from diagram" tool exists
+        this.deleteFromDiagramMutationRunner.graphicalDeleteNodeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
+    }
+
+    /**
+     * Delete semantically a node matching with {@code diagramElementToDeleteId} identifier.
+     * <p>
+     * This method invokes the {@code deleteFromDiagram} GraphQL mutation to perform the node deletion.
+     *
+     * @param diagramElementToDeleteId
+     *            the graphical identifier of the element to delete
+     * @see DeleteFromDiagramMutationRunner
+     */
+    protected void applyNodeSemanticDeletionTool(String diagramElementToDeleteId) {
+        // TODO : check that "Delete from model" tool exists
+        this.deleteFromDiagramMutationRunner.semanticDeleteNodeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
+    }
+
+    /**
+     * Delete semantically an edge matching with {@code diagramElementToDeleteId} identifier.
+     * <p>
+     * This method invokes the {@code deleteFromDiagram} GraphQL mutation to perform the node deletion.
+     *
+     * @param diagramElementToDeleteId
+     *            the graphical identifier of the element to delete
+     * @see DeleteFromDiagramMutationRunner
+     */
+    protected void applyEdgeSemanticDeletionTool(String diagramElementToDeleteId) {
+        // TODO : check that "Delete from model" tool exists
+        this.deleteFromDiagramMutationRunner.semanticDeleteEdgeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
+    }
+
+    /**
+     * Edits the label of the provided {@code labelId}.
+     * <p>
+     * This method invokes the {@code editLabel} GraphQL mutation to perform the label edition.
+     * </p>
+     *
+     * @param labelId
+     *            the identifier of the label to edit
+     * @param newLabel
+     *            the new value to set for the edited label
+     *
+     * @see Node#getLabel()
+     * @see Edge#getCenterLabel()
+     * @see EditLabelMutationRunner
+     */
+    protected void applyEditLabelTool(String labelId, String newLabel) {
+        this.editLabelRunner.editLabel(this.projectId, this.representationId, labelId, newLabel);
+    }
+
+    /**
+     * Reconnects the source of the provided {@code edgeId}.
+     * <p>
+     * This method invokes the {@code reconnectEdge} GraphQL mutation to perform the reconnection.
+     * </p>
+     *
+     * @param edgeId
+     *            the graphical identifier of the edge to reconnect the source from
+     * @param newSourceElementId
+     *            the graphical identifier of the new source of the edge
+     * @see #applyReconnectEdgeTargetTool(String, String) to reconnect the target of an edge
+     * @see ReconnectEdgeMutationRunner
+     */
+    protected void applyReconnectEdgeSourceTool(String edgeId, String newSourceElementId) {
+        this.reconnectEdgeRunner.reconnectEdgeSource(this.projectId, this.representationId, edgeId, newSourceElementId);
+    }
+
+    /**
+     * Reconnects the target of the provided {@code edgeId}.
+     * <p>
+     * This method invokes the {@code reconnectEdge} GraphQL mutation to perform the reconnection.
+     * </p>
+     *
+     * @param edgeId
+     *            the graphical identifier of the edge to reconnect the target from
+     * @param newTargetElementId
+     *            the graphical identifier of the new target of the edge
+     * @see #applyReconnectEdgeSourceTool(String, String) to reconnect the source of an edge
+     * @see ReconnectEdgeMutationRunner
+     */
+    protected void applyReconnectEdgeTargetTool(String edgeId, String newTargetElementId) {
+        this.reconnectEdgeRunner.reconnectEdgeTarget(this.projectId, this.representationId, edgeId, newTargetElementId);
+    }
+
+    /**
+     * Drop the provided {@code droppedElementIds} on {@code targetElementId}.
+     * <p>
+     * This method invokes the {@code dropOnDiagram} GraphQL mutation to perform the drop.
+     * </p>
+     *
+     * @param targetElementId
+     *            the graphical identifier of the target container element
+     * @param droppedElementIds
+     *            the semantic identifiers of the elements to drop
+     * @see DropOnDiagramMutationRunner
+     */
+    protected void applyDropOnDiagramTool(String targetElementId, List<String> droppedElementIds) {
+        this.dropOnDiagramRunner.dropOnDiagram(this.projectId, this.representationId, targetElementId, droppedElementIds);
+    }
+
+    /**
+     * Creates a semantic child in {@code parentElementId}.
+     * <p>
+     * This method invokes the {@code createChild} GraphQL mutation to perform the child creation.
+     * </p>
+     *
+     * @param parentElementId
+     *            the identifier of the semantic parent of the element to create
+     * @param containmentReference
+     *            the containment reference of the element to create
+     * @param childType
+     *            the type of the element to create
+     * @see CreateChildMutationRunner
+     */
+    protected void applyCreateChildTool(String parentElementId, EReference containmentReference, EClass childType) {
+        this.childCreationRunner.createChild(this.projectId, parentElementId, containmentReference, childType);
+    }
+
+    /**
+     * Returns the current {@link Diagram}.
+     * <p>
+     * This method reloads the {@link Diagram} from the backend to ensure that the latest persisted changes are
+     * accessible to callers. Note that this method cannot search for a particular {@link Diagram}, it reloads the
+     * representation built by the {@link #setUp()} method.
+     *
+     * @return the current {@link Diagram}
+     */
+    protected Diagram getDiagram() {
+        Optional<IRepresentation> representation = this.representationSearchService.findById(this.getEditingContext(), this.representationId.toString(), IRepresentation.class);
+        assertThat(representation).isPresent();
+        return (Diagram) representation.get();
+    }
+
+    /**
+     * Returns the current {@link IEditingContext}.
+     * <p>
+     * This method reloads the {@link IEditingContext} from the backend to ensure that the latest persisted changes are
+     * accessible to callers.
+     * </p>
+     *
+     * @return the current {@link IEditingContext}
+     */
+    @Override
+    public IEditingContext getEditingContext() {
+        Optional<IEditingContext> editingContext = this.editingContextSearchService.findById(this.projectId.toString());
+        assertThat(editingContext).isPresent();
+        return editingContext.get();
+    }
+
+    /**
+     * Returns the diagram-to-description mappings for the nodes of the current diagram.
+     *
+     * @return the diagram-to-description mappings for the nodes of the current diagram
+     * @see PapyrusRepresentationDescriptionRegistry
+     */
+    public Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> getCapturedNodes() {
+        return this.papyrusRepresentationDescriptionRegistry.getConvertedNode(this.representationName);
+    }
+
+    /**
+     * Returns the diagram-to-description mappings for the edges of the current diagram.
+     *
+     * @return the diagram-to-description mappings for the edges of the current diagram
+     * @see PapyrusRepresentationDescriptionRegistry
+     */
+    public Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, org.eclipse.sirius.components.diagrams.description.EdgeDescription> getCapturedEdges() {
+        return this.papyrusRepresentationDescriptionRegistry.getConvertedEdges(this.representationName);
+    }
+
+    /**
+     * Returns the {@link NamedElement} in the semantic model with the provided {@code semanticElementName}.
+     * <p>
+     * This method searches for {@link NamedElement} in the semantic model. It cannot find UML elements that aren't
+     * subclasses of {@link NamedElement} (e.g. Comment).
+     * </p>
+     * <p>
+     * This method produces a test failure if the semantic model contains multiple element with the provided
+     * {@code semanticElementName}.
+     * </p>
+     *
+     *
+     * @param semanticElementName
+     *            the name of the element to search for
+     * @return the {@link NamedElement} with the provided name
+     */
+    public NamedElement findSemanticElementByName(String semanticElementName) {
+        IEditingContext editingContext = this.getEditingContext();
+        Optional<Object> optObject = this.getObjectService().getObject(editingContext, this.rootObjectId.toString());
+        assertThat(optObject).isPresent();
+        assertThat(optObject.get()).isInstanceOf(EObject.class);
+        EObject rootEObject = (EObject) optObject.get();
+        List<NamedElement> result = new ArrayList<>();
+        if (rootEObject instanceof NamedElement rootNamedElement) {
+            if (Objects.equals(rootNamedElement.getName(), semanticElementName)) {
+                result.add(rootNamedElement);
+            }
+        }
+        Iterable<EObject> allContents = () -> rootEObject.eAllContents();
+        for (EObject content : allContents) {
+            if (content instanceof NamedElement namedElement) {
+                if (Objects.equals(namedElement.getName(), semanticElementName)) {
+                    result.add(namedElement);
+                }
+            }
+        }
+        assertThat(result).as("The semantic model contains multiple elements named " + semanticElementName).hasSize(1);
+        return result.get(0);
+    }
+
+    /**
+     * Returns the {@link IDiagramElement} in the graphical model with the provided {@code graphicalElementLabel}.
+     * <p>
+     * This method produces a test failure if the graphical model contains multiple elements with the provided
+     * {@code graphicalElementLabel}.
+     *
+     * @param graphicalElementLabel
+     *            the label of the graphical element to search for
+     * @return the {@link IDiagramElement} with the provided label
+     */
+    public IDiagramElement findGraphicalElementByLabel(String graphicalElementLabel) {
+        Diagram diagram = this.getDiagram();
+        List<IDiagramElement> result = new ArrayList<>();
+        for (Node node : diagram.getNodes()) {
+            result.addAll(this.findGraphicalElementByLabel(node, graphicalElementLabel));
+        }
+        for (Edge edge : diagram.getEdges()) {
+            if (Objects.equals(edge.getTargetObjectLabel(), graphicalElementLabel)) {
+                result.add(edge);
+            }
+        }
+        assertThat(result).as("The graphical model contains multiple elements with the label " + graphicalElementLabel).hasSize(1);
+        return result.get(0);
+    }
+
+    /**
+     * Returns the list of {@link IDiagramElement} contained in {@code node} with the provided {@code label}.
+     * <p>
+     * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the
+     * provided {@code node}) is part of the list if its label matches the provided {@code label}.
+     * </p>
+     *
+     * @param node
+     *            the root of the sub-tree of elements to search into
+     * @param label
+     *            the label of the graphical element to search for
+     * @return the list of {@link IDiagramElement} contained in {@code node} with the provided {@code label}
+     */
+    private List<IDiagramElement> findGraphicalElementByLabel(Node node, String label) {
+        List<IDiagramElement> result = new ArrayList<>();
+        if (Objects.equals(node.getTargetObjectLabel(), label)) {
+            result.add(node);
+        }
+        for (Node childNode : node.getChildNodes()) {
+            result.addAll(this.findGraphicalElementByLabel(childNode, label));
+        }
+        return result;
+    }
+
+    /**
+     * Returns the root semantic element of the current {@link IEditingContext}.
+     * <p>
+     * This method reloads the {@link IEditingContext} to ensure that the latest version of the semantic model is
+     * processed.
+     * </p>
+     *
+     * @return the root semantic element of the current {@link IEditingContext}
+     * @see #getEditingContext()
+     */
+    public EObject getRootSemanticElement() {
+        IEditingContext editingContext = this.getEditingContext();
+        Optional<Object> optObject = this.getObjectService().getObject(editingContext, this.rootObjectId.toString());
+        assertThat(optObject).isPresent();
+        assertThat(optObject.get()).isInstanceOf(EObject.class);
+        return (EObject) optObject.get();
+    }
+}

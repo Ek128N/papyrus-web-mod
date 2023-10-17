@@ -1,3 +1,5 @@
+ifndef::imagesdir[:imagesdir: imgs]
+
 == Development FAQ
 :toc:
 
@@ -105,3 +107,20 @@ org.eclipse.papyrus.web.application.properties.services.PapyrusDetailsPostProces
 --
 
 This implementation sorts pages as it was designed in papyrus desktop: starts with the `UML` tab followed by tabs `Comments` and `Profile` and ends with `Advanced` one.
+
+
+=== How can I test my diagrams?
+Papyrus Web provides a _test framework_ to ease the development of test suites for your diagrams. The framework is a generic testing infrastructure defined at the boundaries of Papyrus Web's _backend_: it simulates the invocation of tools (Node Creation, Edge Creation, etc) via the GraphQL API, and checks the data exposed to the frontend. This approach allows to finely check graphical and semantic data, but cannot perform graphical-level tests through the user interface (this can be done with end-to-end integration tests like Cypress).
+
+The Papyrus Web test framework is defined in the `papyrus-web-application` module (in the `src/tests` directory), in the packages prefixed with _tool_:
+
+image::test-framework-architecture.png[Test Framework Architecture,400, align="center"]
+
+- *org.eclipse.papyrus.web.application.tools.test*: the abstract test classes that can be extended by the specifier to test specific tools. These classes provide a common ground to implement tests, and are designed to allow parameterization of concrete implementations.
+- *org.eclipse.papyrus.web.application.tools.checker*: the generic checkers used by the tests to verify the diagram and the semantic model. These checkers operate at the semantic or graphical level, and can be grouped in a `CombinedChecker`.
+-  *org.eclipse.papyrus.web.application.tools.utils*: a set of utility classes that provide common behavior and data for the implementation of test cases. For example, this package contains a default implementation of the `MappingTypes` class, that allows to compute the mapping type associated to a given UML type.
+
+Implementations of the test framework for a specific diagram should follow the same naming/packaging conventions. For example, the Use Case Diagram implementation is defined in the following packages:
+
+- *org.eclipse.papyrus.web.application.tools.usecase*: the concrete implementation of the abstract test classes provided by the framework. These classes allow to test node creation, edge creation, etc in the context of the Use Case Diagram.
+- *org.eclipse.papyrus.web.application.tools.usecase.utils*: utility classes specific to the Use Case Diagram. For example, the `UCDMappingTypes` extends `MappingType` to support Use Case specific mappings.

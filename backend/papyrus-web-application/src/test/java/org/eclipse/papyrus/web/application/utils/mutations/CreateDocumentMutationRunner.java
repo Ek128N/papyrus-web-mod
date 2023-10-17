@@ -32,7 +32,7 @@ import graphql.ExecutionInput;
 import graphql.GraphQL;
 
 /**
- * Service use to create document inside a project.
+ * Service used to create document inside a project.
  *
  * @author Arthur Daussy
  */
@@ -65,11 +65,11 @@ public class CreateDocumentMutationRunner {
         this.projectRepository = projectRepository;
     }
 
-    public UUID createDocument(UUID projectId, String documentName, UUID stereotypeId) {
+    public String createDocument(String projectId, String documentName, UUID stereotypeId) {
 
-        assertThat(this.projectRepository.existsById(projectId)).isTrue();
+        assertThat(this.projectRepository.existsById(UUID.fromString(projectId))).isTrue();
 
-        var createDocumentInput = new CreateDocumentInput(UUID.randomUUID(), projectId.toString(), documentName, stereotypeId);
+        var createDocumentInput = new CreateDocumentInput(UUID.randomUUID(), projectId, documentName, stereotypeId);
 
         var createDocumentExecutionInput = ExecutionInput.newExecutionInput().query(query)
                 .variables(Map.of("input", this.objectMapper.convertValue(createDocumentInput, new TypeReference<Map<String, Object>>() {
@@ -78,14 +78,13 @@ public class CreateDocumentMutationRunner {
         var createDocumentExecutionResult = this.graphQL.execute(createDocumentExecutionInput);
         assertThat(createDocumentExecutionResult.getErrors()).isEmpty();
 
-        UUID documentId = null;
+        String documentId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(createDocumentExecutionResult.toSpecification());
             String responseTypeName = JsonPath.read(jsonResult, "$.data.createDocument.__typename");
             assertThat(responseTypeName).isEqualTo("CreateDocumentSuccessPayload");
 
-            String rawDocumentId = JsonPath.read(jsonResult, "$.data.createDocument.document.id");
-            documentId = UUID.fromString(rawDocumentId);
+            documentId = JsonPath.read(jsonResult, "$.data.createDocument.document.id");
         } catch (JsonProcessingException | IllegalArgumentException exception) {
             fail(exception.getMessage());
         }

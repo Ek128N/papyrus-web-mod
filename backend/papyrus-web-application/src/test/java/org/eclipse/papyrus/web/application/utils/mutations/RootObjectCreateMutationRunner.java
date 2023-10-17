@@ -60,9 +60,9 @@ public class RootObjectCreateMutationRunner {
         this.objectMapper = objectMapper;
     }
 
-    public UUID createRootObject(String ePackageNsURI, String type, UUID documentId, String projectId) {
+    public String createRootObject(String ePackageNsURI, String type, String documentId, String projectId) {
 
-        var createRootObjectInput = new CreateRootObjectInput(UUID.randomUUID(), projectId.toString(), documentId, ePackageNsURI, type);
+        var createRootObjectInput = new CreateRootObjectInput(UUID.randomUUID(), projectId, UUID.fromString(documentId), ePackageNsURI, type);
 
         var createRootObjectExecutionInput = ExecutionInput.newExecutionInput().query(query)
                 .variables(Map.of("input", this.objectMapper.convertValue(createRootObjectInput, new TypeReference<Map<String, Object>>() {
@@ -71,17 +71,17 @@ public class RootObjectCreateMutationRunner {
         var createRootObjectExecutionResult = this.graphQL.execute(createRootObjectExecutionInput);
         assertThat(createRootObjectExecutionResult.getErrors()).isEmpty();
 
+        String rootObjectId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(createRootObjectExecutionResult.toSpecification());
             String responseTypeName = JsonPath.read(jsonResult, "$.data.createRootObject.__typename");
             assertThat(responseTypeName).isEqualTo("CreateRootObjectSuccessPayload");
 
-            String rawObjectId = JsonPath.read(jsonResult, "$.data.createRootObject.object.id");
-            return UUID.fromString(rawObjectId);
+            rootObjectId = JsonPath.read(jsonResult, "$.data.createRootObject.object.id");
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
-            return null;
         }
+        return rootObjectId;
     }
 
 }

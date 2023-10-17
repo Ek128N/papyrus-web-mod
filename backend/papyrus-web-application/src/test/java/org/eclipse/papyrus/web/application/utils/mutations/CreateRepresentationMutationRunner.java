@@ -78,10 +78,10 @@ public class CreateRepresentationMutationRunner {
         this.objectMapper = objectMapper;
     }
 
-    public UUID createRepresentation(UUID projectId, UUID targetObject, String representationDescriptionName, String representationName) {
+    public String createRepresentation(String projectId, String targetObject, String representationDescriptionName, String representationName) {
 
-        var getRepresentationDescriptionsExecutionInput = ExecutionInput.newExecutionInput().query(representationQuery)
-                .variables(Map.of("editingContextId", projectId.toString(), "objectId", targetObject.toString())).build();
+        var getRepresentationDescriptionsExecutionInput = ExecutionInput.newExecutionInput().query(representationQuery).variables(Map.of("editingContextId", projectId, "objectId", targetObject))
+                .build();
         var getRepresentationDescriptionsExecutionResult = this.graphQL.execute(getRepresentationDescriptionsExecutionInput);
         assertThat(getRepresentationDescriptionsExecutionResult.getErrors()).isEmpty();
 
@@ -95,16 +95,16 @@ public class CreateRepresentationMutationRunner {
             fail(exception.getMessage());
         }
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), projectId.toString(), representationDescriptionId, targetObject.toString(), representationName);
-        var executionInput = ExecutionInput.newExecutionInput().query(query).variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }))).build();
+        var input = new CreateRepresentationInput(UUID.randomUUID(), projectId, representationDescriptionId, targetObject, representationName);
+        var executionInput = ExecutionInput.newExecutionInput().query(query).variables(Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { /**/ })))
+                .build();
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
 
-        UUID representationId = null;
+        String representationId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(executionResult.toSpecification());
-            String rawRepresentationId = JsonPath.read(jsonResult, "$.data.createRepresentation.representation.id");
-            representationId = UUID.fromString(rawRepresentationId);
+            representationId = JsonPath.read(jsonResult, "$.data.createRepresentation.representation.id");
         } catch (JsonProcessingException | IllegalArgumentException exception) {
             fail(exception.getMessage());
         }

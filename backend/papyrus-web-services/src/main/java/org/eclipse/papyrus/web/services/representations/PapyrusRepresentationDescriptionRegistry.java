@@ -23,11 +23,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 
 /**
@@ -65,8 +65,9 @@ public class PapyrusRepresentationDescriptionRegistry {
 
         EMFUtils.allContainedObjectOfType(description, DiagramElementDescription.class).forEach(de -> this.registerViewDiagramElement(de));
         Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes = this.buildConvertedNodeMap(description, converted);
+        Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> convertedEdges = this.buildConvertedEdgeMap(description, converted);
 
-        this.diagrams.add(new Match(viewId, description, converted, convertedNodes));
+        this.diagrams.add(new Match(viewId, description, converted, convertedNodes, convertedEdges));
 
     }
 
@@ -92,11 +93,28 @@ public class PapyrusRepresentationDescriptionRegistry {
         return converterNodes;
     }
 
+    private Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> buildConvertedEdgeMap(DiagramDescription diagramDescription,
+            org.eclipse.sirius.components.diagrams.description.DiagramDescription converted) {
+
+        Map<String, EdgeDescription> edgeIdToDescriptions = new HashMap<>();
+        for (EdgeDescription edge : converted.getEdgeDescriptions()) {
+            edgeIdToDescriptions.put(edge.getId(), edge);
+        }
+
+        this.apiDiagramElementDescriptionById.putAll(edgeIdToDescriptions);
+
+        Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> convertedEdges = new HashMap<>();
+        allContainedObjectOfType(diagramDescription, org.eclipse.sirius.components.view.diagram.EdgeDescription.class).forEach(e -> {
+            convertedEdges.put(e, edgeIdToDescriptions.get(this.idProvider.getId(e)));
+        });
+        return convertedEdges;
+    }
+
     public Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescriptionById(String id) {
         return Optional.ofNullable((org.eclipse.sirius.components.view.diagram.NodeDescription) this.viewDiagramElementDescriptionById.get(id));
     }
 
-    public Optional<EdgeDescription> getViewEdgeDescriptionById(String id) {
+    public Optional<org.eclipse.sirius.components.view.diagram.EdgeDescription> getViewEdgeDescriptionById(String id) {
         return Optional.ofNullable((org.eclipse.sirius.components.view.diagram.EdgeDescription) this.viewDiagramElementDescriptionById.get(id));
     }
 
@@ -134,6 +152,10 @@ public class PapyrusRepresentationDescriptionRegistry {
         return this.diagrams.stream().filter(m -> Objects.equals(descriptionName, m.getViewDiagramDescription().getName())).map(Match::getConvertedNodes).findFirst().orElse(Collections.emptyMap());
     }
 
+    public Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> getConvertedEdges(String descriptionName) {
+        return this.diagrams.stream().filter(m -> Objects.equals(descriptionName, m.getViewDiagramDescription().getName())).map(Match::getConvertedEdges).findFirst().orElse(Collections.emptyMap());
+    }
+
     public List<DiagramDescription> getViewDiagrams() {
         return this.diagrams.stream().map(Match::getViewDiagramDescription).toList();
     }
@@ -155,15 +177,19 @@ public class PapyrusRepresentationDescriptionRegistry {
 
         private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes;
 
+        private Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> convertedEdges;
+
         private final String id;
 
         private Match(String id, DiagramDescription viewDiagramDescription, org.eclipse.sirius.components.diagrams.description.DiagramDescription apiDiagramDescription,
-                Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+                Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes,
+                Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> convertedEdges) {
             super();
             this.id = Objects.requireNonNull(id);
             this.viewDiagramDescription = Objects.requireNonNull(viewDiagramDescription);
             this.apiDiagramDescription = Objects.requireNonNull(apiDiagramDescription);
             this.convertedNodes = Collections.unmodifiableMap(Objects.requireNonNull(convertedNodes));
+            this.convertedEdges = convertedEdges;
         }
 
         public DiagramDescription getViewDiagramDescription() {
@@ -180,6 +206,10 @@ public class PapyrusRepresentationDescriptionRegistry {
 
         public Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> getConvertedNodes() {
             return this.convertedNodes;
+        }
+
+        public Map<org.eclipse.sirius.components.view.diagram.EdgeDescription, EdgeDescription> getConvertedEdges() {
+            return this.convertedEdges;
         }
     }
 }

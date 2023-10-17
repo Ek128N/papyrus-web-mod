@@ -80,13 +80,13 @@ public class PrimitiveListWidgetIntegrationTests extends AbstractWebUMLTest {
     @Autowired
     private IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private UUID projectId;
+    private String projectId;
 
-    private UUID rootObjectId;
+    private String rootObjectId;
 
-    private UUID representationId;
+    private String representationId;
 
-    private UUID documentId;
+    private String documentId;
 
     @BeforeEach
     public void setup() {
@@ -106,9 +106,9 @@ public class PrimitiveListWidgetIntegrationTests extends AbstractWebUMLTest {
     @DisplayName("Can instanciate a View-based FormDescription which uses the Primitive List custom widget")
     public void simpleFormWithPrimitiveList() {
         var configuration = new FormConfiguration(this.representationId.toString());
-        var input = new FormEventInput(UUID.randomUUID(), this.projectId.toString(), this.representationId.toString());
+        var input = new FormEventInput(UUID.randomUUID(), this.projectId, this.representationId);
 
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId.toString(), IFormEventProcessor.class, configuration, input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId, IFormEventProcessor.class, configuration, input);
         Predicate<IPayload> isFormWithPrimitiveListRefreshedEventPayload = payload -> {
             if (payload instanceof FormRefreshedEventPayload formRefreshedEventPayload) {
                 return this.checkEvent(formRefreshedEventPayload);

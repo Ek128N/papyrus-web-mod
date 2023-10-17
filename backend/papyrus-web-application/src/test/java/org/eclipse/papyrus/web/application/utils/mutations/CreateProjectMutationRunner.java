@@ -64,7 +64,7 @@ public class CreateProjectMutationRunner {
         this.projectRepository = projectRepository;
     }
 
-    public UUID createProject(String projectName) {
+    public String createProject(String projectName) {
 
         var input = new CreateProjectInput(UUID.randomUUID(), projectName);
 
@@ -75,15 +75,14 @@ public class CreateProjectMutationRunner {
         var executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();
 
-        UUID projectId = null;
+        String projectId = null;
         try {
             var jsonResult = this.objectMapper.writeValueAsString(executionResult.toSpecification());
             String responseTypeName = JsonPath.read(jsonResult, "$.data.createProject.__typename");
             assertThat(responseTypeName).isEqualTo("CreateProjectSuccessPayload");
 
-            String rawProjectId = JsonPath.read(jsonResult, "$.data.createProject.project.id");
-            projectId = UUID.fromString(rawProjectId);
-            assertThat(this.projectRepository.existsById(projectId)).isTrue();
+            projectId = JsonPath.read(jsonResult, "$.data.createProject.project.id");
+            assertThat(this.projectRepository.existsById(UUID.fromString(projectId))).isTrue();
         } catch (JsonProcessingException | IllegalArgumentException exception) {
             fail(exception.getMessage());
         }

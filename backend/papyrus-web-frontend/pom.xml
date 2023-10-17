@@ -109,6 +109,20 @@
 										<include>**/*.svg</include>
 									</includes>
 								</resource>
+								<resource>
+									<!-- (Mandatory) Directory to copy from. Paths are relative to maven's 
+										${baseDir} -->
+									<directory>../../doc/dev/imgs</directory>
+									<!-- (Optional) Directory to copy to. By default uses the option 
+										`outputDirectory` -->
+									<targetPath>dev/imgs</targetPath>
+									<!-- (Optional) If not set, includes all files but default exceptions 
+										mentioned -->
+									<includes>
+										<include>**/*.png</include>
+										<include>**/*.svg</include>
+									</includes>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>
