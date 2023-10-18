@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
  *
  * @author Arthur Daussy
  */
-@ServiceOverride(IObjectService.class)
+@ServiceOverride(org.eclipse.sirius.components.emf.services.ObjectService.class)
 public class PapyrusObjectService implements IObjectService {
 
     private org.eclipse.sirius.components.emf.services.ObjectService delegate;

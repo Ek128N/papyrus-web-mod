@@ -41,7 +41,9 @@ import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
+import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.adapters.DiagramColorAdapter;
+import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.adapters.FormColorAdapter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.services.api.projects.Nature;
@@ -109,7 +111,7 @@ public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFact
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         List<EPackage> additionalEPackages = this.editingContextEPackageService.getEPackages(editingContextId);
         Stream.concat(this.findGlobalEPackages(), additionalEPackages.stream())
-                .filter(ePackage -> isStudioProjectNature || !List.of(DomainPackage.eNS_URI, ViewPackage.eNS_URI).contains(ePackage.getNsURI()))
+                .filter(ePackage -> isStudioProjectNature || !List.of(DomainPackage.eNS_URI, ViewPackage.eNS_URI, DiagramPackage.eNS_URI, FormPackage.eNS_URI).contains(ePackage.getNsURI()))
                 .forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
 
         resourceSet.setPackageRegistry(ePackageRegistry);
