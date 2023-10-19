@@ -31,7 +31,11 @@ export const Footer = () => {
   return (
     <footer className={classes.footer}>
       <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. Powered by </Typography>
-      <Link variant="caption" href="https://github.com/PapyrusSirius" rel="noopener noreferrer" target="_blank">
+      <Link
+        variant="caption"
+        href="https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web"
+        rel="noopener noreferrer"
+        target="_blank">
         Papyrus Web
       </Link>
     </footer>

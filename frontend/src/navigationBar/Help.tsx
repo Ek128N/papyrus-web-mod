@@ -28,7 +28,7 @@ export const Help = () => {
   const classes = useHelpStyle();
   return (
     <Link
-      href={`${httpOrigin}/doc/userdoc.html`}
+      href={`${httpOrigin}/doc/index.html`}
       rel="noopener noreferrer"
       target="_blank"
       color="inherit"

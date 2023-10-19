@@ -1,0 +1,5 @@
+= Papyrus Web Documentation
+Papyrus web v{papyrus-web-version} - {git-commit-id-abbrev}
+
+- xref:user/userdoc.adoc[User documentation]
+- xref:dev/dev-doc-index.adoc[Developper Documentation]

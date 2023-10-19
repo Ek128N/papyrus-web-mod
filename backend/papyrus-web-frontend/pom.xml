@@ -82,10 +82,13 @@
 							<goal>process-asciidoc</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${project.basedir}/../../doc/user/</sourceDirectory>
-							<sourceDocumentName>userdoc.adoc</sourceDocumentName>
+							<sourceDirectory>${project.basedir}/../../doc/</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/resources/static/doc/</outputDirectory>
+							<preserveDirectories>true</preserveDirectories>
 							<attributes>
+								<toc>left</toc>
+								<icons>font</icons>
+								<source-highlighter>coderay</source-highlighter>
 								<imagesdir>./imgs</imagesdir>
 								<sirius-documentation-version>${sirius.documentation.version}</sirius-documentation-version>
 								<papyrus-web-version>${project.version}</papyrus-web-version>
@@ -98,7 +101,7 @@
 									<directory>../../doc/user/imgs</directory>
 									<!-- (Optional) Directory to copy to. By default uses the option 
 										`outputDirectory` -->
-									<targetPath>imgs</targetPath>
+									<targetPath>user/imgs</targetPath>
 									<!-- (Optional) If not set, includes all files but default exceptions 
 										mentioned -->
 									<includes>

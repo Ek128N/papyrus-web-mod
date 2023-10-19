@@ -2,9 +2,7 @@ ifndef::imagesdir[:imagesdir: imgs]
 
 = User Documentation
 :toc:
-
-Papyrus web v{papyrus-web-version} +
-Last commit id: `{git-commit-id-abbrev}`
+:toclevels: 4
 
 == Home page
 

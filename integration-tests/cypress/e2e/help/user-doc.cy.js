@@ -15,8 +15,18 @@ describe('User doc test', () => {
     cy.visit('/projects');
   });
 
-  it('user doc test', () => {
+  it('Check that the documentation is accessible from the ? button', () => {
     cy.getByTestId('help-link').invoke('removeAttr', 'target').click();
+    cy.get('h1').should('have.text', 'Papyrus Web Documentation');
+  });
+
+  it('Check that the user documentation is accessible', () => {
+    cy.visit('/doc/user/userdoc.html');
     cy.get('h1').should('have.text', 'User Documentation');
+  });
+
+  it('Check that the dev documentation is accessible', () => {
+    cy.visit('/doc/dev/dev-doc-index.html');
+    cy.get('h1').should('have.text', 'Documentation for developers');
   });
 });
