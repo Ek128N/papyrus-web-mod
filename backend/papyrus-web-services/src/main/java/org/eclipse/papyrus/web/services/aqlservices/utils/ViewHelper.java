@@ -39,9 +39,20 @@ import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
+import org.eclipse.sirius.components.diagrams.Size;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
+import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -50,13 +61,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A helper to create view in a diagram define in a {@link DiagramDescription}.
+ * A helper to manage views (creation, deletion...) in a diagram define in a {@link DiagramDescription}.
  *
  * @author Arthur Daussy
  */
-public class CreationViewHelper implements IViewCreationHelper {
+public class ViewHelper implements IViewHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreationViewHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewHelper.class);
 
     private final IObjectService objectService;
 
@@ -68,7 +79,7 @@ public class CreationViewHelper implements IViewCreationHelper {
 
     private final Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions;
 
-    public CreationViewHelper(IObjectService objectService, IDiagramOperationsService diagramOperationsService, IDiagramContext diagramContext, DiagramDescription diagramDescription,
+    public ViewHelper(IObjectService objectService, IDiagramOperationsService diagramOperationsService, IDiagramContext diagramContext, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         super();
         this.objectService = objectService;
@@ -79,7 +90,7 @@ public class CreationViewHelper implements IViewCreationHelper {
     }
 
     /**
-     * Creates a new {@link IViewCreationHelper}.
+     * Creates a new {@link IViewHelper}.
      *
      * <p>
      * If the capturedNodeDescriptions is empty then return a NoOp implementation
@@ -99,12 +110,12 @@ public class CreationViewHelper implements IViewCreationHelper {
      * @return a new instance
      */
     @FactoryMethod
-    public static IViewCreationHelper create(IObjectService objectService, IViewDiagramDescriptionService viewDiagramService, IDiagramOperationsService diagramOperationsService,
+    public static IViewHelper create(IObjectService objectService, IViewDiagramDescriptionService viewDiagramService, IDiagramOperationsService diagramOperationsService,
             IDiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         // @formatter:off
         return viewDiagramService.getDiagramDescription(capturedNodeDescriptions)
-                                .map(dd -> (IViewCreationHelper) new CreationViewHelper(objectService, diagramOperationsService, diagramContext, dd, capturedNodeDescriptions))
-                                .orElse(new IViewCreationHelper.NoOp());
+                                .map(dd -> (IViewHelper) new ViewHelper(objectService, diagramOperationsService, diagramContext, dd, capturedNodeDescriptions))
+                                .orElse(new IViewHelper.NoOp());
         // @formatter:on
 
     }
@@ -194,6 +205,70 @@ public class CreationViewHelper implements IViewCreationHelper {
 
         }
         return false;
+    }
+
+    @Override
+    public boolean deleteView(Node droppedNode) {
+        this.diagramOperationsService.deleteView(this.diagramContext, droppedNode);
+        return true;
+    }
+
+    @Override
+    public Node createFakeNode(EObject semanticElement, Node selectedNode) {
+        String targetObjectId = this.objectService.getId(semanticElement);
+        String parentElementId = null;
+        org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = null;
+        if (selectedNode == null) {
+            // case diagram
+            parentElementId = this.diagramContext.getDiagram().getId();
+            childrenType = this.getChildrenNodeDescriptionsOfType(null, semanticElement.eClass());
+        } else {
+            parentElementId = selectedNode.getId();
+            org.eclipse.sirius.components.view.diagram.NodeDescription targetNodeDescription = this.getViewNodeDescription(selectedNode.getDescriptionId()).orElse(null);
+            childrenType = this.getChildrenNodeDescriptionsOfType(targetNodeDescription, semanticElement.eClass());
+        }
+
+        var isBorderedNode = childrenType.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
+        final NodeContainmentKind containmentKind;
+        if (isBorderedNode) {
+            containmentKind = NodeContainmentKind.BORDER_NODE;
+        } else {
+            containmentKind = NodeContainmentKind.CHILD_NODE;
+        }
+
+        org.eclipse.sirius.components.diagrams.description.NodeDescription nodeDescription = this.capturedNodeDescriptions.get(childrenType);
+
+        var targetObjectKind = this.objectService.getKind(semanticElement);
+        var targetObjectLabel = this.objectService.getLabel(semanticElement);
+        String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), containmentKind, targetObjectId);
+
+        var labelStyle = LabelStyle.newLabelStyle().color("").fontSize(14).iconURL(List.of()).build();
+
+        var insideLabel = InsideLabel.newLabel("").type("").text("").insideLabelLocation(InsideLabelLocation.TOP_CENTER).position(Position.UNDEFINED).size(Size.UNDEFINED).alignment(Position.UNDEFINED)
+                .style(labelStyle).isHeader(false).build();
+
+        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().color("").borderColor("").borderStyle(LineStyle.Solid).build();
+
+        return Node.newNode(nodeId)//
+                .type("")//
+                .targetObjectId(targetObjectId)//
+                .targetObjectKind(targetObjectKind)//
+                .targetObjectLabel(targetObjectLabel)//
+                .descriptionId(nodeDescription.getId())//
+                .borderNode(containmentKind == NodeContainmentKind.BORDER_NODE)//
+                .modifiers(Set.of())//
+                .state(ViewModifier.Normal)//
+                .collapsingState(CollapsingState.EXPANDED)//
+                .insideLabel(insideLabel)//
+                .style(nodeStyle)//
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())//
+                .position(Position.UNDEFINED)//
+                .size(Size.UNDEFINED)//
+                .userResizable(true)//
+                .borderNodes(List.of())//
+                .childNodes(List.of())//
+                .customizedProperties(Set.of())//
+                .build();
     }
 
     private boolean matchExistingNode(Node inspectedParent, Node inspectedNode, String searchedSemanticElementID, String searchNodeDescription, Node selectedParent) {

@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -147,7 +148,17 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createRealizationDescription(diagramDescription);
         this.createUsageDescription(diagramDescription);
 
-        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
+
+        // Add dropped tool on diagram
+        DropNodeTool ucdGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
+        List<EClass> children = List.of(this.umlPackage.getUseCase(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getActor(), this.umlPackage.getPackage(),
+                this.umlPackage.getClass_());
+        this.registerCallback(diagramDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            ucdGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        diagramDescription.getPalette().setDropNodeTool(ucdGraphicalDropTool);
     }
 
     /**
@@ -237,7 +248,17 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         NodeTool ucdDiagramPackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, ucdDiagramPackageCreationTool, NODES);
 
-        this.createPackageDescriptionInNodeDescription(ucdDiagramPackageDescription);
+        this.createPackageDescriptionInNodeDescription(diagramDescription, ucdDiagramPackageDescription);
+
+        // Add dropped tool on Package container
+        DropNodeTool ucdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ucdDiagramPackageDescription));
+        List<EClass> children = List.of(this.umlPackage.getUseCase(), this.umlPackage.getComment(), this.umlPackage.getPackage(), this.umlPackage.getConstraint(), this.umlPackage.getActor(),
+                this.umlPackage.getClass_());
+        this.registerCallback(ucdDiagramPackageDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            ucdPackageGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        ucdDiagramPackageDescription.getPalette().setDropNodeTool(ucdPackageGraphicalDropTool);
     }
 
     /**
@@ -284,10 +305,12 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Package} in {@code parentNodeDescription}.
      * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @param parentNodeDescription
      *            the parent {@link NodeDescription} which contain definition of the new {@link NodeDescription}
      */
-    private void createPackageDescriptionInNodeDescription(NodeDescription parentNodeDescription) {
+    private void createPackageDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription) {
         EClass packageEClass = this.umlPackage.getPackage();
         NodeDescription ucdPackagePackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
@@ -298,6 +321,17 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         parentNodeDescription.getChildrenDescriptions().add(ucdPackagePackageDescription);
         NodeTool ucdPackagePackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         this.getNodeToolSection(parentNodeDescription, NODES).getNodeTools().add(ucdPackagePackageCreationTool);
+
+        // Add dropped tool on Sub-Package container
+        DropNodeTool ucdPackageGraphicalDropTool = this.getViewBuilder()
+                .createGraphicalDropTool(this.getIdBuilder().getSpecializedNodeGraphicalDropToolName(ucdPackagePackageDescription, PACKAGE_CHILD));
+        List<EClass> children = List.of(this.umlPackage.getUseCase(), this.umlPackage.getComment(), this.umlPackage.getPackage(), this.umlPackage.getConstraint(), this.umlPackage.getActor(),
+                this.umlPackage.getClass_());
+        this.registerCallback(ucdPackagePackageDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            ucdPackageGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        ucdPackagePackageDescription.getPalette().setDropNodeTool(ucdPackageGraphicalDropTool);
     }
 
     /**
@@ -646,6 +680,15 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         NodeTool ucdDiagramClassifierCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
         this.addDiagramToolInToolSection(diagramDescription, ucdDiagramClassifierCreationTool, SUBJECT);
+
+        // Add dropped tool on Classifier container
+        DropNodeTool ucdClassifierGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ucdDiagramClassifierDescription));
+        List<EClass> children = List.of(this.umlPackage.getUseCase(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
+        this.registerCallback(ucdDiagramClassifierDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            ucdClassifierGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        ucdDiagramClassifierDescription.getPalette().setDropNodeTool(ucdClassifierGraphicalDropTool);
     }
 
     /**
@@ -675,6 +718,16 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         NodeTool ucdPackageClassifierCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(ucdPackageClassifierDescription, diagramDescription, ucdPackageClassifierCreationTool, SUBJECT, owners.toArray(EClass[]::new));
+
+        // Add dropped tool on Shared Classifier container
+        DropNodeTool ucdClassifierGraphicalDropTool = this.getViewBuilder()
+                .createGraphicalDropTool(this.getIdBuilder().getSpecializedNodeGraphicalDropToolName(ucdPackageClassifierDescription, SHARED_SUFFIX));
+        List<EClass> children = List.of(this.umlPackage.getUseCase(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
+        this.registerCallback(ucdPackageClassifierDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            ucdClassifierGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        ucdPackageClassifierDescription.getPalette().setDropNodeTool(ucdClassifierGraphicalDropTool);
     }
 
     /**

@@ -18,6 +18,8 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Varia
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DELETION_POLICY;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DIAGRAM;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DIAGRAM_CONTEXT;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DROPPED_ELEMENT;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DROPPED_NODE;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.EDGE_SEMANTIC_ELEMENT;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.EDGE_SOURCE;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.EDGE_TARGET;
@@ -31,6 +33,8 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Varia
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_EDGE_TARGET;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_RECONNECTION_SOURCE;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_RECONNECTION_TARGET;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.TARGET_ELEMENT;
+import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.TARGET_NODE;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -173,8 +177,12 @@ public class QueryHelper {
         return new CallQuery(variable).callService(Services.ADD_VALUE_TO_SERVICE, S_SEP + feature.getName() + S_SEP, value);
     }
 
-    public String queryDrop() {
-        return CallQuery.queryServiceOnSelf(Services.DROP_SERVICE, SELECTED_NODE, EDITING_CONTEXT, DIAGRAM_CONTEXT, CONVERTED_NODES);
+    public String querySemanticDrop() {
+        return CallQuery.queryServiceOnSelf(Services.SEMANTIC_DROP_SERVICE, SELECTED_NODE, EDITING_CONTEXT, DIAGRAM_CONTEXT, CONVERTED_NODES);
+    }
+
+    public String queryGraphicalDrop() {
+        return new CallQuery(DROPPED_ELEMENT).callService(Services.GRAPHICAL_DROP_SERVICE, TARGET_ELEMENT, DROPPED_NODE, TARGET_NODE, EDITING_CONTEXT, DIAGRAM_CONTEXT, CONVERTED_NODES);
     }
 
     /**

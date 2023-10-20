@@ -1,15 +1,16 @@
-/*******************************************************************************
+/*****************************************************************************
  * Copyright (c) 2022, 2023 CEA LIST, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.services.composite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -334,34 +335,34 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
         var pack = this.init();
         var car = this.createIn(Class.class, pack);
 
-        var carNode = this.getServiceTester().assertDrop(car, null, CSD_CLASSIFIER);
+        var carNode = this.getServiceTester().assertSemanticDrop(car, null, CSD_CLASSIFIER);
 
         var wheel = this.createIn(Class.class, pack);
-        var wheelNode = this.getServiceTester().assertDrop(wheel, null, CSD_CLASSIFIER);
+        var wheelNode = this.getServiceTester().assertSemanticDrop(wheel, null, CSD_CLASSIFIER);
 
         var port1 = this.createIn(Port.class, wheel);
         // Needs to display this port so we can check there is no edge starting or ending on this node
-        this.getServiceTester().assertDrop(port1, wheelNode, CSD_PORT_ON_CLASSIFIER);
+        this.getServiceTester().assertSemanticDrop(port1, wheelNode, CSD_PORT_ON_CLASSIFIER);
 
         var frontLeft = this.createIn(Property.class, car);
         frontLeft.setType(wheel);
-        var frontLeftNode = this.getServiceTester().assertDrop(frontLeft, carNode, CSD_PROPERTY_ON_CLASSIFIER);
-        var portOnFrontLeft = this.getServiceTester().assertDrop(port1, frontLeftNode, CSD_PORT_ON_PROPERTY);
+        var frontLeftNode = this.getServiceTester().assertSemanticDrop(frontLeft, carNode, CSD_PROPERTY_ON_CLASSIFIER);
+        var portOnFrontLeft = this.getServiceTester().assertSemanticDrop(port1, frontLeftNode, CSD_PORT_ON_PROPERTY);
 
         var frontRight = this.createIn(Property.class, car);
         frontRight.setType(wheel);
-        var frontRightNode = this.getServiceTester().assertDrop(frontRight, carNode, CSD_PROPERTY_ON_CLASSIFIER);
-        var portOnFrontRight = this.getServiceTester().assertDrop(port1, frontRightNode, CSD_PORT_ON_PROPERTY);
+        var frontRightNode = this.getServiceTester().assertSemanticDrop(frontRight, carNode, CSD_PROPERTY_ON_CLASSIFIER);
+        var portOnFrontRight = this.getServiceTester().assertSemanticDrop(port1, frontRightNode, CSD_PORT_ON_PROPERTY);
 
         var backLeft = this.createIn(Property.class, car);
         backLeft.setType(wheel);
-        var backLeftNode = this.getServiceTester().assertDrop(backLeft, carNode, CSD_PROPERTY_ON_CLASSIFIER);
-        var portOnBackLeft = this.getServiceTester().assertDrop(port1, backLeftNode, CSD_PORT_ON_PROPERTY);
+        var backLeftNode = this.getServiceTester().assertSemanticDrop(backLeft, carNode, CSD_PROPERTY_ON_CLASSIFIER);
+        var portOnBackLeft = this.getServiceTester().assertSemanticDrop(port1, backLeftNode, CSD_PORT_ON_PROPERTY);
 
         var backRight = this.createIn(Property.class, car);
         backRight.setType(wheel);
-        var backRightNode = this.getServiceTester().assertDrop(backRight, carNode, CSD_PROPERTY_ON_CLASSIFIER);
-        var portOnBackRight = this.getServiceTester().assertDrop(port1, backRightNode, CSD_PORT_ON_PROPERTY);
+        var backRightNode = this.getServiceTester().assertSemanticDrop(backRight, carNode, CSD_PROPERTY_ON_CLASSIFIER);
+        var portOnBackRight = this.getServiceTester().assertSemanticDrop(port1, backRightNode, CSD_PORT_ON_PROPERTY);
 
         // Create the Front and Back Connector
         this.getServiceTester().buildSynchronizedDomainBasedEdgeCreationTestHelper(ID_BUILDER)//

@@ -66,7 +66,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createCommentDescription(diagramDescription);
 
         // There is a unique DropTool for the DiagramDescription
-        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 
     private NodeDescription createStateMachineNodeDescription(DiagramDescription diagramDescription) {

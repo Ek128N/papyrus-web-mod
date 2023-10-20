@@ -22,6 +22,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -164,8 +165,17 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createExtensionDescription(diagramDescription);
         this.createGeneralizationDescription(diagramDescription);
 
-        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
+        // Add dropped tool on diagram
+        DropNodeTool prdGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
+        List<EClass> children = List.of(this.umlPackage.getClass_(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getDataType(), this.umlPackage.getEnumeration(),
+                this.umlPackage.getPackage(), this.umlPackage.getPrimitiveType(), this.umlPackage.getStereotype());
+        this.registerCallback(diagramDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            prdGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        diagramDescription.getPalette().setDropNodeTool(prdGraphicalDropTool);
     }
 
     /**
@@ -253,6 +263,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.addDiagramToolInToolSection(diagramDescription, prdDiagramPackageCreationTool, NODES);
 
         // No direct children for Package: the NodeDescriptions it can contain are all defined as shared descriptions.
+
+        // Add dropped tool on Package container
+        DropNodeTool prdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdDiagramPackageDescription));
+        List<EClass> children = List.of(this.umlPackage.getClass_(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getDataType(), this.umlPackage.getPackage());
+        this.registerCallback(prdDiagramPackageDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of()).stream()
+                    .filter(nodeDescription -> !nodeDescription.getName().contains(PRD_METACLASS)).toList();
+            prdPackageGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        prdDiagramPackageDescription.getPalette().setDropNodeTool(prdPackageGraphicalDropTool);
     }
 
     /**
@@ -294,6 +314,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         NodeTool prdDiagramProfileCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), profileEClass);
         this.addDiagramToolInToolSection(diagramDescription, prdDiagramProfileCreationTool, NODES);
+
+        // Add dropped tool on Profile container
+        DropNodeTool prdProfileGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdDiagramProfileDescription));
+        List<EClass> children = List.of(this.umlPackage.getClass_(), this.umlPackage.getElementImport(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getDataType(),
+                this.umlPackage.getPackage());
+        this.registerCallback(prdDiagramProfileDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            prdProfileGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        prdDiagramProfileDescription.getPalette().setDropNodeTool(prdProfileGraphicalDropTool);
     }
 
     /**
@@ -446,6 +476,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeTool prdSharedPackageCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(prdSharedPackageDescription, diagramDescription, prdSharedPackageCreationTool, NODES, owners.toArray(EClass[]::new));
+
+        // Add dropped tool on Shared Package container
+        DropNodeTool prdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdSharedPackageDescription));
+        List<EClass> children = List.of(this.umlPackage.getClass_(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getDataType(), this.umlPackage.getPackage());
+        this.registerCallback(prdSharedPackageDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of()).stream()
+                    .filter(nodeDescription -> !nodeDescription.getName().contains(PRD_METACLASS)).toList();
+            prdPackageGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        prdSharedPackageDescription.getPalette().setDropNodeTool(prdPackageGraphicalDropTool);
     }
 
     /**
@@ -497,6 +537,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeTool prdSharedProfileCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), profileEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(prdSharedProfileDescription, diagramDescription, prdSharedProfileCreationTool, NODES, owners.toArray(EClass[]::new));
+
+        // Add dropped tool on Shared Profile container
+        DropNodeTool prdProfileGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdSharedProfileDescription));
+        List<EClass> children = List.of(this.umlPackage.getClass_(), this.umlPackage.getElementImport(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getDataType(),
+                this.umlPackage.getPackage());
+        this.registerCallback(prdSharedProfileDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            prdProfileGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        prdSharedProfileDescription.getPalette().setDropNodeTool(prdProfileGraphicalDropTool);
     }
 
     /**
@@ -528,7 +578,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass classEClass = this.umlPackage.getClass_();
         List<EClass> owners = List.of(classEClass);
         List<EClass> forbiddenOwners = List.of(this.umlPackage.getStereotype());
-        this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, classEClass, compartmentName, owners, forbiddenOwners, this.excludeMetaclassNodeDescription);
+        NodeDescription prdSharedCompartmentForClassDescription = this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, classEClass, compartmentName, owners,
+                forbiddenOwners, this.excludeMetaclassNodeDescription);
+
+        // Add Graphical dropped tool on Shared Compartment for Class
+        this.addDropToolOnSharedCompartment(diagramDescription, compartmentName, prdSharedCompartmentForClassDescription);
     }
 
     /**
@@ -547,7 +601,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass dataTypeEClass = this.umlPackage.getDataType();
         List<EClass> owners = List.of(dataTypeEClass);
         List<EClass> forbiddenOwners = List.of(this.umlPackage.getEnumeration(), this.umlPackage.getPrimitiveType());
-        this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, dataTypeEClass, compartmentName, owners, forbiddenOwners, this.excludeMetaclassNodeDescription);
+        NodeDescription prdSharedCompartmentForDataTypeDescription = this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, dataTypeEClass, compartmentName, owners,
+                forbiddenOwners, this.excludeMetaclassNodeDescription);
+
+        // Add Graphical dropped tool on Shared Compartment for Class
+        this.addDropToolOnSharedCompartment(diagramDescription, compartmentName, prdSharedCompartmentForDataTypeDescription);
     }
 
     /**
@@ -565,7 +623,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private void createSharedCompartmentForStereotypeDescription(DiagramDescription diagramDescription, String compartmentName) {
         EClass stereotypeEClass = this.umlPackage.getStereotype();
         List<EClass> owners = List.of(stereotypeEClass);
-        this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, stereotypeEClass, compartmentName, owners, List.of(), this.excludeMetaclassNodeDescription);
+        NodeDescription prdSharedCompartmentForStereotypeDescription = this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, stereotypeEClass, compartmentName,
+                owners, List.of(), this.excludeMetaclassNodeDescription);
+
+        // Add Graphical dropped tool on Shared Compartment for Stereotype
+        this.addDropToolOnSharedCompartment(diagramDescription, compartmentName, prdSharedCompartmentForStereotypeDescription);
     }
 
     /**
@@ -643,7 +705,15 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeDescription prdSharedLiteralsCompartmentDescription = this.createSharedCompartmentsDescription(diagramDescription, this.prdSharedDescription, enumerationEClass,
                 LITERALS_COMPARTMENT_SUFFIX, owners, List.of(), this.excludeMetaclassNodeDescription);
 
-        this.createEnumerationLiteralsDescription(diagramDescription, prdSharedLiteralsCompartmentDescription);
+        NodeDescription enumerationLiteralsDescription = this.createEnumerationLiteralsDescription(diagramDescription, prdSharedLiteralsCompartmentDescription);
+
+        // Add Graphical dropped tool on Enumeration Compartment container
+        DropNodeTool prdLiteralsCompartmentGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdSharedLiteralsCompartmentDescription));
+        this.registerCallback(prdSharedLiteralsCompartmentDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = List.of(enumerationLiteralsDescription);
+            prdLiteralsCompartmentGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        prdSharedLiteralsCompartmentDescription.getPalette().setDropNodeTool(prdLiteralsCompartmentGraphicalDropTool);
     }
 
     /**
@@ -651,11 +721,39 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
+     * @return the created <i>Literals</i> child node description
      */
-    private void createEnumerationLiteralsDescription(DiagramDescription diagramDescription, NodeDescription parent) {
+    private NodeDescription createEnumerationLiteralsDescription(DiagramDescription diagramDescription, NodeDescription parent) {
         List<EClass> owners = List.of(this.umlPackage.getEnumeration());
-        this.createNodeDescriptionInCompartmentDescription(diagramDescription, parent, this.umlPackage.getEnumerationLiteral(), LITERALS_COMPARTMENT_SUFFIX,
+        return this.createNodeDescriptionInCompartmentDescription(diagramDescription, parent, this.umlPackage.getEnumerationLiteral(), LITERALS_COMPARTMENT_SUFFIX,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getEnumeration_OwnedLiteral()), this.umlPackage.getEnumeration_OwnedLiteral(), owners, List.of(), this.excludeMetaclassNodeDescription);
+    }
+
+    /**
+     * Add graphical dropped tool on Shared compartment {@link NodeDescription}.
+     * 
+     * @param diagramDescription
+     *            the {@link DiagramDescription} containing the Shared {@link NodeDescription}
+     * @param compartmentName
+     *            the name of the compartment to complete with the drop tool
+     * @param prdSharedCompartmentDescription
+     *            the Shared compartment {@link NodeDescription}
+     */
+    private void addDropToolOnSharedCompartment(DiagramDescription diagramDescription, String compartmentName, NodeDescription prdSharedCompartmentForDataTypeDescription) {
+        // Add dropped tool on Shared Compartment container
+        DropNodeTool graphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdSharedCompartmentForDataTypeDescription));
+        this.registerCallback(prdSharedCompartmentForDataTypeDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = null;
+            if (OPERATIONS_COMPARTMENT_SUFFIX.equals(compartmentName)) {
+                List<EClass> children = List.of(this.umlPackage.getOperation());
+                droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            } else if (ATTRIBUTES_COMPARTMENT_SUFFIX.equals(compartmentName)) {
+                List<EClass> children = List.of(this.umlPackage.getProperty());
+                droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            }
+            graphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        prdSharedCompartmentForDataTypeDescription.getPalette().setDropNodeTool(graphicalDropTool);
     }
 
     /**

@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2023 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -186,7 +187,7 @@ public class DiagramServiceTestHelper {
     public Node assertChildCreationAndDrop(Node parentNode, java.lang.Class<? extends EObject> type, EReference containmentReference, String nodeDescriptionName) {
         EObject parent = this.diagramHelper.getSemanticElement(parentNode);
         this.assertChildCreation(parentNode, this.umlHelper.getEClass(type), containmentReference, nodeDescriptionName, parent);
-        Node droppedNode = this.assertDrop(this.umlHelper.createIn(type, parent), parentNode, nodeDescriptionName);
+        Node droppedNode = this.assertSemanticDrop(this.umlHelper.createIn(type, parent), parentNode, nodeDescriptionName);
         return droppedNode;
     }
 
@@ -297,10 +298,10 @@ public class DiagramServiceTestHelper {
      *            the expected NodeDescription of the dropped element
      * @return the new node created after the drop
      */
-    public Node assertDrop(EObject semanticDroppedElement, Node targetView, String expectedNodeDescriptionName) {
+    public Node assertSemanticDrop(EObject semanticDroppedElement, Node targetView, String expectedNodeDescriptionName) {
 
         EObject droppedElement = this.diagramHelper.modify(context -> {
-            EObject theDropppedElement = this.diagramService.drop(semanticDroppedElement, targetView, this.editingContext, context, this.diagramHelper.getConvertedNodes());
+            EObject theDropppedElement = this.diagramService.semanticDrop(semanticDroppedElement, targetView, this.editingContext, context, this.diagramHelper.getConvertedNodes());
             return theDropppedElement;
         });
 
@@ -316,10 +317,10 @@ public class DiagramServiceTestHelper {
      *            the expected NodeDescription of the dropped element
      * @return the new node created after the drop
      */
-    public Node assertSiblingDrop(EObject semanticDroppedElement, Node targetView, String expectedNodeDescriptionName) {
+    public Node assertSiblingSemanticDrop(EObject semanticDroppedElement, Node targetView, String expectedNodeDescriptionName) {
 
         EObject droppedElement = this.diagramHelper.modify(context -> {
-            EObject theDropppedElement = this.diagramService.drop(semanticDroppedElement, targetView, this.editingContext, context, this.diagramHelper.getConvertedNodes());
+            EObject theDropppedElement = this.diagramService.semanticDrop(semanticDroppedElement, targetView, this.editingContext, context, this.diagramHelper.getConvertedNodes());
             return theDropppedElement;
         });
 
@@ -344,9 +345,9 @@ public class DiagramServiceTestHelper {
      * @param secondDrop
      * @param nodeDescriptionName
      */
-    public void assertChildAndSiblingDrop(Node compartiment, EObject firstDrop, EObject secondDrop, String nodeDescriptionName) {
-        Node dropppedElement = this.assertDrop(firstDrop, compartiment, nodeDescriptionName);
-        this.assertSiblingDrop(secondDrop, dropppedElement, nodeDescriptionName);
+    public void assertChildAndSiblingSemanticDrop(Node compartiment, EObject firstDrop, EObject secondDrop, String nodeDescriptionName) {
+        Node dropppedElement = this.assertSemanticDrop(firstDrop, compartiment, nodeDescriptionName);
+        this.assertSiblingSemanticDrop(secondDrop, dropppedElement, nodeDescriptionName);
     }
 
     /**

@@ -78,7 +78,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         this.createCommentDescription(diagramDescription);
 
-        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 
     private void createGeneralizationDescription(DiagramDescription diagramDescription) {

@@ -74,9 +74,10 @@ import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeR
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.uml.domain.services.status.Status;
-import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebExternalDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebInternalDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.WebRepresentationQuerier;
 import org.eclipse.papyrus.web.sirius.contributions.AqlServiceClass;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramElementHelper;
@@ -350,17 +351,29 @@ public abstract class AbstractDiagramService {
      *            {@link org.eclipse.sirius.components.view.NodeDescription} -> {@link NodeDescription})
      * @return self (required for the service to create a view - convention on Sirius component)
      */
-    public EObject drop(EObject semanticDroppedElement, Node targetView, IEditingContext editionContext, IDiagramContext diagramContext,
+    public EObject semanticDrop(EObject droppedElement, Node targetView, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        this.buildDropBehaviorProvider(semanticDroppedElement, editionContext, diagramContext, capturedNodeDescriptions).handleDrop(semanticDroppedElement, targetView);
-        return semanticDroppedElement;
+        this.buildSemanticDropBehaviorProvider(droppedElement, editionContext, diagramContext, capturedNodeDescriptions).handleSemanticDrop(droppedElement, targetView);
+        return droppedElement;
     }
 
-    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject droppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
-        IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext,
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext,
                 capturedNodeDescriptions);
         return new GenericWebExternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions));
+    }
+
+    public EObject graphicalDrop(EObject droppedElement, EObject targetElement, Node droppedView, Node targetView, IEditingContext editionContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+        this.buildGraphicalDropBehaviorProvider(droppedElement, editionContext, diagramContext, capturedNodeDescriptions).handleGraphicalDrop(droppedElement, targetElement, droppedView, targetView);
+        return droppedElement;
+    }
+
+    protected IWebInternalSourceToRepresentationDropBehaviorProvider buildGraphicalDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
+        return new GenericWebInternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions));
     }
 
     /**

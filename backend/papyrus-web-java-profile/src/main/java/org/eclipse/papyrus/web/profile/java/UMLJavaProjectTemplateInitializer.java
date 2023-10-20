@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.profile.java;
 
 import java.io.IOException;
@@ -110,7 +111,7 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
         Model model = (Model) r.getContents().get(0);
         return this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), model, "Main") //$NON-NLS-1$
-                .flatMap(diagram -> this.dropClassAndComment(editingContext, convertedNodes, model, diagram))//
+                .flatMap(diagram -> this.semanticDropClassAndComment(editingContext, convertedNodes, model, diagram))//
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);
@@ -118,24 +119,24 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
                 });
     }
 
-    private Optional<? extends Diagram> dropClassAndComment(IEditingContext editingContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes,
-            Model model, Diagram diagram) {
+    private Optional<? extends Diagram> semanticDropClassAndComment(IEditingContext editingContext,
+            Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Model model, Diagram diagram) {
         org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "Main".equals(m.getName())).findFirst().get(); //$NON-NLS-1$
         return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
             // Get the linked comment
             Comment classComment = model.getOwnedComments().stream().filter(c -> c.getAnnotatedElements().contains(mainClass)).findFirst().get();
-            this.classDiagramService.drop(mainClass, null, editingContext, diagramContext, convertedNodes);
-            this.classDiagramService.drop(classComment, null, editingContext, diagramContext, convertedNodes);
-        }).flatMap(diag -> this.dropOperationsOnClass(editingContext, convertedNodes, mainClass, diag));
+            this.classDiagramService.semanticDrop(mainClass, null, editingContext, diagramContext, convertedNodes);
+            this.classDiagramService.semanticDrop(classComment, null, editingContext, diagramContext, convertedNodes);
+        }).flatMap(diag -> this.semanticDropOperationsOnClass(editingContext, convertedNodes, mainClass, diag));
     }
 
-    private Optional<Diagram> dropOperationsOnClass(IEditingContext editingContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes,
+    private Optional<Diagram> semanticDropOperationsOnClass(IEditingContext editingContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes,
             org.eclipse.uml2.uml.Class mainClass, Diagram diag) {
         return this.diagramBuilderService.updateDiagram(diag, editingContext, diagramContext -> {
             for (Operation operation : mainClass.getOwnedOperations()) {
                 NodeMatcher mainClassNodeMatcher = this.createOperationCompartmentNodeMatcher(mainClass, diag, convertedNodes);
                 Node operationCompartement = this.diagramNavigationService.getMatchingNodes(diag, editingContext, mainClassNodeMatcher).get(0);
-                this.classDiagramService.drop(operation, operationCompartement, editingContext, diagramContext, convertedNodes);
+                this.classDiagramService.semanticDrop(operation, operationCompartement, editingContext, diagramContext, convertedNodes);
             }
         });
     }

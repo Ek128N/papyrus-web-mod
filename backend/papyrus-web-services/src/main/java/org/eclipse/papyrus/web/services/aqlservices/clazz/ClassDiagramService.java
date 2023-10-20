@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
-import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
@@ -51,11 +51,11 @@ public class ClassDiagramService extends AbstractDiagramService {
     }
 
     @Override
-    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
                 capturedNodeDescriptions);
-        IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new ClassDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+        IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new ClassSemanticDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
                 new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
         return dropProvider;
     }

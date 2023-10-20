@@ -26,8 +26,9 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
-import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.IWebInternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
@@ -87,11 +88,22 @@ public class ProfileDiagramService extends AbstractDiagramService {
     }
 
     @Override
-    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+    protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
                 capturedNodeDescriptions);
-        IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new ProfileDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+        IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new ProfileSemanticDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+                this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
+        return dropProvider;
+    }
+
+    @Override
+    protected IWebInternalSourceToRepresentationDropBehaviorProvider buildGraphicalDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
+                capturedNodeDescriptions);
+        IWebInternalSourceToRepresentationDropBehaviorProvider dropProvider = new ProfileGraphicalDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
                 this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
                 new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
         return dropProvider;
@@ -213,7 +225,7 @@ public class ProfileDiagramService extends AbstractDiagramService {
                     Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                             .getConvertedNode(PRDDiagramDescriptionBuilder.PRD_REP_NAME);
 
-                    IViewCreationHelper createViewHelper = CreationViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
+                    IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
                             convertedNodes);
                     if (diagramElement == null) {
                         result = createViewHelper.createRootView(createdElementImport.getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);

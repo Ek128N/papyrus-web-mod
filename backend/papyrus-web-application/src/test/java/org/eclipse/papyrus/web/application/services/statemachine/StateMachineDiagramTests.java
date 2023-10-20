@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.services.statemachine;
 
 import static org.junit.Assert.assertNotNull;
@@ -151,7 +152,7 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
         this.getServiceTester().assertChildCreation(regionInStateMachine, UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT, this.regionInSM);
 
         // Drop the state + synchronized region
-        this.getServiceTester().assertDrop(this.state1, regionInStateMachine, SMD_STATE_NODE_NAME);
+        this.getServiceTester().assertSemanticDrop(this.state1, regionInStateMachine, SMD_STATE_NODE_NAME);
 
         Node regionInStateNode = this.getRegionInStateNode();
         this.getServiceTester().assertChildCreation(regionInStateNode, UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT, this.regionInState1);
@@ -171,21 +172,21 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
     }
 
     @Test
-    public void checkDropStateAndPseudostate() {
+    public void checkSemanticDropStateAndPseudostate() {
         this.init();
 
         Node stateMachineNode = this.getDiagramHelper().assertGetUniqueMatchingNode(SMD_STATEMACHINE_NODE_NAME, this.stateMachine);
 
-        this.getServiceTester().assertDrop(this.entryPointInSM, stateMachineNode, SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_MACHINE_NAME);
+        this.getServiceTester().assertSemanticDrop(this.entryPointInSM, stateMachineNode, SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_MACHINE_NAME);
 
         Node sMRegionNode = this.getRegionInSMNode();
-        this.getServiceTester().assertDrop(this.state1, sMRegionNode, SMD_STATE_NODE_NAME);
+        this.getServiceTester().assertSemanticDrop(this.state1, sMRegionNode, SMD_STATE_NODE_NAME);
 
         Node state1Node = this.getDiagramHelper().assertGetUniqueMatchingNode(SMD_STATE_NODE_NAME, this.state1);
-        this.getServiceTester().assertDrop(this.entryPointInState1, state1Node, SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_NAME);
+        this.getServiceTester().assertSemanticDrop(this.entryPointInState1, state1Node, SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_NAME);
 
         Node regionInState1Node = this.getRegionInStateNode();
-        this.getServiceTester().assertDrop(this.stateInState1, regionInState1Node, SMD_STATE_NODE_NAME);
+        this.getServiceTester().assertSemanticDrop(this.stateInState1, regionInState1Node, SMD_STATE_NODE_NAME);
     }
 
     private Node getRegionInStateNode() {

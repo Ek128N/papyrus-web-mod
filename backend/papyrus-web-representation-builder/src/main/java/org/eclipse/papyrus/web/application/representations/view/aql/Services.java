@@ -64,7 +64,9 @@ public class Services {
 
     public static final String DESTROY_SERVICE = "destroy"; //$NON-NLS-1$
 
-    public static final String DROP_SERVICE = "drop"; //$NON-NLS-1$
+    public static final String SEMANTIC_DROP_SERVICE = "semanticDrop"; //$NON-NLS-1$
+
+    public static final String GRAPHICAL_DROP_SERVICE = "graphicalDrop"; //$NON-NLS-1$
 
     public static final String CREATE_SERVICE = "create"; //$NON-NLS-1$
 

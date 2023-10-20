@@ -38,11 +38,13 @@ public class IdBuilder {
 
     public static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$
 
+    private static final String GRAPHICAL_DROP_TOOL = "GraphicalDropTool_";
+
     private static final String FAKE_CHILD_LABEL_NODE = "_FakeChildLabelNode";
 
     private static final String LABEL_NODE_PREFIX = "LabelNode"; //$NON-NLS-1$
 
-    private static final String UNDERSTORE = "_"; //$NON-NLS-1$
+    private static final String UNDERSCORE = "_"; //$NON-NLS-1$
 
     private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))"); //$NON-NLS-1$
 
@@ -102,7 +104,7 @@ public class IdBuilder {
     }
 
     public String getFeatureBaseEdgeId(EStructuralFeature feature) {
-        return this.diagramPrefix + feature.getEContainingClass().getName() + UNDERSTORE + feature.getName() + "_FeatureEdge"; //$NON-NLS-1$
+        return this.diagramPrefix + feature.getEContainingClass().getName() + UNDERSCORE + feature.getName() + "_FeatureEdge"; //$NON-NLS-1$
     }
 
     private String getBaseName(DiagramElementDescription description) {
@@ -115,27 +117,35 @@ public class IdBuilder {
     }
 
     public String getSpecializedDomainNodeName(EClass domain, String specialization) {
-        return this.diagramPrefix + domain.getName() + UNDERSTORE + specialization;
+        return this.diagramPrefix + domain.getName() + UNDERSCORE + specialization;
     }
 
     public String getCompartmentDomainNodeName(EClass domain, String compartmentName) {
-        return this.diagramPrefix + domain.getName() + UNDERSTORE + compartmentName + COMPARTMENT_NODE_SUFFIX;
+        return this.diagramPrefix + domain.getName() + UNDERSCORE + compartmentName + COMPARTMENT_NODE_SUFFIX;
     }
 
     public String getSpecializedCompartmentDomainNodeName(EClass domain, String compartmentName, String specialization) {
-        return this.diagramPrefix + domain.getName() + UNDERSTORE + compartmentName + UNDERSTORE + specialization + COMPARTMENT_NODE_SUFFIX;
+        return this.diagramPrefix + domain.getName() + UNDERSCORE + compartmentName + UNDERSCORE + specialization + COMPARTMENT_NODE_SUFFIX;
     }
 
     public String getListItemDomainNodeName(EClass domain, EClass parentContainer) {
-        return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSTORE + LABEL_NODE_PREFIX; //$NON-NLS-1$
+        return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSCORE + LABEL_NODE_PREFIX; //$NON-NLS-1$
     }
 
-    public String getDropToolName(NodeDescription nodeToCreate) {
-        return this.diagramPrefix + "DropTool_" + this.getBaseName(nodeToCreate); //$NON-NLS-1$
+    public String getNodeGraphicalDropToolName(NodeDescription nodeToCreate) {
+        return this.diagramPrefix + GRAPHICAL_DROP_TOOL + this.getBaseName(nodeToCreate); // $NON-NLS-1$
     }
 
-    public String getDropToolId() {
-        return this.diagramPrefix + "DropTool"; //$NON-NLS-1$
+    public String getSpecializedNodeGraphicalDropToolName(NodeDescription nodeToCreate, String specialization) {
+        return this.diagramPrefix + GRAPHICAL_DROP_TOOL + this.getBaseName(nodeToCreate) + UNDERSCORE + specialization; // $NON-NLS-1$
+    }
+
+    public String getDiagramSemanticDropToolName() {
+        return this.diagramPrefix + "SemanticDropTool"; //$NON-NLS-1$
+    }
+
+    public String getDiagramGraphicalDropToolName() {
+        return this.diagramPrefix + "GraphicalDropTool"; //$NON-NLS-1$
     }
 
     public String getCreationToolId(EdgeDescription description) {

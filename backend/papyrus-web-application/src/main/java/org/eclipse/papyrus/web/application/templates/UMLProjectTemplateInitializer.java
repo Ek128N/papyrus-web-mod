@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.templates;
 
 import java.io.IOException;
@@ -102,8 +103,8 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                 .createDiagram(editingContext, diagramDescription -> PADDiagramDescriptionBuilder.PD_REP_NAME.equals(diagramDescription.getLabel()), model, "Root Package Diagram") //$NON-NLS-1$
                 .flatMap(diagram -> {
                     return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
-                        this.packageDiagramService.drop(model, null, editingContext, diagramContext, convertedNodes);
-                        this.packageDiagramService.drop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
+                        this.packageDiagramService.semanticDrop(model, null, editingContext, diagramContext, convertedNodes);
+                        this.packageDiagramService.semanticDrop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
                     });
                 })//
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//

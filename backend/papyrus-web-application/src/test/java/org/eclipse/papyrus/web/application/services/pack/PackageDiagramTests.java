@@ -107,10 +107,10 @@ public class PackageDiagramTests extends AbstractDiagramTest {
         Package parentPackage = this.init();
         Package subPack = this.createIn(Package.class, parentPackage);
 
-        Node parentNode = this.getServiceTester().assertDrop(parentPackage, null, PAD_PACKAGE);
+        Node parentNode = this.getServiceTester().assertSemanticDrop(parentPackage, null, PAD_PACKAGE);
 
-        Node childNode = this.getServiceTester().assertDrop(subPack, parentNode, PAD_PACKAGE_CHILD);
-        Node siblingNode = this.getServiceTester().assertDrop(subPack, null, PAD_PACKAGE);
+        Node childNode = this.getServiceTester().assertSemanticDrop(subPack, parentNode, PAD_PACKAGE_CHILD);
+        Node siblingNode = this.getServiceTester().assertSemanticDrop(subPack, null, PAD_PACKAGE);
 
         this.getDiagramHelper().assertGetUniqueFeatureBasedEdge(CONTAINMENT_LINK_EDGE_ID, parentNode, siblingNode);
         this.getDiagramHelper().assertNoFeatureBasedEdge(CONTAINMENT_LINK_EDGE_ID, parentNode, childNode);

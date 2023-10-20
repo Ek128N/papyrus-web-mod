@@ -18,20 +18,20 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 
 /**
- * Provides the behavior on a drop event in the "StateMachine Diagram".
+ * Provides the behavior on a semantic drop event in the "StateMachine Diagram".
  *
  * @author Laurent Fasani
  */
-public class StateMachineDiagramDropBehaviorProvider implements IWebExternalSourceToRepresentationDropBehaviorProvider {
+public class StateMachineSemanticDiagramDropBehaviorProvider implements IWebExternalSourceToRepresentationDropBehaviorProvider {
 
-    private final IViewCreationHelper viewHelper;
+    private final IViewHelper viewHelper;
 
     private DiagramNavigator diagramNavigator;
 
@@ -51,7 +51,7 @@ public class StateMachineDiagramDropBehaviorProvider implements IWebExternalSour
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
      */
-    public StateMachineDiagramDropBehaviorProvider(IEditingContext editionContext, IViewCreationHelper viewHelper, IObjectService objectService, DiagramNavigator diagramNavigator) {
+    public StateMachineSemanticDiagramDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, DiagramNavigator diagramNavigator) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.editionContext = Objects.requireNonNull(editionContext);
         this.viewHelper = Objects.requireNonNull(viewHelper);
@@ -59,7 +59,7 @@ public class StateMachineDiagramDropBehaviorProvider implements IWebExternalSour
     }
 
     /**
-     * Handle a drop event.
+     * Handles a semantic drop event.
      *
      * @param droppedElement
      *            the dropped element
@@ -67,7 +67,7 @@ public class StateMachineDiagramDropBehaviorProvider implements IWebExternalSour
      *            the target node or <code>null</code> if the drop occurred on the diagram
      */
     @Override
-    public void handleDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
+    public void handleSemanticDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         if (targetNode != null) {
             new SemanticDropSwitch(Optional.of(targetNode), this.viewHelper, this.diagramNavigator)//
                     .withEObjectResolver(this::getSemanticObject) //

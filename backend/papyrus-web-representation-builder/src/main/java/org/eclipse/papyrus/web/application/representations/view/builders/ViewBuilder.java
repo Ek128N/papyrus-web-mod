@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -83,14 +84,38 @@ public class ViewBuilder {
         this.styleProvider = Objects.requireNonNull(styleProvider);
     }
 
-    public DropTool createGenericDropTool(String dropToolId) {
+    /**
+     * Creates a semantic drop tool with the given {@code semanticDropToolId}.
+     * 
+     * @param semanticDropToolId
+     *            identifier of the semantic tool to create
+     * @return the new semantic drop tool.
+     */
+    public DropTool createGenericSemanticDropTool(String semanticDropToolId) {
         DropTool dropTool = DiagramFactory.eINSTANCE.createDropTool();
-        dropTool.setName(dropToolId);
+        dropTool.setName(semanticDropToolId);
 
         ChangeContext changeContextOp = ViewFactory.eINSTANCE.createChangeContext();
         dropTool.getBody().add(changeContextOp);
-        changeContextOp.setExpression(this.queryBuilder.queryDrop());
+        changeContextOp.setExpression(this.queryBuilder.querySemanticDrop());
         return dropTool;
+    }
+
+    /**
+     * Creates a graphical drop tool with the given {@code graphicalDropToolId}.
+     * 
+     * @param graphicalDropToolId
+     *            identifier of the graphical tool to create
+     * @return the new graphical drop tool.
+     */
+    public DropNodeTool createGraphicalDropTool(String graphicalDropToolId) {
+        DropNodeTool graphicalDropTool = DiagramFactory.eINSTANCE.createDropNodeTool();
+        graphicalDropTool.setName(graphicalDropToolId);
+
+        ChangeContext changeContextOp = ViewFactory.eINSTANCE.createChangeContext();
+        graphicalDropTool.getBody().add(changeContextOp);
+        changeContextOp.setExpression(this.queryBuilder.queryGraphicalDrop());
+        return graphicalDropTool;
     }
 
     public DiagramDescription buildDiagramDescription(String diagramName, EClass modelType) {

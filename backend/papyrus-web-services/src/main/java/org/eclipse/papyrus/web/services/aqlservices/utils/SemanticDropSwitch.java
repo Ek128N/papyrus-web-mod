@@ -14,7 +14,6 @@
 package org.eclipse.papyrus.web.services.aqlservices.utils;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -33,7 +32,6 @@ import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.ActivityEdge;
 import org.eclipse.uml2.uml.ActivityNode;
@@ -46,12 +44,9 @@ import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Transition;
-import org.eclipse.uml2.uml.util.UMLSwitch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Default switch used to drop :
+ * Default switch used for semantic drop :
  * <ul>
  * <li>a node on a Diagram or on another node,</li>
  * <li>an edge on the diagram or on a node.</li>
@@ -59,22 +54,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Arthur Daussy
  */
-public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
-
-    // Duplicated from org.eclipse.papyrus.web.application.representations.IdBuilder
-    // Keep in sync
-    // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
-    private static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$
-
-    /**
-     * Logger used to log error when Drag and Drop fails.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(SemanticDropSwitch.class);
-
-    /**
-     * The helper used to create element on a diagram.
-     */
-    private final IViewCreationHelper viewHelper;
+public final class SemanticDropSwitch extends AbstractDropSwitch {
 
     /**
      * Checker in charge of checking if a semantic D&D is possible.
@@ -87,31 +67,6 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
     private IExternalSourceToRepresentationDropBehaviorProvider dropProvider;
 
     /**
-     * Object that check if an element can be edited.
-     */
-    private IEditableChecker editableChecker;
-
-    /**
-     * An adapter used to get inverse references
-     */
-    private ECrossReferenceAdapter crossRef;
-
-    /**
-     * EObject resolver used to retrieve the semantic target from the selected node.
-     */
-    private Function<String, Object> eObjectResolver;
-
-    /**
-     * The selected node where element should be dropped.
-     */
-    private final Node selectedNode;
-
-    /**
-     * The helper used to navigate inside a diagram and/or to its description.
-     */
-    private DiagramNavigator diagramNavigator;
-
-    /**
      * Constructor.
      *
      * @param optionalSelectedNode
@@ -122,13 +77,13 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
      */
-    public SemanticDropSwitch(Optional<Node> optionalSelectedNode, IViewCreationHelper viewHelper, DiagramNavigator diagramNavigator) {
+    public SemanticDropSwitch(Optional<Node> optionalSelectedNode, IViewHelper viewHelper, DiagramNavigator diagramNavigator) {
         if (optionalSelectedNode.isPresent()) {
             // case DnD on node
-            this.selectedNode = Objects.requireNonNull(optionalSelectedNode.get());
+            this.targetNode = Objects.requireNonNull(optionalSelectedNode.get());
         } else {
             // case DnD on Diagram
-            this.selectedNode = null;
+            this.targetNode = null;
         }
         this.viewHelper = viewHelper;
         this.diagramNavigator = diagramNavigator;
@@ -275,7 +230,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
         if (status.getState() != State.FAILED) {
             isDragAndDropValid = Boolean.TRUE;
             for (EObject eObjectToDisplay : status.getElementsToDisplay()) {
-                if (this.selectedNode != null) {
+                if (this.targetNode != null) {
                     // case DnD on Node
                     isDragAndDropValid = isDragAndDropValid && this.createChildView(eObjectToDisplay);
                 } else {
@@ -304,7 +259,7 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
                 PackageableElement importedElement = ((ElementImport) eObjectToDisplay).getImportedElement();
                 if (importedElement == null) {
                     LOGGER.error("Only ElementImport with imported element can be drag and dropped."); //$NON-NLS-1$
-                } else if (this.selectedNode != null) {
+                } else if (this.targetNode != null) {
                     // case DnD on Node
                     isDragAndDropValid = isDragAndDropValid && this.createChildView(importedElement, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
                 } else {
@@ -312,23 +267,6 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
                     isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(importedElement, PRDDiagramDescriptionBuilder.PRD_METACLASS);
                 }
             }
-        }
-        return isDragAndDropValid;
-    }
-
-    /**
-     * Create default view for a given element.
-     *
-     * @param object
-     *            the object to represent with a view
-     * @return {@code true} if the view has been created, {@code false} otherwise
-     */
-    private Boolean createDefaultView(EObject object) {
-        Boolean isDragAndDropValid;
-        if (this.selectedNode != null) {
-            isDragAndDropValid = this.createChildView(object);
-        } else {
-            isDragAndDropValid = this.viewHelper.createRootView(object);
         }
         return isDragAndDropValid;
     }
@@ -344,9 +282,9 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
         EObject semanticDiagram = this.getSemanticDiagram();
         EObject semanticTarget = null;
         DnDStatus status = null;
-        if (this.selectedNode != null) {
+        if (this.targetNode != null) {
             // case DnD on Node
-            semanticTarget = this.getSemanticNode(this.selectedNode);
+            semanticTarget = this.getSemanticNode(this.targetNode);
         } else {
             // case DnD on Diagram
             semanticTarget = semanticDiagram;
@@ -361,77 +299,6 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
             LOGGER.error(status.getMessage());
         }
         return status;
-    }
-
-    /**
-     * Creates a view in the selected node for the provided {@code eObjectToDisplay}.
-     * <p>
-     * This method computes the best possible mapping for the provided {@code eObjectToDisplay}. See
-     * {@link #createChildView(EObject, String)} to specify which mapping to use to create the view.
-     * </p>
-     *
-     * @param eObjectToDisplay
-     *            the semantic Object to represent on the selected node
-     * @return {@code true} if the view has been created, {@code false} otherwise
-     *
-     * @see #createChildView(EObject, String)
-     */
-    private boolean createChildView(EObject eObjectToDisplay) {
-        return this.createChildView(eObjectToDisplay, null);
-    }
-
-    /**
-     * Creates a {@code mappingName} view in the selected node for the provided {@code eObjectToDisplay}.
-     * <p>
-     * This method computes the best possible mapping if the provided {@code mappingName} is {@code null}. See
-     * {@link #createChildView(EObject)} for more information.
-     * </p>
-     *
-     * @param eObjectToDisplay
-     *            the semantic Object to represent on the selected node
-     * @param mappingName
-     *            the name of the mapping to use to create the view
-     * @return {@code true} if the view has been created, {@code false} otherwise
-     *
-     * @see #createChildView(EObject)
-     */
-    private boolean createChildView(EObject eObjectToDisplay, String mappingName) {
-        boolean success = this.viewHelper.createChildView(eObjectToDisplay, this.selectedNode, mappingName);
-        if (!success) {
-            // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
-            // If DnD on an icon label element contained by a compartment then DnD the element in the
-            // compartment
-            // instead
-            Optional<Node> parentNode = this.diagramNavigator.getParentNode(this.selectedNode);
-            parentNode//
-                    .flatMap(this.diagramNavigator::getDescription)//
-                    .filter(desc -> desc.getName().endsWith(COMPARTMENT_NODE_SUFFIX)).ifPresent(parentDescription -> {
-                        this.viewHelper.createChildView(eObjectToDisplay, parentNode.get(), mappingName);
-                    });
-        }
-        return success;
-    }
-
-    /**
-     * Get the semantic target represented by the given node.
-     *
-     * @param node
-     *            the node which represents the semantic target to recover
-     *
-     * @return the semantic target represented by the given node
-     */
-    private EObject getSemanticNode(Node node) {
-        return (EObject) this.eObjectResolver.apply(node.getTargetObjectId());
-    }
-
-    /**
-     * Get the semantic target represented by the diagram.
-     *
-     * @return the semantic target represented by the diagram
-     */
-    private EObject getSemanticDiagram() {
-        Diagram diagram = this.diagramNavigator.getDiagram();
-        return (EObject) this.eObjectResolver.apply(diagram.getTargetObjectId());
     }
 
     /**
@@ -580,66 +447,4 @@ public final class SemanticDropSwitch extends UMLSwitch<Boolean> {
         return success;
     }
 
-    /**
-     * Get the node from the diagram and its children nodes that represents the given semantic element.
-     *
-     * @param semanticElement
-     *            the semantic element to retrieve the node from
-     *
-     * @return the node from the diagram and its children nodes that represents the given semantic element
-     * @see #getNodeFromParentNodeAndItsChildren(Node, EObject)
-     */
-    private Node getNodeFromDiagramAndItsChildren(EObject semanticElement) {
-        List<Node> nodes = this.diagramNavigator.getDiagram().getNodes();
-        int i = 0;
-        boolean isFound = false;
-        Node semanticNodeFound = null;
-        while (!isFound && i < nodes.size()) {
-            Node node = nodes.get(i);
-            EObject semanticNode = this.getSemanticNode(node);
-            if (semanticElement.equals(semanticNode)) {
-                isFound = true;
-                semanticNodeFound = node;
-            } else {
-                semanticNodeFound = this.getNodeFromParentNodeAndItsChildren(node, semanticElement);
-                if (semanticNodeFound != null) {
-                    isFound = true;
-                }
-            }
-            i++;
-        }
-        return semanticNodeFound;
-    }
-
-    /**
-     * Get the node from the parent node and its children nodes that represents the given semantic element.
-     *
-     * @param parentNode
-     *            the parent node to look in
-     * @param semanticElement
-     *            the semantic element to retrieve the node from
-     *
-     * @return the node from the parent node and its children nodes that represents the given semantic element
-     */
-    private Node getNodeFromParentNodeAndItsChildren(Node parentNode, EObject semanticElement) {
-        List<Node> nodes = parentNode.getChildNodes();
-        int i = 0;
-        boolean isFound = false;
-        Node semanticNodeFound = null;
-        while (!isFound && i < nodes.size()) {
-            Node node = nodes.get(i);
-            EObject semanticNode = this.getSemanticNode(node);
-            if (semanticElement.equals(semanticNode)) {
-                isFound = true;
-                semanticNodeFound = node;
-            } else {
-                semanticNodeFound = this.getNodeFromParentNodeAndItsChildren(node, semanticElement);
-                if (semanticNodeFound != null) {
-                    isFound = true;
-                }
-            }
-            i++;
-        }
-        return semanticNodeFound;
-    }
 }

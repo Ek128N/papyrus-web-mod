@@ -100,7 +100,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         this.createCommentDescription(diagramDescription);
 
-        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 
     private void createUsageDescription(DiagramDescription diagramDescription) {

@@ -20,8 +20,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.create.CreationStatus;
 import org.eclipse.papyrus.uml.domain.services.create.ICreator;
 import org.eclipse.papyrus.uml.domain.services.status.State;
-import org.eclipse.papyrus.web.services.aqlservices.utils.CreationViewHelper;
-import org.eclipse.papyrus.web.services.aqlservices.utils.IViewCreationHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -65,7 +65,7 @@ public class WebDiagramElementCreator {
         if (status.getState() == State.DONE) {
             EObject semanticElement = status.getElement();
             if (semanticElement != null) {
-                IViewCreationHelper createViewHelper = CreationViewHelper.create(this.objectService, this.viewDiagramNavigationService, this.diagramOperationsService, diagramContext,
+                IViewHelper createViewHelper = ViewHelper.create(this.objectService, this.viewDiagramNavigationService, this.diagramOperationsService, diagramContext,
                         capturedNodeDescriptions);
                 if (targetView == null) {
                     createViewHelper.createRootView(semanticElement);

@@ -1112,9 +1112,10 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      *            the list of domain types to exclude
      * @param forbiddenNodeDescriptionPredicate
      *            predicate on the {@link NodeDescription} to exclude
+     * @return the created {@link NodeDescription}
      */
     // CHECKSTYLE:OFF
-    protected void createNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
+    protected NodeDescription createNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
             String semanticQuery, EReference semanticRefTool, List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         // CHECKSTYLE:ON
         String nodeDescriptionName = null;
@@ -1150,6 +1151,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         this.reuseTool(createNodeDescriptionInCompartmentDescription, diagramDescription, prdSharedNodeDescriptionInCompartmentCreationTool, owners, forbiddenOwners,
                 forbiddenNodeDescriptionPredicate);
 
+        return createNodeDescriptionInCompartmentDescription;
     }
 
     /**

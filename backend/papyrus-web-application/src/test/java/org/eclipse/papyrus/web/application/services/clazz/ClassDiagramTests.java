@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.services.clazz;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -307,32 +308,32 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         Class clazz = this.createIn(Class.class, pack);
 
-        this.getServiceTester().assertDrop(clazz, null, CD_CLASS);
-        this.getServiceTester().assertDrop(clazz, null, CD_CLASS);
+        this.getServiceTester().assertSemanticDrop(clazz, null, CD_CLASS);
+        this.getServiceTester().assertSemanticDrop(clazz, null, CD_CLASS);
 
         this.getDiagramHelper().refresh();
 
         // Test for attributes
         Node attributeCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getAttributeCompartmentId(UML.getClass_()), clazz);
         this.getServiceTester().assertChildAndSiblingCreation(attributeCmp, UML.getProperty(), UML.getStructuredClassifier_OwnedAttribute(), getLabelNodeId(UML.getProperty(), UML.getClass_()));
-        this.getServiceTester().assertDrop(this.createIn(Property.class, clazz), attributeCmp, getLabelNodeId(UML.getProperty(), UML.getClass_()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Property.class, clazz), attributeCmp, getLabelNodeId(UML.getProperty(), UML.getClass_()));
 
         // Test for operations
         Node operationCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getOperationCompartmentId(UML.getClass_()), clazz);
         this.getServiceTester().assertChildAndSiblingCreation(operationCmp, UML.getOperation(), UML.getClass_OwnedOperation(), getLabelNodeId(UML.getOperation(), UML.getClass_()));
-        this.getServiceTester().assertDrop(this.createIn(Operation.class, clazz), operationCmp, getLabelNodeId(UML.getOperation(), UML.getClass_()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Operation.class, clazz), operationCmp, getLabelNodeId(UML.getOperation(), UML.getClass_()));
 
         // Test for nested classifier
         Node nestedClassifierCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getNestedClassifierCompartmentId(UML.getClass_()), clazz);
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getClass_(), UML.getClass_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertDrop(this.createIn(Class.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Class.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getPrimitiveType(), UML.getClass_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertDrop(this.createIn(PrimitiveType.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(PrimitiveType.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getDataType(), UML.getClass_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getClass_()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getEnumeration(), UML.getClass_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertDrop(this.createIn(Enumeration.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Enumeration.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getInterface(), UML.getClass_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertDrop(this.createIn(Interface.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Interface.class, clazz), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
 
     }
 
@@ -342,7 +343,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         Enumeration enumeration = this.createIn(Enumeration.class, pack);
 
-        this.getServiceTester().assertDrop(enumeration, null, CD_ENUMERRATION);
+        this.getServiceTester().assertSemanticDrop(enumeration, null, CD_ENUMERRATION);
 
         this.getDiagramHelper().refresh();
 
@@ -350,7 +351,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Node literalCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getLiteralCompartmentId(UML.getEnumeration()), enumeration);
         this.getServiceTester().assertChildAndSiblingCreation(literalCmp, UML.getEnumerationLiteral(), UML.getEnumeration_OwnedLiteral(),
                 getLabelNodeId(UML.getEnumerationLiteral(), UML.getEnumeration()));
-        this.getServiceTester().assertDrop(this.createIn(EnumerationLiteral.class, enumeration), literalCmp, getLabelNodeId(UML.getEnumerationLiteral(), UML.getEnumeration()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(EnumerationLiteral.class, enumeration), literalCmp, getLabelNodeId(UML.getEnumerationLiteral(), UML.getEnumeration()));
 
     }
 
@@ -360,33 +361,33 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         Interface aInterface = this.createIn(Interface.class, pack);
 
-        this.getServiceTester().assertDrop(aInterface, null, CD_INTERFACE);
+        this.getServiceTester().assertSemanticDrop(aInterface, null, CD_INTERFACE);
 
         this.getDiagramHelper().refresh();
 
         // Test for attributes
         Node attributeCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getAttributeCompartmentId(UML.getInterface()), aInterface);
         this.getServiceTester().assertChildAndSiblingCreation(attributeCmp, UML.getProperty(), UML.getInterface_OwnedAttribute(), getLabelNodeId(UML.getProperty(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(Property.class, aInterface), attributeCmp, getLabelNodeId(UML.getProperty(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Property.class, aInterface), attributeCmp, getLabelNodeId(UML.getProperty(), UML.getInterface()));
 
         // Test for operations
         Node operationCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getOperationCompartmentId(UML.getInterface()), aInterface);
         this.getServiceTester().assertChildAndSiblingCreation(operationCmp, UML.getOperation(), UML.getInterface_OwnedOperation(), getLabelNodeId(UML.getOperation(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(Operation.class, aInterface), operationCmp, getLabelNodeId(UML.getOperation(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Operation.class, aInterface), operationCmp, getLabelNodeId(UML.getOperation(), UML.getInterface()));
 
         // Test for nested classifier
         Node nestedClassifierCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getNestedClassifierCompartmentId(UML.getInterface()), aInterface);
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getClass_(), UML.getInterface_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(Class.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Class.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getPrimitiveType(), UML.getInterface_NestedClassifier(),
                 getLabelNodeId(UML.getClassifier(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(PrimitiveType.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(PrimitiveType.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getDataType(), UML.getInterface_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(DataType.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(DataType.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getEnumeration(), UML.getInterface_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(Enumeration.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Enumeration.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
         this.getServiceTester().assertChildAndSiblingCreation(nestedClassifierCmp, UML.getInterface(), UML.getInterface_NestedClassifier(), getLabelNodeId(UML.getClassifier(), UML.getInterface()));
-        this.getServiceTester().assertDrop(this.createIn(Interface.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
+        this.getServiceTester().assertSemanticDrop(this.createIn(Interface.class, aInterface), nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getInterface()));
 
     }
 
@@ -406,12 +407,12 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         pack.applyProfile(standardProfile);
         assertEquals(1, pack.getAllAppliedProfiles().size());
 
-        this.getServiceTester().assertDrop(clazz, null, CD_CLASS);
+        this.getServiceTester().assertSemanticDrop(clazz, null, CD_CLASS);
 
         this.getDiagramHelper().refresh();
 
         Node nestedClassifierCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getNestedClassifierCompartmentId(UML.getClass_()), clazz);
-        Node interfaceNode = this.getServiceTester().assertDrop(nestedInterface, nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        Node interfaceNode = this.getServiceTester().assertSemanticDrop(nestedInterface, nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
 
         // Checks that there is no keyword and everything is on one line
         assertEquals("Interface1", interfaceNode.getInsideLabel().getText()); //$NON-NLS-1$
@@ -437,7 +438,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         Class clazz = this.createIn(Class.class, pack);
 
-        this.getServiceTester().assertDrop(clazz, null, CD_CLASS);
+        this.getServiceTester().assertSemanticDrop(clazz, null, CD_CLASS);
 
         this.getDiagramHelper().refresh();
 
@@ -445,13 +446,13 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Property attr1 = this.createIn(Property.class, clazz);
         Property attr2 = this.createIn(Property.class, clazz);
         Node attributeCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getAttributeCompartmentId(UML.getClass_()), clazz);
-        this.getServiceTester().assertChildAndSiblingDrop(attributeCmp, attr1, attr2, getLabelNodeId(UML.getProperty(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(attributeCmp, attr1, attr2, getLabelNodeId(UML.getProperty(), UML.getClass_()));
 
         // Test for operations
         Operation op1 = this.createIn(Operation.class, clazz);
         Operation op2 = this.createIn(Operation.class, clazz);
         Node operationCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getOperationCompartmentId(UML.getClass_()), clazz);
-        this.getServiceTester().assertChildAndSiblingDrop(operationCmp, op1, op2, getLabelNodeId(UML.getOperation(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(operationCmp, op1, op2, getLabelNodeId(UML.getOperation(), UML.getClass_()));
         //
         // Test for nested classifier
         Class nestedClass = this.createIn(Class.class, clazz);
@@ -467,11 +468,11 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Interface nestedInterface2 = this.createIn(Interface.class, clazz);
 
         Node nestedClassifierCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getNestedClassifierCompartmentId(UML.getClass_()), clazz);
-        this.getServiceTester().assertChildAndSiblingDrop(nestedClassifierCmp, nestedClass, nestedClass2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertChildAndSiblingDrop(nestedClassifierCmp, nestedPrimitiveType, nestedPrimitiveType2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertChildAndSiblingDrop(nestedClassifierCmp, nestedDataType, nestedDataType2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertChildAndSiblingDrop(nestedClassifierCmp, nestedEnumeration, nestedEnumeration2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
-        this.getServiceTester().assertChildAndSiblingDrop(nestedClassifierCmp, nestedInterface, nestedInterface2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(nestedClassifierCmp, nestedClass, nestedClass2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(nestedClassifierCmp, nestedPrimitiveType, nestedPrimitiveType2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(nestedClassifierCmp, nestedDataType, nestedDataType2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(nestedClassifierCmp, nestedEnumeration, nestedEnumeration2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(nestedClassifierCmp, nestedInterface, nestedInterface2, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
 
     }
 
@@ -481,7 +482,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         PrimitiveType primitiveType = this.createIn(PrimitiveType.class, pack);
 
-        this.getServiceTester().assertDrop(primitiveType, null, CD_PRIMITIVE_TYPE);
+        this.getServiceTester().assertSemanticDrop(primitiveType, null, CD_PRIMITIVE_TYPE);
 
         this.getDiagramHelper().refresh();
 
@@ -489,13 +490,13 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Property attr1 = this.createIn(Property.class, primitiveType);
         Property attr2 = this.createIn(Property.class, primitiveType);
         Node attributeCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getAttributeCompartmentId(UML.getPrimitiveType()), primitiveType);
-        this.getServiceTester().assertChildAndSiblingDrop(attributeCmp, attr1, attr2, getLabelNodeId(UML.getProperty(), UML.getPrimitiveType()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(attributeCmp, attr1, attr2, getLabelNodeId(UML.getProperty(), UML.getPrimitiveType()));
 
         // Test for operations
         Operation op1 = this.createIn(Operation.class, primitiveType);
         Operation op2 = this.createIn(Operation.class, primitiveType);
         Node operationCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getOperationCompartmentId(UML.getPrimitiveType()), primitiveType);
-        this.getServiceTester().assertChildAndSiblingDrop(operationCmp, op1, op2, getLabelNodeId(UML.getOperation(), UML.getPrimitiveType()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(operationCmp, op1, op2, getLabelNodeId(UML.getOperation(), UML.getPrimitiveType()));
 
     }
 
@@ -505,7 +506,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         DataType dataType = this.createIn(DataType.class, pack);
 
-        this.getServiceTester().assertDrop(dataType, null, CD_DATA_TYPE);
+        this.getServiceTester().assertSemanticDrop(dataType, null, CD_DATA_TYPE);
 
         this.getDiagramHelper().refresh();
 
@@ -513,13 +514,13 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Property attr1 = this.createIn(Property.class, dataType);
         Property attr2 = this.createIn(Property.class, dataType);
         Node attributeCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getAttributeCompartmentId(UML.getDataType()), dataType);
-        this.getServiceTester().assertChildAndSiblingDrop(attributeCmp, attr1, attr2, getLabelNodeId(UML.getProperty(), UML.getDataType()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(attributeCmp, attr1, attr2, getLabelNodeId(UML.getProperty(), UML.getDataType()));
 
         // Test for operations
         Operation op1 = this.createIn(Operation.class, dataType);
         Operation op2 = this.createIn(Operation.class, dataType);
         Node operationCmp = this.getDiagramHelper().assertGetUniqueMatchingNode(getOperationCompartmentId(UML.getDataType()), dataType);
-        this.getServiceTester().assertChildAndSiblingDrop(operationCmp, op1, op2, getLabelNodeId(UML.getOperation(), UML.getDataType()));
+        this.getServiceTester().assertChildAndSiblingSemanticDrop(operationCmp, op1, op2, getLabelNodeId(UML.getOperation(), UML.getDataType()));
 
     }
 
@@ -619,12 +620,12 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         // Check with class inside a package
         Package subPack = this.createIn(Package.class, pack);
-        Node subPackageNode = this.getServiceTester().assertDrop(subPack, null, CD_PACKAGE);
+        Node subPackageNode = this.getServiceTester().assertSemanticDrop(subPack, null, CD_PACKAGE);
 
         Class nestedClass = this.createIn(Class.class, subPack);
-        Node nestedClassNode = this.getServiceTester().assertDrop(nestedClass, subPackageNode, CD_CLASS_CHILD);
+        Node nestedClassNode = this.getServiceTester().assertSemanticDrop(nestedClass, subPackageNode, CD_CLASS_CHILD);
 
-        Node interfaceNode = this.getServiceTester().assertDrop(targetInterface, null, CD_INTERFACE);
+        Node interfaceNode = this.getServiceTester().assertSemanticDrop(targetInterface, null, CD_INTERFACE);
         this.getServiceTester().buildDomainBasedEdgeTestHelper(ID_BUILDER)//
                 .withSource(nestedClass)//
                 .withTarget(targetInterface)//
@@ -636,10 +637,10 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         // Check with interface inside a package
         Class rootClass = this.createIn(Class.class, pack);
-        Node rootClassNode = this.getServiceTester().assertDrop(rootClass, null, CD_CLASS);
+        Node rootClassNode = this.getServiceTester().assertSemanticDrop(rootClass, null, CD_CLASS);
 
         Interface nestedInsterface = this.createIn(Interface.class, subPack);
-        Node nestedInterfaceNode = this.getServiceTester().assertDrop(nestedInsterface, subPackageNode, CD_INTERFACE_CHILD);
+        Node nestedInterfaceNode = this.getServiceTester().assertSemanticDrop(nestedInsterface, subPackageNode, CD_INTERFACE_CHILD);
 
         this.getServiceTester().buildDomainBasedEdgeTestHelper(ID_BUILDER)//
                 .withSource(nestedClass)//
@@ -686,9 +687,9 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         // Check with class inside a package
         Package subPack = this.createIn(Package.class, pack);
 
-        Node subPackageNode = this.getServiceTester().assertDrop(subPack, null, CD_PACKAGE);
+        Node subPackageNode = this.getServiceTester().assertSemanticDrop(subPack, null, CD_PACKAGE);
         Class nestedClass = this.createIn(Class.class, subPack);
-        Node nestedClassNode = this.getServiceTester().assertDrop(nestedClass, subPackageNode, CD_CLASS_CHILD);
+        Node nestedClassNode = this.getServiceTester().assertSemanticDrop(nestedClass, subPackageNode, CD_CLASS_CHILD);
 
         Node interfaceNode = this.getDiagramHelper().assertGetUniqueMatchingNode(CD_INTERFACE, targetInterface);
         this.getServiceTester().buildDomainBasedEdgeTestHelper(ID_BUILDER)//
@@ -702,10 +703,10 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         // Check with interface inside a package
         Class rootClass = this.createIn(Class.class, pack);
-        Node rootClassNode = this.getServiceTester().assertDrop(rootClass, null, CD_CLASS);
+        Node rootClassNode = this.getServiceTester().assertSemanticDrop(rootClass, null, CD_CLASS);
 
         Interface nestedInsterface = this.createIn(Interface.class, subPack);
-        Node nestedInterfaceNode = this.getServiceTester().assertDrop(nestedInsterface, subPackageNode, CD_INTERFACE_CHILD);
+        Node nestedInterfaceNode = this.getServiceTester().assertSemanticDrop(nestedInsterface, subPackageNode, CD_INTERFACE_CHILD);
 
         this.getServiceTester().buildDomainBasedEdgeTestHelper(ID_BUILDER)//
                 .withSource(nestedClass)//
@@ -790,13 +791,13 @@ public class ClassDiagramTests extends AbstractDiagramTest {
     public void checkUsageReconnectionEdge() {
         Package pack = this.init();
 
-        Node sourcePackageNode = this.getServiceTester().assertDrop(pack, null, CD_PACKAGE);
+        Node sourcePackageNode = this.getServiceTester().assertSemanticDrop(pack, null, CD_PACKAGE);
         Class targetClass = this.createIn(Class.class, pack);
         Usage usage = this.createUsage(pack, pack, targetClass);
         Interface anInterface = this.createIn(Interface.class, pack);
 
-        Node targetClassNode = this.getServiceTester().assertDrop(targetClass, null, CD_CLASS);
-        this.getServiceTester().assertDrop(anInterface, null, CD_INTERFACE);
+        Node targetClassNode = this.getServiceTester().assertSemanticDrop(targetClass, null, CD_CLASS);
+        this.getServiceTester().assertSemanticDrop(anInterface, null, CD_INTERFACE);
 
         this.getDiagramHelper().assertGetExistDomainBasedEdge(CD_USAGE, usage, sourcePackageNode, targetClassNode);
 
@@ -1272,9 +1273,9 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Association association = this.createAssociation(pack, sourceClass, targetClass);
         Interface anInterface = this.createIn(Interface.class, pack);
 
-        Node sourceClassNode = this.getServiceTester().assertDrop(sourceClass, null, CD_CLASS);
-        Node targetClassNode = this.getServiceTester().assertDrop(targetClass, null, CD_CLASS);
-        this.getServiceTester().assertDrop(anInterface, null, CD_INTERFACE);
+        Node sourceClassNode = this.getServiceTester().assertSemanticDrop(sourceClass, null, CD_CLASS);
+        Node targetClassNode = this.getServiceTester().assertSemanticDrop(targetClass, null, CD_CLASS);
+        this.getServiceTester().assertSemanticDrop(anInterface, null, CD_INTERFACE);
 
         this.getDiagramHelper().assertGetExistDomainBasedEdge(CD_ASSOCIATION, association, sourceClassNode, targetClassNode);
 
@@ -1305,8 +1306,8 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Class c1 = this.createIn(Class.class, pack);
         Interface i1 = this.createIn(Interface.class, pack);
 
-        Node classNode = this.getServiceTester().assertDrop(c1, null, CD_CLASS);
-        Node interfaceNode = this.getServiceTester().assertDrop(i1, null, CD_INTERFACE);
+        Node classNode = this.getServiceTester().assertSemanticDrop(c1, null, CD_CLASS);
+        Node interfaceNode = this.getServiceTester().assertSemanticDrop(i1, null, CD_INTERFACE);
 
         this.checkCompositeAssociationCreation(c1, i1, classNode, interfaceNode);
     }
@@ -1343,8 +1344,8 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Class c1 = this.createIn(Class.class, pack);
         Interface i1 = this.createIn(Interface.class, pack);
 
-        Node classNode = this.getServiceTester().assertDrop(c1, null, CD_CLASS);
-        Node interfaceNode = this.getServiceTester().assertDrop(i1, null, CD_INTERFACE);
+        Node classNode = this.getServiceTester().assertSemanticDrop(c1, null, CD_CLASS);
+        Node interfaceNode = this.getServiceTester().assertSemanticDrop(i1, null, CD_INTERFACE);
 
         this.checkSharedAssociationCreation(c1, i1, classNode, interfaceNode);
     }
@@ -1413,12 +1414,12 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
         // Check on children node
 
-        Node parentNode = this.getServiceTester().assertDrop(pack, null, CD_PACKAGE);
-        Node c1Node = this.getServiceTester().assertDrop(c1, parentNode, CD_CLASS_CHILD);
-        Node p1Node = this.getServiceTester().assertDrop(p1, parentNode, CD_PRIMITIVE_TYPE_CHILD);
-        Node i1Node = this.getServiceTester().assertDrop(i1, parentNode, CD_INTERFACE_CHILD);
-        Node d1Node = this.getServiceTester().assertDrop(d1, parentNode, CD_DATA_TYPE_CHILD);
-        Node e1Node = this.getServiceTester().assertDrop(e1, parentNode, CD_ENUMERATION_TYPE_CHILD);
+        Node parentNode = this.getServiceTester().assertSemanticDrop(pack, null, CD_PACKAGE);
+        Node c1Node = this.getServiceTester().assertSemanticDrop(c1, parentNode, CD_CLASS_CHILD);
+        Node p1Node = this.getServiceTester().assertSemanticDrop(p1, parentNode, CD_PRIMITIVE_TYPE_CHILD);
+        Node i1Node = this.getServiceTester().assertSemanticDrop(i1, parentNode, CD_INTERFACE_CHILD);
+        Node d1Node = this.getServiceTester().assertSemanticDrop(d1, parentNode, CD_DATA_TYPE_CHILD);
+        Node e1Node = this.getServiceTester().assertSemanticDrop(e1, parentNode, CD_ENUMERATION_TYPE_CHILD);
 
         this.getDiagramHelper().assertGetExistDomainBasedEdge(CD_ASSOCIATION, this.getDiagramHelper().getSemanticElement(c1i1Edge), //
                 c1Node, i1Node);
@@ -1441,7 +1442,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         new AssociationTestCaseBuilder(pack).createAssociations();
 
         // Drop all elements
-        EMFUtils.allContainedObjectOfType(pack, Class.class).forEach(c -> this.getServiceTester().assertDrop(c, null, CD_CLASS));
+        EMFUtils.allContainedObjectOfType(pack, Class.class).forEach(c -> this.getServiceTester().assertSemanticDrop(c, null, CD_CLASS));
 
         // Check all edges
         List<Edge> edges = this.getDiagramHelper().getMatchingEdges(Optional.of(CD_ASSOCIATION), Optional.empty(), Optional.empty(), Optional.empty());
