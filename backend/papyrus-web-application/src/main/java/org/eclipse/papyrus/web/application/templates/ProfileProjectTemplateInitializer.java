@@ -19,15 +19,12 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
-import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.services.template.TemplateInitializer;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Profile;
 import org.slf4j.Logger;
@@ -63,16 +60,6 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
     private IDiagramBuilderService diagramBuilderService;
 
     /**
-     * Generic services that can be accessed by the diagram.
-     */
-    private GenericDiagramService profileDiagramService;
-
-    /**
-     * Registry that keeps track of all {@link DiagramDescription}s used in Papyrus application.
-     */
-    private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
-
-    /**
      * Service used to save new representations.
      */
     private IRepresentationPersistenceService representationPersistenceService;
@@ -84,21 +71,14 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
      *            Helper to create Project templates
      * @param diagramBuilderService
      *            Service used to create diagram programmatically
-     * @param papyrusRepresentationRegistry
-     *            Registry that keeps track of all {@link DiagramDescription}s used in Papyrus application
-     * @param packageDiagramService
-     *            Generic service used to provide generic service for a diagram with
      * @param representationPersistenceService
      *            Service used to save new representations
      */
     public ProfileProjectTemplateInitializer(TemplateInitializer initializerHelper, //
             IDiagramBuilderService diagramBuilderService, //
-            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, //
-            GenericDiagramService profileDiagramService, IRepresentationPersistenceService representationPersistenceService) {
+            IRepresentationPersistenceService representationPersistenceService) {
         this.initializerHelper = initializerHelper;
         this.diagramBuilderService = diagramBuilderService;
-        this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
-        this.profileDiagramService = profileDiagramService;
         this.representationPersistenceService = representationPersistenceService;
     }
 

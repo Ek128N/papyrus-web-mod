@@ -193,6 +193,10 @@ public class DiagramDescriptionDescriptionValidator {
                     String errorMessage = MessageFormat.format("Shared NodeDescription {0} should be reused by at least 2 NodeDescriptions", childSharedDescription.getName()); //$NON-NLS-1$
                     result.add(Status.error(errorMessage));
                 }
+                if (!childSharedDescription.getName().contains(AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)) {
+                    String errorMessage = MessageFormat.format("Shared NodeDescription {0} should be suffixed by \'SHARED\'", childSharedDescription.getName()); //$NON-NLS-1$
+                    result.add(Status.error(errorMessage));
+                }
             }
 
         }

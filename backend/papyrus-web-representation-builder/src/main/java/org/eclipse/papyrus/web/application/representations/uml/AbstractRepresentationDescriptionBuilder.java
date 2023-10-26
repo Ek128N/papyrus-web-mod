@@ -1056,7 +1056,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected NodeDescription createSharedCompartmentsDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
             List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         NodeDescription sharedCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createRectangularNodeStyle(false, false))//
-                .name(this.getIdBuilder().getCompartmentDomainNodeName(domainType, compartmentName)) //
+                .name(this.getIdBuilder().getSpecializedCompartmentDomainNodeName(domainType, compartmentName, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
@@ -1105,8 +1105,14 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected void createNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
             String semanticQuery, EReference semanticRefTool, List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         // CHECKSTYLE:ON
+        String nodeDescriptionName = null;
+        if (SHARED_DESCRIPTIONS.equals(parentNodeDescription.getName())) {
+            nodeDescriptionName = this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX);
+        } else {
+            nodeDescriptionName = this.getIdBuilder().getDomainNodeName(domainType);
+        }
         NodeDescription createNodeDescriptionInCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createIconAndlabelStyle(true))//
-                .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
+                .name(nodeDescriptionName) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(semanticQuery)//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//

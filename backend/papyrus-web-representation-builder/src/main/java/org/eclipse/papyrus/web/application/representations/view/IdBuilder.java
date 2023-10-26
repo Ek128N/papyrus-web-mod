@@ -122,6 +122,10 @@ public class IdBuilder {
         return this.diagramPrefix + domain.getName() + UNDERSTORE + compartmentName + COMPARTMENT_NODE_SUFFIX;
     }
 
+    public String getSpecializedCompartmentDomainNodeName(EClass domain, String compartmentName, String specialization) {
+        return this.diagramPrefix + domain.getName() + UNDERSTORE + compartmentName + UNDERSTORE + specialization + COMPARTMENT_NODE_SUFFIX;
+    }
+
     public String getListItemDomainNodeName(EClass domain, EClass parentContainer) {
         return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSTORE + LABEL_NODE_PREFIX; //$NON-NLS-1$
     }

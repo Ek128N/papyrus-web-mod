@@ -118,15 +118,15 @@ public class RepresentationValidatorTests {
 
     @Test
     public void validateProfileDiagram() {
-        Predicate<DiagramElementDescription> isNotMetaclass = p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS)
-                && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
+        Predicate<DiagramElementDescription> isNotMetaclassAndNotCompartment = p -> !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_METACLASS)
+                && !p.getName().equals(PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS) && !p.getName().contains(IdBuilder.COMPARTMENT_NODE_SUFFIX);
         DiagramDescription diagram = new PRDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
-        DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
+        DiagramDescriptionDescriptionValidator validator = new DiagramDescriptionDescriptionValidator();
         // Exclude the deletion tool check for PRD_METACLASS and PRD_SHARED_METACLASS: these elements have a particular
         // behavior because they represent a metaclass from the UML metamodel and thus cannot be deleted.
-        validator.excludeFromDeleteToolValidation(isNotMetaclass);
-        validator.excludeFromDirectEditValidation(isNotMetaclass);
+        validator.excludeFromDeleteToolValidation(isNotMetaclassAndNotCompartment);
+        validator.excludeFromDirectEditValidation(isNotMetaclassAndNotCompartment);
 
         List<Status> validations = validator.validate(diagram);
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
