@@ -170,7 +170,18 @@ Dragging and dropping an element represented as an Edge on the diagram will crea
 ===== Reconnection
 Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element. 
 
+==== UseCase Diagram
+
+The UseCase diagram is a graphical description used to represent the different ways a user can interact with a system. Use case diagrams show the functional elements (use cases represented by ellipses), the individuals or objects that invoke these functionalities (actors shown as stick figures), and possibly the elements responsible for implementing these use cases (subjects).
+
+image::diagUseCase.png[UseCase Diagram Overview,800, align="center"]
+
+===== Specific Features on Direct Edit
+- The direct edit tool doesn't perform any modification on Link (from Constraint or Comment), Generalization, PackageImport and PackageMerge.
+
 ==== Profile Diagram
+
+The Profile diagram provide a way to extend an UML model. They are based on additional stereotypes (identified as classes with the «stereotype» stereotype) and labeled values that are applied to UML element thanks to the _extension_ relation.
 
 image::diagProfile.png[Profile Diagram Overview,800, align="center"]
 
@@ -178,7 +189,7 @@ image::diagProfile.png[Profile Diagram Overview,800, align="center"]
 - The label of an Element Import is the label of the UML metaclass it references as its _imported element_.
 
 ===== Specific Features on Direct Edit
-- The direct edit tool doesn't perform any modification on UML metaclasses.
+- The direct edit tool doesn't perform any modification on UML metaclasses, Generalization and Link (from Constraint or Comment).
 
 ===== Specific Features on Semantic DnD
 - The semantic drag and drop of an Element Import with an UML metaclass as its _imported element_ on the Profile diagram produces a Node with the name of the UML metaclass as its label. Note that it is not possible to drag and drop Element Import with no _imported element_ or with an _imported element_ that is not an UML metaclass. 
