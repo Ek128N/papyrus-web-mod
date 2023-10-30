@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.tools.checker.Checker;
+import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 
@@ -30,6 +31,21 @@ import org.eclipse.sirius.components.diagrams.IDiagramElement;
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
 public class ReconnectEdgeTargetTest extends AbstractPapyrusWebTest {
+
+    /**
+     * The suffix for the elements that are sources of the tested reconnection.
+     */
+    protected static final String SOURCE = "Source";
+
+    /**
+     * The suffix for the elements that are old targets of the tested reconnection.
+     */
+    protected static final String OLD_TARGET = "OldTarget";
+
+    /**
+     * The suffix for the elements that are new targets of the tested reconnection.
+     */
+    protected static final String NEW_TARGET = "NewTarget";
 
     /**
      * Initializes the test with the provided {@code representationName} and {@code rootElementEClass}.
@@ -63,5 +79,34 @@ public class ReconnectEdgeTargetTest extends AbstractPapyrusWebTest {
         this.applyReconnectEdgeTargetTool(edgeId, newTargetElement.getId());
         Edge edge = this.getDiagram().getEdges().get(0);
         checker.validateRepresentationElement(edge);
+    }
+
+    /**
+     * Creates one source and two target nodes with the provided {@code creationTool} in the provided
+     * {@code parentElementId}.
+     * <p>
+     * This method create three nodes and sets their label with
+     * {@code elementType + (OLD_TARGET | NEW_TARGET | SOURCE)}, where {@code elementType} is the type of the created
+     * element.
+     * </p>
+     * <p>
+     * This method is typically used to initialize a target reconnection test, where two targets are required to
+     * actually perform the reconnection.
+     * </p>
+     *
+     * @param parentElementId
+     *            the identifier of the graphical parent to create the nodes into
+     * @param creationTool
+     *            the tool to use to create the source and target nodes
+     *
+     * @see #createDiagramSourceAndTargetNodes(CreationTool) to create one source and two target elements at the diagram
+     *      level
+     */
+    @Override
+    protected void createSourceAndTargetNodes(String parentElementId, CreationTool creationTool) {
+        EClass toolEClass = creationTool.getToolEClass();
+        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + OLD_TARGET);
+        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + NEW_TARGET);
+        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + SOURCE);
     }
 }

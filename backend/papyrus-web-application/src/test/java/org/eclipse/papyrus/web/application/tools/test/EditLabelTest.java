@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.application.tools.checker.Checker;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
@@ -72,10 +71,9 @@ public class EditLabelTest extends AbstractPapyrusWebTest {
             fail();
         }
         this.applyEditLabelTool(labelId, newLabel);
-        IDiagramElement updatedElement = this.findGraphicalElementByLabel(newLabel);
+        // Find by id to avoid finding by name, which is in conflict with the current test.
+        IDiagramElement updatedElement = this.findGraphicalElementById(element.getId());
         assertThat(updatedElement).isNotNull();
-        EObject updatedSemanticElement = this.findSemanticElementByName(newLabel);
-        assertThat(updatedSemanticElement).isNotNull();
         checker.validateRepresentationElement(updatedElement);
     }
 }

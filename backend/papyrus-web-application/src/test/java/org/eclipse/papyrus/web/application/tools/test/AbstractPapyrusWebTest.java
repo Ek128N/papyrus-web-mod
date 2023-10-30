@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -57,6 +58,7 @@ import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -166,6 +168,25 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         this.documentName = documentName;
         this.representationName = representationName;
         this.rootElementEClass = rootElementEClass;
+    }
+
+    /**
+     * Computes the cartesian product of {@code list1} and {@code list2}.
+     *
+     * @param list1
+     *            the first list to compute the cartesian product of
+     * @param list2
+     *            the second list to compute the cartesian product of
+     * @return the cartesian product of {@code list1} and {@code list2}
+     */
+    protected static Stream<Arguments> cartesianProduct(List<?> list1, List<?> list2) {
+        List<Arguments> arguments = new ArrayList<>();
+        for (Object source : list1) {
+            for (Object target : list2) {
+                arguments.add(Arguments.of(source, target));
+            }
+        }
+        return arguments.stream();
     }
 
     /**
@@ -458,8 +479,27 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
                 }
             }
         }
+        assertThat(result).as("The semantic model doesn't contain an element named " + semanticElementName).isNotEmpty();
         assertThat(result).as("The semantic model contains multiple elements named " + semanticElementName).hasSize(1);
         return result.get(0);
+    }
+
+    /**
+     * Returns the {@link EObject} in the semantic model with the provided {@code semanticId}.
+     * <p>
+     * This method produces a test failure if the semantic model doesn't contain an element with the provided
+     * {@code semanticId}.
+     * </p>
+     *
+     * @param semanticId
+     *            the semantic identifier to search for
+     * @return the {@link EObject} with the provided {@code semanticId}
+     */
+    public EObject findSemanticElementById(String semanticId) {
+        IEditingContext editingContext = this.getEditingContext();
+        Optional<Object> optObject = this.getObjectService().getObject(editingContext, semanticId);
+        assertThat(optObject).as("The semantic model doesn't contain an element with id " + semanticId).isPresent();
+        return (EObject) optObject.get();
     }
 
     /**
@@ -483,6 +523,7 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
                 result.add(edge);
             }
         }
+        assertThat(result).as("The graphical model doesn't contain an element with the label  " + graphicalElementLabel).isNotEmpty();
         assertThat(result).as("The graphical model contains multiple elements with the label " + graphicalElementLabel).hasSize(1);
         return result.get(0);
     }
@@ -512,6 +553,56 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     }
 
     /**
+     * Returns the {@link IDiagramElement} in the graphical model with the provided {@code graphicalId}.
+     * <p>
+     * This method produces a test failure if the graphical model doesn't contain an element with the provided
+     * {@code graphicalId}.
+     * </p>
+     *
+     * @param graphicalId
+     *            the graphical identifier to search for
+     * @return the {@link IDiagramElement} with the provided graphical {@code graphicalId}
+     */
+    public IDiagramElement findGraphicalElementById(String graphicalId) {
+        Diagram diagram = this.getDiagram();
+        List<IDiagramElement> result = new ArrayList<>();
+        for (Node node : diagram.getNodes()) {
+            result.addAll(this.findGraphicalElementById(node, graphicalId));
+        }
+        for (Edge edge : diagram.getEdges()) {
+            if (Objects.equals(edge.getId(), graphicalId)) {
+                result.add(edge);
+            }
+        }
+        assertThat(result).as("The graphical model contains multiple elements with the id " + graphicalId).hasSize(1);
+        return result.get(0);
+    }
+
+    /**
+     * Returns the list of {@link IDiagramElement} contained in {@code node} with the provided {@code graphicalId}.
+     * <p>
+     * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the
+     * provided {@code node}) is part of the list if its id matches the provided {@code graphicalId}.
+     * </p>
+     *
+     * @param node
+     *            the root of the sub-tree of elements to search into
+     * @param graphicalId
+     *            the graphical identifier to search for
+     * @return the list of {@link IDiagramElement} contained in {@code node} with the provided {@code graphicalId}
+     */
+    private List<IDiagramElement> findGraphicalElementById(Node node, String graphicalId) {
+        List<IDiagramElement> result = new ArrayList<>();
+        if (Objects.equals(node.getId(), graphicalId)) {
+            result.add(node);
+        }
+        for (Node childNode : node.getChildNodes()) {
+            result.addAll(this.findGraphicalElementById(childNode, graphicalId));
+        }
+        return result;
+    }
+
+    /**
      * Returns the root semantic element of the current {@link IEditingContext}.
      * <p>
      * This method reloads the {@link IEditingContext} to ensure that the latest version of the semantic model is
@@ -527,5 +618,71 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         assertThat(optObject).isPresent();
         assertThat(optObject.get()).isInstanceOf(EObject.class);
         return (EObject) optObject.get();
+    }
+
+    /**
+     * Creates a source and target node with the provided {@code creationTool} in the diagram.
+     * <p>
+     * This method creates two nodes and sets their label with {@code elementType + "Source"} for the source one, and
+     * {@code elementType + "Target"} for the target one, where {@code elementType} is the type of the created element.
+     * </p>
+     * <p>
+     * This method is typically used in edge-based tests to initialize the diagram with source and target nodes.
+     * </p>
+     *
+     * @param creationTool
+     *            the tool to use to create the source and target nodes
+     *
+     * @see #createSourceAndTargetNodes(String, CreationTool) to create a source and target node in a given parent
+     */
+    protected void createDiagramSourceAndTargetNodes(CreationTool creationTool) {
+        this.createSourceAndTargetNodes(this.representationId, creationTool);
+    }
+
+    /**
+     * Creates a source and target node with the provided {@code creationTool} in the provided {@code parentElementId}.
+     * <p>
+     * This method creates two nodes and sets their label with {@code elementType + "Source"} for the source one, and
+     * {@code elementType + "Target"} for the target one, where {@code elementType} is the type of the created element.
+     * </p>
+     * <p>
+     * This method is typically used in edge-based tests to initialize the diagram with source and target nodes.
+     * </p>
+     *
+     * @param parentElementId
+     *            the identifier of the graphical parent to create the nodes into
+     * @param creationTool
+     *            the tool to use to create the source and target nodes
+     *
+     * @see #createDiagramSourceAndTargetNodes(CreationTool) to create a source and target node in the diagram
+     */
+    protected void createSourceAndTargetNodes(String parentElementId, CreationTool creationTool) {
+        EClass toolEClass = creationTool.getToolEClass();
+        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + "Source");
+        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + "Target");
+    }
+
+    /**
+     * Creates a node with the provided {@code creationTool} in the given {@code parentElementId}.
+     * <p>
+     * The label of the created node is set to {@code label}. This method assumes that the diagram doesn't already
+     * contain an element named {@code elementType + "1"} (the default name for elements), where {@code elementType} is
+     * the type of the created element. This method produces a test failure if such element exists.
+     * </p>
+     *
+     * @param parentElementId
+     *            the identifier of the graphical parent to create the node into
+     * @param creationTool
+     *            the tool to use to create the node
+     * @param label
+     *            the label to set in the created node
+     * @return the created node
+     */
+    protected Node createNodeWithLabel(String parentElementId, CreationTool creationTool, String label) {
+        this.applyNodeCreationTool(parentElementId, creationTool);
+        Node createdNode = (Node) this.findGraphicalElementByLabel(creationTool.getToolEClass().getName() + "1");
+        this.applyEditLabelTool(createdNode.getInsideLabel().getId(), label);
+        // Reload the node to ensure that the new label is present
+        return (Node) this.findGraphicalElementById(createdNode.getId());
     }
 }

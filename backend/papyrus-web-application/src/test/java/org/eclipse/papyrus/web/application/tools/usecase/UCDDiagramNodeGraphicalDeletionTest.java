@@ -36,7 +36,21 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class UCDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
 
+    private static final String ACTIVITY1 = "Activity1";
+
     private static final String ACTOR1 = "Actor1";
+
+    private static final String CLASS1 = "Class1";
+
+    private static final String COMPONENT1 = "Component1";
+
+    private static final String CONSTRAINT1 = "Constraint1";
+
+    private static final String INTERACTION1 = "Interaction1";
+
+    private static final String PACKAGE1 = "Package1";
+
+    private static final String STATE_MACHINE1 = "StateMachine1";
 
     private static final String USE_CASE1 = "UseCase1";
 
@@ -46,7 +60,14 @@ public class UCDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
 
     private static Stream<Arguments> parameterProvider() {
         return Stream.of(//
+                Arguments.of(ACTIVITY1, UML.getPackage_PackagedElement()), //
                 Arguments.of(ACTOR1, UML.getPackage_PackagedElement()), //
+                Arguments.of(CLASS1, UML.getPackage_PackagedElement()), //
+                Arguments.of(COMPONENT1, UML.getPackage_PackagedElement()), //
+                Arguments.of(CONSTRAINT1, UML.getNamespace_OwnedRule()), //
+                Arguments.of(INTERACTION1, UML.getPackage_PackagedElement()), //
+                Arguments.of(PACKAGE1, UML.getPackage_PackagedElement()), //
+                Arguments.of(STATE_MACHINE1, UML.getPackage_PackagedElement()), //
                 Arguments.of(USE_CASE1, UML.getPackage_PackagedElement())//
         );
     }
@@ -55,8 +76,14 @@ public class UCDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        // Complete the model with new element and create representations on Diagram
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
         this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getActor()));
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()));
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()));
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()));
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()));
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
+        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()));
         this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
     }
 
@@ -69,8 +96,9 @@ public class UCDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
     @ParameterizedTest
     @MethodSource("parameterProvider")
     public void testDeleteGraphicalNode(String elementName, EReference containmentReference) {
-        DeletionGraphicalChecker graphicalChecker = new DeletionGraphicalChecker(() -> this.getDiagram(), null);
-        NodeGraphicalDeletionSemanticChecker semanticChecker = new NodeGraphicalDeletionSemanticChecker(this.getObjectService(), () -> this.getEditingContext(), () -> this.getRootSemanticElement(),
+        DeletionGraphicalChecker graphicalChecker = new DeletionGraphicalChecker(this::getDiagram, null);
+
+        NodeGraphicalDeletionSemanticChecker semanticChecker = new NodeGraphicalDeletionSemanticChecker(this.getObjectService(), this::getEditingContext, this::getRootSemanticElement,
                 containmentReference);
         this.deleteGraphicalNode(elementName, new CombinedChecker(graphicalChecker, semanticChecker));
     }

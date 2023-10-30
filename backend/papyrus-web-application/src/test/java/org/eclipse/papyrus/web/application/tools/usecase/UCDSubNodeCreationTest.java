@@ -16,7 +16,6 @@ package org.eclipse.papyrus.web.application.tools.usecase;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
@@ -27,7 +26,6 @@ import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDCreationTool;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDToolSections;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
-import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,19 +41,42 @@ public class UCDSubNodeCreationTest extends NodeCreationTest {
 
     private static final EReference PACKAGED_ELEMENT = UML.getPackage_PackagedElement();
 
-    private static final String PACKAGE_NAME = "Package1";
+    private static final String PACKAGE_NAME = "PackageContainer";
+
+    private static final String ACTIVITY_NAME = "ActivityContainer";
+
+    private static final String CLASS_NAME = "ClassContainer";
+
+    private static final String COMPONENT_NAME = "ComponentContainer";
+
+    private static final String INTERACTION_NAME = "InteractionContainer";
+
+    private static final String STATE_MACHINE_NAME = "StateMachineContainer";
 
     public UCDSubNodeCreationTest() {
         super(DEFAULT_DOCUMENT, UCDDiagramDescriptionBuilder.UCD_REP_NAME, UML.getModel());
     }
 
-    private static Stream<Arguments> parameterProvider() {
+    private static Stream<Arguments> packageChildrenParameters() {
         return Stream.of(//
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()), UCDMappingTypes.getSharedMappingType(UML.getActivity()), UML.getActivity(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()), UCDMappingTypes.getSharedMappingType(UML.getClass_()), UML.getClass_(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()), UCDMappingTypes.getSharedMappingType(UML.getComponent()), UML.getComponent(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()), UCDMappingTypes.getSharedMappingType(UML.getInteraction()), UML.getInteraction(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()), UCDMappingTypes.getSharedMappingType(UML.getStateMachine()), UML.getStateMachine(), PACKAGED_ELEMENT) //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()), UML.getActivity(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getActor()), UML.getActor(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()), UML.getClass_(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getComment()), UML.getComment(), UML.getElement_OwnedComment()), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()), UML.getComponent(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()), UML.getConstraint(), UML.getNamespace_OwnedRule()), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()), UML.getInteraction(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()), UML.getPackage(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()), UML.getStateMachine(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()), UML.getUseCase(), PACKAGED_ELEMENT) //
+        );
+    }
+
+    private static Stream<Arguments> subjectChildrenParameters() {
+        return Stream.of(//
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getComment()), UML.getComment(), UML.getElement_OwnedComment()), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()), UML.getConstraint(), UML.getNamespace_OwnedRule()), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()), UML.getUseCase(), UML.getClassifier_OwnedUseCase()) //
         );
     }
 
@@ -63,7 +84,12 @@ public class UCDSubNodeCreationTest extends NodeCreationTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
+        this.createNodeWithLabel(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()), PACKAGE_NAME);
+        this.createNodeWithLabel(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()), ACTIVITY_NAME);
+        this.createNodeWithLabel(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()), CLASS_NAME);
+        this.createNodeWithLabel(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()), COMPONENT_NAME);
+        this.createNodeWithLabel(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()), INTERACTION_NAME);
+        this.createNodeWithLabel(this.representationId, new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()), STATE_MACHINE_NAME);
     }
 
     @Override
@@ -72,22 +98,52 @@ public class UCDSubNodeCreationTest extends NodeCreationTest {
         super.tearDown();
     }
 
-    @ParameterizedTest
-    @MethodSource("parameterProvider")
-    public void testCreateNodeInPackage(CreationTool nodeCreationTool, String mappingType, EClass expectedType, EReference containmentReference) {
-
-        NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, this::getGraphicalOwner, mappingType, this.getCapturedNodes());
-        NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), () -> this.getEditingContext(), expectedType, this::getSemanticOwner,
-                containmentReference);
+    @ParameterizedTest(name = "[{index}] Create node {1} in Package")
+    @MethodSource("packageChildrenParameters")
+    public void testCreateNodeInPackage(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference) {
+        String mappingType = UCDMappingTypes.getMappingTypeAsSubNode(expectedType);
+        NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(PACKAGE_NAME), mappingType, this.getCapturedNodes());
+        NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
+                () -> this.findSemanticElementByName(PACKAGE_NAME), containmentReference);
         this.createNodeOnContainer(PACKAGE_NAME, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
-    protected EObject getSemanticOwner() {
-        return this.findSemanticElementByName(PACKAGE_NAME);
+    @ParameterizedTest(name = "[{index}] Create node {1} in Activity")
+    @MethodSource("subjectChildrenParameters")
+    public void testCreateNodeInActivity(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference) {
+        this.testCreateNodeInSubject(nodeCreationTool, expectedType, containmentReference, ACTIVITY_NAME);
     }
 
-    protected IDiagramElement getGraphicalOwner() {
-        return this.findGraphicalElementByLabel(PACKAGE_NAME);
+    @ParameterizedTest(name = "[{index}] Create node {1} in Class")
+    @MethodSource("subjectChildrenParameters")
+    public void testCreateNodeInClass(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference) {
+        this.testCreateNodeInSubject(nodeCreationTool, expectedType, containmentReference, CLASS_NAME);
+    }
+
+    @ParameterizedTest(name = "[{index}] Create node {1} in Component")
+    @MethodSource("subjectChildrenParameters")
+    public void testCreateNodeInComponent(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference) {
+        this.testCreateNodeInSubject(nodeCreationTool, expectedType, containmentReference, COMPONENT_NAME);
+    }
+
+    @ParameterizedTest(name = "[{index}] Create node {1} in Interaction")
+    @MethodSource("subjectChildrenParameters")
+    public void testCreateNodeInInteraction(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference) {
+        this.testCreateNodeInSubject(nodeCreationTool, expectedType, containmentReference, INTERACTION_NAME);
+    }
+
+    @ParameterizedTest(name = "[{index}] Create node {1} in StateMachine")
+    @MethodSource("subjectChildrenParameters")
+    public void testCreateNodeInStateMachine(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference) {
+        this.testCreateNodeInSubject(nodeCreationTool, expectedType, containmentReference, STATE_MACHINE_NAME);
+    }
+
+    private void testCreateNodeInSubject(CreationTool nodeCreationTool, EClass expectedType, EReference containmentReference, String containerName) {
+        String mappingType = UCDMappingTypes.getMappingTypeAsSubNode(expectedType);
+        NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(containerName), mappingType, this.getCapturedNodes());
+        NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
+                () -> this.findSemanticElementByName(containerName), containmentReference);
+        this.createNodeOnContainer(containerName, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
 }

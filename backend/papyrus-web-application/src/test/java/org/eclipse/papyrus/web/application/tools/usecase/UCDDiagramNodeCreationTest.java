@@ -47,11 +47,16 @@ public class UCDDiagramNodeCreationTest extends NodeCreationTest {
 
     private static Stream<Arguments> parameterProvider() {
         return Stream.of(//
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()), UCDMappingTypes.getMappingType(UML.getActivity()), UML.getActivity(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()), UCDMappingTypes.getMappingType(UML.getClass_()), UML.getClass_(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()), UCDMappingTypes.getMappingType(UML.getComponent()), UML.getComponent(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()), UCDMappingTypes.getMappingType(UML.getInteraction()), UML.getInteraction(), PACKAGED_ELEMENT), //
-                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()), UCDMappingTypes.getMappingType(UML.getStateMachine()), UML.getStateMachine(), PACKAGED_ELEMENT) //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()), UML.getActivity(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getActor()), UML.getActor(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()), UML.getClass_(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getComment()), UML.getComment(), UML.getElement_OwnedComment()), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()), UML.getComponent(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()), UML.getConstraint(), UML.getNamespace_OwnedRule()), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()), UML.getInteraction(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()), UML.getPackage(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()), UML.getStateMachine(), PACKAGED_ELEMENT), //
+                Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()), UML.getUseCase(), PACKAGED_ELEMENT) //
         );
     }
 
@@ -67,13 +72,13 @@ public class UCDDiagramNodeCreationTest extends NodeCreationTest {
         super.tearDown();
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "[{index}] Create node {1} on diagram")
     @MethodSource("parameterProvider")
-    public void testCreateNode(CreationTool nodeCreationTool, String mappingType, EClass expectedType, EReference containmentReference) {
-        NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(() -> this.getDiagram(), null, mappingType, this.getCapturedNodes());
-        NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), () -> this.getEditingContext(), expectedType, () -> this.getRootSemanticElement(),
-                containmentReference);
+    public void testCreateNode(CreationTool nodeCreationTool, EClass expectedType, EReference expectedContainmentReference) {
+        String mappingType = UCDMappingTypes.getMappingType(expectedType);
+        NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, null, mappingType, this.getCapturedNodes());
+        NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType, this::getRootSemanticElement,
+                expectedContainmentReference);
         this.createNodeOnDiagram(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
-
 }

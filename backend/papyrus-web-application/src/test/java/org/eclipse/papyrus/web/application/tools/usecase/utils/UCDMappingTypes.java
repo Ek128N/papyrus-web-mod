@@ -40,8 +40,12 @@ public final class UCDMappingTypes {
         return result;
     }
 
-    public static String getSharedMappingType(EClass eClass) {
-        return UCD_PREFIX + eClass.getName() + "_SHARED";
+    public static String getMappingTypeAsSubNode(EClass eClass) {
+        String result = UCD_PREFIX + eClass.getName() + "_SHARED";
+        if (UMLPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass)) {
+            result = UCD_PREFIX + eClass.getName() + "_inPackage";
+        }
+        return result;
     }
 
 }

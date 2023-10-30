@@ -128,7 +128,8 @@ public class DeletionGraphicalChecker implements Checker {
             result.addAll(this.findGraphicalElementFromContainer(node, removedElement));
         }
         for (Edge edge : diagram.getEdges()) {
-            if (Objects.equals(edge.getTargetObjectLabel(), removedElement)) {
+            // Compare IDs instead of objects, the edge may have been reloaded and can be a different instance.
+            if (Objects.equals(edge.getId(), removedElement.getId())) {
                 result.add(edge);
             }
         }
@@ -139,7 +140,8 @@ public class DeletionGraphicalChecker implements Checker {
 
     private List<IDiagramElement> findGraphicalElementFromContainer(Node node, IDiagramElement removedElement) {
         List<IDiagramElement> result = new ArrayList<>();
-        if (Objects.equals(node, removedElement)) {
+        // Compare IDs instead of objects, the node may have been reloaded and can be a different instance.
+        if (Objects.equals(node.getId(), removedElement.getId())) {
             result.add(node);
         }
         for (Node childNode : node.getChildNodes()) {

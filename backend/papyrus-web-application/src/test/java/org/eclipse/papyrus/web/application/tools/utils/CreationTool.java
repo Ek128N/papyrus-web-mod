@@ -46,6 +46,11 @@ public abstract class CreationTool {
     private String toolName;
 
     /**
+     * The type of the element created by the tool.
+     */
+    private EClass toolEClass;
+
+    /**
      * Build the creation tool from the provided {@code toolSection} and {@code eClass}.
      *
      * @param toolSection
@@ -57,6 +62,7 @@ public abstract class CreationTool {
      */
     public CreationTool(String toolSection, EClass eClass) {
         this.toolSection = toolSection;
+        this.toolEClass = eClass;
         this.toolName = this.computeToolName(eClass);
     }
 
@@ -76,6 +82,15 @@ public abstract class CreationTool {
      */
     public final String getToolName() {
         return this.toolName;
+    }
+
+    /**
+     * Returns the type of the element created by the tool.
+     *
+     * @return the type of the element created by the tool
+     */
+    public final EClass getToolEClass() {
+        return this.toolEClass;
     }
 
     /**
