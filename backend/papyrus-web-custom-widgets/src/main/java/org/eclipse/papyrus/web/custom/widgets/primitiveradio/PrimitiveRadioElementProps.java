@@ -38,7 +38,7 @@ public final class PrimitiveRadioElementProps implements IProps {
 
     private String label;
 
-    private String iconURL;
+    private List<String> iconURL;
 
     private List<Diagnostic> diagnostics;
 
@@ -64,7 +64,7 @@ public final class PrimitiveRadioElementProps implements IProps {
         return this.label;
     }
 
-    public String getIconURL() {
+    public List<String> getIconURL() {
         return this.iconURL;
     }
 
@@ -113,7 +113,7 @@ public final class PrimitiveRadioElementProps implements IProps {
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private boolean readOnly;
 
@@ -136,7 +136,7 @@ public final class PrimitiveRadioElementProps implements IProps {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

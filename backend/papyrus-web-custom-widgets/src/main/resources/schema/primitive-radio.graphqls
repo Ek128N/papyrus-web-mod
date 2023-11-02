@@ -1,7 +1,7 @@
 type PrimitiveRadio implements Widget {
 	id: ID!
 	label: String!
-	iconURL: String
+	iconURL: [String!]!
 	diagnostics: [Diagnostic!]!
 	hasHelpText: Boolean!
 	readOnly: Boolean!

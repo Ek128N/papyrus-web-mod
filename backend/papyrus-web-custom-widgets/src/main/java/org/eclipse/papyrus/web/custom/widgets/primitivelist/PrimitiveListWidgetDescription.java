@@ -37,7 +37,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, List<?>> itemsProvider;
 
@@ -67,7 +67,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -127,7 +127,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -171,7 +171,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

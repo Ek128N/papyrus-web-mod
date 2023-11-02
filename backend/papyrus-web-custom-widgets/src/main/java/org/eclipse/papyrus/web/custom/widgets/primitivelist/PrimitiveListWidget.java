@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.custom.widgets.primitivelist;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -82,7 +83,7 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private ListStyle style;
 
@@ -112,7 +113,7 @@ public final class PrimitiveListWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

@@ -13,6 +13,7 @@
 package org.eclipse.papyrus.web.application.slider;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -32,7 +33,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private Function<VariableManager, Integer> minValueProvider;
 
@@ -54,7 +55,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -99,7 +100,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, String> helpTextProvider;
 
@@ -132,7 +133,7 @@ public final class SliderDescription extends AbstractWidgetDescription {
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }

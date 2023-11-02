@@ -74,7 +74,7 @@ public class UCDSemanticDropTest extends SemanticDropTest {
     public void testSemanticDropOnPackage() {
         this.applyNodeCreationTool(this.representationId, new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
         Node parentNode = (Node) this.findGraphicalElementByLabel("Package1");
-        this.applyEditLabelTool(parentNode.getLabel().getId(), PACKAGE_CONTAINER);
+        this.applyEditLabelTool(parentNode.getInsideLabel().getId(), PACKAGE_CONTAINER);
 
         EObject parentElement = this.findSemanticElementByName(PACKAGE_CONTAINER);
         String parentElementId = this.getObjectService().getId(parentElement);

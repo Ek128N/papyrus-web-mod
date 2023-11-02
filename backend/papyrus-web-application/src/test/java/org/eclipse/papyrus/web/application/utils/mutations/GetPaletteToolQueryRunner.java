@@ -45,74 +45,78 @@ public class GetPaletteToolQueryRunner {
 
     private static String query = """
             query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementId: ID!) {
-              viewer {
-                editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $diagramId) {
-                    description {
-                      ... on DiagramDescription {
-                        palette(diagramElementId: $diagramElementId) {
-                          id
-                          tools {
-                            __typename
-                            id
-                            label
-                            imageURL
-                            ... on SingleClickOnDiagramElementTool {
-                              targetDescriptions {
-                                id
-                                __typename
-                              }
-                              appliesToDiagramRoot
-                              selectionDescriptionId
-                              __typename
-                            }
-                            ... on SingleClickOnTwoDiagramElementsTool {
-                              candidates {
-                                sources {
-                                  id
-                                  __typename
-                                }
-                                targets {
-                                  id
-                                  __typename
-                                }
-                                __typename
-                              }
-                              __typename
-                            }
-                          }
-                          toolSections {
-                            id
-                            label
-                            imageURL
-                            tools {
-                              __typename
+                  viewer {
+                    editingContext(editingContextId: $editingContextId) {
+                      representation(representationId: $diagramId) {
+                        description {
+                          ... on DiagramDescription {
+                            palette(diagramElementId: $diagramElementId) {
                               id
-                              label
-                              imageURL
-                              ... on SingleClickOnDiagramElementTool {
-                                targetDescriptions {
+                              tools {
+                                __typename
+                                id
+                                label
+                                iconURL
+                                ... on SingleClickOnDiagramElementTool {
+                                  targetDescriptions {
+                                    id
+                                    __typename
+                                  }
+                                  appliesToDiagramRoot
+                                  selectionDescriptionId
+                                  __typename
+                                }
+                                ... on SingleClickOnTwoDiagramElementsTool {
+                                  candidates {
+                                    sources {
+                                      id
+                                      __typename
+                                    }
+                                    targets {
+                                      id
+                                      __typename
+                                    }
+                                    __typename
+                                  }
+                                  __typename
+                                }
+                              }
+                              toolSections {
+                                id
+                                label
+                                iconURL
+                                tools {
+                                  __typename
                                   id
-                                  __typename
-                                }
-                                appliesToDiagramRoot
-                                selectionDescriptionId
-                                __typename
-                              }
-                              ... on SingleClickOnTwoDiagramElementsTool {
-                                candidates {
-                                  sources {
-                                    id
+                                  label
+                                  iconURL
+                                  ... on SingleClickOnDiagramElementTool {
+                                    targetDescriptions {
+                                      id
+                                      __typename
+                                    }
+                                    appliesToDiagramRoot
+                                    selectionDescriptionId
                                     __typename
                                   }
-                                  targets {
-                                    id
+                                  ... on SingleClickOnTwoDiagramElementsTool {
+                                    candidates {
+                                      sources {
+                                        id
+                                        __typename
+                                      }
+                                      targets {
+                                        id
+                                        __typename
+                                      }
+                                      __typename
+                                    }
                                     __typename
                                   }
-                                  __typename
                                 }
                                 __typename
                               }
+                              __typename
                             }
                             __typename
                           }
@@ -124,11 +128,7 @@ public class GetPaletteToolQueryRunner {
                     }
                     __typename
                   }
-                  __typename
                 }
-                __typename
-              }
-            }
             """;
 
     private GraphQL graphQL;

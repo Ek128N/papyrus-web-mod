@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.custom.widgets.languageexpression;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.dto.MoveLanguageDirection;
@@ -66,7 +67,7 @@ public class LanguageExpressionComponentTest {
                 .labelProvider(varMan -> "")
                 .isReadOnlyProvider(varMan -> false)
                 .helpTextProvider(varMan -> "")
-                .iconURLProvider(var -> "")
+                .iconURLProvider(var -> List.of())
                 .targetObjectIdProvider(varMan -> UUID.randomUUID().toString())
                 .build();
 

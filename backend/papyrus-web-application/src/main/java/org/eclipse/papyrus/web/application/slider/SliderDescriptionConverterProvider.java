@@ -13,6 +13,7 @@
 package org.eclipse.papyrus.web.application.slider;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -39,7 +40,8 @@ public class SliderDescriptionConverterProvider implements IWidgetConverterProvi
     }
 
     @Override
-    public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
+    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService,
+            IFeedbackMessageService feedbackMessageService) {
         return new SliderDescriptionConverterSwitch(interpreter, editService, objectService, feedbackMessageService, this.widgetIdProvider);
     }
 

@@ -15,14 +15,12 @@ import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import {
   Representation,
   RepresentationComponent,
+  RepresentationComponentRegistry,
   RepresentationContext,
+  RepresentationContextValue,
   ServerContext,
   theme,
 } from '@eclipse-sirius/sirius-components-core';
-import {
-  RepresentationComponentRegistry,
-  RepresentationContextValue,
-} from '@eclipse-sirius/sirius-components-core/dist/workbench/RepresentationContext.types';
 import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
@@ -46,13 +44,9 @@ import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloGraphQLClient } from './ApolloGraphQLClient';
-import './Sprotty.css';
 import { httpOrigin } from './core/URL';
-import './fonts.css';
 import { Main } from './main/Main';
-import './reset.css';
 import { ToastProvider } from './toast/ToastProvider';
-import './variables.css';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
@@ -61,6 +55,12 @@ import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveLis
 import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidgetPropertySection';
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
+
+import './Sprotty.css';
+import './fonts.css';
+import './reset.css';
+import './variables.css';
+
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
   loadErrorMessages();
@@ -227,7 +227,7 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
     const primitiveListWidget: WidgetContribution = {
       name: 'PrimitiveListWidget',
       fields:
-        'label iconURL canAdd items { id label deletable } style { color fontSize italic bold underline strikeThrough }',
+        'label iconURL canAdd items { id label iconURL deletable } style { color fontSize italic bold underline strikeThrough }',
       icon: <FormatListBulletedIcon />,
     };
     return [

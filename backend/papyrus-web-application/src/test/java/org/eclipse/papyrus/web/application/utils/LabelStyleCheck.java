@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -36,7 +37,7 @@ public class LabelStyleCheck {
     }
 
     public static LabelStyleCheck build(Node n) {
-        Label label = n.getLabel();
+        InsideLabel label = n.getInsideLabel();
         assertNotNull(label);
         LabelStyle style = label.getStyle();
         assertNotNull(style);

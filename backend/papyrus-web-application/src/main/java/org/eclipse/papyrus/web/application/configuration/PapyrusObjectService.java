@@ -61,14 +61,15 @@ public class PapyrusObjectService implements IObjectService {
     }
 
     @Override
-    public String getImagePath(Object object) {
-        String image = this.delegate.getImagePath(object);
+    public List<String> getImagePath(Object object) {
+        List<String> images = this.delegate.getImagePath(object);
 
-        return this.imageOverriders.stream().map(imgOverrider -> imgOverrider.getOverrideImage(image)) //
+        return images.stream().map(image -> this.imageOverriders.stream().map(imgOverrider -> imgOverrider.getOverrideImage(image)) //
                 .filter(img -> img.isPresent())//
                 .map(img -> img.get())//
                 .findFirst() //
-                .orElse(image);
+                .orElse(image) //
+        ).toList();
     }
 
     @Override

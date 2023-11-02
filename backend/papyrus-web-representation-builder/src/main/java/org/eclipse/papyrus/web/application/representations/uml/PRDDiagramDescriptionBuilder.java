@@ -196,7 +196,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createDiagramEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.umlPackage.getEnumeration();
-        NodeDescription prdDiagramEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription prdDiagramEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -357,7 +357,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createSharedEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.umlPackage.getEnumeration();
-        NodeDescription prdSharedEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription prdSharedEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(enumerationEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
@@ -575,7 +575,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * @return the created {@link NodeDescription}
      */
     private NodeDescription createDiagramNodeDescriptionForClassifier(DiagramDescription diagramDescription, EClass classifierEClass) {
-        NodeDescription prdDiagramClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription prdDiagramClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -605,7 +605,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * @return the created {@link NodeDescription}
      */
     private NodeDescription createSharedNodeDescriptionForClassifier(DiagramDescription diagramDescription, EClass classifierEClass) {
-        NodeDescription prdSharedClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription prdSharedClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(classifierEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//

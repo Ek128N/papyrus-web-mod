@@ -65,7 +65,7 @@ public class EditLabelTest extends AbstractPapyrusWebTest {
         IDiagramElement element = this.findGraphicalElementByLabel(elementName);
         String labelId = null;
         if (element instanceof Node node) {
-            labelId = node.getLabel().getId();
+            labelId = node.getInsideLabel().getId();
         } else if (element instanceof Edge edge) {
             labelId = edge.getCenterLabel().getId();
         } else {

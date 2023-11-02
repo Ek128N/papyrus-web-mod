@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.slider;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -47,7 +48,7 @@ public class SliderComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = sliderDescription.getIdProvider().apply(idVariableManager);
 
-        String iconURL = sliderDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = sliderDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = sliderDescription.getIsReadOnlyProvider().apply(variableManager);
         int minValue = sliderDescription.getMinValueProvider().apply(variableManager);
         int maxValue = sliderDescription.getMaxValueProvider().apply(variableManager);

@@ -191,7 +191,7 @@ public class LanguageExpressionComponent implements IComponent {
 
 
 
-        String iconURL = languageExpressionDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = languageExpressionDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = languageExpressionDescription.getIsReadOnlyProvider().apply(variableManager);
 
         EObject languageExpressionOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);

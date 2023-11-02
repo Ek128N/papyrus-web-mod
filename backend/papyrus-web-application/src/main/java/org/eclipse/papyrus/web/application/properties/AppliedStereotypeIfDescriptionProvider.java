@@ -82,11 +82,11 @@ public class AppliedStereotypeIfDescriptionProvider {
         return this.objectService.getKind(candidate);
     }
 
-    private String getListItemImageURL(VariableManager variablemanager) {
+    private List<String> getListItemIconURL(VariableManager variablemanager) {
         // @formatter:off
         return variablemanager.get(ListComponent.CANDIDATE_VARIABLE, EObject.class)
                 .map(this::getImage)
-                .orElse("");
+                .orElse(List.of());
         // @formatter:on
     }
 
@@ -104,7 +104,7 @@ public class AppliedStereotypeIfDescriptionProvider {
                 .itemKindProvider(this::getKind)
                 .itemClickHandlerProvider(e -> new Success())
                 .styleProvider(e -> null)
-                .itemImageURLProvider(this::getListItemImageURL)
+                .itemIconURLProvider(this::getListItemIconURL)
                 .diagnosticsProvider(this.propertiesValidationProvider.getDiagnosticsProvider())
                 .kindProvider(this.propertiesValidationProvider.getKindProvider())
                 .messageProvider(this.propertiesValidationProvider.getMessageProvider())
@@ -160,9 +160,9 @@ public class AppliedStereotypeIfDescriptionProvider {
         };
     }
 
-    private String getImage(EObject stereotypeApplication) {
+    private List<String> getImage(EObject stereotypeApplication) {
         if (stereotypeApplication instanceof DynamicEObjectImpl) {
-            return "/icons/full/obj16/Stereotype.gif";
+            return List.of("/icons/full/obj16/Stereotype.gif");
         }
         return this.objectService.getImagePath(stereotypeApplication);
     }

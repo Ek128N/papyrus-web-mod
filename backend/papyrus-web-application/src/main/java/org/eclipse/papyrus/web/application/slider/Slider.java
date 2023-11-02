@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.representations.IStatus;
  */
 @Immutable
 public final class Slider extends AbstractWidget {
+
     private int minValue;
 
     private int maxValue;
@@ -40,6 +41,10 @@ public final class Slider extends AbstractWidget {
 
     private Slider() {
         // Prevent instantiation
+    }
+
+    public static Builder newSlider(String id) {
+        return new Builder(id);
     }
 
     public int getMinValue() {
@@ -64,20 +69,16 @@ public final class Slider extends AbstractWidget {
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.getMinValue(), this.getMaxValue(), this.getCurrentValue(), this.getNewValueHandler());
     }
 
-    public static Builder newSlider(String id) {
-        return new Builder(id);
-    }
-
     /**
      * Builder used to create the Slider.
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
+        private final String id;
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private List<Diagnostic> diagnostics;
 
@@ -96,15 +97,17 @@ public final class Slider extends AbstractWidget {
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
+
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }
+
         public Builder diagnostics(List<Diagnostic> diagnostics) {
             this.diagnostics = Objects.requireNonNull(diagnostics);
             return this;
@@ -144,7 +147,7 @@ public final class Slider extends AbstractWidget {
             Slider slider = new Slider();
             slider.id = Objects.requireNonNull(this.id);
             slider.label = Objects.requireNonNull(this.label);
-            slider.iconURL = this.iconURL;
+            slider.iconURL = Objects.requireNonNull(this.iconURL);
             slider.readOnly = this.readOnly;
             slider.minValue = Objects.requireNonNull(this.minValue);
             slider.maxValue = Objects.requireNonNull(this.maxValue);

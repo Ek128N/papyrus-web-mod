@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.common.util.EList;
@@ -35,7 +34,6 @@ import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefa
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -105,7 +103,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
                 .targetObjectIdProvider(this.semanticTargetIdProvider) //
                 .idProvider(new WidgetIdProvider()).labelProvider(this.getLabelProvider()) //
                 .optionsProvider(this.getOptionsProvider()) //
-                .iconURLProvider(variableManager -> "") //
+                .iconURLProvider(variableManager -> List.of()) //
                 .itemsProvider(this::getReferenceValue) //
                 .itemIdProvider(this::getItemId) //
                 .itemKindProvider(this::getItemKind) //
@@ -125,7 +123,6 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
                 .itemRemoveHandlerProvider(this::handleRemoveValue) //
                 .setHandlerProvider(this::handleSetReference) //
                 .addHandlerProvider(this::handleAddReferenceValues) //
-                .createElementHandlerProvider(this::handleCreateElement) //
                 .moveHandlerProvider(this::handleMoveReferenceValue) //
                 .build();
     }
@@ -175,8 +172,8 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
         return this.getItem(variableManager).map(this.objectService::getLabel).orElse("");
     }
 
-    private String getItemIconURL(VariableManager variableManager) {
-        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse("");
+    private List<String> getItemIconURL(VariableManager variableManager) {
+        return this.getItem(variableManager).map(this.objectService::getImagePath).orElse(List.of());
     }
 
     private String getItemKind(VariableManager variableManager) {
@@ -315,24 +312,6 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
             result = this.createErrorStatus("Something went wrong while adding reference values.");
         }
         return result;
-    }
-
-    private Object handleCreateElement(VariableManager variableManager) {
-        Optional<Object> result = Optional.empty();
-        Optional<Boolean> optionalIsChild = variableManager.get(ReferenceWidgetComponent.IS_CHILD_CREATION_VARIABLE, Boolean.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        String creationDescriptionId = variableManager.get(ReferenceWidgetComponent.CREATION_DESCRIPTION_ID_VARIABLE, String.class).orElse("");
-        if (optionalIsChild.isPresent() && optionalEditingContext.isPresent()) {
-            if (optionalIsChild.get()) {
-                EObject parent = variableManager.get(ReferenceWidgetComponent.PARENT_VARIABLE, EObject.class).orElse(null);
-                result = this.editService.createChild(optionalEditingContext.get(), parent, creationDescriptionId);
-            } else {
-                UUID documentId = variableManager.get(ReferenceWidgetComponent.DOCUMENT_ID_VARIABLE, UUID.class).orElse(UUID.randomUUID());
-                String domainId = variableManager.get(ReferenceWidgetComponent.DOMAIN_ID_VARIABLE, String.class).orElse("");
-                result = this.editService.createRootObject(optionalEditingContext.get(), documentId, domainId, creationDescriptionId);
-            }
-        }
-        return result.orElse(null);
     }
 
     private IStatus handleMoveReferenceValue(VariableManager variableManager) {

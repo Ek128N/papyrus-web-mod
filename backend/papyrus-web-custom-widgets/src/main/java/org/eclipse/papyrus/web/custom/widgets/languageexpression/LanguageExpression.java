@@ -93,7 +93,7 @@ public final class LanguageExpression extends AbstractWidget {
 
         private String label;
 
-        private String iconURL;
+        private List<String> iconURL;
 
         private List<Diagnostic> diagnostics;
 
@@ -122,7 +122,7 @@ public final class LanguageExpression extends AbstractWidget {
             return this;
         }
 
-        public Builder iconURL(String iconURL) {
+        public Builder iconURL(List<String> iconURL) {
             this.iconURL = Objects.requireNonNull(iconURL);
             return this;
         }

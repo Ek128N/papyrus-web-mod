@@ -47,7 +47,7 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
 
         var builder = LanguageExpressionDescription.newLanguageExpressionDescription(UUID.randomUUID().toString()).idProvider(new WidgetIdProvider())
                 .labelProvider(varMan -> "")//
-                .iconURLProvider(varMan -> "") //
+                .iconURLProvider(varMan -> List.of()) //
                 .targetObjectIdProvider(varMan -> "")//
                 .isReadOnlyProvider(varMan -> false);
 
@@ -62,7 +62,7 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(UUID.randomUUID().toString()).idProvider(new WidgetIdProvider()) //
                 .targetObjectIdProvider(varMan -> "")//
                 .labelProvider(varMan -> "") //
-                .iconURLProvider(varMan -> "") //
+                .iconURLProvider(varMan -> List.of()) //
                 .isReadOnlyProvider(varMan -> false) //
                 .candidateValueProvider(varMan -> "") //
                 .candidateListProvider(varMan -> List.of("Option1", "Option2", "Option3")) //
@@ -82,7 +82,7 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
                 .newPrimitiveListDescription(UUID.randomUUID().toString())//
                 .idProvider(varMan -> "")//
                 .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "Primitive List"))//
-                .iconURLProvider(varMan -> "")//
+                .iconURLProvider(varMan -> List.of())//
                 .isReadOnlyProvider(varMan -> false)//
                 .itemsProvider(varMan -> List.of())//
                 .itemKindProvider(varMan -> "")//

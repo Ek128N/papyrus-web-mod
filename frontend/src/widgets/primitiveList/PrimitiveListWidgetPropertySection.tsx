@@ -83,9 +83,15 @@ const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListSty
     flexDirection: 'row',
     alignItems: 'center',
   },
-  icon: {
+  iconContainer: {
+    position: 'relative',
     width: '16px',
     height: '16px',
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
     marginRight: theme.spacing(2),
   },
   canBeSelectedItem: {
@@ -143,7 +149,7 @@ export const PrimitiveListSection = ({
   if (items.length === 0) {
     items.push({
       id: NONE_WIDGET_ITEM_ID,
-      imageURL: '',
+      iconURL: [],
       label: 'None',
       kind: 'Unknown',
       deletable: false,
@@ -219,8 +225,20 @@ export const PrimitiveListSection = ({
     return (
       <>
         <TableCell className={classes.cell}>
-          {item.imageURL && (
-            <img className={classes.icon} width="16" height="16" alt={''} src={httpOrigin + item.imageURL} />
+          {item.iconURL.length > 0 && (
+            <div className={classes.iconContainer}>
+              {item.iconURL.map((icon, index) => (
+                <img
+                  height="16"
+                  width="16"
+                  key={index}
+                  alt={item.label}
+                  src={httpOrigin + icon}
+                  className={classes.icon}
+                  style={{ zIndex: index }}
+                />
+              ))}
+            </div>
           )}
           <Typography
             className={`${classes.style}`}

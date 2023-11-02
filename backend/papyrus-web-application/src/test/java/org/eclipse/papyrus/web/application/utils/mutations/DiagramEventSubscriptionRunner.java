@@ -42,44 +42,39 @@ import graphql.GraphQL;
 public class DiagramEventSubscriptionRunner {
 
     private static String subscription = """
-                      subscription diagramEvent($input: DiagramEventInput!) {
-              diagramEvent(input: $input) {
-                __typename
-                ... on ErrorPayload {
-                  id
-                  message
-                }
-                ... on SubscribersUpdatedEventPayload {
-                  id
-                  subscribers {
-                    username
-                  }
-                }
-                ... on DiagramRefreshedEventPayload {
-                  id
-                  diagram {
+              subscription diagramEvent($input: DiagramEventInput!) {
+                diagramEvent(input: $input) {
+                  __typename
+                  ... on ErrorPayload {
                     id
-                    metadata {
-                      kind
-                      label
+                    message
+                  }
+                  ... on SubscribersUpdatedEventPayload {
+                    id
+                    subscribers {
+                      username
                     }
-                    targetObjectId
-                    position {
-                      x
-                      y
-                    }
-                    size {
-                      width
-                      height
-                    }
-                    nodes {
-                      ...nodeFields
-                      borderNodes {
+                  }
+                  ... on DiagramRefreshedEventPayload {
+                    id
+                    diagram {
+                      id
+                      metadata {
+                        kind
+                        label
+                      }
+                      targetObjectId
+                      position {
+                        x
+                        y
+                      }
+                      size {
+                        width
+                        height
+                      }
+                      nodes {
                         ...nodeFields
                         borderNodes {
-                          ...nodeFields
-                        }
-                        childNodes {
                           ...nodeFields
                           borderNodes {
                             ...nodeFields
@@ -89,13 +84,13 @@ public class DiagramEventSubscriptionRunner {
                             borderNodes {
                               ...nodeFields
                             }
+                            childNodes {
+                              ...nodeFields
+                              borderNodes {
+                                ...nodeFields
+                              }
+                            }
                           }
-                        }
-                      }
-                      childNodes {
-                        ...nodeFields
-                        borderNodes {
-                          ...nodeFields
                         }
                         childNodes {
                           ...nodeFields
@@ -114,136 +109,168 @@ public class DiagramEventSubscriptionRunner {
                               }
                               childNodes {
                                 ...nodeFields
+                                borderNodes {
+                                  ...nodeFields
+                                }
+                                childNodes {
+                                  ...nodeFields
+                                }
                               }
                             }
                           }
                         }
                       }
-                    }
-                    edges {
-                      ...edgeFields
+                      edges {
+                        ...edgeFields
+                      }
                     }
                   }
                 }
               }
-            }
 
-            fragment nodeFields on Node {
-              id
-              type
-              targetObjectId
-              targetObjectKind
-              targetObjectLabel
-              descriptionId
-              state
-              label {
-                ...labelFields
+              fragment nodeFields on Node {
+                id
+                type
+                targetObjectId
+                targetObjectKind
+                targetObjectLabel
+                descriptionId
+                state
+                insideLabel {
+                  ...insideLabelFields
+                }
+                style {
+                  ... on RectangularNodeStyle {
+                    color
+                    borderColor
+                    borderStyle
+                    borderSize
+                    borderRadius
+                  }
+                  ... on ImageNodeStyle {
+                    imageURL
+                    borderColor
+                    borderStyle
+                    borderSize
+                    borderRadius
+                  }
+                  ... on ParametricSVGNodeStyle {
+                    svgURL
+                    backgroundColor
+                    borderColor
+                    borderRadius
+                    borderSize
+                    borderStyle
+                  }
+                  ... on IconLabelNodeStyle {
+                    backgroundColor
+                  }
+                }
+                position {
+                  x
+                  y
+                }
+                size {
+                  width
+                  height
+                }
+                userResizable
               }
-              style {
-                ... on RectangularNodeStyle {
+
+              fragment edgeFields on Edge {
+                id
+                type
+                targetObjectId
+                targetObjectKind
+                targetObjectLabel
+                descriptionId
+                sourceId
+                targetId
+                state
+                beginLabel {
+                  ...labelFields
+                }
+                centerLabel {
+                  ...labelFields
+                }
+                endLabel {
+                  ...labelFields
+                }
+                style {
+                  size
+                  lineStyle
+                  sourceArrow
+                  targetArrow
                   color
-                  borderColor
-                  borderStyle
-                  borderSize
-                  borderRadius
-                  withHeader
                 }
-                ... on ImageNodeStyle {
-                  imageURL
-                  borderColor
-                  borderStyle
-                  borderSize
-                  borderRadius
+                routingPoints {
+                  x
+                  y
                 }
-                ... on ParametricSVGNodeStyle {
-                  svgURL
-                  backgroundColor
-                  borderColor
-                  borderRadius
-                  borderSize
-                  borderStyle
+                sourceAnchorRelativePosition {
+                  x
+                  y
                 }
-                ... on IconLabelNodeStyle {
-                  backgroundColor
+                targetAnchorRelativePosition {
+                  x
+                  y
                 }
               }
-              position {
-                x
-                y
-              }
-              size {
-                width
-                height
-              }
-              userResizable
-            }
 
-            fragment edgeFields on Edge {
-              id
-              type
-              targetObjectId
-              targetObjectKind
-              targetObjectLabel
-              descriptionId
-              sourceId
-              targetId
-              state
-              beginLabel {
-                ...labelFields
+              fragment labelFields on Label {
+                id
+                type
+                text
+                style {
+                  color
+                  fontSize
+                  bold
+                  italic
+                  underline
+                  strikeThrough
+                  iconURL
+                }
+                position {
+                  x
+                  y
+                }
+                size {
+                  width
+                  height
+                }
+                alignment {
+                  x
+                  y
+                }
               }
-              centerLabel {
-                ...labelFields
-              }
-              endLabel {
-                ...labelFields
-              }
-              style {
-                size
-                lineStyle
-                sourceArrow
-                targetArrow
-                color
-              }
-              routingPoints {
-                x
-                y
-              }
-              sourceAnchorRelativePosition {
-                x
-                y
-              }
-              targetAnchorRelativePosition {
-                x
-                y
-              }
-            }
 
-            fragment labelFields on Label {
-              id
-              type
-              text
-              style {
-                color
-                fontSize
-                bold
-                italic
-                underline
-                strikeThrough
-                iconURL
+              fragment insideLabelFields on InsideLabel {
+                id
+                type
+                text
+                style {
+                  color
+                  fontSize
+                  bold
+                  italic
+                  underline
+                  strikeThrough
+                  iconURL
+                }
+                position {
+                  x
+                  y
+                }
+                size {
+                  width
+                  height
+                }
+                alignment {
+                  x
+                  y
+                }
+                isHeader
               }
-              position {
-                x
-                y
-              }
-              size {
-                width
-                height
-              }
-              alignment {
-                x
-                y
-              }
-            }
             """;
 
     private GraphQL graphQL;

@@ -48,7 +48,7 @@ public class PrimitiveRadioComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
         String id = primitiveRadio.getIdProvider().apply(idVariableManager);
 
-        String iconURL = primitiveRadio.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = primitiveRadio.getIconURLProvider().apply(variableManager);
         Boolean readOnly = primitiveRadio.getIsReadOnlyProvider().apply(variableManager);
         String value = primitiveRadio.getCandidateValueProvider().apply(variableManager);
         List<?> options = primitiveRadio.getCandidateListProvider().apply(variableManager);

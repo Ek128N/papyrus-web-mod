@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.custom.widgets.languageexpression;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -33,7 +34,7 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
 
     private Function<VariableManager, String> labelProvider;
 
-    private Function<VariableManager, String> iconURLProvider;
+    private Function<VariableManager, List<String>> iconURLProvider;
 
     private LanguageExpressionDescription() {
         // Prevent instantiation
@@ -51,7 +52,7 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
         return this.labelProvider;
     }
 
-    public Function<VariableManager, String> getIconURLProvider() {
+    public Function<VariableManager, List<String>> getIconURLProvider() {
         return this.iconURLProvider;
     }
 
@@ -73,7 +74,7 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
 
         private Function<VariableManager, String> labelProvider;
 
-        private Function<VariableManager, String> iconURLProvider = variableManager -> null;
+        private Function<VariableManager, List<String>> iconURLProvider = variableManager -> List.of();
 
         private Function<VariableManager, Boolean> isReadOnlyProvider = variableManager -> false;
 
@@ -95,7 +96,7 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
             return this;
         }
 
-        public Builder iconURLProvider(Function<VariableManager, String> iconURLProvider) {
+        public Builder iconURLProvider(Function<VariableManager, List<String>> iconURLProvider) {
             this.iconURLProvider = Objects.requireNonNull(iconURLProvider);
             return this;
         }
@@ -109,7 +110,7 @@ public final class LanguageExpressionDescription extends AbstractWidgetDescripti
             this.helpTextProvider = Objects.requireNonNull(helpTextProvider);
             return this;
         }
-        
+
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
             return this;

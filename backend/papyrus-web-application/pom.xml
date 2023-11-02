@@ -135,6 +135,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customnodes</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customnodes-edit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-spring</artifactId>
 		</dependency>
 		<dependency>

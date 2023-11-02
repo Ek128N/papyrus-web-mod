@@ -61,7 +61,7 @@ import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
  *
  * @author Jerome Gout
  */
-public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<AbstractWidgetDescription> {
+public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional<AbstractWidgetDescription>> {
 
     private final AQLInterpreter interpreter;
 
@@ -83,13 +83,13 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
     }
 
     @Override
-    public AbstractWidgetDescription caseLanguageExpressionWidgetDescription(LanguageExpressionWidgetDescription languageExpressionDescription) {
+    public Optional<AbstractWidgetDescription> caseLanguageExpressionWidgetDescription(LanguageExpressionWidgetDescription languageExpressionDescription) {
         String descriptionId = this.getDescriptionId(languageExpressionDescription);
 
         var builder = LanguageExpressionDescription.newLanguageExpressionDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> this.getLanguageExpressionLabel(languageExpressionDescription, variableManager))
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(languageExpressionDescription.getIsEnabledExpression()));
 
@@ -97,7 +97,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
             builder.helpTextProvider(this.getStringValueProvider(languageExpressionDescription.getHelpExpression()));
         }
 
-        return builder.build();
+        return Optional.of(builder.build());
     }
 
     private String getDescriptionId(EObject description) {
@@ -109,14 +109,14 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
     }
 
     @Override
-    public AbstractWidgetDescription casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription primitiveRadioDescription) {
+    public Optional<AbstractWidgetDescription> casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription primitiveRadioDescription) {
         String descriptionId = this.getDescriptionId(primitiveRadioDescription);
 
         var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(descriptionId)
                 .idProvider(new WidgetIdProvider())
                 .targetObjectIdProvider(this.semanticTargetIdProvider)//
                 .labelProvider(variableManager -> this.getPrimitiveRadioLabel(primitiveRadioDescription, variableManager))
-                .iconURLProvider(variableManager -> "")
+                .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(primitiveRadioDescription.getIsEnabledExpression()))
                 .candidateValueProvider(this.getValueProvider(primitiveRadioDescription.getValueExpression()))
                 .candidateListProvider(this.getOptionsProvider(primitiveRadioDescription.getCandidatesExpression()))
@@ -126,7 +126,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
             builder.helpTextProvider(this.getStringValueProvider(primitiveRadioDescription.getHelpExpression()));
         }
 
-        return builder.build();
+        return Optional.of(builder.build());
     }
 
     private String getPrimitiveListItemId(VariableManager variableManager) {
@@ -138,7 +138,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
     }
 
     @Override
-    public AbstractWidgetDescription casePrimitiveListWidgetDescription(org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription viewListDescription) {
+    public Optional<AbstractWidgetDescription> casePrimitiveListWidgetDescription(org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription viewListDescription) {
         String descriptionId = this.getDescriptionId(viewListDescription);
         StringValueProvider labelProvider = this.getStringValueProvider(viewListDescription.getLabelExpression());
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewListDescription.getIsEnabledExpression());
@@ -163,7 +163,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
         PrimitiveListWidgetDescription.Builder builder = PrimitiveListWidgetDescription.newPrimitiveListDescription(descriptionId)//
                 .idProvider(new WidgetIdProvider())//
                 .labelProvider(labelProvider)//
-                .iconURLProvider(variableManager -> "")//
+                .iconURLProvider(variableManager -> List.of())//
                 .isReadOnlyProvider(isReadOnlyProvider)//
                 .itemsProvider(valueProvider)//
                 .itemKindProvider(itemKindProvider)//
@@ -184,7 +184,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Abstract
         if (newValueHandlerProvider != null) {
             builder.newValueHandler(newValueHandlerProvider); //
         }
-        return builder.build();
+        return Optional.of(builder.build());
     }
 
     private Function<VariableManager, IStatus> handlePrimitiveListDeleteOperation(PrimitiveListDeleteOperation deleteOperation) {

@@ -100,7 +100,11 @@ public class GetMetaclassMetadatasEventHandler implements IEditingContextEventHa
             if (!metaclassEClass.isAbstract() && !metaclassEClass.isInterface()) {
                 // Copied from org.eclipse.papyrus.uml.tools.providers.UMLEClassLabelProvider
                 final EObject instance = UMLFactory.eINSTANCE.create(metaclassEClass);
-                return URLConstants.IMAGE_BASE_PATH + this.objectService.getImagePath(instance);
+                List<String> metaclassImagePaths = this.objectService.getImagePath(instance);
+                if (!metaclassImagePaths.isEmpty()) {
+                    // Return the first path, we don't want to display decorators here.
+                    return URLConstants.IMAGE_BASE_PATH + metaclassImagePaths.get(0);
+                }
             }
         }
         return null;

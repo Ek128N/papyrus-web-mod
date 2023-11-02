@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.custom.widgets;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.core.api.IEditService;
@@ -40,7 +41,7 @@ public class PapyrusWidgetsConverterProvider implements IWidgetConverterProvider
     }
 
     @Override
-    public Switch<AbstractWidgetDescription> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
+    public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
         return new PapyrusWidgetsConverterSwitch(interpreter, editService, objectService, feedbackMessageService, this.formIdProvider);
     }
 

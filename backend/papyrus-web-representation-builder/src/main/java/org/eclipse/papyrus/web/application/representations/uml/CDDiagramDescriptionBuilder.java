@@ -269,7 +269,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private void createEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.pack.getEnumeration();
-        NodeDescription enumerationLiterals = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription enumerationLiterals = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -303,7 +303,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createInterfaceDescription(DiagramDescription diagramDescription) {
 
         EClass interfaceEClass = this.pack.getInterface();
-        NodeDescription interfaceDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription interfaceDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(interfaceEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -359,7 +359,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createPrimitiveTypeDescription(DiagramDescription diagramDescription) {
 
         EClass primitiveTypeEClass = this.pack.getPrimitiveType();
-        NodeDescription primitiveTypeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription primitiveTypeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(primitiveTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -399,7 +399,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createDataTypeDescription(DiagramDescription diagramDescription) {
 
         EClass dataTypeEClass = this.pack.getDataType();
-        NodeDescription classDescription = this.newNodeBuilder(dataTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription classDescription = this.newNodeBuilder(dataTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(dataTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -440,7 +440,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createClassDescription(DiagramDescription diagramDescription) {
-        NodeDescription classDescription = this.newNodeBuilder(this.pack.getClass_(), this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription classDescription = this.newNodeBuilder(this.pack.getClass_(), this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getClass_()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//

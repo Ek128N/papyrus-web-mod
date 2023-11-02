@@ -58,7 +58,7 @@ public class PrimitiveListWidgetComponent implements IComponent {
         idVariableManager.put(FormComponent.WIDGET_LABEL, label);
 
         String id = listDescription.getIdProvider().apply(idVariableManager);
-        String iconURL = listDescription.getIconURLProvider().apply(variableManager);
+        List<String> iconURL = listDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = listDescription.getIsReadOnlyProvider().apply(variableManager);
         List<?> itemCandidates = listDescription.getItemsProvider().apply(variableManager);
         ListStyle style = listDescription.getStyleProvider().apply(variableManager);
@@ -81,7 +81,7 @@ public class PrimitiveListWidgetComponent implements IComponent {
             PrimitiveListItem item = PrimitiveListItem.newPrimitiveListItem(itemId)//
                     .label(itemLabel)//
                     .kind(itemKind)//
-                    .imageURL("")//
+                    .iconURL(List.of())//
                     .deletable(isItemDeletable)//
                     .deleteHandler(deleteHandler)//
                     .build();

@@ -1,7 +1,7 @@
 type PrimitiveListWidget implements Widget {
   id: ID!
   label: String!
-  iconURL: String
+  iconURL: [String!]!
   diagnostics: [Diagnostic!]!
   hasHelpText: Boolean!
   readOnly: Boolean!
@@ -30,6 +30,6 @@ type PrimitiveListItem {
   id: ID!
   label: String!
   kind: String!
-  imageURL: String!
+  iconURL: [String!]!
   deletable: Boolean!
 }

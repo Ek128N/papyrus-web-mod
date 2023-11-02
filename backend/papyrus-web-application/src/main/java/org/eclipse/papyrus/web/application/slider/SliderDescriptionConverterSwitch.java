@@ -44,7 +44,7 @@ import org.eclipse.sirius.web.customwidgets.util.CustomwidgetsSwitch;
  *
  * @author pcdavid
  */
-public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<AbstractWidgetDescription> {
+public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Optional<AbstractWidgetDescription>> {
 
     private final AQLInterpreter interpreter;
 
@@ -66,7 +66,7 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
     }
 
     @Override
-    public AbstractWidgetDescription caseSliderDescription(SliderDescription viewSliderDescription) {
+    public Optional<AbstractWidgetDescription> caseSliderDescription(SliderDescription viewSliderDescription) {
         String descriptionId = this.getDescriptionId(viewSliderDescription);
         WidgetIdProvider idProvider = new WidgetIdProvider();
         StringValueProvider labelProvider = this.getStringValueProvider(viewSliderDescription.getLabelExpression());
@@ -82,7 +82,7 @@ public class SliderDescriptionConverterSwitch extends CustomwidgetsSwitch<Abstra
         if (viewSliderDescription.getHelpExpression() != null && !viewSliderDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewSliderDescription.getHelpExpression()));
         }
-        return builder.build();
+        return Optional.of(builder.build());
     }
 
     private Function<VariableManager, Integer> getIntValueProvider(String intValueExpression) {

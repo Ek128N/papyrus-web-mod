@@ -414,7 +414,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Node interfaceNode = this.getServiceTester().assertDrop(nestedInterface, nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
 
         // Checks that there is no keyword and everything is on one line
-        assertEquals("Interface1", interfaceNode.getLabel().getText()); //$NON-NLS-1$
+        assertEquals("Interface1", interfaceNode.getInsideLabel().getText()); //$NON-NLS-1$
 
         Stereotype stereotype = EMFUtils.allContainedObjectOfType(standardProfile, Stereotype.class)//
                 .filter(s -> "Realization".equals(s.getName()))// //$NON-NLS-1$
@@ -427,7 +427,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         this.getDiagramHelper().refresh();
 
         interfaceNode = this.getDiagramHelper().assertGetUniqueMatchingNode(getLabelNodeId(UML.getClassifier(), UML.getClass_()), nestedInterface);
-        assertEquals(UMLCharacters.ST_LEFT + "Realization" + UMLCharacters.ST_RIGHT + " Interface1", interfaceNode.getLabel().getText()); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(UMLCharacters.ST_LEFT + "Realization" + UMLCharacters.ST_RIGHT + " Interface1", interfaceNode.getInsideLabel().getText()); //$NON-NLS-1$ //$NON-NLS-2$
 
     }
 

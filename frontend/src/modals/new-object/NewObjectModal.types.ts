@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-forms';
 
 export interface NewObjectModalProps {
   editingContextId: string;
@@ -23,7 +24,7 @@ export interface NewObjectModalProps {
 export interface ChildCreationDescription {
   id: string;
   label: string;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export interface GQLGetChildCreationDescriptionsQueryVariables {
@@ -47,7 +48,7 @@ export interface GQLEditingContext {
 export interface GQLChildCreationDescription {
   id: string;
   label: string;
-  iconURL: string;
+  iconURL: string[];
 }
 
 export interface GQLCreateChildMutationData {
@@ -61,6 +62,7 @@ export interface GQLCreateChildPayload {
 export interface GQLCreateChildSuccessPayload extends GQLCreateChildPayload {
   id: string;
   object: GQLObject;
+  messages: GQLMessage[];
 }
 
 export interface GQLObject {
@@ -70,5 +72,5 @@ export interface GQLObject {
 }
 
 export interface GQLErrorPayload extends GQLCreateChildPayload {
-  message: string;
+  messages: GQLMessage[];
 }
