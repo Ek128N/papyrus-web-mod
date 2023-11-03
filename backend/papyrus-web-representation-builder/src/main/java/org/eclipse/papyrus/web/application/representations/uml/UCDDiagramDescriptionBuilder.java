@@ -156,7 +156,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createDiagramPackageDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.umlPackage.getPackage();
-        NodeDescription ucdDiagramPackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass, this.getQueryBuilder().queryAllReachable(packageEClass));
+        NodeDescription ucdDiagramPackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
+                this.getQueryBuilder().queryAllReachableExactType(packageEClass));
         diagramDescription.getNodeDescriptions().add(ucdDiagramPackageDescription);
 
         this.createToolSectionsWithSubjectInNodeDescription(ucdDiagramPackageDescription);
@@ -312,7 +313,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createDiagramClassifierAsSubjectDescription(DiagramDescription diagramDescription, EClass classifierAsSubject) {
         NodeDescription ucdDiagramClassifierDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getDomainNodeName(classifierAsSubject)) //
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(classifierAsSubject))//
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierAsSubject))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool())//
@@ -456,7 +457,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdDiagramActorDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(actorEClass)) //
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(actorEClass))//
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(actorEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool())//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
@@ -565,7 +566,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createExtendDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> useCaseCollector = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getUseCase());
         EClass extendClass = this.umlPackage.getExtend();
-        EdgeDescription ucdExtendDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(extendClass, this.getQueryBuilder().queryAllReachable(extendClass),
+        EdgeDescription ucdExtendDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(extendClass, this.getQueryBuilder().queryAllReachableExactType(extendClass),
                 useCaseCollector, useCaseCollector);
         EdgeStyle style = ucdExtendDescription.getStyle();
         style.setLineStyle(LineStyle.DASH);
@@ -612,7 +613,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createIncludeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> useCaseCollector = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getUseCase());
         EdgeDescription ucdIncludeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getInclude(),
-                this.getQueryBuilder().queryAllReachable(this.umlPackage.getInclude()), useCaseCollector, useCaseCollector);
+                this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getInclude()), useCaseCollector, useCaseCollector);
         EdgeStyle style = ucdIncludeDescription.getStyle();
         style.setLineStyle(LineStyle.DASH);
         style.setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
@@ -634,7 +635,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createPackageImportDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage());
         EdgeDescription ucdPackageImportDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getPackageImport(),
-                this.getQueryBuilder().queryAllReachable(this.umlPackage.getPackageImport()), packageDescriptions, packageDescriptions);
+                this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getPackageImport()), packageDescriptions, packageDescriptions);
         ucdPackageImportDescription.getStyle().setLineStyle(LineStyle.DASH);
         ucdPackageImportDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
@@ -656,7 +657,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createPackageMergeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage());
         EdgeDescription ucdPackageMergeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getPackageMerge(),
-                this.getQueryBuilder().queryAllReachable(this.umlPackage.getPackageMerge()), packageDescriptions, packageDescriptions);
+                this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getPackageMerge()), packageDescriptions, packageDescriptions);
         ucdPackageMergeDescription.getStyle().setLineStyle(LineStyle.DASH);
         ucdPackageMergeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
         EdgeTool ucdPackageMergeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageMergeDescription, this.umlPackage.getPackage_PackageMerge());

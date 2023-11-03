@@ -174,7 +174,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private void createDiagramPackageDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.umlPackage.getPackage();
         NodeDescription prdDiagramPackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
-                this.getQueryBuilder().queryAllReachable(this.umlPackage.getPackage()));
+                this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getPackage()));
         diagramDescription.getNodeDescriptions().add(prdDiagramPackageDescription);
 
         // create Package tool sections
@@ -217,7 +217,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createDiagramProfileDescription(DiagramDescription diagramDescription) {
         EClass profileEClass = this.umlPackage.getProfile();
-        NodeDescription prdDiagramProfileDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(profileEClass, this.getQueryBuilder().queryAllReachable(profileEClass));
+        NodeDescription prdDiagramProfileDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(profileEClass,
+                this.getQueryBuilder().queryAllReachableExactType(profileEClass));
         diagramDescription.getNodeDescriptions().add(prdDiagramProfileDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdDiagramProfileDescription);
@@ -334,7 +335,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createDiagramNodeDescriptionForClassifier(DiagramDescription diagramDescription, EClass classifierEClass) {
         NodeDescription prdDiagramClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(classifierEClass))//
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool())//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierEClass.getName())) //
@@ -505,7 +506,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass primitiveTypeEClass = this.umlPackage.getPrimitiveType();
         NodeDescription prdDiagramPrimitiveTypeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, false)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(primitiveTypeEClass)) //
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(primitiveTypeEClass)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
@@ -610,7 +611,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass enumerationEClass = this.umlPackage.getEnumeration();
         NodeDescription prdDiagramEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
-                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(enumerationEClass))//
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool())//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //

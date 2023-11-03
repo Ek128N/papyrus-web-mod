@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices.utils;
 
 import static java.util.stream.Collectors.toList;
@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
+import org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.sirius.contributions.FactoryMethod;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
@@ -247,13 +248,20 @@ public class CreationViewHelper implements IViewCreationHelper {
         List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()//
                 .distinct()//
                 .filter(c -> this.isCompliant(UMLHelper.toEClass(c.getDomainType()), eClass))//
+                .filter(c -> !AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS.equals(c.getName())) //
                 // We want to keep the more specialized description type first
                 .sorted(Comparator.comparingInt(n -> -1 * this.computeDistanceToElement(UMLHelper.toEClass(n.getDomainType())))).collect(toList());
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidate = candidates.stream().filter(c -> UMLHelper.toEClass(c.getDomainType()) == eClass).findFirst();
         if (candidates.isEmpty()) {
             LOGGER.error(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName)); //$NON-NLS-1$
             return null;
         } else {
-            org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = candidates.get(0);
+            org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = null;
+            if (perfectCandidate.isPresent()) {
+                byDefault = perfectCandidate.get();
+            } else {
+                byDefault = candidates.get(0);
+            }
             if (candidates.size() > 1) {
                 LOGGER.info(
                         MessageFormat.format("More than one candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName())); //$NON-NLS-1$
