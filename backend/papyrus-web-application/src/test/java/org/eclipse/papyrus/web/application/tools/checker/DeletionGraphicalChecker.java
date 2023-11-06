@@ -90,11 +90,43 @@ public class DeletionGraphicalChecker implements Checker {
         Diagram diagram = this.diagramSupplier.get();
         int newDiagramAllNodesCount = this.getDiagramSize(diagram);
 
-        assertThat(newDiagramAllNodesCount).as("The diagram should contain 1 less element").isEqualTo(this.diagramAllChildCount - 1);
+        assertThat(newDiagramAllNodesCount).as("The diagram should contain " + this.getExpectedNumerOfDeletedElements() + " less element")
+                .isEqualTo(this.diagramAllChildCount - this.getExpectedNumerOfDeletedElements());
 
         int newGraphicalOwnerChildCount = this.getGraphicalElementChildCount(this.graphicalOwnerSupplier)
                 .orElse(this.diagramSupplier.get().getNodes().size() + this.diagramSupplier.get().getEdges().size());
-        assertThat(newGraphicalOwnerChildCount).as("The graphical container should contain 1 less element").isEqualTo(this.graphicalOwnerChildCount - 1);
+        assertThat(newGraphicalOwnerChildCount).as("The graphical container should contain " + this.getExpectedNumberOfDeletedGraphicalOwnerDirectChildren() + " less element")
+                .isEqualTo(this.graphicalOwnerChildCount - this.getExpectedNumberOfDeletedGraphicalOwnerDirectChildren());
+    }
+
+    /**
+     * The expected number of deleted elements in the diagram.
+     * <p>
+     * This method is used by {@link #checkNumberOfRemovedElement()} to ensure that the correct number of elements have
+     * been deleted in the diagram. The default implementation of this method returns {@code 1}.
+     * </p>
+     *
+     * @return the expected number of deleted elements in the diagram
+     */
+    protected int getExpectedNumerOfDeletedElements() {
+        return 1;
+    }
+
+    /**
+     * The expected number of deleted element in the checked graphical owner.
+     * <p>
+     * This method is used by {@link #checkNumberOfRemovedElement()} to ensure that the correct number of elements have
+     * been deleted in the checked graphical parent. The default implementation of this method returns {@code 1}.
+     * </p>
+     * <p>
+     * This method may return a number smaller than {@link #getExpectedNumerOfDeletedElements()} if some elements aren't
+     * deleted in the graphical owner.
+     * </p>
+     *
+     * @return the expected number of deleted element in the checked graphical parent
+     */
+    protected int getExpectedNumberOfDeletedGraphicalOwnerDirectChildren() {
+        return 1;
     }
 
     private int getDiagramSize(Diagram diagram) {

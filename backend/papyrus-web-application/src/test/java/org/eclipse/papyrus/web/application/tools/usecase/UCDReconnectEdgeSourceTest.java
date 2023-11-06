@@ -22,7 +22,6 @@ import org.eclipse.papyrus.web.application.tools.checker.EdgeSourceGraphicalChec
 import org.eclipse.papyrus.web.application.tools.test.ReconnectEdgeSourceTest;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDCreationTool;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDToolSections;
-import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -110,7 +109,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndRealizationAndUsageParameters")
     public void testReconnectAbstractionSource(EClass newSourceType) {
-        String abstractionId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, UML.getAbstraction());
+        String abstractionId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getAbstraction()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(abstractionId, newSourceLabel, graphicalChecker);
@@ -119,7 +118,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("associationAndGeneralizationParameters")
     public void testReconnectAssociationSource(EClass newSourceType) {
-        String associationId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, UML.getAssociation());
+        String associationId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getAssociation()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(associationId, newSourceLabel, graphicalChecker);
@@ -128,7 +127,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndRealizationAndUsageParameters")
     public void testReconnectDependencySource(EClass newSourceType) {
-        String dependencyId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, UML.getDependency());
+        String dependencyId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getDependency()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(dependencyId, newSourceLabel, graphicalChecker);
@@ -137,7 +136,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("extendAndIncludeParameters")
     public void testReconnectExtendSource(EClass newSourceType) {
-        String extendId = this.createEdge(USE_CASE_EDGE_SOURCE, USE_CASE_EDGE_TARGET, UML.getExtend());
+        String extendId = this.createEdge(USE_CASE_EDGE_SOURCE, USE_CASE_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getExtend()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(extendId, newSourceLabel, graphicalChecker);
@@ -146,7 +145,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("associationAndGeneralizationParameters")
     public void testReconnectGeneralizationSource(EClass newSourceType) {
-        String generalizationId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, UML.getGeneralization());
+        String generalizationId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getGeneralization()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(generalizationId, newSourceLabel, graphicalChecker);
@@ -155,7 +154,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("extendAndIncludeParameters")
     public void testReconnectIncludeSource(EClass newSourceType) {
-        String includeId = this.createEdge(USE_CASE_EDGE_SOURCE, USE_CASE_EDGE_TARGET, UML.getInclude());
+        String includeId = this.createEdge(USE_CASE_EDGE_SOURCE, USE_CASE_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getInclude()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(includeId, newSourceLabel, graphicalChecker);
@@ -164,7 +163,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("packageImportAndPackageMergeParameters")
     public void testReconnectPackageImportSource(EClass newSourceType) {
-        String packageImportId = this.createEdge(PACKAGE_EDGE_SOURCE, PACKAGE_EDGE_TARGET, UML.getPackageImport());
+        String packageImportId = this.createEdge(PACKAGE_EDGE_SOURCE, PACKAGE_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getPackageImport()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(packageImportId, newSourceLabel, graphicalChecker);
@@ -173,7 +172,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("packageImportAndPackageMergeParameters")
     public void testReconnectPackageMergeSource(EClass newSourceType) {
-        String packageMergeId = this.createEdge(PACKAGE_EDGE_SOURCE, PACKAGE_EDGE_TARGET, UML.getPackageMerge());
+        String packageMergeId = this.createEdge(PACKAGE_EDGE_SOURCE, PACKAGE_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getPackageMerge()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(packageMergeId, newSourceLabel, graphicalChecker);
@@ -182,7 +181,7 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndRealizationAndUsageParameters")
     public void testReconnectRealizationSource(EClass newSourceType) {
-        String realizationId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, UML.getRealization());
+        String realizationId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getRealization()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(realizationId, newSourceLabel, graphicalChecker);
@@ -191,17 +190,9 @@ public class UCDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndRealizationAndUsageParameters")
     public void testReconnectUsageSource(EClass newSourceType) {
-        String usageId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, UML.getUsage());
+        String usageId = this.createEdge(ACTIVITY_EDGE_SOURCE, ACTIVITY_EDGE_TARGET, new UCDCreationTool(UCDToolSections.EDGES, UML.getUsage()));
         String newSourceLabel = newSourceType.getName() + NEW_SOURCE;
         Checker graphicalChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(newSourceLabel));
         this.reconnectEdgeSource(usageId, newSourceLabel, graphicalChecker);
-    }
-
-    private String createEdge(String sourceLabel, String targetLabel, EClass edgeType) {
-        int diagramEdgeCount = this.getDiagram().getEdges().size();
-        Node sourceNode = (Node) this.findGraphicalElementByLabel(sourceLabel);
-        Node targetNode = (Node) this.findGraphicalElementByLabel(targetLabel);
-        this.applyEdgeCreationTool(sourceNode.getId(), targetNode.getId(), new UCDCreationTool(UCDToolSections.EDGES, edgeType));
-        return this.getDiagram().getEdges().get(diagramEdgeCount).getId();
     }
 }

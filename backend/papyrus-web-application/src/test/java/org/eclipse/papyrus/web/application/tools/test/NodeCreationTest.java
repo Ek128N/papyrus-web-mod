@@ -33,6 +33,10 @@ import org.eclipse.sirius.components.diagrams.Node;
  */
 public class NodeCreationTest extends AbstractPapyrusWebTest {
 
+    private static final String CHECKER_IS_NULL_ERROR = "checker cannot be null";
+
+    private static final String NODE_CONTAINER_IS_NOT_NODE_ERROR = "Node container should be a Node";
+
     /**
      * Initializes the test with the provided {@code representationName} and {@code rootElementEClass}.
      *
@@ -58,7 +62,7 @@ public class NodeCreationTest extends AbstractPapyrusWebTest {
      *            the {@link Checker} to use to validate the operation
      */
     protected void createNodeOnDiagram(CreationTool nodeCreationTool, Checker checker) {
-        assertThat(checker).as("checker cannot be null").isNotNull();
+        assertThat(checker).as(CHECKER_IS_NULL_ERROR).isNotNull();
         this.applyNodeCreationTool(this.representationId, nodeCreationTool);
         // Reload the diagram to ensure it contains the create element
         Diagram diagram = this.getDiagram();
@@ -71,25 +75,54 @@ public class NodeCreationTest extends AbstractPapyrusWebTest {
      *
      * @param parentName
      *            the label of the graphical container of the node to create
-     * @param edgeCreationTool
+     * @param nodeCreationTool
      *            the {@link CreationTool} specifying the tool section and name in the palette
      * @param checker
      *            the {@link Checker} to use to validate the operation
      */
     protected void createNodeOnContainer(String parentName, CreationTool nodeCreationTool, Checker checker) {
-        assertThat(checker).as("checker cannot be null").isNotNull();
+        assertThat(checker).as(CHECKER_IS_NULL_ERROR).isNotNull();
         IDiagramElement diagramElement = this.findGraphicalElementByLabel(parentName);
-        assertThat(diagramElement).as("Node container should be a Node").isInstanceOf(Node.class);
+        assertThat(diagramElement).as(NODE_CONTAINER_IS_NOT_NODE_ERROR).isInstanceOf(Node.class);
         assertThat(diagramElement).as("Cannot find Node container with label " + parentName).isNotNull();
         Node parentNode = (Node) diagramElement;
         int initialNumberOfChild = parentNode.getChildNodes().size();
         this.applyNodeCreationTool(parentNode.getId(), nodeCreationTool);
         // Reload the parent element to ensure it contains the created element
         IDiagramElement updatedDiagramElement = this.findGraphicalElementByLabel(parentName);
-        assertThat(updatedDiagramElement).as("Node container should be a Node").isInstanceOf(Node.class);
+        assertThat(updatedDiagramElement).as(NODE_CONTAINER_IS_NOT_NODE_ERROR).isInstanceOf(Node.class);
         assertThat(updatedDiagramElement).as("Cannot find Node container with label " + parentName).isNotNull();
         // We assume the created element is always added at the end of the getChildNodes list
         Node createdNode = ((Node) updatedDiagramElement).getChildNodes().get(initialNumberOfChild);
+        checker.validateRepresentationElement(createdNode);
+    }
+
+    /**
+     * Creates a node in the {@code compartmentMapping} of the {@code parentName} node with the provided
+     * {@code nodeCreationTool}.
+     *
+     * @param parentName
+     *            the label of the graphical container of the node to create
+     * @param compartmentMapping
+     *            the mapping of the compartment to create the node into
+     * @param nodeCreationTool
+     *            the {@link CreationTool} specifying the tool section and name in the palette
+     * @param checker
+     *            the {@link Checker} to use to validate the operation
+     */
+    protected void createNodeOnContainerCompartment(String parentName, String compartmentMapping, CreationTool nodeCreationTool, Checker checker) {
+        assertThat(checker).as(CHECKER_IS_NULL_ERROR).isNotNull();
+        Node parentCompartmentNode = this.getSubNode(parentName, compartmentMapping);
+        IDiagramElement compartmentElement = this.getSubNode(parentName, compartmentMapping);
+        assertThat(compartmentElement).as("Cannot find Node compartment with mapping " + compartmentMapping + " in parent " + parentName).isNotNull();
+        int compartmentChildCount = parentCompartmentNode.getChildNodes().size();
+        this.applyNodeCreationTool(parentCompartmentNode.getId(), nodeCreationTool);
+        // Reload the parent element to ensure it contains the created element
+        IDiagramElement updatedCompartmentElement = this.getSubNode(parentName, compartmentMapping);
+        assertThat(updatedCompartmentElement).as(NODE_CONTAINER_IS_NOT_NODE_ERROR).isInstanceOf(Node.class);
+        assertThat(updatedCompartmentElement).as("Cannot find Node compartment with mapping " + compartmentMapping + " in parent " + parentName).isNotNull();
+        // We assume the created element is always added at the end of the getChildNodes list
+        Node createdNode = ((Node) updatedCompartmentElement).getChildNodes().get(compartmentChildCount);
         checker.validateRepresentationElement(createdNode);
     }
 }

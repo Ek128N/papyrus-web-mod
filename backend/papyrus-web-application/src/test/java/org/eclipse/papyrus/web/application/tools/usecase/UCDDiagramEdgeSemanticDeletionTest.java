@@ -13,8 +13,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.tools.usecase;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -28,9 +26,7 @@ import org.eclipse.papyrus.web.application.tools.checker.NodeSemanticDeletionSem
 import org.eclipse.papyrus.web.application.tools.test.EdgeDeletionTest;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDCreationTool;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDToolSections;
-import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.sirius.components.diagrams.Edge;
-import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -248,12 +244,5 @@ public class UCDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
         DeletionGraphicalChecker graphicalChecker = new DeletionGraphicalChecker(this::getDiagram, null);
         NodeSemanticDeletionSemanticChecker semanticChecker = new NodeSemanticDeletionSemanticChecker(this.getObjectService(), this::getEditingContext, oldOwnerSupplier, oldContainmentReference);
         this.deleteSemanticEdge(edge, new CombinedChecker(graphicalChecker, semanticChecker));
-    }
-
-    private void createEdge(String sourceLabel, String targetLabel, CreationTool creationTool) {
-        IDiagramElement source = this.findGraphicalElementByLabel(sourceLabel);
-        IDiagramElement target = this.findGraphicalElementByLabel(targetLabel);
-        this.applyEdgeCreationTool(source.getId(), target.getId(), creationTool);
-        assertThat(this.getDiagram().getEdges()).as("Diagram doesn't contain the created edge").hasSize(1);
     }
 }

@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public abstract class CreationTool {
+public class CreationTool {
 
     private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))"); //$NON-NLS-1$
 

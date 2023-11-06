@@ -13,7 +13,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.tools.usecase;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
@@ -25,15 +24,11 @@ import org.eclipse.papyrus.web.application.tools.test.SemanticDropTest;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDCreationTool;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDToolSections;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
-import org.eclipse.uml2.uml.NamedElement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Tests semantic drop tools in the Use Case Diagram.
@@ -47,9 +42,6 @@ public class UCDSemanticDropTest extends SemanticDropTest {
     private static final String CLASS_CONTAINER = "ClassContainer";
 
     private static final String DROP_SUFFIX = "Drop";
-
-    @Autowired
-    private IEditingContextPersistenceService persistenceService;
 
     public UCDSemanticDropTest() {
         super(DEFAULT_DOCUMENT, UCDDiagramDescriptionBuilder.UCD_REP_NAME, UML.getModel());
@@ -118,20 +110,6 @@ public class UCDSemanticDropTest extends SemanticDropTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(CLASS_CONTAINER),
                 UCDMappingTypes.getMappingTypeAsSubNode(elementType), this.getCapturedNodes());
         this.semanticDropOnContainer(CLASS_CONTAINER, this.getObjectService().getId(elementToDrop), graphicalChecker);
-    }
-
-    private EObject createSemanticElement(EObject parentElement, EReference containmentReference, EClass type, String name) {
-        String parentElementId = this.getObjectService().getId(parentElement);
-        int numberOfChildren = ((List<?>) parentElement.eGet(containmentReference)).size();
-        this.applyCreateChildTool(parentElementId, containmentReference, type);
-        IEditingContext editingContext = this.getEditingContext();
-        EObject updatedParentElement = (EObject) this.getObjectService().getObject(editingContext, parentElementId).get();
-        EObject createdObject = (EObject) ((List<?>) updatedParentElement.eGet(containmentReference)).get(numberOfChildren);
-        if (createdObject instanceof NamedElement namedElement) {
-            namedElement.setName(name);
-            this.persistenceService.persist(editingContext);
-        }
-        return createdObject;
     }
 
 }

@@ -107,13 +107,13 @@ public abstract class CreationGraphicalChecker implements Checker {
     }
 
     /**
-     * The expected number of created elements.
+     * The expected number of created elements in the diagram.
      * <p>
      * This method is used by {@link #checkNumberOfCreatedElement(IDiagramElement)} to ensure that the correct number of
-     * elements have been created. The default implementation of this method returns {@code 1}.
+     * elements have been created in the diagram. The default implementation of this method returns {@code 1}.
      * </p>
      *
-     * @return the expected number of created elements
+     * @return the expected number of created elements in the diagram
      */
     protected int getExpectedNumberOfCreatedElements() {
         return 1;

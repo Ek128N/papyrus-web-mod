@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.configuration.UMLStereotypeDescriptionRegistryConfigurer;
+import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.utils.AbstractWebUMLTest;
 import org.eclipse.papyrus.web.application.utils.mutations.CreateChildMutationRunner;
@@ -52,6 +53,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -95,6 +97,12 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     protected String documentName;
 
     @Autowired
+    protected EditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+
+    @Autowired
+    protected DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
+
+    @Autowired
     private CreateProjectMutationRunner projectCreator;
 
     @Autowired
@@ -107,9 +115,6 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     private IProjectRepository projectRepository;
 
     @Autowired
-    private EditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
-
-    @Autowired
     private CreateRepresentationMutationRunner representationCreator;
 
     @Autowired
@@ -120,9 +125,6 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
 
     @Autowired
     private GetPaletteToolQueryRunner getPaletteQueryRunner;
-
-    @Autowired
-    private DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolRunner invokeToolOnOneElementRunner;
@@ -534,6 +536,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the
      * provided {@code node}) is part of the list if its label matches the provided {@code label}.
      * </p>
+     * <p>
+     * This method ignores compartment nodes, but look into the compartment children to find matching elements.
+     * </p>
      *
      * @param node
      *            the root of the sub-tree of elements to search into
@@ -543,13 +548,76 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      */
     private List<IDiagramElement> findGraphicalElementByLabel(Node node, String label) {
         List<IDiagramElement> result = new ArrayList<>();
-        if (Objects.equals(node.getTargetObjectLabel(), label)) {
+        // Ignore compartments
+        if (Objects.equals(node.getTargetObjectLabel(), label) && !IdBuilder.isCompartmentNode(this.getNodeDescription(node))) {
             result.add(node);
         }
         for (Node childNode : node.getChildNodes()) {
             result.addAll(this.findGraphicalElementByLabel(childNode, label));
         }
         return result;
+
+    }
+
+    /**
+     * Returns the {@link NodeDescription} associated to the provided {@code node}.
+     * <p>
+     * This method relies on {@link #getCapturedNodes()}.
+     * </p>
+     *
+     * @param node
+     *            the {@link Node} to retrieve the description from
+     * @return the description of the {@link Node}
+     */
+    protected NodeDescription getNodeDescription(Node node) {
+        return this.getCapturedNodes().entrySet().stream()//
+                .filter(entry -> entry.getValue().getId().equals(node.getDescriptionId()))//
+                .findFirst()//
+                .get()//
+                .getKey();
+    }
+
+    /**
+     * Returns the sub-node with the given {@code mapping} in the {@link Node} with the provided
+     * {@code parentNodeLabel}.
+     * <p>
+     * This method checks the {@link NodeDescription} of the children nodes to find the one with the appropriate
+     * mapping.
+     * </p>
+     *
+     * @param parentNodeLabel
+     *            the label of the parent {@link Node} to retrieve the sub-node from
+     * @param mapping
+     *            the mapping of the sub-node to retrieve
+     * @return the sub-node if it exists, or {@code null} otherwise
+     */
+    protected Node getSubNode(String parentNodeLabel, String mapping) {
+        IDiagramElement parent = this.findGraphicalElementByLabel(parentNodeLabel);
+        assertThat(parent).as("Parent should be a Node").isInstanceOf(Node.class);
+        return this.getSubNode((Node) parent, mapping);
+    }
+
+    /**
+     * Returns the sub-node in the provided {@code parentNode} with the given {@code mapping}.
+     * <p>
+     * This method checks the {@link NodeDescription} of the {@code parentNode}'s children to find the one with the
+     * appropriate mapping.
+     * </p>
+     *
+     * @param parentNode
+     *            the parent node to retrieve the sub-node from
+     * @param mapping
+     *            the mapping of the sub-node to retrieve
+     * @return the sub-node if it exists, or {@code null} otherwise
+     */
+    protected Node getSubNode(Node parentNode, String mapping) {
+        for (Node child : parentNode.getChildNodes()) {
+            NodeDescription childDescription = this.getNodeDescription(child);
+            if (childDescription.getName().equals(mapping)) {
+                return child;
+            }
+        }
+        return null;
     }
 
     /**
@@ -684,5 +752,26 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         this.applyEditLabelTool(createdNode.getInsideLabel().getId(), label);
         // Reload the node to ensure that the new label is present
         return (Node) this.findGraphicalElementById(createdNode.getId());
+    }
+
+    /**
+     * Creates an edge with the provided {@code edgeCreationTool} between {@code sourceLabel} and {@code targetLabel}.
+     *
+     *
+     * @param sourceLabel
+     *            the label of the source graphical element
+     * @param targetLabel
+     *            the label of the target graphical element
+     * @param edgeCreationTool
+     *            the creation tool to use to create the edge
+     * @return the created edge
+     */
+    protected String createEdge(String sourceLabel, String targetLabel, CreationTool edgeCreationTool) {
+        int diagramEdgeCount = this.getDiagram().getEdges().size();
+        Node sourceNode = (Node) this.findGraphicalElementByLabel(sourceLabel);
+        Node targetNode = (Node) this.findGraphicalElementByLabel(targetLabel);
+        this.applyEdgeCreationTool(sourceNode.getId(), targetNode.getId(), edgeCreationTool);
+        assertThat(this.getDiagram().getEdges()).as("Diagram doesn't contain the created edge").hasSize(diagramEdgeCount + 1);
+        return this.getDiagram().getEdges().get(diagramEdgeCount).getId();
     }
 }
