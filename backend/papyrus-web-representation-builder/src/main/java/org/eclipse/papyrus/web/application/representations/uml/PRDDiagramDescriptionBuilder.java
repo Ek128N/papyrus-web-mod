@@ -337,7 +337,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierEClass.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramClassifierDescription);
@@ -368,7 +368,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierEClass.getName())) //
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedClassifierDescription);
@@ -508,7 +508,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(primitiveTypeEClass)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
-                .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(primitiveTypeEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramPrimitiveTypeDescription);
@@ -535,7 +535,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement())) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
-                .labelEditTool(this.getViewBuilder().createDirectEditTool()) //
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(primitiveTypeEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdPrimitiveTypeDescription);
@@ -613,7 +613,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(prdDiagramEnumerationDescription);
@@ -640,7 +640,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedEnumerationDescription);

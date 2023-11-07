@@ -1116,7 +1116,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(semanticQuery)//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
                 .build();
         parentNodeDescription.getChildrenDescriptions().add(createNodeDescriptionInCompartmentDescription);

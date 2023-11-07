@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
 import static org.eclipse.papyrus.web.application.representations.view.aql.CallQuery.queryAttributeOnSelf;
@@ -70,41 +70,39 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
-        createClassifierAndChildrenDescription(diagramDescription);
+        this.createClassifierAndChildrenDescription(diagramDescription);
 
-        createConnectorDescription(diagramDescription);
-        createUsageDescription(diagramDescription);
-        createGeneralizationDescription(diagramDescription);
+        this.createConnectorDescription(diagramDescription);
+        this.createUsageDescription(diagramDescription);
+        this.createGeneralizationDescription(diagramDescription);
 
-        createCommentDescription(diagramDescription);
+        this.createCommentDescription(diagramDescription);
 
-        diagramDescription.getPalette().setDropTool(getViewBuilder().createGenericDropTool(getIdBuilder().getDropToolId()));
+        diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericDropTool(this.getIdBuilder().getDropToolId()));
     }
 
     private void createGeneralizationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> namedElementCollector = () -> collectNodesWithDomain(diagramDescription, pack.getClassifier());
-        EdgeDescription connectorDescription = getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(pack.getGeneralization(),
-                getQueryBuilder().queryAllReachable(pack.getGeneralization()),
-                namedElementCollector, namedElementCollector);
+        Supplier<List<NodeDescription>> namedElementCollector = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
+        EdgeDescription connectorDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getGeneralization(),
+                this.getQueryBuilder().queryAllReachable(this.pack.getGeneralization()), namedElementCollector, namedElementCollector);
         EdgeStyle style = connectorDescription.getStyle();
         style.setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
         diagramDescription.getEdgeDescriptions().add(connectorDescription);
 
-        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(connectorDescription, pack.getClassifier_Generalization());
-        registerCallback(connectorDescription, () -> {
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(connectorDescription, this.pack.getClassifier_Generalization());
+        this.registerCallback(connectorDescription, () -> {
             CreationToolsUtil.addEdgeCreationTool(namedElementCollector, creationTool);
         });
     }
 
     private void createConnectorDescription(DiagramDescription diagramDescription) {
 
-        Supplier<List<NodeDescription>> sourceAndTargets = () -> collectNodesWithDomain(diagramDescription, pack.getPort(), pack.getProperty());
+        Supplier<List<NodeDescription>> sourceAndTargets = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPort(), this.pack.getProperty());
 
-        EdgeDescription connectorDescription = getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(pack.getConnector(), getQueryBuilder().queryAllReachable(pack.getConnector()),
-                sourceAndTargets,
-                sourceAndTargets);
-        connectorDescription.setBeginLabelExpression(getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
-        connectorDescription.setEndLabelExpression(getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
+        EdgeDescription connectorDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getConnector(),
+                this.getQueryBuilder().queryAllReachable(this.pack.getConnector()), sourceAndTargets, sourceAndTargets);
+        connectorDescription.setBeginLabelExpression(this.getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
+        connectorDescription.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
         // Use ConnectorEnd#partWithPort to handle complex Connector edges
         connectorDescription.setPreconditionExpression(new CallQuery(Variables.SELF)//
                 .callService("shouldDisplayConnector", //$NON-NLS-1$
@@ -115,124 +113,124 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                         Variables.CACHE, //
                         Variables.EDITING_CONTEXT));
         diagramDescription.getEdgeDescriptions().add(connectorDescription);
-        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(connectorDescription, pack.getStructuredClassifier_OwnedConnector());
-        registerCallback(connectorDescription, () -> {
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(connectorDescription, this.pack.getStructuredClassifier_OwnedConnector());
+        this.registerCallback(connectorDescription, () -> {
             CreationToolsUtil.addEdgeCreationTool(sourceAndTargets, creationTool);
         });
     }
 
     private void createUsageDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> classifierCollector = () -> collectNodesWithDomain(diagramDescription, pack.getNamedElement());
-        EdgeDescription connectorDescription = getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(pack.getUsage(), getQueryBuilder().queryAllReachable(pack.getUsage()),
-                classifierCollector,
-                classifierCollector);
+        Supplier<List<NodeDescription>> classifierCollector = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
+        EdgeDescription connectorDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getUsage(),
+                this.getQueryBuilder().queryAllReachable(this.pack.getUsage()), classifierCollector, classifierCollector);
         EdgeStyle style = connectorDescription.getStyle();
         style.setLineStyle(LineStyle.DASH);
         style.setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
         diagramDescription.getEdgeDescriptions().add(connectorDescription);
 
-        EdgeTool creationTool = getViewBuilder().createDefaultDomainBasedEdgeTool(connectorDescription, pack.getPackage_PackagedElement());
-        registerCallback(connectorDescription, () -> {
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(connectorDescription, this.pack.getPackage_PackagedElement());
+        this.registerCallback(connectorDescription, () -> {
             CreationToolsUtil.addEdgeCreationTool(classifierCollector, creationTool);
         });
     }
 
     private void createClassifierAndChildrenDescription(DiagramDescription diagramDescription) {
-        csdClassifier = newNodeBuilder(pack.getClassifier(), getViewBuilder().createRectangularNodeStyle(true, true))//
-                .name(getIdBuilder().getDomainNodeName(pack.getClassifier())) //
-                .semanticCandidateExpression(getQueryBuilder().queryAllReachable(pack.getClassifier()))//
+        this.csdClassifier = this.newNodeBuilder(this.pack.getClassifier(), this.getViewBuilder().createRectangularNodeStyle(true, true))//
+                .name(this.getIdBuilder().getDomainNodeName(this.pack.getClassifier())) //
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getClassifier()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
-                .labelEditTool(getViewBuilder().createDirectEditTool())//
-                .deleteTool(getViewBuilder().createNodeDeleteTool(pack.getClassifier().getName())) //
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(this.pack.getClassifier().getName()))//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.pack.getClassifier().getName())) //
                 .build();
-        diagramDescription.getNodeDescriptions().add(csdClassifier);
-        diagramDescription.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(pack.getPackage_PackagedElement(), pack.getClass_()));
+        diagramDescription.getNodeDescriptions().add(this.csdClassifier);
+        diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getClass_()));
 
-        createPropertyAndChildrenDescription(CallQuery.queryOperationOnSelf(pack.getClassifier__AllAttributes()), diagramDescription);
-        csdPortOnClassifier = createPortDescriptionOnClassifier();
-        csdClassifier.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(csdPortOnClassifier, pack.getStructuredClassifier_OwnedAttribute()));
-        
-        createNestedClassifierDescription(csdClassifier, diagramDescription);
+        this.createPropertyAndChildrenDescription(CallQuery.queryOperationOnSelf(this.pack.getClassifier__AllAttributes()), diagramDescription);
+        this.csdPortOnClassifier = this.createPortDescriptionOnClassifier();
+        this.csdClassifier.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.csdPortOnClassifier, this.pack.getStructuredClassifier_OwnedAttribute()));
 
-        csdClassifier.getBorderNodesDescriptions().add(csdPortOnClassifier);
+        this.createNestedClassifierDescription(this.csdClassifier, diagramDescription);
 
-        registerNodeAsCommentOwner(csdClassifier, diagramDescription);
+        this.csdClassifier.getBorderNodesDescriptions().add(this.csdPortOnClassifier);
 
-        registerCallback(csdClassifier, () -> {
-            CreationToolsUtil.addNodeCreationTool(() -> collectNodesWithDomain(diagramDescription, pack.getClassifier()),
-                    getViewBuilder().createCreationTool(pack.getClass_NestedClassifier(), pack.getClass_()));
+        this.registerNodeAsCommentOwner(this.csdClassifier, diagramDescription);
+
+        this.registerCallback(this.csdClassifier, () -> {
+            CreationToolsUtil.addNodeCreationTool(() -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier()),
+                    this.getViewBuilder().createCreationTool(this.pack.getClass_NestedClassifier(), this.pack.getClass_()));
         });
     }
 
     private void createNestedClassifierDescription(NodeDescription parent, DiagramDescription diagramDescription) {
-        NodeDescription csdNestedClass = newNodeBuilder(pack.getClassifier(), getViewBuilder().createRectangularNodeStyle(true, true))//
-                .name(getIdBuilder().getSpecializedDomainNodeName(pack.getClassifier(), IN_CLASSIFIER)) //
-                .semanticCandidateExpression(queryAttributeOnSelf(pack.getClass_NestedClassifier()))//
+        NodeDescription csdNestedClass = this.newNodeBuilder(this.pack.getClassifier(), this.getViewBuilder().createRectangularNodeStyle(true, true))//
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getClassifier(), IN_CLASSIFIER)) //
+                .semanticCandidateExpression(queryAttributeOnSelf(this.pack.getClass_NestedClassifier()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
-                .labelEditTool(getViewBuilder().createDirectEditTool())//
-                .deleteTool(getViewBuilder().createNodeDeleteTool(pack.getClassifier().getName())) //
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(this.pack.getClassifier().getName()))//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.pack.getClassifier().getName())) //
                 .build();
 
         parent.getChildrenDescriptions().add(csdNestedClass);
-        getViewBuilder().addDefaultDeleteTool(csdNestedClass);
+        this.getViewBuilder().addDefaultDeleteTool(csdNestedClass);
 
-        registerNodeAsCommentOwner(csdNestedClass, diagramDescription);
+        this.registerNodeAsCommentOwner(csdNestedClass, diagramDescription);
 
-        csdNestedClass.getReusedBorderNodeDescriptions().add(csdPortOnClassifier);
-        csdNestedClass.getReusedChildNodeDescriptions().add(csdPropertyOnClassifier);
+        csdNestedClass.getReusedBorderNodeDescriptions().add(this.csdPortOnClassifier);
+        csdNestedClass.getReusedChildNodeDescriptions().add(this.csdPropertyOnClassifier);
         csdNestedClass.getReusedChildNodeDescriptions().add(csdNestedClass);
     }
 
     private NodeDescription createPortDescriptionOnClassifier() {
-        NodeDescription port = getViewBuilder().createSpecializedPortUnsynchonizedNodeDescription(IN_CLASSIFIER, pack.getPort(), queryOperationOnSelf(pack.getClassifier__AllAttributes()));
+        NodeDescription port = this.getViewBuilder().createSpecializedPortUnsynchonizedNodeDescription(IN_CLASSIFIER, this.pack.getPort(),
+                queryOperationOnSelf(this.pack.getClassifier__AllAttributes()));
         return port;
     }
 
     private void createPropertyAndChildrenDescription(String semanticCandidateExpression, DiagramDescription diagramDescription) {
 
-        this.csdPropertyOnClassifier = getViewBuilder().createSpecializedUnsynchonizedNodeDescription(pack.getProperty(), semanticCandidateExpression, IN_CLASSIFIER);
-        csdClassifier.getChildrenDescriptions().add(csdPropertyOnClassifier);
-        csdClassifier.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(csdPropertyOnClassifier, pack.getStructuredClassifier_OwnedAttribute()));
+        this.csdPropertyOnClassifier = this.getViewBuilder().createSpecializedUnsynchonizedNodeDescription(this.pack.getProperty(), semanticCandidateExpression, IN_CLASSIFIER);
+        this.csdClassifier.getChildrenDescriptions().add(this.csdPropertyOnClassifier);
+        this.csdClassifier.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.csdPropertyOnClassifier, this.pack.getStructuredClassifier_OwnedAttribute()));
 
-        registerNodeAsCommentOwner(csdPropertyOnClassifier, diagramDescription);
+        this.registerNodeAsCommentOwner(this.csdPropertyOnClassifier, diagramDescription);
 
-        csdPortOnProperty = createPortDescriptionOnProperty();
-        NodeTool creationTool = getViewBuilder().createCreationTool(getIdBuilder().getCreationToolId(pack.getPort()), //
-                queryAttributeOnSelf(pack.getTypedElement_Type()), //
-                pack.getStructuredClassifier_OwnedAttribute(), //
-                pack.getPort());
-        csdPropertyOnClassifier.getPalette().getNodeTools().add(creationTool);
-        csdPropertyOnClassifier.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(csdPropertyOnClassifier, pack.getStructuredClassifier_OwnedAttribute()));
-        csdPropertyOnClassifier.getBorderNodesDescriptions().add(csdPortOnProperty);
+        this.csdPortOnProperty = this.createPortDescriptionOnProperty();
+        NodeTool creationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.pack.getPort()), //
+                queryAttributeOnSelf(this.pack.getTypedElement_Type()), //
+                this.pack.getStructuredClassifier_OwnedAttribute(), //
+                this.pack.getPort());
+        this.csdPropertyOnClassifier.getPalette().getNodeTools().add(creationTool);
+        this.csdPropertyOnClassifier.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.csdPropertyOnClassifier, this.pack.getStructuredClassifier_OwnedAttribute()));
+        this.csdPropertyOnClassifier.getBorderNodesDescriptions().add(this.csdPortOnProperty);
 
         // Create property children
-        String typeVariable = queryAttributeOnSelf(pack.getTypedElement_Type());
-        String childrenSemanticCandidateExpression = IfQuery.ifExpression(instanceOf(typeVariable, pack.getClassifier(), getUmlMetaModelHelper())) // $NON-NLS-1$
-                .then(new CallQuery(typeVariable).callOperation(pack.getClassifier__AllAttributes())) // $NON-NLS-1$
+        String typeVariable = queryAttributeOnSelf(this.pack.getTypedElement_Type());
+        String childrenSemanticCandidateExpression = IfQuery.ifExpression(instanceOf(typeVariable, this.pack.getClassifier(), this.getUmlMetaModelHelper())) // $NON-NLS-1$
+                .then(new CallQuery(typeVariable).callOperation(this.pack.getClassifier__AllAttributes())) // $NON-NLS-1$
                 .orElse("Sequence{}").toQuery(); //$NON-NLS-1$
 
-        csdPropertyOnProperty = getViewBuilder().createSpecializedUnsynchonizedNodeDescription(pack.getProperty(), childrenSemanticCandidateExpression, IN_PROPERTY);
+        this.csdPropertyOnProperty = this.getViewBuilder().createSpecializedUnsynchonizedNodeDescription(this.pack.getProperty(), childrenSemanticCandidateExpression, IN_PROPERTY);
 
-        registerNodeAsCommentOwner(csdPropertyOnProperty, diagramDescription);
+        this.registerNodeAsCommentOwner(this.csdPropertyOnProperty, diagramDescription);
 
-        csdPropertyOnClassifier.getChildrenDescriptions().add(csdPropertyOnProperty);
-        csdPropertyOnProperty.getPalette().getNodeTools().add(getViewBuilder().createCreationTool(csdPropertyOnProperty, pack.getStructuredClassifier_OwnedAttribute()));
-        csdPropertyOnProperty.getReusedBorderNodeDescriptions().add(csdPortOnProperty);
-        csdPropertyOnProperty.getReusedChildNodeDescriptions().add(csdPropertyOnProperty);
+        this.csdPropertyOnClassifier.getChildrenDescriptions().add(this.csdPropertyOnProperty);
+        this.csdPropertyOnProperty.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.csdPropertyOnProperty, this.pack.getStructuredClassifier_OwnedAttribute()));
+        this.csdPropertyOnProperty.getReusedBorderNodeDescriptions().add(this.csdPortOnProperty);
+        this.csdPropertyOnProperty.getReusedChildNodeDescriptions().add(this.csdPropertyOnProperty);
 
     }
 
     private NodeDescription createPortDescriptionOnProperty() {
-        String typeVariable = queryAttributeOnSelf(pack.getTypedElement_Type());
-        String semanticCandidateExpression = IfQuery.ifExpression(instanceOf(typeVariable, pack.getClassifier(), getUmlMetaModelHelper()))//
+        String typeVariable = queryAttributeOnSelf(this.pack.getTypedElement_Type());
+        String semanticCandidateExpression = IfQuery.ifExpression(instanceOf(typeVariable, this.pack.getClassifier(), this.getUmlMetaModelHelper()))//
                 .then(//
                         new CallQuery(typeVariable)//
-                                .callOperation(pack.getClassifier__AllAttributes()))
+                                .callOperation(this.pack.getClassifier__AllAttributes()))
                 .orElse("Sequence{}").toQuery(); //$NON-NLS-1$
 
-        NodeDescription port = getViewBuilder().createSpecializedPortUnsynchonizedNodeDescription(IN_PROPERTY, pack.getPort(), semanticCandidateExpression);
+        NodeDescription port = this.getViewBuilder().createSpecializedPortUnsynchonizedNodeDescription(IN_PROPERTY, this.pack.getPort(), semanticCandidateExpression);
 
         return port;
     }

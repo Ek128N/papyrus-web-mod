@@ -316,7 +316,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierAsSubject))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierAsSubject.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierAsSubject.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(ucdDiagramClassifierDescription);
@@ -344,7 +344,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierAsSubject.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierAsSubject.getName())) //
                 .build();
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageClassifierDescription);
@@ -386,7 +386,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         NodeDescription ucdDiagramUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
 
@@ -421,7 +421,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(useCaseEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
 
@@ -459,7 +459,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .name(this.getIdBuilder().getDomainNodeName(actorEClass)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(actorEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
 
@@ -491,7 +491,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(actorEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool())//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageActorDescription);

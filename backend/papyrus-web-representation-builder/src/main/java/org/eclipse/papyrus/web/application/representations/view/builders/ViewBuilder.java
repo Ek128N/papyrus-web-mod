@@ -59,6 +59,11 @@ import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
  */
 public class ViewBuilder {
 
+    /**
+     * Direct Edit tool name prefix.
+     */
+    private static final String DIRET_EDIT = "DirectEdit ";
+
     private QueryHelper queryBuilder;
 
     private StyleProvider styleProvider;
@@ -421,14 +426,15 @@ public class ViewBuilder {
         return changeContext;
     }
 
-    public LabelEditTool createDirectEditTool() {
-        return this.createDirectEditTool(Variables.SELF);
+    public LabelEditTool createDirectEditTool(String domainTypeName) {
+        return this.createDirectEditTool(domainTypeName, Variables.SELF);
     }
 
-    public LabelEditTool createDirectEditTool(String selfExpression) {
+    public LabelEditTool createDirectEditTool(String domainTypeName, String selfExpression) {
         LabelEditTool directEditTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         directEditTool.setInitialDirectEditLabelExpression(new CallQuery(selfExpression).callService(Services.GET_DIRECT_EDIT_INPUT_VALUE_SERVICE));
         directEditTool.getBody().add(this.createChangeContextOperation(new CallQuery(selfExpression).callService(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
+        directEditTool.setName(DIRET_EDIT + domainTypeName);
         return directEditTool;
     }
 
@@ -451,11 +457,11 @@ public class ViewBuilder {
     }
 
     public void addDirectEditTool(NodeDescription description) {
-        description.getPalette().setLabelEditTool(this.createDirectEditTool());
+        description.getPalette().setLabelEditTool(this.createDirectEditTool(this.metamodelHelper.toEClass(description.getDomainType()).getName()));
     }
 
     public void addDirectEditTool(EdgeDescription description) {
-        description.getPalette().setCenterLabelEditTool(this.createDirectEditTool());
+        description.getPalette().setCenterLabelEditTool(this.createDirectEditTool(this.metamodelHelper.toEClass(description.getDomainType()).getName()));
     }
 
     public NodeDescription createSpecializedUnsynchonizedNodeDescription(EClass domain, String semanticCandidateExpression, String specialization) {
