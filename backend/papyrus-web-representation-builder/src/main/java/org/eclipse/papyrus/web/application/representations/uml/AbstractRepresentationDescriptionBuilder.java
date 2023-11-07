@@ -98,12 +98,12 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     /**
      * Nodes tool section name.
      */
-    protected static final String NODES = "Nodes"; //$NON-NLS-1$
+    public static final String NODES = "Nodes"; //$NON-NLS-1$
 
     /**
      * Edges tool section name.
      */
-    protected static final String EDGES = "Edges"; //$NON-NLS-1$
+    public static final String EDGES = "Edges"; //$NON-NLS-1$
 
     protected StyleProvider styleProvider;
 

@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 
 /**
  * A builder to create note-styled nodes.
@@ -80,6 +81,8 @@ public class NoteStyleDescriptionBuilder {
     private String semanticCandidateExpression;
 
     private String name;
+
+    private NodeToolSection edgesToolSection;
 
     /**
      * Creates an instance of the builder with the provided parameters.
@@ -322,6 +325,10 @@ public class NoteStyleDescriptionBuilder {
         style.setShowIcon(true);
         style.setColor(this.color);
 
+        NodeToolSection nodesToolSection = this.viewBuilder.createNodeToolSection(AbstractRepresentationDescriptionBuilder.NODES);
+        this.edgesToolSection = this.viewBuilder.createNodeToolSection(AbstractRepresentationDescriptionBuilder.EDGES);
+        noteStyleDescription.getPalette().getToolSections().addAll(List.of(nodesToolSection, this.edgesToolSection));
+
         return noteStyleDescription;
     }
 
@@ -363,8 +370,7 @@ public class NoteStyleDescriptionBuilder {
             EdgeTool creationTool = this.viewBuilder.createFeatureBasedEdgeTool("New Link", //$NON-NLS-1$
                     this.queryBuilder.queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.noteToElementReference, Variables.SEMANTIC_EDGE_TARGET), //
                     this.collectNodesWithDomain(diagramDescription, this.annotedDomainType));
-
-            noteStyleDescription.getPalette().getEdgeTools().add(creationTool);
+            this.edgesToolSection.getEdgeTools().add(creationTool);
         }));
 
     }

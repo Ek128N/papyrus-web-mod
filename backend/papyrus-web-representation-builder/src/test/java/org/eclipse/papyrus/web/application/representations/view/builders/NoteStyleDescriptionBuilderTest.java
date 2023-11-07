@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
@@ -39,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,8 +125,11 @@ public class NoteStyleDescriptionBuilderTest {
         // Reconnect tool for source and target reconnection
         assertEquals(2, edgeDescription.getPalette().getEdgeReconnectionTools().size());
 
-        assertEquals(1, nodeDescription.getPalette().getEdgeTools().size());
-        EdgeTool edgeTool = nodeDescription.getPalette().getEdgeTools().get(0);
+        assertEquals(2, nodeDescription.getPalette().getToolSections().size());
+        assertEquals(1, nodeDescription.getPalette().getToolSections().get(0).getEdgeTools().size() + nodeDescription.getPalette().getToolSections().get(1).getEdgeTools().size());
+        NodeToolSection edgeToolSection = this.getEdgeToolSection(nodeDescription);
+        assertNotNull(edgeToolSection);
+        EdgeTool edgeTool = edgeToolSection.getEdgeTools().get(0);
         assertEquals("New Link", edgeTool.getName());
     }
 
@@ -181,8 +186,11 @@ public class NoteStyleDescriptionBuilderTest {
         // Reconnect tool for source and target reconnection
         assertEquals(2, edgeDescription.getPalette().getEdgeReconnectionTools().size());
 
-        assertEquals(1, childNodeDescription.getPalette().getEdgeTools().size());
-        EdgeTool edgeTool = childNodeDescription.getPalette().getEdgeTools().get(0);
+        assertEquals(2, childNodeDescription.getPalette().getToolSections().size());
+        assertEquals(1, childNodeDescription.getPalette().getToolSections().get(0).getEdgeTools().size() + childNodeDescription.getPalette().getToolSections().get(1).getEdgeTools().size());
+        NodeToolSection edgeToolSection = this.getEdgeToolSection(childNodeDescription);
+        assertNotNull(edgeToolSection);
+        EdgeTool edgeTool = edgeToolSection.getEdgeTools().get(0);
         assertEquals("New Link", edgeTool.getName());
     }
 
@@ -198,6 +206,10 @@ public class NoteStyleDescriptionBuilderTest {
                 e.eAdapters().remove(callback);
             }
         });
+    }
+
+    private NodeToolSection getEdgeToolSection(NodeDescription nodeDescription) {
+        return nodeDescription.getPalette().getToolSections().stream().filter(toolSection -> AbstractRepresentationDescriptionBuilder.EDGES.equals(toolSection.getName())).findFirst().orElse(null);
     }
 
 }

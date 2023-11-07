@@ -498,8 +498,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         this.createDefaultToolSectionsInNodeDescription(ucdPackageActorDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(ucdPackageActorDescription);
-
         NodeTool ucdPackageActorCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), actorEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(ucdPackageActorDescription, diagramDescription, ucdPackageActorCreationTool, NODES, owners.toArray(EClass[]::new));
