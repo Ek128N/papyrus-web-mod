@@ -901,7 +901,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     private void sortPaletteTools(DiagramDescription diagramDescription) {
         ToolComparator comparator = new ToolComparator();
         // diagram palette first
+        for (DiagramToolSection diagramToolSection : diagramDescription.getPalette().getToolSections()) {
+            ECollections.sort(diagramToolSection.getNodeTools(), comparator);
+        }
         ECollections.sort(diagramDescription.getPalette().getNodeTools(), comparator);
+        // children node then
         diagramDescription.getNodeDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
         diagramDescription.getEdgeDescriptions().forEach(edge -> {
             ECollections.sort(edge.getPalette().getNodeTools(), comparator);
@@ -909,9 +913,15 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     private void sortPaletteTools(NodeDescription nodeDescription, ToolComparator comparator) {
-
+        // reorder tools in tool sections of the nodeDescription palette
+        for (NodeToolSection toolSection : nodeDescription.getPalette().getToolSections()) {
+            ECollections.sort(toolSection.getNodeTools(), comparator);
+            ECollections.sort(toolSection.getEdgeTools(), comparator);
+        }
+        // reorder tools without tool sections of the nodeDescription palette
         ECollections.sort(nodeDescription.getPalette().getNodeTools(), comparator);
         ECollections.sort(nodeDescription.getPalette().getEdgeTools(), comparator);
+
         nodeDescription.getChildrenDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
         nodeDescription.getBorderNodesDescriptions().forEach(node -> this.sortPaletteTools(node, comparator));
     }
