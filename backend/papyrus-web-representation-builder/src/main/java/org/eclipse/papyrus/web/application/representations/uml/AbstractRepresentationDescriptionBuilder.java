@@ -47,6 +47,7 @@ import org.eclipse.papyrus.web.application.representations.view.builders.NodeDes
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
 import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.ViewBuilder;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -59,7 +60,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -355,7 +355,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         commentDescription.setDefaultWidthExpression("200");
         commentDescription.setDefaultHeightExpression("100");
 
-        ImageNodeStyleDescription style = (ImageNodeStyleDescription) commentDescription.getStyle();
+        NoteNodeStyleDescription style = (NoteNodeStyleDescription) commentDescription.getStyle();
         style.setShowIcon(false);
         style.setColor(this.styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);

@@ -105,7 +105,6 @@ public final class EllipseNodeStyle implements INodeStyle {
             return this;
         }
 
-
         public EllipseNodeStyle build() {
             EllipseNodeStyle nodeStyleDescription = new EllipseNodeStyle();
             nodeStyleDescription.color = Objects.requireNonNull(this.color);

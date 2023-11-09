@@ -109,16 +109,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-customnodes</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-customnodes-edit</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-components-view-emf</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
@@ -255,6 +245,11 @@
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-components-graphql-api</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-components-view-diagram</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>

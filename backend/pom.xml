@@ -43,6 +43,8 @@
 		<module>papyrus-web-properties-builder</module>
 		<module>papyrus-web-graphics</module>
 		<module>papyrus-web-tests</module>
+		<module>papyrus-web-customnodes</module>
+		<module>papyrus-web-customnodes-edit</module>
 
 		<!--Profiles -->
 

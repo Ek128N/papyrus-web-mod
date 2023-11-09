@@ -24,9 +24,9 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -34,7 +34,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -181,6 +180,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
         ucdDiagramActorDescription.setDefaultWidthExpression("70"); //$NON-NLS-1$
         ucdDiagramActorDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
+        ucdDiagramActorDescription.setKeepAspectRatio(true);
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramActorDescription);
 
@@ -259,7 +259,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createDiagramUseCaseDescription(DiagramDescription diagramDescription) {
         EClass useCaseEClass = this.umlPackage.getUseCase();
 
-        ImageNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.toString(), true);
+        EllipseNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createEllipseNodeStyle();
 
         NodeDescription ucdDiagramUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
@@ -336,6 +336,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
         ucdPackageActorDescription.setDefaultWidthExpression("70"); //$NON-NLS-1$
         ucdPackageActorDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
+        ucdPackageActorDescription.setKeepAspectRatio(true);
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageActorDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ucdPackageActorDescription);
@@ -409,7 +410,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createSharedUseCaseDescription(DiagramDescription diagramDescription) {
         EClass useCaseEClass = this.umlPackage.getUseCase();
 
-        ImageNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.toString(), true);
+        EllipseNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createEllipseNodeStyle();
 
         NodeDescription ucdSharedUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(useCaseEClass, SHARED_SUFFIX)) //

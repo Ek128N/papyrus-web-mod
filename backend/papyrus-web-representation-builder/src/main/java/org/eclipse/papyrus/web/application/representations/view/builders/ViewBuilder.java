@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.papyrus.web.application.representations.configuration.ParametricSVGImageRegistryCustomImpl;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.StyleProvider;
@@ -27,6 +26,11 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomnodesFactory;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -334,17 +338,32 @@ public class ViewBuilder {
         return nodeStyle;
     }
 
-    private ImageNodeStyleDescription createClassNodeStyle(boolean showIcon) {
-        return this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_CLASS_IMAGE_ID.toString(), showIcon);
+    public EllipseNodeStyleDescription createEllipseNodeStyle() {
+        EllipseNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createEllipseNodeStyleDescription();
+        this.initStyle(nodeStyle);
+        nodeStyle.setShowIcon(true);
+        return nodeStyle;
     }
 
-    private ImageNodeStyleDescription createNoteNodeStyle() {
-        return this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_NOTE_IMAGE_ID.toString(), true);
+    public PackageNodeStyleDescription createPackageNodeStyle() {
+        PackageNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createPackageNodeStyleDescription();
+        this.initStyle(nodeStyle);
+        nodeStyle.setShowIcon(true);
+        return nodeStyle;
     }
 
-    public ImageNodeStyleDescription createPackageNodeStyle() {
-        ImageNodeStyleDescription packageNodeStyle = this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_PACKAGE_IMAGE_ID.toString(), true);
-        return packageNodeStyle;
+    public NoteNodeStyleDescription createNoteNodeStyle() {
+        NoteNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createNoteNodeStyleDescription();
+        this.initStyle(nodeStyle);
+        nodeStyle.setShowIcon(true);
+        return nodeStyle;
+    }
+
+    public RectangleWithExternalLabelNodeStyleDescription createRectangleWithExternalLabelNodeStyle() {
+        RectangleWithExternalLabelNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription();
+        this.initStyle(nodeStyle);
+        nodeStyle.setShowIcon(true);
+        return nodeStyle;
     }
 
     public ImageNodeStyleDescription createImageNodeStyle(String imageId, boolean showIcon) {
@@ -466,15 +485,8 @@ public class ViewBuilder {
     }
 
     public NodeDescription createSpecializedUnsynchonizedNodeDescription(EClass domain, String semanticCandidateExpression, String specialization) {
-        NodeDescription result = this.createNodeDescription(this.idBuilder.getSpecializedDomainNodeName(domain, specialization), domain, semanticCandidateExpression, this.createClassNodeStyle(true),
-                SynchronizationPolicy.UNSYNCHRONIZED);
-        this.addDefaultDeleteTool(result);
-        this.addDirectEditTool(result);
-        return result;
-    }
-
-    public NodeDescription createClassStyleNodeDescription(EClass domain, String semanticCandidateExpression, boolean showIcon, SynchronizationPolicy synchronizationPolicy) {
-        NodeDescription result = this.createNodeDescription(this.idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, this.createClassNodeStyle(showIcon), synchronizationPolicy);
+        NodeDescription result = this.createNodeDescription(this.idBuilder.getSpecializedDomainNodeName(domain, specialization), domain, semanticCandidateExpression,
+                this.createRectangularNodeStyle(true, true), SynchronizationPolicy.UNSYNCHRONIZED);
         this.addDefaultDeleteTool(result);
         this.addDirectEditTool(result);
         return result;

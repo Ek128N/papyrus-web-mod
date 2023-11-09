@@ -6,3 +6,39 @@ type EllipseNodeStyle {
   borderStyle: LineStyle!
   color: String!
 }
+
+extend union INodeStyle = PackageNodeStyle
+
+type PackageNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  color: String!
+}
+
+extend union INodeStyle = RectangleWithExternalLabelNodeStyle
+
+type RectangleWithExternalLabelNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  color: String!
+}
+
+extend union INodeStyle = ImageWithTopLabelNodeStyle
+
+type ImageWithTopLabelNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  imageURL: String!
+}
+
+extend union INodeStyle = NoteNodeStyle
+
+type NoteNodeStyle {
+  color: String!
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+}

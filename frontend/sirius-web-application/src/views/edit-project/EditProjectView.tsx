@@ -46,9 +46,18 @@ import { useEffect, useState } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { EllipseNode } from '../../nodes/EllipseNode';
-import { EllipseNodeConverterHandler } from '../../nodes/EllipseNodeConverterHandler';
-import { EllipseNodeLayoutHandler } from '../../nodes/EllipseNodeLayoutHandler';
+import { EllipseNode } from '../../nodes/ellipse/EllipseNode';
+import { EllipseNodeConverterHandler } from '../../nodes/ellipse/EllipseNodeConverterHandler';
+import { EllipseNodeLayoutHandler } from '../../nodes/ellipse/EllipseNodeLayoutHandler';
+import { NoteNode } from '../../nodes/note/NoteNode';
+import { NoteNodeConverterHandler } from '../../nodes/note/NoteNodeConverterHandler';
+import { NoteNodeLayoutHandler } from '../../nodes/note/NoteNodeLayoutHandler';
+import { RectangleWithExternalLabelNode } from '../../nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNode';
+import { RectangleWithExternalLabelNodeConverterHandler } from '../../nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverterHandler';
+import { RectangleWithExternalLabelNodeLayoutHandler } from '../../nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeLayoutHandler';
+import { PackageNode } from '../../nodes/package/PackageNode';
+import { PackageNodeConverterHandler } from '../../nodes/package/PackageNodeConverterHandler';
+import { PackageNodeLayoutHandler } from '../../nodes/package/PackageNodeLayoutHandler';
 import { OnboardArea } from '../../onboarding/OnboardArea';
 import { UMLModelTreeItemContextMenuContribution } from '../../profile/apply-profile/UMLModelTreeItemContextMenuContribution';
 import { UMLElementTreeItemContextMenuContribution } from '../../profile/apply-stereotype/UMLElementTreeItemContextMenuContribution';
@@ -223,10 +232,37 @@ export const EditProjectView = () => {
           type: 'EllipseNodeStyle',
           fields: `borderColor borderSize borderStyle color`,
         },
+        {
+          type: 'PackageNodeStyle',
+          fields: `borderColor borderSize borderStyle color`,
+        },
+        {
+          type: 'RectangleWithExternalLabelNodeStyle',
+          fields: `borderColor borderSize borderStyle color`,
+        },
+        {
+          type: 'NoteNodeStyle',
+          fields: `borderColor borderSize borderStyle color`,
+        },
       ],
-      nodeLayoutHandlers: [new EllipseNodeLayoutHandler()],
-      nodeConverterHandlers: [new EllipseNodeConverterHandler()],
-      nodeTypeContributions: [<NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />],
+      nodeLayoutHandlers: [
+        new EllipseNodeLayoutHandler(),
+        new PackageNodeLayoutHandler(),
+        new RectangleWithExternalLabelNodeLayoutHandler(),
+        new NoteNodeLayoutHandler(),
+      ],
+      nodeConverterHandlers: [
+        new EllipseNodeConverterHandler(),
+        new PackageNodeConverterHandler(),
+        new RectangleWithExternalLabelNodeConverterHandler(),
+        new NoteNodeConverterHandler(),
+      ],
+      nodeTypeContributions: [
+        <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
+        <NodeTypeContribution component={PackageNode} type={'packageNode'} />,
+        <NodeTypeContribution component={RectangleWithExternalLabelNode} type={'rectangleWithExternalLabelNode'} />,
+        <NodeTypeContribution component={NoteNode} type={'noteNode'} />,
+      ],
     };
 
     main = (

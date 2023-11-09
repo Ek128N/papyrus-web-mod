@@ -41,6 +41,16 @@
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-customnodes</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-customnodes-edit</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 
 

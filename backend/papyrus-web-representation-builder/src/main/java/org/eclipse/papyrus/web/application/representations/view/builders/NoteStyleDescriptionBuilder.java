@@ -31,6 +31,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -40,7 +41,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -321,7 +321,7 @@ public class NoteStyleDescriptionBuilder {
         noteStyleDescription.setDefaultWidthExpression("200"); //$NON-NLS-1$
         noteStyleDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
 
-        ImageNodeStyleDescription style = (ImageNodeStyleDescription) noteStyleDescription.getStyle();
+        NoteNodeStyleDescription style = (NoteNodeStyleDescription) noteStyleDescription.getStyle();
         style.setShowIcon(true);
         style.setColor(this.color);
 

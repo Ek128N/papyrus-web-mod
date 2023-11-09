@@ -244,6 +244,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getPackage()));
         diagramDescription.getNodeDescriptions().add(prdDiagramPackageDescription);
 
+        prdDiagramPackageDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+
         // create Package tool sections
         this.createDefaultToolSectionsInNodeDescription(prdDiagramPackageDescription);
 
@@ -435,6 +437,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         NodeDescription prdSharedPackageDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
         prdSharedPackageDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, SHARED_SUFFIX));
+        prdSharedPackageDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+
         this.prdSharedDescription.getChildrenDescriptions().add(prdSharedPackageDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdSharedPackageDescription);

@@ -187,9 +187,14 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             String literalName = literal.substring(0, 1).toUpperCase() + literal.substring(1);
             String imageName = literalName + ".svg"; //$NON-NLS-1$
 
-            NodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(imageName.getBytes()).toString(), false);
-            imageNodeStyle.setBorderSize(0);
-            ConditionalNodeStyle conditionalNodeStyle = this.getViewBuilder().createConditionalNodeStyle(condition, imageNodeStyle);
+            NodeStyleDescription nodeStyle;
+            if (pseudostateKind.equals(PseudostateKind.FORK_LITERAL) || pseudostateKind.equals(PseudostateKind.JOIN_LITERAL)) {
+                nodeStyle = this.getViewBuilder().createRectangleWithExternalLabelNodeStyle();
+            } else {
+                nodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(imageName.getBytes()).toString(), false);
+            }
+
+            ConditionalNodeStyle conditionalNodeStyle = this.getViewBuilder().createConditionalNodeStyle(condition, nodeStyle);
             conditionalNodeStyles.add(conditionalNodeStyle);
 
             // Node creation tool
@@ -221,6 +226,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         pseudostateBorderNodeDesc.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_WITDTH));
         pseudostateBorderNodeDesc.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_HEIGHT));
+        pseudostateBorderNodeDesc.setKeepAspectRatio(true);
 
         this.registerCallback(pseudostateBorderNodeDesc, () -> {
             parentDesc.getPalette().getNodeTools().addAll(creationTools);

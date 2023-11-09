@@ -14,12 +14,12 @@ package org.eclipse.papyrus.web.application.nodes;
 
 import java.util.Optional;
 
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.emf.diagram.INodeStyleProvider;
-import org.eclipse.sirius.web.customnodes.EllipseNodeStyleDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -46,19 +46,9 @@ public class EllipseNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(EllipseNodeStyle.newEllipseNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor())
-                            .filter(FixedColor.class::isInstance)
-                            .map(FixedColor.class::cast)
-                            .map(FixedColor::getValue)
-                            .orElse("transparent"))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
-                            .filter(FixedColor.class::isInstance)
-                            .map(FixedColor.class::cast)
-                            .map(FixedColor::getValue)
-                            .orElse("black"))
-                    .borderSize(nodeStyle.getBorderSize())
-                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
-                    .build());
+                    .color(Optional.ofNullable(nodeStyle.getColor()).filter(FixedColor.class::isInstance).map(FixedColor.class::cast).map(FixedColor::getValue).orElse("transparent"))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).filter(FixedColor.class::isInstance).map(FixedColor.class::cast).map(FixedColor::getValue).orElse("black"))
+                    .borderSize(nodeStyle.getBorderSize()).borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral())).build());
         }
 
         return iNodeStyle;

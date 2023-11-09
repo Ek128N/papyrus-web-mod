@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   height="50px"
+   width="50px"
+   version="1.1"
+   id="fork"
+   sodipodi:docname="Choice.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="11.72383"
+     inkscape:cx="24.607998"
+     inkscape:cy="25.119776"
+     inkscape:window-width="1280"
+     inkscape:window-height="650"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="fork" />
+  <defs
+     id="defs2" />
+  <path
+     style="fill:#ffffff;stroke:#0b006b;stroke-width:0.763229;stroke-opacity:1"
+     d="M 0.53967915,24.991567 25.0154,0.53942452 49.491121,24.991567 25.0154,49.491832 Z"
+     id="lozenge" />
+</svg>
