@@ -56,12 +56,8 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>github-org.eclipse.papyrus-designer</id>
-			<url>https://maven.pkg.github.com/PapyrusSirius/org.eclipse.papyrus-designer</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
+			<id>eclipse-org.eclipse.papyrus-designer</id>
+			<url>https://repo.eclipse.org/content/repositories/papyrus-releases/</url>
 		</repository>
 		<repository>
 			<id>github-papyrus-sirius-uml2</id>
