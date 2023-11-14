@@ -13,11 +13,10 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices.scope;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
@@ -33,40 +32,33 @@ public class ReachableElementsServices {
 
     /**
      * Retrieve all elements present reachable from the given self element compatible with the type of the reference
-     * given by name. The returned list does not contain elements that the reference is already referring to.
+     * given by name.
      *
      * @param self
      *            the current selected element owning the reference
      * @param referenceName
      *            the name of the reference
-     * @return the list of new reachable elements.
+     * @return the list of reachable elements.
      */
     public <T extends EObject> List<T> getAllReachableElements(EObject self, String referenceName) {
         EReference ref = (EReference) self.eClass().getEStructuralFeature(referenceName);
-
-        final Predicate<T> filter = this.getExistingElementsFilter(self, ref);
-
-        @SuppressWarnings("unchecked")
-        Class<T> type = (Class<T>) ref.getEReferenceType().getInstanceClass();
-        List<Notifier> roots = new ElementRootCandidateSeachProvider().getReachableRoots(self);
-        return roots.stream().flatMap(r -> EMFUtils.allContainedObjectOfType(r, type)).filter(filter).toList();
+        return this.getAllReachableElements(self, ref.getEReferenceType());
     }
 
-    private <T extends EObject> Predicate<T> getExistingElementsFilter(EObject self, EReference ref) {
-        final Predicate<T> filter;
-        if (ref.isUnique()) {
-            if (ref.isMany()) {
-                @SuppressWarnings("unchecked")
-                Collection<T> values = (Collection<T>) self.eGet(ref);
-                filter = element -> !values.contains(element);
-            } else {
-                Object value = self.eGet(ref);
-                filter = element -> element != value;
-            }
-        } else {
-            filter = element -> true;
-        }
-        return filter;
+    /**
+     * Retrieve all reachable elements from a given self which are compatible with the give type.
+     *
+     * @param self
+     *            the current selected element owning the reference
+     * @param typeClass
+     *            the type of the referenced element
+     * @return the list of reachable elements.
+     */
+    public <T extends EObject> List<T> getAllReachableElements(EObject self, EClass typeClass) {
+        @SuppressWarnings("unchecked")
+        Class<T> type = (Class<T>) typeClass.getInstanceClass();
+        List<Notifier> roots = new ElementRootCandidateSeachProvider().getReachableRoots(self);
+        return roots.stream().flatMap(r -> EMFUtils.allContainedObjectOfType(r, type)).toList();
     }
 
     /**
