@@ -31,6 +31,7 @@ import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescript
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
+import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.application.utils.AssociationTestCaseBuilder;
 import org.eclipse.papyrus.web.application.utils.ElementMatcher;
 import org.eclipse.papyrus.web.application.utils.LabelStyleCheck;
@@ -1495,7 +1496,8 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
     @Override
     protected ClassDiagramService buildService() {
-        return new ClassDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+        return new ClassDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
+                new MockServiceLogger());
     }
 
     @Override

@@ -20,8 +20,9 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.labels.ElementDefaultNameProvider;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
@@ -50,18 +51,23 @@ public class StateMachineDiagramService extends AbstractDiagramService {
 
     public static final String FORK_NODE_DEFAULT_HEIGHT = "150"; //$NON-NLS-1$
 
+    /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
     public StateMachineDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService,
-            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService) {
-        super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService);
+            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ServiceLogger logger) {
+        super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
+        this.logger = logger;
     }
 
     @Override
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
-        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
-                capturedNodeDescriptions);
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
         return new StateMachineSemanticDiagramDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
-                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
     }
 
     /**

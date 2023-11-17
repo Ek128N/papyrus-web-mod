@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
@@ -40,6 +41,11 @@ public class StateMachineSemanticDiagramDropBehaviorProvider implements IWebExte
     private IObjectService objectService;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param editionContext
@@ -50,12 +56,16 @@ public class StateMachineSemanticDiagramDropBehaviorProvider implements IWebExte
      *            service used to retrieve semantic target according to node id
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
-    public StateMachineSemanticDiagramDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, DiagramNavigator diagramNavigator) {
+    public StateMachineSemanticDiagramDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, DiagramNavigator diagramNavigator,
+            ServiceLogger logger) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.editionContext = Objects.requireNonNull(editionContext);
         this.viewHelper = Objects.requireNonNull(viewHelper);
         this.objectService = Objects.requireNonNull(objectService);
+        this.logger = logger;
     }
 
     /**
@@ -69,7 +79,7 @@ public class StateMachineSemanticDiagramDropBehaviorProvider implements IWebExte
     @Override
     public void handleSemanticDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         if (targetNode != null) {
-            new SemanticDropSwitch(Optional.of(targetNode), this.viewHelper, this.diagramNavigator)//
+            new SemanticDropSwitch(Optional.of(targetNode), this.viewHelper, this.diagramNavigator, this.logger)//
                     .withEObjectResolver(this::getSemanticObject) //
                     .doSwitch(droppedElement);
         } else {

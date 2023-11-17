@@ -67,6 +67,7 @@ import org.eclipse.papyrus.uml.domain.services.labels.StereotypeLabelPrefixProvi
 import org.eclipse.papyrus.uml.domain.services.labels.domains.DefaultNamedElementNameProvider;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.modify.IFeatureModifier;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeReconnectSourceBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeReconnectTargetBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeReconnectionSourceChecker;
@@ -74,10 +75,10 @@ import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeR
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.uml.domain.services.status.Status;
-import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebExternalDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebInternalDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.WebRepresentationQuerier;
 import org.eclipse.papyrus.web.sirius.contributions.AqlServiceClass;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramElementHelper;
@@ -134,13 +135,19 @@ public abstract class AbstractDiagramService {
 
     private IViewDiagramDescriptionService viewDiagramService;
 
+    /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
     public AbstractDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService,
-            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService) {
+            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ServiceLogger logger) {
         this.editableChecker = editableChecker;
         this.viewDiagramService = Objects.requireNonNull(viewDiagramService);
         this.objectService = Objects.requireNonNull(objectService);
         this.diagramNavigationService = Objects.requireNonNull(diagramNavigationService);
         this.diagramOperationsService = Objects.requireNonNull(diagramOperationsService);
+        this.logger = logger;
     }
 
     protected IObjectService getObjectService() {
@@ -276,8 +283,9 @@ public abstract class AbstractDiagramService {
                         String elements = destroyerStatus.getElements().stream()//
                                 .map(Object::toString)//
                                 .collect(Collectors.joining(ITEM_SEP));
-                        // TODO But Once a service is available, report a business error to the user instead of logging
-                        LOGGER.warn(destroyerStatus.getMessage() + ": " + elements); //$NON-NLS-1$
+                        String errorMessage = destroyerStatus.getMessage() + ": " + elements; //$NON-NLS-1$
+                        LOGGER.warn(errorMessage);
+                        this.logger.log(errorMessage, ILogLevel.WARNING);
                     }
                 }
                 break;
@@ -322,8 +330,9 @@ public abstract class AbstractDiagramService {
                         String elements = destroyerStatus.getElements().stream()//
                                 .map(Object::toString)//
                                 .collect(Collectors.joining(ITEM_SEP));
-                        // TODO But Once a service is available, report a business error to the user instead of logging
-                        LOGGER.warn(destroyerStatus.getMessage() + ": " + elements); //$NON-NLS-1$
+                        String errorMessage = destroyerStatus.getMessage() + ": " + elements; //$NON-NLS-1$
+                        LOGGER.warn(errorMessage);
+                        this.logger.log(errorMessage, ILogLevel.WARNING);
                     }
                 }
                 break;
@@ -359,9 +368,8 @@ public abstract class AbstractDiagramService {
 
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject droppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
-        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext,
-                capturedNodeDescriptions);
-        return new GenericWebExternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions));
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
+        return new GenericWebExternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
     }
 
     public EObject graphicalDrop(EObject droppedElement, EObject targetElement, Node droppedView, Node targetView, IEditingContext editionContext, IDiagramContext diagramContext,
@@ -373,7 +381,7 @@ public abstract class AbstractDiagramService {
     protected IWebInternalSourceToRepresentationDropBehaviorProvider buildGraphicalDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
         IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.viewDiagramService, this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
-        return new GenericWebInternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions));
+        return new GenericWebInternalDropBehaviorProvider(createViewHelper, new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
     }
 
     /**
@@ -390,8 +398,8 @@ public abstract class AbstractDiagramService {
     public EObject addValueTo(EObject featureOwner, String featureName, Object value) {
         Status status = this.buildFeatureModifier(featureOwner).addValue(featureOwner, featureName, value);
         if (status.getState() == State.FAILED) {
-            // TODO But Once a service is available, report a business error to the user instead of logging
             LOGGER.warn(status.getMessage());
+            this.logger.log(status.getMessage(), ILogLevel.WARNING);
         }
         return featureOwner;
     }
@@ -410,8 +418,8 @@ public abstract class AbstractDiagramService {
     public EObject removeValueFrom(EObject featureOwner, String featureName, Object value) {
         Status status = this.buildFeatureModifier(featureOwner).removeValue(featureOwner, featureName, value);
         if (status.getState() == State.FAILED) {
-            // TODO But Once a service is available, report a business error to the user instead of logging
             LOGGER.warn(status.getMessage());
+            this.logger.log(status.getMessage(), ILogLevel.WARNING);
         }
         return featureOwner;
     }
@@ -487,14 +495,16 @@ public abstract class AbstractDiagramService {
     public EObject createDomainBasedEdge(EObject source, EObject target, String type, String containementReferenceName, Node sourceNode, Node targetNode, IEditingContext editingContext,
             IDiagramContext diagramContext) {
 
+        String errorMessage = null;
         IViewQuerier represenationQuery = this.createRepresentationQuerier(editingContext, diagramContext.getDiagram());
 
         // Workaround for missing precondition on edges
         CheckStatus canCreateStatus = this.buildDomainBasedEdgeCreationChecker().canCreate(source, target, type, containementReferenceName, represenationQuery, sourceNode, targetNode);
         final EObject result;
         if (!canCreateStatus.isValid()) {
-            // TODO Once a service is available, report a business error to the user
-            LOGGER.warn("Creation failed : " + canCreateStatus.getMessage()); //$NON-NLS-1$
+            errorMessage = "Creation failed : " + canCreateStatus.getMessage(); //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
             result = null;
         } else {
             CreationStatus status = this.buildDomainBasedEdgeCreator(source).createDomainBasedEdge(source, target, type, containementReferenceName, represenationQuery, sourceNode, targetNode);
@@ -502,8 +512,9 @@ public abstract class AbstractDiagramService {
             result = status.getElement();
 
             if (status.getState() == State.FAILED) {
-                // TODO Once a service is available, report a business error to the user
-                LOGGER.warn("Creation failed : " + status.getMessage()); //$NON-NLS-1$
+                errorMessage = "Creation failed : " + status.getMessage();
+                LOGGER.warn(errorMessage);
+                this.logger.log(errorMessage, ILogLevel.WARNING);
             }
 
         }
@@ -568,15 +579,19 @@ public abstract class AbstractDiagramService {
     public EObject create(EObject parent, String type, String referenceName, Node targetView, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         final EObject result;
+        String errorMessage = null;
         if (parent == null) {
-            LOGGER.warn("Unable to create an element on nothing"); //$NON-NLS-1$
+            errorMessage = "Unable to create an element on nothing"; //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
             result = null;
         } else {
             // Workaround for missing precondition on edges
             CheckStatus canCreateStatus = this.buildElementCreationChecker().canCreate(parent, type, referenceName);
             if (!canCreateStatus.isValid()) {
-                // TODO Once a service is available, report a business error to the user
-                LOGGER.warn("Can not create : " + canCreateStatus.getMessage()); //$NON-NLS-1$
+                errorMessage = "Can not create : " + canCreateStatus.getMessage(); //$NON-NLS-1$
+                LOGGER.warn(errorMessage);
+                this.logger.log(errorMessage, ILogLevel.WARNING);
                 result = null;
             } else {
 
@@ -585,8 +600,9 @@ public abstract class AbstractDiagramService {
                 result = status.getElement();
 
                 if (status.getState() == State.FAILED) {
-                    // TODO Once a service is available, report a business error to the user
-                    LOGGER.warn("Creation failed : " + status.getMessage()); //$NON-NLS-1$
+                    errorMessage = "Creation failed : " + status.getMessage(); //$NON-NLS-1$
+                    LOGGER.warn(errorMessage);
+                    this.logger.log(errorMessage, ILogLevel.WARNING);
                 }
             }
         }
@@ -640,7 +656,9 @@ public abstract class AbstractDiagramService {
         return new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions).getParentNode(siblingView).map(parentNode -> {
             return this.create(parent, type, referenceName, parentNode, diagramContext, capturedNodeDescriptions);
         }).orElseGet(() -> {
-            LOGGER.warn(MessageFormat.format("Unable to get the parent view of {0}", sibling)); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("Unable to get the parent view of {0}", sibling); //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
             return sibling;
         });
     }
@@ -666,9 +684,11 @@ public abstract class AbstractDiagramService {
                     reconnectionTargetView);
             if (!status.isValid()) {
                 LOGGER.warn(status.getMessage());
+                this.logger.log(status.getMessage(), ILogLevel.WARNING);
             }
         } else {
             LOGGER.warn(checkStatus.getMessage());
+            this.logger.log(checkStatus.getMessage(), ILogLevel.WARNING);
         }
         return domainBaseEdge;
     }
@@ -719,9 +739,11 @@ public abstract class AbstractDiagramService {
             CheckStatus status = new ElementDomainBasedEdgeReconnectTargetBehaviorProvider(represenationQuery).reconnectTarget(domainBaseEdge, oldTarget, newTarget, reconnectionTargetView);
             if (!status.isValid()) {
                 LOGGER.warn(status.getMessage());
+                this.logger.log(status.getMessage(), ILogLevel.WARNING);
             }
         } else {
             LOGGER.warn(checkStatus.getMessage());
+            this.logger.log(checkStatus.getMessage(), ILogLevel.WARNING);
         }
         return domainBaseEdge;
     }
@@ -747,8 +769,9 @@ public abstract class AbstractDiagramService {
             source.getAnnotatedElements().remove(oldTarget);
             source.getAnnotatedElements().add((Element) newTarget);
         } else {
-            // TODO Once a service is available, report a business error to the user
-            LOGGER.warn("Can't reconnect to the new target. It is not an Element"); //$NON-NLS-1$
+            String errorMessage = "Can't reconnect to the new target. It is not an Element"; //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
         }
 
         return source;
@@ -771,7 +794,9 @@ public abstract class AbstractDiagramService {
             source.getConstrainedElements().remove(oldTarget);
             source.getConstrainedElements().add(element);
         } else {
-            LOGGER.warn("Can't reconnect to the new target. It is not an Element"); //$NON-NLS-1$
+            String errorMessage = "Can't reconnect to the new target. It is not an Element"; //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
         }
         return source;
     }
@@ -792,16 +817,20 @@ public abstract class AbstractDiagramService {
      */
     public EObject moveIn(EObject objectToMove, EObject newOwner) {
         List<EReference> candidateReferences = this.getUMLContainementReference(newOwner, objectToMove);
-
+        String errorMessage = null;
         final EReference ref;
         if (candidateReferences.isEmpty()) {
-            LOGGER.warn(MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove)); //$NON-NLS-1$
+            errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove); //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
             ref = null;
         } else {
             ref = candidateReferences.get(0);
             if (candidateReferences.size() > 1) {
-                LOGGER.warn(MessageFormat.format("More than one containment reference to contain {0} : {1}", objectToMove.eClass().getName(), //$NON-NLS-1$
-                        candidateReferences.stream().map(f -> f.getName()).collect(joining(ITEM_SEP))));
+                errorMessage = MessageFormat.format("More than one containment reference to contain {0} : {1}", objectToMove.eClass().getName(), //$NON-NLS-1$
+                        candidateReferences.stream().map(f -> f.getName()).collect(joining(ITEM_SEP)));
+                LOGGER.warn(errorMessage);
+                this.logger.log(errorMessage, ILogLevel.WARNING);
             }
         }
 
@@ -837,7 +866,9 @@ public abstract class AbstractDiagramService {
 
         final EReference ref;
         if (!(refCandidate instanceof EReference) || !((EReference) refCandidate).isContainment()) {
-            LOGGER.warn(MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove)); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove); //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
             ref = null;
         } else {
             ref = (EReference) refCandidate;
@@ -857,8 +888,9 @@ public abstract class AbstractDiagramService {
     private EObject moveIn(EObject objectToMove, EObject newOwner, final EReference ref) {
         final EObject result;
         if (EMFUtils.getAncestors(EObject.class, newOwner).contains(objectToMove)) {
-            // TODO But Once a service is available, report a business error to the user instead of logging
-            LOGGER.warn(MessageFormat.format("Impossible to move this {0} in this {1}. It would create a containment loop.", objectToMove.eClass().getName(), newOwner.eClass().getName())); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("Impossible to move this {0} in this {1}. It would create a containment loop.", objectToMove.eClass().getName(), newOwner.eClass().getName()); //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
             // Workaround for https://github.com/eclipse-sirius/sirius-components/issues/1343
             result = AbstractDiagramService.FAILURE_OBJECT;
         } else {
@@ -892,7 +924,9 @@ public abstract class AbstractDiagramService {
             oldSource.getAnnotatedElements().remove(target);
             newSource.getAnnotatedElements().add((Element) target);
         } else {
-            LOGGER.error("The target element should be an eleemnt"); //$NON-NLS-1$
+            String errorMessage = "The target element should be an element"; //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
         }
 
         return target;
@@ -914,7 +948,9 @@ public abstract class AbstractDiagramService {
             oldSource.getConstrainedElements().remove(element);
             newSource.getConstrainedElements().add(element);
         } else {
-            LOGGER.error("The target element should be an Element"); //$NON-NLS-1$
+            String errorMessage = "The target element should be an Element"; //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
         }
         return target;
     }

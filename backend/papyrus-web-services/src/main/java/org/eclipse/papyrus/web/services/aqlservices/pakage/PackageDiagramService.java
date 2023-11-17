@@ -19,8 +19,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
@@ -40,6 +41,11 @@ import org.springframework.stereotype.Service;
 public class PackageDiagramService extends AbstractDiagramService {
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param objectService
@@ -53,20 +59,22 @@ public class PackageDiagramService extends AbstractDiagramService {
      *            Object that check if an element can be edited
      * @param viewDiagramService
      *            Service used to navigate in DiagramDescription
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
     public PackageDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService, IEditableChecker editableChecker,
-            IViewDiagramDescriptionService viewDiagramService) {
-        super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService);
+            IViewDiagramDescriptionService viewDiagramService, ServiceLogger logger) {
+        super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
+        this.logger = logger;
     }
 
     @Override
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
-                capturedNodeDescriptions);
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
         IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new PackageSemanticDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
                 this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
-                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
         return dropProvider;
     }
 

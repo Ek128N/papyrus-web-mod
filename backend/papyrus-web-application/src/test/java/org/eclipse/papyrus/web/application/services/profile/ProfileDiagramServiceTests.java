@@ -21,6 +21,7 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
+import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Class;
@@ -88,7 +89,7 @@ public class ProfileDiagramServiceTests extends AbstractDiagramTest {
     @Override
     protected ProfileDiagramService buildService() {
         return new ProfileDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(), null,
-                null);
+                null, new MockServiceLogger());
     }
 
     @Override

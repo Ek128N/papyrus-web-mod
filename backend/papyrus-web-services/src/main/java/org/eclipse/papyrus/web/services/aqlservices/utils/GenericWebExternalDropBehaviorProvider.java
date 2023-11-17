@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 
@@ -33,9 +34,15 @@ public class GenericWebExternalDropBehaviorProvider implements IWebExternalSourc
 
     private DiagramNavigator diagramNavigator;
 
-    public GenericWebExternalDropBehaviorProvider(IViewHelper viewHelper, DiagramNavigator diagramNavigator) {
+    /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    public GenericWebExternalDropBehaviorProvider(IViewHelper viewHelper, DiagramNavigator diagramNavigator, ServiceLogger logger) {
         this.diagramNavigator = diagramNavigator;
         this.viewHelper = Objects.requireNonNull(viewHelper);
+        this.logger = logger;
     }
 
     /**
@@ -49,7 +56,7 @@ public class GenericWebExternalDropBehaviorProvider implements IWebExternalSourc
     @Override
     public void handleSemanticDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
-        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator).doSwitch(droppedElement);
+        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator, this.logger).doSwitch(droppedElement);
     }
 
 }

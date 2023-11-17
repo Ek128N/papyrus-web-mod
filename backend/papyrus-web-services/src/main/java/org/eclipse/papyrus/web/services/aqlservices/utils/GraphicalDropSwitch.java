@@ -24,10 +24,12 @@ import org.eclipse.papyrus.uml.domain.services.drop.IInternalSourceToRepresentat
 import org.eclipse.papyrus.uml.domain.services.drop.IInternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.modify.IFeatureModifier;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.uml.domain.services.status.Status;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.Class;
@@ -71,6 +73,11 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
     private Node droppedNode;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param optionalTargetNode
@@ -84,9 +91,13 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
      *            the helper used to create element on a diagram
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or its description
+     * @param droppedNode
+     *            the node dropped
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
     public GraphicalDropSwitch(Optional<Node> optionalTargetNode, Optional<EObject> optionalOldSemanticContainer, Optional<EObject> optionalNewSemanticContainer, IViewHelper viewHelper,
-            DiagramNavigator diagramNavigator, Node droppedNode) {
+            DiagramNavigator diagramNavigator, Node droppedNode, ServiceLogger logger) {
         if (optionalTargetNode.isPresent()) {
             // case DnD on node
             this.targetNode = Objects.requireNonNull(optionalTargetNode.get());
@@ -99,6 +110,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
         this.oldSemanticContainer = Objects.requireNonNull(optionalOldSemanticContainer.get());
         this.newSemanticContainer = Objects.requireNonNull(optionalNewSemanticContainer.get());
         this.droppedNode = droppedNode;
+        this.logger = logger;
     }
 
     /**
@@ -272,7 +284,9 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
         Boolean isViewCreated = Boolean.TRUE;
         PackageableElement importedElement = elementImport.getImportedElement();
         if (importedElement == null) {
-            LOGGER.error("Only ElementImport with imported element can be drag and dropped."); //$NON-NLS-1$
+            String errorMessage = "Only ElementImport with imported element can be drag and dropped"; //$NON-NLS-1$
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
         } else if (parentNode != null) {
             // case DnD on Node
             isViewCreated = this.viewHelper.createChildView(importedElement, parentNode, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
@@ -308,7 +322,8 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             status = Status.createFailingStatus(canDragAndDrop.getMessage());
         }
         if (status.getState() == State.FAILED) {
-            LOGGER.error(status.getMessage());
+            LOGGER.warn(status.getMessage());
+            this.logger.log(status.getMessage(), ILogLevel.WARNING);
         }
         return status;
     }

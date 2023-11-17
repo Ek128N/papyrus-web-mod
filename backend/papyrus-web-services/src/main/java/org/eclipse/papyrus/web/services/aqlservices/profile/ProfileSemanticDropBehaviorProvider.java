@@ -22,6 +22,7 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.ProfileExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.ProfileExternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
@@ -49,6 +50,11 @@ public class ProfileSemanticDropBehaviorProvider implements IWebExternalSourceTo
     private final DiagramNavigator diagramNavigator;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param editionContext
@@ -63,16 +69,18 @@ public class ProfileSemanticDropBehaviorProvider implements IWebExternalSourceTo
      *            Object that check if an element can be edited
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
-     * @return
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
     public ProfileSemanticDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, ECrossReferenceAdapter crossRef, IEditableChecker editableChecker,
-            DiagramNavigator diagramNavigator) {
+            DiagramNavigator diagramNavigator, ServiceLogger logger) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.crossRef = Objects.requireNonNull(crossRef);
         this.editableChecker = Objects.requireNonNull(editableChecker);
         this.editionContext = Objects.requireNonNull(editionContext);
         this.viewHelper = Objects.requireNonNull(viewHelper);
         this.objectService = Objects.requireNonNull(objectService);
+        this.logger = logger;
     }
 
     /**
@@ -86,7 +94,7 @@ public class ProfileSemanticDropBehaviorProvider implements IWebExternalSourceTo
     @Override
     public void handleSemanticDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
-        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator) //
+        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator, this.logger) //
                 .withDropChecker(new ProfileExternalSourceToRepresentationDropChecker()) //
                 .withDropProvider(new ProfileExternalSourceToRepresentationDropBehaviorProvider()) //
                 .withCrossRef(this.crossRef) //

@@ -27,6 +27,7 @@ import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
+import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.application.utils.ElementMatcher;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
@@ -469,7 +470,8 @@ public class PackageDiagramTests extends AbstractDiagramTest {
 
     @Override
     protected AbstractDiagramService buildService() {
-        return new PackageDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+        return new PackageDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
+                new MockServiceLogger());
     }
 
     @Test

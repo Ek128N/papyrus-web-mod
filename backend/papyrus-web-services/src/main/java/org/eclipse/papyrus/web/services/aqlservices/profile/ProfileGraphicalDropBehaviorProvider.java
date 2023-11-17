@@ -22,6 +22,7 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.ProfileInternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.ProfileInternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.web.services.aqlservices.IWebInternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.GraphicalDropSwitch;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
@@ -49,6 +50,11 @@ public class ProfileGraphicalDropBehaviorProvider implements IWebInternalSourceT
     private final DiagramNavigator diagramNavigator;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param editionContext
@@ -63,16 +69,18 @@ public class ProfileGraphicalDropBehaviorProvider implements IWebInternalSourceT
      *            Object that check if an element can be edited
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
-     * @return
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
     public ProfileGraphicalDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, ECrossReferenceAdapter crossRef, IEditableChecker editableChecker,
-            DiagramNavigator diagramNavigator) {
+            DiagramNavigator diagramNavigator, ServiceLogger logger) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.crossRef = Objects.requireNonNull(crossRef);
         this.editableChecker = Objects.requireNonNull(editableChecker);
         this.editionContext = Objects.requireNonNull(editionContext);
         this.viewHelper = Objects.requireNonNull(viewHelper);
         this.objectService = Objects.requireNonNull(objectService);
+        this.logger = logger;
     }
 
     /**
@@ -92,7 +100,7 @@ public class ProfileGraphicalDropBehaviorProvider implements IWebInternalSourceT
         Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
         Optional<EObject> optionalOldContainer = Optional.ofNullable(droppedElement.eContainer());
         Optional<EObject> optionalNewContainer = Optional.ofNullable(targetElement);
-        new GraphicalDropSwitch(optionalTargetNode, optionalOldContainer, optionalNewContainer, this.viewHelper, this.diagramNavigator, droppedNode) //
+        new GraphicalDropSwitch(optionalTargetNode, optionalOldContainer, optionalNewContainer, this.viewHelper, this.diagramNavigator, droppedNode, this.logger) //
                 .withDropChecker(new ProfileInternalSourceToRepresentationDropChecker()) //
                 .withDropProvider(new ProfileInternalSourceToRepresentationDropBehaviorProvider()) //
                 .withCrossRef(this.crossRef) //

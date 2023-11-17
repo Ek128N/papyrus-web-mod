@@ -23,6 +23,7 @@ import org.eclipse.papyrus.web.application.representations.uml.CSDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
+import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.application.utils.LabelStyleCheck;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
@@ -69,8 +70,8 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
 
     @Override
     protected AbstractDiagramService buildService() {
-        return new CompositeStructureDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true,
-                this.getViewDiagramDescriptionService());
+        return new CompositeStructureDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
+                new MockServiceLogger());
     }
 
     @Test

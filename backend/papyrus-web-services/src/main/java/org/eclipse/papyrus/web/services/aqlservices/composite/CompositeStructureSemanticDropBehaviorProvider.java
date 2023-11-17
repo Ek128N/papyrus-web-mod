@@ -1,7 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2022, 2023 CEA, Obeo
+/*****************************************************************************
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo.
  *
- * This program and the accompanying materials
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -9,8 +9,8 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *    Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices.composite;
 
 import java.util.Objects;
@@ -22,6 +22,7 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.CompositeStructureExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.drop.diagrams.CompositeStructureExternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
@@ -48,14 +49,20 @@ public class CompositeStructureSemanticDropBehaviorProvider implements IWebExter
 
     private DiagramNavigator diagramNavigator;
 
+    /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
     public CompositeStructureSemanticDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, ECrossReferenceAdapter crossRef,
-            IEditableChecker editableChecker, DiagramNavigator diagramNavigator) {
+            IEditableChecker editableChecker, DiagramNavigator diagramNavigator, ServiceLogger logger) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.crossRef = Objects.requireNonNull(crossRef);
         this.editableChecker = Objects.requireNonNull(editableChecker);
         this.editionContext = Objects.requireNonNull(editionContext);
         this.viewHelper = Objects.requireNonNull(viewHelper);
         this.objectService = Objects.requireNonNull(objectService);
+        this.logger = logger;
     }
 
     /**
@@ -69,7 +76,7 @@ public class CompositeStructureSemanticDropBehaviorProvider implements IWebExter
     @Override
     public void handleSemanticDrop(EObject droppedElement, org.eclipse.sirius.components.diagrams.Node targetNode) {
         Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
-        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator) //
+        new SemanticDropSwitch(optionalTargetNode, this.viewHelper, this.diagramNavigator, this.logger) //
                 .withDropChecker(new CompositeStructureExternalSourceToRepresentationDropChecker()) //
                 .withDropProvider(new CompositeStructureExternalSourceToRepresentationDropBehaviorProvider()) //
                 .withCrossRef(this.crossRef) //

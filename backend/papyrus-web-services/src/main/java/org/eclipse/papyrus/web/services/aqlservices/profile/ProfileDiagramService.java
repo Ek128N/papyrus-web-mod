@@ -27,8 +27,9 @@ import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescrip
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.IWebInternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
+import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
@@ -44,6 +45,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Namespace;
@@ -66,6 +68,11 @@ public class ProfileDiagramService extends AbstractDiagramService {
     private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param objectService
@@ -79,33 +86,41 @@ public class ProfileDiagramService extends AbstractDiagramService {
      *            Object that check if an element can be edited
      * @param viewDiagramService
      *            Service used to navigate in DiagramDescription
+     * @param representationSearchService
+     *            helper used to find representation
+     * @param papyrusRepresentationRegistry
+     *            registry that keeps track of all {@link DiagramDescription}s used in Papyrus application
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
+    // CHECKSTYLE:OFF
     public ProfileDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService, IEditableChecker editableChecker,
-            IViewDiagramDescriptionService viewDiagramService, IRepresentationSearchService representationSearchService, PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry) {
-        super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService);
+            IViewDiagramDescriptionService viewDiagramService, IRepresentationSearchService representationSearchService, PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry,
+            ServiceLogger logger) {
+        // CHECKSTYLE:ON
+        super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
         this.representationSearchService = representationSearchService;
         this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
+        this.logger = logger;
     }
 
     @Override
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
-                capturedNodeDescriptions);
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
         IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new ProfileSemanticDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
                 this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
-                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
         return dropProvider;
     }
 
     @Override
     protected IWebInternalSourceToRepresentationDropBehaviorProvider buildGraphicalDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
-                capturedNodeDescriptions);
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
         IWebInternalSourceToRepresentationDropBehaviorProvider dropProvider = new ProfileGraphicalDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
                 this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
-                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions));
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
         return dropProvider;
     }
 
@@ -225,8 +240,7 @@ public class ProfileDiagramService extends AbstractDiagramService {
                     Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                             .getConvertedNode(PRDDiagramDescriptionBuilder.PRD_REP_NAME);
 
-                    IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext,
-                            convertedNodes);
+                    IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, convertedNodes);
                     if (diagramElement == null) {
                         result = createViewHelper.createRootView(createdElementImport.getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
                     } else {

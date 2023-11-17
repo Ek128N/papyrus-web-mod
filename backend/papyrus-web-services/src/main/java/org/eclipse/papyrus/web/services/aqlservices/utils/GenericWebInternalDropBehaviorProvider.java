@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.services.aqlservices.IWebInternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 
@@ -40,16 +41,24 @@ public class GenericWebInternalDropBehaviorProvider implements IWebInternalSourc
     private DiagramNavigator diagramNavigator;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param viewHelper
      *            the helper used to create element on a diagram
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
-    public GenericWebInternalDropBehaviorProvider(IViewHelper viewHelper, DiagramNavigator diagramNavigator) {
+    public GenericWebInternalDropBehaviorProvider(IViewHelper viewHelper, DiagramNavigator diagramNavigator, ServiceLogger logger) {
         this.diagramNavigator = diagramNavigator;
         this.viewHelper = Objects.requireNonNull(viewHelper);
+        this.logger = logger;
     }
 
     /**
@@ -69,7 +78,8 @@ public class GenericWebInternalDropBehaviorProvider implements IWebInternalSourc
         Optional<Node> optionalTargetNode = Optional.ofNullable(targetNode);
         Optional<EObject> optionalOldSemanticContainer = Optional.ofNullable(droppedElement.eContainer());
         Optional<EObject> optionalNewSemanticContainer = Optional.ofNullable(targetElement);
-        new GraphicalDropSwitch(optionalTargetNode, optionalOldSemanticContainer, optionalNewSemanticContainer, this.viewHelper, this.diagramNavigator, droppedNode).doSwitch(droppedElement);
+        new GraphicalDropSwitch(optionalTargetNode, optionalOldSemanticContainer, optionalNewSemanticContainer, this.viewHelper, this.diagramNavigator, droppedNode, this.logger)
+                .doSwitch(droppedElement);
     }
 
 }

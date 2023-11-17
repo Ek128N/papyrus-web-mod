@@ -25,6 +25,7 @@ import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
+import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
 import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.Interaction;
@@ -173,7 +174,8 @@ public class UseCaseDiagramTests extends AbstractDiagramTest {
 
     @Override
     protected UseCaseDiagramService buildService() {
-        return new UseCaseDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+        return new UseCaseDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
+                new MockServiceLogger());
     }
 
     @Override

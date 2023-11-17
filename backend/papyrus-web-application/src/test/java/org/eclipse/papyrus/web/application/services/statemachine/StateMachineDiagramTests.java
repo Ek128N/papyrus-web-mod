@@ -28,6 +28,7 @@ import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
+import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.application.utils.ElementMatcher;
 import org.eclipse.papyrus.web.application.utils.LabelStyleCheck;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
@@ -354,7 +355,8 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
 
     @Override
     protected AbstractDiagramService buildService() {
-        return new StateMachineDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+        return new StateMachineDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
+                new MockServiceLogger());
     }
 
     @Override

@@ -28,9 +28,11 @@ import org.eclipse.papyrus.uml.domain.services.drop.IExternalSourceToRepresentat
 import org.eclipse.papyrus.uml.domain.services.drop.IExternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeSourceProvider;
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeTargetsProvider;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.ActivityEdge;
@@ -67,6 +69,11 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
     private IExternalSourceToRepresentationDropBehaviorProvider dropProvider;
 
     /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
+    /**
      * Constructor.
      *
      * @param optionalSelectedNode
@@ -76,8 +83,10 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
      *            the helper used to create element on a diagram
      * @param diagramNavigator
      *            the helper used to navigate inside a diagram and/or to its description
+     * @param logger
+     *            Logger used to report errors and warnings to the user
      */
-    public SemanticDropSwitch(Optional<Node> optionalSelectedNode, IViewHelper viewHelper, DiagramNavigator diagramNavigator) {
+    public SemanticDropSwitch(Optional<Node> optionalSelectedNode, IViewHelper viewHelper, DiagramNavigator diagramNavigator, ServiceLogger logger) {
         if (optionalSelectedNode.isPresent()) {
             // case DnD on node
             this.targetNode = Objects.requireNonNull(optionalSelectedNode.get());
@@ -87,6 +96,7 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
         }
         this.viewHelper = viewHelper;
         this.diagramNavigator = diagramNavigator;
+        this.logger = logger;
     }
 
     /**
@@ -191,7 +201,9 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
         DnDStatus status = null;
         if (this.dropChecker != null && this.dropProvider != null) {
             status = this.semanticDragAndDrop(elementImport);
-            isDragAndDropValid = this.createElementImportDragAndDropView(status);
+            if (status != null && status.getState() != State.FAILED) {
+                isDragAndDropValid = this.createElementImportDragAndDropView(status);
+            }
         } else {
             // default case when no dropChecker neither dropProvider are defined
             // ex. : org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebExternalDropBehaviorProvider
@@ -209,7 +221,9 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             Objects.requireNonNull(this.editableChecker);
             Objects.requireNonNull(this.eObjectResolver);
             status = this.semanticDragAndDrop(object);
-            isDragAndDropValid = this.createDragAndDropView(status);
+            if (status != null && status.getState() != State.FAILED) {
+                isDragAndDropValid = this.createDragAndDropView(status);
+            }
         } else {
             // default case when no dropChecker neither dropProvider are defined
             // ex. : org.eclipse.papyrus.web.services.aqlservices.utils.GenericWebExternalDropBehaviorProvider
@@ -258,7 +272,9 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             for (EObject eObjectToDisplay : status.getElementsToDisplay()) {
                 PackageableElement importedElement = ((ElementImport) eObjectToDisplay).getImportedElement();
                 if (importedElement == null) {
-                    LOGGER.error("Only ElementImport with imported element can be drag and dropped."); //$NON-NLS-1$
+                    String errorMesasge = "Only ElementImport with imported element can be drag and dropped"; //$NON-NLS-1$
+                    LOGGER.warn(errorMesasge);
+                    this.logger.log(status.getMessage(), ILogLevel.WARNING);
                 } else if (this.targetNode != null) {
                     // case DnD on Node
                     isDragAndDropValid = isDragAndDropValid && this.createChildView(importedElement, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
@@ -296,7 +312,8 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             status = DnDStatus.createFailingStatus(canDragAndDrop.getMessage(), Collections.emptySet());
         }
         if (status.getState() == State.FAILED) {
-            LOGGER.error(status.getMessage());
+            LOGGER.warn(status.getMessage());
+            this.logger.log(status.getMessage(), ILogLevel.WARNING);
         }
         return status;
     }
