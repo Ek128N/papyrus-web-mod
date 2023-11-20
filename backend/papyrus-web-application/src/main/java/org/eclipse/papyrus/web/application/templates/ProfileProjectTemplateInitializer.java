@@ -42,7 +42,7 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
     /**
      * Name of the new resource.
      */
-    private static final String PROFILE_MODEL_TITLE = "Profile.profile"; //$NON-NLS-1$
+    private static final String PROFILE_MODEL_TITLE = "Profile.profile.uml"; //$NON-NLS-1$
 
     /**
      * Logger used to log error when model creation fails.

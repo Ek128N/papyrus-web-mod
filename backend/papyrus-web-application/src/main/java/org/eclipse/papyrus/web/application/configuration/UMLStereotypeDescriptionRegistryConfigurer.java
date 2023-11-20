@@ -44,7 +44,7 @@ public class UMLStereotypeDescriptionRegistryConfigurer implements IStereotypeDe
 
     public static final UUID EMPTY_PROFILE_ID = UUID.nameUUIDFromBytes("empty_profile".getBytes()); //$NON-NLS-1$
 
-    public static final String EMPTY_PROFILE_LABEL = "Profile.profile"; //$NON-NLS-1$
+    public static final String EMPTY_PROFILE_LABEL = "Profile.profile.uml"; //$NON-NLS-1$
 
     public static final UUID SAMPLE_UML_ID_SELF_CONTAINED = UUID.nameUUIDFromBytes("sample_uml_self_contained".getBytes()); //$NON-NLS-1$
 

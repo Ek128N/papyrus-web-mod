@@ -117,7 +117,7 @@ public abstract class AbstractDiagramService {
     /**
      * Profile extension name.
      */
-    public static final String PROFILE_EXT = ".profile";
+    public static final String PROFILE_EXT = ".profile.uml";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDiagramService.class);
 
@@ -907,13 +907,12 @@ public abstract class AbstractDiagramService {
     }
 
     /**
-     * Check if the resource of a given {@link Object} is defined with ".profile" extension in its name.
+     * Check if the resource of a given {@code context} contains the ".profile.uml" extension in its name.
      *
      * @param context
      *            context used to create diagram on
      *
-     * @return <code>true</code> if the resource is defined with ".profile" extension in its name, <code>false</code>
-     *         otherwise.
+     * @return {@code true} if the resource contains the ".profile.uml" extension, {@code false} otherwise
      */
 
     protected boolean isContainedInProfileResource(EObject context) {
