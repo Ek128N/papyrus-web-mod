@@ -80,7 +80,7 @@ public class NoteStyleDescriptionBuilderTest {
 
         View stubView = ViewFactory.eINSTANCE.createView();
 
-        this.styleProvider = new StyleProvider(stubView);
+        this.styleProvider = new StyleProvider(stubView, "");
         ViewBuilder viewBuilder = new ViewBuilder(queryBuilder, this.styleProvider, idBuilder, umlMetaModelHelper);
 
         this.noteStyleDescriptionBuilder = new NoteStyleDescriptionBuilder(idBuilder, viewBuilder, queryBuilder);

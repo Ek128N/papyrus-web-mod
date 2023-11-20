@@ -58,40 +58,41 @@ public class StyleProvider {
 
     private ColorPalette colorPalette;
 
-    public StyleProvider(View view) {
-        colorPalette = ViewFactory.eINSTANCE.createColorPalette();
-        view.getColorPalettes().add(colorPalette);
-        nodeColor = createFixedColor("Default Node Background", "#fefefe");
-        borderNodeColor = createFixedColor("Default Node", "#0b006b");
-        nodeLabelColor = createFixedColor("Default Label", "#0b006b");
-        noteColor = createFixedColor("Comment", "#fffff0");
-        constraintColor = createFixedColor("Constraint", "#c8ffe6");
-        modelColor = createFixedColor("Model", "#f1f8fe");
-        edgeColor = borderNodeColor;
+    public StyleProvider(View view, String colorPrefix) {
+        this.colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+        view.getColorPalettes().add(this.colorPalette);
+        this.colorPalette.setName(colorPrefix + "ColorPalette");
+        this.nodeColor = this.createFixedColor(colorPrefix + "Default Node Background", "#fefefe");
+        this.borderNodeColor = this.createFixedColor(colorPrefix + "Default Node", "#0b006b");
+        this.nodeLabelColor = this.createFixedColor(colorPrefix + "Default Label", "#0b006b");
+        this.noteColor = this.createFixedColor(colorPrefix + "Comment", "#fffff0");
+        this.constraintColor = this.createFixedColor(colorPrefix + "Constraint", "#c8ffe6");
+        this.modelColor = this.createFixedColor(colorPrefix + "Model", "#f1f8fe");
+        this.edgeColor = this.borderNodeColor;
     }
 
     private FixedColor createFixedColor(String name, String value) {
         var fixedColor = ViewFactory.eINSTANCE.createFixedColor();
         fixedColor.setName(name);
         fixedColor.setValue(value);
-        colorPalette.getColors().add(fixedColor);
+        this.colorPalette.getColors().add(fixedColor);
         return fixedColor;
     }
 
     public UserColor getNoteColor() {
-        return noteColor;
+        return this.noteColor;
     }
 
     public UserColor getConstraintColor() {
-        return constraintColor;
+        return this.constraintColor;
     }
 
     public UserColor getModelColor() {
-        return modelColor;
+        return this.modelColor;
     }
 
     public LineStyle getEdgeStyle() {
-        return edgeStyle;
+        return this.edgeStyle;
     }
 
     public StyleProvider setEdgeStyle(LineStyle aEdgeStyle) {
@@ -100,7 +101,7 @@ public class StyleProvider {
     }
 
     public ArrowStyle getSourceArrowStyle() {
-        return sourceArrowStyle;
+        return this.sourceArrowStyle;
     }
 
     public StyleProvider setSourceArrowStyle(ArrowStyle aSourceArrowStyle) {
@@ -109,7 +110,7 @@ public class StyleProvider {
     }
 
     public ArrowStyle getTargetArrowStyle() {
-        return targetArrowStyle;
+        return this.targetArrowStyle;
     }
 
     public StyleProvider setTargetArrowStyle(ArrowStyle aTargetArrowStyle) {
@@ -118,11 +119,11 @@ public class StyleProvider {
     }
 
     public int getEdgeWidth() {
-        return edgeWidth;
+        return this.edgeWidth;
     }
 
     public int getFontSize() {
-        return fontSize;
+        return this.fontSize;
     }
 
     public StyleProvider setFontSize(int aFontSize) {
@@ -131,7 +132,7 @@ public class StyleProvider {
     }
 
     public int getPortSize() {
-        return portSize;
+        return this.portSize;
     }
 
     public StyleProvider setPortSize(int aPortSize) {
@@ -145,7 +146,7 @@ public class StyleProvider {
     }
 
     public UserColor getEdgeColor() {
-        return edgeColor;
+        return this.edgeColor;
     }
 
     public StyleProvider setEdgeColor(UserColor anEdgeColor) {
@@ -154,7 +155,7 @@ public class StyleProvider {
     }
 
     public UserColor getNodeColor() {
-        return nodeColor;
+        return this.nodeColor;
     }
 
     public StyleProvider setNodeColor(UserColor aNodeColor) {
@@ -163,7 +164,7 @@ public class StyleProvider {
     }
 
     public UserColor getBorderNodeColor() {
-        return borderNodeColor;
+        return this.borderNodeColor;
     }
 
     public StyleProvider setBorderNodeColor(UserColor aBorderNodeColor) {
@@ -172,7 +173,7 @@ public class StyleProvider {
     }
 
     public int getNodeBorderRadius() {
-        return nodeBorderRadius;
+        return this.nodeBorderRadius;
     }
 
     public StyleProvider setNodeBorderRadius(int aNodeBorderRadius) {
@@ -181,7 +182,7 @@ public class StyleProvider {
     }
 
     public UserColor getNodeLabelColor() {
-        return nodeLabelColor;
+        return this.nodeLabelColor;
     }
 
     public StyleProvider setNodeLabelColor(UserColor aNodeLabelColor) {

@@ -115,6 +115,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     private final IdBuilder idBuilder;
 
+    private final String diagramPrefix;
+
     private final String representationName;
 
     private final EClass representationDomainClass;
@@ -123,6 +125,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
     public AbstractRepresentationDescriptionBuilder(String diagramPrefix, String representationName, EClass domainClass) {
         super();
+        this.diagramPrefix = diagramPrefix;
         this.representationName = representationName;
         this.representationDomainClass = domainClass;
         this.queryBuilder = new QueryHelper(this.umlMetaModelHelper);
@@ -147,8 +150,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     public DiagramDescription createDiagramDescription(View view) {
-
-        this.styleProvider = new StyleProvider(view);
+        this.styleProvider = new StyleProvider(view, this.diagramPrefix);
         this.viewBuilder = new ViewBuilder(this.queryBuilder, this.styleProvider, this.idBuilder, this.umlMetaModelHelper);
 
         DiagramDescription diagramDescription = this.getViewBuilder().buildDiagramDescription(this.representationName, this.representationDomainClass);
