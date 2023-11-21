@@ -1,4 +1,7 @@
 ifndef::imagesdir[:imagesdir: imgs]
+:tip-caption: 💡
+:warning-caption: ⚠️
+:toclevels: 4
 
 == Development FAQ
 :toc:
@@ -40,39 +43,6 @@ Here its definition:
       return List.of("C", "C++", "JAVA", "Natural Language", "OCL");
   }
 -----
-
-=== How to use Shared Descriptions?
-
-==== What are shared elements?
-
-Shared elements are a reuse mechanism we use to avoid the duplication of NodeDescription in our DSL View. They are defined in a `SHARED_DESCRIPTIONS` NodeDescription, and are reused by all the description that can contain them.
-
-This mechanism ensures that a NodeDescription is defined at a single place, which eases the maintenance and evolution of the DSL View. 
-
-Note that some diagrams contain top-level NodeDescription in addition to shared elements to represent elements on the diagram background. These top-level NodeDescription typically cannot be reused from the `SHARED_DESCRIPTIONS` because their semantic candidate expression is different.
-
-==== When should I use a shared element?
-
-The rules below cover the use cases where a shared element should be used to avoid code duplication.
-1. A shared element is reused by **at least** two other elements (as child node or border node). Note that being reused by the diagram itself doesn't count.
-2. A non-shared element cannot be reused by another element
-3. A shared element is suffixed with `_SHARED` and stored in a common `SHARED_DESCRIPTIONS` NodeDescription at the root of the DSL view.
-4. The `SHARED_DESCRIPTIONS` NodeDescription targets the `UML#Element` metaclass as its semantic domain.
-5. The `SHARED_DESCRIPTIONS` NodeDescription doesn't contain tools.
-6. The `SHARED_DESCRIPTIONS` NodeDescription has the following semantic candidate expression: `aql:Sequence{}` to make sure it is never displayed.
-7. Elements that are used in a single location (e.g. elements inside a Package that cannot be represented anywhere else) should be defined inside their containing element (and not the shared description)
-  - If they are reused in another location (e.g. elements inside a Package and a Profile) they should be defined as shared elements.
-8. Shared elements' `semanticCandidateExpression` should never use `QueryBuilder#getAllReachable`. It should instead contain a semantic expression based on the container, or a call to a service if the semantic candidate expression is complex.
-
-*These rules are validated during the build of Papyrus Web.*
-
-==== Tooling around shared elements
-
-- Use `AbstractRepresentationDescriptionBuilder#createSharedDescription` to create a shared description for a given diagram. This method takes care of the naming of the shared description, setting its semantic domain, and its semantic candidate expression (rules 4, 5, and 6).
-- Use `AbstractRepresentationDescriptionBuilder#createCommentDescriptionInNodeDescription` and `AbstractRepresentationBuilder#createConstraintDescriptionInNodeDescription` to create constraint and comments in the shared description passed as a parameter (rules 3, 8).
-  - Comments and constraints can be represented in various container in most diagrams. These methods provide a common implementation that can be reused as is in new diagrams.
-- Use `IdBuilder.getSpecializedDomainNodeName(eClass, AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)` to create a node description with the `_SHARED` suffix (rule 3).
-- Use `sharedDescriptionNode.getChildrenDescriptions().add(myNodeDescription)` to add a NodeDescription to the `SHARED_DESCRIPTIONS` element. This NodeDescription can be created with the regular creation APIs such as `org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.newNodeBuilder(EClass, NodeStyleDescription)`. In this case it's the user's responsibility to ensure that the NodeDescription complies with the rules defined above. 
 
 === Pages management in Details panel
 
@@ -124,3 +94,518 @@ Implementations of the test framework for a specific diagram should follow the s
 
 - *org.eclipse.papyrus.web.application.tools.usecase*: the concrete implementation of the abstract test classes provided by the framework. These classes allow to test node creation, edge creation, etc in the context of the Use Case Diagram.
 - *org.eclipse.papyrus.web.application.tools.usecase.utils*: utility classes specific to the Use Case Diagram. For example, the `UCDMappingTypes` extends `MappingType` to support Use Case specific mappings.
+
+
+=== How to create custom nodes?
+Custom nodes are project-specific node styles used to extend Sirius Web's default styles. In Papyrus Web, they are typically used to define nodes with specific shapes, such as the _Package_ node or the _Note_ node.
+
+Custom nodes are defined both in the backend (to make them usable in the View DSL) and the frontend (the actual graphical implementation of the node). 
+
+==== Backend
+There are two backend modules related to custom nodes:
+
+- `papyrus-web-customnodes`
+- `papyrus-web-customnodes-edit`
+
+To create a new custom node, open the `papyrus-customnodes.ecore` model and create a new top-level `EClass`. Set its name with the name of your custom node (e.g. _NoteNodeStyleDescription_), and set the super type to `NodeStyleDescription`. Then head to the `papyrus-customnodes.genmodel` file and re-generate the model and edit projects.
+
+[TIP]
+.Update the icon associated to the custom node in Papyrus Studio
+====
+You can update the icon associated to your custom node in the corresponding item provider in `papyrus-web-customnodes-edit`. To do so look for the `getImage` method, and change the path of the image. 
+⚠️ Make sure you edit the Javadoc of the method to add `@generated NOT`, otherwise this change will be lost the next time you generate the code.
+====
+
+Now you need to define the custom node style and its provider in the `papyrus-web-application`. To do so, head to the `org.eclipse.papyrus.web.application.nodes` package, and create two classes for your custom node:
+
+- `MyCustomNodeStyle`: defines the parameters required by your custom node style. Typical parameters include _border color_, _border size_, or _color_, for example. Note that you can add any parameter you need (for example an image URL). These parameters will be passed to the frontend component that handles the rendering of the custom node.
+- `MyCustomNodeStyleProvider`: defines the provider of your custom node. This is the class that hooks your custom node into the Sirius Web framework.
+
+Finally, you need to update the GraphQL schema to make sure the new custom node is correctly sent to the frontend. To do so open the `customnodes.graphqls` file located in `papyrus-web-application`, and add the following content:
+```graphqls
+extend union INodeStyle = MyCustomNodeStyle
+
+type MyCustomNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  imageURL: String!
+}
+```
+
+The name of the GraphQL type *must* match the name of the class defined in `org.eclipse.papyrus.web.application.nodes`, and the type parameters must also match the parameters of the class.
+
+_Optional_: you can add a method in `ViewBuilder` to ease the creation of your custom style. This is particularly useful when your custom node needs some specific initialization. The code bellow shows such method for the `NoteNodeStyle`:
+[source, java]
+----
+// [ViewBuilder.java]
+public NoteNodeStyleDescription createNoteNodeStyle() {
+    NoteNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createNoteNodeStyleDescription();
+    this.initStyle(nodeStyle);
+    nodeStyle.setShowIcon(true);
+    return nodeStyle;
+}
+----
+
+==== Frontend
+Custom nodes are located in the `sirius-web-application/src/nodes` directory in the frontend. Each node is defined in a dedicated directory that contains 4 files:
+
+- `MyCustomNode.tsx`: the actual implementation of the graphical node. This is where you create the React component that will be rendered to represent your node.
+- `MyCustomNode.types.ts`: the types used by your custom node. This file contains both the properties required by `MyCustomNode.tsx` as well as the definition of the GraphQL type associated to your node.
+- `MyCustomNodeConverterHandler.ts`: the converter that transforms the GraphQL type to your node. This is the place where you can access the styles defined in your GraphQL type and use them to instantiate your node. 
+- `MyCustomNodeLayoutHandler.ts`: the layout of your node. This file defines high-level layout such as how child elements are handled.
+
+[TIP]
+The `sirius-web-application/src/nodes` directory contains various examples of custom nodes used in Papyrus Web.
+
+In addition to the files defining the custom node themselves, you need to edit the file `sirius-web-application/src/views/edit-project/EditProjectView` and update the `nodeTypeRegistryValue` variable to make your custom node usable:
+```typescript
+const nodeTypeRegistryValue: NodeTypeContextValue = {
+      graphQLNodeStyleFragments: [
+        // Other Node Styles already registered
+        {
+          type: 'MyCustomNodeStyle',
+          fields: `borderColor borderSize borderStyle color`,
+        },
+      ],
+      nodeLayoutHandlers: [
+        // Other Node Layout Handlers
+        new MyCustomNodeLayoutHandler(),
+      ],
+      nodeConverterHandlers: [
+        // Other Node Converter Handlers
+        new MyCustomNodeConverterHandler(),
+      ],
+      nodeTypeContributions: [
+        // Other NodeTypeContributions
+        <NodeTypeContribution component={NoteNode} type={'myCustomNode'} />,
+      ],
+    };
+```
+
+The `fields` attribute configures the information passed by the backend that can be retrieved in your custom node implementation. In our example we provide typical attributes that are shared by most of the nodes: `borderColor`, `borderSize`, `borderStyle`, and `color`.
+
+[TIP]
+Additional information on how to create custom nodes is available in the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-node.adoc[Sirius Web documentation].
+
+=== How to create multiple nested views?
+The `IViewHelper` API focuses on the creation of individual graphical elements. It allows to create root element, child elements, but these method do not handle the creation of entire sub-trees of elements. 
+
+Creating such sub-trees is complex because each view creation needs to access the graphical parent of the view to create. These graphical parents aren't available when creating a sub-tree, because they haven't been created yet. 
+
+This can be tackled with `IViewHelper.createFakeNode`, which creates a fake graphical node (i.e. a node that won't be rendered by the frontend) that allows to create multiple view levels. This method is used, as an example, in the `GraphicalDropSwitch`, to create the child views of a dropped node.
+
+
+=== How is organized the code of my diagram?
+Implementing a complete diagram representation (e.g. the _Class Diagram_) involves a large amount of work. It is necessary to create the View DSL describing the representation (the nodes, edge, etc of the diagram), but also the services required by your representation, the tests, and hook your implementation into the Papyrus Web framework to make it usable by client users. In the following we describe how this code is structured.
+
+==== The View DSL
+While Sirius Web provides a studio to graphically create View DSLs, Papyrus Web relies on a _builder_ approach to programmatically create them. This programmatic approach is motivated by the frequent evolutions of Sirius Web that are easier to capture when backed up by a robust type system instead of a graphical editor.
+
+The code to create the View DSL of a given diagram is stored in a single class in the package `org.eclipse.papyrus.web.application.representations.uml` of the module `papyrus-web-representation-builder`. For example, the class `UCDDiagramDescriptionBuilder` contains the code to create the View DSL of the _Use Case_ diagram.
+
+These classes extend `AbstractRepresentationDescriptionBuilder`, which provides a set of utility method to create pre-configured descriptions, manipulate palette tools and tool sections, or configure direct edit capabilities (see <<_how_to_create_tools, this FAQ entry>> for more information on the best practices to create such tools).
+
+The `fillDescription` method is the entry point of the builder. It is called by the Papyrus Web framework on startup, and typically calls other methods that are responsible for the creation of a specific element (e.g. `createDiagramActorDescription` creates the description for an _Actor_ represented on the diagram background). Note that this is where you can use <<_how_to_use_shared_descriptions, shared descriptions>> to organize your builder code.
+
+The builder is hooked into the Papyrus Web framework via the `PapyrusRepresentationDescriptionRegistryConfigurer` class in the `papyrus-web-application` module, which maps the name of the representation with the builder.
+
+==== The services
+Services are located in the module `papyrus-web-services`. Each diagram has its own package, which contains all the classes related to its services. As an example, the package `org.eclipse.papyrus.web.services.aqlservices.useCase` contains the code for the services of the _Use Case_ diagram.
+
+Services are used in descriptions that require complex processing, usually in their semantic candidate expression. For example, a service may be required to compute all the candidate elements of a particular description.
+
+To call a service from the builder, you have to follow this pattern:
+```java
+NodeDescription ucdDiagramUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
+  .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
+```
+
+The name of the service (i.e. the name of the method from the `UseCaseDiagramService` class) is provided as a string. Each diagram has a class that gathers the name of its services. This class is stored in the `papyrus-web-representation-builder` module, next to the builder for the View DSL.
+
+==== Tests
+There are two kinds of test for each diagram:
+
+- Service tests: these are unit tests ran against the services of your diagram. They are stored in `papyrus-web-application/src/tests/java`, in a dedicated package prefixed with `org.eclipse.papyrus.web.application.services.`
+- Tools tests: these are integration tests that simulate tool invocation and check the state of the diagram/model returned to the frontend. They are also stored in `papyrus-web-application/src/test/java`, in a dedicated package prefixed with `org.eclipse.papyrus.web.application.tools.`. These tests are defined with the <<_how_can_i_test_my_diagrams, Papyrus Web Test Framework>>.
+
+=== How to create a Diagram representation?
+
+==== How to create tools?
+Diagrams need to contain tool to allow the user to interact with them. A diagram can contain several kinds of tools:
+
+- Node/edge creation tools
+- Node/edge deletion tools
+- Direct edit tools
+- Edge source/target reconnect tools
+- Semantic drag & drop tools
+- Graphical drag & drop tools
+
+In the following we detail how to create these tools in your diagram description.
+
+===== Creation tools
+The `ViewBuilder` class provides an utility method `createCreationTool` to create a Node creation tool. This method can either call the default creation process, or call a specific service if needed (e.g. if the creation is complex and requires some additional processing).
+
+The produced `NodeTool` can be added to the diagram palette (for nodes represented on the diagram background) via the `AbstractRepresentationDescriptionBuilder.addDiagramToolInToolSection` method, or inside containing node descriptions via the `AbstractRepresentationDescriptionBuidler.reuseNodeAndCreateTool` method. Note that in both cases it is necessary to provide the name of the tool section where the tool will be added.
+
+The `ViewBuilder` class also provides an utility method `createDefaultDomainBasedEdgeTool` to create an Edge creation tool. The produced `EdgeTool` can be added to the **source** nodes' palette via the `AbstractRepresentationDescriptionBuilder.addEdgeToolInEdgesToolSection` method. Note that it is necessary to provide the name of the tool section where the tool will be added.
+
+[WARNING]
+Creation tools need to be added to a _Tool Section_. You can use the `AbstractRepresentationDescriptionBuilder.createDefaultToolSectionInDiagramDescription` method to create default tool sections (_Nodes_ to store node creation tools and _Edges_ to store edge creation tools). This method is typically called in the `fillDescription` method of the diagram builder.
+
+===== Semantic Deletion tools
+Node semantic deletion tools are typically provided via the `NodeDescriptionBuilder` used to create the node representation. The `ViewBuilder.createNodeDeleteTool` returns the default deletion tool for a given node.
+```java
+// In the View DSL builder
+this.newNodeBuilder(/* ... */)
+  // ...
+  .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainClass.getName()))
+  // ...
+```
+Note that some methods in `ViewBuilder` create fully-fledged `NodeDescription` out of the box. In this case it is not necessary to configure the deletion tool, the `ViewBuilder` takes care of it. This is for example the case for the `createNoteStyleUnsynchonizedNodeDescription` method.
+
+Edge semantic deletion tools are pre-configured in the `ViewBuilder.createDefaultSynchonizedDomainBaseEdgeDescription` method, which is typically used to create domain-based edges. 
+
+[TIP]
+A description without a semantic deletion tool won't have the _delete_ tool in its palette. This may be used to forbid deletion of specific nodes on a diagram (e.g. metaclasses in the _Profile_ diagram).
+
+===== Direct edit tools
+Direct edit tools are typically provided via the `NodeDescriptionBuilder` used to create the node representation. The `ViewBuilder.createDirectEditTool` returns the default direct edit tool for a given node.
+```java
+// In the View DSL builder
+this.newNodeBuilder(/* ... */)
+  // ...
+  .labelEditTool(this.getViewBuilder().createDirectEditTool(domainClass.getName()))
+  // ...
+```
+
+Note that some methods in `ViewBuilder` create fully-fledged `NodeDescription` out of the box. In this case it is not necessary to configure the direct edit tool, the `ViewBuilder` takes care of it. This is for example the case for the `createNoteStyleUnsynchonizedNodeDescription` method.
+
+Edge direct edit tools are pre-configured in the `ViewBuilder.createDefaultSynchonizedDomainBaseEdgeDescription` method, which is usually used to create domain-based edges. 
+
+===== Edge source/target reconnection tools
+Edge reconnection tools can be configured via the `ViewBuilder.addDefaultReconnectionTools`, which sets the default source/target reconnection tools for a given edge. 
+
+If a non-default tool is required, this can be done by editing the edge palette and adding a custom reconnection tool, which can be created with `ViewBuilder.createDomainBaseEdgeSourceReconnectionTool` and `ViewBuilder.createDomainBaseEdgeTargetReconnectionTool`:
+```java
+SourceEdgeEndReconnectionTool tool = edge.getPalette().getEdgeReconnectionTools().add(getViewBuilder().createDomainBaseEdgeSourceReconnectionTool(edge, getIdBuilder().getSourceReconnectionToolId(edge)));
+```
+
+===== Semantic drag & drop tools
+The semantic drag & drop tool is configured at the diagram level. This is typically done in the `fillDescription method`:
+```java
+diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
+```
+
+This will automatically bind the semantic drag & drop tool to the `SemanticDropBehaviorProvider` associated to the diagram, and located in the `papyrus-web-services` module.
+
+===== Graphical drag & drop tools
+Graphical drag & drop tools have to be configured for each container nodes as well as the diagram. The configuration of the tool is similar in both cases: the graphical drag & drop tool is created via the `ViewBuilder`, then the _accepted types_ (i.e. the types that can be dropped on the container) are set on the tool. Finally the tool is added to the node's (or diagram's) palette.
+```java
+// Create the drop tool
+DropNodeTool graphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
+// Configure the accepted types
+List<EClass> children = List.of(this.umlPackage.getComment(), this.umlPackage.getConstraint());
+this.registerCallback(diagramDescription, () -> {
+    // Set the accepted types in the tool
+    List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+    ucdGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+});
+// Add the tool to the palette
+diagramDescription.getPalette().setDropNodeTool(ucdGraphicalDropTool);
+```
+
+==== How to use Shared Descriptions?
+
+===== What are shared elements?
+
+Shared elements are a reuse mechanism we use to avoid the duplication of NodeDescription in our DSL View. They are defined in a `SHARED_DESCRIPTIONS` NodeDescription, and are reused by all the description that can contain them.
+
+This mechanism ensures that a NodeDescription is defined at a single place, which eases the maintenance and evolution of the DSL View. 
+
+Note that some diagrams contain top-level NodeDescription in addition to shared elements to represent elements on the diagram background. These top-level NodeDescription typically cannot be reused from the `SHARED_DESCRIPTIONS` because their semantic candidate expression is different.
+
+===== When should I use a shared element?
+
+The rules below cover the use cases where a shared element should be used to avoid code duplication.
+1. A shared element is reused by **at least** two other elements (as child node or border node). Note that being reused by the diagram itself doesn't count.
+2. A non-shared element cannot be reused by another element
+3. A shared element is suffixed with `_SHARED` and stored in a common `SHARED_DESCRIPTIONS` NodeDescription at the root of the DSL view.
+4. The `SHARED_DESCRIPTIONS` NodeDescription targets the `UML#Element` metaclass as its semantic domain.
+5. The `SHARED_DESCRIPTIONS` NodeDescription doesn't contain tools.
+6. The `SHARED_DESCRIPTIONS` NodeDescription has the following semantic candidate expression: `aql:Sequence{}` to make sure it is never displayed.
+7. Elements that are used in a single location (e.g. elements inside a Package that cannot be represented anywhere else) should be defined inside their containing element (and not the shared description)
+  - If they are reused in another location (e.g. elements inside a Package and a Profile) they should be defined as shared elements.
+8. Shared elements' `semanticCandidateExpression` should never use `QueryBuilder#getAllReachable`. It should instead contain a semantic expression based on the container, or a call to a service if the semantic candidate expression is complex.
+
+*These rules are validated during the build of Papyrus Web.*
+
+===== Tooling around shared elements
+
+- Use `AbstractRepresentationDescriptionBuilder#createSharedDescription` to create a shared description for a given diagram. This method takes care of the naming of the shared description, setting its semantic domain, and its semantic candidate expression (rules 4, 5, and 6).
+- Use `AbstractRepresentationDescriptionBuilder#createCommentDescriptionInNodeDescription` and `AbstractRepresentationBuilder#createConstraintDescriptionInNodeDescription` to create constraint and comments in the shared description passed as a parameter (rules 3, 8).
+  - Comments and constraints can be represented in various container in most diagrams. These methods provide a common implementation that can be reused as is in new diagrams.
+- Use `IdBuilder.getSpecializedDomainNodeName(eClass, AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)` to create a node description with the `_SHARED` suffix (rule 3).
+- Use `sharedDescriptionNode.getChildrenDescriptions().add(myNodeDescription)` to add a NodeDescription to the `SHARED_DESCRIPTIONS` element. This NodeDescription can be created with the regular creation APIs such as `org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.newNodeBuilder(EClass, NodeStyleDescription)`. In this case it's the user's responsibility to ensure that the NodeDescription complies with the rules defined above. 
+
+
+
+=== How to create a custom tool?
+Custom tools are used to add capabilities to a diagram that aren't supported by the default tools. These custom tools can perform complex semantic and graphical operations, open dialogs to ease the creation of elements, etc.
+
+Since these tools are diagram-specific, they require some work on the backend and the frontend of Papyrus Web. In the following we show how to create such custom tool, using the _Import Metaclass_ popup from the Profile diagram as an example.
+
+==== Backend
+
+===== GraphQL
+When a tool is executed on a diagram, a GraphQL query is sent to the backend to perform the actual operation on the graphical and semantic model. 
+
+Sirius Web tools notify the backend through GraphQL mutations. Custom tools do the same, but the mutation they send need to be specified in the backend. This is done in a `profile.graphqls` file from the `papyrus-web-graphql` module. 
+
+[NOTE]
+For now we only have a `profile.graphqls` file in this module, because we only have custom tools on profile diagram. Additional files can be created for future diagrams if necessary.
+
+```graphqls
+extend type Mutation {
+  // [Other mutations]
+  createMetaclassImport(input: CreateMetaclassImportInput): CreateMetaclassImportPayload
+}
+```
+
+The new mutation consumes a `CreateMetaclassImportInput` input and produces a `CreateMetaclassImportPayload` result. We have to specify them in the `graphqls` file too:
+
+```graphqls
+input CreateMetaclassImportInput {
+	id: ID!
+	editingContextId: ID!
+	representationId: ID!
+	diagramElementId: ID!
+	metaclassIds: [ID!]!
+}
+
+union CreateMetaclassImportPayload = ErrorPayload | CreateMetaclassImportSuccessPayload
+
+type CreateMetaclassImportSuccessPayload {
+	id: ID!
+}
+```
+
+The `CreateMetaclassImportInput` type specifies the information that will be sent from the frontend to perform the operation (in our case create a metaclass import). The `id` is a mandatory field used to identify the input, the other fields specify the editing context, the current representation (the diagram), the selected element when the tool is invoked, and the list of metaclasses to create.
+
+[NOTE]
+We won't detail here how this list of metaclass is computed by the frontend. See <<_graphql_queries, GraphQL Queries>> section for more information on how to retrieve backend data from the frontend.
+
+The `CreateMetaclassImportPayload` specifies that the mutation can return either an `ErrorPayload` (if something went wrong while handeling it), or a `CreateMetaclassImportSuccessPayload` that wraps the identifier of the successful mutation.
+
+Now that we have defined the GraphQL mutation we need to define the backend DTO (Data Transfer Object) that will represent the data, as well as the fetcher and handler that will receive the mutation and execute the actual code performing the requested action.
+
+===== DTO
+
+We need to create a DTO for the input and the produced payload. This is done in the `papyrus-web-services-api` module, in the `org.eclipse.papyrus.web.services.api.dto` package. We create the following two classes/records:
+
+```java
+// File: CreateMetaclassImportInput.java
+public record CreateMetaclassImportInput(
+  UUID id, 
+  String editingContextId, 
+  String representationId, 
+  String diagramElementId, 
+  List<String> metaclassIds) implements IDiagramInput {
+
+}
+// File CreateMetaclassImportSuccessPayload.java
+public final class CreateMetaclassImportSuccessPayload implements IPayload {
+
+    private final UUID id;
+
+    public CreateMetaclassImportSuccessPayload(UUID id) {
+        this.id = Objects.requireNonNull(id);
+    }
+
+    @Override
+    public UUID id() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        String pattern = "{0} '{'id: {1}'}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
+    }
+
+}
+```
+
+The key part here is that the `CreateMetaclassImportInput` record takes as parameters the fields of the `CreateMetaclassImportInput` GraphQL input.
+
+===== Data Fetcher
+We now have to define the _data fetcher_ that will receive the GraphQL mutation. This is done in the `papyrus-web-graphql` module, in the `org.eclipse.papyrus.web.graphql.datafetchers.mutation`
+
+```java
+@MutationDataFetcher(type = "Mutation", field = MutationCreateMetaclassImportDataFetcher.CREATE_METACLASS_IMPORT_FIELD)
+public class MutationCreateMetaclassImportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
+
+  public static final String CREATE_METACLASS_IMPORT_FIELD = "createMetaclassImport";
+
+  // Attributes and constructor
+
+  @Override
+    public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
+        Object argument = environment.getArgument("input");
+        var input = this.objectMapper.convertValue(argument, CreateMetaclassImportInput.class);
+
+        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
+                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
+                .toFuture();
+    }
+}
+```
+
+The data fetcher is bound to the mutation using the `@MutationDataFetcher` annotation. The important part here is the `get` method, that dispatches the event to the processors, and returns an `ErrorPayload` if no result was returned.
+
+[TIP]
+Data fetchers are only required for mutations. You don't need to create a fetcher for queries, they are directly forwarded to the event processor.
+
+===== Event Handler
+
+Now we can define the event handler that will be used by the event processor to actually perform the backend logic associated to the mutation. This is done in the `papyrus-web-services` module, in the `org.eclipse.papyrus.web.services.editingcontext.handlers` package.
+
+```java
+// File CreateMetaclassImportHandler.java
+@Service
+public class CreateMetaclassImportEventHandler implements IDiagramEventHandler {
+
+    // Attributes and constructor
+
+    @Override
+    public boolean canHandle(IDiagramInput input) {
+        return input instanceof CreateMetaclassImportInput;
+    }
+
+    @Override
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
+        this.counter.increment();
+
+        ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
+        IPayload payload = null;
+
+        final String message;
+        if (diagramInput instanceof CreateMetaclassImportInput createMetaclassImportInput) {
+            String representationId = createMetaclassImportInput.representationId();
+            String diagramElementId = createMetaclassImportInput.diagramElementId();
+            List<String> metaclassIds = createMetaclassImportInput.metaclassIds();
+
+            boolean result = true;
+            for (String metaclassId : metaclassIds) {
+                result = result && this.profileDiagramService.createMetaclassImport(editingContext, representationId, diagramElementId, metaclassId, diagramContext);
+            }
+            if (result) {
+                payload = new CreateMetaclassImportSuccessPayload(createMetaclassImportInput.id());
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), createMetaclassImportInput);
+                message = null;
+            } else {
+                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), createMetaclassImportInput);
+                message = "The metaclass import creation failed"; //$NON-NLS-1$
+            }
+        } else {
+            message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ApplyProfileInput.class.getSimpleName());
+        }
+
+        if (payload == null) {
+            payload = new ErrorPayload(diagramInput.id(), message);
+        }
+
+        payloadSink.tryEmitValue(payload);
+        changeDescriptionSink.tryEmitNext(changeDescription);
+    }
+```
+
+The `canHandle` method let the event processor know if the handler can handle a specific input. The `handle` method is where we actually perform the operation. In our example this is done by calling `profileDiagramService.createMetaclassImport`. If the operation is successful the handler constructs a `CreateMetaclassImportSuccessPayload` to notify the caller. A `ChangeDescription` is also created to represent the modification performed by the handler. This `ChangeDescription` is forwarded to the other event processors, which can trigger additional operations based on the change (e.g. refresh the diagram, create a view, etc).
+
+[TIP]
+Our handler implements `IDiagramEventHandler` because it performs both semantic and graphical operations (the import metaclass is created in the model, and the corresponding view is added on the diagram). Handlers that only perform semantic operation should implement `IEditingContextEventHandler`, which doesn't provide an access to the `DiagramContext`, making graphical operations impossible to perform.
+
+
+==== Frontend
+
+On the frontend side, a custom tool is a React component that is added in the palette. This component takes a `DiagramPaletteToolContributionComponentProps` as parameter, and sends the GraphQL mutation to the backend. The file `PapyrusPopupToolContribution` shows such component for our _Import Metaclass_ example:
+```typescript
+const createMetaclassImportMutation = gql`
+  mutation createMetaclassImport($input: CreateMetaclassImportInput!) {
+    createMetaclassImport(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+export const PapyrusPopupToolContribution = ({ diagramElementId }: DiagramPaletteToolContributionComponentProps) => {
+  // ...
+
+  const [createMetaclassImport, { data, error }] = useMutation<
+    GQLCreateMetaclassImportData,
+    GQLCreateMetaclassImportVariables
+  >(createMetaclassImportMutation);
+  useEffect(() => {
+    if (error) {
+      addErrorMessage(error.message);
+    }
+    if (data && data.createMetaclassImport.__typename === 'ErrorPayload') {
+      const errorPayload = data.createMetaclassImport as ErrorPayload;
+      addErrorMessage(errorPayload.message);
+    }
+  }, [data, error, onClose]);
+
+  // ...
+  const variables: GQLCreateMetaclassImportVariables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId,
+        diagramElementId,
+        metaclassIds: selectedElementIds,
+      },
+    };
+    createMetaclassImport({ variables });
+}
+```
+
+The details of the component are ommitted for the sake of simplicity. Note that the component can perform complex operations such as opening a dialog to retrieve the parameters required to send the mutation to the backend. The GraphQL types manipulates by the component are defined in a dedicated file (`PapyrusPopupToolContribution.types.ts` in our example).
+
+Finally, we need to edit the `EditProjectViews.tsx` file to add our new tool contribution. This is done in the `diagramPaletteToolContributions` variables:
+```typescript
+const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
+      <DiagramPaletteToolContribution
+        canHandle={(_diagramId, diagramElementId) => {
+          if (!isProfileDiagram) {
+            return false;
+          }
+          if (_diagramId === diagramElementId) {
+            return true;
+          } else {
+            const nodes = useNodes<NodeData>();
+            const targetedNode = nodes.find((node) => node.id === diagramElementId);
+            return targetedNode?.data.targetObjectKind === 'siriusComponents://semantic?domain=uml&entity=Profile';
+          }
+        }}
+        component={PapyrusPopupToolContribution}
+      />,
+    ];
+```
+
+The `canHandle` function allows to configure where/when the custom tool should be displayed. In our example we want to allow metaclass import only on profile elements and on the background of the diagram. The component parameter is set with the react component we created above.
+
+[TIP]
+Additional information on how to contribute custom tools to a diagram is available on the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-tool.adoc[Sirius Web documentation].
+ 
+==== GraphQL queries
+GraphQL queries are sent by the frontend to access data from the backend. As an example, a GraphQL query (`getMetaclassMetadatas`) is used by the `PapyrusPopupToolContribution` to retrieve all the metaclasses available in the editing context.
+
+These queries are defined in a similar way mutations are, with backend DTOs and event handlers. Note that queries don't need a _data fetcher_, they are directly handled by the event handlers.
+
+
+
+
+
