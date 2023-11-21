@@ -303,6 +303,13 @@ The containment reference widget has the following actions available:
  It starts to create a new child element. 
  If the specified type of the reference has derived types, a modal dialog is open to choose the actual type of the new element.
  After its creation, the new element is set as the reference value in case this reference is a mono-valued one, or added to the reference value list otherwise. 
+ 
+[WARNING]
+====
+In case of mono-valued containment reference, if the value is already set, the user is not allowed to create a new element and the plus icon is disabled. 
+ In this situation, the user has to remove first the current value before creating a new one.
+====
+
  * The reorder icon to sort the reference values (optional: only for multi-valued references). +
  Reordering values can be done manually inside a dedicated dialog: 
 
