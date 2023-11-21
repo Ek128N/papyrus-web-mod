@@ -143,8 +143,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createExtendDescription(diagramDescription);
         this.createGeneralizationDescription(diagramDescription);
         this.createIncludeDescription(diagramDescription);
-        this.createPackageMergeDescription(diagramDescription);
         this.createPackageImportDescription(diagramDescription);
+        this.createPackageMergeDescription(diagramDescription);
         this.createRealizationDescription(diagramDescription);
         this.createUsageDescription(diagramDescription);
 
@@ -602,15 +602,16 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the UseCase {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
     private void createPackageImportDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage());
+        Supplier<List<NodeDescription>> sourceDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage(), this.umlPackage.getNamespace());
+        Supplier<List<NodeDescription>> targetDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getPackage());
         EdgeDescription ucdPackageImportDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getPackageImport(),
-                this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getPackageImport()), packageDescriptions, packageDescriptions);
+                this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getPackageImport()), sourceDescriptions, targetDescriptions);
         ucdPackageImportDescription.getStyle().setLineStyle(LineStyle.DASH);
         ucdPackageImportDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
         EdgeTool ucdPackageImportCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(ucdPackageImportDescription, this.umlPackage.getNamespace_PackageImport());
         this.registerCallback(ucdPackageImportDescription, () -> {
-            this.addEdgeToolInEdgesToolSection(packageDescriptions.get(), ucdPackageImportCreationTool);
+            this.addEdgeToolInEdgesToolSection(sourceDescriptions.get(), ucdPackageImportCreationTool);
         });
         diagramDescription.getEdgeDescriptions().add(ucdPackageImportDescription);
         this.getViewBuilder().addDefaultReconnectionTools(ucdPackageImportDescription);
