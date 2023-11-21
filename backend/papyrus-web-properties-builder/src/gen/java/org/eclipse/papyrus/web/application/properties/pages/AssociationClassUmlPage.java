@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -94,9 +95,19 @@ public class AssociationClassUmlPage {
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
-                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedAttribute") //
+                .label("aql:'Owned attribute'") //
+                .help("aql:self.getFeatureDescription('ownedAttribute')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedAttribute") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedAttribute'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedAttribute', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void createMemberEndUmlGroup(PageDescription page) {

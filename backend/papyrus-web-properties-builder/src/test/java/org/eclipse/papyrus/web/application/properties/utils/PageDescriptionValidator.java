@@ -82,7 +82,11 @@ public class PageDescriptionValidator {
     private void checkForbiddenServices(List<Status> result, WidgetDescription d, String expression) {
         if (expression != null && !expression.isBlank()) {
             for (String pattern : FORBIDDEN_SERVICES_PATTERN) {
-                if (expression.contains(pattern)) {
+                if (pattern.startsWith("feature:")) {
+                    if (pattern.equals(expression)) {
+                        result.add(new Status(Severity.ERROR, MessageFormat.format("Forbidden expression {0} in {1} matching pattern {2}", expression, getQualifiedName(d), pattern.toString())));
+                    }
+                } else if (expression.contains(pattern)) {
                     result.add(new Status(Severity.ERROR, MessageFormat.format("Forbidden expression {0} in {1} matching pattern {2}", expression, getQualifiedName(d), pattern.toString())));
                 }
             }

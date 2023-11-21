@@ -1,0 +1,83 @@
+type ContainmentReferenceWidget implements Widget {
+  id: ID!
+  descriptionId: String!
+  diagnostics: [Diagnostic!]!
+  label: String!
+  iconURL: [String!]!
+  hasHelpText: Boolean!
+  readOnly: Boolean!
+  containmentReference: ContainmentReference!
+  referenceValues: [ContainmentReferenceItem!]!
+  style: ReferenceWidgetStyle
+  ownerId: ID!
+}
+
+type ContainmentReference {
+  ownerKind: String!
+  referenceKind: String!
+  isMany: Boolean!
+  canMove: Boolean!
+}
+
+type ContainmentReferenceItem {
+  id: ID!
+  label: String!
+  kind: String!
+  iconURL: [String!]!
+  hasClickAction: Boolean!
+}
+
+extend type Mutation {
+  clickContainmentReferenceItem(input: ClickContainmentReferenceItemInput!): ClickContainmentReferenceItemPayload!
+  removeContainmentReferenceItem(input: RemoveContainmentReferenceItemInput!): RemoveContainmentReferenceItemPayload!
+  createElementInContainmentReference(input: CreateElementInContainmentReferenceInput!): CreateElementInContainmentReferencePayload!
+  moveContainmentReferenceItem(input: MoveContainmentReferenceItemInput!): MoveContainmentReferenceItemPayload!
+}
+
+input ClickContainmentReferenceItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  referenceItemId: ID!
+  clickEventKind: ClickEventKind!
+}
+
+union ClickContainmentReferenceItemPayload = ErrorPayload | SuccessPayload
+
+input RemoveContainmentReferenceItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  referenceItemId: ID!
+}
+
+union RemoveContainmentReferenceItemPayload = ErrorPayload | SuccessPayload
+
+input CreateElementInContainmentReferenceInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  creationDescriptionId: ID!
+}
+
+type CreateElementInContainmentReferenceSuccessPayload {
+  id: ID!
+  object: Object!
+}
+
+union CreateElementInContainmentReferencePayload = CreateElementInContainmentReferenceSuccessPayload | ErrorPayload
+
+input MoveContainmentReferenceItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  referenceWidgetId: ID!
+  referenceItemId: ID!
+  fromIndex: Int!
+  toIndex: Int!
+}
+
+union MoveContainmentReferenceItemPayload = ErrorPayload | SuccessPayload

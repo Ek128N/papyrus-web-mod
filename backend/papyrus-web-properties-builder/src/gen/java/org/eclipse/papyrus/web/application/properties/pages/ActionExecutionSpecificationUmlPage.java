@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -75,21 +76,57 @@ public class ActionExecutionSpecificationUmlPage {
     }
 
     protected void addAction(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("action", "aql:'Action'", "aql:self.getFeatureDescription('action')",
-                "aql:self.eClass().getEStructuralFeature('action').changeable", "aql:'action'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("action") //
+                .label("aql:'Action'") //
+                .help("aql:self.getFeatureDescription('action')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('action').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('action').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('action').eType.name") //
+                .value("feature:action") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('action')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'action')") //
+                .unsetOperation("aql:item.delete(self, 'action'))") //
+                .clearOperation("aql:self.clearReference('action')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addFinish(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("finish", "aql:'Finish'", "aql:self.getFeatureDescription('finish')",
-                "aql:self.eClass().getEStructuralFeature('finish').changeable", "aql:'finish'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("finish") //
+                .label("aql:'Finish'") //
+                .help("aql:self.getFeatureDescription('finish')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('finish').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('finish').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('finish').eType.name") //
+                .value("feature:finish") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('finish')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'finish')") //
+                .unsetOperation("aql:item.delete(self, 'finish'))") //
+                .clearOperation("aql:self.clearReference('finish')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addStart(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("start", "aql:'Start'", "aql:self.getFeatureDescription('start')",
-                "aql:self.eClass().getEStructuralFeature('start').changeable", "aql:'start'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("start") //
+                .label("aql:'Start'") //
+                .help("aql:self.getFeatureDescription('start')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('start').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('start').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('start').eType.name") //
+                .value("feature:start") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('start')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'start')") //
+                .unsetOperation("aql:item.delete(self, 'start'))") //
+                .clearOperation("aql:self.clearReference('start')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

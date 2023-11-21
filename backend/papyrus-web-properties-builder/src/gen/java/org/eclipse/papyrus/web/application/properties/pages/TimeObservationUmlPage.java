@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -79,9 +80,21 @@ public class TimeObservationUmlPage {
     }
 
     protected void addEvent(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("event", "aql:'Event'", "aql:self.getFeatureDescription('event')",
-                "aql:self.eClass().getEStructuralFeature('event').changeable", "aql:'event'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("event") //
+                .label("aql:'Event'") //
+                .help("aql:self.getFeatureDescription('event')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('event').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('event').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('event').eType.name") //
+                .value("feature:event") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('event')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'event')") //
+                .unsetOperation("aql:item.delete(self, 'event'))") //
+                .clearOperation("aql:self.clearReference('event')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

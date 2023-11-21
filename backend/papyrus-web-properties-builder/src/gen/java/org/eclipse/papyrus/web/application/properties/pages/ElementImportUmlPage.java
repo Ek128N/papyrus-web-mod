@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,21 @@ public class ElementImportUmlPage {
     }
 
     protected void addImportedElement(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("importedElement", "aql:'Imported element'", "aql:self.getFeatureDescription('importedElement')",
-                "aql:self.eClass().getEStructuralFeature('importedElement').changeable", "aql:'importedElement'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("importedElement") //
+                .label("aql:'Imported element'") //
+                .help("aql:self.getFeatureDescription('importedElement')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('importedElement').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('importedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('importedElement').eType.name") //
+                .value("feature:importedElement") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('importedElement')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'importedElement')") //
+                .unsetOperation("aql:item.delete(self, 'importedElement'))") //
+                .clearOperation("aql:self.clearReference('importedElement')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

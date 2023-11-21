@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -81,21 +82,51 @@ public class SequenceNodeUmlPage {
     }
 
     protected void addExecutableNode(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("executableNode", "aql:'Executable node'", "aql:self.getFeatureDescription('executableNode')",
-                "aql:self.eClass().getEStructuralFeature('executableNode').changeable", "aql:'executableNode'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("executableNode") //
+                .label("aql:'Executable node'") //
+                .help("aql:self.getFeatureDescription('executableNode')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('executableNode').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('executableNode').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('executableNode').eType.name") //
+                .isMany(true) //
+                .value("feature:executableNode") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'executableNode'))") //
+                .reorderOperation("aql:self.moveReferenceElement('executableNode', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLocalPostcondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
-                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("localPostcondition") //
+                .label("aql:'Local postcondition'") //
+                .help("aql:self.getFeatureDescription('localPostcondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .isMany(true) //
+                .value("feature:localPostcondition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'localPostcondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('localPostcondition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLocalPrecondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
-                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("localPrecondition") //
+                .label("aql:'Local precondition'") //
+                .help("aql:self.getFeatureDescription('localPrecondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .isMany(true) //
+                .value("feature:localPrecondition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'localPrecondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('localPrecondition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

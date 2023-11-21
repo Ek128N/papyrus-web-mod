@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,9 +74,19 @@ public class RedefinableTemplateSignatureUmlPage {
     }
 
     protected void addOwnedParameter(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
-                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedParameter") //
+                .label("aql:'Owned parameter'") //
+                .help("aql:self.getFeatureDescription('ownedParameter')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedParameter") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedParameter'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedParameter', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

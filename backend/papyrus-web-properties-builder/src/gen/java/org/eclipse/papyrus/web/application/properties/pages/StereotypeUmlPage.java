@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,21 +73,51 @@ public class StereotypeUmlPage {
     }
 
     protected void addIcon(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("icon", "aql:'Icon'", "aql:self.getFeatureDescription('icon')",
-                "aql:self.eClass().getEStructuralFeature('icon').changeable", "aql:'icon'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("icon") //
+                .label("aql:'Icon'") //
+                .help("aql:self.getFeatureDescription('icon')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('icon').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('icon').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('icon').eType.name") //
+                .isMany(true) //
+                .value("feature:icon") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'icon'))") //
+                .reorderOperation("aql:self.moveReferenceElement('icon', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
-                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedAttribute") //
+                .label("aql:'Owned attribute'") //
+                .help("aql:self.getFeatureDescription('ownedAttribute')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedAttribute") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedAttribute'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedAttribute', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedOperation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
-                "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedOperation") //
+                .label("aql:'Owned operation'") //
+                .help("aql:self.getFeatureDescription('ownedOperation')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedOperation').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedOperation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedOperation').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedOperation") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedOperation'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedOperation', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

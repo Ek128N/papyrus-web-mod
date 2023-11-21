@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -74,21 +76,54 @@ public class LifelineUmlPage {
     }
 
     protected void addDecomposedAs(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("decomposedAs", "aql:'Decomposed as'", "aql:self.getFeatureDescription('decomposedAs')",
-                "aql:self.eClass().getEStructuralFeature('decomposedAs').changeable", "aql:'decomposedAs'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("decomposedAs") //
+                .label("aql:'Decomposed as'") //
+                .help("aql:self.getFeatureDescription('decomposedAs')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('decomposedAs').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('decomposedAs').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decomposedAs').eType.name") //
+                .value("feature:decomposedAs") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('decomposedAs')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'decomposedAs')") //
+                .unsetOperation("aql:item.delete(self, 'decomposedAs'))") //
+                .clearOperation("aql:self.clearReference('decomposedAs')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRepresents(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("represents", "aql:'Represents'", "aql:self.getFeatureDescription('represents')",
-                "aql:self.eClass().getEStructuralFeature('represents').changeable", "aql:'represents'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("represents") //
+                .label("aql:'Represents'") //
+                .help("aql:self.getFeatureDescription('represents')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('represents').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('represents').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('represents').eType.name") //
+                .value("feature:represents") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('represents')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'represents')") //
+                .unsetOperation("aql:item.delete(self, 'represents'))") //
+                .clearOperation("aql:self.clearReference('represents')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addSelector(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("selector", "aql:'Selector'", "aql:self.getFeatureDescription('selector')",
-                "aql:self.eClass().getEStructuralFeature('selector').changeable", "aql:'selector'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("selector") //
+                .label("aql:'Selector'") //
+                .help("aql:self.getFeatureDescription('selector')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('selector').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('selector').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('selector').eType.name") //
+                .isMany(false) //
+                .value("feature:selector") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'selector'))");
+        group.getChildren().add(builder.build());
     }
 
 }

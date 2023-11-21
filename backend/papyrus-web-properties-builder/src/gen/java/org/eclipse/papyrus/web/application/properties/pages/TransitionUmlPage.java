@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -75,21 +77,52 @@ public class TransitionUmlPage {
     }
 
     protected void addTrigger(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("trigger", "aql:'Trigger'", "aql:self.getFeatureDescription('trigger')",
-                "aql:self.eClass().getEStructuralFeature('trigger').changeable", "aql:'trigger'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("trigger") //
+                .label("aql:'Trigger'") //
+                .help("aql:self.getFeatureDescription('trigger')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('trigger').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('trigger').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('trigger').eType.name") //
+                .isMany(true) //
+                .value("feature:trigger") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'trigger'))") //
+                .reorderOperation("aql:self.moveReferenceElement('trigger', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addGuard(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("guard", "aql:'Guard'", "aql:self.getFeatureDescription('guard')",
-                "aql:self.eClass().getEStructuralFeature('guard').changeable", "aql:'guard'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("guard") //
+                .label("aql:'Guard'") //
+                .help("aql:self.getFeatureDescription('guard')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('guard').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('guard').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('guard').eType.name") //
+                .value("feature:guard") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('guard')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'guard')") //
+                .unsetOperation("aql:item.delete(self, 'guard'))") //
+                .clearOperation("aql:self.clearReference('guard')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addEffect(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("effect", "aql:'Effect'", "aql:self.getFeatureDescription('effect')",
-                "aql:self.eClass().getEStructuralFeature('effect').changeable", "aql:'effect'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("effect") //
+                .label("aql:'Effect'") //
+                .help("aql:self.getFeatureDescription('effect')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('effect').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('effect').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('effect').eType.name") //
+                .isMany(false) //
+                .value("feature:effect") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'effect'))");
+        group.getChildren().add(builder.build());
     }
 
 }

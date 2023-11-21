@@ -91,11 +91,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      * @generated
      */
     public PapyrusWidgetsItemProviderAdapterFactory() {
-        supportedTypes.add(IEditingDomainItemProvider.class);
-        supportedTypes.add(IStructuredItemContentProvider.class);
-        supportedTypes.add(ITreeItemContentProvider.class);
-        supportedTypes.add(IItemLabelProvider.class);
-        supportedTypes.add(IItemPropertySource.class);
+        this.supportedTypes.add(IEditingDomainItemProvider.class);
+        this.supportedTypes.add(IStructuredItemContentProvider.class);
+        this.supportedTypes.add(ITreeItemContentProvider.class);
+        this.supportedTypes.add(IItemLabelProvider.class);
+        this.supportedTypes.add(IItemPropertySource.class);
     }
 
     /**
@@ -116,11 +116,12 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createLanguageExpressionWidgetDescriptionAdapter() {
-        if (languageExpressionWidgetDescriptionItemProvider == null) {
-            languageExpressionWidgetDescriptionItemProvider = new LanguageExpressionWidgetDescriptionItemProvider(this);
+        if (this.languageExpressionWidgetDescriptionItemProvider == null) {
+            this.languageExpressionWidgetDescriptionItemProvider = new LanguageExpressionWidgetDescriptionItemProvider(
+                    this);
         }
 
-        return languageExpressionWidgetDescriptionItemProvider;
+        return this.languageExpressionWidgetDescriptionItemProvider;
     }
 
     /**
@@ -141,11 +142,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createPrimitiveRadioWidgetDescriptionAdapter() {
-        if (primitiveRadioWidgetDescriptionItemProvider == null) {
-            primitiveRadioWidgetDescriptionItemProvider = new PrimitiveRadioWidgetDescriptionItemProvider(this);
+        if (this.primitiveRadioWidgetDescriptionItemProvider == null) {
+            this.primitiveRadioWidgetDescriptionItemProvider = new PrimitiveRadioWidgetDescriptionItemProvider(this);
         }
 
-        return primitiveRadioWidgetDescriptionItemProvider;
+        return this.primitiveRadioWidgetDescriptionItemProvider;
     }
 
     /**
@@ -166,11 +167,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createPrimitiveListWidgetDescriptionAdapter() {
-        if (primitiveListWidgetDescriptionItemProvider == null) {
-            primitiveListWidgetDescriptionItemProvider = new PrimitiveListWidgetDescriptionItemProvider(this);
+        if (this.primitiveListWidgetDescriptionItemProvider == null) {
+            this.primitiveListWidgetDescriptionItemProvider = new PrimitiveListWidgetDescriptionItemProvider(this);
         }
 
-        return primitiveListWidgetDescriptionItemProvider;
+        return this.primitiveListWidgetDescriptionItemProvider;
     }
 
     /**
@@ -191,11 +192,11 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createPrimitiveListDeleteOperationAdapter() {
-        if (primitiveListDeleteOperationItemProvider == null) {
-            primitiveListDeleteOperationItemProvider = new PrimitiveListDeleteOperationItemProvider(this);
+        if (this.primitiveListDeleteOperationItemProvider == null) {
+            this.primitiveListDeleteOperationItemProvider = new PrimitiveListDeleteOperationItemProvider(this);
         }
 
-        return primitiveListDeleteOperationItemProvider;
+        return this.primitiveListDeleteOperationItemProvider;
     }
 
     /**
@@ -216,11 +217,288 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Adapter createPrimitiveListAddOperationAdapter() {
-        if (primitiveListAddOperationItemProvider == null) {
-            primitiveListAddOperationItemProvider = new PrimitiveListAddOperationItemProvider(this);
+        if (this.primitiveListAddOperationItemProvider == null) {
+            this.primitiveListAddOperationItemProvider = new PrimitiveListAddOperationItemProvider(this);
         }
 
-        return primitiveListAddOperationItemProvider;
+        return this.primitiveListAddOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MonoReferenceWidgetDescriptionItemProvider monoReferenceWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMonoReferenceWidgetDescriptionAdapter() {
+        if (this.monoReferenceWidgetDescriptionItemProvider == null) {
+            this.monoReferenceWidgetDescriptionItemProvider = new MonoReferenceWidgetDescriptionItemProvider(this);
+        }
+
+        return this.monoReferenceWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MultiReferenceWidgetDescriptionItemProvider multiReferenceWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMultiReferenceWidgetDescriptionAdapter() {
+        if (this.multiReferenceWidgetDescriptionItemProvider == null) {
+            this.multiReferenceWidgetDescriptionItemProvider = new MultiReferenceWidgetDescriptionItemProvider(this);
+        }
+
+        return this.multiReferenceWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MonoReferenceSetOperationItemProvider monoReferenceSetOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMonoReferenceSetOperationAdapter() {
+        if (this.monoReferenceSetOperationItemProvider == null) {
+            this.monoReferenceSetOperationItemProvider = new MonoReferenceSetOperationItemProvider(this);
+        }
+
+        return this.monoReferenceSetOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MonoReferenceUnsetOperationItemProvider monoReferenceUnsetOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMonoReferenceUnsetOperationAdapter() {
+        if (this.monoReferenceUnsetOperationItemProvider == null) {
+            this.monoReferenceUnsetOperationItemProvider = new MonoReferenceUnsetOperationItemProvider(this);
+        }
+
+        return this.monoReferenceUnsetOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CreateElementInReferenceOperationItemProvider createElementInReferenceOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCreateElementInReferenceOperationAdapter() {
+        if (this.createElementInReferenceOperationItemProvider == null) {
+            this.createElementInReferenceOperationItemProvider = new CreateElementInReferenceOperationItemProvider(
+                    this);
+        }
+
+        return this.createElementInReferenceOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ClickReferenceValueOperationItemProvider clickReferenceValueOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createClickReferenceValueOperationAdapter() {
+        if (this.clickReferenceValueOperationItemProvider == null) {
+            this.clickReferenceValueOperationItemProvider = new ClickReferenceValueOperationItemProvider(this);
+        }
+
+        return this.clickReferenceValueOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MultiReferenceAddOperationItemProvider multiReferenceAddOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMultiReferenceAddOperationAdapter() {
+        if (this.multiReferenceAddOperationItemProvider == null) {
+            this.multiReferenceAddOperationItemProvider = new MultiReferenceAddOperationItemProvider(this);
+        }
+
+        return this.multiReferenceAddOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MultiReferenceRemoveOperationItemProvider multiReferenceRemoveOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMultiReferenceRemoveOperationAdapter() {
+        if (this.multiReferenceRemoveOperationItemProvider == null) {
+            this.multiReferenceRemoveOperationItemProvider = new MultiReferenceRemoveOperationItemProvider(this);
+        }
+
+        return this.multiReferenceRemoveOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ClearReferenceOperationItemProvider clearReferenceOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createClearReferenceOperationAdapter() {
+        if (this.clearReferenceOperationItemProvider == null) {
+            this.clearReferenceOperationItemProvider = new ClearReferenceOperationItemProvider(this);
+        }
+
+        return this.clearReferenceOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MultiReferenceReorderOperationItemProvider multiReferenceReorderOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMultiReferenceReorderOperationAdapter() {
+        if (this.multiReferenceReorderOperationItemProvider == null) {
+            this.multiReferenceReorderOperationItemProvider = new MultiReferenceReorderOperationItemProvider(this);
+        }
+
+        return this.multiReferenceReorderOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected ContainmentReferenceWidgetDescriptionItemProvider containmentReferenceWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createContainmentReferenceWidgetDescriptionAdapter() {
+        if (this.containmentReferenceWidgetDescriptionItemProvider == null) {
+            this.containmentReferenceWidgetDescriptionItemProvider = new ContainmentReferenceWidgetDescriptionItemProvider(
+                    this);
+        }
+
+        return this.containmentReferenceWidgetDescriptionItemProvider;
     }
 
     /**
@@ -231,7 +509,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
     }
 
     /**
@@ -252,7 +530,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public boolean isFactoryForType(Object type) {
-        return supportedTypes.contains(type) || super.isFactoryForType(type);
+        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
     }
 
     /**
@@ -273,7 +551,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public Object adapt(Object object, Object type) {
-        if (isFactoryForType(type)) {
+        if (this.isFactoryForType(type)) {
             Object adapter = super.adapt(object, type);
             if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
                 return adapter;
@@ -290,7 +568,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.addListener(notifyChangedListener);
+        this.changeNotifier.addListener(notifyChangedListener);
     }
 
     /**
@@ -300,7 +578,7 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.removeListener(notifyChangedListener);
+        this.changeNotifier.removeListener(notifyChangedListener);
     }
 
     /**
@@ -311,10 +589,10 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        changeNotifier.fireNotifyChanged(notification);
+        this.changeNotifier.fireNotifyChanged(notification);
 
-        if (parentAdapterFactory != null) {
-            parentAdapterFactory.fireNotifyChanged(notification);
+        if (this.parentAdapterFactory != null) {
+            this.parentAdapterFactory.fireNotifyChanged(notification);
         }
     }
 
@@ -326,16 +604,38 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
      */
     @Override
     public void dispose() {
-        if (languageExpressionWidgetDescriptionItemProvider != null)
-            languageExpressionWidgetDescriptionItemProvider.dispose();
-        if (primitiveRadioWidgetDescriptionItemProvider != null)
-            primitiveRadioWidgetDescriptionItemProvider.dispose();
-        if (primitiveListWidgetDescriptionItemProvider != null)
-            primitiveListWidgetDescriptionItemProvider.dispose();
-        if (primitiveListDeleteOperationItemProvider != null)
-            primitiveListDeleteOperationItemProvider.dispose();
-        if (primitiveListAddOperationItemProvider != null)
-            primitiveListAddOperationItemProvider.dispose();
+        if (this.languageExpressionWidgetDescriptionItemProvider != null)
+            this.languageExpressionWidgetDescriptionItemProvider.dispose();
+        if (this.primitiveRadioWidgetDescriptionItemProvider != null)
+            this.primitiveRadioWidgetDescriptionItemProvider.dispose();
+        if (this.primitiveListWidgetDescriptionItemProvider != null)
+            this.primitiveListWidgetDescriptionItemProvider.dispose();
+        if (this.primitiveListDeleteOperationItemProvider != null)
+            this.primitiveListDeleteOperationItemProvider.dispose();
+        if (this.primitiveListAddOperationItemProvider != null)
+            this.primitiveListAddOperationItemProvider.dispose();
+        if (this.monoReferenceWidgetDescriptionItemProvider != null)
+            this.monoReferenceWidgetDescriptionItemProvider.dispose();
+        if (this.multiReferenceWidgetDescriptionItemProvider != null)
+            this.multiReferenceWidgetDescriptionItemProvider.dispose();
+        if (this.monoReferenceSetOperationItemProvider != null)
+            this.monoReferenceSetOperationItemProvider.dispose();
+        if (this.monoReferenceUnsetOperationItemProvider != null)
+            this.monoReferenceUnsetOperationItemProvider.dispose();
+        if (this.createElementInReferenceOperationItemProvider != null)
+            this.createElementInReferenceOperationItemProvider.dispose();
+        if (this.clickReferenceValueOperationItemProvider != null)
+            this.clickReferenceValueOperationItemProvider.dispose();
+        if (this.multiReferenceAddOperationItemProvider != null)
+            this.multiReferenceAddOperationItemProvider.dispose();
+        if (this.multiReferenceRemoveOperationItemProvider != null)
+            this.multiReferenceRemoveOperationItemProvider.dispose();
+        if (this.clearReferenceOperationItemProvider != null)
+            this.clearReferenceOperationItemProvider.dispose();
+        if (this.multiReferenceReorderOperationItemProvider != null)
+            this.multiReferenceReorderOperationItemProvider.dispose();
+        if (this.containmentReferenceWidgetDescriptionItemProvider != null)
+            this.containmentReferenceWidgetDescriptionItemProvider.dispose();
     }
 
     /**
@@ -386,14 +686,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseGroupDescription(GroupDescription object) {
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }
@@ -405,17 +714,29 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFlexboxContainerDescription(FlexboxContainerDescription object) {
-                newChildDescriptors
-                        .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                newChildDescriptors
-                        .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                newChildDescriptors
-                        .add(createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                                 PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                                PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                                PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+
+                this.newChildDescriptors
+                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                                PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }
@@ -427,14 +748,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFormElementFor(FormElementFor object) {
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }
@@ -446,14 +776,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFormElementIf(FormElementIf object) {
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                newChildDescriptors.add(createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }

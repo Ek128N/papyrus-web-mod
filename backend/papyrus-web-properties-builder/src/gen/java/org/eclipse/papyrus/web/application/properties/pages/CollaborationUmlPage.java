@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -80,15 +82,38 @@ public class CollaborationUmlPage {
     }
 
     protected void addCollaborationRole(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("collaborationRole", "aql:'Collaboration role'", "aql:self.getFeatureDescription('collaborationRole')",
-                "aql:self.eClass().getEStructuralFeature('collaborationRole').changeable", "aql:'collaborationRole'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("collaborationRole") //
+                .label("aql:'Collaboration role'") //
+                .help("aql:self.getFeatureDescription('collaborationRole')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('collaborationRole').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('collaborationRole').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('collaborationRole').eType.name") //
+                .value("feature:collaborationRole") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('collaborationRole')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'collaborationRole')") //
+                .removeOperation("aql:item.delete(self, 'collaborationRole'))") //
+                .reorderOperation("aql:self.moveReferenceElement('collaborationRole', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('collaborationRole')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
-                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedAttribute") //
+                .label("aql:'Owned attribute'") //
+                .help("aql:self.getFeatureDescription('ownedAttribute')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedAttribute") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedAttribute'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedAttribute', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

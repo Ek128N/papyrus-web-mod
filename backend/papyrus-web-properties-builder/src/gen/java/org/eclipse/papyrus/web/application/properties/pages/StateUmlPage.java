@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -69,39 +71,100 @@ public class StateUmlPage {
     }
 
     protected void addStateInvariant(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("stateInvariant", "aql:'State invariant'", "aql:self.getFeatureDescription('stateInvariant')",
-                "aql:self.eClass().getEStructuralFeature('stateInvariant').changeable", "aql:'stateInvariant'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("stateInvariant") //
+                .label("aql:'State invariant'") //
+                .help("aql:self.getFeatureDescription('stateInvariant')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('stateInvariant').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('stateInvariant').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('stateInvariant').eType.name") //
+                .value("feature:stateInvariant") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('stateInvariant')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'stateInvariant')") //
+                .unsetOperation("aql:item.delete(self, 'stateInvariant'))") //
+                .clearOperation("aql:self.clearReference('stateInvariant')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addEntry(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("entry", "aql:'Entry'", "aql:self.getFeatureDescription('entry')",
-                "aql:self.eClass().getEStructuralFeature('entry').changeable", "aql:'entry'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("entry") //
+                .label("aql:'Entry'") //
+                .help("aql:self.getFeatureDescription('entry')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('entry').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('entry').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('entry').eType.name") //
+                .isMany(false) //
+                .value("feature:entry") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'entry'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addDoActivity(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("doActivity", "aql:'Do activity'", "aql:self.getFeatureDescription('doActivity')",
-                "aql:self.eClass().getEStructuralFeature('doActivity').changeable", "aql:'doActivity'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("doActivity") //
+                .label("aql:'Do activity'") //
+                .help("aql:self.getFeatureDescription('doActivity')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('doActivity').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('doActivity').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('doActivity').eType.name") //
+                .isMany(false) //
+                .value("feature:doActivity") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'doActivity'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addExit(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("exit", "aql:'Exit'", "aql:self.getFeatureDescription('exit')",
-                "aql:self.eClass().getEStructuralFeature('exit').changeable", "aql:'exit'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("exit") //
+                .label("aql:'Exit'") //
+                .help("aql:self.getFeatureDescription('exit')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('exit').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('exit').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('exit').eType.name") //
+                .isMany(false) //
+                .value("feature:exit") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'exit'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addSubmachine(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("submachine", "aql:'Submachine'", "aql:self.getFeatureDescription('submachine')",
-                "aql:self.eClass().getEStructuralFeature('submachine').changeable", "aql:'submachine'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("submachine") //
+                .label("aql:'Submachine'") //
+                .help("aql:self.getFeatureDescription('submachine')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('submachine').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('submachine').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('submachine').eType.name") //
+                .value("feature:submachine") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('submachine')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'submachine')") //
+                .unsetOperation("aql:item.delete(self, 'submachine'))") //
+                .clearOperation("aql:self.clearReference('submachine')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addDeferrableTrigger(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("deferrableTrigger", "aql:'Deferrable trigger'", "aql:self.getFeatureDescription('deferrableTrigger')",
-                "aql:self.eClass().getEStructuralFeature('deferrableTrigger').changeable", "aql:'deferrableTrigger'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("deferrableTrigger") //
+                .label("aql:'Deferrable trigger'") //
+                .help("aql:self.getFeatureDescription('deferrableTrigger')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('deferrableTrigger').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('deferrableTrigger').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('deferrableTrigger').eType.name") //
+                .isMany(true) //
+                .value("feature:deferrableTrigger") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'deferrableTrigger'))") //
+                .reorderOperation("aql:self.moveReferenceElement('deferrableTrigger', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

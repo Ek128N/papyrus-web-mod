@@ -15,11 +15,11 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ElementCommentsPage {
 
@@ -51,21 +51,24 @@ public class ElementCommentsPage {
         GroupDescription group = viewElementFactory.createGroupDescription("element_comments_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
-        addAppliedComment(group);
         addOwnedComment(group);
 
     }
 
-    protected void addAppliedComment(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("appliedComment", "aql:'Applied comments'", "aql:'The list of comments applied to this element'",
-                "aql:self.eClass().getEStructuralFeature('ownedComment').changeable", "aql:'ownedComment'", "");
-        group.getChildren().add(widget);
-    }
-
     protected void addOwnedComment(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedComment", "aql:'Owned comments'", "aql:self.getFeatureDescription('ownedComment')",
-                "aql:self.eClass().getEStructuralFeature('ownedComment').changeable", "aql:'ownedComment'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedComment") //
+                .label("aql:'Owned comments'") //
+                .help("aql:self.getFeatureDescription('ownedComment')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedComment').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedComment').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedComment').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedComment") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedComment'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedComment', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

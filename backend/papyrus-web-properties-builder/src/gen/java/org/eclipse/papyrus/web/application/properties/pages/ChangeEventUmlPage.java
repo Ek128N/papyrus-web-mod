@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,18 @@ public class ChangeEventUmlPage {
     }
 
     protected void addChangeExpression(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("changeExpression", "aql:'Change expression'", "aql:self.getFeatureDescription('changeExpression')",
-                "aql:self.eClass().getEStructuralFeature('changeExpression').changeable", "aql:'changeExpression'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("changeExpression") //
+                .label("aql:'Change expression'") //
+                .help("aql:self.getFeatureDescription('changeExpression')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('changeExpression').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('changeExpression').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('changeExpression').eType.name") //
+                .isMany(false) //
+                .value("feature:changeExpression") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'changeExpression'))");
+        group.getChildren().add(builder.build());
     }
 
 }

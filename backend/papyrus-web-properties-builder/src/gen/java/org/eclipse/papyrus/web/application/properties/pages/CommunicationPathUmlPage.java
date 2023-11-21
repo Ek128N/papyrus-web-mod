@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -89,27 +91,76 @@ public class CommunicationPathUmlPage {
     }
 
     protected void addMemberEnd(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("memberEnd", "aql:'Member end'", "aql:self.getFeatureDescription('memberEnd')",
-                "aql:self.eClass().getEStructuralFeature('memberEnd').changeable", "aql:'memberEnd'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("memberEnd") //
+                .label("aql:'Member end'") //
+                .help("aql:self.getFeatureDescription('memberEnd')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('memberEnd').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('memberEnd').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('memberEnd').eType.name") //
+                .value("feature:memberEnd") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('memberEnd')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'memberEnd')") //
+                .removeOperation("aql:item.delete(self, 'memberEnd'))") //
+                .reorderOperation("aql:self.moveReferenceElement('memberEnd', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('memberEnd')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addNavigableOwnedEnd(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("navigableOwnedEnd", "aql:'Navigable owned end'", "aql:self.getFeatureDescription('navigableOwnedEnd')",
-                "aql:self.eClass().getEStructuralFeature('navigableOwnedEnd').changeable", "aql:'navigableOwnedEnd'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("navigableOwnedEnd") //
+                .label("aql:'Navigable owned end'") //
+                .help("aql:self.getFeatureDescription('navigableOwnedEnd')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('navigableOwnedEnd').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('navigableOwnedEnd').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('navigableOwnedEnd').eType.name") //
+                .value("feature:navigableOwnedEnd") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('navigableOwnedEnd')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'navigableOwnedEnd')") //
+                .removeOperation("aql:item.delete(self, 'navigableOwnedEnd'))") //
+                .reorderOperation("aql:self.moveReferenceElement('navigableOwnedEnd', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('navigableOwnedEnd')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedEnd(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedEnd", "aql:'Owned end'", "aql:self.getFeatureDescription('ownedEnd')",
-                "aql:self.eClass().getEStructuralFeature('ownedEnd').changeable", "aql:'ownedEnd'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedEnd") //
+                .label("aql:'Owned end'") //
+                .help("aql:self.getFeatureDescription('ownedEnd')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedEnd').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedEnd').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedEnd').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedEnd") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedEnd'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedEnd', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addUseCase(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
-                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("useCase") //
+                .label("aql:'Use case'") //
+                .help("aql:self.getFeatureDescription('useCase')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .value("feature:useCase") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'useCase')") //
+                .removeOperation("aql:item.delete(self, 'useCase'))") //
+                .reorderOperation("aql:self.moveReferenceElement('useCase', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('useCase')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

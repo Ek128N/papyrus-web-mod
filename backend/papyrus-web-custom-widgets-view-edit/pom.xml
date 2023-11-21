@@ -56,6 +56,10 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form-edit</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
+		</dependency>
 
 	</dependencies>
 	<build>

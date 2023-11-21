@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,15 +74,39 @@ public class InstanceValueUmlPage {
     }
 
     protected void addInstance(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("instance", "aql:'Instance'", "aql:self.getFeatureDescription('instance')",
-                "aql:self.eClass().getEStructuralFeature('instance').changeable", "aql:'instance'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("instance") //
+                .label("aql:'Instance'") //
+                .help("aql:self.getFeatureDescription('instance')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('instance').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('instance').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('instance').eType.name") //
+                .value("feature:instance") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('instance')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'instance')") //
+                .unsetOperation("aql:item.delete(self, 'instance'))") //
+                .clearOperation("aql:self.clearReference('instance')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
-                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("type") //
+                .label("aql:'Type'") //
+                .help("aql:self.getFeatureDescription('type')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .value("feature:type") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('type')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'type')") //
+                .unsetOperation("aql:item.delete(self, 'type'))") //
+                .clearOperation("aql:self.clearReference('type')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

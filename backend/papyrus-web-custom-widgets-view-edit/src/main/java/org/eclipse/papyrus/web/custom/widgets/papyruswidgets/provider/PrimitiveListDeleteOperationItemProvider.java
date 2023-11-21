@@ -61,11 +61,11 @@ public class PrimitiveListDeleteOperationItemProvider extends ItemProviderAdapte
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
@@ -79,11 +79,11 @@ public class PrimitiveListDeleteOperationItemProvider extends ItemProviderAdapte
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (childrenFeatures == null) {
+        if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY);
+            this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY);
         }
-        return childrenFeatures;
+        return this.childrenFeatures;
     }
 
     /**
@@ -128,7 +128,7 @@ public class PrimitiveListDeleteOperationItemProvider extends ItemProviderAdapte
      */
     @Override
     public String getText(Object object) {
-        return getString("_UI_PrimitiveListDeleteOperation_type");
+        return this.getString("_UI_PrimitiveListDeleteOperation_type");
     }
 
     /**
@@ -140,11 +140,11 @@ public class PrimitiveListDeleteOperationItemProvider extends ItemProviderAdapte
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
 
         switch (notification.getFeatureID(PrimitiveListDeleteOperation.class)) {
         case PapyrusWidgetsPackage.PRIMITIVE_LIST_DELETE_OPERATION__BODY:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
         super.notifyChanged(notification);
@@ -162,23 +162,23 @@ public class PrimitiveListDeleteOperationItemProvider extends ItemProviderAdapte
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
                         ViewFactory.eINSTANCE.createChangeContext()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
                         ViewFactory.eINSTANCE.createCreateInstance()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
                         ViewFactory.eINSTANCE.createSetValue()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
                         ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
                         ViewFactory.eINSTANCE.createDeleteElement()));
     }
 

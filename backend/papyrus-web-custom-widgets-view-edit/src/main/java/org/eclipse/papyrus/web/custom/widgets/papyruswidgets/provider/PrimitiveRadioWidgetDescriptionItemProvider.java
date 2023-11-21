@@ -57,14 +57,14 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addIsEnabledExpressionPropertyDescriptor(object);
-            addCandidatesExpressionPropertyDescriptor(object);
-            addValueExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
+            this.addCandidatesExpressionPropertyDescriptor(object);
+            this.addValueExpressionPropertyDescriptor(object);
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
@@ -74,10 +74,10 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add(createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-                getString("_UI_PrimitiveRadioWidgetDescription_isEnabledExpression_feature"),
-                getString("_UI_PropertyDescriptor_description",
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_PrimitiveRadioWidgetDescription_isEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description",
                         "_UI_PrimitiveRadioWidgetDescription_isEnabledExpression_feature",
                         "_UI_PrimitiveRadioWidgetDescription_type"),
                 PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false,
@@ -91,10 +91,10 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      * @generated
      */
     protected void addCandidatesExpressionPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add(createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-                getString("_UI_PrimitiveRadioWidgetDescription_candidatesExpression_feature"),
-                getString("_UI_PropertyDescriptor_description",
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_PrimitiveRadioWidgetDescription_candidatesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description",
                         "_UI_PrimitiveRadioWidgetDescription_candidatesExpression_feature",
                         "_UI_PrimitiveRadioWidgetDescription_type"),
                 PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION, true, false,
@@ -108,14 +108,14 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      * @generated
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
-        itemPropertyDescriptors
-                .add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-                        getResourceLocator(), getString("_UI_PrimitiveRadioWidgetDescription_valueExpression_feature"),
-                        getString("_UI_PropertyDescriptor_description",
-                                "_UI_PrimitiveRadioWidgetDescription_valueExpression_feature",
-                                "_UI_PrimitiveRadioWidgetDescription_type"),
-                        PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION, true,
-                        false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_PrimitiveRadioWidgetDescription_valueExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description",
+                        "_UI_PrimitiveRadioWidgetDescription_valueExpression_feature",
+                        "_UI_PrimitiveRadioWidgetDescription_type"),
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -129,11 +129,11 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (childrenFeatures == null) {
+        if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY);
+            this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY);
         }
-        return childrenFeatures;
+        return this.childrenFeatures;
     }
 
     /**
@@ -180,8 +180,8 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
     @Override
     public String getText(Object object) {
         String label = ((PrimitiveRadioWidgetDescription) object).getName();
-        return label == null || label.length() == 0 ? getString("_UI_PrimitiveRadioWidgetDescription_type")
-                : getString("_UI_PrimitiveRadioWidgetDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_PrimitiveRadioWidgetDescription_type")
+                : this.getString("_UI_PrimitiveRadioWidgetDescription_type") + " " + label;
     }
 
     /**
@@ -193,16 +193,16 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
 
         switch (notification.getFeatureID(PrimitiveRadioWidgetDescription.class)) {
         case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
         case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION:
         case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
         super.notifyChanged(notification);
@@ -220,23 +220,23 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
                         ViewFactory.eINSTANCE.createChangeContext()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
                         ViewFactory.eINSTANCE.createCreateInstance()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
                         ViewFactory.eINSTANCE.createSetValue()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
                         ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors
-                .add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
                         ViewFactory.eINSTANCE.createDeleteElement()));
     }
 

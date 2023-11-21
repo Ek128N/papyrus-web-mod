@@ -15,11 +15,12 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ClauseUmlPage {
 
@@ -61,39 +62,116 @@ public class ClauseUmlPage {
     }
 
     protected void addDecider(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("decider", "aql:'Decider'", "aql:self.getFeatureDescription('decider')",
-                "aql:self.eClass().getEStructuralFeature('decider').changeable", "aql:'decider'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("decider") //
+                .label("aql:'Decider'") //
+                .help("aql:self.getFeatureDescription('decider')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('decider').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('decider').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decider').eType.name") //
+                .value("feature:decider") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('decider')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'decider')") //
+                .unsetOperation("aql:item.delete(self, 'decider'))") //
+                .clearOperation("aql:self.clearReference('decider')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addBody(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("body", "aql:'Body'", "aql:self.getFeatureDescription('body')",
-                "aql:self.eClass().getEStructuralFeature('body').changeable", "aql:'body'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("body") //
+                .label("aql:'Body'") //
+                .help("aql:self.getFeatureDescription('body')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('body').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('body').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('body').eType.name") //
+                .value("feature:body") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('body')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'body')") //
+                .removeOperation("aql:item.delete(self, 'body'))") //
+                .reorderOperation("aql:self.moveReferenceElement('body', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('body')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addBodyOutput(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("bodyOutput", "aql:'Body output'", "aql:self.getFeatureDescription('bodyOutput')",
-                "aql:self.eClass().getEStructuralFeature('bodyOutput').changeable", "aql:'bodyOutput'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("bodyOutput") //
+                .label("aql:'Body output'") //
+                .help("aql:self.getFeatureDescription('bodyOutput')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('bodyOutput').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('bodyOutput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyOutput').eType.name") //
+                .value("feature:bodyOutput") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('bodyOutput')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'bodyOutput')") //
+                .removeOperation("aql:item.delete(self, 'bodyOutput'))") //
+                .reorderOperation("aql:self.moveReferenceElement('bodyOutput', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('bodyOutput')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addPredecessorClause(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("predecessorClause", "aql:'Predecessor clause'", "aql:self.getFeatureDescription('predecessorClause')",
-                "aql:self.eClass().getEStructuralFeature('predecessorClause').changeable", "aql:'predecessorClause'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("predecessorClause") //
+                .label("aql:'Predecessor clause'") //
+                .help("aql:self.getFeatureDescription('predecessorClause')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('predecessorClause').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('predecessorClause').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('predecessorClause').eType.name") //
+                .value("feature:predecessorClause") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('predecessorClause')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'predecessorClause')") //
+                .removeOperation("aql:item.delete(self, 'predecessorClause'))") //
+                .reorderOperation("aql:self.moveReferenceElement('predecessorClause', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('predecessorClause')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addSuccessorClause(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("successorClause", "aql:'Successor clause'", "aql:self.getFeatureDescription('successorClause')",
-                "aql:self.eClass().getEStructuralFeature('successorClause').changeable", "aql:'successorClause'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("successorClause") //
+                .label("aql:'Successor clause'") //
+                .help("aql:self.getFeatureDescription('successorClause')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('successorClause').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('successorClause').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('successorClause').eType.name") //
+                .value("feature:successorClause") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('successorClause')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'successorClause')") //
+                .removeOperation("aql:item.delete(self, 'successorClause'))") //
+                .reorderOperation("aql:self.moveReferenceElement('successorClause', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('successorClause')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addTest(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("test", "aql:'Test'", "aql:self.getFeatureDescription('test')",
-                "aql:self.eClass().getEStructuralFeature('test').changeable", "aql:'test'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("test") //
+                .label("aql:'Test'") //
+                .help("aql:self.getFeatureDescription('test')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('test').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('test').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('test').eType.name") //
+                .value("feature:test") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('test')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'test')") //
+                .removeOperation("aql:item.delete(self, 'test'))") //
+                .reorderOperation("aql:self.moveReferenceElement('test', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('test')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

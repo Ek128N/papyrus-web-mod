@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -78,39 +80,99 @@ public class ReadLinkObjectEndQualifierActionUmlPage {
     }
 
     protected void addObject(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("object", "aql:'Object'", "aql:self.getFeatureDescription('object')",
-                "aql:self.eClass().getEStructuralFeature('object').changeable", "aql:'object'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("object") //
+                .label("aql:'Object'") //
+                .help("aql:self.getFeatureDescription('object')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('object').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('object').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('object').eType.name") //
+                .isMany(false) //
+                .value("feature:object") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'object'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addQualifier(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("qualifier", "aql:'Qualifier'", "aql:self.getFeatureDescription('qualifier')",
-                "aql:self.eClass().getEStructuralFeature('qualifier').changeable", "aql:'qualifier'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("qualifier") //
+                .label("aql:'Qualifier'") //
+                .help("aql:self.getFeatureDescription('qualifier')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('qualifier').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('qualifier').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('qualifier').eType.name") //
+                .value("feature:qualifier") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('qualifier')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'qualifier')") //
+                .unsetOperation("aql:item.delete(self, 'qualifier'))") //
+                .clearOperation("aql:self.clearReference('qualifier')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addResult(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("result", "aql:'Result'", "aql:self.getFeatureDescription('result')",
-                "aql:self.eClass().getEStructuralFeature('result').changeable", "aql:'result'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("result") //
+                .label("aql:'Result'") //
+                .help("aql:self.getFeatureDescription('result')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('result').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('result').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('result').eType.name") //
+                .isMany(false) //
+                .value("feature:result") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'result'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLocalPostcondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
-                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("localPostcondition") //
+                .label("aql:'Local postcondition'") //
+                .help("aql:self.getFeatureDescription('localPostcondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .isMany(true) //
+                .value("feature:localPostcondition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'localPostcondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('localPostcondition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLocalPrecondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
-                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("localPrecondition") //
+                .label("aql:'Local precondition'") //
+                .help("aql:self.getFeatureDescription('localPrecondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .isMany(true) //
+                .value("feature:localPrecondition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'localPrecondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('localPrecondition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addHandler(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("handler", "aql:'Handler'", "aql:self.getFeatureDescription('handler')",
-                "aql:self.eClass().getEStructuralFeature('handler').changeable", "aql:'handler'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("handler") //
+                .label("aql:'Handler'") //
+                .help("aql:self.getFeatureDescription('handler')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .isMany(true) //
+                .value("feature:handler") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'handler'))") //
+                .reorderOperation("aql:self.moveReferenceElement('handler', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,21 @@ public class SignalEventUmlPage {
     }
 
     protected void addSignal(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("signal", "aql:'Signal'", "aql:self.getFeatureDescription('signal')",
-                "aql:self.eClass().getEStructuralFeature('signal').changeable", "aql:'signal'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("signal") //
+                .label("aql:'Signal'") //
+                .help("aql:self.getFeatureDescription('signal')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('signal').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('signal').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('signal').eType.name") //
+                .value("feature:signal") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('signal')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'signal')") //
+                .unsetOperation("aql:item.delete(self, 'signal'))") //
+                .clearOperation("aql:self.clearReference('signal')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

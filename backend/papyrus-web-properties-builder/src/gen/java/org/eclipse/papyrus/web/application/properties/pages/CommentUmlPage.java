@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -63,9 +64,22 @@ public class CommentUmlPage {
     }
 
     protected void addAnnotatedElement(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("annotatedElement", "aql:'Annotated element'", "aql:self.getFeatureDescription('annotatedElement')",
-                "aql:self.eClass().getEStructuralFeature('annotatedElement').changeable", "aql:'annotatedElement'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("annotatedElement") //
+                .label("aql:'Annotated element'") //
+                .help("aql:self.getFeatureDescription('annotatedElement')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('annotatedElement').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('annotatedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('annotatedElement').eType.name") //
+                .value("feature:annotatedElement") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('annotatedElement')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'annotatedElement')") //
+                .removeOperation("aql:item.delete(self, 'annotatedElement'))") //
+                .reorderOperation("aql:self.moveReferenceElement('annotatedElement', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('annotatedElement')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

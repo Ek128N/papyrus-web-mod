@@ -213,7 +213,7 @@ The Details panel is used to visualize and edit all the features of the selected
 
 In the UML tab, each property is represented by an appropriated widget according to its nature. For instance, a property of type `ecore::EString` will be represented by a text widget. It might be, in some situations more appropriate to represent this string with a text area widget that supports multiple lines of text.
 
-Basic widgets
+===== Basic widgets
 
 In the following table, we present the mapping between basic types and their associated widgets
 
@@ -241,11 +241,11 @@ In the following table, we present the mapping between basic types and their ass
 
 Here is https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_details_view[the Sirius documentation] of all those widgets.
 
-Custom widgets
+===== Custom widgets
 
 Some UML 2 concepts have properties that need a special UI to manage their data. Here are the details of each custom widget.
 
-===== Language Expression
+====== Language Expression
 
 A language expression custom widget has been introduced to manage a couple of connected lists in the following concepts:
 
@@ -266,11 +266,11 @@ Languages can be reordered using up or down actions of the toolbar. Since the li
 
 Removing a language can be done using the trash icon action of its toolbar. No confirmation is required before deleting a language element.
 
-===== Primitive List
+====== Primitive List
 
-The primitive list custom widget aims to provide capabilities to visualize and edit _EAttributes_ wich represent more than one value.
+The primitive list custom widget aims to provide capabilities to visualize and edit _EAttributes_ which represent more than one value.
 
-image::primitive-list.png[]
+image::primitive-list.png[align="center"]
 
 The values are represented as list items.
 Each item can be deleted using the _trash_ icon.
@@ -279,10 +279,78 @@ Be aware that the server receives a _String_ value and needs to convert it to th
 For widgets used in the default pages of the _Details_ view, Papyrus Web uses pure _EMF_ implementation to convert the given _String_ into the required _DataType_.
 For example, for a _boolean_ feature, the given _String_ is converted to _true_ only if it is equal (ignoring case) to 'true'.
 
-In the context of _UML_, for a more exhaustive list of convertion rule look at:
+In the context of _UML_, for a more exhaustive list of conversion rule look at:
 
 * _org.eclipse.uml2.uml.internal.impl.UMLFactoryImpl.createFromString(EDataType, String)_
 * _org.eclipse.uml2.types.internal.impl.TypesFactoryImpl.createFromString(EDataType, String)_
+
+====== References
+
+Depending on the nature of the reference, we handle it differently. 
+Containment references use a dedicated custom widget, while non-containment references use Sirius components reference widgets.
+
+Containment reference widget
+
+In those references, reference values are child nodes of the reference owner, which means that the elements referenced in the widget can be found underneath the reference owner. 
+For instance, a class that has two operations set in its `Owned Operations` property can be found as children nodes of the _Class_ node in the _Model Explorer_
+
+image::containment-reference.png[containment reference widget, 500, align="center"]
+image::containment-children.png[align="center"]
+
+The containment reference widget has the following actions available:
+
+ * The plus icon to change the reference value +
+ It starts to create a new child element. 
+ If the specified type of the reference has derived types, a modal dialog is open to choose the actual type of the new element.
+ After its creation, the new element is set as the reference value in case this reference is a mono-valued one, or added to the reference value list otherwise. 
+ * The reorder icon to sort the reference values (optional: only for multi-valued references). +
+ Reordering values can be done manually inside a dedicated dialog: 
+
+image::containment-reference-reorder-dialog.png[width=300, height=360, align="center"]
+
+ * The cross icon on each value element to remove this value in the reference *and* delete the element from the model.
+ * Clicking value elements inside the reference navigates to those elements.   
+
+Non-containment reference widget
+
+Non-containment references are managed using the Sirius components reference widget.
+
+image::reference.png[non-containment reference widget, 500, align="center"]
+
+Actions available in non-containment reference widgets are:
+
+* Ellipsis icon to set/edit the value of the reference using a dialog:
+
+image::reference-set-mono.png[mono-valued set, 400, align="center"]
+
+In a mono-valued reference, the user can select a compatible element to set in the reference (this element will possibly replace the current reference value)
+
+image::reference-set-multi.png[multi-valued edit, 600, align="center"]
+
+Whereas in a multi-valued reference, the dialog allows the user to manage the list of reference values. 
+The left panel contains compatible elements within the editing context.
+Elements  displayed with a bold label are elements that are currently present in the reference value list.
+This list can be seen in the right panel.
+Icons in between those panels can be used to move a selected element from right to left (remove operation) or from left to right (add operation).
+Moving elements can also be performed by dragging an element from a panel and dropping it to the other one.
+Finally, current elements (in the right panel) can be reordered using drag and drop.
+
+* The plus icon to create a new element and change the reference value. +
+Since new element is not contained by the reference owner, user has to first specify the new element's container and the actual type of element to create.
+This is done inside the create dialog:
+
+image::reference-create.png[creation dialog, 500, align="center"]
+
+For a mono-value reference, once the new element is created it is set as the reference value and replaces its current value.
+In case of a multi-valued reference, the new element is added at the end of the value list.
+
+* The trash icon to clear the reference value.
+* The dropdown icon to choose a value among compatible elements (not already present in the reference value) found in the editing context. +
+For a mono-valued reference the selected value replace the existing one, whereas it is added to the value list in case of multi-valued.
+* The user can type some text in the values area to filter dropdown list content.
+* Each value element has a cross icon to remove it from the reference. +
+Since this is a non-containment reference, the removed element is only removed from its value and the referenced element still exists in the model.
+* Clicking value elements inside the reference navigates to those elements. 
 
 ==== Related Elements
 

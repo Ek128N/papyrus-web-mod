@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -79,9 +80,18 @@ public class TimeEventUmlPage {
     }
 
     protected void addWhen(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("when", "aql:'When'", "aql:self.getFeatureDescription('when')",
-                "aql:self.eClass().getEStructuralFeature('when').changeable", "aql:'when'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("when") //
+                .label("aql:'When'") //
+                .help("aql:self.getFeatureDescription('when')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('when').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('when').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('when').eType.name") //
+                .isMany(false) //
+                .value("feature:when") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'when'))");
+        group.getChildren().add(builder.build());
     }
 
 }

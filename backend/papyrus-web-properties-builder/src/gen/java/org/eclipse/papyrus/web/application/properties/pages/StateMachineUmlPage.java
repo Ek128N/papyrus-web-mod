@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -95,15 +97,40 @@ public class StateMachineUmlPage {
     }
 
     protected void addSpecification(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
-                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("specification") //
+                .label("aql:'Specification'") //
+                .help("aql:self.getFeatureDescription('specification')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .value("feature:specification") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('specification')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'specification')") //
+                .unsetOperation("aql:item.delete(self, 'specification'))") //
+                .clearOperation("aql:self.clearReference('specification')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addUseCase(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
-                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("useCase") //
+                .label("aql:'Use case'") //
+                .help("aql:self.getFeatureDescription('useCase')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .value("feature:useCase") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'useCase')") //
+                .removeOperation("aql:item.delete(self, 'useCase'))") //
+                .reorderOperation("aql:self.moveReferenceElement('useCase', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('useCase')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

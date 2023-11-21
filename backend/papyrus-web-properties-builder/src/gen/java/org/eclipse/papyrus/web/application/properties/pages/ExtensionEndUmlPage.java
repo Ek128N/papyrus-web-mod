@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -126,9 +129,21 @@ public class ExtensionEndUmlPage {
     }
 
     protected void addType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
-                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("type") //
+                .label("aql:'Type'") //
+                .help("aql:self.getFeatureDescription('type')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .value("feature:type") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('type')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'type')") //
+                .unsetOperation("aql:item.delete(self, 'type'))") //
+                .clearOperation("aql:self.clearReference('type')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addMultiplicity(GroupDescription group) {
@@ -139,15 +154,37 @@ public class ExtensionEndUmlPage {
     }
 
     protected void addDefaultValue(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("defaultValue", "aql:'Default value'", "aql:self.getFeatureDescription('defaultValue')",
-                "aql:self.eClass().getEStructuralFeature('defaultValue').changeable", "aql:'defaultValue'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("defaultValue") //
+                .label("aql:'Default value'") //
+                .help("aql:self.getFeatureDescription('defaultValue')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('defaultValue').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('defaultValue').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('defaultValue').eType.name") //
+                .isMany(false) //
+                .value("feature:defaultValue") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'defaultValue'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addSubsettedProperty(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("subsettedProperty", "aql:'Subsetted property'", "aql:self.getFeatureDescription('subsettedProperty')",
-                "aql:self.eClass().getEStructuralFeature('subsettedProperty').changeable", "aql:'subsettedProperty'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("subsettedProperty") //
+                .label("aql:'Subsetted property'") //
+                .help("aql:self.getFeatureDescription('subsettedProperty')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('subsettedProperty').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('subsettedProperty').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('subsettedProperty').eType.name") //
+                .value("feature:subsettedProperty") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('subsettedProperty')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'subsettedProperty')") //
+                .removeOperation("aql:item.delete(self, 'subsettedProperty'))") //
+                .reorderOperation("aql:self.moveReferenceElement('subsettedProperty', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('subsettedProperty')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

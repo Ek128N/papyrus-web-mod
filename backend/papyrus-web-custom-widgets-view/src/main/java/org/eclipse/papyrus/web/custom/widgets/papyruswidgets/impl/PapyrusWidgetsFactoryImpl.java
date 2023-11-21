@@ -19,7 +19,18 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
@@ -77,6 +88,28 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
                 return this.createPrimitiveListDeleteOperation();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ADD_OPERATION:
                 return this.createPrimitiveListAddOperation();
+            case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION:
+                return this.createMonoReferenceWidgetDescription();
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION:
+                return this.createMultiReferenceWidgetDescription();
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION:
+                return this.createMonoReferenceSetOperation();
+            case PapyrusWidgetsPackage.MONO_REFERENCE_UNSET_OPERATION:
+                return this.createMonoReferenceUnsetOperation();
+            case PapyrusWidgetsPackage.CREATE_ELEMENT_IN_REFERENCE_OPERATION:
+                return this.createCreateElementInReferenceOperation();
+            case PapyrusWidgetsPackage.CLICK_REFERENCE_VALUE_OPERATION:
+                return this.createClickReferenceValueOperation();
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_ADD_OPERATION:
+                return this.createMultiReferenceAddOperation();
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_REMOVE_OPERATION:
+                return this.createMultiReferenceRemoveOperation();
+            case PapyrusWidgetsPackage.CLEAR_REFERENCE_OPERATION:
+                return this.createClearReferenceOperation();
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_REORDER_OPERATION:
+                return this.createMultiReferenceReorderOperation();
+            case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION:
+                return this.createContainmentReferenceWidgetDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -135,6 +168,127 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
     public PrimitiveListAddOperation createPrimitiveListAddOperation() {
         PrimitiveListAddOperationImpl primitiveListAddOperation = new PrimitiveListAddOperationImpl();
         return primitiveListAddOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MonoReferenceWidgetDescription createMonoReferenceWidgetDescription() {
+        MonoReferenceWidgetDescriptionImpl monoReferenceWidgetDescription = new MonoReferenceWidgetDescriptionImpl();
+        return monoReferenceWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MultiReferenceWidgetDescription createMultiReferenceWidgetDescription() {
+        MultiReferenceWidgetDescriptionImpl multiReferenceWidgetDescription = new MultiReferenceWidgetDescriptionImpl();
+        return multiReferenceWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MonoReferenceSetOperation createMonoReferenceSetOperation() {
+        MonoReferenceSetOperationImpl monoReferenceSetOperation = new MonoReferenceSetOperationImpl();
+        return monoReferenceSetOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MonoReferenceUnsetOperation createMonoReferenceUnsetOperation() {
+        MonoReferenceUnsetOperationImpl monoReferenceUnsetOperation = new MonoReferenceUnsetOperationImpl();
+        return monoReferenceUnsetOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CreateElementInReferenceOperation createCreateElementInReferenceOperation() {
+        CreateElementInReferenceOperationImpl createElementInReferenceOperation = new CreateElementInReferenceOperationImpl();
+        return createElementInReferenceOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ClickReferenceValueOperation createClickReferenceValueOperation() {
+        ClickReferenceValueOperationImpl clickReferenceValueOperation = new ClickReferenceValueOperationImpl();
+        return clickReferenceValueOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MultiReferenceAddOperation createMultiReferenceAddOperation() {
+        MultiReferenceAddOperationImpl multiReferenceAddOperation = new MultiReferenceAddOperationImpl();
+        return multiReferenceAddOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MultiReferenceRemoveOperation createMultiReferenceRemoveOperation() {
+        MultiReferenceRemoveOperationImpl multiReferenceRemoveOperation = new MultiReferenceRemoveOperationImpl();
+        return multiReferenceRemoveOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ClearReferenceOperation createClearReferenceOperation() {
+        ClearReferenceOperationImpl clearReferenceOperation = new ClearReferenceOperationImpl();
+        return clearReferenceOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MultiReferenceReorderOperation createMultiReferenceReorderOperation() {
+        MultiReferenceReorderOperationImpl multiReferenceReorderOperation = new MultiReferenceReorderOperationImpl();
+        return multiReferenceReorderOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ContainmentReferenceWidgetDescription createContainmentReferenceWidgetDescription() {
+        ContainmentReferenceWidgetDescriptionImpl containmentReferenceWidgetDescription = new ContainmentReferenceWidgetDescriptionImpl();
+        return containmentReferenceWidgetDescription;
     }
 
     /**

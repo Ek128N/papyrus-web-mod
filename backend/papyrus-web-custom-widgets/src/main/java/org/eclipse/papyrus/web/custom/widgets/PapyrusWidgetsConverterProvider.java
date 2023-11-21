@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
@@ -36,13 +37,16 @@ public class PapyrusWidgetsConverterProvider implements IWidgetConverterProvider
 
     private final IFormIdProvider formIdProvider;
 
-    public PapyrusWidgetsConverterProvider(IFormIdProvider formIdProvider) {
+    private final IEMFKindService emfKindService;
+
+    public PapyrusWidgetsConverterProvider(IFormIdProvider formIdProvider, IEMFKindService emfKindService) {
         this.formIdProvider = Objects.requireNonNull(formIdProvider);
+        this.emfKindService = Objects.requireNonNull(emfKindService);
     }
 
     @Override
     public Switch<Optional<AbstractWidgetDescription>> getWidgetConverter(AQLInterpreter interpreter, IEditService editService, IObjectService objectService, IFeedbackMessageService feedbackMessageService) {
-        return new PapyrusWidgetsConverterSwitch(interpreter, editService, objectService, feedbackMessageService, this.formIdProvider);
+        return new PapyrusWidgetsConverterSwitch(interpreter, editService, objectService, feedbackMessageService, this.formIdProvider, this.emfKindService);
     }
 
 }

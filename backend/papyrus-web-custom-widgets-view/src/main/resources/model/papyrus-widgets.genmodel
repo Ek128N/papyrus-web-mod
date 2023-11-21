@@ -7,7 +7,7 @@
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
     commentFormatting="true" testsDirectory="" importerID="org.eclipse.emf.importer.ecore"
     bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="papyrus-web-custom-widgets-view-edit"
-    usedGenPackages="../../../../../sirius-components-view-form/src/main/resources/model/form.genmodel#//form ../../../../../sirius-components-view/src/main/resources/model/view.genmodel#//view"
+    usedGenPackages="../../../../../sirius-components-view-form/src/main/resources/model/form.genmodel#//form ../../../../../sirius-components-widget-reference-view/src/main/resources/model/reference.genmodel#//reference ../../../../../sirius-components-view/src/main/resources/model/view.genmodel#//view"
     operationReflection="true" importOrganizing="true" cleanup="true">
   <foreignModel>papyrus-widgets.ecore</foreignModel>
   <genPackages prefix="PapyrusWidgets" basePackage="org.eclipse.papyrus.web.custom.widgets"
@@ -35,6 +35,74 @@
     </genClasses>
     <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListAddOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListAddOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MonoReferenceWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/isEnabledExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/ownerExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/candidatesSearchScopeExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/dropdownOptionsExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/createElementOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/setOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/unsetOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/clearOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/clickOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/conditionalStyles"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MultiReferenceWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MultiReferenceWidgetDescription/isEnabledExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MultiReferenceWidgetDescription/ownerExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MultiReferenceWidgetDescription/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MultiReferenceWidgetDescription/valueExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MultiReferenceWidgetDescription/candidatesSearchScopeExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MultiReferenceWidgetDescription/dropdownOptionsExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/createElementOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/addOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/removeOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/clearOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/reorderOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/clickOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/conditionalStyles"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MonoReferenceSetOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceSetOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MonoReferenceUnsetOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceUnsetOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//CreateElementInReferenceOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//CreateElementInReferenceOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//ClickReferenceValueOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ClickReferenceValueOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MultiReferenceAddOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceAddOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MultiReferenceRemoveOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceRemoveOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//ClearReferenceOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ClearReferenceOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//MultiReferenceReorderOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceReorderOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/isEnabledExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/many"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/ownerExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/valueExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/createElementOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/removeOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/reorderOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/clickOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/style"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/conditionalStyles"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

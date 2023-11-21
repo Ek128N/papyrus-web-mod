@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -90,27 +92,70 @@ public class ArtifactUmlPage {
     }
 
     protected void addManifestation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("manifestation", "aql:'Manifestation'", "aql:self.getFeatureDescription('manifestation')",
-                "aql:self.eClass().getEStructuralFeature('manifestation').changeable", "aql:'manifestation'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("manifestation") //
+                .label("aql:'Manifestation'") //
+                .help("aql:self.getFeatureDescription('manifestation')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('manifestation').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('manifestation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('manifestation').eType.name") //
+                .isMany(true) //
+                .value("feature:manifestation") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'manifestation'))") //
+                .reorderOperation("aql:self.moveReferenceElement('manifestation', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
-                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedAttribute") //
+                .label("aql:'Owned attribute'") //
+                .help("aql:self.getFeatureDescription('ownedAttribute')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedAttribute") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedAttribute'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedAttribute', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedOperation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
-                "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedOperation") //
+                .label("aql:'Owned operation'") //
+                .help("aql:self.getFeatureDescription('ownedOperation')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedOperation').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedOperation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedOperation').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedOperation") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedOperation'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedOperation', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addUseCase(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
-                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("useCase") //
+                .label("aql:'Use case'") //
+                .help("aql:self.getFeatureDescription('useCase')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .value("feature:useCase") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'useCase')") //
+                .removeOperation("aql:item.delete(self, 'useCase'))") //
+                .reorderOperation("aql:self.moveReferenceElement('useCase', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('useCase')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

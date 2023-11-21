@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 24 24"
+   aria-labelledby="title"
+   aria-describedby="desc"
+   role="img"
+   id="svg2"
+   sodipodi:docname="multi-reference-new.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="53.592801"
+     inkscape:cx="20.711737"
+     inkscape:cy="9.8613991"
+     inkscape:window-width="3840"
+     inkscape:window-height="2054"
+     inkscape:window-x="1789"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <g
+     id="g1">
+    <rect
+       fill="none"
+       height="24"
+       width="24"
+       id="rect1" />
+  </g>
+  <g
+     id="g2"
+     transform="translate(1.9791094,2.95547)"
+     mask="url(#mask-powermask-path-effect2)"
+     inkscape:path-effect="#path-effect2"
+     style="display:inline">
+    <polygon
+       points="15.59,8.41 18.17,11 9,11 9,13 18.17,13 15.59,15.59 17,17 22,12 17,7 "
+       id="polygon1"
+       d="M 22,12 17,7 15.59,8.41 18.17,11 H 9 v 2 h 9.17 L 15.59,15.59 17,17 Z" />
+    <path
+       id="path1"
+       d="M 9.2181562 2.9996081 A 6.4094429 6.4094429 0 0 1 8.6400312 4.9996081 L 18.999406 4.9996081 L 18.999406 6.9996081 L 20.999406 6.9996081 L 20.999406 4.9996081 C 20.999406 3.8996092 20.109405 2.9996081 18.999406 2.9996081 L 9.2181562 2.9996081 z M 4.9994062 8.2671862 A 6.4094429 6.4094429 0 0 1 2.9994062 8.6402331 L 2.9994062 18.999608 C 2.9994062 20.099607 3.8994073 20.999608 4.9994062 20.999608 L 18.999406 20.999608 C 20.109405 20.999608 20.999406 20.099607 20.999406 18.999608 L 20.999406 16.999608 L 18.999406 16.999608 L 18.999406 18.999608 L 4.9994062 18.999608 L 4.9994062 8.2671862 z " />
+  </g>
+  <path
+     d="M 4.3591147,5.7134793 1.1093423,4.4643751 1.4369502,3.5520321 4.776623,4.6730037 4.8849817,0.88566081 5.7993995,0.86700158 5.8491424,4.6654654 9.2314084,3.7486186 9.4195409,4.4913333 6.0838166,5.6682445 8.0573166,8.7679688 7.3127661,9.3004649 5.272356,6.1168603 2.9247142,9.2081049 2.3413196,8.7001127 Z"
+     id="text2"
+     style="font-size:21.2316px;font-family:Roboto;-inkscape-font-specification:Roboto;display:inline;fill:#1a1a1a;stroke:#000000;stroke-width:1.50081"
+     aria-label="*"
+     sodipodi:nodetypes="cccccccccccccccc" />
+</svg>

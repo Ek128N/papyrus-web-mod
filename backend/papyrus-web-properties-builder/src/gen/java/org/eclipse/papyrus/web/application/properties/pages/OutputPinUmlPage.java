@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -113,15 +116,39 @@ public class OutputPinUmlPage {
     }
 
     protected void addSelection(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("selection", "aql:'Selection'", "aql:self.getFeatureDescription('selection')",
-                "aql:self.eClass().getEStructuralFeature('selection').changeable", "aql:'selection'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("selection") //
+                .label("aql:'Selection'") //
+                .help("aql:self.getFeatureDescription('selection')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('selection').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('selection').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('selection').eType.name") //
+                .value("feature:selection") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('selection')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'selection')") //
+                .unsetOperation("aql:item.delete(self, 'selection'))") //
+                .clearOperation("aql:self.clearReference('selection')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
-                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("type") //
+                .label("aql:'Type'") //
+                .help("aql:self.getFeatureDescription('type')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .value("feature:type") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('type')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'type')") //
+                .unsetOperation("aql:item.delete(self, 'type'))") //
+                .clearOperation("aql:self.clearReference('type')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addMultiplicity(GroupDescription group) {
@@ -132,15 +159,37 @@ public class OutputPinUmlPage {
     }
 
     protected void addUpperBound(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("upperBound", "aql:'Upper bound'", "aql:self.getFeatureDescription('upperBound')",
-                "aql:self.eClass().getEStructuralFeature('upperBound').changeable", "aql:'upperBound'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("upperBound") //
+                .label("aql:'Upper bound'") //
+                .help("aql:self.getFeatureDescription('upperBound')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('upperBound').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('upperBound').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('upperBound').eType.name") //
+                .isMany(false) //
+                .value("feature:upperBound") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'upperBound'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addInState(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("inState", "aql:'In state'", "aql:self.getFeatureDescription('inState')",
-                "aql:self.eClass().getEStructuralFeature('inState').changeable", "aql:'inState'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("inState") //
+                .label("aql:'In state'") //
+                .help("aql:self.getFeatureDescription('inState')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('inState').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('inState').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('inState').eType.name") //
+                .value("feature:inState") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('inState')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'inState')") //
+                .removeOperation("aql:item.delete(self, 'inState'))") //
+                .reorderOperation("aql:self.moveReferenceElement('inState', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('inState')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

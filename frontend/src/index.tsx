@@ -49,6 +49,8 @@ import { Main } from './main/Main';
 import { ToastProvider } from './toast/ToastProvider';
 import { SliderPreview } from './widgets/SliderPreview';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
+import { ContainmentReferenceIcon } from './widgets/containmentReference/ContainmentReferenceIcon';
+import ContainmentReferenceSection from './widgets/containmentReference/ContainmentReferenceSection';
 import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
 import { LanguageExpressionSection } from './widgets/languageExpression/LanguageExpressionSection';
 import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveListWidgetPreview';
@@ -168,6 +170,8 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       return PrimitiveRadioSection;
     } else if (widget.__typename === 'PrimitiveListWidget') {
       return PrimitiveListSection;
+    } else if (widget.__typename === 'ContainmentReferenceWidget') {
+      return ContainmentReferenceSection;
     }
   },
   getPreviewComponent: (widget: GQLWidget) => {
@@ -230,12 +234,42 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
         'label iconURL canAdd items { id label iconURL deletable } style { color fontSize italic bold underline strikeThrough }',
       icon: <FormatListBulletedIcon />,
     };
+    const containmentReferenceWidget: WidgetContribution = {
+      name: 'ContainmentReferenceWidget',
+      icon: <ContainmentReferenceIcon />,
+      fields: `label
+              iconURL
+              ownerId
+              descriptionId
+              containmentReference {
+                ownerKind
+                referenceKind
+                isMany
+                canMove
+              }
+              referenceValues {
+                id
+                label
+                kind
+                iconURL
+                hasClickAction
+              }
+              style {
+                color
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
+              }`,
+    };
     return [
       sliderWidgetContribution,
       referenceWidget,
       languageExpressionWidget,
       primitiveRadioWidget,
       primitiveListWidget,
+      containmentReferenceWidget,
     ];
   },
 };

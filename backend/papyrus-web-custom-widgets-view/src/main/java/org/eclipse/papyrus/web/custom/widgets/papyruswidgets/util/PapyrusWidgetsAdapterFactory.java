@@ -18,7 +18,18 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
@@ -101,6 +112,61 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter casePrimitiveListAddOperation(PrimitiveListAddOperation object) {
             return PapyrusWidgetsAdapterFactory.this.createPrimitiveListAddOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseMonoReferenceWidgetDescription(MonoReferenceWidgetDescription object) {
+            return PapyrusWidgetsAdapterFactory.this.createMonoReferenceWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiReferenceWidgetDescription(MultiReferenceWidgetDescription object) {
+            return PapyrusWidgetsAdapterFactory.this.createMultiReferenceWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseMonoReferenceSetOperation(MonoReferenceSetOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createMonoReferenceSetOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseMonoReferenceUnsetOperation(MonoReferenceUnsetOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createMonoReferenceUnsetOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseCreateElementInReferenceOperation(CreateElementInReferenceOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createCreateElementInReferenceOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseClickReferenceValueOperation(ClickReferenceValueOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createClickReferenceValueOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiReferenceAddOperation(MultiReferenceAddOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createMultiReferenceAddOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiReferenceRemoveOperation(MultiReferenceRemoveOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createMultiReferenceRemoveOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseClearReferenceOperation(ClearReferenceOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createClearReferenceOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiReferenceReorderOperation(MultiReferenceReorderOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createMultiReferenceReorderOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseContainmentReferenceWidgetDescription(ContainmentReferenceWidgetDescription object) {
+            return PapyrusWidgetsAdapterFactory.this.createContainmentReferenceWidgetDescriptionAdapter();
         }
 
         @Override
@@ -203,6 +269,168 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPrimitiveListAddOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription <em>Mono Reference
+     * Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription
+     * @generated
+     */
+    public Adapter createMonoReferenceWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription <em>Multi Reference
+     * Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription
+     * @generated
+     */
+    public Adapter createMultiReferenceWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation <em>Mono Reference Set
+     * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation
+     * @generated
+     */
+    public Adapter createMonoReferenceSetOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation <em>Mono Reference
+     * Unset Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation
+     * @generated
+     */
+    public Adapter createMonoReferenceUnsetOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation <em>Create
+     * Element In Reference Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation
+     * @generated
+     */
+    public Adapter createCreateElementInReferenceOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation <em>Click Reference
+     * Value Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation
+     * @generated
+     */
+    public Adapter createClickReferenceValueOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation <em>Multi Reference Add
+     * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation
+     * @generated
+     */
+    public Adapter createMultiReferenceAddOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation <em>Multi Reference
+     * Remove Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation
+     * @generated
+     */
+    public Adapter createMultiReferenceRemoveOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation <em>Clear Reference
+     * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation
+     * @generated
+     */
+    public Adapter createClearReferenceOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation <em>Multi Reference
+     * Reorder Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation
+     * @generated
+     */
+    public Adapter createMultiReferenceReorderOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription
+     * <em>Containment Reference Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns
+     * null so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+     * anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription
+     * @generated
+     */
+    public Adapter createContainmentReferenceWidgetDescriptionAdapter() {
         return null;
     }
 

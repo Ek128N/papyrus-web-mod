@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -64,9 +65,22 @@ public class InterruptibleActivityRegionUmlPage {
     }
 
     protected void addInterruptingEdge(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("interruptingEdge", "aql:'Interrupting edge'", "aql:self.getFeatureDescription('interruptingEdge')",
-                "aql:self.eClass().getEStructuralFeature('interruptingEdge').changeable", "aql:'interruptingEdge'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("interruptingEdge") //
+                .label("aql:'Interrupting edge'") //
+                .help("aql:self.getFeatureDescription('interruptingEdge')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('interruptingEdge').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('interruptingEdge').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('interruptingEdge').eType.name") //
+                .value("feature:interruptingEdge") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('interruptingEdge')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'interruptingEdge')") //
+                .removeOperation("aql:item.delete(self, 'interruptingEdge'))") //
+                .reorderOperation("aql:self.moveReferenceElement('interruptingEdge', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('interruptingEdge')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

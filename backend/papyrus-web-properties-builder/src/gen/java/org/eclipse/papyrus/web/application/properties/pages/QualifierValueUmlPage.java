@@ -15,11 +15,11 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class QualifierValueUmlPage {
 
@@ -57,15 +57,39 @@ public class QualifierValueUmlPage {
     }
 
     protected void addQualifier(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("qualifier", "aql:'Qualifier'", "aql:self.getFeatureDescription('qualifier')",
-                "aql:self.eClass().getEStructuralFeature('qualifier').changeable", "aql:'qualifier'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("qualifier") //
+                .label("aql:'Qualifier'") //
+                .help("aql:self.getFeatureDescription('qualifier')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('qualifier').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('qualifier').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('qualifier').eType.name") //
+                .value("feature:qualifier") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('qualifier')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'qualifier')") //
+                .unsetOperation("aql:item.delete(self, 'qualifier'))") //
+                .clearOperation("aql:self.clearReference('qualifier')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addValue(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
-                "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("value") //
+                .label("aql:'Value'") //
+                .help("aql:self.getFeatureDescription('value')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .value("feature:value") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('value')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'value')") //
+                .unsetOperation("aql:item.delete(self, 'value'))") //
+                .clearOperation("aql:self.clearReference('value')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

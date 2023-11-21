@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,9 +74,21 @@ public class ExecutionOccurrenceSpecificationUmlPage {
     }
 
     protected void addExecution(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("execution", "aql:'Execution'", "aql:self.getFeatureDescription('execution')",
-                "aql:self.eClass().getEStructuralFeature('execution').changeable", "aql:'execution'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("execution") //
+                .label("aql:'Execution'") //
+                .help("aql:self.getFeatureDescription('execution')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('execution').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('execution').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('execution').eType.name") //
+                .value("feature:execution") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('execution')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'execution')") //
+                .unsetOperation("aql:item.delete(self, 'execution'))") //
+                .clearOperation("aql:self.clearReference('execution')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,18 @@ public class EnumerationLiteralUmlPage {
     }
 
     protected void addSpecification(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
-                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("specification") //
+                .label("aql:'Specification'") //
+                .help("aql:self.getFeatureDescription('specification')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .isMany(false) //
+                .value("feature:specification") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'specification'))");
+        group.getChildren().add(builder.build());
     }
 
 }

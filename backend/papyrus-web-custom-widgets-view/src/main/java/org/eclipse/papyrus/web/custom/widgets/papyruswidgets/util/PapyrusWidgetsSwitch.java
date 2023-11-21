@@ -17,7 +17,18 @@ package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReorderOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
@@ -124,6 +135,95 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION: {
+                MonoReferenceWidgetDescription monoReferenceWidgetDescription = (MonoReferenceWidgetDescription) theEObject;
+                T result = this.caseMonoReferenceWidgetDescription(monoReferenceWidgetDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(monoReferenceWidgetDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(monoReferenceWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION: {
+                MultiReferenceWidgetDescription multiReferenceWidgetDescription = (MultiReferenceWidgetDescription) theEObject;
+                T result = this.caseMultiReferenceWidgetDescription(multiReferenceWidgetDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(multiReferenceWidgetDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(multiReferenceWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION: {
+                MonoReferenceSetOperation monoReferenceSetOperation = (MonoReferenceSetOperation) theEObject;
+                T result = this.caseMonoReferenceSetOperation(monoReferenceSetOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.MONO_REFERENCE_UNSET_OPERATION: {
+                MonoReferenceUnsetOperation monoReferenceUnsetOperation = (MonoReferenceUnsetOperation) theEObject;
+                T result = this.caseMonoReferenceUnsetOperation(monoReferenceUnsetOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.CREATE_ELEMENT_IN_REFERENCE_OPERATION: {
+                CreateElementInReferenceOperation createElementInReferenceOperation = (CreateElementInReferenceOperation) theEObject;
+                T result = this.caseCreateElementInReferenceOperation(createElementInReferenceOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.CLICK_REFERENCE_VALUE_OPERATION: {
+                ClickReferenceValueOperation clickReferenceValueOperation = (ClickReferenceValueOperation) theEObject;
+                T result = this.caseClickReferenceValueOperation(clickReferenceValueOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_ADD_OPERATION: {
+                MultiReferenceAddOperation multiReferenceAddOperation = (MultiReferenceAddOperation) theEObject;
+                T result = this.caseMultiReferenceAddOperation(multiReferenceAddOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_REMOVE_OPERATION: {
+                MultiReferenceRemoveOperation multiReferenceRemoveOperation = (MultiReferenceRemoveOperation) theEObject;
+                T result = this.caseMultiReferenceRemoveOperation(multiReferenceRemoveOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.CLEAR_REFERENCE_OPERATION: {
+                ClearReferenceOperation clearReferenceOperation = (ClearReferenceOperation) theEObject;
+                T result = this.caseClearReferenceOperation(clearReferenceOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.MULTI_REFERENCE_REORDER_OPERATION: {
+                MultiReferenceReorderOperation multiReferenceReorderOperation = (MultiReferenceReorderOperation) theEObject;
+                T result = this.caseMultiReferenceReorderOperation(multiReferenceReorderOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION: {
+                ContainmentReferenceWidgetDescription containmentReferenceWidgetDescription = (ContainmentReferenceWidgetDescription) theEObject;
+                T result = this.caseContainmentReferenceWidgetDescription(containmentReferenceWidgetDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(containmentReferenceWidgetDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(containmentReferenceWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -202,6 +302,172 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePrimitiveListAddOperation(PrimitiveListAddOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Mono Reference Widget Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Mono Reference Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMonoReferenceWidgetDescription(MonoReferenceWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Multi Reference Widget Description</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Multi Reference Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMultiReferenceWidgetDescription(MultiReferenceWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Mono Reference Set Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Mono Reference Set Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMonoReferenceSetOperation(MonoReferenceSetOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Mono Reference Unset Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Mono Reference Unset Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMonoReferenceUnsetOperation(MonoReferenceUnsetOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Create Element In Reference Operation</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Create Element In Reference Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCreateElementInReferenceOperation(CreateElementInReferenceOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Click Reference Value Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Click Reference Value Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseClickReferenceValueOperation(ClickReferenceValueOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Multi Reference Add Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Multi Reference Add Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMultiReferenceAddOperation(MultiReferenceAddOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Multi Reference Remove Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Multi Reference Remove Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMultiReferenceRemoveOperation(MultiReferenceRemoveOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Clear Reference Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Clear Reference Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseClearReferenceOperation(ClearReferenceOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Multi Reference Reorder Operation</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Multi Reference Reorder Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseMultiReferenceReorderOperation(MultiReferenceReorderOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Containment Reference Widget
+     * Description</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Containment Reference Widget
+     *         Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseContainmentReferenceWidgetDescription(ContainmentReferenceWidgetDescription object) {
         return null;
     }
 

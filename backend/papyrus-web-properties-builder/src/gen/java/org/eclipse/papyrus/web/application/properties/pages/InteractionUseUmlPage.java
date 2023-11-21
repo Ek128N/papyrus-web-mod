@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,9 +74,21 @@ public class InteractionUseUmlPage {
     }
 
     protected void addRefersTo(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("refersTo", "aql:'Refers to'", "aql:self.getFeatureDescription('refersTo')",
-                "aql:self.eClass().getEStructuralFeature('refersTo').changeable", "aql:'refersTo'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("refersTo") //
+                .label("aql:'Refers to'") //
+                .help("aql:self.getFeatureDescription('refersTo')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('refersTo').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('refersTo').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('refersTo').eType.name") //
+                .value("feature:refersTo") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('refersTo')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'refersTo')") //
+                .unsetOperation("aql:item.delete(self, 'refersTo'))") //
+                .clearOperation("aql:self.clearReference('refersTo')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

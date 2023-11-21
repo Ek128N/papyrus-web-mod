@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -86,9 +87,19 @@ public class ModelUmlPage {
     }
 
     protected void addPackageMerge(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("packageMerge", "aql:'Package merge'", "aql:self.getFeatureDescription('packageMerge')",
-                "aql:self.eClass().getEStructuralFeature('packageMerge').changeable", "aql:'packageMerge'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("packageMerge") //
+                .label("aql:'Package merge'") //
+                .help("aql:self.getFeatureDescription('packageMerge')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('packageMerge').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('packageMerge').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('packageMerge').eType.name") //
+                .isMany(true) //
+                .value("feature:packageMerge") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'packageMerge'))") //
+                .reorderOperation("aql:self.moveReferenceElement('packageMerge', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,15 +74,39 @@ public class GeneralOrderingUmlPage {
     }
 
     protected void addBefore(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("before", "aql:'Before'", "aql:self.getFeatureDescription('before')",
-                "aql:self.eClass().getEStructuralFeature('before').changeable", "aql:'before'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("before") //
+                .label("aql:'Before'") //
+                .help("aql:self.getFeatureDescription('before')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('before').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('before').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('before').eType.name") //
+                .value("feature:before") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('before')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'before')") //
+                .unsetOperation("aql:item.delete(self, 'before'))") //
+                .clearOperation("aql:self.clearReference('before')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addAfter(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("after", "aql:'After'", "aql:self.getFeatureDescription('after')",
-                "aql:self.eClass().getEStructuralFeature('after').changeable", "aql:'after'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("after") //
+                .label("aql:'After'") //
+                .help("aql:self.getFeatureDescription('after')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('after').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('after').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('after').eType.name") //
+                .value("feature:after") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('after')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'after')") //
+                .unsetOperation("aql:item.delete(self, 'after'))") //
+                .clearOperation("aql:self.clearReference('after')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

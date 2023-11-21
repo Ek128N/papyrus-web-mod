@@ -75,6 +75,10 @@
 			<artifactId>sirius-components-annotations-spring</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -107,6 +111,16 @@
 			<groupId>org.eclipse.uml2.plugins</groupId>
 			<artifactId>org.eclipse.uml2.types</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>papyrus-uml-domain-services</groupId>
+			<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.osgi</groupId>
+					<artifactId>org.osgi.service.prefs</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

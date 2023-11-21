@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -87,9 +88,22 @@ public class ExecutionEnvironmentUmlPage {
     }
 
     protected void addUseCase(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
-                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("useCase") //
+                .label("aql:'Use case'") //
+                .help("aql:self.getFeatureDescription('useCase')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .value("feature:useCase") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'useCase')") //
+                .removeOperation("aql:item.delete(self, 'useCase'))") //
+                .reorderOperation("aql:self.moveReferenceElement('useCase', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('useCase')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

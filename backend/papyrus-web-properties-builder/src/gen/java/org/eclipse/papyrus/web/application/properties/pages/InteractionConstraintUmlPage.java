@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -77,33 +80,85 @@ public class InteractionConstraintUmlPage {
     }
 
     protected void addContext(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("context", "aql:'Context'", "aql:self.getFeatureDescription('context')",
-                "aql:self.eClass().getEStructuralFeature('context').changeable", "aql:'context'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("context") //
+                .label("aql:'Context'") //
+                .help("aql:self.getFeatureDescription('context')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('context').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('context').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('context').eType.name") //
+                .value("feature:context") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('context')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'context')") //
+                .unsetOperation("aql:item.delete(self, 'context'))") //
+                .clearOperation("aql:self.clearReference('context')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addMaxint(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("maxint", "aql:'Maxint'", "aql:self.getFeatureDescription('maxint')",
-                "aql:self.eClass().getEStructuralFeature('maxint').changeable", "aql:'maxint'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("maxint") //
+                .label("aql:'Maxint'") //
+                .help("aql:self.getFeatureDescription('maxint')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('maxint').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('maxint').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('maxint').eType.name") //
+                .isMany(false) //
+                .value("feature:maxint") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'maxint'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addMinint(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("minint", "aql:'Minint'", "aql:self.getFeatureDescription('minint')",
-                "aql:self.eClass().getEStructuralFeature('minint').changeable", "aql:'minint'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("minint") //
+                .label("aql:'Minint'") //
+                .help("aql:self.getFeatureDescription('minint')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('minint').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('minint').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('minint').eType.name") //
+                .isMany(false) //
+                .value("feature:minint") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'minint'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addSpecification(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("specification", "aql:'Specification'", "aql:self.getFeatureDescription('specification')",
-                "aql:self.eClass().getEStructuralFeature('specification').changeable", "aql:'specification'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("specification") //
+                .label("aql:'Specification'") //
+                .help("aql:self.getFeatureDescription('specification')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .isMany(false) //
+                .value("feature:specification") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'specification'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addConstrainedElement(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("constrainedElement", "aql:'Constrained element'", "aql:self.getFeatureDescription('constrainedElement')",
-                "aql:self.eClass().getEStructuralFeature('constrainedElement').changeable", "aql:'constrainedElement'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("constrainedElement") //
+                .label("aql:'Constrained element'") //
+                .help("aql:self.getFeatureDescription('constrainedElement')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('constrainedElement').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('constrainedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('constrainedElement').eType.name") //
+                .value("feature:constrainedElement") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('constrainedElement')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'constrainedElement')") //
+                .removeOperation("aql:item.delete(self, 'constrainedElement'))") //
+                .reorderOperation("aql:self.moveReferenceElement('constrainedElement', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('constrainedElement')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,21 @@ public class CallEventUmlPage {
     }
 
     protected void addOperation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("operation", "aql:'Operation'", "aql:self.getFeatureDescription('operation')",
-                "aql:self.eClass().getEStructuralFeature('operation').changeable", "aql:'operation'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("operation") //
+                .label("aql:'Operation'") //
+                .help("aql:self.getFeatureDescription('operation')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('operation').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('operation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('operation').eType.name") //
+                .value("feature:operation") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('operation')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'operation')") //
+                .unsetOperation("aql:item.delete(self, 'operation'))") //
+                .clearOperation("aql:self.clearReference('operation')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

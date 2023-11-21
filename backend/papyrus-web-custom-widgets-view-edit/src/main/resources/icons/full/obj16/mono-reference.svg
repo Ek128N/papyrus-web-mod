@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 24 24"
+   aria-labelledby="title"
+   aria-describedby="desc"
+   role="img"
+   id="svg2"
+   sodipodi:docname="mono-reference.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="53.592801"
+     inkscape:cx="20.711737"
+     inkscape:cy="9.8613991"
+     inkscape:window-width="3840"
+     inkscape:window-height="2054"
+     inkscape:window-x="1789"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <g
+     id="g1">
+    <rect
+       fill="none"
+       height="24"
+       width="24"
+       id="rect1" />
+  </g>
+  <g
+     id="g2"
+     transform="translate(-0.4997031,3.000392)"
+     mask="url(#mask-powermask-path-effect2)"
+     style="display:inline">
+    <polygon
+       points="18.17,13 15.59,15.59 17,17 22,12 17,7 15.59,8.41 18.17,11 9,11 9,13 "
+       id="polygon1"
+       d="M 22,12 17,7 15.59,8.41 18.17,11 H 9 v 2 h 9.17 L 15.59,15.59 17,17 Z" />
+    <path
+       id="path1"
+       d="m 9.2181562,2.9996081 a 6.4094429,6.4094429 0 0 1 -0.578125,2 H 18.999406 v 2 h 2 v -2 c 0,-1.0999989 -0.890001,-2 -2,-2 z m -4.21875,5.2675781 a 6.4094429,6.4094429 0 0 1 -2,0.3730469 V 18.999608 c 0,1.099999 0.9000011,2 2,2 H 18.999406 c 1.109999,0 2,-0.900001 2,-2 v -2 h -2 v 2 H 4.9994062 Z" />
+  </g>
+  <path
+     d="M 6.4651508,9.8696623 H 5.2969654 V 2.1257237 L 2.9543141,2.9861613 V 1.9310261 L 6.2830144,0.6811934 h 0.1821364 z"
+     id="text2"
+     style="font-size:12.8626px;font-family:Roboto;-inkscape-font-specification:Roboto;stroke:#000000;stroke-width:0.909222"
+     aria-label="1" />
+</svg>

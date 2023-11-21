@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -98,27 +101,75 @@ public class ReceptionUmlPage {
     }
 
     protected void addSignal(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("signal", "aql:'Signal'", "aql:self.getFeatureDescription('signal')",
-                "aql:self.eClass().getEStructuralFeature('signal').changeable", "aql:'signal'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("signal") //
+                .label("aql:'Signal'") //
+                .help("aql:self.getFeatureDescription('signal')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('signal').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('signal').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('signal').eType.name") //
+                .value("feature:signal") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('signal')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'signal')") //
+                .unsetOperation("aql:item.delete(self, 'signal'))") //
+                .clearOperation("aql:self.clearReference('signal')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addMethod(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("method", "aql:'Method'", "aql:self.getFeatureDescription('method')",
-                "aql:self.eClass().getEStructuralFeature('method').changeable", "aql:'method'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("method") //
+                .label("aql:'Method'") //
+                .help("aql:self.getFeatureDescription('method')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('method').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('method').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('method').eType.name") //
+                .value("feature:method") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('method')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'method')") //
+                .removeOperation("aql:item.delete(self, 'method'))") //
+                .reorderOperation("aql:self.moveReferenceElement('method', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('method')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedParameter(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
-                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedParameter") //
+                .label("aql:'Owned parameter'") //
+                .help("aql:self.getFeatureDescription('ownedParameter')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedParameter") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedParameter'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedParameter', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addRaisedException(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("raisedException", "aql:'Raised Exception'", "aql:self.getFeatureDescription('raisedException')",
-                "aql:self.eClass().getEStructuralFeature('raisedException').changeable", "aql:'raisedException'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("raisedException") //
+                .label("aql:'Raised Exception'") //
+                .help("aql:self.getFeatureDescription('raisedException')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('raisedException').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('raisedException').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('raisedException').eType.name") //
+                .value("feature:raisedException") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('raisedException')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'raisedException')") //
+                .removeOperation("aql:item.delete(self, 'raisedException'))") //
+                .reorderOperation("aql:self.moveReferenceElement('raisedException', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('raisedException')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

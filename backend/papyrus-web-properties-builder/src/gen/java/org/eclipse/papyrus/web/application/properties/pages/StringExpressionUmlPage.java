@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -80,15 +82,37 @@ public class StringExpressionUmlPage {
     }
 
     protected void addType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
-                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("type") //
+                .label("aql:'Type'") //
+                .help("aql:self.getFeatureDescription('type')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .value("feature:type") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('type')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'type')") //
+                .unsetOperation("aql:item.delete(self, 'type'))") //
+                .clearOperation("aql:self.clearReference('type')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOperand(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("operand", "aql:'Operand'", "aql:self.getFeatureDescription('operand')",
-                "aql:self.eClass().getEStructuralFeature('operand').changeable", "aql:'operand'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("operand") //
+                .label("aql:'Operand'") //
+                .help("aql:self.getFeatureDescription('operand')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('operand').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('operand').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('operand').eType.name") //
+                .isMany(true) //
+                .value("feature:operand") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'operand'))") //
+                .reorderOperation("aql:self.moveReferenceElement('operand', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

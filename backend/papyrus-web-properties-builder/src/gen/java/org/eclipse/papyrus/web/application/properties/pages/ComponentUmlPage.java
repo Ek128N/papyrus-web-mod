@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -96,21 +97,60 @@ public class ComponentUmlPage {
     }
 
     protected void addProvided(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("provided", "aql:'Provided'", "aql:self.getFeatureDescription('provided')",
-                "aql:self.eClass().getEStructuralFeature('provided').changeable", "aql:'provided'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("provided") //
+                .label("aql:'Provided'") //
+                .help("aql:self.getFeatureDescription('provided')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('provided').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('provided').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('provided').eType.name") //
+                .value("feature:provided") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('provided')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'provided')") //
+                .removeOperation("aql:item.delete(self, 'provided'))") //
+                .reorderOperation("aql:self.moveReferenceElement('provided', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('provided')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRequired(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("required", "aql:'Required'", "aql:self.getFeatureDescription('required')",
-                "aql:self.eClass().getEStructuralFeature('required').changeable", "aql:'required'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("required") //
+                .label("aql:'Required'") //
+                .help("aql:self.getFeatureDescription('required')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('required').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('required').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('required').eType.name") //
+                .value("feature:required") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('required')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'required')") //
+                .removeOperation("aql:item.delete(self, 'required'))") //
+                .reorderOperation("aql:self.moveReferenceElement('required', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('required')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addUseCase(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
-                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("useCase") //
+                .label("aql:'Use case'") //
+                .help("aql:self.getFeatureDescription('useCase')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .value("feature:useCase") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'useCase')") //
+                .removeOperation("aql:item.delete(self, 'useCase'))") //
+                .reorderOperation("aql:self.moveReferenceElement('useCase', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('useCase')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

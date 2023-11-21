@@ -149,7 +149,7 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
     protected PrimitiveListDeleteOperation deleteOperation;
 
     /**
-     * The cached value of the '{@link #getAddOperation() <em>Add Operation</em>}' containment reference list. <!--
+     * The cached value of the '{@link #getAddOperation() <em>Add Operation</em>}' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @see #getAddOperation()

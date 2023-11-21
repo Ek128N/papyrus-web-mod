@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -95,63 +98,177 @@ public class LoopNodeUmlPage {
     }
 
     protected void addDecider(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("decider", "aql:'Decider'", "aql:self.getFeatureDescription('decider')",
-                "aql:self.eClass().getEStructuralFeature('decider').changeable", "aql:'decider'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("decider") //
+                .label("aql:'Decider'") //
+                .help("aql:self.getFeatureDescription('decider')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('decider').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('decider').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decider').eType.name") //
+                .value("feature:decider") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('decider')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'decider')") //
+                .unsetOperation("aql:item.delete(self, 'decider'))") //
+                .clearOperation("aql:self.clearReference('decider')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addBodyOutput(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("bodyOutput", "aql:'Body output'", "aql:self.getFeatureDescription('bodyOutput')",
-                "aql:self.eClass().getEStructuralFeature('bodyOutput').changeable", "aql:'bodyOutput'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("bodyOutput") //
+                .label("aql:'Body output'") //
+                .help("aql:self.getFeatureDescription('bodyOutput')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('bodyOutput').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('bodyOutput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyOutput').eType.name") //
+                .value("feature:bodyOutput") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('bodyOutput')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'bodyOutput')") //
+                .removeOperation("aql:item.delete(self, 'bodyOutput'))") //
+                .reorderOperation("aql:self.moveReferenceElement('bodyOutput', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('bodyOutput')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addBodyPart(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("bodyPart", "aql:'Body part'", "aql:self.getFeatureDescription('bodyPart')",
-                "aql:self.eClass().getEStructuralFeature('bodyPart').changeable", "aql:'bodyPart'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("bodyPart") //
+                .label("aql:'Body part'") //
+                .help("aql:self.getFeatureDescription('bodyPart')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('bodyPart').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('bodyPart').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyPart').eType.name") //
+                .value("feature:bodyPart") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('bodyPart')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'bodyPart')") //
+                .removeOperation("aql:item.delete(self, 'bodyPart'))") //
+                .reorderOperation("aql:self.moveReferenceElement('bodyPart', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('bodyPart')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addLocalPostcondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPostcondition", "aql:'Local postcondition'", "aql:self.getFeatureDescription('localPostcondition')",
-                "aql:self.eClass().getEStructuralFeature('localPostcondition').changeable", "aql:'localPostcondition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("localPostcondition") //
+                .label("aql:'Local postcondition'") //
+                .help("aql:self.getFeatureDescription('localPostcondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .isMany(true) //
+                .value("feature:localPostcondition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'localPostcondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('localPostcondition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLocalPrecondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("localPrecondition", "aql:'Local precondition'", "aql:self.getFeatureDescription('localPrecondition')",
-                "aql:self.eClass().getEStructuralFeature('localPrecondition').changeable", "aql:'localPrecondition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("localPrecondition") //
+                .label("aql:'Local precondition'") //
+                .help("aql:self.getFeatureDescription('localPrecondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .isMany(true) //
+                .value("feature:localPrecondition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'localPrecondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('localPrecondition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLoopVariable(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("loopVariable", "aql:'Loop variable'", "aql:self.getFeatureDescription('loopVariable')",
-                "aql:self.eClass().getEStructuralFeature('loopVariable').changeable", "aql:'loopVariable'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("loopVariable") //
+                .label("aql:'Loop variable'") //
+                .help("aql:self.getFeatureDescription('loopVariable')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('loopVariable').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('loopVariable').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('loopVariable').eType.name") //
+                .isMany(true) //
+                .value("feature:loopVariable") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'loopVariable'))") //
+                .reorderOperation("aql:self.moveReferenceElement('loopVariable', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addLoopVariableInput(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("loopVariableInput", "aql:'Loop variable input'", "aql:self.getFeatureDescription('loopVariableInput')",
-                "aql:self.eClass().getEStructuralFeature('loopVariableInput').changeable", "aql:'loopVariableInput'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("loopVariableInput") //
+                .label("aql:'Loop variable input'") //
+                .help("aql:self.getFeatureDescription('loopVariableInput')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('loopVariableInput').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('loopVariableInput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('loopVariableInput').eType.name") //
+                .isMany(true) //
+                .value("feature:loopVariableInput") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'loopVariableInput'))") //
+                .reorderOperation("aql:self.moveReferenceElement('loopVariableInput', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addResult(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("result", "aql:'Result'", "aql:self.getFeatureDescription('result')",
-                "aql:self.eClass().getEStructuralFeature('result').changeable", "aql:'result'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("result") //
+                .label("aql:'Result'") //
+                .help("aql:self.getFeatureDescription('result')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('result').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('result').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('result').eType.name") //
+                .isMany(true) //
+                .value("feature:result") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'result'))") //
+                .reorderOperation("aql:self.moveReferenceElement('result', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addSetupPart(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("setupPart", "aql:'Setup part'", "aql:self.getFeatureDescription('setupPart')",
-                "aql:self.eClass().getEStructuralFeature('setupPart').changeable", "aql:'setupPart'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("setupPart") //
+                .label("aql:'Setup part'") //
+                .help("aql:self.getFeatureDescription('setupPart')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('setupPart').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('setupPart').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('setupPart').eType.name") //
+                .value("feature:setupPart") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('setupPart')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'setupPart')") //
+                .removeOperation("aql:item.delete(self, 'setupPart'))") //
+                .reorderOperation("aql:self.moveReferenceElement('setupPart', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('setupPart')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addTest(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("test", "aql:'Test'", "aql:self.getFeatureDescription('test')",
-                "aql:self.eClass().getEStructuralFeature('test').changeable", "aql:'test'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("test") //
+                .label("aql:'Test'") //
+                .help("aql:self.getFeatureDescription('test')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('test').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('test').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('test').eType.name") //
+                .value("feature:test") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('test')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'test')") //
+                .removeOperation("aql:item.delete(self, 'test'))") //
+                .reorderOperation("aql:self.moveReferenceElement('test', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('test')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

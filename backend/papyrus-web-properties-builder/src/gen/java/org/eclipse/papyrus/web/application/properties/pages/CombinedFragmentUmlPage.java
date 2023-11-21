@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -82,9 +83,22 @@ public class CombinedFragmentUmlPage {
     }
 
     protected void addCovered(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("covered", "aql:'Covered'", "aql:self.getFeatureDescription('covered')",
-                "aql:self.eClass().getEStructuralFeature('covered').changeable", "aql:'covered'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("covered") //
+                .label("aql:'Covered'") //
+                .help("aql:self.getFeatureDescription('covered')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('covered').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('covered').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('covered').eType.name") //
+                .value("feature:covered") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('covered')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'covered')") //
+                .removeOperation("aql:item.delete(self, 'covered'))") //
+                .reorderOperation("aql:self.moveReferenceElement('covered', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('covered')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

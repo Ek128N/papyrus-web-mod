@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -87,15 +88,33 @@ public class ObjectFlowUmlPage {
     }
 
     protected void addGuard(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("guard", "aql:'Guard'", "aql:self.getFeatureDescription('guard')",
-                "aql:self.eClass().getEStructuralFeature('guard').changeable", "aql:'guard'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("guard") //
+                .label("aql:'Guard'") //
+                .help("aql:self.getFeatureDescription('guard')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('guard').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('guard').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('guard').eType.name") //
+                .isMany(false) //
+                .value("feature:guard") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'guard'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addWeight(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("weight", "aql:'Weight'", "aql:self.getFeatureDescription('weight')",
-                "aql:self.eClass().getEStructuralFeature('weight').changeable", "aql:'weight'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("weight") //
+                .label("aql:'Weight'") //
+                .help("aql:self.getFeatureDescription('weight')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('weight').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('weight').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('weight').eType.name") //
+                .isMany(false) //
+                .value("feature:weight") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'weight'))");
+        group.getChildren().add(builder.build());
     }
 
 }

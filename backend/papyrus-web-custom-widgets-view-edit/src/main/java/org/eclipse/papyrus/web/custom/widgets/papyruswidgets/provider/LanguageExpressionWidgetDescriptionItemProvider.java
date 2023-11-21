@@ -55,12 +55,12 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addIsEnabledExpressionPropertyDescriptor(object);
+            this.addIsEnabledExpressionPropertyDescriptor(object);
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
@@ -70,10 +70,10 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add(createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-                getString("_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature"),
-                getString("_UI_PropertyDescriptor_description",
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description",
                         "_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature",
                         "_UI_LanguageExpressionWidgetDescription_type"),
                 PapyrusWidgetsPackage.Literals.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true,
@@ -110,8 +110,8 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
     @Override
     public String getText(Object object) {
         String label = ((LanguageExpressionWidgetDescription) object).getName();
-        return label == null || label.length() == 0 ? getString("_UI_LanguageExpressionWidgetDescription_type")
-                : getString("_UI_LanguageExpressionWidgetDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_LanguageExpressionWidgetDescription_type")
+                : this.getString("_UI_LanguageExpressionWidgetDescription_type") + " " + label;
     }
 
     /**
@@ -123,11 +123,11 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
 
         switch (notification.getFeatureID(LanguageExpressionWidgetDescription.class)) {
         case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         }
         super.notifyChanged(notification);

@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -80,15 +82,38 @@ public class EnumerationUmlPage {
     }
 
     protected void addOwnedLiteral(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedLiteral", "aql:'Owned literal'", "aql:self.getFeatureDescription('ownedLiteral')",
-                "aql:self.eClass().getEStructuralFeature('ownedLiteral').changeable", "aql:'ownedLiteral'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedLiteral") //
+                .label("aql:'Owned literal'") //
+                .help("aql:self.getFeatureDescription('ownedLiteral')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedLiteral').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedLiteral').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedLiteral').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedLiteral") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedLiteral'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedLiteral', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addUseCase(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("useCase", "aql:'Use case'", "aql:self.getFeatureDescription('useCase')",
-                "aql:self.eClass().getEStructuralFeature('useCase').changeable", "aql:'useCase'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("useCase") //
+                .label("aql:'Use case'") //
+                .help("aql:self.getFeatureDescription('useCase')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .value("feature:useCase") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'useCase')") //
+                .removeOperation("aql:item.delete(self, 'useCase'))") //
+                .reorderOperation("aql:self.moveReferenceElement('useCase', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('useCase')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

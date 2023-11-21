@@ -17,7 +17,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsSwitch;
@@ -28,6 +31,10 @@ import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.form.ListStyleProvider;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
+import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyleProvider;
+import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * Converter used to create the widget previews.
@@ -130,4 +137,118 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         return helpText;
     }
 
+    private ReferenceWidgetStyle getWidgetStyle(ReferenceWidgetDescriptionStyle style, VariableManager varMan) {
+        if (style == null) {
+            return null;
+        }
+        return new ReferenceWidgetStyleProvider(style).apply(varMan);
+    }
+
+    @Override
+    public AbstractWidgetDescription caseContainmentReferenceWidgetDescription(ContainmentReferenceWidgetDescription description) {
+        var builder = org.eclipse.papyrus.web.custom.widgets.containmentreference.ContainmentReferenceWidgetDescription.newContainmentReferenceWidgetDescription(UUID.randomUUID().toString()) //
+                .targetObjectIdProvider(varMan -> "") //
+                .idProvider(varMan -> "") //
+                .labelProvider(varMan -> this.getWidgetLabel(description, "Containment Reference")) //
+                .isReadOnlyProvider(varMan -> false) //
+                .iconURLProvider(varMan -> List.of()) //
+                .itemsProvider(varMan -> List.of()) //
+                .itemIdProvider(varMan -> "") //
+                .itemKindProvider(varMan -> "") //
+                .itemLabelProvider(varMan -> "") //
+                .itemIconURLProvider(varMan -> List.of()) //
+                .ownerKindProvider(varMan -> "") //
+                .referenceKindProvider(varMan -> "") //
+                .isManyProvider(varMan -> true)
+                .styleProvider(varMan -> this.getWidgetStyle(description.getStyle(), varMan)) //
+                .ownerIdProvider(varMan -> "") //
+                .diagnosticsProvider(varMan -> List.of()) //
+                .kindProvider(object -> "") //
+                .messageProvider(object -> "") //
+                .itemClickHandlerProvider(varMan -> new Success()) //
+                .itemRemoveHandlerProvider(varMan -> new Success()) //
+                .moveHandlerProvider(varMan -> new Success());
+        if (description.getHelpExpression() != null && !description.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(vm -> this.getWidgetHelpText(description));
+        }
+        return builder.build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseMonoReferenceWidgetDescription(MonoReferenceWidgetDescription referenceDescription) {
+        var builder =  ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
+                .idProvider(vm -> "")
+                .targetObjectIdProvider(vm -> "")
+                .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Mono Reference"))
+                .iconURLProvider(varMan -> List.of())
+                .isReadOnlyProvider(varMan -> false)
+                .itemsProvider(varMan -> List.of())
+                .optionsProvider(varMan -> List.of())
+                .itemIdProvider(varMan -> "")
+                .itemKindProvider(varMan -> "")
+                .itemLabelProvider(varMan -> "")
+                .itemKindProvider(varMan -> "")
+                .itemLabelProvider(varMan -> "")
+                .itemImageURLProvider(varMan -> List.of())
+                .ownerKindProvider(varMan -> "")
+                .referenceKindProvider(varMan -> "")
+                .isContainmentProvider(varMan -> false)
+                .isManyProvider(varMan -> false)
+                .ownerIdProvider(varMan -> "")
+                .itemClickHandlerProvider(varMan -> new Success())
+                .ownerIdProvider(varMan -> "")
+                .clearHandlerProvider(varMan -> new Success())
+                .itemRemoveHandlerProvider(varMan -> new Success())
+                .setHandlerProvider(varMan -> new Success())
+                .addHandlerProvider(varMan -> new Success())
+                .moveHandlerProvider(varMan -> new Success())
+                .styleProvider(varMan -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
+                .diagnosticsProvider(varMan -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
+        if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
+            String helpText = this.getWidgetHelpText(referenceDescription);
+            builder.helpTextProvider(varMan -> helpText);
+        }
+        return builder.build();
+    }
+
+    @Override
+    public AbstractWidgetDescription caseMultiReferenceWidgetDescription(MultiReferenceWidgetDescription referenceDescription) {
+        var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
+            .idProvider(vm -> "")
+            .targetObjectIdProvider(vm -> "")
+            .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Multi Reference"))
+            .iconURLProvider(varMan -> List.of())
+            .isReadOnlyProvider(varMan -> false)
+            .itemsProvider(varMan -> List.of())
+            .optionsProvider(varMan -> List.of())
+            .itemIdProvider(varMan -> "")
+            .itemKindProvider(varMan -> "")
+            .itemLabelProvider(varMan -> "")
+            .itemKindProvider(varMan -> "")
+            .itemLabelProvider(varMan -> "")
+            .itemImageURLProvider(varMan -> List.of())
+            .ownerKindProvider(varMan -> "")
+            .referenceKindProvider(varMan -> "")
+            .isContainmentProvider(varMan -> false)
+            .isManyProvider(varMan -> true)
+            .ownerIdProvider(varMan -> "")
+            .itemClickHandlerProvider(varMan -> new Success())
+            .ownerIdProvider(varMan -> "")
+            .clearHandlerProvider(varMan -> new Success())
+            .itemRemoveHandlerProvider(varMan -> new Success())
+            .setHandlerProvider(varMan -> new Success())
+            .addHandlerProvider(varMan -> new Success())
+            .moveHandlerProvider(varMan -> new Success())
+            .styleProvider(varMan -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
+            .diagnosticsProvider(varMan -> List.of())
+            .kindProvider(object -> "")
+            .messageProvider(object -> "");
+        if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
+            String helpText = this.getWidgetHelpText(referenceDescription);
+            builder.helpTextProvider(varMan -> helpText);
+        }
+        return builder.build();
+    }
 }

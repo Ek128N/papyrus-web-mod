@@ -1,0 +1,160 @@
+/**
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under
+ * the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ * Obeo - Initial API and implementation
+ */
+package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl;
+
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.sirius.components.view.Operation;
+
+/**
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mono Reference Set Operation</b></em>'. <!--
+ * end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.MonoReferenceSetOperationImpl#getBody
+ * <em>Body</em>}</li>
+ * </ul>
+ *
+ * @generated
+ */
+public class MonoReferenceSetOperationImpl extends MinimalEObjectImpl.Container implements MonoReferenceSetOperation {
+    /**
+     * The cached value of the '{@link #getBody() <em>Body</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @see #getBody()
+     * @generated
+     * @ordered
+     */
+    protected EList<Operation> body;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MonoReferenceSetOperationImpl() {
+        super();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return PapyrusWidgetsPackage.Literals.MONO_REFERENCE_SET_OPERATION;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Operation> getBody() {
+        if (this.body == null) {
+            this.body = new EObjectContainmentEList<>(Operation.class, this, PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION__BODY);
+        }
+        return this.body;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION__BODY:
+                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+        switch (featureID) {
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION__BODY:
+                return this.getBody();
+        }
+        return super.eGet(featureID, resolve, coreType);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void eSet(int featureID, Object newValue) {
+        switch (featureID) {
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION__BODY:
+                this.getBody().clear();
+                this.getBody().addAll((Collection<? extends Operation>) newValue);
+                return;
+        }
+        super.eSet(featureID, newValue);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void eUnset(int featureID) {
+        switch (featureID) {
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION__BODY:
+                this.getBody().clear();
+                return;
+        }
+        super.eUnset(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean eIsSet(int featureID) {
+        switch (featureID) {
+            case PapyrusWidgetsPackage.MONO_REFERENCE_SET_OPERATION__BODY:
+                return this.body != null && !this.body.isEmpty();
+        }
+        return super.eIsSet(featureID);
+    }
+
+} // MonoReferenceSetOperationImpl

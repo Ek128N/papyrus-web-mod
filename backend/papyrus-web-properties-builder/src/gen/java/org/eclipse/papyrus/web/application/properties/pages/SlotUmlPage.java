@@ -15,11 +15,12 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class SlotUmlPage {
 
@@ -57,15 +58,37 @@ public class SlotUmlPage {
     }
 
     protected void addDefiningFeature(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("definingFeature", "aql:'Defining feature'", "aql:self.getFeatureDescription('definingFeature')",
-                "aql:self.eClass().getEStructuralFeature('definingFeature').changeable", "aql:'definingFeature'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("definingFeature") //
+                .label("aql:'Defining feature'") //
+                .help("aql:self.getFeatureDescription('definingFeature')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('definingFeature').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('definingFeature').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('definingFeature').eType.name") //
+                .value("feature:definingFeature") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('definingFeature')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'definingFeature')") //
+                .unsetOperation("aql:item.delete(self, 'definingFeature'))") //
+                .clearOperation("aql:self.clearReference('definingFeature')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addValue(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("value", "aql:'Value'", "aql:self.getFeatureDescription('value')",
-                "aql:self.eClass().getEStructuralFeature('value').changeable", "aql:'value'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("value") //
+                .label("aql:'Value'") //
+                .help("aql:self.getFeatureDescription('value')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .isMany(true) //
+                .value("feature:value") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'value'))") //
+                .reorderOperation("aql:self.moveReferenceElement('value', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

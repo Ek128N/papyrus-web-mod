@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -79,9 +80,22 @@ public class UseCaseUmlPage {
     }
 
     protected void addSubject(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("subject", "aql:'Subject'", "aql:self.getFeatureDescription('subject')",
-                "aql:self.eClass().getEStructuralFeature('subject').changeable", "aql:'subject'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("subject") //
+                .label("aql:'Subject'") //
+                .help("aql:self.getFeatureDescription('subject')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('subject').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('subject').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('subject').eType.name") //
+                .value("feature:subject") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('subject')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'subject')") //
+                .removeOperation("aql:item.delete(self, 'subject'))") //
+                .reorderOperation("aql:self.moveReferenceElement('subject', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('subject')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

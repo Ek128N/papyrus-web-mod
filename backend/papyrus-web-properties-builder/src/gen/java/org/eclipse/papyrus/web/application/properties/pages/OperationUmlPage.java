@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -107,39 +110,113 @@ public class OperationUmlPage {
     }
 
     protected void addBodyCondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("bodyCondition", "aql:'Body condition'", "aql:self.getFeatureDescription('bodyCondition')",
-                "aql:self.eClass().getEStructuralFeature('bodyCondition').changeable", "aql:'bodyCondition'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("bodyCondition") //
+                .label("aql:'Body condition'") //
+                .help("aql:self.getFeatureDescription('bodyCondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('bodyCondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('bodyCondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyCondition').eType.name") //
+                .value("feature:bodyCondition") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('bodyCondition')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'bodyCondition')") //
+                .unsetOperation("aql:item.delete(self, 'bodyCondition'))") //
+                .clearOperation("aql:self.clearReference('bodyCondition')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addMethod(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("method", "aql:'Method'", "aql:self.getFeatureDescription('method')",
-                "aql:self.eClass().getEStructuralFeature('method').changeable", "aql:'method'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("method") //
+                .label("aql:'Method'") //
+                .help("aql:self.getFeatureDescription('method')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('method').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('method').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('method').eType.name") //
+                .value("feature:method") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('method')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'method')") //
+                .removeOperation("aql:item.delete(self, 'method'))") //
+                .reorderOperation("aql:self.moveReferenceElement('method', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('method')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedParameter(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameter", "aql:'Owned parameter'", "aql:self.getFeatureDescription('ownedParameter')",
-                "aql:self.eClass().getEStructuralFeature('ownedParameter').changeable", "aql:'ownedParameter'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedParameter") //
+                .label("aql:'Owned parameter'") //
+                .help("aql:self.getFeatureDescription('ownedParameter')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedParameter") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedParameter'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedParameter', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addPrecondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("precondition", "aql:'Precondition'", "aql:self.getFeatureDescription('precondition')",
-                "aql:self.eClass().getEStructuralFeature('precondition').changeable", "aql:'precondition'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("precondition") //
+                .label("aql:'Precondition'") //
+                .help("aql:self.getFeatureDescription('precondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('precondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('precondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('precondition').eType.name") //
+                .value("feature:precondition") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('precondition')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'precondition')") //
+                .removeOperation("aql:item.delete(self, 'precondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('precondition', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('precondition')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addPostcondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("postcondition", "aql:'Postcondition'", "aql:self.getFeatureDescription('postcondition')",
-                "aql:self.eClass().getEStructuralFeature('postcondition').changeable", "aql:'postcondition'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("postcondition") //
+                .label("aql:'Postcondition'") //
+                .help("aql:self.getFeatureDescription('postcondition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('postcondition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('postcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('postcondition').eType.name") //
+                .value("feature:postcondition") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('postcondition')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'postcondition')") //
+                .removeOperation("aql:item.delete(self, 'postcondition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('postcondition', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('postcondition')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRaisedException(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("raisedException", "aql:'Raised Exception'", "aql:self.getFeatureDescription('raisedException')",
-                "aql:self.eClass().getEStructuralFeature('raisedException').changeable", "aql:'raisedException'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("raisedException") //
+                .label("aql:'Raised Exception'") //
+                .help("aql:self.getFeatureDescription('raisedException')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('raisedException').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('raisedException').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('raisedException').eType.name") //
+                .value("feature:raisedException") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('raisedException')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'raisedException')") //
+                .removeOperation("aql:item.delete(self, 'raisedException'))") //
+                .reorderOperation("aql:self.moveReferenceElement('raisedException', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('raisedException')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

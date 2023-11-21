@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -82,27 +83,66 @@ public class InterfaceUmlPage {
     }
 
     protected void addProtocol(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("protocol", "aql:'Protocol'", "aql:self.getFeatureDescription('protocol')",
-                "aql:self.eClass().getEStructuralFeature('protocol').changeable", "aql:'protocol'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("protocol") //
+                .label("aql:'Protocol'") //
+                .help("aql:self.getFeatureDescription('protocol')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('protocol').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('protocol').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('protocol').eType.name") //
+                .isMany(false) //
+                .value("feature:protocol") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'protocol'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedOperation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedOperation", "aql:'Owned operation'", "aql:self.getFeatureDescription('ownedOperation')",
-                "aql:self.eClass().getEStructuralFeature('ownedOperation').changeable", "aql:'ownedOperation'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedOperation") //
+                .label("aql:'Owned operation'") //
+                .help("aql:self.getFeatureDescription('ownedOperation')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedOperation').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedOperation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedOperation').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedOperation") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedOperation'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedOperation', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedReception(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedReception", "aql:'Owned reception'", "aql:self.getFeatureDescription('ownedReception')",
-                "aql:self.eClass().getEStructuralFeature('ownedReception').changeable", "aql:'ownedReception'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedReception") //
+                .label("aql:'Owned reception'") //
+                .help("aql:self.getFeatureDescription('ownedReception')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedReception').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedReception').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedReception').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedReception") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedReception'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedReception', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedAttribute(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedAttribute", "aql:'Owned attribute'", "aql:self.getFeatureDescription('ownedAttribute')",
-                "aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable", "aql:'ownedAttribute'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedAttribute") //
+                .label("aql:'Owned attribute'") //
+                .help("aql:self.getFeatureDescription('ownedAttribute')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .isMany(true) //
+                .value("feature:ownedAttribute") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedAttribute'))") //
+                .reorderOperation("aql:self.moveReferenceElement('ownedAttribute', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

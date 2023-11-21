@@ -16,3 +16,5 @@ import 'cypress-file-upload';
 import './serverCommands';
 import './testIdCommands';
 import './detailsCommands';
+import './childrenCommands';
+import './dragCommands';

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -65,9 +66,21 @@ public class PackageImportUmlPage {
     }
 
     protected void addImportedPackage(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("importedPackage", "aql:'Imported package'", "aql:self.getFeatureDescription('importedPackage')", "aql:false",
-                "aql:'importedPackage'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("importedPackage") //
+                .label("aql:'Imported package'") //
+                .help("aql:self.getFeatureDescription('importedPackage')") //
+                .isEnable("aql:false") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('importedPackage').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('importedPackage').eType.name") //
+                .value("feature:importedPackage") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('importedPackage')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'importedPackage')") //
+                .unsetOperation("aql:item.delete(self, 'importedPackage'))") //
+                .clearOperation("aql:self.clearReference('importedPackage')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

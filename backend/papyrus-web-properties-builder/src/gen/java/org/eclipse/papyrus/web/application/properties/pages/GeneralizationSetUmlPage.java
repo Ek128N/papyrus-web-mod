@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -86,9 +87,21 @@ public class GeneralizationSetUmlPage {
     }
 
     protected void addPowerType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("powerType", "aql:'Powertype'", "aql:self.getFeatureDescription('powertype')",
-                "aql:self.eClass().getEStructuralFeature('powertype').changeable", "aql:'powertype'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("powerType") //
+                .label("aql:'Powertype'") //
+                .help("aql:self.getFeatureDescription('powertype')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('powertype').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('powertype').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('powertype').eType.name") //
+                .value("feature:powerType") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('powertype')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'powertype')") //
+                .unsetOperation("aql:item.delete(self, 'powertype'))") //
+                .clearOperation("aql:self.clearReference('powertype')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

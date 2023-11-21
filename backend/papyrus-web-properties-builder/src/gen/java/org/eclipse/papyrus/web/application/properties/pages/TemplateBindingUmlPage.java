@@ -15,11 +15,11 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class TemplateBindingUmlPage {
 
@@ -56,9 +56,19 @@ public class TemplateBindingUmlPage {
     }
 
     protected void addParameterSubstitution(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("parameterSubstitution", "aql:'Parameter substitution'", "aql:self.getFeatureDescription('parameterSubstitution')",
-                "aql:self.eClass().getEStructuralFeature('parameterSubstitution').changeable", "aql:'parameterSubstitution'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("parameterSubstitution") //
+                .label("aql:'Parameter substitution'") //
+                .help("aql:self.getFeatureDescription('parameterSubstitution')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('parameterSubstitution').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('parameterSubstitution').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameterSubstitution').eType.name") //
+                .isMany(true) //
+                .value("feature:parameterSubstitution") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'parameterSubstitution'))") //
+                .reorderOperation("aql:self.moveReferenceElement('parameterSubstitution', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,9 +74,18 @@ public class ComponentRealizationUmlPage {
     }
 
     protected void addMapping(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("mapping", "aql:'Mapping'", "aql:self.getFeatureDescription('mapping')",
-                "aql:self.eClass().getEStructuralFeature('mapping').changeable", "aql:'mapping'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("mapping") //
+                .label("aql:'Mapping'") //
+                .help("aql:self.getFeatureDescription('mapping')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('mapping').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('mapping').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('mapping').eType.name") //
+                .isMany(false) //
+                .value("feature:mapping") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'mapping'))");
+        group.getChildren().add(builder.build());
     }
 
 }

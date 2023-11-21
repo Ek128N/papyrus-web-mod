@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -67,27 +69,69 @@ public class ClassifierTemplateParameterUmlPage {
     }
 
     protected void addDefault(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("default", "aql:'Default'", "aql:self.getFeatureDescription('default')",
-                "aql:self.eClass().getEStructuralFeature('default').changeable", "aql:'default'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("default") //
+                .label("aql:'Default'") //
+                .help("aql:self.getFeatureDescription('default')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('default').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('default').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('default').eType.name") //
+                .value("feature:default") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('default')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'default')") //
+                .unsetOperation("aql:item.delete(self, 'default'))") //
+                .clearOperation("aql:self.clearReference('default')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedDefault(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedDefault", "aql:'Owned default'", "aql:self.getFeatureDescription('ownedDefault')",
-                "aql:self.eClass().getEStructuralFeature('ownedDefault').changeable", "aql:'ownedDefault'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedDefault") //
+                .label("aql:'Owned default'") //
+                .help("aql:self.getFeatureDescription('ownedDefault')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedDefault').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedDefault').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedDefault').eType.name") //
+                .isMany(false) //
+                .value("feature:ownedDefault") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedDefault'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedParameteredElement(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedParameteredElement", "aql:'Owned parametered element'",
-                "aql:self.getFeatureDescription('ownedParameteredElement')", "aql:self.eClass().getEStructuralFeature('ownedParameteredElement').changeable", "aql:'ownedParameteredElement'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedParameteredElement") //
+                .label("aql:'Owned parametered element'") //
+                .help("aql:self.getFeatureDescription('ownedParameteredElement')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameteredElement').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedParameteredElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameteredElement').eType.name") //
+                .isMany(false) //
+                .value("feature:ownedParameteredElement") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedParameteredElement'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addParameteredElement(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("parameteredElement", "aql:'Parametered element'", "aql:self.getFeatureDescription('parameteredElement')",
-                "aql:self.eClass().getEStructuralFeature('parameteredElement').changeable", "aql:'parameteredElement'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("parameteredElement") //
+                .label("aql:'Parametered element'") //
+                .help("aql:self.getFeatureDescription('parameteredElement')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('parameteredElement').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('parameteredElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameteredElement').eType.name") //
+                .value("feature:parameteredElement") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('parameteredElement')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'parameteredElement')") //
+                .unsetOperation("aql:item.delete(self, 'parameteredElement'))") //
+                .clearOperation("aql:self.clearReference('parameteredElement')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

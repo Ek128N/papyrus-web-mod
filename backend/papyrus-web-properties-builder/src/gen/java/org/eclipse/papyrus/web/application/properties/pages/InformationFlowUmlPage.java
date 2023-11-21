@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -76,33 +77,98 @@ public class InformationFlowUmlPage {
     }
 
     protected void addConveyed(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("conveyed", "aql:'Conveyed'", "aql:self.getFeatureDescription('conveyed')",
-                "aql:self.eClass().getEStructuralFeature('conveyed').changeable", "aql:'conveyed'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("conveyed") //
+                .label("aql:'Conveyed'") //
+                .help("aql:self.getFeatureDescription('conveyed')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('conveyed').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('conveyed').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('conveyed').eType.name") //
+                .value("feature:conveyed") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('conveyed')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'conveyed')") //
+                .removeOperation("aql:item.delete(self, 'conveyed'))") //
+                .reorderOperation("aql:self.moveReferenceElement('conveyed', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('conveyed')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRealization(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("realization", "aql:'Realization'", "aql:self.getFeatureDescription('realization')",
-                "aql:self.eClass().getEStructuralFeature('realization').changeable", "aql:'realization'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("realization") //
+                .label("aql:'Realization'") //
+                .help("aql:self.getFeatureDescription('realization')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('realization').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('realization').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realization').eType.name") //
+                .value("feature:realization") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('realization')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'realization')") //
+                .removeOperation("aql:item.delete(self, 'realization'))") //
+                .reorderOperation("aql:self.moveReferenceElement('realization', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('realization')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRealizingActivityEdge(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("realizingActivityEdge", "aql:'Realizing activity edge'", "aql:self.getFeatureDescription('realizingActivityEdge')",
-                "aql:self.eClass().getEStructuralFeature('realizingActivityEdge').changeable", "aql:'realizingActivityEdge'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("realizingActivityEdge") //
+                .label("aql:'Realizing activity edge'") //
+                .help("aql:self.getFeatureDescription('realizingActivityEdge')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('realizingActivityEdge').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('realizingActivityEdge').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realizingActivityEdge').eType.name") //
+                .value("feature:realizingActivityEdge") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('realizingActivityEdge')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'realizingActivityEdge')") //
+                .removeOperation("aql:item.delete(self, 'realizingActivityEdge'))") //
+                .reorderOperation("aql:self.moveReferenceElement('realizingActivityEdge', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('realizingActivityEdge')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRealizingConnector(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("realizingConnector", "aql:'Realizing connector'", "aql:self.getFeatureDescription('realizingConnector')",
-                "aql:self.eClass().getEStructuralFeature('realizingConnector').changeable", "aql:'realizingConnector'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("realizingConnector") //
+                .label("aql:'Realizing connector'") //
+                .help("aql:self.getFeatureDescription('realizingConnector')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('realizingConnector').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('realizingConnector').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realizingConnector').eType.name") //
+                .value("feature:realizingConnector") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('realizingConnector')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'realizingConnector')") //
+                .removeOperation("aql:item.delete(self, 'realizingConnector'))") //
+                .reorderOperation("aql:self.moveReferenceElement('realizingConnector', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('realizingConnector')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addRealizingMessage(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("realizingMessage", "aql:'Realizing message'", "aql:self.getFeatureDescription('realizingMessage')",
-                "aql:self.eClass().getEStructuralFeature('realizingMessage').changeable", "aql:'realizingMessage'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("realizingMessage") //
+                .label("aql:'Realizing message'") //
+                .help("aql:self.getFeatureDescription('realizingMessage')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('realizingMessage').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('realizingMessage').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realizingMessage').eType.name") //
+                .value("feature:realizingMessage") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('realizingMessage')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'realizingMessage')") //
+                .removeOperation("aql:item.delete(self, 'realizingMessage'))") //
+                .reorderOperation("aql:self.moveReferenceElement('realizingMessage', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('realizingMessage')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

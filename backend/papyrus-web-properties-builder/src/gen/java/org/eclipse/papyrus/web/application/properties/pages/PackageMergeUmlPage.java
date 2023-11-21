@@ -15,11 +15,11 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class PackageMergeUmlPage {
 
@@ -56,9 +56,21 @@ public class PackageMergeUmlPage {
     }
 
     protected void addMergedPackage(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("mergedPackage", "aql:'Merged package'", "aql:self.getFeatureDescription('mergedPackage')",
-                "aql:self.eClass().getEStructuralFeature('mergedPackage').changeable", "aql:'mergedPackage'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("mergedPackage") //
+                .label("aql:'Merged package'") //
+                .help("aql:self.getFeatureDescription('mergedPackage')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('mergedPackage').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('mergedPackage').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('mergedPackage').eType.name") //
+                .value("feature:mergedPackage") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('mergedPackage')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'mergedPackage')") //
+                .unsetOperation("aql:item.delete(self, 'mergedPackage'))") //
+                .clearOperation("aql:self.clearReference('mergedPackage')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,15 +75,38 @@ public class ParameterSetUmlPage {
     }
 
     protected void addCondition(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("condition", "aql:'Condition'", "aql:self.getFeatureDescription('condition')",
-                "aql:self.eClass().getEStructuralFeature('condition').changeable", "aql:'condition'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("condition") //
+                .label("aql:'Condition'") //
+                .help("aql:self.getFeatureDescription('condition')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('condition').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('condition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('condition').eType.name") //
+                .isMany(true) //
+                .value("feature:condition") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'condition'))") //
+                .reorderOperation("aql:self.moveReferenceElement('condition', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
     protected void addParameter(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("parameter", "aql:'Parameter'", "aql:self.getFeatureDescription('parameter')",
-                "aql:self.eClass().getEStructuralFeature('parameter').changeable", "aql:'parameter'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("parameter") //
+                .label("aql:'Parameter'") //
+                .help("aql:self.getFeatureDescription('parameter')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('parameter').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('parameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameter').eType.name") //
+                .value("feature:parameter") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('parameter')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'parameter')") //
+                .removeOperation("aql:item.delete(self, 'parameter'))") //
+                .reorderOperation("aql:self.moveReferenceElement('parameter', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('parameter')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

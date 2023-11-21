@@ -20,18 +20,19 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescriptionProvider;
 import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -63,13 +64,16 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
     private final ApplicationContext applicationContext;
 
+    private final IInMemoryViewRegistry viewRegistry;
+
     public UMLPropertiesConfigurer(ViewFormDescriptionConverter converter, EPackage.Registry globalEPackageRegistry, AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider,
-            UMLDocumentationService docService, ApplicationContext applicationContext, List<IJavaServiceProvider> javaServiceProviders) {
+            UMLDocumentationService docService, ApplicationContext applicationContext, List<IJavaServiceProvider> javaServiceProviders, IInMemoryViewRegistry viewRegistry) {
         this.defaultPropertyViewProvider = Objects.requireNonNull(defaultPropertyViewProvider);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.converter = Objects.requireNonNull(converter);
         this.javaServiceProviders = javaServiceProviders;
         this.applicationContext = applicationContext;
+        this.viewRegistry = Objects.requireNonNull(viewRegistry);
     }
 
     @Override
@@ -78,7 +82,7 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
         URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + NAME_UUID_FROM_BYTES);
-        Resource resource = new XMIResourceImpl(uri);
+        Resource resource = new JSONResourceFactory().createResource(uri);
         View view = new UMLDetailViewFromBuilder(UML_DETAIL_VIEW_NAME).build();
         resource.getContents().add(view);
 
@@ -93,6 +97,8 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
         // Register the "Advance Property View"
         this.defaultPropertyViewProvider.getFormDescription().getPageDescriptions().forEach(registry::add);
+
+        this.viewRegistry.register(view);
     }
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {

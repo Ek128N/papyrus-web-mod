@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,9 +74,22 @@ public class InstanceSpecificationUmlPage {
     }
 
     protected void addClassifier(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("classifier", "aql:'Classifier'", "aql:self.getFeatureDescription('classifier')",
-                "aql:self.eClass().getEStructuralFeature('classifier').changeable", "aql:'classifier'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("classifier") //
+                .label("aql:'Classifier'") //
+                .help("aql:self.getFeatureDescription('classifier')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('classifier').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('classifier').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('classifier').eType.name") //
+                .value("feature:classifier") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('classifier')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'classifier')") //
+                .removeOperation("aql:item.delete(self, 'classifier'))") //
+                .reorderOperation("aql:self.moveReferenceElement('classifier', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('classifier')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

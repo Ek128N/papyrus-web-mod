@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,18 @@ public class StateInvariantUmlPage {
     }
 
     protected void addInvariant(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("invariant", "aql:'Invariant'", "aql:self.getFeatureDescription('invariant')",
-                "aql:self.eClass().getEStructuralFeature('invariant').changeable", "aql:'invariant'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("invariant") //
+                .label("aql:'Invariant'") //
+                .help("aql:self.getFeatureDescription('invariant')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('invariant').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('invariant').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('invariant').eType.name") //
+                .isMany(false) //
+                .value("feature:invariant") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'invariant'))");
+        group.getChildren().add(builder.build());
     }
 
 }

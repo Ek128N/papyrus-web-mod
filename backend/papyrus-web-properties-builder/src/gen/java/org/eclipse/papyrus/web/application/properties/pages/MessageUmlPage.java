@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,15 +75,37 @@ public class MessageUmlPage {
     }
 
     protected void addSignature(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("signature", "aql:'Signature'", "aql:self.getFeatureDescription('signature')",
-                "aql:self.eClass().getEStructuralFeature('signature').changeable", "aql:'signature'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("signature") //
+                .label("aql:'Signature'") //
+                .help("aql:self.getFeatureDescription('signature')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('signature').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('signature').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('signature').eType.name") //
+                .value("feature:signature") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('signature')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'signature')") //
+                .unsetOperation("aql:item.delete(self, 'signature'))") //
+                .clearOperation("aql:self.clearReference('signature')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addArgument(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("argument", "aql:'Argument'", "aql:self.getFeatureDescription('argument')",
-                "aql:self.eClass().getEStructuralFeature('argument').changeable", "aql:'argument'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("argument") //
+                .label("aql:'Argument'") //
+                .help("aql:self.getFeatureDescription('argument')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('argument').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('argument').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('argument').eType.name") //
+                .isMany(true) //
+                .value("feature:argument") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'argument'))") //
+                .reorderOperation("aql:self.moveReferenceElement('argument', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -78,9 +79,21 @@ public class ConnectorEndUmlPage {
     }
 
     protected void addRole(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("role", "aql:'Role'", "aql:self.getFeatureDescription('role')",
-                "aql:self.eClass().getEStructuralFeature('role').changeable", "aql:'role'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("role") //
+                .label("aql:'Role'") //
+                .help("aql:self.getFeatureDescription('role')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('role').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('role').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('role').eType.name") //
+                .value("feature:role") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('role')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'role')") //
+                .unsetOperation("aql:item.delete(self, 'role'))") //
+                .clearOperation("aql:self.clearReference('role')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

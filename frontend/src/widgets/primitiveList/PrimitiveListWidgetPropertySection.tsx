@@ -12,7 +12,7 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { ServerContext, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLListItem, PropertySectionLabel, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { Input, InputAdornment } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -26,7 +26,8 @@ import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { MouseEvent, useContext, useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
+import { IconURL } from '../IconURL';
 import {
   GQLAddPrimitiveListItemMutationData,
   GQLAddPrimitiveListItemPayload,
@@ -37,6 +38,7 @@ import {
   PrimitiveListPropertySectionProps,
   PrimitiveListStyleProps,
 } from './PrimitiveListWidgetPropertySection.types';
+
 export const deletePrimitiveListItemMutation = gql`
   mutation deletePrimitiveListItem($input: DeleteListItemInput!) {
     deletePrimitiveListItem(input: $input) {
@@ -82,17 +84,6 @@ const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListSty
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  iconContainer: {
-    position: 'relative',
-    width: '16px',
-    height: '16px',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    marginRight: theme.spacing(2),
   },
   canBeSelectedItem: {
     '&:hover': {
@@ -143,7 +134,6 @@ export const PrimitiveListSection = ({
 
   const [newValue, setNewValue] = useState('');
   const classes = usePrimitiveListPropertySectionStyles(props);
-  const { httpOrigin } = useContext(ServerContext);
 
   let items = [...widget.items];
   if (items.length === 0) {
@@ -225,21 +215,7 @@ export const PrimitiveListSection = ({
     return (
       <>
         <TableCell className={classes.cell}>
-          {item.iconURL.length > 0 && (
-            <div className={classes.iconContainer}>
-              {item.iconURL.map((icon, index) => (
-                <img
-                  height="16"
-                  width="16"
-                  key={index}
-                  alt={item.label}
-                  src={httpOrigin + icon}
-                  className={classes.icon}
-                  style={{ zIndex: index }}
-                />
-              ))}
-            </div>
-          )}
+          <IconURL iconURL={item.iconURL} alt={item.label} />
           <Typography
             className={`${classes.style}`}
             color="textPrimary"

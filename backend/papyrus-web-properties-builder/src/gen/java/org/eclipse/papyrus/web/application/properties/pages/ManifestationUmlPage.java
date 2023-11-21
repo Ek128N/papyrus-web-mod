@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,15 +75,36 @@ public class ManifestationUmlPage {
     }
 
     protected void addMapping(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("mapping", "aql:'Mapping'", "aql:self.getFeatureDescription('mapping')",
-                "aql:self.eClass().getEStructuralFeature('mapping').changeable", "aql:'mapping'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("mapping") //
+                .label("aql:'Mapping'") //
+                .help("aql:self.getFeatureDescription('mapping')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('mapping').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('mapping').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('mapping').eType.name") //
+                .isMany(false) //
+                .value("feature:mapping") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'mapping'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addUtilizedElement(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("utilizedElement", "aql:'Utilized element'", "aql:self.getFeatureDescription('utilizedElement')",
-                "aql:self.eClass().getEStructuralFeature('utilizedElement').changeable", "aql:'utilizedElement'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("utilizedElement") //
+                .label("aql:'Utilized element'") //
+                .help("aql:self.getFeatureDescription('utilizedElement')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('utilizedElement').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('utilizedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('utilizedElement').eType.name") //
+                .value("feature:utilizedElement") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('utilizedElement')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'utilizedElement')") //
+                .unsetOperation("aql:item.delete(self, 'utilizedElement'))") //
+                .clearOperation("aql:self.clearReference('utilizedElement')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

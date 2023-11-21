@@ -22,6 +22,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.sirius.components.view.form.provider.FormEditPlugin;
 import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
+import org.eclipse.sirius.components.widgets.reference.provider.ReferenceEditPlugin;
 
 /**
  * This is the central singleton for the PapyrusWidgets edit plugin. <!--
@@ -50,7 +51,8 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
      * @generated
      */
     public PapyrusWebCustomWidgetsEditPlugin() {
-        super(new ResourceLocator[] { FormEditPlugin.INSTANCE, ViewEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] { FormEditPlugin.INSTANCE, ReferenceEditPlugin.INSTANCE,
+                ViewEditPlugin.INSTANCE, });
     }
 
     /**
@@ -77,8 +79,7 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
      * Computes the file extension to be used with the key to specify an image
      * resource.
      *
-     * @param key
-     *            the key for the imagine.
+     * @param key the key for the imagine.
      * @return the file extension to be used with the key to specify an image
      *         resource.
      */

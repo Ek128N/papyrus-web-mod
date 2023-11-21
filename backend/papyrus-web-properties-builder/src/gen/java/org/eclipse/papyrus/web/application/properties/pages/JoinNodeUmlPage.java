@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -79,9 +80,18 @@ public class JoinNodeUmlPage {
     }
 
     protected void addJoinSpec(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("joinSpec", "aql:'Join spec'", "aql:self.getFeatureDescription('joinSpec')",
-                "aql:self.eClass().getEStructuralFeature('joinSpec').changeable", "aql:'joinSpec'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("joinSpec") //
+                .label("aql:'Join spec'") //
+                .help("aql:self.getFeatureDescription('joinSpec')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('joinSpec').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('joinSpec').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('joinSpec').eType.name") //
+                .isMany(false) //
+                .value("feature:joinSpec") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'joinSpec'))");
+        group.getChildren().add(builder.build());
     }
 
 }

@@ -1,0 +1,140 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
+describe('Multi-valued reference widget tests', () => {
+  /**
+   * For each test, we start with a fresh new project containing all concepts gathered in one single model
+   */
+  beforeEach(() => {
+    cy.deleteAllProjects();
+    cy.createProject('Cypress Project').then((res) => {
+      const projectId = res.body.data.createProject.project.id;
+      cy.wrap(projectId).as('projectId');
+      cy.visit(`/projects/${projectId}/edit`).then((res) => {
+        cy.getByTestId('upload-document-icon').click();
+        cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
+        cy.getByTestId('file')
+          .selectFile(
+            {
+              contents: '@model4test',
+              fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
+            },
+            { force: true }
+          )
+          .then(() => {
+            cy.getByTestId('upload-document-submit').click();
+            cy.getByTestId('model4test.uml-more').should('be.visible').click();
+            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.getByTestId('FunctionBehavior').should('be.visible').click();
+            cy.activateDetailsTab('UML');
+          });
+      });
+    });
+  });
+
+  it('add reference values with dropdown and remove one value', () => {
+    // open dropdown
+    cy.getByTestId('Use case').click();
+    cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
+    // check content
+    cy.get('@dropdown').find('li').should('have.length', 2);
+    cy.get('@dropdown').findByTestId('option-UseCase1').should('be.visible');
+    cy.get('@dropdown').findByTestId('option-UseCase2').should('be.visible');
+    // add UseCase1
+    cy.get('@dropdown').findByTestId('option-UseCase1').click();
+    // reopen dropdown
+    cy.getByTestId('Use case').click();
+    cy.get('.MuiAutocomplete-popper').should('be.visible').find('ul').as('dropdown');
+    // check that UseCase1 is not longer in the dropdown
+    cy.get('@dropdown').find('li').should('have.length', 1);
+    // add UseCase2
+    cy.get('@dropdown').findByTestId('option-UseCase2').should('be.visible').click();
+    // check UseCase1 and UseCase2 are in the reference value list
+    cy.getByTestId('reference-value-UseCase1').should('be.visible');
+    cy.getByTestId('reference-value-UseCase2').should('be.visible');
+    // remove UseCase1
+    cy.getByTestId('reference-value-UseCase1').should('be.visible').find('svg').click();
+    // check that it is no longer there
+    cy.getByTestId('reference-value-UseCase1').should('not.exist');
+    // but UseCase2 is still there
+    cy.getByTestId('reference-value-UseCase2').should('be.visible');
+  });
+
+  it('manage reference values with dialog', () => {
+    // open ... dialog
+    cy.getByTestId('Use case-more').click();
+    cy.get('[role="dialog"]').as('dialog');
+    // two roots Primitive types and model4test, expand model4test
+    cy.get('@dialog').findByTestId('tree-root-elements').find('li').should('have.length', 2);
+    cy.get('@dialog').findByTestId('model4test-toggle').should('be.visible').click();
+    // select UseCase1
+    cy.get('@dialog').findByTestId('UseCase1').click();
+    // add UseCase1
+    cy.get('@dialog').findByTestId('move-right').click();
+    // check UseCase1 has been transferred to the right panel
+    cy.get('@dialog').findByTestId('selected-items-list').children().should('have.length', 1);
+    cy.get('@dialog').findByTestId('selected-items-list').children().first().contains('UseCase1');
+    // and check the content of the reference
+    cy.getByTestId('reference-value-UseCase1').should('be.visible');
+    // use drag and drop to add the UseCase2
+    cy.dragByTestId('UseCase2', 'selected-items-list', { inside: '[role="dialog"]' });
+    // check 2 elements in the right panel
+    cy.get('@dialog').findByTestId('selected-items-list').children().should('have.length', 2);
+    // check bot are added to the reference
+    cy.getByTestId('reference-value-UseCase1').should('be.visible');
+    cy.getByTestId('reference-value-UseCase2').should('be.visible');
+    // remove UseCase1
+    cy.get('@dialog').findByTestId('selected-items-list').findByTestId('UseCase1').click();
+    cy.get('@dialog').findByTestId('move-left').click();
+    // check right panel contains only one element
+    cy.get('@dialog').findByTestId('selected-items-list').children().should('have.length', 1);
+    // remove UseCase2 using drag and drop (from right to left)
+    cy.drag(
+      '[data-testid="selected-items-list"] [data-testid="UseCase2"]',
+      '[role="dialog"] [data-testid="tree-root-elements"]'
+    );
+    // check that the right panel is empty
+    cy.get('@dialog').findByTestId('selected-items-list').children().should('have.length', 0);
+    // Close transfer dialog
+    cy.get('@dialog').findByTestId('close-transfer-modal').should('be.visible').click();
+  });
+
+  it('create new value element and clear reference content', () => {
+    cy.getByTestId('Use case-add').should('be.visible').click();
+    cy.get('[role="dialog"]').as('dialog');
+    // check only model4test model as root of the tree
+    cy.get('@dialog').findByTestId('tree-root-elements').find('li').should('have.length', 1);
+    // create a Reception under Activity node
+    cy.get('@dialog').findByTestId('model4test.uml-toggle').should('be.visible').click();
+    cy.get('@dialog').findByTestId('model4test-toggle').should('be.visible').click();
+    cy.get('@dialog').findByTestId('Activity').should('be.visible').click();
+    cy.get('@dialog')
+      .findByTestId('childCreationDescription')
+      .children('[role="button"]')
+      .contains('UseCase (in nestedClassifier)')
+      .click();
+    cy.get('[data-value="ownedUseCase::UseCase"]').should('be.visible').click();
+    cy.getByTestId('create-object').click();
+    // check reference value added
+    cy.getByTestId('reference-value-UseCase1').should('be.visible');
+    // check instance is properly created
+    cy.checkChildren('Activity', ['UseCase1']);
+    // clear reference content
+    cy.getByTestId('Use case-clear').should('be.visible').click();
+    // check reference no longer contains previous content
+    cy.getByTestId('reference-value-UseCase1').should('not.exist');
+    // check instance has not been removed
+    cy.checkChildren('Activity', ['UseCase1']);
+  });
+});

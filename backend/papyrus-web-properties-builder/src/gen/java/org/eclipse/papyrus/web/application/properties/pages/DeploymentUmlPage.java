@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -72,9 +73,19 @@ public class DeploymentUmlPage {
     }
 
     protected void addConfiguration(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("configuration", "aql:'Configuration'", "aql:self.getFeatureDescription('configuration')",
-                "aql:self.eClass().getEStructuralFeature('configuration').changeable", "aql:'configuration'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("configuration") //
+                .label("aql:'Configuration'") //
+                .help("aql:self.getFeatureDescription('configuration')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('configuration').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('configuration').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('configuration').eType.name") //
+                .isMany(true) //
+                .value("feature:configuration") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'configuration'))") //
+                .reorderOperation("aql:self.moveReferenceElement('configuration', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

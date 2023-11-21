@@ -15,6 +15,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -74,21 +76,53 @@ public class InteractionOperandUmlPage {
     }
 
     protected void addGuard(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("guard", "aql:'Guard'", "aql:self.getFeatureDescription('guard')",
-                "aql:self.eClass().getEStructuralFeature('guard').changeable", "aql:'guard'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("guard") //
+                .label("aql:'Guard'") //
+                .help("aql:self.getFeatureDescription('guard')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('guard').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('guard').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('guard').eType.name") //
+                .isMany(false) //
+                .value("feature:guard") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'guard'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addCovered(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("covered", "aql:'Covered'", "aql:self.getFeatureDescription('covered')",
-                "aql:self.eClass().getEStructuralFeature('covered').changeable", "aql:'covered'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("covered") //
+                .label("aql:'Covered'") //
+                .help("aql:self.getFeatureDescription('covered')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('covered').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('covered').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('covered').eType.name") //
+                .value("feature:covered") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('covered')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'covered')") //
+                .removeOperation("aql:item.delete(self, 'covered'))") //
+                .reorderOperation("aql:self.moveReferenceElement('covered', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('covered')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addFragment(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("fragment", "aql:'Fragment'", "aql:self.getFeatureDescription('fragment')",
-                "aql:self.eClass().getEStructuralFeature('fragment').changeable", "aql:'fragment'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("fragment") //
+                .label("aql:'Fragment'") //
+                .help("aql:self.getFeatureDescription('fragment')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('fragment').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('fragment').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('fragment').eType.name") //
+                .isMany(true) //
+                .value("feature:fragment") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'fragment'))") //
+                .reorderOperation("aql:self.moveReferenceElement('fragment', item, fromIndex, toIndex)");
+        group.getChildren().add(builder.build());
     }
 
 }

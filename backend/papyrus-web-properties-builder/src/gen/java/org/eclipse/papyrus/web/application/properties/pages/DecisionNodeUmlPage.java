@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -73,15 +74,39 @@ public class DecisionNodeUmlPage {
     }
 
     protected void addDecisionInput(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("decisionInput", "aql:'Decision input'", "aql:self.getFeatureDescription('decisionInput')",
-                "aql:self.eClass().getEStructuralFeature('decisionInput').changeable", "aql:'decisionInput'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("decisionInput") //
+                .label("aql:'Decision input'") //
+                .help("aql:self.getFeatureDescription('decisionInput')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('decisionInput').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('decisionInput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decisionInput').eType.name") //
+                .value("feature:decisionInput") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('decisionInput')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'decisionInput')") //
+                .unsetOperation("aql:item.delete(self, 'decisionInput'))") //
+                .clearOperation("aql:self.clearReference('decisionInput')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addDecisionInputFlow(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("decisionInputFlow", "aql:'Decision input flow'", "aql:self.getFeatureDescription('decisionInputFlow')",
-                "aql:self.eClass().getEStructuralFeature('decisionInputFlow').changeable", "aql:'decisionInputFlow'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("decisionInputFlow") //
+                .label("aql:'Decision input flow'") //
+                .help("aql:self.getFeatureDescription('decisionInputFlow')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('decisionInputFlow').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('decisionInputFlow').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decisionInputFlow').eType.name") //
+                .value("feature:decisionInputFlow") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('decisionInputFlow')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'decisionInputFlow')") //
+                .unsetOperation("aql:item.delete(self, 'decisionInputFlow'))") //
+                .clearOperation("aql:self.clearReference('decisionInputFlow')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

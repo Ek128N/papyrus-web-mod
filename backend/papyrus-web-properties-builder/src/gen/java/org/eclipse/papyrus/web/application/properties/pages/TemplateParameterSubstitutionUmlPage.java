@@ -15,11 +15,12 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class TemplateParameterSubstitutionUmlPage {
 
@@ -59,21 +60,54 @@ public class TemplateParameterSubstitutionUmlPage {
     }
 
     protected void addFormal(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("formal", "aql:'Formal'", "aql:self.getFeatureDescription('formal')",
-                "aql:self.eClass().getEStructuralFeature('formal').changeable", "aql:'formal'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("formal") //
+                .label("aql:'Formal'") //
+                .help("aql:self.getFeatureDescription('formal')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('formal').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('formal').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('formal').eType.name") //
+                .value("feature:formal") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('formal')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'formal')") //
+                .unsetOperation("aql:item.delete(self, 'formal'))") //
+                .clearOperation("aql:self.clearReference('formal')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addActual(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("actual", "aql:'Actual'", "aql:self.getFeatureDescription('actual')",
-                "aql:self.eClass().getEStructuralFeature('actual').changeable", "aql:'actual'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("actual") //
+                .label("aql:'Actual'") //
+                .help("aql:self.getFeatureDescription('actual')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('actual').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('actual').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('actual').eType.name") //
+                .value("feature:actual") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('actual')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'actual')") //
+                .unsetOperation("aql:item.delete(self, 'actual'))") //
+                .clearOperation("aql:self.clearReference('actual')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addOwnedActual(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("ownedActual", "aql:'Owned actual'", "aql:self.getFeatureDescription('ownedActual')",
-                "aql:self.eClass().getEStructuralFeature('ownedActual').changeable", "aql:'ownedActual'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("ownedActual") //
+                .label("aql:'Owned actual'") //
+                .help("aql:self.getFeatureDescription('ownedActual')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('ownedActual').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('ownedActual').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedActual').eType.name") //
+                .isMany(false) //
+                .value("feature:ownedActual") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'ownedActual'))");
+        group.getChildren().add(builder.build());
     }
 
 }

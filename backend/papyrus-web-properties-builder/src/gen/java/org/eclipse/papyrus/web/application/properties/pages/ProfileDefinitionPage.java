@@ -19,7 +19,6 @@ import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ProfileDefinitionPage {
 
@@ -51,14 +50,6 @@ public class ProfileDefinitionPage {
         GroupDescription group = viewElementFactory.createGroupDescription("profile_definition_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
-        addDefinitions(group);
-
-    }
-
-    protected void addDefinitions(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("definitions", "aql:'Definitions'", "aql:'The list of definitions of this Profile'", "aql:true",
-                "aql:'profileApplication'", "");
-        group.getChildren().add(widget);
     }
 
 }

@@ -15,11 +15,12 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
-import org.eclipse.sirius.components.view.form.WidgetDescription;
 
 public class ExceptionHandlerUmlPage {
 
@@ -58,21 +59,58 @@ public class ExceptionHandlerUmlPage {
     }
 
     protected void addExceptionInput(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("exceptionInput", "aql:'Exception Input'", "aql:self.getFeatureDescription('exceptionInput')",
-                "aql:self.eClass().getEStructuralFeature('exceptionInput').changeable", "aql:'exceptionInput'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("exceptionInput") //
+                .label("aql:'Exception Input'") //
+                .help("aql:self.getFeatureDescription('exceptionInput')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('exceptionInput').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('exceptionInput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('exceptionInput').eType.name") //
+                .value("feature:exceptionInput") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('exceptionInput')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'exceptionInput')") //
+                .unsetOperation("aql:item.delete(self, 'exceptionInput'))") //
+                .clearOperation("aql:self.clearReference('exceptionInput')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addHandlerBody(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("handlerBody", "aql:'Handler body'", "aql:self.getFeatureDescription('handlerBody')",
-                "aql:self.eClass().getEStructuralFeature('handlerBody').changeable", "aql:'handlerBody'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("handlerBody") //
+                .label("aql:'Handler body'") //
+                .help("aql:self.getFeatureDescription('handlerBody')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('handlerBody').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('handlerBody').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handlerBody').eType.name") //
+                .value("feature:handlerBody") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('handlerBody')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'handlerBody')") //
+                .unsetOperation("aql:item.delete(self, 'handlerBody'))") //
+                .clearOperation("aql:self.clearReference('handlerBody')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addExceptionType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("exceptionType", "aql:'Exception type'", "aql:self.getFeatureDescription('exceptionType')",
-                "aql:self.eClass().getEStructuralFeature('exceptionType').changeable", "aql:'exceptionType'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("exceptionType") //
+                .label("aql:'Exception type'") //
+                .help("aql:self.getFeatureDescription('exceptionType')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('exceptionType').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('exceptionType').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('exceptionType').eType.name") //
+                .value("feature:exceptionType") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('exceptionType')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'exceptionType')") //
+                .removeOperation("aql:item.delete(self, 'exceptionType'))") //
+                .reorderOperation("aql:self.moveReferenceElement('exceptionType', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('exceptionType')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

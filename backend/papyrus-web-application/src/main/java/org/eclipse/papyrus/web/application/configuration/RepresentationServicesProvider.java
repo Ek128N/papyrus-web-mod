@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.papyrus.uml.domain.services.internal.helpers.UMLService;
-import org.eclipse.papyrus.uml.domain.services.properties.PropertiesCrudServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesMultiplicityServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesProfileDefinitionServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
@@ -34,10 +33,12 @@ import org.eclipse.papyrus.web.services.aqlservices.clazz.ClassDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.composite.CompositeStructureDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesCrudServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpContentServices;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesMemberEndServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesProfileServices;
+import org.eclipse.papyrus.web.services.aqlservices.scope.ReachableElementsServices;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
 import org.eclipse.sirius.components.view.RepresentationDescription;
@@ -105,7 +106,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
     private void registerFormServices(org.eclipse.sirius.components.view.form.FormDescription formDesc, List<Class<?>> services) {
         String name = formDesc.getName();
         if (name != null && name.startsWith(UMLPropertiesConfigurer.UML_DETAIL_VIEW_NAME)) {
-            services.add(PropertiesCrudServices.class);
+            services.add(PropertiesCrudServicesWrapper.class);
             services.add(PropertiesImageServicesWrapper.class);
             services.add(PropertiesMemberEndServicesWrapper.class);
             services.add(PropertiesMultiplicityServices.class);
@@ -115,6 +116,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             services.add(DebugService.class);
             services.add(PropertiesHelpContentServices.class);
             services.add(PropertiesProfileServices.class);
+            services.add(ReachableElementsServices.class);
         }
     }
 }

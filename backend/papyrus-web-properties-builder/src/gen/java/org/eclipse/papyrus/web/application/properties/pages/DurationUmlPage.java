@@ -15,6 +15,9 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.ContainmentReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -74,21 +77,55 @@ public class DurationUmlPage {
     }
 
     protected void addExpr(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("expr", "aql:'Expr'", "aql:self.getFeatureDescription('expr')",
-                "aql:self.eClass().getEStructuralFeature('expr').changeable", "aql:'expr'", "");
-        group.getChildren().add(widget);
+        var builder = new ContainmentReferenceWidgetBuilder() //
+                .name("expr") //
+                .label("aql:'Expr'") //
+                .help("aql:self.getFeatureDescription('expr')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('expr').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('expr').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('expr').eType.name") //
+                .isMany(false) //
+                .value("feature:expr") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .removeOperation("aql:item.delete(self, 'expr'))");
+        group.getChildren().add(builder.build());
     }
 
     protected void addType(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("type", "aql:'Type'", "aql:self.getFeatureDescription('type')",
-                "aql:self.eClass().getEStructuralFeature('type').changeable", "aql:'type'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("type") //
+                .label("aql:'Type'") //
+                .help("aql:self.getFeatureDescription('type')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .value("feature:type") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('type')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'type')") //
+                .unsetOperation("aql:item.delete(self, 'type'))") //
+                .clearOperation("aql:self.clearReference('type')"); //
+        group.getChildren().add(builder.build());
     }
 
     protected void addObservation(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("observation", "aql:'Observation'", "aql:self.getFeatureDescription('observation')",
-                "aql:self.eClass().getEStructuralFeature('observation').changeable", "aql:'observation'", "");
-        group.getChildren().add(widget);
+        var builder = new MultiReferenceWidgetBuilder() //
+                .name("observation") //
+                .label("aql:'Observation'") //
+                .help("aql:self.getFeatureDescription('observation')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('observation').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('observation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('observation').eType.name") //
+                .value("feature:observation") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('observation')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, 'observation')") //
+                .removeOperation("aql:item.delete(self, 'observation'))") //
+                .reorderOperation("aql:self.moveReferenceElement('observation', item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference('observation')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

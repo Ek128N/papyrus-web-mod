@@ -15,6 +15,7 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
@@ -86,9 +87,21 @@ public class ActivityPartitionUmlPage {
     }
 
     protected void addRepresents(GroupDescription group) {
-        WidgetDescription widget = viewElementFactory.createReferenceDescription("represents", "aql:'Represents'", "aql:self.getFeatureDescription('represents')",
-                "aql:self.eClass().getEStructuralFeature('represents').changeable", "aql:'represents'", "");
-        group.getChildren().add(widget);
+        var builder = new MonoReferenceWidgetBuilder() //
+                .name("represents") //
+                .label("aql:'Represents'") //
+                .help("aql:self.getFeatureDescription('represents')") //
+                .isEnable("aql:self.eClass().getEStructuralFeature('represents').changeable") //
+                .owner("") //
+                .type("aql:self.eClass().getEStructuralFeature('represents').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('represents').eType.name") //
+                .value("feature:represents") //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements('represents')") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,'represents')") //
+                .unsetOperation("aql:item.delete(self, 'represents'))") //
+                .clearOperation("aql:self.clearReference('represents')"); //
+        group.getChildren().add(builder.build());
     }
 
 }

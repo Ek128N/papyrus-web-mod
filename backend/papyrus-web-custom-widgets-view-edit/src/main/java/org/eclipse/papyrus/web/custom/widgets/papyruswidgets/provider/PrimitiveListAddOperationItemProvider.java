@@ -61,11 +61,11 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter i
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
@@ -79,11 +79,11 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter i
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (childrenFeatures == null) {
+        if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY);
+            this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY);
         }
-        return childrenFeatures;
+        return this.childrenFeatures;
     }
 
     /**
@@ -129,7 +129,7 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter i
      */
     @Override
     public String getText(Object object) {
-        return getString("_UI_PrimitiveListAddOperation_type");
+        return this.getString("_UI_PrimitiveListAddOperation_type");
     }
 
     /**
@@ -141,11 +141,11 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter i
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
 
         switch (notification.getFeatureID(PrimitiveListAddOperation.class)) {
         case PapyrusWidgetsPackage.PRIMITIVE_LIST_ADD_OPERATION__BODY:
-            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
         super.notifyChanged(notification);
@@ -162,20 +162,25 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter i
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
-                ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
+                        ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
-                ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
+                        ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
-                ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
+                        ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
-                ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
+                        ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
-                ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors
+                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY,
+                        ViewFactory.eINSTANCE.createDeleteElement()));
     }
 
     /**

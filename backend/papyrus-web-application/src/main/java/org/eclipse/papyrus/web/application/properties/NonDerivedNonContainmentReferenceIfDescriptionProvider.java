@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.compatibility.emf.properties.NonContainment
 import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider;
 import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
-import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
@@ -72,18 +71,15 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IEditService editService;
-
     public NonDerivedNonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IObjectService objectService,
-            Function<VariableManager, String> semanticTargetIdProvider, IPropertiesValidationProvider propertiesValidationProvider, IEditService editService,
-            IFeedbackMessageService feedbackMessageService, IEMFKindService emfKindService) {
+            Function<VariableManager, String> semanticTargetIdProvider, IPropertiesValidationProvider propertiesValidationProvider, IFeedbackMessageService feedbackMessageService,
+            IEMFKindService emfKindService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectService = Objects.requireNonNull(objectService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.editService = Objects.requireNonNull(editService);
     }
 
     public IfDescription getIfDescription() {
@@ -326,6 +322,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
             EReference reference = optionalEReference.get();
             if (item.isPresent() && fromIndex.isPresent() && toIndex.isPresent()) {
                 if (reference.isMany()) {
+                    @SuppressWarnings("unchecked")
                     List<Object> values = (List<Object>) referenceOwner.eGet(reference);
                     var valueItem = values.get(fromIndex.get().intValue());
                     if (valueItem != null && valueItem.equals(item.get()) && (values instanceof EList<Object> eValues)) {

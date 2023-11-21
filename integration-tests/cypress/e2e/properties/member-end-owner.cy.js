@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 
 describe('Member end owner test', () => {
   /**
@@ -40,29 +41,10 @@ describe('Member end owner test', () => {
     });
   });
 
-  const checkChildren = (node, children) => {
-    cy.getByTestId(`${node}-toggle`).should('be.visible').parent().parent().children('ul').as('father');
-    cy.get('@father').children().should('length', children.length);
-    children.forEach((child) => {
-      cy.get('@father').contains(child);
-    });
-  };
-
-  const checkNoChildren = (node) => {
-    cy.getByTestId(`${node}`)
-      .should('be.visible')
-      .parent()
-      .parent()
-      .siblings()
-      .first()
-      .should('have.prop', 'tagName')
-      .should('not.eq', 'SVG');
-  };
-
   it('member end owner test', () => {
     // Verify initial situation (Association has two children: properties)
-    checkChildren('Association', ['from', 'to']);
-    checkNoChildren('Activity');
+    cy.checkChildren('Association', ['from', 'to']);
+    cy.checkNoChildren('Activity');
     // Change the owner of 'from' association's member to 'classifier'
     cy.getByTestId('Association').click();
     cy.activateDetailsTab('UML');
@@ -72,9 +54,9 @@ describe('Member end owner test', () => {
       .click();
     cy.get('@classifier').children().first().should('have.class', 'Mui-checked');
     // Verify that Association has only one child ('to')
-    checkChildren('Association', ['to']);
+    cy.checkChildren('Association', ['to']);
     // Verify that Activity has one child ('from')
-    checkChildren('Activity', ['from']);
+    cy.checkChildren('Activity', ['from']);
     // Change the owner of 'to' association's member to 'association'
     cy.activateDetailsTab('UML');
     cy.getByTestId('Association').click();
@@ -84,8 +66,8 @@ describe('Member end owner test', () => {
       .click();
     cy.get('@association').children().first().should('have.class', 'Mui-checked');
     // Verify that Association has two children ('form', 'to')
-    checkChildren('Association', ['from', 'to']);
+    cy.checkChildren('Association', ['from', 'to']);
     // Verify that Activity has no more children now
-    checkNoChildren('Activity');
+    cy.checkNoChildren('Activity');
   });
 });

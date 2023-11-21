@@ -77,6 +77,104 @@ public interface PapyrusWidgetsFactory extends EFactory {
     PrimitiveListAddOperation createPrimitiveListAddOperation();
 
     /**
+     * Returns a new object of class '<em>Mono Reference Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Mono Reference Widget Description</em>'.
+     * @generated
+     */
+    MonoReferenceWidgetDescription createMonoReferenceWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>Multi Reference Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Multi Reference Widget Description</em>'.
+     * @generated
+     */
+    MultiReferenceWidgetDescription createMultiReferenceWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>Mono Reference Set Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Mono Reference Set Operation</em>'.
+     * @generated
+     */
+    MonoReferenceSetOperation createMonoReferenceSetOperation();
+
+    /**
+     * Returns a new object of class '<em>Mono Reference Unset Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Mono Reference Unset Operation</em>'.
+     * @generated
+     */
+    MonoReferenceUnsetOperation createMonoReferenceUnsetOperation();
+
+    /**
+     * Returns a new object of class '<em>Create Element In Reference Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Create Element In Reference Operation</em>'.
+     * @generated
+     */
+    CreateElementInReferenceOperation createCreateElementInReferenceOperation();
+
+    /**
+     * Returns a new object of class '<em>Click Reference Value Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Click Reference Value Operation</em>'.
+     * @generated
+     */
+    ClickReferenceValueOperation createClickReferenceValueOperation();
+
+    /**
+     * Returns a new object of class '<em>Multi Reference Add Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Multi Reference Add Operation</em>'.
+     * @generated
+     */
+    MultiReferenceAddOperation createMultiReferenceAddOperation();
+
+    /**
+     * Returns a new object of class '<em>Multi Reference Remove Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Multi Reference Remove Operation</em>'.
+     * @generated
+     */
+    MultiReferenceRemoveOperation createMultiReferenceRemoveOperation();
+
+    /**
+     * Returns a new object of class '<em>Clear Reference Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Clear Reference Operation</em>'.
+     * @generated
+     */
+    ClearReferenceOperation createClearReferenceOperation();
+
+    /**
+     * Returns a new object of class '<em>Multi Reference Reorder Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Multi Reference Reorder Operation</em>'.
+     * @generated
+     */
+    MultiReferenceReorderOperation createMultiReferenceReorderOperation();
+
+    /**
+     * Returns a new object of class '<em>Containment Reference Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Containment Reference Widget Description</em>'.
+     * @generated
+     */
+    ContainmentReferenceWidgetDescription createContainmentReferenceWidgetDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.
