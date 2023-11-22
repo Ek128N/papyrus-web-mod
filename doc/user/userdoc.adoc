@@ -425,6 +425,24 @@ Each profile definition can be removed using the trash button.
 WARNING: The remove action only remove the profile definition from the model.
 It does not "unpublish" the profile.
 
+===== Comments panel
+
+As we have already mentioned, _Comments_ panel displays for the selected element the list of owned and applied comments.
+_Applied comments_ contains the list of _Comments_ that are currently annotating the selected element.
+
+image::applied-comments.png[applied comments widget, 500, align="center"]
+
+The feature _Annotated Element_ of the related _Comment_ element contains the select element.
+
+image::annotated-element.png[Annotated element of a comment, 500, align="center"]
+
+Both features, _Applied comments_ and _Annotated element_ work together and are in-sync.
+That means that adding (or removing) an element in _Annotated element_ of a _Comment_ automatically adds (or removes) this comment to the _Applied comments_ of the element and vice-versa.
+Creating a new _Comment_ from the _Applied comments_ list of selected element has two actions:
+
+* first a new _Comment_ is created somewhere (as defined in the Creation dialog)
+* next, the selected element is added inside the _Annotated element_ of this new comment to ensure that these relations are in-sync.   
+
 ==== Related Elements
 
 There is a section about the link:++https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#project-editor++[_Related Elements view_] in the documentation.
