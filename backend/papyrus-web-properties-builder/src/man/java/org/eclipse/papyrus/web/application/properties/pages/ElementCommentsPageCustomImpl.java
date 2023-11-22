@@ -43,7 +43,7 @@ public class ElementCommentsPageCustomImpl extends ElementCommentsPage {
                 .value("aql:self.getAllAppliedComments()") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements(uml::Comment)") //
-                .createOperation("aql:parent.createAppliedComment()") //
+                .createOperation("aql:parent.create('uml::Comment', feature)") //
                 .addOperation("aql:newValue.addReferenceElement(Sequence{self}, 'annotatedElement')") //
                 .removeOperation("aql:self.delete(item, 'annotatedElement'))") //
                 .reorderOperation("") // sorting those elements has no sense
