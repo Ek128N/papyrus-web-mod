@@ -63,12 +63,12 @@ describe('Basic widgets test', () => {
     cy.getByTestId('Comment').click();
     cy.activateDetailsTab('UML');
     cy.getByTestId('Body').should('be.visible').find('textarea').eq(0).as('textarea');
-    // Verify comment if empty
-    cy.get('@textarea').should('have.value', '');
-    // Fill the comment
-    cy.get('@textarea').type('myComment{enter}');
+    // Verify comment content
+    cy.get('@textarea').should('have.value', 'Comment');
+    // update the comment
+    cy.get('@textarea').type('_updated');
     // Verify the comment content is shown in the explorer tree
-    cy.getByTestId('explorer://').find('[title="uml::Comment"]').should('have.attr', 'data-testid', 'myComment');
+    cy.getByTestId('explorer://').find('[title="uml::Comment"]').should('have.attr', 'data-testid', 'Comment');
   });
 
   /**
