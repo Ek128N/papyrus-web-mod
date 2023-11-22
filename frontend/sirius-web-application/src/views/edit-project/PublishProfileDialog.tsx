@@ -228,7 +228,7 @@ export const PublishProfileDialog = ({ editingContextId, item, onClose }: Publis
 
   return (
     <>
-      <Dialog open={true} onClose={onClose} maxWidth="md" fullWidth>
+      <Dialog open={true} onClose={onClose} maxWidth="md" fullWidth data-testid="publish-profile-dialog">
         <DialogTitle>Publish the profile</DialogTitle>
         <DialogContent className={classes.content}>
           <div className={classes.main}>
@@ -307,6 +307,7 @@ export const PublishProfileDialog = ({ editingContextId, item, onClose }: Publis
                 }}
               />
               <TextField
+                data-testid="publish-profile-author"
                 label="Author"
                 value={state.author}
                 onChange={(event) => onChange('author', event)}
@@ -317,6 +318,7 @@ export const PublishProfileDialog = ({ editingContextId, item, onClose }: Publis
 
           <div className={classes.comments}>
             <TextField
+              data-testid="publish-profile-comment"
               label="Comments"
               value={state.comments}
               onChange={(event) => onChange('comments', event)}
@@ -328,6 +330,7 @@ export const PublishProfileDialog = ({ editingContextId, item, onClose }: Publis
 
           <div className={classes.copyright}>
             <TextField
+              data-testid="publish-profile-copyright"
               label="Copyright"
               value={state.copyright}
               onChange={(event) => onChange('copyright', event)}
@@ -341,7 +344,12 @@ export const PublishProfileDialog = ({ editingContextId, item, onClose }: Publis
           <Button onClick={onClose} variant="contained" color="secondary">
             Cancel
           </Button>
-          <Button onClick={handlePublishProfile} variant="contained" color="primary" disabled={!isPublishEnabled()}>
+          <Button
+            data-testid="publish-profile-publish"
+            onClick={handlePublishProfile}
+            variant="contained"
+            color="primary"
+            disabled={!isPublishEnabled()}>
             Publish
           </Button>
         </DialogActions>
