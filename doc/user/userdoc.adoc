@@ -213,7 +213,9 @@ The Details panel is used to visualize and edit all the features of the selected
 
 In the UML tab, each property is represented by an appropriated widget according to its nature. For instance, a property of type `ecore::EString` will be represented by a text widget. It might be, in some situations more appropriate to represent this string with a text area widget that supports multiple lines of text.
 
-===== Basic widgets
+===== UML panel
+
+====== Basic widgets
 
 In the following table, we present the mapping between basic types and their associated widgets
 
@@ -241,11 +243,11 @@ In the following table, we present the mapping between basic types and their ass
 
 Here is https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_details_view[the Sirius documentation] of all those widgets.
 
-===== Custom widgets
+====== Custom widgets
 
 Some UML 2 concepts have properties that need a special UI to manage their data. Here are the details of each custom widget.
 
-====== Language Expression
+======= Language Expression
 
 A language expression custom widget has been introduced to manage a couple of connected lists in the following concepts:
 
@@ -266,7 +268,7 @@ Languages can be reordered using up or down actions of the toolbar. Since the li
 
 Removing a language can be done using the trash icon action of its toolbar. No confirmation is required before deleting a language element.
 
-====== Primitive List
+======= Primitive List
 
 The primitive list custom widget aims to provide capabilities to visualize and edit _EAttributes_ which represent more than one value.
 
@@ -284,7 +286,7 @@ In the context of _UML_, for a more exhaustive list of conversion rule look at:
 * _org.eclipse.uml2.uml.internal.impl.UMLFactoryImpl.createFromString(EDataType, String)_
 * _org.eclipse.uml2.types.internal.impl.TypesFactoryImpl.createFromString(EDataType, String)_
 
-====== References
+======= References
 
 Depending on the nature of the reference, we handle it differently. 
 Containment references use a dedicated custom widget, while non-containment references use Sirius components reference widgets.
@@ -358,6 +360,17 @@ For a mono-valued reference the selected value replace the existing one, whereas
 * Each value element has a cross icon to remove it from the reference. +
 Since this is a non-containment reference, the removed element is only removed from its value and the referenced element still exists in the model.
 * Clicking value elements inside the reference navigates to those elements. 
+
+===== Definition panel
+
+When a Profile element is selected (for instance inside the _Explorer_), the definition tab is shown in the Details panel.
+The _Definition_ page contains all profile's version detailed information. 
+These information are those typed inside the dialog each time the profile is published. 
+
+image::profile-definition-page.png[profile definition page, align="center"]
+
+All profile definitions are stacked together with the more recent version on top of the panel. +
+Each profile definition can be removed using the trash button. 
 
 ==== Related Elements
 
