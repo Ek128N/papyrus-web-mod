@@ -352,8 +352,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected void createCommentDescription(DiagramDescription diagramDescription) {
         NodeDescription commentDescription = this.getViewBuilder().createNoteStyleUnsynchonizedNodeDescription(this.pack.getComment(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getComment()));
-        commentDescription.getStyle().setWidthComputationExpression("200");
-        commentDescription.getStyle().setHeightComputationExpression("100");
+        commentDescription.setDefaultWidthExpression("200");
+        commentDescription.setDefaultHeightExpression("100");
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) commentDescription.getStyle();
         style.setShowIcon(false);

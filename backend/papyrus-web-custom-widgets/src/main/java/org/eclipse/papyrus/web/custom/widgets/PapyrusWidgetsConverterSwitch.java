@@ -122,7 +122,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
 
         var builder = LanguageExpressionDescription.newLanguageExpressionDescription(descriptionId) //
                 .idProvider(new WidgetIdProvider()) //
-                .labelProvider(variableManager -> this.getLanguageExpressionLabel(languageExpressionDescription, variableManager))// 
+                .labelProvider(variableManager -> this.getLanguageExpressionLabel(languageExpressionDescription, variableManager))//
                 .iconURLProvider(variableManager -> List.of()) //
                 .targetObjectIdProvider(this.semanticTargetIdProvider) //
                 .isReadOnlyProvider(this.getReadOnlyValueProvider(languageExpressionDescription.getIsEnabledExpression()));
@@ -353,7 +353,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
                 .itemIdProvider(this::getItemId) //
                 .itemKindProvider(this::getItemKind) //
                 .itemLabelProvider(this::getItemLabel) //
-                .itemImageURLProvider(this::getItemIconURL) //
+                .itemIconURLProvider(this::getItemIconURL) //
                 .ownerKindProvider(this.getOwnerKindProvider(referenceDescription.getOwnerExpression())) //
                 .referenceKindProvider(this.getReferenceKindProvider(referenceDescription.getType())) //
                 .isContainmentProvider(variableManager -> false) // containment reference are not handled by this widget
@@ -391,7 +391,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
                 .itemIdProvider(this::getItemId) //
                 .itemKindProvider(this::getItemKind) //
                 .itemLabelProvider(this::getItemLabel) //
-                .itemImageURLProvider(this::getItemIconURL) //
+                .itemIconURLProvider(this::getItemIconURL) //
                 .ownerKindProvider(this.getOwnerKindProvider(referenceDescription.getOwnerExpression())) //
                 .referenceKindProvider(this.getReferenceKindProvider(referenceDescription.getType())) //
                 .isContainmentProvider(variableManager -> false) // containment reference are not handled by this widget

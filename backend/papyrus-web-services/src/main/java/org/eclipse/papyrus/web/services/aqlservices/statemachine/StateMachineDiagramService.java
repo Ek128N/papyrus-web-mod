@@ -44,6 +44,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class StateMachineDiagramService extends AbstractDiagramService {
 
+    public static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30"; //$NON-NLS-1$
+
+    public static final String FORK_NODE_DEFAULT_WIDTH = "50"; //$NON-NLS-1$
+
+    public static final String FORK_NODE_DEFAULT_HEIGHT = "150"; //$NON-NLS-1$
+
     public StateMachineDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService,
             IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService) {
         super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService);
@@ -73,6 +79,38 @@ public class StateMachineDiagramService extends AbstractDiagramService {
             return (Pseudostate) result;
         }
         return null;
+    }
+
+    /**
+     * Compute width expression of node representing a given {@link Pseudostate}.
+     *
+     * @param pseudostate
+     *            the {@link Pseudostate} represented on the diagram
+     * @return the width expression of node representing a given {@link Pseudostate}
+     */
+    public String computePseudoStateWidthExpression(Pseudostate pseudostate) {
+        String widthComputationExpression = ROUND_ICON_NODE_DEFAULT_DIAMETER;
+        PseudostateKind pseudostateKind = pseudostate.getKind();
+        if (pseudostateKind.equals(PseudostateKind.FORK_LITERAL) || pseudostateKind.equals(PseudostateKind.JOIN_LITERAL)) {
+            widthComputationExpression = FORK_NODE_DEFAULT_WIDTH;
+        }
+        return widthComputationExpression;
+    }
+
+    /**
+     * Compute height expression of node representing a given {@link Pseudostate}.
+     *
+     * @param pseudostate
+     *            the {@link Pseudostate} represented on the diagram
+     * @return the height expression of node representing a given {@link Pseudostate}
+     */
+    public String computePseudoStateHeightExpression(Pseudostate pseudostate) {
+        String widthComputationExpression = ROUND_ICON_NODE_DEFAULT_DIAMETER;
+        PseudostateKind pseudostateKind = pseudostate.getKind();
+        if (pseudostateKind.equals(PseudostateKind.FORK_LITERAL) || pseudostateKind.equals(PseudostateKind.JOIN_LITERAL)) {
+            widthComputationExpression = FORK_NODE_DEFAULT_HEIGHT;
+        }
+        return widthComputationExpression;
     }
 
     /**

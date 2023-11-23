@@ -318,8 +318,8 @@ public class NoteStyleDescriptionBuilder {
             noteStyleDescription.setName(this.name);
         }
 
-        noteStyleDescription.getStyle().setWidthComputationExpression("200"); //$NON-NLS-1$
-        noteStyleDescription.getStyle().setHeightComputationExpression("100"); //$NON-NLS-1$
+        noteStyleDescription.setDefaultWidthExpression("200"); //$NON-NLS-1$
+        noteStyleDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
 
         ImageNodeStyleDescription style = (ImageNodeStyleDescription) noteStyleDescription.getStyle();
         style.setShowIcon(true);

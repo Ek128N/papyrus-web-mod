@@ -1,0 +1,204 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2023 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+import { ApolloProvider } from '@apollo/client';
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+import {
+  Representation,
+  RepresentationComponent,
+  RepresentationComponentRegistry,
+  RepresentationContext,
+  RepresentationContextValue,
+  ServerContext,
+  theme,
+} from '@eclipse-sirius/sirius-components-core';
+import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
+import {
+  FormRepresentation,
+  GQLWidget,
+  PropertySectionComponentRegistry,
+  PropertySectionContext,
+  PropertySectionContextValue,
+  WidgetContribution,
+} from '@eclipse-sirius/sirius-components-forms';
+import {
+  ReferenceIcon,
+  ReferencePreview,
+  ReferencePropertySection,
+} from '@eclipse-sirius/sirius-components-widget-reference';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { ApolloGraphQLClient } from './ApolloGraphQLClient';
+import { httpOrigin, wsOrigin } from './core/URL';
+import { PapyrusIcon } from './core/PapyrusIcon';
+import { Main } from './main/Main';
+import { ToastProvider } from './toast/ToastProvider';
+import { SliderPreview } from './widgets/SliderPreview';
+import { SliderPropertySection } from './widgets/SliderPropertySection';
+import { ContainmentReferenceIcon } from './widgets/containmentReference/ContainmentReferenceIcon';
+import ContainmentReferenceSection from './widgets/containmentReference/ContainmentReferenceSection';
+import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
+import { LanguageExpressionSection } from './widgets/languageExpression/LanguageExpressionSection';
+import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveListWidgetPreview';
+import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidgetPropertySection';
+import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
+import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
+import { SiriusWebApplication, Views } from '@papyrus-web/sirius-web-application';
+import { Help } from './core/Help';
+import './Sprotty.css';
+import './fonts.css';
+import './reset.css';
+import './variables.css';
+
+if (process.env.NODE_ENV !== 'production') {
+  loadDevMessages();
+  loadErrorMessages();
+}
+
+const isSlider = (widget: GQLWidget): widget is GQLSlider => widget.__typename === 'Slider';
+const isReferenceWidget = (widget: GQLWidget): widget is GQLReferenceWidget => widget.__typename === 'ReferenceWidget';
+
+const propertySectionsRegistry: PropertySectionComponentRegistry = {
+  getComponent: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+    if (isSlider(widget)) {
+      return SliderPropertySection;
+    } else if (isReferenceWidget(widget)) {
+      return ReferencePropertySection;
+    } else if (widget.__typename === 'LanguageExpression') {
+      return LanguageExpressionSection;
+    } else if (widget.__typename === 'PrimitiveRadio') {
+      return PrimitiveRadioSection;
+    } else if (widget.__typename === 'PrimitiveListWidget') {
+      return PrimitiveListSection;
+    } else if (widget.__typename === 'ContainmentReferenceWidget') {
+      return ContainmentReferenceSection;
+    }
+    return null;
+  },
+  getPreviewComponent: (widget: GQLWidget) => {
+    if (widget.__typename === 'Slider') {
+      return SliderPreview;
+    } else if (widget.__typename === 'ReferenceWidget') {
+      return ReferencePreview;
+    } else if (widget.__typename === 'PrimitiveListWidget') {
+      return PrimitiveListWidgetPreview;
+    }
+    return null;
+  },
+  getWidgetContributions: () => {
+    const sliderWidgetContribution: WidgetContribution = {
+      name: 'Slider',
+      fields: `label iconURL minValue maxValue currentValue`,
+      icon: <LinearScaleOutlinedIcon />,
+    };
+    const referenceWidget: WidgetContribution = {
+      name: 'ReferenceWidget',
+      fields: `label
+               iconURL
+               ownerId
+               descriptionId
+               reference {
+                 ownerKind
+                 referenceKind
+                 containment
+                 manyValued
+               }
+               referenceValues {
+                 id
+                 label
+                 kind
+                 iconURL
+                 hasClickAction
+               }
+               style {
+                 color
+                 fontSize
+                 italic
+                 bold
+                 underline
+                 strikeThrough
+               }`,
+      icon: <ReferenceIcon />,
+    };
+    const languageExpressionWidget: WidgetContribution = {
+      name: 'LanguageExpression',
+      fields: 'id label iconURL languages { id label body } predefinedLanguages',
+      icon: <LanguageExpressionIcon />,
+    };
+    const primitiveRadioWidget: WidgetContribution = {
+      name: 'PrimitiveRadio',
+      fields: 'id label iconURL candidateList candidateValue',
+      icon: <PrimitiveRadioIcon />,
+    };
+    const primitiveListWidget: WidgetContribution = {
+      name: 'PrimitiveListWidget',
+      fields:
+        'label iconURL canAdd items { id label iconURL deletable } style { color fontSize italic bold underline strikeThrough }',
+      icon: <FormatListBulletedIcon />,
+    };
+    const containmentReferenceWidget: WidgetContribution = {
+      name: 'ContainmentReferenceWidget',
+      icon: <ContainmentReferenceIcon />,
+      fields: `label
+              iconURL
+              ownerId
+              descriptionId
+              containmentReference {
+                ownerKind
+                referenceKind
+                isMany
+                canMove
+              }
+              referenceValues {
+                id
+                label
+                kind
+                iconURL
+                hasClickAction
+              }
+              style {
+                color
+                fontSize
+                italic
+                bold
+                underline
+                strikeThrough
+              }`,
+    };
+    return [
+      sliderWidgetContribution,
+      referenceWidget,
+      languageExpressionWidget,
+      primitiveRadioWidget,
+      primitiveListWidget,
+      containmentReferenceWidget,
+    ];
+  },
+};
+
+const propertySectionRegistryValue: PropertySectionContextValue = {
+  propertySectionsRegistry,
+};
+
+ReactDOM.render(
+  <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
+      <Views applicationIcon={<PapyrusIcon />} applicationBarMenu={<Help />} />
+    </SiriusWebApplication>
+  </PropertySectionContext.Provider>,
+  document.getElementById('root')
+);

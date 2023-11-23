@@ -25,10 +25,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.emf.services.ObjectService;
 
 /**
  * Utility class to check that a semantic element has been created in the semantic model.
@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.emf.services.ObjectService;
  */
 public abstract class CreationSemanticChecker implements Checker {
 
-    protected ObjectService objectService;
+    protected IObjectService objectService;
 
     protected Supplier<IEditingContext> editingContextSupplier;
 
@@ -65,7 +65,7 @@ public abstract class CreationSemanticChecker implements Checker {
      * @param containmentFeature
      *            the expected containment feature of the checked element
      */
-    public CreationSemanticChecker(ObjectService objectService, Supplier<IEditingContext> editingContextSupplier, EClass expectedType, Supplier<EObject> expectedOwnerSupplier,
+    public CreationSemanticChecker(IObjectService objectService, Supplier<IEditingContext> editingContextSupplier, EClass expectedType, Supplier<EObject> expectedOwnerSupplier,
             EReference containmentFeature) {
         this.objectService = objectService;
         this.editingContextSupplier = editingContextSupplier;

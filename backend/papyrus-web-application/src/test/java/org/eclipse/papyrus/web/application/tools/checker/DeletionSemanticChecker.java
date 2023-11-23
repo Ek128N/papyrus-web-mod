@@ -23,9 +23,9 @@ import java.util.function.Supplier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.emf.services.ObjectService;
 
 /**
  * Utility class to check that a semantic element has been removed or not in the semantic model after semantic or
@@ -38,7 +38,7 @@ import org.eclipse.sirius.components.emf.services.ObjectService;
  */
 public abstract class DeletionSemanticChecker implements Checker {
 
-    protected ObjectService objectService;
+    protected IObjectService objectService;
 
     protected Supplier<IEditingContext> editingContextSupplier;
 
@@ -58,7 +58,7 @@ public abstract class DeletionSemanticChecker implements Checker {
      * @param containmentFeature
      *            the expected containment feature of the checked element
      */
-    public DeletionSemanticChecker(ObjectService objectService, Supplier<IEditingContext> editingContextSupplier, Supplier<EObject> oldOwnerSupplier, EReference containmentFeature) {
+    public DeletionSemanticChecker(IObjectService objectService, Supplier<IEditingContext> editingContextSupplier, Supplier<EObject> oldOwnerSupplier, EReference containmentFeature) {
         this.objectService = objectService;
         this.editingContextSupplier = editingContextSupplier;
         this.oldOwnerSupplier = oldOwnerSupplier;

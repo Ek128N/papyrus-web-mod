@@ -104,7 +104,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
                 .itemIdProvider(this::getItemId) //
                 .itemKindProvider(this::getItemKind) //
                 .itemLabelProvider(this::getItemLabel) //
-                .itemImageURLProvider(this::getItemIconURL) //
+                .itemIconURLProvider(this::getItemIconURL) //
                 .isReadOnlyProvider(this.readOnlyProvider()) //
                 .ownerKindProvider(this::getTypeName) //
                 .referenceKindProvider(this::getReferenceKind) //

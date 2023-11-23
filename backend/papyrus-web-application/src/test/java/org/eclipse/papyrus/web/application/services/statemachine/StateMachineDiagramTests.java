@@ -41,6 +41,7 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
+import org.eclipse.uml2.uml.UMLFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -109,6 +110,32 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
         stateMachineNode = this.getDiagramHelper().assertGetUniqueMatchingNode(SMD_STATEMACHINE_NODE_NAME, this.stateMachine);
 
         LabelStyleCheck.build(stateMachineNode).assertIsItalic().assertIsNotUnderline();
+    }
+
+    @Test
+    public void checkSizeExpressionOnPseudoState() {
+        Pseudostate pseudostate = UMLFactory.eINSTANCE.createPseudostate();
+
+        // DeepHistory Pseudostate
+        pseudostate.setKind(PseudostateKind.DEEP_HISTORY_LITERAL);
+        String computedPseudoStateWidthExpression = this.getDiagramService().computePseudoStateWidthExpression(pseudostate);
+        String computedPseudoStateHeightExpression = this.getDiagramService().computePseudoStateHeightExpression(pseudostate);
+        assertEquals(StateMachineDiagramService.ROUND_ICON_NODE_DEFAULT_DIAMETER, computedPseudoStateWidthExpression);
+        assertEquals(StateMachineDiagramService.ROUND_ICON_NODE_DEFAULT_DIAMETER, computedPseudoStateHeightExpression);
+
+        // Fork Pseudostate
+        pseudostate.setKind(PseudostateKind.FORK_LITERAL);
+        computedPseudoStateWidthExpression = this.getDiagramService().computePseudoStateWidthExpression(pseudostate);
+        computedPseudoStateHeightExpression = this.getDiagramService().computePseudoStateHeightExpression(pseudostate);
+        assertEquals(StateMachineDiagramService.FORK_NODE_DEFAULT_WIDTH, computedPseudoStateWidthExpression);
+        assertEquals(StateMachineDiagramService.FORK_NODE_DEFAULT_HEIGHT, computedPseudoStateHeightExpression);
+
+        // Join Pseudostate
+        pseudostate.setKind(PseudostateKind.JOIN_LITERAL);
+        computedPseudoStateWidthExpression = this.getDiagramService().computePseudoStateWidthExpression(pseudostate);
+        computedPseudoStateHeightExpression = this.getDiagramService().computePseudoStateHeightExpression(pseudostate);
+        assertEquals(StateMachineDiagramService.FORK_NODE_DEFAULT_WIDTH, computedPseudoStateWidthExpression);
+        assertEquals(StateMachineDiagramService.FORK_NODE_DEFAULT_HEIGHT, computedPseudoStateHeightExpression);
     }
 
     /**
@@ -280,7 +307,7 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
         EClass type = UML.getPseudostate();
 
         EObject newElement = this.getDiagramHelper().modify(context -> {
-            EObject aNewElement = ((StateMachineDiagramService) this.getDiagramService()).createPseudoState(semanticOwner, type.getName(), containementRef.getName(), visualParent, context,
+            EObject aNewElement = this.getDiagramService().createPseudoState(semanticOwner, type.getName(), containementRef.getName(), visualParent, context,
                     this.getDiagramHelper().getConvertedNodes(), entryPointLiteral.toString());
             assertTrue(type.isInstance(aNewElement));
             assertEquals(semanticOwner, aNewElement.eContainer());
@@ -327,6 +354,11 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
     @Override
     protected AbstractDiagramService buildService() {
         return new StateMachineDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService());
+    }
+
+    @Override
+    protected StateMachineDiagramService getDiagramService() {
+        return (StateMachineDiagramService) super.getDiagramService();
     }
 
 }

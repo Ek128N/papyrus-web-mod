@@ -198,8 +198,8 @@ public class ViewBuilder {
 
     private NodeDescription createUnsynchonizedPortDescription(String id, EClass domainType, String semanticCandidateExpression) {
         NodeDescription borderNodeDescription = this.createNodeDescription(id, domainType, semanticCandidateExpression, this.createDefaultRectangularNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
-        borderNodeDescription.getStyle().setWidthComputationExpression(String.valueOf(this.styleProvider.getPortSize()));
-        borderNodeDescription.getStyle().setHeightComputationExpression(String.valueOf(this.styleProvider.getPortSize()));
+        borderNodeDescription.setDefaultWidthExpression(String.valueOf(this.styleProvider.getPortSize()));
+        borderNodeDescription.setDefaultHeightExpression(String.valueOf(this.styleProvider.getPortSize()));
         return borderNodeDescription;
     }
 
@@ -328,6 +328,9 @@ public class ViewBuilder {
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(showIcon);
         nodeStyle.setWithHeader(showHeader);
+        if (showHeader) {
+            nodeStyle.setDisplayHeaderSeparator(true);
+        }
         return nodeStyle;
     }
 
@@ -341,8 +344,6 @@ public class ViewBuilder {
 
     public ImageNodeStyleDescription createPackageNodeStyle() {
         ImageNodeStyleDescription packageNodeStyle = this.createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_PACKAGE_IMAGE_ID.toString(), true);
-        packageNodeStyle.setWidthComputationExpression("300");
-        packageNodeStyle.setHeightComputationExpression("150");
         return packageNodeStyle;
     }
 
@@ -491,6 +492,8 @@ public class ViewBuilder {
         NodeDescription result = this.createNodeDescription(this.idBuilder.getDomainNodeName(domain), domain, semanticCandidateExpression, this.createPackageNodeStyle(),
                 SynchronizationPolicy.UNSYNCHRONIZED);
         result.setCollapsible(true);
+        result.setDefaultWidthExpression("300");
+        result.setDefaultHeightExpression("150");
         this.addDefaultDeleteTool(result);
         this.addDirectEditTool(result);
         return result;

@@ -21,10 +21,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.emf.services.ObjectService;
 import org.eclipse.uml2.uml.NamedElement;
 
 /**
@@ -34,7 +34,7 @@ import org.eclipse.uml2.uml.NamedElement;
  */
 public class LabelSemanticChecker implements Checker {
 
-    private ObjectService objectService;
+    private IObjectService objectService;
 
     private Supplier<IEditingContext> editingContextSupplier;
 
@@ -50,7 +50,7 @@ public class LabelSemanticChecker implements Checker {
      * @param expectedLabel
      *            the expected label to check
      */
-    public LabelSemanticChecker(ObjectService objectService, Supplier<IEditingContext> editingContextSupplier, String expectedLabel) {
+    public LabelSemanticChecker(IObjectService objectService, Supplier<IEditingContext> editingContextSupplier, String expectedLabel) {
         this.objectService = objectService;
         this.editingContextSupplier = editingContextSupplier;
         this.expectedLabel = expectedLabel;

@@ -43,14 +43,13 @@ jobs:
         run: |
           echo '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' >> .npmrc
           npm ci
-          npm run-script format-lint
           npm run build
         working-directory: frontend
 
       - name: Copy frontend artifacts
         run: |
           mkdir -p backend/papyrus-web-frontend/src/main/resources/static
-          cp -R frontend/dist/* backend/papyrus-web-frontend/src/main/resources/static
+          cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resources/static
 
       - name: Build backend with Maven
         env:

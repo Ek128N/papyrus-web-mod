@@ -108,8 +108,8 @@ public class NoteStyleDescriptionBuilderTest {
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription nodeDescription = this.diagramDescription.getNodeDescriptions().get(0);
         assertEquals(this.styleProvider.getNoteColor(), nodeDescription.getStyle().getColor());
-        assertEquals("200", nodeDescription.getStyle().getWidthComputationExpression());
-        assertEquals("100", nodeDescription.getStyle().getHeightComputationExpression());
+        assertEquals("200", nodeDescription.getDefaultWidthExpression());
+        assertEquals("100", nodeDescription.getDefaultHeightExpression());
         assertTrue(nodeDescription.getStyle().isShowIcon());
 
         // The builder does not create creation tools
@@ -170,8 +170,8 @@ public class NoteStyleDescriptionBuilderTest {
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription childNodeDescription = diagChildNodeDescription.getChildrenDescriptions().get(0);
         assertEquals(this.styleProvider.getNoteColor(), childNodeDescription.getStyle().getColor());
-        assertEquals("200", childNodeDescription.getStyle().getWidthComputationExpression());
-        assertEquals("100", childNodeDescription.getStyle().getHeightComputationExpression());
+        assertEquals("200", childNodeDescription.getDefaultWidthExpression());
+        assertEquals("100", childNodeDescription.getDefaultHeightExpression());
         assertTrue(childNodeDescription.getStyle().isShowIcon());
 
         assertTrue(diagChildNodeDescription.getPalette().getNodeTools().isEmpty());

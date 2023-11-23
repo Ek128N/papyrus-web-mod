@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.ObjectService;
+import org.eclipse.sirius.components.core.api.IObjectService;
 
 /**
  * Utility class to check that a semantic edge has been created in the semantic model.
@@ -46,7 +46,7 @@ public class EdgeCreationSemanticChecker extends CreationSemanticChecker {
      * @param containmentFeature
      *            the expected containment feature of the checked edge
      */
-    public EdgeCreationSemanticChecker(ObjectService objectService, Supplier<IEditingContext> editingContextSupplier, EClass expectedType, Supplier<EObject> expectedOwnerSupplier,
+    public EdgeCreationSemanticChecker(IObjectService objectService, Supplier<IEditingContext> editingContextSupplier, EClass expectedType, Supplier<EObject> expectedOwnerSupplier,
             EReference containmentFeature) {
         super(objectService, editingContextSupplier, expectedType, expectedOwnerSupplier, containmentFeature);
     }

@@ -49,11 +49,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     public static final int STATEMACHINE_NODE_BORDER_RADIUS = 10;
 
-    private static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30";
-
-    private static final String FORK_NODE_DEFAULT_WIDTH = "50";
-
-    private static final String FORK_NODE_DEFAULT_HEIGHT = "150";
+    private static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30"; //$NON-NLS-1$
 
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
@@ -74,7 +70,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private NodeDescription createStateMachineNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, false);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
         NodeDescription smdStateMachineNodeDesc = this.newNodeBuilder(this.umlPackage.getStateMachine(), rectangularNodeStyle)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
@@ -151,8 +147,6 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private void createFinalStateNodeDescription(NodeDescription regionNodeDescription) {
         ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("FinalState_24dp.svg".getBytes()).toString(), false); //$NON-NLS-1$
         imageNodeStyle.setBorderSize(0);
-        imageNodeStyle.setWidthComputationExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
-        imageNodeStyle.setHeightComputationExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
 
         NodeDescription finalStateNodeDesc = this.newNodeBuilder(this.umlPackage.getFinalState(), imageNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getRegion_Subvertex()))//
@@ -160,6 +154,8 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getFinalState().getName()))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getFinalState().getName()))//
                 .build();
+        finalStateNodeDesc.setDefaultWidthExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
+        finalStateNodeDesc.setDefaultHeightExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
 
         regionNodeDescription.getChildrenDescriptions().add(finalStateNodeDesc);
     }
@@ -190,16 +186,9 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             String literal = pseudostateKind.getLiteral();
             String literalName = literal.substring(0, 1).toUpperCase() + literal.substring(1);
             String imageName = literalName + ".svg"; //$NON-NLS-1$
+
             NodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(imageName.getBytes()).toString(), false);
             imageNodeStyle.setBorderSize(0);
-            if (pseudostateKind.equals(PseudostateKind.FORK_LITERAL) || pseudostateKind.equals(PseudostateKind.JOIN_LITERAL)) {
-                imageNodeStyle.setWidthComputationExpression(FORK_NODE_DEFAULT_WIDTH);
-                imageNodeStyle.setHeightComputationExpression(FORK_NODE_DEFAULT_HEIGHT);
-            } else {
-                imageNodeStyle.setWidthComputationExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
-                imageNodeStyle.setHeightComputationExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
-            }
-
             ConditionalNodeStyle conditionalNodeStyle = this.getViewBuilder().createConditionalNodeStyle(condition, imageNodeStyle);
             conditionalNodeStyles.add(conditionalNodeStyle);
 
@@ -208,7 +197,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             creationTool.setName("New " + literalName);
 
             // Create instance and init
-            ChangeContext createElement = this.getViewBuilder().createChangeContextOperation(CallQuery.queryServiceOnSelf("createPseudoState", //
+            ChangeContext createElement = this.getViewBuilder().createChangeContextOperation(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.CREATE_PSEUDO_STATE, //
                     "'uml::Pseudostate'", //
                     String.format("'%s'", containmentFeature.getName()), //
                     "selectedNode", //
@@ -229,6 +218,10 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getPseudostate().getName()))//
                 .conditionalStyles(conditionalNodeStyles)//
                 .build();
+
+        pseudostateBorderNodeDesc.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_WITDTH));
+        pseudostateBorderNodeDesc.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_HEIGHT));
+
         this.registerCallback(pseudostateBorderNodeDesc, () -> {
             parentDesc.getPalette().getNodeTools().addAll(creationTools);
         });

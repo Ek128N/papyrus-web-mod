@@ -170,8 +170,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createDiagramActorDescription(DiagramDescription diagramDescription) {
         NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), false); //$NON-NLS-1$
         actorNodeStyle.setBorderSize(0);
-        actorNodeStyle.setWidthComputationExpression("70"); //$NON-NLS-1$
-        actorNodeStyle.setHeightComputationExpression("100"); //$NON-NLS-1$
 
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdDiagramActorDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
@@ -181,6 +179,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
+        ucdDiagramActorDescription.setDefaultWidthExpression("70"); //$NON-NLS-1$
+        ucdDiagramActorDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramActorDescription);
 
@@ -260,8 +260,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         EClass useCaseEClass = this.umlPackage.getUseCase();
 
         ImageNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.toString(), true);
-        useCaseNodeStyle.setWidthComputationExpression("204"); //$NON-NLS-1$
-        useCaseNodeStyle.setHeightComputationExpression("104"); //$NON-NLS-1$
 
         NodeDescription ucdDiagramUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
@@ -269,6 +267,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
+        ucdDiagramUseCaseDescription.setDefaultWidthExpression("204"); //$NON-NLS-1$
+        ucdDiagramUseCaseDescription.setDefaultHeightExpression("104"); //$NON-NLS-1$
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramUseCaseDescription);
 
@@ -325,8 +325,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createSharedActorDescription(DiagramDescription diagramDescription) {
         NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), false); //$NON-NLS-1$
         actorNodeStyle.setBorderSize(0);
-        actorNodeStyle.setWidthComputationExpression("70"); //$NON-NLS-1$
-        actorNodeStyle.setHeightComputationExpression("100"); //$NON-NLS-1$
 
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdPackageActorDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
@@ -336,6 +334,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
+        ucdPackageActorDescription.setDefaultWidthExpression("70"); //$NON-NLS-1$
+        ucdPackageActorDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageActorDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ucdPackageActorDescription);
@@ -410,8 +410,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         EClass useCaseEClass = this.umlPackage.getUseCase();
 
         ImageNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createImageNodeStyle(ParametricSVGImageRegistryCustomImpl.PARAMETRIC_USE_CASE_IMAGE_ID.toString(), true);
-        useCaseNodeStyle.setWidthComputationExpression("204"); //$NON-NLS-1$
-        useCaseNodeStyle.setHeightComputationExpression("104"); //$NON-NLS-1$
 
         NodeDescription ucdSharedUseCaseDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(useCaseEClass, SHARED_SUFFIX)) //
@@ -420,6 +418,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
+
+        ucdSharedUseCaseDescription.setDefaultWidthExpression("204"); //$NON-NLS-1$
+        ucdSharedUseCaseDescription.setDefaultHeightExpression("104"); //$NON-NLS-1$
 
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdSharedUseCaseDescription);
 

@@ -25,9 +25,9 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.papyrus.web.application.configuration.JPAConfiguration;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.emf.services.ObjectService;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ public class AbstractWebUMLTest {
     private UMLTestHelper umlHelper = new UMLTestHelper();
 
     @Autowired
-    private ObjectService objectService;
+    private IObjectService objectService;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -85,7 +85,7 @@ public class AbstractWebUMLTest {
         registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword); //$NON-NLS-1$
     }
 
-    protected ObjectService getObjectService() {
+    protected IObjectService getObjectService() {
         return this.objectService;
     }
 
