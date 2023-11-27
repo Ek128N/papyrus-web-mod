@@ -372,6 +372,9 @@ image::profile-definition-page.png[profile definition page, align="center"]
 All profile definitions are stacked together with the more recent version on top of the panel. +
 Each profile definition can be removed using the trash button. 
 
+WARNING: The remove action only remove the profile definition from the model.
+It does not "unpublish" the profile.
+
 ==== Related Elements
 
 There is a section about the link:++https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#project-editor++[_Related Elements view_] in the documentation.
