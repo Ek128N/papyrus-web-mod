@@ -20,9 +20,11 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
+import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.uml2.uml.util.UMLSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,16 +129,119 @@ public class AbstractDropSwitch extends UMLSwitch<Boolean> {
         boolean success = this.viewHelper.createChildView(eObjectToDisplay, this.targetNode, mappingName);
         if (!success) {
             // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
-            // If DnD on an icon label element contained by a compartment then DnD the element in the
-            // compartment instead
-            Optional<Node> parentNode = this.diagramNavigator.getParentNode(this.targetNode);
-            parentNode//
-                    .flatMap(this.diagramNavigator::getDescription)//
-                    .filter(desc -> desc.getName().endsWith(COMPARTMENT_NODE_SUFFIX)).ifPresent(parentDescription -> {
-                        this.viewHelper.createChildView(eObjectToDisplay, parentNode.get(), mappingName);
-                    });
+            // If DnD on a container containing compartments then DnD the element in the appropriate compartment instead
+            for (Node childNode : this.targetNode.getChildNodes()) {
+                NodeDescription compartmentNodeDescription = this.getCompartmentNodeDescription(childNode);
+                String domainType = (new UMLMetamodelHelper()).getDomain(eObjectToDisplay.eClass());
+                if (compartmentNodeDescription != null && this.canDomainTypeBeAChildNodeDescription(domainType, compartmentNodeDescription)) {
+                    success = this.viewHelper.createChildView(eObjectToDisplay, childNode, mappingName);
+                }
+            }
+            if (!success) {
+                // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
+                // If DnD on an icon label element contained by a compartment then DnD the element in the
+                // compartment instead
+                this.createViewInCompartmentFromSibling(eObjectToDisplay, mappingName);
+            }
         }
         return success;
+    }
+
+    /**
+     * Creates a {@code mappingName} view in the selected node for the provided {@code eObjectToDisplay}.
+     * <p>
+     * This method only computes the view in the compartment of the sibling element used as target node.
+     * </p>
+     *
+     * @param eObjectToDisplay
+     *            the semantic Object to represent on the selected node
+     * @param mappingName
+     *            the name of the mapping to use to create the view
+     */
+    @Deprecated
+    private void createViewInCompartmentFromSibling(EObject eObjectToDisplay, String mappingName) {
+        Optional<Node> parentNode = this.diagramNavigator.getParentNode(this.targetNode);
+        parentNode//
+                .flatMap(this.diagramNavigator::getDescription)//
+                .filter(desc -> desc.getName().endsWith(COMPARTMENT_NODE_SUFFIX)).ifPresent(parentDescription -> {
+                    this.viewHelper.createChildView(eObjectToDisplay, parentNode.get(), mappingName);
+                });
+    }
+
+    /**
+     * Check if a given {@code domainType} can be represented with children node description from a given parent
+     * {@code compartmentNodeDescription}.
+     *
+     * @param domainType
+     *            the domain type to represent
+     * @param parentNodeDescription
+     *            the parent node description which contain children node description to represent the domain type
+     * @return {@code true} if a given {@code domainType} can be represented with children node description,
+     *         {@code false } otherwise.
+     */
+    private boolean canDomainTypeBeAChildNodeDescription(String domainType, NodeDescription parentNodeDescription) {
+        return this.hasReusedChildrenDescriptionWithDomainType(domainType, parentNodeDescription) || this.hasChildrenDescriptionWithDomainType(domainType, parentNodeDescription);
+    }
+
+    /**
+     * Check if a given {@code domainType} can be represented with direct children node description from a given parent
+     * {@code compartmentNodeDescription}.
+     *
+     * @param domainType
+     *            the domain type to represent
+     * @param parentNodeDescription
+     *            the parent node description which contain children node description to represent the domain type
+     * @return {@code true} if a given {@code domainType} can be represented with direct children node description,
+     *         {@code false } otherwise.
+     */
+    private boolean hasReusedChildrenDescriptionWithDomainType(String domainType, NodeDescription parentNodeDescription) {
+        for (NodeDescription nodeDescription : parentNodeDescription.getReusedChildNodeDescriptions()) {
+            if (domainType.equals(nodeDescription.getDomainType())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if a given {@code domainType} can be represented with reused children node description from a given parent
+     * {@code compartmentNodeDescription}.
+     *
+     * @param domainType
+     *            the domain type to represent
+     * @param parentNodeDescription
+     *            the parent node description which contain children node description to represent the domain type
+     * @return {@code true} if a given {@code domainType} can be represented with reused children node description,
+     *         {@code false } otherwise.
+     */
+    private boolean hasChildrenDescriptionWithDomainType(String domainType, NodeDescription parentNodeDescription) {
+        for (NodeDescription nodeDescription : parentNodeDescription.getChildrenDescriptions()) {
+            if (domainType.equals(nodeDescription.getDomainType())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get the node description used to represent a given {@link Node} if this node description is a compartment
+     * description.
+     *
+     * @param node
+     *            the node with the the description to recover,
+     * @return the compartment node description if it exists, {@code null} if the node is not represented with a
+     *         compartment node description.
+     */
+    private NodeDescription getCompartmentNodeDescription(Node node) {
+        NodeDescription compartmentDescription = null;
+        Optional<NodeDescription> optDescription = this.diagramNavigator.getDescription(node);
+        if (optDescription.isPresent()) {
+            NodeDescription nodeDescription = optDescription.get();
+            if (nodeDescription.getName().endsWith(COMPARTMENT_NODE_SUFFIX)) {
+                compartmentDescription = nodeDescription;
+            }
+        }
+        return compartmentDescription;
     }
 
     /**
