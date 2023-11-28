@@ -383,11 +383,12 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         annotedElementEdge.getStyle().setLineStyle(LineStyle.DASH);
         diagramDescription.getEdgeDescriptions().add(annotedElementEdge);
 
-        EdgeTool creationTool = this.getViewBuilder().createFeatureBasedEdgeTool("Link", //$NON-NLS-1$
-                this.getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET), //
-                this.collectNodesWithDomain(diagramDescription, this.pack.getElement()));
-        commentDescription.getPalette().getEdgeTools().add(creationTool);
-
+        this.registerCallback(commentDescription, () -> {
+            EdgeTool creationTool = this.getViewBuilder().createFeatureBasedEdgeTool("Link", //$NON-NLS-1$
+                    this.getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET), //
+                    this.collectNodesWithDomain(diagramDescription, this.pack.getElement()));
+            commentDescription.getPalette().getEdgeTools().add(creationTool);
+        });
     }
 
     /**
