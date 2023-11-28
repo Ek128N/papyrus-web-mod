@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.scope.ElementRootCandidateSeachProvider;
+import org.eclipse.uml2.uml.Package;
 
 /**
  * Services used to retrieve reachable elements.
@@ -71,6 +72,33 @@ public class ReachableElementsServices {
      */
     public List<Notifier> getAllReachableRootElements(EObject self) {
         return new ElementRootCandidateSeachProvider().getReachableRoots(self);
+    }
+
+    /**
+     * Return all root {@link Package} elements found in the resource set of the given element.
+     *
+     * @param self
+     *            the current selected element owning the reference
+     * @return the list of root {@link Package} elements.
+     */
+    public List<Package> getAllRootPackages(EObject self) {
+        return self.eResource().getResourceSet().getResources().stream()//
+                .flatMap(r -> r.getContents().stream())//
+                .filter(Package.class::isInstance)//
+                .map(Package.class::cast)//
+                .toList();
+    }
+
+    /**
+     * Return all {@link Package} elements reachable by the given element.
+     *
+     * @param self
+     *            the current selected element owning the reference
+     * @return the list of {@link Package} elements.
+     */
+    public List<Package> getAllUMLPackages(EObject self) {
+        var roots = this.getAllRootPackages(self);
+        return roots.stream().flatMap(e -> EMFUtils.allContainedObjectOfType(e, Package.class)).toList();
     }
 
 }

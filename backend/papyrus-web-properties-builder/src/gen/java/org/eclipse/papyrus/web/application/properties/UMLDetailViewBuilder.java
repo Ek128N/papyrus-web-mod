@@ -159,7 +159,7 @@ public class UMLDetailViewBuilder {
         pages.add(new OperationTemplateParameterUmlPage(factory, colorRegistry).create());
         pages.add(new OutputPinUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new PackageUmlPage(factory, colorRegistry).create());
-        pages.add(new PackageImportUmlPage(factory, colorRegistry).create());
+        pages.add(new PackageImportUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new PackageMergeUmlPage(factory, colorRegistry).create());
         pages.add(new ParameterUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new ParameterSetUmlPage(factory, colorRegistry).create());
