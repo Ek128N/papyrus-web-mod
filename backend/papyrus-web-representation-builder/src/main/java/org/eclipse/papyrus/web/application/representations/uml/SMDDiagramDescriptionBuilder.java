@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -240,13 +241,12 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EdgeDescription transitionEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getTransition(),
                 this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getTransition()), vertexNodeDescriptions, vertexNodeDescriptions);
         transitionEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        transitionEdgeDescription.getPalette().setCenterLabelEditTool(null);
-        this.registerCallback(transitionEdgeDescription, () -> {
-            CreationToolsUtil.addEdgeCreationTool(vertexNodeDescriptions, this.getViewBuilder().createDefaultDomainBasedEdgeTool(transitionEdgeDescription, this.umlPackage.getRegion_Transition()));
-        });
-
         diagramDescription.getEdgeDescriptions().add(transitionEdgeDescription);
-
+        transitionEdgeDescription.getPalette().setCenterLabelEditTool(null);
+        EdgeTool edgeTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(transitionEdgeDescription, this.umlPackage.getRegion_Transition());
+        this.registerCallback(transitionEdgeDescription, () -> {
+            CreationToolsUtil.addEdgeCreationTool(vertexNodeDescriptions, edgeTool);
+        });
         this.getViewBuilder().addDefaultReconnectionTools(transitionEdgeDescription);
     }
 }
