@@ -13,9 +13,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
-import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.CACHE;
-import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.GRAPHICAL_EDGE_SOURCE;
-import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.GRAPHICAL_EDGE_TARGET;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_EDGE_SOURCE;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SEMANTIC_EDGE_TARGET;
 
@@ -25,11 +22,10 @@ import java.util.function.Supplier;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
-import org.eclipse.sirius.components.view.ChangeContext;
+import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -83,22 +79,15 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 sourceAndTargetProvider, //
                 sourceAndTargetProvider);
 
-        containmentLinkEdge.setPreconditionExpression(new CallQuery(GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, GRAPHICAL_EDGE_TARGET, CACHE)); // $NON-NLS-1$
+        containmentLinkEdge.setPreconditionExpression(new CallQuery(Variables.GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, Variables.GRAPHICAL_EDGE_TARGET, Variables.CACHE)); // $NON-NLS-1$
 
         containmentLinkEdge.getStyle().setSourceArrowStyle(ArrowStyle.CROSSED_CIRCLE);
 
         diagramDescription.getEdgeDescriptions().add(containmentLinkEdge);
-
-        // Create containment Link tool
-
-        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
-        tool.setName("New Containment Link"); //$NON-NLS-1$
-
-        String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE); // $NON-NLS-1$
-
-        ChangeContext changeContext = this.getViewBuilder().createChangeContextOperation(toolQuery);
-        tool.getBody().add(changeContext);
         this.registerCallback(containmentLinkEdge, () -> {
+            // Create containment Link tool
+            String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE); // $NON-NLS-1$
+            EdgeTool tool = this.getViewBuilder().createFeatureBasedEdgeTool("New Containment Link", toolQuery, this.collectNodesWithDomain(diagramDescription, this.pack.getPackage()));
             CreationToolsUtil.addEdgeCreationTool(sourceAndTargetProvider, tool);
         });
     }
