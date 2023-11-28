@@ -93,7 +93,7 @@ public class ActivityPartitionUmlPage {
                 .help("aql:self.getFeatureDescription('represents')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('represents').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('represents').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('represents').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('represents')") //
                 .value("feature:represents") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('represents')") //

@@ -84,7 +84,7 @@ public class FinalStateUmlPage {
                 .help("aql:self.getFeatureDescription('stateInvariant')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('stateInvariant').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('stateInvariant').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('stateInvariant').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('stateInvariant')") //
                 .value("feature:stateInvariant") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('stateInvariant')") //
@@ -102,7 +102,7 @@ public class FinalStateUmlPage {
                 .help("aql:self.getFeatureDescription('entry')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('entry').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('entry').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('entry').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('entry')") //
                 .isMany(false) //
                 .value("feature:entry") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -117,7 +117,7 @@ public class FinalStateUmlPage {
                 .help("aql:self.getFeatureDescription('doActivity')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('doActivity').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('doActivity').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('doActivity').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('doActivity')") //
                 .isMany(false) //
                 .value("feature:doActivity") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -132,7 +132,7 @@ public class FinalStateUmlPage {
                 .help("aql:self.getFeatureDescription('exit')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('exit').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('exit').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('exit').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('exit')") //
                 .isMany(false) //
                 .value("feature:exit") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -147,7 +147,7 @@ public class FinalStateUmlPage {
                 .help("aql:self.getFeatureDescription('deferrableTrigger')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('deferrableTrigger').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('deferrableTrigger').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('deferrableTrigger').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('deferrableTrigger')") //
                 .isMany(true) //
                 .value("feature:deferrableTrigger") //
                 .createOperation("aql:parent.create(kind, feature)") //

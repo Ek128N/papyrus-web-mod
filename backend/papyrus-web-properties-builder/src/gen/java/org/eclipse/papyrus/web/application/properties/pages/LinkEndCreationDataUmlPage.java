@@ -75,7 +75,7 @@ public class LinkEndCreationDataUmlPage {
                 .help("aql:self.getFeatureDescription('end')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('end').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('end').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('end').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('end')") //
                 .value("feature:end") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('end')") //
@@ -93,7 +93,7 @@ public class LinkEndCreationDataUmlPage {
                 .help("aql:self.getFeatureDescription('insertAt')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('insertAt').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('insertAt').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('insertAt').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('insertAt')") //
                 .value("feature:insertAt") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('insertAt')") //
@@ -111,7 +111,7 @@ public class LinkEndCreationDataUmlPage {
                 .help("aql:self.getFeatureDescription('value')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('value')") //
                 .value("feature:value") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('value')") //
@@ -129,7 +129,7 @@ public class LinkEndCreationDataUmlPage {
                 .help("aql:self.getFeatureDescription('qualifier')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('qualifier').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('qualifier').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('qualifier').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('qualifier')") //
                 .isMany(true) //
                 .value("feature:qualifier") //
                 .createOperation("aql:parent.create(kind, feature)") //

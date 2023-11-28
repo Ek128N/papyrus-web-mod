@@ -81,7 +81,7 @@ public class ManifestationUmlPage {
                 .help("aql:self.getFeatureDescription('mapping')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('mapping').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('mapping').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('mapping').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('mapping')") //
                 .isMany(false) //
                 .value("feature:mapping") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -96,7 +96,7 @@ public class ManifestationUmlPage {
                 .help("aql:self.getFeatureDescription('utilizedElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('utilizedElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('utilizedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('utilizedElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('utilizedElement')") //
                 .value("feature:utilizedElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('utilizedElement')") //

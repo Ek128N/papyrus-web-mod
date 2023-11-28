@@ -80,7 +80,7 @@ public class GeneralOrderingUmlPage {
                 .help("aql:self.getFeatureDescription('before')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('before').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('before').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('before').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('before')") //
                 .value("feature:before") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('before')") //
@@ -98,7 +98,7 @@ public class GeneralOrderingUmlPage {
                 .help("aql:self.getFeatureDescription('after')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('after').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('after').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('after').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('after')") //
                 .value("feature:after") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('after')") //

@@ -80,7 +80,7 @@ public class DecisionNodeUmlPage {
                 .help("aql:self.getFeatureDescription('decisionInput')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('decisionInput').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('decisionInput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decisionInput').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('decisionInput')") //
                 .value("feature:decisionInput") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('decisionInput')") //
@@ -98,7 +98,7 @@ public class DecisionNodeUmlPage {
                 .help("aql:self.getFeatureDescription('decisionInputFlow')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('decisionInputFlow').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('decisionInputFlow').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decisionInputFlow').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('decisionInputFlow')") //
                 .value("feature:decisionInputFlow") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('decisionInputFlow')") //

@@ -79,7 +79,7 @@ public class ChangeEventUmlPage {
                 .help("aql:self.getFeatureDescription('changeExpression')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('changeExpression').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('changeExpression').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('changeExpression').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('changeExpression')") //
                 .isMany(false) //
                 .value("feature:changeExpression") //
                 .createOperation("aql:parent.create(kind, feature)") //

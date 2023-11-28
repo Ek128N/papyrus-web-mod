@@ -103,7 +103,7 @@ public class ComponentUmlPage {
                 .help("aql:self.getFeatureDescription('provided')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('provided').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('provided').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('provided').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('provided')") //
                 .value("feature:provided") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('provided')") //
@@ -122,7 +122,7 @@ public class ComponentUmlPage {
                 .help("aql:self.getFeatureDescription('required')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('required').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('required').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('required').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('required')") //
                 .value("feature:required") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('required')") //
@@ -141,7 +141,7 @@ public class ComponentUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

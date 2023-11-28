@@ -82,7 +82,7 @@ public class IntervalUmlPage {
                 .help("aql:self.getFeatureDescription('min')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('min').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('min').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('min').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('min')") //
                 .value("feature:min") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('min')") //
@@ -100,7 +100,7 @@ public class IntervalUmlPage {
                 .help("aql:self.getFeatureDescription('max')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('max').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('max').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('max').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('max')") //
                 .value("feature:max") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('max')") //
@@ -118,7 +118,7 @@ public class IntervalUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //

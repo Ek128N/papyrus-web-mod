@@ -116,7 +116,7 @@ public class OperationUmlPage {
                 .help("aql:self.getFeatureDescription('bodyCondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('bodyCondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('bodyCondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyCondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('bodyCondition')") //
                 .value("feature:bodyCondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('bodyCondition')") //
@@ -134,7 +134,7 @@ public class OperationUmlPage {
                 .help("aql:self.getFeatureDescription('method')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('method').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('method').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('method').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('method')") //
                 .value("feature:method") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('method')") //
@@ -153,7 +153,7 @@ public class OperationUmlPage {
                 .help("aql:self.getFeatureDescription('ownedParameter')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedParameter')") //
                 .isMany(true) //
                 .value("feature:ownedParameter") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -169,7 +169,7 @@ public class OperationUmlPage {
                 .help("aql:self.getFeatureDescription('precondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('precondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('precondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('precondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('precondition')") //
                 .value("feature:precondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('precondition')") //
@@ -188,7 +188,7 @@ public class OperationUmlPage {
                 .help("aql:self.getFeatureDescription('postcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('postcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('postcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('postcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('postcondition')") //
                 .value("feature:postcondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('postcondition')") //
@@ -207,7 +207,7 @@ public class OperationUmlPage {
                 .help("aql:self.getFeatureDescription('raisedException')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('raisedException').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('raisedException').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('raisedException').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('raisedException')") //
                 .value("feature:raisedException") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('raisedException')") //

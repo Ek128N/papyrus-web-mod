@@ -80,7 +80,7 @@ public class ExecutionOccurrenceSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('execution')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('execution').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('execution').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('execution').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('execution')") //
                 .value("feature:execution") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('execution')") //

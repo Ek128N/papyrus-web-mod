@@ -80,7 +80,7 @@ public class InstanceSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('classifier')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('classifier').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('classifier').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('classifier').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('classifier')") //
                 .value("feature:classifier") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('classifier')") //

@@ -104,7 +104,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('decider')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('decider').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('decider').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decider').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('decider')") //
                 .value("feature:decider") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('decider')") //
@@ -122,7 +122,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('bodyOutput')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('bodyOutput').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('bodyOutput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyOutput').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('bodyOutput')") //
                 .value("feature:bodyOutput") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('bodyOutput')") //
@@ -141,7 +141,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('bodyPart')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('bodyPart').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('bodyPart').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyPart').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('bodyPart')") //
                 .value("feature:bodyPart") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('bodyPart')") //
@@ -160,7 +160,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -176,7 +176,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -192,7 +192,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('loopVariable')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('loopVariable').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('loopVariable').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('loopVariable').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('loopVariable')") //
                 .isMany(true) //
                 .value("feature:loopVariable") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -208,7 +208,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('loopVariableInput')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('loopVariableInput').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('loopVariableInput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('loopVariableInput').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('loopVariableInput')") //
                 .isMany(true) //
                 .value("feature:loopVariableInput") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -224,7 +224,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('result')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('result').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('result').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('result').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('result')") //
                 .isMany(true) //
                 .value("feature:result") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -240,7 +240,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('setupPart')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('setupPart').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('setupPart').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('setupPart').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('setupPart')") //
                 .value("feature:setupPart") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('setupPart')") //
@@ -259,7 +259,7 @@ public class LoopNodeUmlPage {
                 .help("aql:self.getFeatureDescription('test')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('test').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('test').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('test').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('test')") //
                 .value("feature:test") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('test')") //

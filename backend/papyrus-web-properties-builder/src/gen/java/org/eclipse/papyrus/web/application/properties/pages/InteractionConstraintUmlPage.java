@@ -86,7 +86,7 @@ public class InteractionConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('context')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('context').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('context').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('context').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('context')") //
                 .value("feature:context") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('context')") //
@@ -104,7 +104,7 @@ public class InteractionConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('maxint')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('maxint').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('maxint').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('maxint').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('maxint')") //
                 .isMany(false) //
                 .value("feature:maxint") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -119,7 +119,7 @@ public class InteractionConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('minint')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('minint').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('minint').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('minint').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('minint')") //
                 .isMany(false) //
                 .value("feature:minint") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -134,7 +134,7 @@ public class InteractionConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('specification')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('specification')") //
                 .isMany(false) //
                 .value("feature:specification") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -149,7 +149,7 @@ public class InteractionConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('constrainedElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('constrainedElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('constrainedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('constrainedElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('constrainedElement')") //
                 .value("feature:constrainedElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('constrainedElement')") //

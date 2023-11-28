@@ -83,7 +83,7 @@ public class TransitionUmlPage {
                 .help("aql:self.getFeatureDescription('trigger')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('trigger').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('trigger').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('trigger').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('trigger')") //
                 .isMany(true) //
                 .value("feature:trigger") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -99,7 +99,7 @@ public class TransitionUmlPage {
                 .help("aql:self.getFeatureDescription('guard')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('guard').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('guard').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('guard').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('guard')") //
                 .value("feature:guard") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('guard')") //
@@ -117,7 +117,7 @@ public class TransitionUmlPage {
                 .help("aql:self.getFeatureDescription('effect')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('effect').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('effect').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('effect').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('effect')") //
                 .isMany(false) //
                 .value("feature:effect") //
                 .createOperation("aql:parent.create(kind, feature)") //

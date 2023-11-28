@@ -81,7 +81,7 @@ public class CollaborationUseUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //
@@ -99,7 +99,7 @@ public class CollaborationUseUmlPage {
                 .help("aql:self.getFeatureDescription('roleBinding')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('roleBinding').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('roleBinding').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('roleBinding').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('roleBinding')") //
                 .isMany(true) //
                 .value("feature:roleBinding") //
                 .createOperation("aql:parent.create(kind, feature)") //

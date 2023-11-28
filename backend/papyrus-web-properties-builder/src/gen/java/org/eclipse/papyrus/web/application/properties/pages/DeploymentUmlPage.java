@@ -79,7 +79,7 @@ public class DeploymentUmlPage {
                 .help("aql:self.getFeatureDescription('configuration')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('configuration').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('configuration').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('configuration').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('configuration')") //
                 .isMany(true) //
                 .value("feature:configuration") //
                 .createOperation("aql:parent.create(kind, feature)") //

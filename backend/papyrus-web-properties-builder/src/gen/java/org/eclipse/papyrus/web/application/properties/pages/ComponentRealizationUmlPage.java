@@ -80,7 +80,7 @@ public class ComponentRealizationUmlPage {
                 .help("aql:self.getFeatureDescription('mapping')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('mapping').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('mapping').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('mapping').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('mapping')") //
                 .isMany(false) //
                 .value("feature:mapping") //
                 .createOperation("aql:parent.create(kind, feature)") //

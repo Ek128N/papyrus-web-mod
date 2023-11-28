@@ -95,7 +95,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('insertAt')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('insertAt').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('insertAt').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('insertAt').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('insertAt')") //
                 .isMany(false) //
                 .value("feature:insertAt") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -110,7 +110,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('object')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('object').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('object').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('object').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('object')") //
                 .isMany(false) //
                 .value("feature:object") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -125,7 +125,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('result')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('result').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('result').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('result').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('result')") //
                 .isMany(false) //
                 .value("feature:result") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -140,7 +140,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('structuralFeature')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('structuralFeature').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('structuralFeature').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('structuralFeature').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('structuralFeature')") //
                 .value("feature:structuralFeature") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('structuralFeature')") //
@@ -158,7 +158,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('value')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('value')") //
                 .isMany(false) //
                 .value("feature:value") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -173,7 +173,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -189,7 +189,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -205,7 +205,7 @@ public class AddStructuralFeatureValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('handler')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handler')") //
                 .isMany(true) //
                 .value("feature:handler") //
                 .createOperation("aql:parent.create(kind, feature)") //

@@ -79,7 +79,7 @@ public class SignalEventUmlPage {
                 .help("aql:self.getFeatureDescription('signal')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('signal').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('signal').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('signal').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('signal')") //
                 .value("feature:signal") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('signal')") //

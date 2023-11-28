@@ -66,7 +66,7 @@ public class TemplateParameterSubstitutionUmlPage {
                 .help("aql:self.getFeatureDescription('formal')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('formal').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('formal').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('formal').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('formal')") //
                 .value("feature:formal") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('formal')") //
@@ -84,7 +84,7 @@ public class TemplateParameterSubstitutionUmlPage {
                 .help("aql:self.getFeatureDescription('actual')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('actual').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('actual').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('actual').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('actual')") //
                 .value("feature:actual") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('actual')") //
@@ -102,7 +102,7 @@ public class TemplateParameterSubstitutionUmlPage {
                 .help("aql:self.getFeatureDescription('ownedActual')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedActual').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedActual').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedActual').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedActual')") //
                 .isMany(false) //
                 .value("feature:ownedActual") //
                 .createOperation("aql:parent.create(kind, feature)") //

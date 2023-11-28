@@ -88,7 +88,7 @@ public class CollaborationUmlPage {
                 .help("aql:self.getFeatureDescription('collaborationRole')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('collaborationRole').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('collaborationRole').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('collaborationRole').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('collaborationRole')") //
                 .value("feature:collaborationRole") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('collaborationRole')") //
@@ -107,7 +107,7 @@ public class CollaborationUmlPage {
                 .help("aql:self.getFeatureDescription('ownedAttribute')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedAttribute')") //
                 .isMany(true) //
                 .value("feature:ownedAttribute") //
                 .createOperation("aql:parent.create(kind, feature)") //

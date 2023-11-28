@@ -79,7 +79,7 @@ public class StateInvariantUmlPage {
                 .help("aql:self.getFeatureDescription('invariant')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('invariant').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('invariant').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('invariant').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('invariant')") //
                 .isMany(false) //
                 .value("feature:invariant") //
                 .createOperation("aql:parent.create(kind, feature)") //

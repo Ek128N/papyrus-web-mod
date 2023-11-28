@@ -68,7 +68,7 @@ public class ClauseUmlPage {
                 .help("aql:self.getFeatureDescription('decider')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('decider').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('decider').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decider').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('decider')") //
                 .value("feature:decider") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('decider')") //
@@ -86,7 +86,7 @@ public class ClauseUmlPage {
                 .help("aql:self.getFeatureDescription('body')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('body').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('body').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('body').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('body')") //
                 .value("feature:body") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('body')") //
@@ -105,7 +105,7 @@ public class ClauseUmlPage {
                 .help("aql:self.getFeatureDescription('bodyOutput')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('bodyOutput').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('bodyOutput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('bodyOutput').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('bodyOutput')") //
                 .value("feature:bodyOutput") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('bodyOutput')") //
@@ -124,7 +124,7 @@ public class ClauseUmlPage {
                 .help("aql:self.getFeatureDescription('predecessorClause')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('predecessorClause').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('predecessorClause').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('predecessorClause').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('predecessorClause')") //
                 .value("feature:predecessorClause") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('predecessorClause')") //
@@ -143,7 +143,7 @@ public class ClauseUmlPage {
                 .help("aql:self.getFeatureDescription('successorClause')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('successorClause').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('successorClause').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('successorClause').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('successorClause')") //
                 .value("feature:successorClause") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('successorClause')") //
@@ -162,7 +162,7 @@ public class ClauseUmlPage {
                 .help("aql:self.getFeatureDescription('test')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('test').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('test').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('test').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('test')") //
                 .value("feature:test") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('test')") //

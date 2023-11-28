@@ -72,7 +72,7 @@ public class PackageImportUmlPage {
                 .help("aql:self.getFeatureDescription('importedPackage')") //
                 .isEnable("aql:false") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('importedPackage').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('importedPackage').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('importedPackage')") //
                 .value("feature:importedPackage") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('importedPackage')") //

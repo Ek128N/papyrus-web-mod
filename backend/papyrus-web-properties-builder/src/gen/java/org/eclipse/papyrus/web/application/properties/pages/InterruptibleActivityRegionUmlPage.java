@@ -71,7 +71,7 @@ public class InterruptibleActivityRegionUmlPage {
                 .help("aql:self.getFeatureDescription('interruptingEdge')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('interruptingEdge').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('interruptingEdge').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('interruptingEdge').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('interruptingEdge')") //
                 .value("feature:interruptingEdge") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('interruptingEdge')") //

@@ -93,7 +93,7 @@ public class ProtocolTransitionUmlPage {
                 .help("aql:self.getFeatureDescription('effect')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('effect').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('effect').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('effect').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('effect')") //
                 .isMany(false) //
                 .value("feature:effect") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -108,7 +108,7 @@ public class ProtocolTransitionUmlPage {
                 .help("aql:self.getFeatureDescription('guard')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('guard').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('guard').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('guard').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('guard')") //
                 .value("feature:guard") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('guard')") //
@@ -126,7 +126,7 @@ public class ProtocolTransitionUmlPage {
                 .help("aql:self.getFeatureDescription('postCondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('postCondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('postCondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('postCondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('postCondition')") //
                 .value("feature:postCondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('postCondition')") //
@@ -144,7 +144,7 @@ public class ProtocolTransitionUmlPage {
                 .help("aql:self.getFeatureDescription('preCondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('preCondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('preCondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('preCondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('preCondition')") //
                 .value("feature:preCondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('preCondition')") //
@@ -162,7 +162,7 @@ public class ProtocolTransitionUmlPage {
                 .help("aql:self.getFeatureDescription('trigger')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('trigger').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('trigger').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('trigger').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('trigger')") //
                 .isMany(true) //
                 .value("feature:trigger") //
                 .createOperation("aql:parent.create(kind, feature)") //

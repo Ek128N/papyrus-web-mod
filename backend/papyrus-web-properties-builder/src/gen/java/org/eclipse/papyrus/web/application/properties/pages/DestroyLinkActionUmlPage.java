@@ -82,7 +82,7 @@ public class DestroyLinkActionUmlPage {
                 .help("aql:self.getFeatureDescription('endData')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('endData').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('endData').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('endData').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('endData')") //
                 .isMany(true) //
                 .value("feature:endData") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -98,7 +98,7 @@ public class DestroyLinkActionUmlPage {
                 .help("aql:self.getFeatureDescription('inputValue')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('inputValue').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('inputValue').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('inputValue').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('inputValue')") //
                 .isMany(true) //
                 .value("feature:inputValue") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -114,7 +114,7 @@ public class DestroyLinkActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -130,7 +130,7 @@ public class DestroyLinkActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //

@@ -85,7 +85,7 @@ public class ReplyActionUmlPage {
                 .help("aql:self.getFeatureDescription('replyToCall')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('replyToCall').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('replyToCall').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('replyToCall').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('replyToCall')") //
                 .value("feature:replyToCall") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('replyToCall')") //
@@ -103,7 +103,7 @@ public class ReplyActionUmlPage {
                 .help("aql:self.getFeatureDescription('returnInformation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('returnInformation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('returnInformation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('returnInformation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('returnInformation')") //
                 .isMany(false) //
                 .value("feature:returnInformation") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -118,7 +118,7 @@ public class ReplyActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -134,7 +134,7 @@ public class ReplyActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -150,7 +150,7 @@ public class ReplyActionUmlPage {
                 .help("aql:self.getFeatureDescription('replyValue')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('replyValue').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('replyValue').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('replyValue').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('replyValue')") //
                 .isMany(true) //
                 .value("feature:replyValue") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -166,7 +166,7 @@ public class ReplyActionUmlPage {
                 .help("aql:self.getFeatureDescription('handler')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handler')") //
                 .isMany(true) //
                 .value("feature:handler") //
                 .createOperation("aql:parent.create(kind, feature)") //

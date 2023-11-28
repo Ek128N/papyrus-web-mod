@@ -89,7 +89,7 @@ public class ExpressionUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //
@@ -107,7 +107,7 @@ public class ExpressionUmlPage {
                 .help("aql:self.getFeatureDescription('operand')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('operand').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('operand').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('operand').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('operand')") //
                 .isMany(true) //
                 .value("feature:operand") //
                 .createOperation("aql:parent.create(kind, feature)") //

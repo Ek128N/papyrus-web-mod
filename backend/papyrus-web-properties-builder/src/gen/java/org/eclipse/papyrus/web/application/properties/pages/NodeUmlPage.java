@@ -94,7 +94,7 @@ public class NodeUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

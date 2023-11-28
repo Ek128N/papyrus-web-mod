@@ -93,7 +93,7 @@ public class ModelUmlPage {
                 .help("aql:self.getFeatureDescription('packageMerge')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('packageMerge').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('packageMerge').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('packageMerge').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('packageMerge')") //
                 .isMany(true) //
                 .value("feature:packageMerge") //
                 .createOperation("aql:parent.create(kind, feature)") //

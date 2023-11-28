@@ -93,7 +93,7 @@ public class GeneralizationSetUmlPage {
                 .help("aql:self.getFeatureDescription('powertype')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('powertype').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('powertype').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('powertype').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('powertype')") //
                 .value("feature:powerType") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('powertype')") //

@@ -93,7 +93,7 @@ public class RemoveVariableValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('removeAt')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('removeAt').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('removeAt').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('removeAt').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('removeAt')") //
                 .isMany(false) //
                 .value("feature:removeAt") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -108,7 +108,7 @@ public class RemoveVariableValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('value')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('value')") //
                 .isMany(false) //
                 .value("feature:value") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -123,7 +123,7 @@ public class RemoveVariableValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('variable')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('variable').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('variable').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('variable').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('variable')") //
                 .value("feature:variable") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('variable')") //
@@ -141,7 +141,7 @@ public class RemoveVariableValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -157,7 +157,7 @@ public class RemoveVariableValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -173,7 +173,7 @@ public class RemoveVariableValueActionUmlPage {
                 .help("aql:self.getFeatureDescription('handler')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handler')") //
                 .isMany(true) //
                 .value("feature:handler") //
                 .createOperation("aql:parent.create(kind, feature)") //

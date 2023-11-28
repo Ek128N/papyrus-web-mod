@@ -85,7 +85,7 @@ public class ClearAssociationActionUmlPage {
                 .help("aql:self.getFeatureDescription('association')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('association').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('association').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('association').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('association')") //
                 .value("feature:association") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('association')") //
@@ -103,7 +103,7 @@ public class ClearAssociationActionUmlPage {
                 .help("aql:self.getFeatureDescription('object')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('object').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('object').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('object').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('object')") //
                 .isMany(false) //
                 .value("feature:object") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -118,7 +118,7 @@ public class ClearAssociationActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -134,7 +134,7 @@ public class ClearAssociationActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -150,7 +150,7 @@ public class ClearAssociationActionUmlPage {
                 .help("aql:self.getFeatureDescription('handler')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handler')") //
                 .isMany(true) //
                 .value("feature:handler") //
                 .createOperation("aql:parent.create(kind, feature)") //

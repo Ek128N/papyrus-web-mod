@@ -85,7 +85,7 @@ public class ConnectorEndUmlPage {
                 .help("aql:self.getFeatureDescription('role')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('role').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('role').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('role').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('role')") //
                 .value("feature:role") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('role')") //

@@ -102,7 +102,7 @@ public class ActivityParameterNodeUmlPage {
                 .help("aql:self.getFeatureDescription('selection')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('selection').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('selection').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('selection').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('selection')") //
                 .value("feature:selection") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('selection')") //
@@ -120,7 +120,7 @@ public class ActivityParameterNodeUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //
@@ -138,7 +138,7 @@ public class ActivityParameterNodeUmlPage {
                 .help("aql:self.getFeatureDescription('parameter')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('parameter').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('parameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameter').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('parameter')") //
                 .value("feature:parameter") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('parameter')") //
@@ -156,7 +156,7 @@ public class ActivityParameterNodeUmlPage {
                 .help("aql:self.getFeatureDescription('upperBound')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('upperBound').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('upperBound').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('upperBound').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('upperBound')") //
                 .isMany(false) //
                 .value("feature:upperBound") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -171,7 +171,7 @@ public class ActivityParameterNodeUmlPage {
                 .help("aql:self.getFeatureDescription('inState')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('inState').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('inState').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('inState').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('inState')") //
                 .value("feature:inState") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('inState')") //

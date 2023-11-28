@@ -109,7 +109,7 @@ public class FunctionBehaviorUmlPage {
                 .help("aql:self.getFeatureDescription('specification')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('specification')") //
                 .value("feature:specification") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('specification')") //
@@ -127,7 +127,7 @@ public class FunctionBehaviorUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

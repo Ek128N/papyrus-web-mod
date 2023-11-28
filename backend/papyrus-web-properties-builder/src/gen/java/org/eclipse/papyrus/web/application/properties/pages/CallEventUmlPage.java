@@ -79,7 +79,7 @@ public class CallEventUmlPage {
                 .help("aql:self.getFeatureDescription('operation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('operation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('operation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('operation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('operation')") //
                 .value("feature:operation") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('operation')") //

@@ -65,7 +65,7 @@ public class ExceptionHandlerUmlPage {
                 .help("aql:self.getFeatureDescription('exceptionInput')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('exceptionInput').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('exceptionInput').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('exceptionInput').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('exceptionInput')") //
                 .value("feature:exceptionInput") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('exceptionInput')") //
@@ -83,7 +83,7 @@ public class ExceptionHandlerUmlPage {
                 .help("aql:self.getFeatureDescription('handlerBody')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handlerBody').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handlerBody').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handlerBody').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handlerBody')") //
                 .value("feature:handlerBody") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('handlerBody')") //
@@ -101,7 +101,7 @@ public class ExceptionHandlerUmlPage {
                 .help("aql:self.getFeatureDescription('exceptionType')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('exceptionType').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('exceptionType').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('exceptionType').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('exceptionType')") //
                 .value("feature:exceptionType") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('exceptionType')") //

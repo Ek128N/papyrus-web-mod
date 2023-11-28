@@ -62,7 +62,7 @@ public class PackageMergeUmlPage {
                 .help("aql:self.getFeatureDescription('mergedPackage')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('mergedPackage').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('mergedPackage').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('mergedPackage').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('mergedPackage')") //
                 .value("feature:mergedPackage") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('mergedPackage')") //

@@ -79,7 +79,7 @@ public class EnumerationLiteralUmlPage {
                 .help("aql:self.getFeatureDescription('specification')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('specification')") //
                 .isMany(false) //
                 .value("feature:specification") //
                 .createOperation("aql:parent.create(kind, feature)") //

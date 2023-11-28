@@ -83,7 +83,7 @@ public class DurationUmlPage {
                 .help("aql:self.getFeatureDescription('expr')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('expr').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('expr').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('expr').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('expr')") //
                 .isMany(false) //
                 .value("feature:expr") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -98,7 +98,7 @@ public class DurationUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //
@@ -116,7 +116,7 @@ public class DurationUmlPage {
                 .help("aql:self.getFeatureDescription('observation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('observation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('observation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('observation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('observation')") //
                 .value("feature:observation") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('observation')") //

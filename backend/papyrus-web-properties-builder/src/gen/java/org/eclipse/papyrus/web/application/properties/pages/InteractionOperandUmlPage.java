@@ -82,7 +82,7 @@ public class InteractionOperandUmlPage {
                 .help("aql:self.getFeatureDescription('guard')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('guard').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('guard').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('guard').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('guard')") //
                 .isMany(false) //
                 .value("feature:guard") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -97,7 +97,7 @@ public class InteractionOperandUmlPage {
                 .help("aql:self.getFeatureDescription('covered')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('covered').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('covered').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('covered').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('covered')") //
                 .value("feature:covered") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('covered')") //
@@ -116,7 +116,7 @@ public class InteractionOperandUmlPage {
                 .help("aql:self.getFeatureDescription('fragment')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('fragment').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('fragment').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('fragment').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('fragment')") //
                 .isMany(true) //
                 .value("feature:fragment") //
                 .createOperation("aql:parent.create(kind, feature)") //

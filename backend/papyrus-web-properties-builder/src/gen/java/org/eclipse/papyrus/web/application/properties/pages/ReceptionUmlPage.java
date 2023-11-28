@@ -107,7 +107,7 @@ public class ReceptionUmlPage {
                 .help("aql:self.getFeatureDescription('signal')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('signal').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('signal').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('signal').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('signal')") //
                 .value("feature:signal") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('signal')") //
@@ -125,7 +125,7 @@ public class ReceptionUmlPage {
                 .help("aql:self.getFeatureDescription('method')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('method').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('method').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('method').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('method')") //
                 .value("feature:method") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('method')") //
@@ -144,7 +144,7 @@ public class ReceptionUmlPage {
                 .help("aql:self.getFeatureDescription('ownedParameter')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedParameter')") //
                 .isMany(true) //
                 .value("feature:ownedParameter") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -160,7 +160,7 @@ public class ReceptionUmlPage {
                 .help("aql:self.getFeatureDescription('raisedException')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('raisedException').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('raisedException').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('raisedException').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('raisedException')") //
                 .value("feature:raisedException") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('raisedException')") //

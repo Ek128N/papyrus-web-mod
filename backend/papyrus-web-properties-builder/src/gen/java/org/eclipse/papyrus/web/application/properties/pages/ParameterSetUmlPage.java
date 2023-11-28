@@ -81,7 +81,7 @@ public class ParameterSetUmlPage {
                 .help("aql:self.getFeatureDescription('condition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('condition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('condition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('condition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('condition')") //
                 .isMany(true) //
                 .value("feature:condition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -97,7 +97,7 @@ public class ParameterSetUmlPage {
                 .help("aql:self.getFeatureDescription('parameter')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('parameter').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('parameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameter').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('parameter')") //
                 .value("feature:parameter") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('parameter')") //

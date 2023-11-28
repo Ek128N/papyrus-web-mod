@@ -83,7 +83,7 @@ public class InformationFlowUmlPage {
                 .help("aql:self.getFeatureDescription('conveyed')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('conveyed').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('conveyed').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('conveyed').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('conveyed')") //
                 .value("feature:conveyed") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('conveyed')") //
@@ -102,7 +102,7 @@ public class InformationFlowUmlPage {
                 .help("aql:self.getFeatureDescription('realization')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('realization').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('realization').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realization').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('realization')") //
                 .value("feature:realization") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('realization')") //
@@ -121,7 +121,7 @@ public class InformationFlowUmlPage {
                 .help("aql:self.getFeatureDescription('realizingActivityEdge')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('realizingActivityEdge').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('realizingActivityEdge').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realizingActivityEdge').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('realizingActivityEdge')") //
                 .value("feature:realizingActivityEdge") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('realizingActivityEdge')") //
@@ -140,7 +140,7 @@ public class InformationFlowUmlPage {
                 .help("aql:self.getFeatureDescription('realizingConnector')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('realizingConnector').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('realizingConnector').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realizingConnector').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('realizingConnector')") //
                 .value("feature:realizingConnector") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('realizingConnector')") //
@@ -159,7 +159,7 @@ public class InformationFlowUmlPage {
                 .help("aql:self.getFeatureDescription('realizingMessage')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('realizingMessage').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('realizingMessage').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('realizingMessage').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('realizingMessage')") //
                 .value("feature:realizingMessage") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('realizingMessage')") //

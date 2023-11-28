@@ -120,7 +120,7 @@ public class ActivityUmlPage {
                 .help("aql:self.getFeatureDescription('specification')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('specification')") //
                 .value("feature:specification") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('specification')") //
@@ -138,7 +138,7 @@ public class ActivityUmlPage {
                 .help("aql:self.getFeatureDescription('precondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('precondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('precondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('precondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('precondition')") //
                 .value("feature:precondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('precondition')") //
@@ -157,7 +157,7 @@ public class ActivityUmlPage {
                 .help("aql:self.getFeatureDescription('postcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('postcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('postcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('postcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('postcondition')") //
                 .value("feature:postcondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('postcondition')") //
@@ -176,7 +176,7 @@ public class ActivityUmlPage {
                 .help("aql:self.getFeatureDescription('ownedParameter')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedParameter')") //
                 .isMany(true) //
                 .value("feature:ownedParameter") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -192,7 +192,7 @@ public class ActivityUmlPage {
                 .help("aql:self.getFeatureDescription('variable')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('variable').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('variable').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('variable').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('variable')") //
                 .isMany(true) //
                 .value("feature:variable") //
                 .createOperation("aql:parent.create(kind, feature)") //

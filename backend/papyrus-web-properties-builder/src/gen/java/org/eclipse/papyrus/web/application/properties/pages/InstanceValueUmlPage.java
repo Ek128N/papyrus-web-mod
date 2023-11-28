@@ -80,7 +80,7 @@ public class InstanceValueUmlPage {
                 .help("aql:self.getFeatureDescription('instance')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('instance').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('instance').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('instance').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('instance')") //
                 .value("feature:instance") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('instance')") //
@@ -98,7 +98,7 @@ public class InstanceValueUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //

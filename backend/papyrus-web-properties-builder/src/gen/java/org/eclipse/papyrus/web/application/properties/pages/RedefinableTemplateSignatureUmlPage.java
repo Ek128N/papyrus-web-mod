@@ -80,7 +80,7 @@ public class RedefinableTemplateSignatureUmlPage {
                 .help("aql:self.getFeatureDescription('ownedParameter')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameter').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedParameter').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameter').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedParameter')") //
                 .isMany(true) //
                 .value("feature:ownedParameter") //
                 .createOperation("aql:parent.create(kind, feature)") //

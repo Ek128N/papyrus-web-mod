@@ -112,7 +112,7 @@ public class DeploymentSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('manifestation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('manifestation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('manifestation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('manifestation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('manifestation')") //
                 .isMany(true) //
                 .value("feature:manifestation") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -128,7 +128,7 @@ public class DeploymentSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('ownedAttribute')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedAttribute')") //
                 .isMany(true) //
                 .value("feature:ownedAttribute") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -144,7 +144,7 @@ public class DeploymentSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('ownedOperation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedOperation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedOperation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedOperation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedOperation')") //
                 .isMany(true) //
                 .value("feature:ownedOperation") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -160,7 +160,7 @@ public class DeploymentSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

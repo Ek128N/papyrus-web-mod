@@ -87,7 +87,7 @@ public class OpaqueExpressionUmlPage {
                 .help("aql:self.getFeatureDescription('behavior')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('behavior').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('behavior').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('behavior').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('behavior')") //
                 .value("feature:behavior") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('behavior')") //
@@ -105,7 +105,7 @@ public class OpaqueExpressionUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //

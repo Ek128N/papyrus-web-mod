@@ -86,7 +86,7 @@ public class JoinNodeUmlPage {
                 .help("aql:self.getFeatureDescription('joinSpec')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('joinSpec').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('joinSpec').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('joinSpec').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('joinSpec')") //
                 .isMany(false) //
                 .value("feature:joinSpec") //
                 .createOperation("aql:parent.create(kind, feature)") //

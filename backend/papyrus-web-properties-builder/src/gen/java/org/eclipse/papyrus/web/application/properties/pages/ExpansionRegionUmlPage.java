@@ -100,7 +100,7 @@ public class ExpansionRegionUmlPage {
                 .help("aql:self.getFeatureDescription('inputElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('inputElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('inputElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('inputElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('inputElement')") //
                 .value("feature:inputElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('inputElement')") //
@@ -119,7 +119,7 @@ public class ExpansionRegionUmlPage {
                 .help("aql:self.getFeatureDescription('outputElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('outputElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('outputElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('outputElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('outputElement')") //
                 .value("feature:outputElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('outputElement')") //
@@ -138,7 +138,7 @@ public class ExpansionRegionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -154,7 +154,7 @@ public class ExpansionRegionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -170,7 +170,7 @@ public class ExpansionRegionUmlPage {
                 .help("aql:self.getFeatureDescription('handler')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handler')") //
                 .isMany(true) //
                 .value("feature:handler") //
                 .createOperation("aql:parent.create(kind, feature)") //

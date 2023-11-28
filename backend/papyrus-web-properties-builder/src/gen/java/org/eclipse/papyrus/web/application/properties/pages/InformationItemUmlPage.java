@@ -87,7 +87,7 @@ public class InformationItemUmlPage {
                 .help("aql:self.getFeatureDescription('represented')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('represented').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('represented').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('represented').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('represented')") //
                 .value("feature:represented") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('represented')") //
@@ -106,7 +106,7 @@ public class InformationItemUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

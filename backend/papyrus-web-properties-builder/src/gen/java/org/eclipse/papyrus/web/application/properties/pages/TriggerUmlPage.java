@@ -81,7 +81,7 @@ public class TriggerUmlPage {
                 .help("aql:self.getFeatureDescription('event')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('event').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('event').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('event').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('event')") //
                 .value("feature:event") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('event')") //
@@ -99,7 +99,7 @@ public class TriggerUmlPage {
                 .help("aql:self.getFeatureDescription('port')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('port').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('port').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('port').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('port')") //
                 .value("feature:port") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('port')") //

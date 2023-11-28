@@ -104,7 +104,7 @@ public class InteractionUmlPage {
                 .help("aql:self.getFeatureDescription('specification')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('specification')") //
                 .value("feature:specification") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('specification')") //
@@ -122,7 +122,7 @@ public class InteractionUmlPage {
                 .help("aql:self.getFeatureDescription('precondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('precondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('precondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('precondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('precondition')") //
                 .value("feature:precondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('precondition')") //
@@ -141,7 +141,7 @@ public class InteractionUmlPage {
                 .help("aql:self.getFeatureDescription('postcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('postcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('postcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('postcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('postcondition')") //
                 .value("feature:postcondition") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('postcondition')") //
@@ -160,7 +160,7 @@ public class InteractionUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

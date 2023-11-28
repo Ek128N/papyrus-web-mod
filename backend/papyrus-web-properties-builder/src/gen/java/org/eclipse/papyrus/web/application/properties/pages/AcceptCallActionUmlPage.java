@@ -91,7 +91,7 @@ public class AcceptCallActionUmlPage {
                 .help("aql:self.getFeatureDescription('returnInformation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('returnInformation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('returnInformation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('returnInformation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('returnInformation')") //
                 .isMany(false) //
                 .value("feature:returnInformation") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -106,7 +106,7 @@ public class AcceptCallActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPostcondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPostcondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPostcondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPostcondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPostcondition')") //
                 .isMany(true) //
                 .value("feature:localPostcondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -122,7 +122,7 @@ public class AcceptCallActionUmlPage {
                 .help("aql:self.getFeatureDescription('localPrecondition')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('localPrecondition').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('localPrecondition').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('localPrecondition').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('localPrecondition')") //
                 .isMany(true) //
                 .value("feature:localPrecondition") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -138,7 +138,7 @@ public class AcceptCallActionUmlPage {
                 .help("aql:self.getFeatureDescription('result')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('result').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('result').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('result').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('result')") //
                 .isMany(true) //
                 .value("feature:result") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -154,7 +154,7 @@ public class AcceptCallActionUmlPage {
                 .help("aql:self.getFeatureDescription('trigger')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('trigger').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('trigger').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('trigger').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('trigger')") //
                 .isMany(true) //
                 .value("feature:trigger") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -170,7 +170,7 @@ public class AcceptCallActionUmlPage {
                 .help("aql:self.getFeatureDescription('handler')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('handler').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('handler').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('handler').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('handler')") //
                 .isMany(true) //
                 .value("feature:handler") //
                 .createOperation("aql:parent.create(kind, feature)") //

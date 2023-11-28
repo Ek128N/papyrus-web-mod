@@ -79,7 +79,7 @@ public class StereotypeUmlPage {
                 .help("aql:self.getFeatureDescription('icon')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('icon').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('icon').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('icon').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('icon')") //
                 .isMany(true) //
                 .value("feature:icon") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -95,7 +95,7 @@ public class StereotypeUmlPage {
                 .help("aql:self.getFeatureDescription('ownedAttribute')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedAttribute')") //
                 .isMany(true) //
                 .value("feature:ownedAttribute") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -111,7 +111,7 @@ public class StereotypeUmlPage {
                 .help("aql:self.getFeatureDescription('ownedOperation')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedOperation').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedOperation').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedOperation').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedOperation')") //
                 .isMany(true) //
                 .value("feature:ownedOperation") //
                 .createOperation("aql:parent.create(kind, feature)") //

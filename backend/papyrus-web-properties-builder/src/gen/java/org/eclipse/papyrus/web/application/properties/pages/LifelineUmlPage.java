@@ -82,7 +82,7 @@ public class LifelineUmlPage {
                 .help("aql:self.getFeatureDescription('decomposedAs')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('decomposedAs').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('decomposedAs').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('decomposedAs').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('decomposedAs')") //
                 .value("feature:decomposedAs") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('decomposedAs')") //
@@ -100,7 +100,7 @@ public class LifelineUmlPage {
                 .help("aql:self.getFeatureDescription('represents')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('represents').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('represents').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('represents').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('represents')") //
                 .value("feature:represents") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('represents')") //
@@ -118,7 +118,7 @@ public class LifelineUmlPage {
                 .help("aql:self.getFeatureDescription('selector')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('selector').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('selector').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('selector').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('selector')") //
                 .isMany(false) //
                 .value("feature:selector") //
                 .createOperation("aql:parent.create(kind, feature)") //

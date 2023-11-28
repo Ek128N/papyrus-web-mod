@@ -86,7 +86,7 @@ public class SignalUmlPage {
                 .help("aql:self.getFeatureDescription('ownedAttribute')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedAttribute').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedAttribute').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedAttribute').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedAttribute')") //
                 .isMany(true) //
                 .value("feature:ownedAttribute") //
                 .createOperation("aql:parent.create(kind, feature)") //

@@ -128,7 +128,7 @@ public class PortUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //
@@ -153,7 +153,7 @@ public class PortUmlPage {
                 .help("aql:self.getFeatureDescription('defaultValue')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('defaultValue').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('defaultValue').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('defaultValue').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('defaultValue')") //
                 .isMany(false) //
                 .value("feature:defaultValue") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -168,7 +168,7 @@ public class PortUmlPage {
                 .help("aql:self.getFeatureDescription('provided')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('provided').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('provided').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('provided').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('provided')") //
                 .value("feature:provided") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('provided')") //
@@ -187,7 +187,7 @@ public class PortUmlPage {
                 .help("aql:self.getFeatureDescription('required')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('required').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('required').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('required').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('required')") //
                 .value("feature:required") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('required')") //
@@ -206,7 +206,7 @@ public class PortUmlPage {
                 .help("aql:self.getFeatureDescription('subsettedProperty')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('subsettedProperty').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('subsettedProperty').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('subsettedProperty').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('subsettedProperty')") //
                 .value("feature:subsettedProperty") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('subsettedProperty')") //

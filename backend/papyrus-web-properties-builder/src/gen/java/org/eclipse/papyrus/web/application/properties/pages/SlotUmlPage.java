@@ -64,7 +64,7 @@ public class SlotUmlPage {
                 .help("aql:self.getFeatureDescription('definingFeature')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('definingFeature').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('definingFeature').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('definingFeature').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('definingFeature')") //
                 .value("feature:definingFeature") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('definingFeature')") //
@@ -82,7 +82,7 @@ public class SlotUmlPage {
                 .help("aql:self.getFeatureDescription('value')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('value')") //
                 .isMany(true) //
                 .value("feature:value") //
                 .createOperation("aql:parent.create(kind, feature)") //

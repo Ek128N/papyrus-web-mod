@@ -89,7 +89,7 @@ public class CombinedFragmentUmlPage {
                 .help("aql:self.getFeatureDescription('covered')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('covered').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('covered').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('covered').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('covered')") //
                 .value("feature:covered") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('covered')") //

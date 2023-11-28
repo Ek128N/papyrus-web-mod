@@ -62,7 +62,7 @@ public class TemplateBindingUmlPage {
                 .help("aql:self.getFeatureDescription('parameterSubstitution')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('parameterSubstitution').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('parameterSubstitution').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameterSubstitution').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('parameterSubstitution')") //
                 .isMany(true) //
                 .value("feature:parameterSubstitution") //
                 .createOperation("aql:parent.create(kind, feature)") //

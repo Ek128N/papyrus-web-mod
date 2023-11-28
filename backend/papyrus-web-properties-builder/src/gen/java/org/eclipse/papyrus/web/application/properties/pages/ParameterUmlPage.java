@@ -128,7 +128,7 @@ public class ParameterUmlPage {
                 .help("aql:self.getFeatureDescription('type')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('type').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('type').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('type').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('type')") //
                 .value("feature:type") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('type')") //
@@ -153,7 +153,7 @@ public class ParameterUmlPage {
                 .help("aql:self.getFeatureDescription('defaultValue')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('defaultValue').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('defaultValue').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('defaultValue').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('defaultValue')") //
                 .isMany(false) //
                 .value("feature:defaultValue") //
                 .createOperation("aql:parent.create(kind, feature)") //

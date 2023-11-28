@@ -86,7 +86,7 @@ public class UseCaseUmlPage {
                 .help("aql:self.getFeatureDescription('subject')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('subject').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('subject').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('subject').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('subject')") //
                 .value("feature:subject") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('subject')") //

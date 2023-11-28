@@ -62,7 +62,7 @@ public class ElementCommentsPage {
                 .help("aql:self.getFeatureDescription('ownedComment')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedComment').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedComment').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedComment').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedComment')") //
                 .isMany(true) //
                 .value("feature:ownedComment") //
                 .createOperation("aql:parent.create(kind, feature)") //

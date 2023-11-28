@@ -86,7 +86,7 @@ public class TimeEventUmlPage {
                 .help("aql:self.getFeatureDescription('when')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('when').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('when').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('when').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('when')") //
                 .isMany(false) //
                 .value("feature:when") //
                 .createOperation("aql:parent.create(kind, feature)") //

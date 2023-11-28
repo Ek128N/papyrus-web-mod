@@ -79,7 +79,7 @@ public class ElementImportUmlPage {
                 .help("aql:self.getFeatureDescription('importedElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('importedElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('importedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('importedElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('importedElement')") //
                 .value("feature:importedElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('importedElement')") //

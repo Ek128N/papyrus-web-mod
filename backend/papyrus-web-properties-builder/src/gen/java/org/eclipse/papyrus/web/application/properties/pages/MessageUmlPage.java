@@ -81,7 +81,7 @@ public class MessageUmlPage {
                 .help("aql:self.getFeatureDescription('signature')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('signature').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('signature').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('signature').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('signature')") //
                 .value("feature:signature") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('signature')") //
@@ -99,7 +99,7 @@ public class MessageUmlPage {
                 .help("aql:self.getFeatureDescription('argument')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('argument').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('argument').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('argument').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('argument')") //
                 .isMany(true) //
                 .value("feature:argument") //
                 .createOperation("aql:parent.create(kind, feature)") //

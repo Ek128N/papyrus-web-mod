@@ -80,7 +80,7 @@ public class InteractionUseUmlPage {
                 .help("aql:self.getFeatureDescription('refersTo')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('refersTo').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('refersTo').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('refersTo').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('refersTo')") //
                 .value("feature:refersTo") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('refersTo')") //

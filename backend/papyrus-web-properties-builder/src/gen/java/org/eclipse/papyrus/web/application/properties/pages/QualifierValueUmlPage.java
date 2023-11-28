@@ -63,7 +63,7 @@ public class QualifierValueUmlPage {
                 .help("aql:self.getFeatureDescription('qualifier')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('qualifier').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('qualifier').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('qualifier').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('qualifier')") //
                 .value("feature:qualifier") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('qualifier')") //
@@ -81,7 +81,7 @@ public class QualifierValueUmlPage {
                 .help("aql:self.getFeatureDescription('value')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('value').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('value').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('value').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('value')") //
                 .value("feature:value") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('value')") //

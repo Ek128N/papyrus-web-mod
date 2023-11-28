@@ -88,7 +88,7 @@ public class EnumerationUmlPage {
                 .help("aql:self.getFeatureDescription('ownedLiteral')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedLiteral').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedLiteral').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedLiteral').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedLiteral')") //
                 .isMany(true) //
                 .value("feature:ownedLiteral") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -104,7 +104,7 @@ public class EnumerationUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //

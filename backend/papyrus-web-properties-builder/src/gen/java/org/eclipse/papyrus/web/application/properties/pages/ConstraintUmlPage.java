@@ -84,7 +84,7 @@ public class ConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('context')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('context').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('context').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('context').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('context')") //
                 .value("feature:context") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('context')") //
@@ -102,7 +102,7 @@ public class ConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('constrainedElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('constrainedElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('constrainedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('constrainedElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('constrainedElement')") //
                 .value("feature:constrainedElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('constrainedElement')") //
@@ -121,7 +121,7 @@ public class ConstraintUmlPage {
                 .help("aql:self.getFeatureDescription('specification')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('specification').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('specification').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('specification').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('specification')") //
                 .isMany(false) //
                 .value("feature:specification") //
                 .createOperation("aql:parent.create(kind, feature)") //

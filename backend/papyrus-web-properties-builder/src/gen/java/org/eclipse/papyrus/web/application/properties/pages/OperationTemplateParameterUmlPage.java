@@ -67,7 +67,7 @@ public class OperationTemplateParameterUmlPage {
                 .help("aql:self.getFeatureDescription('default')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('default').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('default').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('default').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('default')") //
                 .value("feature:default") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('default')") //
@@ -85,7 +85,7 @@ public class OperationTemplateParameterUmlPage {
                 .help("aql:self.getFeatureDescription('ownedDefault')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedDefault').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedDefault').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedDefault').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedDefault')") //
                 .isMany(false) //
                 .value("feature:ownedDefault") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -100,7 +100,7 @@ public class OperationTemplateParameterUmlPage {
                 .help("aql:self.getFeatureDescription('ownedParameteredElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedParameteredElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedParameteredElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedParameteredElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedParameteredElement')") //
                 .isMany(false) //
                 .value("feature:ownedParameteredElement") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -115,7 +115,7 @@ public class OperationTemplateParameterUmlPage {
                 .help("aql:self.getFeatureDescription('parameteredElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('parameteredElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('parameteredElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('parameteredElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('parameteredElement')") //
                 .value("feature:parameteredElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('parameteredElement')") //

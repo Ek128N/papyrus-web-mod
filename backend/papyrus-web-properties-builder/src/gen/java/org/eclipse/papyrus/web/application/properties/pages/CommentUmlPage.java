@@ -70,7 +70,7 @@ public class CommentUmlPage {
                 .help("aql:self.getFeatureDescription('annotatedElement')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('annotatedElement').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('annotatedElement').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('annotatedElement').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('annotatedElement')") //
                 .value("feature:annotatedElement") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('annotatedElement')") //

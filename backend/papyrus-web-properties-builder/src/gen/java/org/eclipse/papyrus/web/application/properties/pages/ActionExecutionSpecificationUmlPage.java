@@ -82,7 +82,7 @@ public class ActionExecutionSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('action')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('action').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('action').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('action').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('action')") //
                 .value("feature:action") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('action')") //
@@ -100,7 +100,7 @@ public class ActionExecutionSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('finish')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('finish').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('finish').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('finish').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('finish')") //
                 .value("feature:finish") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('finish')") //
@@ -118,7 +118,7 @@ public class ActionExecutionSpecificationUmlPage {
                 .help("aql:self.getFeatureDescription('start')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('start').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('start').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('start').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('start')") //
                 .value("feature:start") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('start')") //

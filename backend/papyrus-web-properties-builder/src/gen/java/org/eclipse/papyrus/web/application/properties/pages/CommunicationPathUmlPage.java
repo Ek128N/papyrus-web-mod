@@ -97,7 +97,7 @@ public class CommunicationPathUmlPage {
                 .help("aql:self.getFeatureDescription('memberEnd')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('memberEnd').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('memberEnd').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('memberEnd').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('memberEnd')") //
                 .value("feature:memberEnd") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('memberEnd')") //
@@ -116,7 +116,7 @@ public class CommunicationPathUmlPage {
                 .help("aql:self.getFeatureDescription('navigableOwnedEnd')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('navigableOwnedEnd').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('navigableOwnedEnd').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('navigableOwnedEnd').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('navigableOwnedEnd')") //
                 .value("feature:navigableOwnedEnd") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('navigableOwnedEnd')") //
@@ -135,7 +135,7 @@ public class CommunicationPathUmlPage {
                 .help("aql:self.getFeatureDescription('ownedEnd')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('ownedEnd').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('ownedEnd').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('ownedEnd').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('ownedEnd')") //
                 .isMany(true) //
                 .value("feature:ownedEnd") //
                 .createOperation("aql:parent.create(kind, feature)") //
@@ -151,7 +151,7 @@ public class CommunicationPathUmlPage {
                 .help("aql:self.getFeatureDescription('useCase')") //
                 .isEnable("aql:self.eClass().getEStructuralFeature('useCase').changeable") //
                 .owner("") //
-                .type("aql:self.eClass().getEStructuralFeature('useCase').eType.ePackage.name + '::' + self.eClass().getEStructuralFeature('useCase').eType.name") //
+                .type("aql:self.getFeatureTypeQualifiedName('useCase')") //
                 .value("feature:useCase") //
                 .searchScope("aql:self.getAllReachableRootElements()") //
                 .dropdownOptions("aql:self.getAllReachableElements('useCase')") //
