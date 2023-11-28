@@ -33,7 +33,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -49,7 +48,6 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
@@ -62,6 +60,7 @@ import org.eclipse.sirius.web.services.documents.EObjectRandomIDManager;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
+import org.eclipse.uml2.uml.internal.resource.UMLResourceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -122,10 +121,8 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
             String projectId = uploadDocumentInput.editingContextId();
             UploadFile file = uploadDocumentInput.file();
 
-            Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+            Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext).filter(EditingContext.class::isInstance).map(EditingContext.class::cast)
+                    .map(EditingContext::getDomain);
 
             String name = file.getName().trim();
             if (optionalEditingDomain.isPresent()) {
@@ -141,13 +138,12 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
 
                     if (resourceSet.getResource(uri, false) == null) {
 
-                        ResourceSet loadingResourceSet = new ResourceSetImpl();
-                        loadingResourceSet.setPackageRegistry(resourceSet.getPackageRegistry());
+                        ResourceSet loadingResourceSet = this.editingDomainFactoryService.createEditingDomain(UUID.randomUUID().toString()).getResourceSet();
 
                         JsonResource resource = new JSONResourceFactory().createResource(uri);
                         loadingResourceSet.getResources().add(resource);
                         try (var inputStream = new ByteArrayInputStream(document.getContent().getBytes())) {
-                            resource.load(inputStream, null);
+                            resource.load(inputStream, adapterFactoryEditingDomain.getResourceSet().getLoadOptions());
                         } catch (IOException exception) {
                             this.logger.warn(exception.getMessage(), exception);
                         }
@@ -211,22 +207,17 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
     private boolean containsProxies(Resource resource) {
         Iterable<EObject> iterable = () -> EcoreUtil.getAllProperContents(resource, false);
         return StreamSupport.stream(iterable.spliterator(), false)
-            .anyMatch(eObject -> eObject.eClass().getEAllReferences().stream()
-                    .filter(ref -> !ref.isContainment() && eObject.eIsSet(ref))
-                    .anyMatch(ref -> {
-                        boolean containsAProxy = false;
-                        Object value = eObject.eGet(ref);
-                        if (ref.isMany()) {
-                            List<?> list = (List<?>) value;
-                            containsAProxy = list.stream()
-                                    .filter(EObject.class::isInstance)
-                                    .map(EObject.class::cast)
-                                    .anyMatch(EObject::eIsProxy);
-                        } else if (value instanceof EObject eObjectValue) {
-                            containsAProxy = eObjectValue.eIsProxy();
-                        }
-                        return containsAProxy;
-                    }));
+                .anyMatch(eObject -> eObject.eClass().getEAllReferences().stream().filter(ref -> !ref.isContainment() && eObject.eIsSet(ref)).anyMatch(ref -> {
+                    boolean containsAProxy = false;
+                    Object value = eObject.eGet(ref);
+                    if (ref.isMany()) {
+                        List<?> list = (List<?>) value;
+                        containsAProxy = list.stream().filter(EObject.class::isInstance).map(EObject.class::cast).anyMatch(EObject::eIsProxy);
+                    } else if (value instanceof EObject eObjectValue) {
+                        containsAProxy = eObjectValue.eIsProxy();
+                    }
+                    return containsAProxy;
+                }));
     }
 
     /**
@@ -252,13 +243,22 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
         bufferedInputStream.mark(Integer.MAX_VALUE);
         try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
             String line = reader.readLine();
-            Map<String, Object> options = new HashMap<>();
+            Map<Object, Object> options = new HashMap<>();
             if (line != null) {
                 if (line.contains("{")) {
                     resource = new JSONResourceFactory().createResource(resourceURI);
                 } else if (line.contains("<")) {
-                    resource = new XMIResourceImpl(resourceURI);
-                    options = new EMFResourceUtils().getXMILoadOptions();
+                    AdapterFactoryEditingDomain editingDomain = this.editingDomainFactoryService.createEditingDomain(UUID.randomUUID().toString());
+                    resource = editingDomain.getResourceSet().getResource(resourceURI, false);
+                    if (resourceURI.toString().endsWith(".uml")) {
+
+                        resource = new UMLResourceImpl(resourceURI);
+                    } else {
+
+                        resource = new XMIResourceImpl(resourceURI);
+                    }
+
+                    options = resourceSet.getLoadOptions();
                 }
             }
             bufferedInputStream.reset();
