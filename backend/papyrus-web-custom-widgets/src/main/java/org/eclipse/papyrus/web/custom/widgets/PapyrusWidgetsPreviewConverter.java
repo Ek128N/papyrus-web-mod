@@ -25,7 +25,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidget
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsSwitch;
 import org.eclipse.papyrus.web.custom.widgets.primitiveradio.PrimitiveRadioDescription;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -45,15 +45,21 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
 
     private final VariableManager variableManager;
 
-    public PapyrusWidgetsPreviewConverter(VariableManager variableManager) {
+    private final FormDescriptionEditorDescription formDescriptionEditorDescription;
+
+
+    public PapyrusWidgetsPreviewConverter(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription) {
         this.variableManager = variableManager;
+        this.formDescriptionEditorDescription = formDescriptionEditorDescription;
     }
 
     @Override
-    public AbstractWidgetDescription caseLanguageExpressionWidgetDescription(LanguageExpressionWidgetDescription object) {
-
-        var builder = LanguageExpressionDescription.newLanguageExpressionDescription(UUID.randomUUID().toString()).idProvider(new WidgetIdProvider())
-                .labelProvider(varMan -> "")//
+    public AbstractWidgetDescription caseLanguageExpressionWidgetDescription(LanguageExpressionWidgetDescription languageExpressionDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, languageExpressionDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+        var builder = LanguageExpressionDescription.newLanguageExpressionDescription(UUID.randomUUID().toString()).idProvider(vm -> id)
+                .labelProvider(varMan -> this.getWidgetLabel(languageExpressionDescription, "Language Expression"))//
                 .iconURLProvider(varMan -> List.of()) //
                 .targetObjectIdProvider(varMan -> "")//
                 .isReadOnlyProvider(varMan -> false);
@@ -64,11 +70,13 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
     }
 
     @Override
-    public AbstractWidgetDescription casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription object) {
-
-        var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(UUID.randomUUID().toString()).idProvider(new WidgetIdProvider()) //
+    public AbstractWidgetDescription casePrimitiveRadioWidgetDescription(PrimitiveRadioWidgetDescription primitiveRadioDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, primitiveRadioDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+        var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(UUID.randomUUID().toString()).idProvider(vm -> id) //
                 .targetObjectIdProvider(varMan -> "")//
-                .labelProvider(varMan -> "") //
+                .labelProvider(varMan -> this.getWidgetLabel(primitiveRadioDescription, "Primitive radio")) //
                 .iconURLProvider(varMan -> List.of()) //
                 .isReadOnlyProvider(varMan -> false) //
                 .candidateValueProvider(varMan -> "") //
@@ -84,10 +92,10 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
     public AbstractWidgetDescription casePrimitiveListWidgetDescription(PrimitiveListWidgetDescription viewListDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, viewListDescription);
-
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescription.Builder builder = org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescription
                 .newPrimitiveListDescription(UUID.randomUUID().toString())//
-                .idProvider(varMan -> "")//
+                .idProvider(varMan -> id)//
                 .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "Primitive List"))//
                 .iconURLProvider(varMan -> List.of())//
                 .isReadOnlyProvider(varMan -> false)//
@@ -146,9 +154,12 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
 
     @Override
     public AbstractWidgetDescription caseContainmentReferenceWidgetDescription(ContainmentReferenceWidgetDescription description) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, description);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder = org.eclipse.papyrus.web.custom.widgets.containmentreference.ContainmentReferenceWidgetDescription.newContainmentReferenceWidgetDescription(UUID.randomUUID().toString()) //
                 .targetObjectIdProvider(varMan -> "") //
-                .idProvider(varMan -> "") //
+                .idProvider(varMan -> id) //
                 .labelProvider(varMan -> this.getWidgetLabel(description, "Containment Reference")) //
                 .isReadOnlyProvider(varMan -> false) //
                 .iconURLProvider(varMan -> List.of()) //
@@ -176,8 +187,11 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
 
     @Override
     public AbstractWidgetDescription caseMonoReferenceWidgetDescription(MonoReferenceWidgetDescription referenceDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, referenceDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder =  ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
-                .idProvider(vm -> "")
+                .idProvider(vm -> id)
                 .targetObjectIdProvider(vm -> "")
                 .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Mono Reference"))
                 .iconURLProvider(varMan -> List.of())
@@ -215,8 +229,11 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
 
     @Override
     public AbstractWidgetDescription caseMultiReferenceWidgetDescription(MultiReferenceWidgetDescription referenceDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, referenceDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
-            .idProvider(vm -> "")
+            .idProvider(vm -> id)
             .targetObjectIdProvider(vm -> "")
             .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Multi Reference"))
             .iconURLProvider(varMan -> List.of())

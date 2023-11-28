@@ -30,7 +30,7 @@ public class PapyrusWidgetsPreviewConverterProvider implements IWidgetPreviewCon
 
     @Override
     public Switch<AbstractWidgetDescription> getWidgetConverter(FormDescriptionEditorDescription formDescriptionEditorDescription, VariableManager variableManager) {
-        return new PapyrusWidgetsPreviewConverter(variableManager);
+        return new PapyrusWidgetsPreviewConverter(variableManager, formDescriptionEditorDescription);
     }
 
 }

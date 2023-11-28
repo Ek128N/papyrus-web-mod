@@ -16,8 +16,11 @@ package org.eclipse.papyrus.web.custom.widgets;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.papyrus.web.custom.widgets.containmentreference.ContainmentReferenceWidgetDescriptor;
+import org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionDescriptor;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescriptor;
+import org.eclipse.papyrus.web.custom.widgets.primitiveradio.PrimitiveRadioDescriptor;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +36,17 @@ public class PapyrusWidgetsDescriptionProvider implements IWidgetDescriptionProv
 
     @Override
     public Optional<EClass> getWidgetDescriptionType(String widgetKind) {
-
+        Optional<EClass> res = Optional.empty();
         if (Objects.equal(widgetKind, PrimitiveListWidgetDescriptor.TYPE)) {
-            return Optional.of(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION);
-        } else {
-            return Optional.empty();
+            res = Optional.of(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION);
+        } else if (Objects.equal(widgetKind, LanguageExpressionDescriptor.TYPE)) {
+            res = Optional.of(PapyrusWidgetsPackage.Literals.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION);
+        } else if (Objects.equal(widgetKind, PrimitiveRadioDescriptor.TYPE)) {
+            res = Optional.of(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION);
+        } else if (Objects.equal(widgetKind, ContainmentReferenceWidgetDescriptor.TYPE)) {
+            res = Optional.of(PapyrusWidgetsPackage.Literals.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION);
         }
+        return res;
     }
 
 }

@@ -58,6 +58,9 @@ import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidge
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
 import { SiriusWebApplication, Views } from '@papyrus-web/sirius-web-application';
+import { ContainmentReferencePreview } from './widgets/containmentReference/ContainmentReferencePreview';
+import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
+import { LanguageExpressionPreview } from './widgets/languageExpression/LanguageExpressionPreview';
 import { Help } from './core/Help';
 import './Sprotty.css';
 import './fonts.css';
@@ -96,6 +99,12 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
       return ReferencePreview;
     } else if (widget.__typename === 'PrimitiveListWidget') {
       return PrimitiveListWidgetPreview;
+    } else if (widget.__typename === 'LanguageExpression') {
+      return LanguageExpressionPreview;
+    } else if (widget.__typename === 'PrimitiveRadio') {
+      return PrimitiveRadioPreview;
+    } else if (widget.__typename === 'ContainmentReferenceWidget') {
+      return ContainmentReferencePreview;
     }
     return null;
   },
