@@ -22,12 +22,14 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IObjectServiceDelegate;
 import org.eclipse.uml2.uml.Element;
+import org.springframework.stereotype.Service;
 
 /**
  * Specialized version of {@link IObjectService} for Papyrus application.
  *
  * @author Arthur Daussy
  */
+@Service
 public class PapyrusObjectService implements IObjectServiceDelegate {
 
     private List<IImageOverrideService> imageOverriders;
