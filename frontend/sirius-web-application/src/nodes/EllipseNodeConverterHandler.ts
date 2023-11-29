@@ -14,6 +14,7 @@ import {
   AlignmentMap,
   BorderNodePositon,
   ConnectionHandle,
+  GQLDiagram,
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
@@ -23,12 +24,15 @@ import {
   INodeConverterHandler,
   convertHandles,
   convertLabelStyle,
+  convertLineStyle,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
+
 const toEllipseNode = (
+  gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
@@ -48,6 +52,8 @@ const toEllipseNode = (
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+
   const data: EllipseNodeData = {
     targetObjectId,
     targetObjectLabel,
@@ -58,7 +64,7 @@ const toEllipseNode = (
       backgroundColor: style.color,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
-      borderStyle: style.borderStyle,
+      borderStyle: convertLineStyle(style.borderStyle),
     },
     label: undefined,
     faded: state === GQLViewModifier.Faded,
@@ -69,6 +75,7 @@ const toEllipseNode = (
     borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
     connectionHandles,
     labelEditable,
+    isNew,
   };
 
   if (insideLabel) {
@@ -116,6 +123,22 @@ const toEllipseNode = (
     node.parentNode = gqlParentNode.id;
   }
 
+  const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];
+  if (nodeLayoutData) {
+    const {
+      position,
+      size: { height, width },
+    } = nodeLayoutData;
+    node.position = position;
+    node.height = height;
+    node.width = width;
+    node.style = {
+      ...node.style,
+      width: `${node.width}px`,
+      height: `${node.height}px`,
+    };
+  }
+
   return node;
 };
 
@@ -126,6 +149,7 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
 
   handle(
     convertEngine: IConvertEngine,
+    gqlDiagram: GQLDiagram,
     gqlNode: GQLNode<GQLEllipseNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
@@ -134,8 +158,20 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toEllipseNode(gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
-    convertEngine.convertNodes(gqlNode.borderNodes ?? [], gqlNode, nodes, nodeDescriptions);
-    convertEngine.convertNodes(gqlNode.childNodes ?? [], gqlNode, nodes, nodeDescriptions);
+    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.borderNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.borderNodeDescriptions ?? []
+    );
+    convertEngine.convertNodes(
+      gqlDiagram,
+      gqlNode.childNodes ?? [],
+      gqlNode,
+      nodes,
+      nodeDescription?.childNodeDescriptions ?? []
+    );
   }
 }

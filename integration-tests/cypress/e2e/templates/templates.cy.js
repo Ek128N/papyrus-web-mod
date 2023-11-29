@@ -39,6 +39,6 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('delete').click();
 
     cy.getByTestId('class diagram test-more').should('not.exist');
-    cy.getByTestId('diagram-complete-message').should('exist');
+    cy.getByTestId('representation-area').should('be.visible').contains('The representation is not available anymore');
   });
 });

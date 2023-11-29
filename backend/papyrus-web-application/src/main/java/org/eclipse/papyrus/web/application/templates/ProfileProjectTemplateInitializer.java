@@ -111,7 +111,7 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
         Profile profile = (Profile) r.getContents().get(0);
 
         return this.diagramBuilderService
-                .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram") //$NON-NLS-1$
+                .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram__SPROTTY") //$NON-NLS-1$
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);

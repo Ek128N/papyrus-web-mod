@@ -99,7 +99,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                 .getConvertedNode(PADDiagramDescriptionBuilder.PD_REP_NAME);
 
         return this.diagramBuilderService
-                .createDiagram(editingContext, diagramDescription -> PADDiagramDescriptionBuilder.PD_REP_NAME.equals(diagramDescription.getLabel()), model, "Root Package Diagram") //$NON-NLS-1$
+                .createDiagram(editingContext, diagramDescription -> PADDiagramDescriptionBuilder.PD_REP_NAME.equals(diagramDescription.getLabel()), model, "Root Package Diagram__SPROTTY") //$NON-NLS-1$
                 .flatMap(diagram -> {
                     return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
                         this.packageDiagramService.drop(model, null, editingContext, diagramContext, convertedNodes);
