@@ -37,7 +37,7 @@ The <<diagram-panel,`central area`>> is the place where diagrams live and the <<
 [[project-explorer-panel]]
 === Project Explorer panel
 
-The Explorer panel displays all elements contained by the _Project_. Roots nodes are the _Resources_ stored in the project where all elements underneath live. The root element for _UML_ resources is generally a _Model_ or a _Profile_.
+The Explorer panel displays all elements contained by the _Project_. Root nodes are the _Resources_ stored in the project where all elements underneath live. The root element for _UML_ resources is generally a _Model_ or a _Profile_.
 
 WARNING: Note that the name of the resource should always end with `.uml`.
 
@@ -48,7 +48,7 @@ To create a _New Representation Diagram_, use the contextual menu on any semanti
 The _Explorer_ tree contains semantic elements of the _Model_ and diagrams at the same level.
 Diagram elements can be easily recognized by the diagram icon image:diagram.svg[diagram icon,16] whereas semantic elements have specific icons depending on their nature.
 
-From the _Explorer_ view, it is possible to create new semantic elements. To do so, use the contextual menu on any semantic element and choose _New Object_. In the dialog, select the new element to create among all semantic elements listed in the dropdown (names are prefixed by the feature containment).
+From the _Explorer_ view, it is possible to create new semantic elements. To do so, use the contextual menu on any semantic element and choose _New Object_. In the dialog, select the new element to create among all semantic elements listed in the dropdown (names are prefixed by the containment feature).
 
 Regarding the representation creation, it is worth noting that _Representations_ depend on the selected semantic element (the one used to open the contextual menu). Here are available representations and their creation contexts:
 
@@ -64,11 +64,18 @@ Regarding the representation creation, it is worth noting that _Representations_
 | _Package_
 | _Package_
 
+| _Profile Diagram_
+| _Profile or Package (in a `.profile.uml` model)_
+
 | _State Machine Diagram_
 | _State Machine_
+
+| _Use Case Diagram_
+| _Package_
+
 |===
 
-As we can see in the table above, the _State Machine Diagram_ can only be added from a _State Machine_ semantic element.
+As we can see in the table above, the _State Machine Diagram_ can only be created on a _State Machine_ semantic element.
 
 Deletion of semantic elements (and representation diagrams) is possible through the contextual menu of tree nodes.
 
@@ -124,48 +131,53 @@ Once a graphical element is selected, a second click on it will reveal a set of 
 
 The Palette displays all the tools available according to the current selection. It has the following subgroups from left to right:
 
-* _Connector_ action
-Action to initiate a _Connection_ from the current element to another one. This action is only present in the Palette when a _Connection_ is available. Once the second element is chosen, the list of connections between those elements is shown to specify the actual nature of this new _Connection_
 * Children element creation group +
 All children's creation actions are grouped in a dropdown list depending on the selected element's nature.
-* Edge creation group +
-This group presents the list of the available _Connection_ types starting from the selected element, once one _Connection_ has been chosen, only compatible elements can be targeted to finish the edge creation.
 * Generic tools (Edit, Delete from the diagram, Delete from the model, Hide, Fade)
 As far as Edit is concerned, it is worth noting that names (or more generally texts) can be edited in the following ways:
  ** Edit action of the Palette
- ** Double-click on elements
  ** Press F2
 +
 WARNING: As far as _Edge_ elements are concerned, start and end labels can only be edited by double-clicking them. The above ways will edit the edge label itself (the centered label of the edge).
 * Collapse / Expand tools +
 Those actions are only available for containers or compartments (e.g _Package_ or _Operations Compartment_ of a _Class_)
-* Close the Palette action
 
 The Diagram panel has global actions grouped in a horizontal toolbar underneath the diagram tabs.
+
+image::diagramPalette.png[Labels Overview,400, align="center"]
+
 This toolbar contains the following actions:
 
-* Zoom percent selector
-* Zoom group
+* Display full screen
 * Fit screen action
-* Auto Arrange all action
+* Zoom group
 * Share the diagram link
+* Export diagram as SVG
+* Display Grid
 * Reveal hidden elements of action
 * Reveal faded elements of action
 
 ===== Label
-Keywords on Nodes and Edges are displayed on the first separate line of the label. If the semantic element is stereotyped, the stereotype is displayed on a second separate line. Finally, the label will be displayed on the third line.The label can be the simple name of the element, or more complex in some specific cases detailed in the corresponding diagram section.
+Keywords on Nodes and Edges are displayed on the first separate line of the label. If the semantic element is stereotyped, the stereotype is displayed on a second separate line. Finally, the label will be displayed on the third line. The label can be the simple name of the element, or more complex in some specific cases detailed in the corresponding diagram section.
 Label of UML elements with the _isAbstract_ feature set to true is displayed in italic.
 Label of UML elements with the _isStatic_ feature set to true is displayed underlined.
 
 image::labelsDisplayed.png[Labels Overview,400, align="center"]
 
 ===== Edge Creation
-Edges can be created between Nodes whose types match the Edge's source and target types. If the creation of an Edge is not authorized, the mouse cursor will be showing a forbidden sign. It is not possible for now to create an Edge between two Edges or between an Edge and a Node. 
+Edges can be created between Nodes whose types match the Edge's source and target types. If the creation of an Edge is not authorized, the target node appears faded. When user try to create an edge, he clicks first on the source element to display arrow. Then he clicks on one of these arrows and stay click until the target. User can see the feedback of the edge and the target node is highlighted. It is not possible for now to create an Edge between two Edges or between an Edge and a Node. 
+
+image::edgeCreation.png[Labels Overview,400, align="center"]
 
 ===== Semantic DnD
 Users can select elements in the Explorer view and drag and drop them into their container Nodes in the diagram. This drag and drop doesn't perform any semantic modification, except in specific case detailed in the corresponding diagram section. In addition, some diagrams allow semantic drag and drop of any element from the Explorer view (in the same resourceSet as the diagram) on the background of the diagram.  
 
 Dragging and dropping an element represented as an Edge on the diagram will create the source/target elements of the Edge if they aren't already represented. Note that Edges can be dropped anywhere on the diagram, but they will only appear in their semantic container. 
+
+===== Graphical DnD
+User can select a node on the diagram and drag and drop it in an other container node. Only authorized containers are revealed on the diagram, forbidden targets are faded. When user try to drag and drop a node, the target container node is highlighted.
+
+image::graphicalDragAndDrop.png[Labels Overview,400, align="center"]
 
 ===== Reconnection
 Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element. 
