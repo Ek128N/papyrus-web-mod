@@ -41,10 +41,12 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchServ
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.ElementImport;
@@ -64,6 +66,8 @@ import org.springframework.stereotype.Service;
 public class ProfileDiagramService extends AbstractDiagramService {
 
     private IRepresentationSearchService representationSearchService;
+
+    private IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
@@ -88,6 +92,8 @@ public class ProfileDiagramService extends AbstractDiagramService {
      *            Service used to navigate in DiagramDescription
      * @param representationSearchService
      *            helper used to find representation
+     * @param representationDescriptionSearchService
+     *            helper used to find representation descriptions
      * @param papyrusRepresentationRegistry
      *            registry that keeps track of all {@link DiagramDescription}s used in Papyrus application
      * @param logger
@@ -95,11 +101,12 @@ public class ProfileDiagramService extends AbstractDiagramService {
      */
     // CHECKSTYLE:OFF
     public ProfileDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService, IEditableChecker editableChecker,
-            IViewDiagramDescriptionService viewDiagramService, IRepresentationSearchService representationSearchService, PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry,
-            ServiceLogger logger) {
+            IViewDiagramDescriptionService viewDiagramService, IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, ServiceLogger logger) {
         // CHECKSTYLE:ON
         super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
         this.representationSearchService = representationSearchService;
+        this.representationDescriptionSearchService = representationDescriptionSearchService;
         this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
         this.logger = logger;
     }
@@ -138,8 +145,9 @@ public class ProfileDiagramService extends AbstractDiagramService {
         if (representationId != null && !representationId.isEmpty()) {
             Optional<Diagram> optDiagram = this.representationSearchService.findById(editingContext, representationId, Diagram.class);
             if (optDiagram.isPresent()) {
+                Optional<IRepresentationDescription> optDescription = this.representationDescriptionSearchService.findById(editingContext, optDiagram.get().getDescriptionId());
                 EObject eObject = (EObject) this.getObjectService().getObject(editingContext, optDiagram.get().getTargetObjectId()).orElse(null);
-                result = this.isProfileModel(eObject);
+                result = optDescription.isPresent() && Objects.equals(optDescription.get().getLabel(), PRDDiagramDescriptionBuilder.PRD_REP_NAME) && this.isProfileModel(eObject);
             }
         }
         return result;
