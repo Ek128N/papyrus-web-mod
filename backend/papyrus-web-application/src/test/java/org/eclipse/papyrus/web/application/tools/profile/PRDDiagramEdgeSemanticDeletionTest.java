@@ -62,7 +62,7 @@ public class PRDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
     private static final String STEREOTYPE_TARGET = "StereotypeTarget";
 
     public PRDDiagramEdgeSemanticDeletionTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> associationAndGeneralizationParameters() {

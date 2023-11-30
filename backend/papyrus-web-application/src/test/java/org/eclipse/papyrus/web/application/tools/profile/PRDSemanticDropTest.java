@@ -82,7 +82,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
     private static final String DROP_SUFFIX = "Drop";
 
     public PRDSemanticDropTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> dropOnDiagramAndPackageAndProfileParameters() {

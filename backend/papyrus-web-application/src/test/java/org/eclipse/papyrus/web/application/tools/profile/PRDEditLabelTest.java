@@ -81,7 +81,7 @@ public class PRDEditLabelTest extends EditLabelTest {
     private static final String STEREOTYPE_LABEL_PREFIX = "«stereotype»" + System.lineSeparator();
 
     public PRDEditLabelTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> parameterProvider() {

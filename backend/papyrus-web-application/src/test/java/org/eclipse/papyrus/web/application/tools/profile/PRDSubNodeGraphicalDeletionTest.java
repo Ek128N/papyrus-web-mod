@@ -83,7 +83,7 @@ public class PRDSubNodeGraphicalDeletionTest extends NodeDeletionTest {
     private static final String STEREOTYPE_SUB_NODE_SUFFIX = "_In_Stereotype";
 
     public PRDSubNodeGraphicalDeletionTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> packageAndProfileChildrenParameters() {

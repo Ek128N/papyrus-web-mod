@@ -43,7 +43,7 @@ public class PRDDiagramNodeCreationTest extends NodeCreationTest {
     private static final EReference PACKAGED_ELEMENT = UML.getPackage_PackagedElement();
 
     public PRDDiagramNodeCreationTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> parameterProvider() {

@@ -44,7 +44,7 @@ public class PRDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     private static final String STEREOTYPE_EDGE_TARGET = "Stereotype" + TARGET;
 
     public PRDReconnectEdgeSourceTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> associationAndGeneralizationParameters() {

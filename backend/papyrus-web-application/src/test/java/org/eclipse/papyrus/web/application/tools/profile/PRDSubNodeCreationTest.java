@@ -69,7 +69,7 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
     private static final String STEREOTYPE_OPERATION_COMPARTMENT = "PRD_Stereotype_Operations_SHARED_CompartmentNode";
 
     public PRDSubNodeCreationTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> packageAndProfileChildrenParameters() {

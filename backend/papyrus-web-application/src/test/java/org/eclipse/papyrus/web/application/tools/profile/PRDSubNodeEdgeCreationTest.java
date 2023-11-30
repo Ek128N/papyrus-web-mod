@@ -67,7 +67,7 @@ public class PRDSubNodeEdgeCreationTest extends EdgeCreationTest {
     private String packageContainerId;
 
     public PRDSubNodeEdgeCreationTest() {
-        super("test.profile", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
+        super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
     private static Stream<Arguments> associationAndGeneralizationParameters() {
