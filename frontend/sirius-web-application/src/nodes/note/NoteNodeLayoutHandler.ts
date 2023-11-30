@@ -16,7 +16,11 @@ import {
   ILayoutEngine,
   INodeLayoutHandler,
   NodeData,
+  applyRatioOnNewNodeSizeValue,
+  computePreviousSize,
   findNodeIndex,
+  getNodeOrMinHeight,
+  getNodeOrMinWidth,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node } from 'reactflow';
 import { NoteNodeData } from './NoteNode.types';
@@ -30,12 +34,12 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
   handle(
     _layoutEngine: ILayoutEngine,
-    _previousDiagram: Diagram | null,
+    previousDiagram: Diagram | null,
     node: Node<NoteNodeData, 'noteNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
     _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    _forceWidth?: number
+    forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
@@ -50,7 +54,33 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       borderWidth * 2;
     const labelHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
-    node.width = Math.max(labelWidth, node.data.defaultWidth ?? 0);
-    node.height = Math.max(labelHeight, node.data.defaultHeight ?? 0);
+
+    const nodeWidth = labelWidth;
+    const nodeHeight = labelHeight + borderWidth * 2;
+
+    const minNodeWith = forceWidth ?? getNodeOrMinWidth(nodeWidth, node); // WARN: not sure yet for the forceWidth to be here.
+    const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
+
+    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousDimensions = computePreviousSize(previousNode, node);
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
+        node.width = minNodeWith;
+      } else {
+        node.width = previousDimensions.width;
+      }
+      if (minNodeheight > previousDimensions.height) {
+        node.height = minNodeheight;
+      } else {
+        node.height = previousDimensions.height;
+      }
+    } else {
+      node.width = minNodeWith;
+      node.height = minNodeheight;
+    }
+
+    if (node.data.nodeDescription?.keepAspectRatio) {
+      applyRatioOnNewNodeSizeValue(node);
+    }
   }
 }

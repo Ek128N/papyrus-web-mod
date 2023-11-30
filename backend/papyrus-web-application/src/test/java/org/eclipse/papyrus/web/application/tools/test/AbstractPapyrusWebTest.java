@@ -211,7 +211,7 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         this.projectId = this.projectCreator.createProject("Instance");
         this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeDescriptionRegistryConfigurer.EMPTY_ID);
         this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, "TEST__REACT_FLOW");
+        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, "TEST");
         this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
     }
 

@@ -122,15 +122,10 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const labelOnlyWidth =
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().width ?? 0) + rectangularNodePadding;
-
-    const newLabelWidth = labelOnlyWidth / 0.4;
 
     const nodeWidth =
       Math.max(
         directChildrenAwareNodeWidth,
-        newLabelWidth,
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth,
         node.data.defaultWidth ? node.data.defaultWidth : 0
@@ -157,7 +152,11 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
     if (node.data.nodeDescription?.userResizable) {
-      node.width = minNodeWith;
+      if (minNodeWith > previousDimensions.width) {
+        node.width = minNodeWith;
+      } else {
+        node.width = previousDimensions.width;
+      }
       if (minNodeheight > previousDimensions.height) {
         node.height = minNodeheight;
       } else {
@@ -179,21 +178,16 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     previousDiagram: Diagram | null,
     node: Node<PackageNodeData, 'packageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
-    borderWidth: number,
+    _borderWidth: number,
     _forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    const labelWidth =
-      rectangularNodePadding +
-      (labelElement?.getBoundingClientRect().width ?? 0) +
-      rectangularNodePadding +
-      borderWidth * 2;
     const labelHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const minNodeWith = Math.max(labelWidth, node.data.defaultWidth ? node.data.defaultWidth : 0);
+    const minNodeWith = Math.max(node.data.defaultWidth ? node.data.defaultWidth : 0);
     const minNodeheight = Math.max(labelHeight, node.data.defaultHeight ? node.data.defaultHeight : 0);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);

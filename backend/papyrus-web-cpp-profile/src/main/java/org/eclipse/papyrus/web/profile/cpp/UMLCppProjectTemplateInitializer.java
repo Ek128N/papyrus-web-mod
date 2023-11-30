@@ -195,16 +195,14 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
     private Optional<Diagram> createMainCppSMClassDiagram(IEditingContext editingContext, Resource r) {
 
         Optional<Diagram> optDiagram = this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()),
-                r.getContents().get(0), "SimpleSM__REACT_FLOW"); //$NON-NLS-1$
+                r.getContents().get(0), "SimpleSM_"); //$NON-NLS-1$
 
         Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
         Model model = (Model) r.getContents().get(0);
 
         return optDiagram.flatMap(diagram -> this.dropModelAndComment(editingContext, convertedNodes, model, diagram))
-                // Need a refresh to make the package node appear
                 .flatMap(diagram -> this.dropMainClassAndComment(editingContext, convertedNodes, model, diagram))//
-                // .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);
                     return Optional.of(diagram);

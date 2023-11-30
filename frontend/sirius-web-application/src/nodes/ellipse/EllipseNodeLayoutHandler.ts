@@ -19,6 +19,7 @@ import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
   computePreviousPosition,
+  computePreviousSize,
   findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
@@ -134,8 +135,28 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const nodeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
       borderWidth * 2;
-    node.width = forceWidth ?? getNodeOrMinWidth(nodeWidth, node);
-    node.height = getNodeOrMinHeight(nodeHeight, node);
+
+    const minNodeWith = forceWidth ?? getNodeOrMinWidth(nodeWidth, node); // WARN: not sure yet for the forceWidth to be here.
+    const minNodeheight = getNodeOrMinHeight(nodeHeight, node);
+
+    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousDimensions = computePreviousSize(previousNode, node);
+    if (node.data.nodeDescription?.userResizable) {
+      if (minNodeWith > previousDimensions.width) {
+        node.width = minNodeWith;
+      } else {
+        node.width = previousDimensions.width;
+      }
+      if (minNodeheight > previousDimensions.height) {
+        node.height = minNodeheight;
+      } else {
+        node.height = previousDimensions.height;
+      }
+    } else {
+      node.width = minNodeWith;
+      node.height = minNodeheight;
+    }
+
     if (node.data.nodeDescription?.keepAspectRatio) {
       applyRatioOnNewNodeSizeValue(node);
     }

@@ -122,7 +122,7 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
     ...data.label,
     style: {
       ...data?.label?.style,
-      whiteSpace: 'nowrap',
+      whiteSpace: 'pre',
       overflow: 'hidden',
       justifyContent: 'flex-start',
       textAlign: 'left',
