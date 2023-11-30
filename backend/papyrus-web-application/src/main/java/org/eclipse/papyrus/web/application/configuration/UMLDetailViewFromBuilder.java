@@ -14,7 +14,7 @@
 package org.eclipse.papyrus.web.application.configuration;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
-import org.eclipse.papyrus.web.application.properties.UMLDetailViewBuilder;
+import org.eclipse.papyrus.web.application.properties.builder.UMLDetailViewBuilderCustomImpl;
 import org.eclipse.papyrus.web.application.properties.pages.MemberEndGroupDescriptionBuilder;
 import org.eclipse.sirius.components.view.ColorPalette;
 import org.eclipse.sirius.components.view.View;
@@ -46,7 +46,7 @@ public class UMLDetailViewFromBuilder {
         FormDescription form = this.createFormDescription();
         view.getDescriptions().add(form);
 
-        form.getPages().addAll(new UMLDetailViewBuilder(colorRegistry).createPages());
+        form.getPages().addAll(new UMLDetailViewBuilderCustomImpl(colorRegistry).createPages());
 
         ColorPalette colorPalette = ViewFactory.eINSTANCE.createColorPalette();
         view.getColorPalettes().add(colorPalette);

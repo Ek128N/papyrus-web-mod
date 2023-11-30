@@ -272,13 +272,22 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
+     * The feature id for the '<em><b>Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -287,7 +296,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -296,7 +305,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Delete Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -305,7 +314,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 5;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Add Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -314,7 +323,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 6;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
 
     /**
      * The number of structural features of the '<em>Primitive List Widget Description</em>' class. <!-- begin-user-doc
@@ -323,7 +332,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 7;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Primitive List Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1332,6 +1341,18 @@ public interface PapyrusWidgetsPackage extends EPackage {
     EAttribute getPrimitiveListWidgetDescription_DisplayExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getCandidatesExpression
+     * <em>Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Candidates Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getCandidatesExpression()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EAttribute getPrimitiveListWidgetDescription_CandidatesExpression();
+
+    /**
      * Returns the meta object for the containment reference
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getStyle
      * <em>Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2220,6 +2241,14 @@ public interface PapyrusWidgetsPackage extends EPackage {
          * @generated
          */
         EAttribute PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION = eINSTANCE.getPrimitiveListWidgetDescription_DisplayExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Candidates Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION = eINSTANCE.getPrimitiveListWidgetDescription_CandidatesExpression();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc

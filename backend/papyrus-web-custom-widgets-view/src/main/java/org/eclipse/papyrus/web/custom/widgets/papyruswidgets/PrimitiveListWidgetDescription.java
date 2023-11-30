@@ -31,6 +31,8 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <em>Value Expression</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getDisplayExpression
  * <em>Display Expression</em>}</li>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getCandidatesExpression
+ * <em>Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getStyle
  * <em>Style</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getConditionalStyles
@@ -95,6 +97,30 @@ public interface PrimitiveListWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setDisplayExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Candidates Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Candidates Expression</em>' attribute.
+     * @see #setCandidatesExpression(String)
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getPrimitiveListWidgetDescription_CandidatesExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getCandidatesExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getCandidatesExpression
+     * <em>Candidates Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Candidates Expression</em>' attribute.
+     * @see #getCandidatesExpression()
+     * @generated
+     */
+    void setCandidatesExpression(String value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

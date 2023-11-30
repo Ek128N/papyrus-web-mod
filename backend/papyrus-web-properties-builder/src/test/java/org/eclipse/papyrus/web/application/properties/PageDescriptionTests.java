@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.UMLHelper;
+import org.eclipse.papyrus.web.application.properties.builder.UMLDetailViewBuilderCustomImpl;
 import org.eclipse.papyrus.web.application.properties.pages.MemberEndGroupDescriptionBuilder;
 import org.eclipse.papyrus.web.application.properties.utils.PageDescriptionValidator;
 import org.eclipse.papyrus.web.tests.utils.Severity;
@@ -46,7 +47,7 @@ public class PageDescriptionTests {
         List<Status> statuses = new ArrayList<>();
         ColorRegistry colorRegistry = new ColorRegistry();
         colorRegistry.registerColor(MemberEndGroupDescriptionBuilder.MEMBER_END_BORDER_COLOR_NAME, "#c2c2c2");
-        List<PageDescription> pages = new UMLDetailViewBuilder(colorRegistry).createPages();
+        List<PageDescription> pages = new UMLDetailViewBuilderCustomImpl(colorRegistry).createPages();
         for (PageDescription page : pages) {
             statuses.addAll(validator.validate(page));
         }
@@ -70,7 +71,7 @@ public class PageDescriptionTests {
 
         ColorRegistry colorRegistry = new ColorRegistry();
         colorRegistry.registerColor(MemberEndGroupDescriptionBuilder.MEMBER_END_BORDER_COLOR_NAME, "#c2c2c2");
-        List<PageDescription> allPages = new UMLDetailViewBuilder(colorRegistry).createPages();
+        List<PageDescription> allPages = new UMLDetailViewBuilderCustomImpl(colorRegistry).createPages();
 
         for (PageDescription page : allPages) {
             String domainType = page.getDomainType();

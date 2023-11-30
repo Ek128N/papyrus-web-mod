@@ -279,7 +279,10 @@ Each item can be deleted using the _trash_ icon.
 To add a value, the _New item_ input can be used.
 Be aware that the server receives a _String_ value and needs to convert it to the correct _DataType_.
 For widgets used in the default pages of the _Details_ view, Papyrus Web uses pure _EMF_ implementation to convert the given _String_ into the required _DataType_.
-For example, for a _boolean_ feature, the given _String_ is converted to _true_ only if it is equal (ignoring case) to 'true'.
+It is also possible provide a strict list of candidates for enumeration or boolean, for example.
+In that case, the list of possible values are presented in a dropdown whereas the text field is used as a filter of those values.
+Once the user chooses the value, it may be added using the plus icon action.
+For example, for a _boolean_ feature, there are only two value allowed _true_ and _false_.
 
 In the context of _UML_, for a more exhaustive list of conversion rule look at:
 

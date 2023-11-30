@@ -183,6 +183,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         Function<VariableManager, String> itemKindProvider = variableManger -> "unknown";
         Function<VariableManager, IStatus> itemDeleteHandlerProvider = this.handleOperation(viewListDescription.getDeleteOperation(), PrimitiveListDeleteOperation::getBody, DELETION_ERROR_MSG);
         BiFunction<VariableManager, String, IStatus> newValueHandlerProvider = this.getNewValueHandler(viewListDescription.getAddOperation());
+        Function<VariableManager, List<?>> candidatesProvider = this.getOptionsProvider(viewListDescription.getCandidatesExpression());
 
         Function<VariableManager, ListStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewListDescription.getConditionalStyles().stream()//
@@ -216,7 +217,10 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         }
 
         if (newValueHandlerProvider != null) {
-            builder.newValueHandler(newValueHandlerProvider); //
+            builder.newValueHandler(newValueHandlerProvider);
+        }
+        if (viewListDescription.getCandidatesExpression() != null) {
+            builder.candidatesProvider(candidatesProvider);
         }
         return Optional.of(builder.build());
     }

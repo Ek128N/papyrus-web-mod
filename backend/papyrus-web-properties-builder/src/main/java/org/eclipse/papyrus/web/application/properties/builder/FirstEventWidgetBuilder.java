@@ -32,6 +32,7 @@ public class FirstEventWidgetBuilder {
         description.setName("firstEvent");
         description.setLabelExpression("First event");
         description.setValueExpression("feature:firstEvent");
+        description.setCandidatesExpression("aql:Sequence{'true', 'false'}");
         PrimitiveListDeleteOperation deleteOperation = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListDeleteOperation();
         deleteOperation.getBody().add(createChangeContext("aql:self.removeFromUsingIndex('firstEvent',candidateIndex)"));
         description.setDeleteOperation(deleteOperation);

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import org.eclipse.papyrus.uml.domain.services.internal.helpers.UMLService;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesMultiplicityServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesProfileDefinitionServices;
+import org.eclipse.papyrus.uml.domain.services.properties.PropertiesStereotypeApplicationServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesUMLServices;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesValueSpecificationServices;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
@@ -117,6 +118,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             services.add(PropertiesHelpContentServices.class);
             services.add(PropertiesProfileServices.class);
             services.add(ReachableElementsServices.class);
+            services.add(PropertiesStereotypeApplicationServices.class);
         }
     }
 }

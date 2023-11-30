@@ -42,6 +42,8 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
     private Function<String, IStatus> newValueHandler;
 
+    private List<?> candidates;
+
     private PrimitiveListWidget() {
         // Prevent instantiation
     }
@@ -60,6 +62,10 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
     public ListStyle getStyle() {
         return this.style;
+    }
+
+    public List<?> getCandidates() {
+        return this.candidates;
     }
 
     public static Builder newPrimitiveList(String id) {
@@ -98,6 +104,8 @@ public final class PrimitiveListWidget extends AbstractWidget {
         private Function<String, IStatus> newValueHandler;
 
         private boolean canAdd;
+
+        private List<?> candidates;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -148,6 +156,11 @@ public final class PrimitiveListWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder candidates(List<?> candidates) {
+            this.candidates = candidates;
+            return this;
+        }
+
         public PrimitiveListWidget build() {
             PrimitiveListWidget list = new PrimitiveListWidget();
             list.id = Objects.requireNonNull(this.id);
@@ -160,6 +173,7 @@ public final class PrimitiveListWidget extends AbstractWidget {
             list.helpTextProvider = this.helpTextProvider; // Optional on purpose
             list.readOnly = this.readOnly;
             list.newValueHandler = this.newValueHandler; // Optional on purpose
+            list.candidates = this.candidates;
             return list;
         }
     }

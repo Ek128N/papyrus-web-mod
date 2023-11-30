@@ -24,6 +24,7 @@
     <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListWidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/valueExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/displayExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/candidatesExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/conditionalStyles"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/isEnabledExpression"/>

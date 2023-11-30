@@ -31,15 +31,14 @@ import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionItemPro
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
+ * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
 public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescriptionItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -48,8 +47,7 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -64,25 +62,20 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
     }
 
     /**
-     * This adds a property descriptor for the Is Enabled Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description",
-                        "_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature",
-                        "_UI_LanguageExpressionWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true,
-                false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature", "_UI_LanguageExpressionWidgetDescription_type"),
+                PapyrusWidgetsPackage.Literals.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This returns LanguageExpressionWidgetDescription.gif. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns LanguageExpressionWidgetDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -102,22 +95,20 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((LanguageExpressionWidgetDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_LanguageExpressionWidgetDescription_type")
-                : this.getString("_UI_LanguageExpressionWidgetDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_LanguageExpressionWidgetDescription_type") : this.getString("_UI_LanguageExpressionWidgetDescription_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -126,17 +117,18 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(LanguageExpressionWidgetDescription.class)) {
-        case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
+            case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+                return;
+            default:
+                super.notifyChanged(notification);
+                return;
         }
-        super.notifyChanged(notification);
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -146,8 +138,7 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

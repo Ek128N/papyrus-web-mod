@@ -648,8 +648,9 @@ public class ContainmentReferenceWidgetDescriptionImpl extends WidgetDescription
                 return this.basicSetStyle(null, msgs);
             case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            default:
+                return super.eInverseRemove(otherEnd, featureID, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -682,8 +683,9 @@ public class ContainmentReferenceWidgetDescriptionImpl extends WidgetDescription
                 return this.getStyle();
             case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -729,8 +731,10 @@ public class ContainmentReferenceWidgetDescriptionImpl extends WidgetDescription
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalReferenceWidgetDescriptionStyle>) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -774,8 +778,10 @@ public class ContainmentReferenceWidgetDescriptionImpl extends WidgetDescription
             case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -808,8 +814,9 @@ public class ContainmentReferenceWidgetDescriptionImpl extends WidgetDescription
                 return this.style != null;
             case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**

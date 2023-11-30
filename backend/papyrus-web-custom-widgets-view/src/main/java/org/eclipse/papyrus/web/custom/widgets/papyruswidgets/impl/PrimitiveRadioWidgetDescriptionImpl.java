@@ -232,8 +232,9 @@ public class PrimitiveRadioWidgetDescriptionImpl extends WidgetDescriptionImpl i
         switch (featureID) {
             case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY:
                 return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            default:
+                return super.eInverseRemove(otherEnd, featureID, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -252,8 +253,9 @@ public class PrimitiveRadioWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 return this.getValueExpression();
             case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY:
                 return this.getBody();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -278,8 +280,10 @@ public class PrimitiveRadioWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -302,8 +306,10 @@ public class PrimitiveRadioWidgetDescriptionImpl extends WidgetDescriptionImpl i
             case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY:
                 this.getBody().clear();
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -322,8 +328,9 @@ public class PrimitiveRadioWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
             case PapyrusWidgetsPackage.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY:
                 return this.body != null && !this.body.isEmpty();
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**

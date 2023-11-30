@@ -55,6 +55,8 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
 
+    private Function<VariableManager, List<?>> candidatesProvider;
+
     private PrimitiveListWidgetDescription() {
         // Prevent instantiation
     }
@@ -77,6 +79,10 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     public BiFunction<VariableManager, String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
+    }
+
+    public Function<VariableManager, List<?>> getCandidatesProvider() {
+        return this.candidatesProvider;
     }
 
     public Function<VariableManager, String> getItemIdProvider() {
@@ -154,6 +160,8 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
         private Function<VariableManager, String> helpTextProvider;
 
         private BiFunction<VariableManager, String, IStatus> newValueHandler;
+
+        private Function<VariableManager, List<?>> candidatesProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -241,6 +249,11 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             return this;
         }
 
+        public Builder candidatesProvider(Function<VariableManager, List<?>> candidatesProvider) {
+            this.candidatesProvider = Objects.requireNonNull(candidatesProvider);
+            return this;
+        }
+
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = targetObjectIdProvider;
             return this;
@@ -266,8 +279,10 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             listDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
             listDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             listDescription.newValueHandler = this.newValueHandler; // Optional on purpose
+            listDescription.candidatesProvider = this.candidatesProvider; // Optional on purpose
             return listDescription;
         }
+
 
 
     }

@@ -108,8 +108,9 @@ public class LanguageExpressionWidgetDescriptionImpl extends WidgetDescriptionIm
         switch (featureID) {
             case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 return this.getIsEnabledExpression();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -123,8 +124,10 @@ public class LanguageExpressionWidgetDescriptionImpl extends WidgetDescriptionIm
             case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.setIsEnabledExpression((String) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -138,8 +141,10 @@ public class LanguageExpressionWidgetDescriptionImpl extends WidgetDescriptionIm
             case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -152,8 +157,9 @@ public class LanguageExpressionWidgetDescriptionImpl extends WidgetDescriptionIm
         switch (featureID) {
             case PapyrusWidgetsPackage.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
                 return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**

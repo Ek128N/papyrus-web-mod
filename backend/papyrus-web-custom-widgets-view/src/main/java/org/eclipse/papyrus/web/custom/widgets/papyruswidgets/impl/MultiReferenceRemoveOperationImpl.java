@@ -93,8 +93,9 @@ public class MultiReferenceRemoveOperationImpl extends MinimalEObjectImpl.Contai
         switch (featureID) {
             case PapyrusWidgetsPackage.MULTI_REFERENCE_REMOVE_OPERATION__BODY:
                 return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
+            default:
+                return super.eInverseRemove(otherEnd, featureID, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -107,8 +108,9 @@ public class MultiReferenceRemoveOperationImpl extends MinimalEObjectImpl.Contai
         switch (featureID) {
             case PapyrusWidgetsPackage.MULTI_REFERENCE_REMOVE_OPERATION__BODY:
                 return this.getBody();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -124,8 +126,10 @@ public class MultiReferenceRemoveOperationImpl extends MinimalEObjectImpl.Contai
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -139,8 +143,10 @@ public class MultiReferenceRemoveOperationImpl extends MinimalEObjectImpl.Contai
             case PapyrusWidgetsPackage.MULTI_REFERENCE_REMOVE_OPERATION__BODY:
                 this.getBody().clear();
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -153,8 +159,9 @@ public class MultiReferenceRemoveOperationImpl extends MinimalEObjectImpl.Contai
         switch (featureID) {
             case PapyrusWidgetsPackage.MULTI_REFERENCE_REMOVE_OPERATION__BODY:
                 return this.body != null && !this.body.isEmpty();
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
 } // MultiReferenceRemoveOperationImpl

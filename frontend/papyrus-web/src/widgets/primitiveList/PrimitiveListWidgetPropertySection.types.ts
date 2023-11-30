@@ -34,6 +34,7 @@ export interface PrimitiveListPropertySectionProps {
 
 export interface EditableGQLList extends GQLList {
   canAdd: boolean;
+  candidates: string[] | undefined;
 }
 
 export interface GQLDeletePrimitiveListItemMutationData {

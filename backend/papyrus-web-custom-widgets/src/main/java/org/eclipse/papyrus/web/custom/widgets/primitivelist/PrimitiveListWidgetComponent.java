@@ -105,6 +105,9 @@ public class PrimitiveListWidgetComponent implements IComponent {
         if (listDescription.getNewValueHandler() != null) {
             listElementPropsBuilder.newValueHandler(newValue -> listDescription.getNewValueHandler().apply(variableManager, newValue));
         }
+        if (listDescription.getCandidatesProvider() != null) {
+            listElementPropsBuilder.candidatesProvider(listDescription.getCandidatesProvider().apply(variableManager));
+        }
 
         if (readOnly != null) {
             listElementPropsBuilder.readOnly(readOnly);

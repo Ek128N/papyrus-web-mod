@@ -43,6 +43,8 @@ import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
  * <em>Value Expression</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl#getDisplayExpression
  * <em>Display Expression</em>}</li>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl#getCandidatesExpression
+ * <em>Candidates Expression</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl#getStyle
  * <em>Style</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl#getConditionalStyles
@@ -97,6 +99,26 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @ordered
      */
     protected String displayExpression = DISPLAY_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getCandidatesExpression() <em>Candidates Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCandidatesExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String CANDIDATES_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getCandidatesExpression() <em>Candidates Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getCandidatesExpression()
+     * @generated
+     * @ordered
+     */
+    protected String candidatesExpression = CANDIDATES_EXPRESSION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -221,6 +243,30 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
         this.displayExpression = newDisplayExpression;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION, oldDisplayExpression, this.displayExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getCandidatesExpression() {
+        return this.candidatesExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setCandidatesExpression(String newCandidatesExpression) {
+        String oldCandidatesExpression = this.candidatesExpression;
+        this.candidatesExpression = newCandidatesExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(
+                    new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION, oldCandidatesExpression, this.candidatesExpression));
     }
 
     /**
@@ -422,8 +468,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.basicSetDeleteOperation(null, msgs);
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 return this.basicSetAddOperation(null, msgs);
+            default:
+                return super.eInverseRemove(otherEnd, featureID, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -438,6 +485,8 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.getValueExpression();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION:
                 return this.getDisplayExpression();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION:
+                return this.getCandidatesExpression();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE:
                 return this.getStyle();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -448,8 +497,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.getDeleteOperation();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 return this.getAddOperation();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -467,6 +517,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION:
                 this.setDisplayExpression((String) newValue);
                 return;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION:
+                this.setCandidatesExpression((String) newValue);
+                return;
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ListDescriptionStyle) newValue);
                 return;
@@ -483,8 +536,10 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 this.setAddOperation((PrimitiveListAddOperation) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -501,6 +556,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION:
                 this.setDisplayExpression(DISPLAY_EXPRESSION_EDEFAULT);
                 return;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION:
+                this.setCandidatesExpression(CANDIDATES_EXPRESSION_EDEFAULT);
+                return;
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ListDescriptionStyle) null);
                 return;
@@ -516,8 +574,10 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 this.setAddOperation((PrimitiveListAddOperation) null);
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -532,6 +592,8 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION:
                 return DISPLAY_EXPRESSION_EDEFAULT == null ? this.displayExpression != null : !DISPLAY_EXPRESSION_EDEFAULT.equals(this.displayExpression);
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION:
+                return CANDIDATES_EXPRESSION_EDEFAULT == null ? this.candidatesExpression != null : !CANDIDATES_EXPRESSION_EDEFAULT.equals(this.candidatesExpression);
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE:
                 return this.style != null;
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -542,8 +604,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.deleteOperation != null;
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 return this.addOperation != null;
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**
@@ -561,6 +624,8 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
         result.append(this.valueExpression);
         result.append(", displayExpression: ");
         result.append(this.displayExpression);
+        result.append(", candidatesExpression: ");
+        result.append(this.candidatesExpression);
         result.append(", isEnabledExpression: ");
         result.append(this.isEnabledExpression);
         result.append(')');

@@ -20,10 +20,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import TextField from '@material-ui/core/TextField';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MouseEvent, useEffect, useState } from 'react';
@@ -39,6 +40,7 @@ import {
   PrimitiveListStyleProps,
 } from './PrimitiveListWidgetPropertySection.types';
 
+import { Autocomplete } from '@material-ui/lab';
 export const deletePrimitiveListItemMutation = gql`
   mutation deletePrimitiveListItem($input: DeleteListItemInput!) {
     deletePrimitiveListItem(input: $input) {
@@ -102,6 +104,11 @@ const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListSty
     whiteSpace: 'nowrap',
     flexGrow: 1,
   },
+  autocomplete: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
 }));
 
 const NONE_WIDGET_ITEM_ID = 'none';
@@ -131,7 +138,7 @@ export const PrimitiveListSection = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-
+  const theme = useTheme();
   const [newValue, setNewValue] = useState('');
   const classes = usePrimitiveListPropertySectionStyles(props);
 
@@ -166,16 +173,18 @@ export const PrimitiveListSection = ({
     useMutation<GQLAddPrimitiveListItemMutationData>(addPrimitiveListItemMutation);
 
   const onAdd = () => {
-    const variables = {
-      input: {
-        id: crypto.randomUUID(),
-        editingContextId,
-        representationId: formId,
-        listId: widget.id,
-        newValue,
-      },
-    };
-    addListItem({ variables });
+    if (newValue) {
+      const variables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          listId: widget.id,
+          newValue,
+        },
+      };
+      addListItem({ variables });
+    }
   };
 
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -225,9 +234,10 @@ export const PrimitiveListSection = ({
 
           {item.deletable && (
             <IconButton
-              aria-label="deleteListItem"
+              aria-label="delete list item"
               onClick={(event) => onDelete(event, item)}
               size="small"
+              title="Delete item"
               disabled={readOnly || !item.deletable || widget.readOnly}
               data-testid={`primitive-list-item-delete-button-${item.label}`}>
               <DeleteIcon />
@@ -238,37 +248,78 @@ export const PrimitiveListSection = ({
     );
   };
 
+  const freeValue = (
+    <Input
+      id={'new-item-text-field' + widget.id}
+      type="text"
+      value={newValue}
+      fullWidth
+      margin="dense"
+      placeholder="New Item"
+      disabled={readOnly || widget.readOnly}
+      data-testid={'primitive-list-input'}
+      endAdornment={
+        <InputAdornment position="end">
+          <IconButton
+            data-testid={'primitive-list-add'}
+            size="small"
+            onClick={(_) => onAdd()}
+            disabled={readOnly || widget.readOnly}>
+            <AddIcon />
+          </IconButton>
+        </InputAdornment>
+      }
+      onKeyPress={(event) => {
+        if (event.key === 'Enter') {
+          onAdd();
+        }
+      }}
+      onChange={(event) => setNewValue(event.target.value)}
+    />
+  );
+
+  const strictValue = (
+    <div className={classes.autocomplete}>
+      <Autocomplete
+        data-testid={`${widget.label}-autocomplete`}
+        options={widget.candidates}
+        clearOnEscape
+        openOnFocus
+        fullWidth
+        disableClearable
+        value={newValue}
+        onChange={(_, value) => setNewValue(value)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            data-testid={`${widget.label}-autocomplete-textfield`}
+            variant="standard"
+            placeholder={'New Item'}
+            error={widget.diagnostics.length > 0}
+            helperText={widget.diagnostics[0]?.message}
+          />
+        )}
+        onKeyPress={(event) => {
+          if (event.key === 'Enter') {
+            onAdd();
+          }
+        }}
+      />
+      <IconButton
+        aria-label="add"
+        size="small"
+        title="Add item"
+        disabled={readOnly || widget.readOnly || !newValue}
+        data-testid={`${widget.label}-add`}
+        onClick={() => onAdd()}>
+        <AddIcon />
+      </IconButton>
+    </div>
+  );
+
   const addSection = (
     <TableRow key="Add">
-      <TableCell className={classes.cell}>
-        <Input
-          id={'new-item-text-field' + widget.id}
-          type="text"
-          value={newValue}
-          fullWidth
-          margin="dense"
-          placeholder="New Item"
-          disabled={readOnly || widget.readOnly}
-          data-testid={'primitive-list-input'}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                data-testid={'primitive-list-add'}
-                size="small"
-                onClick={(_) => onAdd()}
-                disabled={readOnly || widget.readOnly}>
-                <AddIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          onKeyPress={(event) => {
-            if (event.key === 'Enter') {
-              onAdd();
-            }
-          }}
-          onChange={(event) => setNewValue(event.target.value)}
-        />
-      </TableCell>
+      <TableCell className={classes.cell}>{widget.candidates?.length > 0 ? strictValue : freeValue}</TableCell>
     </TableRow>
   );
 

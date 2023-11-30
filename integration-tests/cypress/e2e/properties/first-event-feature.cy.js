@@ -45,15 +45,17 @@ describe('Basic widgets test', () => {
 
   it('Test the primitive list widget handling first event feature', () => {
     cy.getByTestId('primitive-list-table').get('tbody>tr>td>p').as('prim-items');
-    cy.getByTestId('primitive-list-input').find('input').as('prim-input');
+    cy.getByTestId('First event-autocomplete-textfield').find('input').as('prim-input');
 
     // add 'true' value using add button
     cy.get('@prim-input').type('true');
-    cy.getByTestId('primitive-list-add').click();
+    cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
+    cy.get('@dropdown').find('li').contains('true').click();
+    cy.getByTestId('First event-add').click();
     cy.get('@prim-items').first().should('have.text', 'true');
 
     // add 'false' using keyboard
-    cy.get('@prim-input').type('false{enter}');
+    cy.get('@prim-input').type('false{downArrow}{enter}{enter}');
     cy.get('@prim-items').should('have.lengthOf', 2);
     cy.get('@prim-items').eq(0).should('have.text', 'true');
     cy.get('@prim-items').eq(1).should('have.text', 'false');
@@ -67,12 +69,9 @@ describe('Basic widgets test', () => {
     cy.get('@prim-items').should('have.lengthOf', 1);
     cy.get('@prim-items').eq(0).should('have.text', 'true');
 
-    // Add invalid => No item added and input field is empty
+    // Add invalid => Empty dropdown and add is disabled
     cy.get('@prim-input').type('invalid value');
-    cy.getByTestId('primitive-list-add').click();
-    cy.get('@prim-items').should('have.lengthOf', 2);
-    cy.get('@prim-items').eq(0).should('have.text', 'true');
-    cy.get('@prim-items').eq(1).should('have.text', 'false');
-    cy.get('@prim-input').should('have.value', '');
+    cy.get('.MuiAutocomplete-popper').contains('No options');
+    cy.getByTestId('First event-add').should('have.attr', 'disabled');
   });
 });

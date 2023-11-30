@@ -25,8 +25,7 @@ import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
 import org.eclipse.sirius.components.widgets.reference.provider.ReferenceEditPlugin;
 
 /**
- * This is the central singleton for the PapyrusWidgets edit plugin. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the central singleton for the PapyrusWidgets edit plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -51,13 +50,11 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
      * @generated
      */
     public PapyrusWebCustomWidgetsEditPlugin() {
-        super(new ResourceLocator[] { FormEditPlugin.INSTANCE, ReferenceEditPlugin.INSTANCE,
-                ViewEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] { FormEditPlugin.INSTANCE, ReferenceEditPlugin.INSTANCE, ViewEditPlugin.INSTANCE, });
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the singleton instance.
      * @generated
@@ -76,23 +73,19 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
     }
 
     /**
-     * Computes the file extension to be used with the key to specify an image
-     * resource.
+     * Computes the file extension to be used with the key to specify an image resource.
      *
-     * @param key the key for the imagine.
-     * @return the file extension to be used with the key to specify an image
-     *         resource.
+     * @param key
+     *            the key for the imagine.
+     * @return the file extension to be used with the key to specify an image resource.
      */
     protected static String extensionFor(String key) {
         String result = ".gif";
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension)
-                    || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension)
-                    || "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
-                    || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension)
-                    || "svg".equalsIgnoreCase(extension)) {
+            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+                    || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
         }
@@ -100,8 +93,7 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the singleton instance.
      * @generated
@@ -111,8 +103,7 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
     }
 
     /**
-     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

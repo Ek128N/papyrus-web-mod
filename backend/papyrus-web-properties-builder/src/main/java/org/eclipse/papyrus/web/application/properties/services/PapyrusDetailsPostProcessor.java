@@ -59,7 +59,7 @@ public class PapyrusDetailsPostProcessor implements IFormPostProcessor {
 
     private List<Page> getExtraPages(Form form) {
         return form.getPages().stream().filter(
-                (p) -> !UML_PAGE_LABEL.equals(p.getLabel()) && !COMMENTS_PAGE_LABEL.equals(p.getLabel()) && !PROFILE_PAGE_LABEL.equals(p.getLabel()) && !ADVANCED_PAGE_LABEL.equals(p.getLabel()))
+                p -> !UML_PAGE_LABEL.equals(p.getLabel()) && !COMMENTS_PAGE_LABEL.equals(p.getLabel()) && !PROFILE_PAGE_LABEL.equals(p.getLabel()) && !ADVANCED_PAGE_LABEL.equals(p.getLabel()))
                 .toList();
     }
 
@@ -73,14 +73,14 @@ public class PapyrusDetailsPostProcessor implements IFormPostProcessor {
         if (umlPage.isPresent()) {
             newPages.add(umlPage.get());
         }
+        // other pages are just sorted by name
+        newPages.addAll(this.getExtraPages(form).stream().sorted(Comparator.comparing(Page::getLabel)).toList());
         if (commentsPage.isPresent()) {
             newPages.add(commentsPage.get());
         }
         if (profilePage.isPresent()) {
             newPages.add(profilePage.get());
         }
-        // other pages are just sorted by name
-        newPages.addAll(this.getExtraPages(form).stream().sorted(Comparator.comparing(Page::getLabel)).toList());
         if (advancedPage.isPresent()) {
             newPages.add(advancedPage.get());
         }

@@ -8,6 +8,7 @@ type PrimitiveListWidget implements Widget {
   items: [PrimitiveListItem!]!
   style: ListStyle
   canAdd : Boolean!
+  candidates: [String!]
 }
 
 extend type Mutation {
