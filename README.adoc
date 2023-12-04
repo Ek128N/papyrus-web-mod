@@ -153,7 +153,7 @@ npm run build
 [source,sh]
 ----
 mkdir -p backend/papyrus-web-frontend/src/main/resources/static
-cp -R frontend/dist/* backend/papyrus-web-frontend/src/main/resources/static
+cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resources/static
 ----
 
 . Build the backend ([.small]#from the `backend` subfolder of Papyrus web main location#):
