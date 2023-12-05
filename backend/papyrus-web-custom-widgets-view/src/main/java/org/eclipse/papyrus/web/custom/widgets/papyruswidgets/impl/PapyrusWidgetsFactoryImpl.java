@@ -35,6 +35,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFacto
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 
@@ -88,6 +89,8 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
                 return this.createPrimitiveListDeleteOperation();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ADD_OPERATION:
                 return this.createPrimitiveListAddOperation();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_REORDER_OPERATION:
+                return this.createPrimitiveListReorderOperation();
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION:
                 return this.createMonoReferenceWidgetDescription();
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION:
@@ -168,6 +171,17 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
     public PrimitiveListAddOperation createPrimitiveListAddOperation() {
         PrimitiveListAddOperationImpl primitiveListAddOperation = new PrimitiveListAddOperationImpl();
         return primitiveListAddOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PrimitiveListReorderOperation createPrimitiveListReorderOperation() {
+        PrimitiveListReorderOperationImpl primitiveListReorderOperation = new PrimitiveListReorderOperationImpl();
+        return primitiveListReorderOperation;
     }
 
     /**

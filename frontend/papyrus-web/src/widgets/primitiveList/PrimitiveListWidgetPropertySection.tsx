@@ -35,12 +35,17 @@ import {
   GQLDeletePrimitiveListItemMutationData,
   GQLDeletePrimitiveListItemPayload,
   GQLErrorPayload,
+  GQLReorderPrimitiveListItemsMutationData,
+  GQLReorderPrimitiveListItemsMutationVariables,
   GQLSuccessPayload,
   PrimitiveListPropertySectionProps,
   PrimitiveListStyleProps,
 } from './PrimitiveListWidgetPropertySection.types';
 
 import { Autocomplete } from '@material-ui/lab';
+import ReorderIcon from '../containmentReference/ReorderIcon';
+import ReorderItemsDialog from '../dialogs/ReorderItemsDialog';
+
 export const deletePrimitiveListItemMutation = gql`
   mutation deletePrimitiveListItem($input: DeleteListItemInput!) {
     deletePrimitiveListItem(input: $input) {
@@ -64,6 +69,26 @@ export const deletePrimitiveListItemMutation = gql`
 export const addPrimitiveListItemMutation = gql`
   mutation addPrimitiveListItem($input: AddPrimitiveListItemInput!) {
     addPrimitiveListItem(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
+export const reorderPrimitiveListItemsMutation = gql`
+  mutation reorderPrimitiveListItems($input: ReorderPrimitiveListItemsInput!) {
+    reorderPrimitiveListItems(input: $input) {
       __typename
       ... on ErrorPayload {
         messages {
@@ -140,6 +165,7 @@ export const PrimitiveListSection = ({
   };
   const theme = useTheme();
   const [newValue, setNewValue] = useState('');
+  const [openReorderDialog, setOpenReorderDialog] = useState<boolean>(false);
   const classes = usePrimitiveListPropertySectionStyles(props);
 
   let items = [...widget.items];
@@ -187,6 +213,11 @@ export const PrimitiveListSection = ({
     }
   };
 
+  const [reorderPrimitiveListItems, { loading: reorderLoading, error: reorderError, data: reorderData }] = useMutation<
+    GQLReorderPrimitiveListItemsMutationData,
+    GQLReorderPrimitiveListItemsMutationVariables
+  >(reorderPrimitiveListItemsMutation);
+
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
@@ -219,6 +250,20 @@ export const PrimitiveListSection = ({
       }
     }
   }, [addLoading, addError, addData]);
+
+  useEffect(() => {
+    if (!reorderLoading) {
+      if (reorderError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (reorderData) {
+        const { reorderPrimitiveListItems } = reorderData;
+        if (isErrorPayload(reorderPrimitiveListItems) || isSuccessPayload(reorderPrimitiveListItems)) {
+          addMessages(reorderPrimitiveListItems.messages);
+        }
+      }
+    }
+  }, [reorderLoading, reorderError, reorderData]);
 
   const getTableCellContent = (item: GQLListItem): JSX.Element => {
     return (
@@ -323,24 +368,64 @@ export const PrimitiveListSection = ({
     </TableRow>
   );
 
-  return (
-    <FormControl error={widget.diagnostics.length > 0} fullWidth>
-      <PropertySectionLabel
-        editingContextId={editingContextId}
-        formId={formId}
-        widget={widget}
-        subscribers={subscribers}
-      />
-      <Table size="small" data-testid={'primitive-list-table'}>
-        <TableBody>
-          {items.map((item) => (
-            <TableRow key={item.id}>{getTableCellContent(item)}</TableRow>
-          ))}
-          {widget.canAdd && addSection}
-        </TableBody>
-      </Table>
+  const callReorderPrimitiveListItems = (valueId: string, fromIndex: number, toIndex: number) => {
+    if (valueId && fromIndex !== -1 && toIndex !== -1) {
+      const variables: GQLReorderPrimitiveListItemsMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          listId: widget.id,
+          itemId: valueId,
+          fromIndex,
+          toIndex,
+        },
+      };
+      reorderPrimitiveListItems({ variables });
+    }
+  };
 
-      <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
-    </FormControl>
+  const isEnabled = !readOnly && !widget.readOnly && widget.canReorder && widget.items.length > 1;
+
+  return (
+    <>
+      <FormControl error={widget.diagnostics.length > 0} fullWidth>
+        <div style={{ display: 'flex' }}>
+          <PropertySectionLabel
+            editingContextId={editingContextId}
+            formId={formId}
+            widget={widget}
+            subscribers={subscribers}
+          />
+          {widget.canReorder && (
+            <IconButton
+              style={{ marginLeft: 'auto', marginRight: '16px' }}
+              data-testid="containment-reference-reorder-children"
+              onClick={() => setOpenReorderDialog(true)}
+              disabled={!isEnabled}
+              size="small">
+              <ReorderIcon fill={`${isEnabled ? '#00000077' : '#B3BFC5'}`} />
+            </IconButton>
+          )}
+        </div>
+        <Table size="small" data-testid={'primitive-list-table'}>
+          <TableBody>
+            {items.map((item) => (
+              <TableRow key={item.id}>{getTableCellContent(item)}</TableRow>
+            ))}
+            {widget.canAdd && addSection}
+          </TableBody>
+        </Table>
+
+        <FormHelperText>{widget.diagnostics[0]?.message}</FormHelperText>
+      </FormControl>
+      {openReorderDialog && (
+        <ReorderItemsDialog
+          items={widget.items.map(({ label, id, iconURL }) => ({ label, id, iconURL }))}
+          moveElement={callReorderPrimitiveListItems}
+          onClose={() => setOpenReorderDialog(false)}
+        />
+      )}
+    </>
   );
 };

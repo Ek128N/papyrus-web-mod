@@ -43,6 +43,8 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <em>Delete Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getAddOperation
  * <em>Add Operation</em>}</li>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getReorderOperation
+ * <em>Reorder Operation</em>}</li>
  * </ul>
  *
  * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getPrimitiveListWidgetDescription()
@@ -229,5 +231,29 @@ public interface PrimitiveListWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setAddOperation(PrimitiveListAddOperation value);
+
+    /**
+     * Returns the value of the '<em><b>Reorder Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Reorder Operation</em>' containment reference.
+     * @see #setReorderOperation(PrimitiveListReorderOperation)
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getPrimitiveListWidgetDescription_ReorderOperation()
+     * @model containment="true"
+     * @generated
+     */
+    PrimitiveListReorderOperation getReorderOperation();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getReorderOperation
+     * <em>Reorder Operation</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Reorder Operation</em>' containment reference.
+     * @see #getReorderOperation()
+     * @generated
+     */
+    void setReorderOperation(PrimitiveListReorderOperation value);
 
 } // PrimitiveListWidgetDescription

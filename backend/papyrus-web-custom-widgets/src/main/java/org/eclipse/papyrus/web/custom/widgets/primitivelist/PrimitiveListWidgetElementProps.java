@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.PrimitiveListItem;
+import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.ReorderPrimitiveListHandlerParameters;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.representations.Element;
@@ -56,6 +57,8 @@ public final class PrimitiveListWidgetElementProps implements IProps {
 
     private List<?> candidates;
 
+    private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
+
     private PrimitiveListWidgetElementProps() {
         // Prevent instantiation
     }
@@ -74,6 +77,10 @@ public final class PrimitiveListWidgetElementProps implements IProps {
 
     public List<?> getCandidates() {
         return this.candidates;
+    }
+
+    public Function<ReorderPrimitiveListHandlerParameters, IStatus> getReorderHandler() {
+        return this.reorderHandler;
     }
 
     public List<String> getIconURL() {
@@ -139,6 +146,8 @@ public final class PrimitiveListWidgetElementProps implements IProps {
 
         private List<?> candidates;
 
+        private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -188,6 +197,11 @@ public final class PrimitiveListWidgetElementProps implements IProps {
             return this;
         }
 
+        public Builder reorderHandler(Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler) {
+            this.reorderHandler = reorderHandler;
+            return this;
+        }
+
         public PrimitiveListWidgetElementProps build() {
             PrimitiveListWidgetElementProps primListElementProps = new PrimitiveListWidgetElementProps();
             primListElementProps.id = Objects.requireNonNull(this.id);
@@ -200,6 +214,7 @@ public final class PrimitiveListWidgetElementProps implements IProps {
             primListElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             primListElementProps.newValueHandler = this.newValueHandler; // Optional on purpose
             primListElementProps.candidates = this.candidates; // Optional on purpose
+            primListElementProps.reorderHandler = this.reorderHandler; // Optional on purpose
             return primListElementProps;
         }
 

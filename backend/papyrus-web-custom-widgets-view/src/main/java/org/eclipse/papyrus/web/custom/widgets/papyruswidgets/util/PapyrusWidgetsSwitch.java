@@ -32,6 +32,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidge
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -131,6 +132,13 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ADD_OPERATION: {
                 PrimitiveListAddOperation primitiveListAddOperation = (PrimitiveListAddOperation) theEObject;
                 T result = this.casePrimitiveListAddOperation(primitiveListAddOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_REORDER_OPERATION: {
+                PrimitiveListReorderOperation primitiveListReorderOperation = (PrimitiveListReorderOperation) theEObject;
+                T result = this.casePrimitiveListReorderOperation(primitiveListReorderOperation);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -302,6 +310,21 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePrimitiveListAddOperation(PrimitiveListAddOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Primitive List Reorder Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Primitive List Reorder Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T casePrimitiveListReorderOperation(PrimitiveListReorderOperation object) {
         return null;
     }
 

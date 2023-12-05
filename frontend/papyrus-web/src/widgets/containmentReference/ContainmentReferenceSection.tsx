@@ -52,7 +52,7 @@ import {
 import ReorderIcon from './ReorderIcon';
 import CreateNewChildDialog from './dialogs/CreateNewChildDialog';
 import { ChildCreationDescription } from './dialogs/CreateNewChildDialog.types';
-import ReorderItemsDialog from './dialogs/ReorderItemsDialog';
+import ReorderItemsDialog from '../dialogs/ReorderItemsDialog';
 
 const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
   labelItemStyle: {
@@ -314,20 +314,18 @@ const ContainmentReferenceSection = ({
 
   const callMoveContainmentReferenceItem = (valueId: string, fromIndex: number, toIndex: number) => {
     if (valueId && fromIndex !== -1 && toIndex !== -1) {
-      if (valueId) {
-        const variables: GQLMoveContainmentReferenceItemMutationVariables = {
-          input: {
-            id: crypto.randomUUID(),
-            editingContextId,
-            representationId: formId,
-            referenceWidgetId: widget.id,
-            referenceItemId: valueId,
-            fromIndex,
-            toIndex,
-          },
-        };
-        moveReferenceValue({ variables });
-      }
+      const variables: GQLMoveContainmentReferenceItemMutationVariables = {
+        input: {
+          id: crypto.randomUUID(),
+          editingContextId,
+          representationId: formId,
+          referenceWidgetId: widget.id,
+          referenceItemId: valueId,
+          fromIndex,
+          toIndex,
+        },
+      };
+      moveReferenceValue({ variables });
     }
   };
 

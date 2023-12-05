@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
@@ -55,6 +56,8 @@ import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
  * <em>Delete Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl#getAddOperation
  * <em>Add Operation</em>}</li>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListWidgetDescriptionImpl#getReorderOperation
+ * <em>Reorder Operation</em>}</li>
  * </ul>
  *
  * @generated
@@ -179,6 +182,16 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @ordered
      */
     protected PrimitiveListAddOperation addOperation;
+
+    /**
+     * The cached value of the '{@link #getReorderOperation() <em>Reorder Operation</em>}' containment reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getReorderOperation()
+     * @generated
+     * @ordered
+     */
+    protected PrimitiveListReorderOperation reorderOperation;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -458,6 +471,55 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @generated
      */
     @Override
+    public PrimitiveListReorderOperation getReorderOperation() {
+        return this.reorderOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetReorderOperation(PrimitiveListReorderOperation newReorderOperation, NotificationChain msgs) {
+        PrimitiveListReorderOperation oldReorderOperation = this.reorderOperation;
+        this.reorderOperation = newReorderOperation;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION, oldReorderOperation,
+                    newReorderOperation);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setReorderOperation(PrimitiveListReorderOperation newReorderOperation) {
+        if (newReorderOperation != this.reorderOperation) {
+            NotificationChain msgs = null;
+            if (this.reorderOperation != null)
+                msgs = ((InternalEObject) this.reorderOperation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION, null, msgs);
+            if (newReorderOperation != null)
+                msgs = ((InternalEObject) newReorderOperation).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION, null, msgs);
+            msgs = this.basicSetReorderOperation(newReorderOperation, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION, newReorderOperation, newReorderOperation));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE:
@@ -468,6 +530,8 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.basicSetDeleteOperation(null, msgs);
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 return this.basicSetAddOperation(null, msgs);
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION:
+                return this.basicSetReorderOperation(null, msgs);
             default:
                 return super.eInverseRemove(otherEnd, featureID, msgs);
         }
@@ -497,6 +561,8 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.getDeleteOperation();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 return this.getAddOperation();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION:
+                return this.getReorderOperation();
             default:
                 return super.eGet(featureID, resolve, coreType);
         }
@@ -536,6 +602,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 this.setAddOperation((PrimitiveListAddOperation) newValue);
                 return;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION:
+                this.setReorderOperation((PrimitiveListReorderOperation) newValue);
+                return;
             default:
                 super.eSet(featureID, newValue);
                 return;
@@ -574,6 +643,9 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 this.setAddOperation((PrimitiveListAddOperation) null);
                 return;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION:
+                this.setReorderOperation((PrimitiveListReorderOperation) null);
+                return;
             default:
                 super.eUnset(featureID);
                 return;
@@ -604,6 +676,8 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 return this.deleteOperation != null;
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
                 return this.addOperation != null;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION:
+                return this.reorderOperation != null;
             default:
                 return super.eIsSet(featureID);
         }

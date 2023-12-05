@@ -33,6 +33,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidge
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
@@ -112,6 +113,11 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter casePrimitiveListAddOperation(PrimitiveListAddOperation object) {
             return PapyrusWidgetsAdapterFactory.this.createPrimitiveListAddOperationAdapter();
+        }
+
+        @Override
+        public Adapter casePrimitiveListReorderOperation(PrimitiveListReorderOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createPrimitiveListReorderOperationAdapter();
         }
 
         @Override
@@ -269,6 +275,21 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPrimitiveListAddOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation <em>Primitive List
+     * Reorder Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation
+     * @generated
+     */
+    public Adapter createPrimitiveListReorderOperationAdapter() {
         return null;
     }
 

@@ -34,6 +34,7 @@ export interface PrimitiveListPropertySectionProps {
 
 export interface EditableGQLList extends GQLList {
   canAdd: boolean;
+  canReorder: boolean;
   candidates: string[] | undefined;
 }
 
@@ -67,4 +68,25 @@ export interface GQLErrorPayload extends GQLAddPrimitiveListItemPayload {
 
 export interface GQLSuccessPayload extends GQLAddPrimitiveListItemPayload {
   messages: GQLMessage[];
+}
+export interface GQLReorderPrimitiveListItemsMutationData {
+  reorderPrimitiveListItems: GQLReorderPrimitiveListItemsPayload;
+}
+
+export interface GQLReorderPrimitiveListItemsPayload {
+  __typename: string;
+}
+
+export interface GQLReorderPrimitiveListItemsMutationVariables {
+  input: GQLReorderPrimitiveListItemsInput;
+}
+
+export interface GQLReorderPrimitiveListItemsInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  listId: string;
+  itemId: string;
+  fromIndex: number;
+  toIndex: number;
 }

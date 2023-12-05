@@ -63,12 +63,10 @@ public class PrimitiveListWidgetDescriptor implements IWidgetDescriptor {
         Optional<Object> result = Optional.empty();
         if (Objects.equals(type, PrimitiveListWidgetElementProps.TYPE) && elementProps instanceof PrimitiveListWidgetElementProps props) {
             List<Diagnostic> diagnostics = this.getDiagnosticsFromChildren(children);
-            boolean canAdd = props.getNewValueHandler() != null;
             PrimitiveListWidget.Builder builder = PrimitiveListWidget.newPrimitiveList(props.getId())//
                     .label(props.getLabel())//
                     .iconURL(props.getIconURL())//
                     .diagnostics(diagnostics)//
-                    .canAdd(canAdd)//
                     .items(props.getItems())//
                     .candidates(props.getCandidates())
                     .readOnly(props.isReadOnly());
@@ -84,9 +82,11 @@ public class PrimitiveListWidgetDescriptor implements IWidgetDescriptor {
                 builder.style(props.getStyle());
             }
 
-            builder.canAdd(canAdd);
-            if (canAdd) {
+            if (props.getNewValueHandler() != null) {
                 builder.newValueHandler(props.getNewValueHandler());
+            }
+            if (props.getReorderHandler() != null) {
+                builder.reorderHandler(props.getReorderHandler());
             }
             result = Optional.of(builder.build());
         }

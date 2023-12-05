@@ -57,6 +57,8 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     private Function<VariableManager, List<?>> candidatesProvider;
 
+    private Function<VariableManager, IStatus> reorderHandlerProvider;
+
     private PrimitiveListWidgetDescription() {
         // Prevent instantiation
     }
@@ -83,6 +85,10 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     public Function<VariableManager, List<?>> getCandidatesProvider() {
         return this.candidatesProvider;
+    }
+
+    public Function<VariableManager, IStatus> getReorderHandlerProvider() {
+        return this.reorderHandlerProvider;
     }
 
     public Function<VariableManager, String> getItemIdProvider() {
@@ -164,6 +170,8 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
         private Function<VariableManager, List<?>> candidatesProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
+
+        private Function<VariableManager, IStatus> reorderHandlerProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -259,6 +267,11 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             return this;
         }
 
+        public Builder reorderHandlerProvider(Function<VariableManager, IStatus> reorderHandlerProvider) {
+            this.reorderHandlerProvider = reorderHandlerProvider;
+            return this;
+        }
+
         public PrimitiveListWidgetDescription build() {
             PrimitiveListWidgetDescription listDescription = new PrimitiveListWidgetDescription();
             listDescription.id = Objects.requireNonNull(this.id);
@@ -280,6 +293,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             listDescription.helpTextProvider = this.helpTextProvider; // Optional on purpose
             listDescription.newValueHandler = this.newValueHandler; // Optional on purpose
             listDescription.candidatesProvider = this.candidatesProvider; // Optional on purpose
+            listDescription.reorderHandlerProvider = this.reorderHandlerProvider; // Optional on purpose
             return listDescription;
         }
 

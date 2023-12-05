@@ -156,7 +156,7 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
     const primitiveListWidget: WidgetContribution = {
       name: 'PrimitiveListWidget',
       fields:
-        'label iconURL canAdd candidates items { id label iconURL deletable } style { color fontSize italic bold underline strikeThrough }',
+        'label iconURL canAdd canReorder candidates items { id label iconURL deletable } style { color fontSize italic bold underline strikeThrough }',
       icon: <FormatListBulletedIcon />,
     };
     const containmentReferenceWidget: WidgetContribution = {

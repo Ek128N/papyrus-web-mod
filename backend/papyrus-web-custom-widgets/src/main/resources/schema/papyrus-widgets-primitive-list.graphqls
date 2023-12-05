@@ -8,12 +8,14 @@ type PrimitiveListWidget implements Widget {
   items: [PrimitiveListItem!]!
   style: ListStyle
   canAdd : Boolean!
+  canReorder: Boolean!
   candidates: [String!]
 }
 
 extend type Mutation {
   deletePrimitiveListItem(input: DeleteListItemInput!): DeleteListItemPayload!
   addPrimitiveListItem(input: AddPrimitiveListItemInput!): AddPrimitiveListItemPayload!
+  reorderPrimitiveListItems(input: ReorderPrimitiveListItemsInput!): ReorderPrimitiveListItemsPayload!
 }
 
 input AddPrimitiveListItemInput {
@@ -22,7 +24,6 @@ input AddPrimitiveListItemInput {
   representationId: ID!
   listId: ID!
   newValue: String!
-
 }
 
 union AddPrimitiveListItemPayload = ErrorPayload | SuccessPayload
@@ -34,3 +35,15 @@ type PrimitiveListItem {
   iconURL: [String!]!
   deletable: Boolean!
 }
+
+input ReorderPrimitiveListItemsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  listId: ID!
+  itemId: ID!
+  fromIndex: Int!
+  toIndex: Int!
+}
+
+union ReorderPrimitiveListItemsPayload = ErrorPayload | SuccessPayload

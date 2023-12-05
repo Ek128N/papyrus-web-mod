@@ -16,9 +16,11 @@ package org.eclipse.papyrus.web.custom.widgets.primitivelist;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.PrimitiveListItem;
+import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.ReorderPrimitiveListHandlerParameters;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.validation.DiagnosticComponent;
@@ -38,6 +40,14 @@ public class PrimitiveListWidgetComponent implements IComponent {
     public static final String CANDIDATE_INDEX_VARIABLE = "candidateIndex";
 
     public static final String CANDIDATE_VARIABLE = "candidate";
+
+    public static final String ITEM_VARIABLE = "item";
+
+    public static final String ITEM_ID_VARIABLE = "itemId";
+
+    public static final String MOVE_FROM_VARIABLE = "fromIndex";
+
+    public static final String MOVE_TO_VARIABLE = "toIndex";
 
     private PrimitiveListWidgetComponentProps props;
 
@@ -108,7 +118,16 @@ public class PrimitiveListWidgetComponent implements IComponent {
         if (listDescription.getCandidatesProvider() != null) {
             listElementPropsBuilder.candidatesProvider(listDescription.getCandidatesProvider().apply(variableManager));
         }
-
+        if (listDescription.getReorderHandlerProvider() != null) {
+            Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler = input -> {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(ITEM_ID_VARIABLE, input.itemId());
+                childVariableManager.put(MOVE_FROM_VARIABLE, input.fromIndex());
+                childVariableManager.put(MOVE_TO_VARIABLE, input.toIndex());
+                return listDescription.getReorderHandlerProvider().apply(childVariableManager);
+            };
+            listElementPropsBuilder.reorderHandler(reorderHandler);
+        }
         if (readOnly != null) {
             listElementPropsBuilder.readOnly(readOnly);
         }

@@ -41,6 +41,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReord
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsSwitch;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetComponent;
@@ -215,7 +216,9 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         if (viewListDescription.getHelpExpression() != null && !viewListDescription.getHelpExpression().isBlank()) {
             builder.helpTextProvider(this.getStringValueProvider(viewListDescription.getHelpExpression()));
         }
-
+        if (viewListDescription.getReorderOperation() != null) {
+            builder.reorderHandlerProvider(this.handleOperation(viewListDescription.getReorderOperation(), PrimitiveListReorderOperation::getBody, "Something went wrong while handling list items reordering."));
+        }
         if (newValueHandlerProvider != null) {
             builder.newValueHandler(newValueHandlerProvider);
         }

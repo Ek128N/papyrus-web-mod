@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.DeletePrimitiveListItemInput;
+import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.ReorderPrimitiveListItemsInput;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -28,21 +28,21 @@ import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to delete a list item.
+ * The data fetcher used to reorder list items.
  * <p>
  * It will be used to handle the following GraphQL field:
  * </p>
  *
  * <pre>
  * type Mutation {
- *   deletePrimitiveListItem(input: DeletePrimitiveListItemInput!): DeleteListItemPayload!
+ *   reorderPrimitiveListItems(input: ReorderPrimitiveListItemsInput!): ReorderPrimitiveListItemsPayload!
  * }
  * </pre>
  *
- * @author Arthur Daussy
+ * @author Jerome Gout
  */
-@MutationDataFetcher(type = "Mutation", field = "deletePrimitiveListItem")
-public class MutationDeletePrimitiveListItemDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
+@MutationDataFetcher(type = "Mutation", field = "reorderPrimitiveListItems")
+public class MutationReorderPrimitiveListItemsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -52,7 +52,7 @@ public class MutationDeletePrimitiveListItemDataFetcher implements IDataFetcherW
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    public MutationDeletePrimitiveListItemDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
+    public MutationReorderPrimitiveListItemsDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEditingContextDispatcher editingContextDispatcher) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
@@ -62,7 +62,7 @@ public class MutationDeletePrimitiveListItemDataFetcher implements IDataFetcherW
     public CompletableFuture<IPayload> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
 
-        DeletePrimitiveListItemInput input = this.objectMapper.convertValue(argument, DeletePrimitiveListItemInput.class);
+        ReorderPrimitiveListItemsInput input = this.objectMapper.convertValue(argument, ReorderPrimitiveListItemsInput.class);
 
         return this.exceptionWrapper.wrapMono(() -> this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input), input).toFuture();
 

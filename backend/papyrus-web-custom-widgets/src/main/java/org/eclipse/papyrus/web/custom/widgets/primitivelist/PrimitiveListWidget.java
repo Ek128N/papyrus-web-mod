@@ -20,6 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.PrimitiveListItem;
+import org.eclipse.papyrus.web.custom.widgets.primitivelist.dto.ReorderPrimitiveListHandlerParameters;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.ListStyle;
@@ -38,18 +39,22 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
     private ListStyle style;
 
-    private boolean canAdd;
-
     private Function<String, IStatus> newValueHandler;
 
     private List<?> candidates;
+
+    private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
 
     private PrimitiveListWidget() {
         // Prevent instantiation
     }
 
     public boolean canAdd() {
-        return this.canAdd;
+        return this.newValueHandler != null;
+    }
+
+    public boolean canReorder() {
+        return this.reorderHandler != null;
     }
 
     public Function<String, IStatus> getNewValueHandler() {
@@ -66,6 +71,10 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
     public List<?> getCandidates() {
         return this.candidates;
+    }
+
+    public Function<ReorderPrimitiveListHandlerParameters, IStatus> getReorderHandler() {
+        return this.reorderHandler;
     }
 
     public static Builder newPrimitiveList(String id) {
@@ -103,9 +112,9 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
         private Function<String, IStatus> newValueHandler;
 
-        private boolean canAdd;
-
         private List<?> candidates;
+
+        private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -113,11 +122,6 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
         public Builder label(String label) {
             this.label = Objects.requireNonNull(label);
-            return this;
-        }
-
-        public Builder canAdd(boolean canAdd) {
-            this.canAdd = canAdd;
             return this;
         }
 
@@ -161,6 +165,11 @@ public final class PrimitiveListWidget extends AbstractWidget {
             return this;
         }
 
+        public Builder reorderHandler(Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler) {
+            this.reorderHandler = reorderHandler;
+            return this;
+        }
+
         public PrimitiveListWidget build() {
             PrimitiveListWidget list = new PrimitiveListWidget();
             list.id = Objects.requireNonNull(this.id);
@@ -168,12 +177,12 @@ public final class PrimitiveListWidget extends AbstractWidget {
             list.iconURL = this.iconURL; // Optional on purpose
             list.style = this.style; // Optional on purpose
             list.items = Objects.requireNonNull(this.items);
-            list.canAdd = this.canAdd;
             list.diagnostics = Objects.requireNonNull(this.diagnostics);
             list.helpTextProvider = this.helpTextProvider; // Optional on purpose
             list.readOnly = this.readOnly;
             list.newValueHandler = this.newValueHandler; // Optional on purpose
             list.candidates = this.candidates;
+            list.reorderHandler = this.reorderHandler; // Optional on purpose
             return list;
         }
     }

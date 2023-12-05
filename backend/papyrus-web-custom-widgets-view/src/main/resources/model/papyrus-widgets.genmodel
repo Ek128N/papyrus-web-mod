@@ -30,12 +30,16 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListWidgetDescription/isEnabledExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/deleteOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/addOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListWidgetDescription/reorderOperation"/>
     </genClasses>
     <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListDeleteOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListDeleteOperation/body"/>
     </genClasses>
     <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListAddOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListAddOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListReorderOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListReorderOperation/body"/>
     </genClasses>
     <genClasses ecoreClass="papyrus-widgets.ecore#//MonoReferenceWidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/isEnabledExpression"/>

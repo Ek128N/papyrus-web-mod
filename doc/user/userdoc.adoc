@@ -301,6 +301,14 @@ In the context of _UML_, for a more exhaustive list of conversion rule look at:
 * _org.eclipse.uml2.uml.internal.impl.UMLFactoryImpl.createFromString(EDataType, String)_
 * _org.eclipse.uml2.types.internal.impl.TypesFactoryImpl.createFromString(EDataType, String)_
 
+The primitive list has also the capability to reorder its items. This is an optional capability that is controlled by the presence of an expression inside the view model of the widget. If such an expression is provided an reorder icon appears on the left of the list title as displayed below:
+
+image::primitive-list-with-reorder-action.png[primitive list with reorder action, 500, align="center"]
+
+Triggering this reorder icon opens a dialog in which the user can change the order of the list items:
+
+image::primitive-list-reorder-dialog.png[width=300, height=360, align="center"]
+
 ======= References
 
 Depending on the nature of the reference, we handle it differently. 

@@ -220,6 +220,31 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
 
     /**
      * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected PrimitiveListReorderOperationItemProvider primitiveListReorderOperationItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createPrimitiveListReorderOperationAdapter() {
+        if (this.primitiveListReorderOperationItemProvider == null) {
+            this.primitiveListReorderOperationItemProvider = new PrimitiveListReorderOperationItemProvider(this);
+        }
+
+        return this.primitiveListReorderOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
      * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -603,6 +628,8 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
             this.primitiveListDeleteOperationItemProvider.dispose();
         if (this.primitiveListAddOperationItemProvider != null)
             this.primitiveListAddOperationItemProvider.dispose();
+        if (this.primitiveListReorderOperationItemProvider != null)
+            this.primitiveListReorderOperationItemProvider.dispose();
         if (this.monoReferenceWidgetDescriptionItemProvider != null)
             this.monoReferenceWidgetDescriptionItemProvider.dispose();
         if (this.multiReferenceWidgetDescriptionItemProvider != null)
