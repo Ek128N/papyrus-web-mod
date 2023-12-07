@@ -35,6 +35,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFacto
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
@@ -89,6 +90,13 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     private EClass primitiveListReorderOperationEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass primitiveListItemActionOperationEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -410,6 +418,16 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
+    public EReference getPrimitiveListWidgetDescription_ItemActionOperation() {
+        return (EReference) this.primitiveListWidgetDescriptionEClass.getEStructuralFeatures().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getPrimitiveListDeleteOperation() {
         return this.primitiveListDeleteOperationEClass;
     }
@@ -462,6 +480,36 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
     @Override
     public EReference getPrimitiveListReorderOperation_Body() {
         return (EReference) this.primitiveListReorderOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getPrimitiveListItemActionOperation() {
+        return this.primitiveListItemActionOperationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPrimitiveListItemActionOperation_Body() {
+        return (EReference) this.primitiveListItemActionOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getPrimitiveListItemActionOperation_IconURLExpression() {
+        return (EAttribute) this.primitiveListItemActionOperationEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -1082,6 +1130,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION);
         this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION);
         this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION);
+        this.createEReference(this.primitiveListWidgetDescriptionEClass, PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION);
 
         this.primitiveListDeleteOperationEClass = this.createEClass(PRIMITIVE_LIST_DELETE_OPERATION);
         this.createEReference(this.primitiveListDeleteOperationEClass, PRIMITIVE_LIST_DELETE_OPERATION__BODY);
@@ -1091,6 +1140,10 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
 
         this.primitiveListReorderOperationEClass = this.createEClass(PRIMITIVE_LIST_REORDER_OPERATION);
         this.createEReference(this.primitiveListReorderOperationEClass, PRIMITIVE_LIST_REORDER_OPERATION__BODY);
+
+        this.primitiveListItemActionOperationEClass = this.createEClass(PRIMITIVE_LIST_ITEM_ACTION_OPERATION);
+        this.createEReference(this.primitiveListItemActionOperationEClass, PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY);
+        this.createEAttribute(this.primitiveListItemActionOperationEClass, PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION);
 
         this.monoReferenceWidgetDescriptionEClass = this.createEClass(MONO_REFERENCE_WIDGET_DESCRIPTION);
         this.createEAttribute(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
@@ -1236,6 +1289,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_ReorderOperation(), this.getPrimitiveListReorderOperation(), null, "reorderOperation", null, 0, 1,
                 PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getPrimitiveListWidgetDescription_ItemActionOperation(), this.getPrimitiveListItemActionOperation(), null, "itemActionOperation", null, 0, 1,
+                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.primitiveListDeleteOperationEClass, PrimitiveListDeleteOperation.class, "PrimitiveListDeleteOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPrimitiveListDeleteOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListDeleteOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -1248,6 +1303,13 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEClass(this.primitiveListReorderOperationEClass, PrimitiveListReorderOperation.class, "PrimitiveListReorderOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPrimitiveListReorderOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListReorderOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.primitiveListItemActionOperationEClass, PrimitiveListItemActionOperation.class, "PrimitiveListItemActionOperation", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getPrimitiveListItemActionOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListItemActionOperation.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPrimitiveListItemActionOperation_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1,
+                PrimitiveListItemActionOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.monoReferenceWidgetDescriptionEClass, MonoReferenceWidgetDescription.class, "MonoReferenceWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,

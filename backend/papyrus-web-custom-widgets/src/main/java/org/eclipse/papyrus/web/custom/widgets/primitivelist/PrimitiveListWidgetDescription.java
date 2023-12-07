@@ -59,6 +59,10 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     private Function<VariableManager, IStatus> reorderHandlerProvider;
 
+    private Function<VariableManager, IStatus> itemActionHandlerProvider;
+
+    private Function<VariableManager, String> itemActionIconURLProvider;
+
     private PrimitiveListWidgetDescription() {
         // Prevent instantiation
     }
@@ -113,6 +117,14 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     public Function<VariableManager, ListStyle> getStyleProvider() {
         return this.styleProvider;
+    }
+
+    public Function<VariableManager, IStatus> getItemActionHandlerProvider() {
+        return this.itemActionHandlerProvider;
+    }
+
+    public Function<VariableManager, String> getItemActionIconURLProvider() {
+        return this.itemActionIconURLProvider;
     }
 
     public static Builder newPrimitiveListDescription(String id) {
@@ -172,6 +184,10 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
         private Function<VariableManager, String> targetObjectIdProvider;
 
         private Function<VariableManager, IStatus> reorderHandlerProvider;
+
+        private Function<VariableManager, IStatus> itemActionHandlerProvider;
+
+        private Function<VariableManager, String> itemActionIconURLProvider;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -272,6 +288,16 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             return this;
         }
 
+        public Builder itemActionHandlerProvider(Function<VariableManager, IStatus> itemActionHandlerProvider) {
+            this.itemActionHandlerProvider = itemActionHandlerProvider;
+            return this;
+        }
+
+        public Builder itemActionIconURLProvider(Function<VariableManager, String> itemActionIconURLProvider) {
+            this.itemActionIconURLProvider = itemActionIconURLProvider;
+            return this;
+        }
+
         public PrimitiveListWidgetDescription build() {
             PrimitiveListWidgetDescription listDescription = new PrimitiveListWidgetDescription();
             listDescription.id = Objects.requireNonNull(this.id);
@@ -294,6 +320,8 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             listDescription.newValueHandler = this.newValueHandler; // Optional on purpose
             listDescription.candidatesProvider = this.candidatesProvider; // Optional on purpose
             listDescription.reorderHandlerProvider = this.reorderHandlerProvider; // Optional on purpose
+            listDescription.itemActionHandlerProvider = this.itemActionHandlerProvider; // Optional on purpose
+            listDescription.itemActionIconURLProvider = this.itemActionIconURLProvider; // Optional on purpose
             return listDescription;
         }
 

@@ -335,13 +335,22 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
+     * The feature id for the '<em><b>Item Action Operation</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
+
+    /**
      * The number of structural features of the '<em>Primitive List Widget Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
+    int PRIMITIVE_LIST_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Primitive List Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -468,6 +477,53 @@ public interface PapyrusWidgetsPackage extends EPackage {
 
     /**
      * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListItemActionOperationImpl
+     * <em>Primitive List Item Action Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListItemActionOperationImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListItemActionOperation()
+     * @generated
+     */
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION = 6;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY = 0;
+
+    /**
+     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION = 1;
+
+    /**
+     * The number of structural features of the '<em>Primitive List Item Action Operation</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION_FEATURE_COUNT = 2;
+
+    /**
+     * The number of operations of the '<em>Primitive List Item Action Operation</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.MonoReferenceWidgetDescriptionImpl <em>Mono
      * Reference Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -475,7 +531,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMonoReferenceWidgetDescription()
      * @generated
      */
-    int MONO_REFERENCE_WIDGET_DESCRIPTION = 6;
+    int MONO_REFERENCE_WIDGET_DESCRIPTION = 7;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -645,7 +701,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMultiReferenceWidgetDescription()
      * @generated
      */
-    int MULTI_REFERENCE_WIDGET_DESCRIPTION = 7;
+    int MULTI_REFERENCE_WIDGET_DESCRIPTION = 8;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -824,7 +880,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMonoReferenceSetOperation()
      * @generated
      */
-    int MONO_REFERENCE_SET_OPERATION = 8;
+    int MONO_REFERENCE_SET_OPERATION = 9;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -862,7 +918,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMonoReferenceUnsetOperation()
      * @generated
      */
-    int MONO_REFERENCE_UNSET_OPERATION = 9;
+    int MONO_REFERENCE_UNSET_OPERATION = 10;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -900,7 +956,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getCreateElementInReferenceOperation()
      * @generated
      */
-    int CREATE_ELEMENT_IN_REFERENCE_OPERATION = 10;
+    int CREATE_ELEMENT_IN_REFERENCE_OPERATION = 11;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -938,7 +994,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getClickReferenceValueOperation()
      * @generated
      */
-    int CLICK_REFERENCE_VALUE_OPERATION = 11;
+    int CLICK_REFERENCE_VALUE_OPERATION = 12;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -976,7 +1032,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMultiReferenceAddOperation()
      * @generated
      */
-    int MULTI_REFERENCE_ADD_OPERATION = 12;
+    int MULTI_REFERENCE_ADD_OPERATION = 13;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1014,7 +1070,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMultiReferenceRemoveOperation()
      * @generated
      */
-    int MULTI_REFERENCE_REMOVE_OPERATION = 13;
+    int MULTI_REFERENCE_REMOVE_OPERATION = 14;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1052,7 +1108,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getClearReferenceOperation()
      * @generated
      */
-    int CLEAR_REFERENCE_OPERATION = 14;
+    int CLEAR_REFERENCE_OPERATION = 15;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1090,7 +1146,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getMultiReferenceReorderOperation()
      * @generated
      */
-    int MULTI_REFERENCE_REORDER_OPERATION = 15;
+    int MULTI_REFERENCE_REORDER_OPERATION = 16;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -1128,7 +1184,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getContainmentReferenceWidgetDescription()
      * @generated
      */
-    int CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION = 16;
+    int CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION = 17;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1472,6 +1528,18 @@ public interface PapyrusWidgetsPackage extends EPackage {
     EReference getPrimitiveListWidgetDescription_ReorderOperation();
 
     /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getItemActionOperation
+     * <em>Item Action Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Item Action Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getItemActionOperation()
+     * @see #getPrimitiveListWidgetDescription()
+     * @generated
+     */
+    EReference getPrimitiveListWidgetDescription_ItemActionOperation();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation <em>Primitive List
      * Delete Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1539,6 +1607,41 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      */
     EReference getPrimitiveListReorderOperation_Body();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation <em>Primitive List
+     * Item Action Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Primitive List Item Action Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation
+     * @generated
+     */
+    EClass getPrimitiveListItemActionOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation#getBody
+     * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation#getBody()
+     * @see #getPrimitiveListItemActionOperation()
+     * @generated
+     */
+    EReference getPrimitiveListItemActionOperation_Body();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation#getIconURLExpression
+     * <em>Icon URL Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Icon URL Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation#getIconURLExpression()
+     * @see #getPrimitiveListItemActionOperation()
+     * @generated
+     */
+    EAttribute getPrimitiveListItemActionOperation_IconURLExpression();
 
     /**
      * Returns the meta object for class
@@ -2381,6 +2484,14 @@ public interface PapyrusWidgetsPackage extends EPackage {
         EReference PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION = eINSTANCE.getPrimitiveListWidgetDescription_ReorderOperation();
 
         /**
+         * The meta object literal for the '<em><b>Item Action Operation</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION = eINSTANCE.getPrimitiveListWidgetDescription_ItemActionOperation();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListDeleteOperationImpl
          * <em>Primitive List Delete Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2436,6 +2547,33 @@ public interface PapyrusWidgetsPackage extends EPackage {
          * @generated
          */
         EReference PRIMITIVE_LIST_REORDER_OPERATION__BODY = eINSTANCE.getPrimitiveListReorderOperation_Body();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListItemActionOperationImpl
+         * <em>Primitive List Item Action Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListItemActionOperationImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getPrimitiveListItemActionOperation()
+         * @generated
+         */
+        EClass PRIMITIVE_LIST_ITEM_ACTION_OPERATION = eINSTANCE.getPrimitiveListItemActionOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY = eINSTANCE.getPrimitiveListItemActionOperation_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Icon URL Expression</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION = eINSTANCE.getPrimitiveListItemActionOperation_IconURLExpression();
 
         /**
          * The meta object literal for the

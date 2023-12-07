@@ -35,6 +35,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFacto
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
@@ -91,6 +92,8 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
                 return this.createPrimitiveListAddOperation();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_REORDER_OPERATION:
                 return this.createPrimitiveListReorderOperation();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION:
+                return this.createPrimitiveListItemActionOperation();
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION:
                 return this.createMonoReferenceWidgetDescription();
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION:
@@ -182,6 +185,17 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
     public PrimitiveListReorderOperation createPrimitiveListReorderOperation() {
         PrimitiveListReorderOperationImpl primitiveListReorderOperation = new PrimitiveListReorderOperationImpl();
         return primitiveListReorderOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public PrimitiveListItemActionOperation createPrimitiveListItemActionOperation() {
+        PrimitiveListItemActionOperationImpl primitiveListItemActionOperation = new PrimitiveListItemActionOperationImpl();
+        return primitiveListItemActionOperation;
     }
 
     /**

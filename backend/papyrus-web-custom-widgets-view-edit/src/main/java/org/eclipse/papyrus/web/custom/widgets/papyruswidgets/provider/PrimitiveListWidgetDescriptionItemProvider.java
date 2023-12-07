@@ -134,6 +134,7 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION);
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION);
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION);
+            this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION);
         }
         return this.childrenFeatures;
     }
@@ -205,6 +206,7 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION:
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION:
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION:
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
             default:
@@ -238,6 +240,9 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
 
         newChildDescriptors.add(
                 this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListReorderOperation()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListItemActionOperation()));
     }
 
     /**

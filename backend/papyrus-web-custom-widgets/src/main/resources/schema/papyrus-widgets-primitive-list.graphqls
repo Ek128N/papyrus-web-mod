@@ -16,6 +16,7 @@ extend type Mutation {
   deletePrimitiveListItem(input: DeleteListItemInput!): DeleteListItemPayload!
   addPrimitiveListItem(input: AddPrimitiveListItemInput!): AddPrimitiveListItemPayload!
   reorderPrimitiveListItems(input: ReorderPrimitiveListItemsInput!): ReorderPrimitiveListItemsPayload!
+  actionPrimitiveListItem(input: ActionListItemInput!): ActionListItemPayload!
 }
 
 input AddPrimitiveListItemInput {
@@ -34,6 +35,8 @@ type PrimitiveListItem {
   kind: String!
   iconURL: [String!]!
   deletable: Boolean!
+  hasAction: Boolean!
+  actionIconURL: String
 }
 
 input ReorderPrimitiveListItemsInput {
@@ -47,3 +50,13 @@ input ReorderPrimitiveListItemsInput {
 }
 
 union ReorderPrimitiveListItemsPayload = ErrorPayload | SuccessPayload
+
+input ActionListItemInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  listId: ID!
+  itemId: ID!
+}
+
+union ActionListItemPayload = ErrorPayload | SuccessPayload

@@ -86,6 +86,15 @@ public interface PapyrusWidgetsFactory extends EFactory {
     PrimitiveListReorderOperation createPrimitiveListReorderOperation();
 
     /**
+     * Returns a new object of class '<em>Primitive List Item Action Operation</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Primitive List Item Action Operation</em>'.
+     * @generated
+     */
+    PrimitiveListItemActionOperation createPrimitiveListItemActionOperation();
+
+    /**
      * Returns a new object of class '<em>Mono Reference Widget Description</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *

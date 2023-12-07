@@ -40,6 +40,10 @@ public final class PrimitiveListItem {
 
     private Supplier<IStatus> deleteHandler;
 
+    private Supplier<IStatus> actionHandler;
+
+    private String actionIconURL;
+
     private PrimitiveListItem() {
         // Prevent instantiation
     }
@@ -66,6 +70,18 @@ public final class PrimitiveListItem {
 
     public Supplier<IStatus> getDeleteHandler() {
         return this.deleteHandler;
+    }
+
+    public boolean hasAction() {
+        return this.actionHandler != null;
+    }
+
+    public Supplier<IStatus> getActionHandler() {
+        return this.actionHandler;
+    }
+
+    public String getActionIconURL() {
+        return this.actionIconURL;
     }
 
     public static Builder newPrimitiveListItem(String id) {
@@ -97,6 +113,10 @@ public final class PrimitiveListItem {
 
         private Supplier<IStatus> deleteHandler;
 
+        private Supplier<IStatus> actionHandler;
+
+        private String actionIconURL;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -126,6 +146,16 @@ public final class PrimitiveListItem {
             return this;
         }
 
+        public Builder actionHandler(Supplier<IStatus> actionHandler) {
+            this.actionHandler = actionHandler;
+            return this;
+        }
+
+        public Builder actionIconURL(String actionIconURL) {
+            this.actionIconURL = actionIconURL;
+            return this;
+        }
+
         public PrimitiveListItem build() {
             PrimitiveListItem listItem = new PrimitiveListItem();
             listItem.id = Objects.requireNonNull(this.id);
@@ -134,6 +164,8 @@ public final class PrimitiveListItem {
             listItem.deletable = this.deletable;
             listItem.deleteHandler = Objects.requireNonNull(this.deleteHandler);
             listItem.iconURL = Objects.requireNonNull(this.iconURL);
+            listItem.actionHandler = this.actionHandler; // Optional on purpose
+            listItem.actionIconURL = this.actionIconURL; // Optional on purpose
             return listItem;
         }
     }

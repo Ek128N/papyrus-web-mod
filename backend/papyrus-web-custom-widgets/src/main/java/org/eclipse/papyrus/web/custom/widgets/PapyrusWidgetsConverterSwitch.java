@@ -41,6 +41,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceReord
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsSwitch;
@@ -88,6 +89,8 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
 public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional<AbstractWidgetDescription>> {
 
     private static final String DELETION_ERROR_MSG = "Something went wrong while handling item deletion.";
+
+    private static final String ITEM_ACTION_ERROR_MSG = "Something went wrong while handling item action.";
 
     private static final String CLICKING_ERROR_MSG = "Something went wrong while clicking item.";
 
@@ -183,6 +186,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         Function<VariableManager, String> itemIdProvider = this::getPrimitiveListItemId;
         Function<VariableManager, String> itemKindProvider = variableManger -> "unknown";
         Function<VariableManager, IStatus> itemDeleteHandlerProvider = this.handleOperation(viewListDescription.getDeleteOperation(), PrimitiveListDeleteOperation::getBody, DELETION_ERROR_MSG);
+        Function<VariableManager, IStatus> itemActionHandlerProvider = this.handleOperation(viewListDescription.getItemActionOperation(), PrimitiveListItemActionOperation::getBody, ITEM_ACTION_ERROR_MSG);
         BiFunction<VariableManager, String, IStatus> newValueHandlerProvider = this.getNewValueHandler(viewListDescription.getAddOperation());
         Function<VariableManager, List<?>> candidatesProvider = this.getOptionsProvider(viewListDescription.getCandidatesExpression());
 
@@ -224,6 +228,10 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         }
         if (viewListDescription.getCandidatesExpression() != null) {
             builder.candidatesProvider(candidatesProvider);
+        }
+        if (viewListDescription.getItemActionOperation() != null) {
+            builder.itemActionHandlerProvider(itemActionHandlerProvider);
+            builder.itemActionIconURLProvider(this.getStringValueProvider(viewListDescription.getItemActionOperation().getIconURLExpression()));
         }
         return Optional.of(builder.build());
     }

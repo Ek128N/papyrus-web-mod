@@ -12,7 +12,13 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLList, GQLMessage, GQLSubscriber } from '@eclipse-sirius/sirius-components-forms';
+import {
+  GQLListItem,
+  GQLListStyle,
+  GQLMessage,
+  GQLSubscriber,
+  GQLWidget,
+} from '@eclipse-sirius/sirius-components-forms';
 
 export interface PrimitiveListStyleProps {
   color: string | null;
@@ -32,10 +38,17 @@ export interface PrimitiveListPropertySectionProps {
   setSelection: (selection: Selection) => void;
 }
 
-export interface EditableGQLList extends GQLList {
+export interface EditableGQLList extends GQLWidget {
   canAdd: boolean;
   canReorder: boolean;
   candidates: string[] | undefined;
+  items: GQLActionableListItem[];
+  style: GQLListStyle;
+}
+
+export interface GQLActionableListItem extends GQLListItem {
+  hasAction: Boolean;
+  actionIconURL: string;
 }
 
 export interface GQLDeletePrimitiveListItemMutationData {
@@ -89,4 +102,24 @@ export interface GQLReorderPrimitiveListItemsInput {
   itemId: string;
   fromIndex: number;
   toIndex: number;
+}
+
+export interface GQLActionPrimitiveListItemMutationData {
+  actionPrimitiveListItem: GQLActionPrimitiveListItemPayload;
+}
+
+export interface GQLActionPrimitiveListItemPayload {
+  __typename: string;
+}
+
+export interface GQLActionPrimitiveListItemMutationVariables {
+  input: GQLActionPrimitiveListItemInput;
+}
+
+export interface GQLActionPrimitiveListItemInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  listId: string;
+  itemId: string;
 }

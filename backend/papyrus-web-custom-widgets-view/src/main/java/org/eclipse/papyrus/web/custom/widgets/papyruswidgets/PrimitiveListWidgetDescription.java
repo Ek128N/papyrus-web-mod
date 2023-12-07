@@ -45,6 +45,8 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
  * <em>Add Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getReorderOperation
  * <em>Reorder Operation</em>}</li>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getItemActionOperation
+ * <em>Item Action Operation</em>}</li>
  * </ul>
  *
  * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getPrimitiveListWidgetDescription()
@@ -255,5 +257,29 @@ public interface PrimitiveListWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setReorderOperation(PrimitiveListReorderOperation value);
+
+    /**
+     * Returns the value of the '<em><b>Item Action Operation</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Item Action Operation</em>' containment reference.
+     * @see #setItemActionOperation(PrimitiveListItemActionOperation)
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getPrimitiveListWidgetDescription_ItemActionOperation()
+     * @model containment="true"
+     * @generated
+     */
+    PrimitiveListItemActionOperation getItemActionOperation();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription#getItemActionOperation
+     * <em>Item Action Operation</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Item Action Operation</em>' containment reference.
+     * @see #getItemActionOperation()
+     * @generated
+     */
+    void setItemActionOperation(PrimitiveListItemActionOperation value);
 
 } // PrimitiveListWidgetDescription

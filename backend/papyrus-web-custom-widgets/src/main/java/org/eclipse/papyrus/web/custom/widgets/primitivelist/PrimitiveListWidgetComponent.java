@@ -88,15 +88,20 @@ public class PrimitiveListWidgetComponent implements IComponent {
             boolean isItemDeletable = listDescription.getItemDeletableProvider().apply(itemVariableManager);
             Supplier<IStatus> deleteHandler = () -> listDescription.getItemDeleteHandlerProvider().apply(itemVariableManager);
 
-            PrimitiveListItem item = PrimitiveListItem.newPrimitiveListItem(itemId)//
+            PrimitiveListItem.Builder itemBuilder = PrimitiveListItem.newPrimitiveListItem(itemId)//
                     .label(itemLabel)//
                     .kind(itemKind)//
                     .iconURL(List.of())//
                     .deletable(isItemDeletable)//
-                    .deleteHandler(deleteHandler)//
-                    .build();
+                    .deleteHandler(deleteHandler);
+            if (listDescription.getItemActionHandlerProvider() != null) {
+                itemBuilder.actionHandler(() -> listDescription.getItemActionHandlerProvider().apply(itemVariableManager));
+            }
+            if (listDescription.getItemActionIconURLProvider() != null) {
+                itemBuilder.actionIconURL(listDescription.getItemActionIconURLProvider().apply(itemVariableManager));
+            }
 
-            items.add(item);
+            items.add(itemBuilder.build());
         }
 
         PrimitiveListWidgetElementProps.Builder listElementPropsBuilder = PrimitiveListWidgetElementProps.newListElementProps(id)

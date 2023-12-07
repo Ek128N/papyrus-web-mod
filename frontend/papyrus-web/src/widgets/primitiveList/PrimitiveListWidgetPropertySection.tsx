@@ -12,7 +12,7 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLListItem, PropertySectionLabel, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { Input, InputAdornment } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,12 +24,17 @@ import TextField from '@material-ui/core/TextField';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { MouseEvent, useEffect, useState } from 'react';
+import BubbleChartIcon from '@material-ui/icons/BubbleChart';
+import { MouseEvent, useContext, useEffect, useState } from 'react';
 import { IconURL } from '../IconURL';
 import {
+  GQLActionPrimitiveListItemMutationData,
+  GQLActionPrimitiveListItemMutationVariables,
+  GQLActionPrimitiveListItemPayload,
+  GQLActionableListItem,
   GQLAddPrimitiveListItemMutationData,
   GQLAddPrimitiveListItemPayload,
   GQLDeletePrimitiveListItemMutationData,
@@ -37,6 +42,7 @@ import {
   GQLErrorPayload,
   GQLReorderPrimitiveListItemsMutationData,
   GQLReorderPrimitiveListItemsMutationVariables,
+  GQLReorderPrimitiveListItemsPayload,
   GQLSuccessPayload,
   PrimitiveListPropertySectionProps,
   PrimitiveListStyleProps,
@@ -106,6 +112,26 @@ export const reorderPrimitiveListItemsMutation = gql`
   }
 `;
 
+export const actionPrimitiveListItemMutation = gql`
+  mutation actionPrimitiveListItemMutation($input: ActionListItemInput!) {
+    actionPrimitiveListItem(input: $input) {
+      __typename
+      ... on ErrorPayload {
+        messages {
+          body
+          level
+        }
+      }
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
+    }
+  }
+`;
+
 const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListStyleProps>((theme) => ({
   cell: {
     display: 'flex',
@@ -138,15 +164,21 @@ const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListSty
 
 const NONE_WIDGET_ITEM_ID = 'none';
 
-const isErrorPayload = (payload: GQLDeletePrimitiveListItemPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (payload: GQLDeletePrimitiveListItemPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
+const isErrorPayload = (
+  payload:
+    | GQLAddPrimitiveListItemPayload
+    | GQLDeletePrimitiveListItemPayload
+    | GQLReorderPrimitiveListItemsPayload
+    | GQLActionPrimitiveListItemPayload
+): payload is GQLErrorPayload => payload.__typename === 'ErrorPayload';
 
-const isAddErrorPayload = (payload: GQLAddPrimitiveListItemPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-const isAddSuccessPayload = (payload: GQLAddPrimitiveListItemPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
+const isSuccessPayload = (
+  payload:
+    | GQLAddPrimitiveListItemPayload
+    | GQLDeletePrimitiveListItemPayload
+    | GQLReorderPrimitiveListItemsPayload
+    | GQLActionPrimitiveListItemPayload
+): payload is GQLSuccessPayload => payload.__typename === 'SuccessPayload';
 
 export const PrimitiveListSection = ({
   editingContextId,
@@ -163,7 +195,7 @@ export const PrimitiveListSection = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const theme = useTheme();
+  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [newValue, setNewValue] = useState('');
   const [openReorderDialog, setOpenReorderDialog] = useState<boolean>(false);
   const classes = usePrimitiveListPropertySectionStyles(props);
@@ -176,6 +208,8 @@ export const PrimitiveListSection = ({
       label: 'None',
       kind: 'Unknown',
       deletable: false,
+      hasAction: false,
+      actionIconURL: '',
     });
   }
 
@@ -218,6 +252,11 @@ export const PrimitiveListSection = ({
     GQLReorderPrimitiveListItemsMutationVariables
   >(reorderPrimitiveListItemsMutation);
 
+  const [actionPrimitiveListItem, { loading: actionLoading, error: actionError, data: actionData }] = useMutation<
+    GQLActionPrimitiveListItemMutationData,
+    GQLActionPrimitiveListItemMutationVariables
+  >(actionPrimitiveListItemMutation);
+
   const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
@@ -227,7 +266,7 @@ export const PrimitiveListSection = ({
       }
       if (deleteData) {
         const { deletePrimitiveListItem } = deleteData;
-        if (isAddErrorPayload(deletePrimitiveListItem) || isAddSuccessPayload(deletePrimitiveListItem)) {
+        if (isErrorPayload(deletePrimitiveListItem) || isSuccessPayload(deletePrimitiveListItem)) {
           addMessages(deletePrimitiveListItem.messages);
         }
       }
@@ -265,31 +304,69 @@ export const PrimitiveListSection = ({
     }
   }, [reorderLoading, reorderError, reorderData]);
 
-  const getTableCellContent = (item: GQLListItem): JSX.Element => {
-    return (
-      <>
-        <TableCell className={classes.cell}>
-          <IconURL iconURL={item.iconURL} alt={item.label} />
-          <Typography
-            className={`${classes.style}`}
-            color="textPrimary"
-            data-testid={`primitive-list-item-content-${item.label}`}>
-            {item.label}
-          </Typography>
+  useEffect(() => {
+    if (!actionLoading) {
+      if (actionError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (actionData) {
+        const { actionPrimitiveListItem } = actionData;
+        if (isErrorPayload(actionPrimitiveListItem) || isSuccessPayload(actionPrimitiveListItem)) {
+          addMessages(actionPrimitiveListItem.messages);
+        }
+      }
+    }
+  }, [actionLoading, actionError, actionData]);
 
-          {item.deletable && (
-            <IconButton
-              aria-label="delete list item"
-              onClick={(event) => onDelete(event, item)}
-              size="small"
-              title="Delete item"
-              disabled={readOnly || !item.deletable || widget.readOnly}
-              data-testid={`primitive-list-item-delete-button-${item.label}`}>
-              <DeleteIcon />
-            </IconButton>
-          )}
-        </TableCell>
-      </>
+  const callActionPrimitvieListItem = (_: MouseEvent<HTMLElement>, item: GQLActionableListItem) => {
+    const variables: GQLActionPrimitiveListItemMutationVariables = {
+      input: {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: formId,
+        listId: widget.id,
+        itemId: item.id,
+      },
+    };
+    actionPrimitiveListItem({ variables });
+  };
+
+  const getTableCellContent = (item: GQLActionableListItem): JSX.Element => {
+    return (
+      <TableCell className={classes.cell}>
+        <IconURL iconURL={item.iconURL} alt={item.label} />
+        <Typography
+          className={classes.style}
+          color="textPrimary"
+          data-testid={`primitive-list-item-content-${item.label}`}>
+          {item.label}
+        </Typography>
+        {item.hasAction && (
+          <IconButton
+            aria-label="action item"
+            onClick={(event) => callActionPrimitvieListItem(event, item)}
+            size="small"
+            disabled={readOnly || widget.readOnly}
+            data-testid={`primitive-list-item-action-button-${item.label}`}>
+            {item.actionIconURL ? (
+              <img height="24" width="24" src={httpOrigin + item.actionIconURL} />
+            ) : (
+              <BubbleChartIcon />
+            )}
+          </IconButton>
+        )}
+        {item.deletable && (
+          <IconButton
+            aria-label="delete list item"
+            onClick={(event) => onDelete(event, item)}
+            size="small"
+            title="Delete item"
+            disabled={readOnly || !item.deletable || widget.readOnly}
+            data-testid={`primitive-list-item-delete-button-${item.label}`}>
+            <DeleteIcon />
+          </IconButton>
+        )}
+      </TableCell>
     );
   };
 

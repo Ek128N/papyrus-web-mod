@@ -309,6 +309,14 @@ Triggering this reorder icon opens a dialog in which the user can change the ord
 
 image::primitive-list-reorder-dialog.png[width=300, height=360, align="center"]
 
+The primitive list custom widget can be configured to have a single extra action on each item.
+This item action is optional but its setting is for all items or none. 
+One can control the UI appearance of the action by setting its icon file.
+
+As an example, the following image shows a paperclip icon for the item action and when the user clicks an information pops up with the clicked item name.
+
+image::primitive-list-with-item-action.png[primitive list with item action, 500, align="center"]
+
 ======= References
 
 Depending on the nature of the reference, we handle it differently. 
