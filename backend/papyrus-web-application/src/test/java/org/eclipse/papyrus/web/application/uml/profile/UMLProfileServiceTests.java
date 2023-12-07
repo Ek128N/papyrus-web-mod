@@ -44,6 +44,7 @@ import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.ProfileApplication;
 import org.eclipse.uml2.uml.Stereotype;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -66,6 +67,11 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
 
     @Autowired
     private IProfileRepository profileRepository;
+
+    @AfterEach
+    public void removePublishedProfile() {
+        this.profileRepository.deleteAll();
+    }
 
     /**
      * Test the application of a static package profile (<i>Standard Profile</i>).

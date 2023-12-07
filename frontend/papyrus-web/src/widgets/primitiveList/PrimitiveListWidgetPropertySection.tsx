@@ -379,11 +379,11 @@ export const PrimitiveListSection = ({
       margin="dense"
       placeholder="New Item"
       disabled={readOnly || widget.readOnly}
-      data-testid={'primitive-list-input'}
+      data-testid={`primitive-list-input-${widget.label}`}
       endAdornment={
         <InputAdornment position="end">
           <IconButton
-            data-testid={'primitive-list-add'}
+            data-testid={`primitive-list-add-${widget.label}`}
             size="small"
             onClick={(_) => onAdd()}
             disabled={readOnly || widget.readOnly}>
@@ -403,7 +403,7 @@ export const PrimitiveListSection = ({
   const strictValue = (
     <div className={classes.autocomplete}>
       <Autocomplete
-        data-testid={`${widget.label}-autocomplete`}
+        data-testid={`primitive-list-autocomplete-${widget.label}`}
         options={widget.candidates}
         clearOnEscape
         openOnFocus
@@ -414,7 +414,7 @@ export const PrimitiveListSection = ({
         renderInput={(params) => (
           <TextField
             {...params}
-            data-testid={`${widget.label}-autocomplete-textfield`}
+            data-testid={`primitive-list-autocomplete-textfield-${widget.label}`}
             variant="standard"
             placeholder={'New Item'}
             error={widget.diagnostics.length > 0}
@@ -432,7 +432,7 @@ export const PrimitiveListSection = ({
         size="small"
         title="Add item"
         disabled={readOnly || widget.readOnly || !newValue}
-        data-testid={`${widget.label}-add`}
+        data-testid={`primitive-list-add-${widget.label}`}
         onClick={() => onAdd()}>
         <AddIcon />
       </IconButton>
@@ -440,7 +440,7 @@ export const PrimitiveListSection = ({
   );
 
   const addSection = (
-    <TableRow key="Add">
+    <TableRow key="Add" data-testid={`primitive-list-add-section-${widget.label}`}>
       <TableCell className={classes.cell}>{widget.candidates?.length > 0 ? strictValue : freeValue}</TableCell>
     </TableRow>
   );
@@ -485,10 +485,12 @@ export const PrimitiveListSection = ({
             </IconButton>
           )}
         </div>
-        <Table size="small" data-testid={'primitive-list-table'}>
-          <TableBody>
+        <Table size="small">
+          <TableBody data-testid={`primitive-list-table-${widget.label}`}>
             {items.map((item) => (
-              <TableRow key={item.id}>{getTableCellContent(item)}</TableRow>
+              <TableRow key={item.id} data-testid={`primitive-list-item-${item.label}`}>
+                {getTableCellContent(item)}
+              </TableRow>
             ))}
             {widget.canAdd && addSection}
           </TableBody>

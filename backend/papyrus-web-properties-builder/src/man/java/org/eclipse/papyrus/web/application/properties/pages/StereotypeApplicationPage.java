@@ -14,6 +14,8 @@
 package org.eclipse.papyrus.web.application.properties.pages;
 
 import org.eclipse.papyrus.web.application.properties.ColorRegistry;
+import org.eclipse.papyrus.web.application.properties.MonoReferenceWidgetBuilder;
+import org.eclipse.papyrus.web.application.properties.MultiReferenceWidgetBuilder;
 import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
@@ -73,29 +75,37 @@ public class StereotypeApplicationPage {
         featureIterator.setIterableExpression("aql:self.getAllFeatures()");
         
         // Mono
-        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoStringAttribute", "monoString", "aql:'Widget to set '+feature.name+': expecting a String'", true));
-        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoIntegerAttribute", "monoInteger", "aql:'Widget to set '+feature.name+': expecting an Integer'"));
-        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoDoubleAttribute", "monoDouble", "aql:'Widget to set '+feature.name+': expecting a Double'"));
-        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoFloatAttribute", "monoFloat", "aql:'Widget to set '+feature.name+': expecting a Float'"));
+        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoStringAttribute", "monoString", "aql:'Widget to set \"'+feature.name+'\": expecting a String.'", true));
+        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoIntegerAttribute", "monoInteger", "aql:'Widget to set \"'+feature.name+'\": expecting an Integer.'"));
+        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoDoubleAttribute", "monoDouble", "aql:'Widget to set \"'+feature.name+'\": expecting a Double.'"));
+        featureIterator.getChildren().add(createMonoStringAttributeIf("isMonoFloatAttribute", "monoFloat", "aql:'Widget to set \"'+feature.name+'\": expecting a Float.'"));
         // boolean -> check
         featureIterator.getChildren().add(createMonoBooleanAttributeIf());
         // Boolean -> radio with "true", "false" and "null"
         featureIterator.getChildren().add(createMonoBooleanObjectAttributeIf());
-        // EEnumeration -> Select
+        // Enumeration -> Select
         featureIterator.getChildren().add(createMonoEnumerationAttributeIf());
         
         // Multi
-        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiStringAttribute", "multiString", "aql:'Widget to set '+feature.name+': expecting a list of String'"));
-        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiIntegerAttribute", "multiInteger", "aql:'Widget to set '+feature.name+': expecting a list of Ineger'"));
-        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiDoubleAttribute", "multiDouble", "aql:'Widget to set '+feature.name+': expecting a list of Double'"));
-        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiFloatAttribute", "multiFloat", "aql:'Widget to set '+feature.name+': expecting a list of Float'"));
+        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiStringAttribute", "multiString", "aql:'Widget to set \"'+feature.name+'\": expecting a list of String.'"));
+        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiIntegerAttribute", "multiInteger", "aql:'Widget to set \"'+feature.name+'\": expecting a list of Ineger.'"));
+        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiDoubleAttribute", "multiDouble", "aql:'Widget to set \"'+feature.name+'\": expecting a list of Double.'"));
+        featureIterator.getChildren().add(createMultiStringAttributeIf("isMultiFloatAttribute", "multiFloat", "aql:'Widget to set \"'+feature.name+'\": expecting a list of Float.'"));
         // Multi boolean
-        featureIterator.getChildren().add(createMultiEnumerationAttributeIf("isMultiBooleanAttribute", "multiBoolean", "aql:Sequence{'true', 'false'}", "aql:'Widget to set '+feature.name+': expecting a list of Boolean'"));
+        featureIterator.getChildren().add(
+                createMultiEnumerationAttributeIf("isMultiBooleanAttribute", "multiBoolean", "aql:Sequence{'true', 'false'}",
+                        "aql:'Widget to set \"'+feature.name+'\": expecting a list of Boolean.'"));
         // Multi enum
-        featureIterator.getChildren().add(createMultiEnumerationAttributeIf("isMultiEnumeration", "multiEnumeration", "aql:feature.getStereotypeEnumerationLiterals()", "aql:'Widget to set '+feature.name+': expecting a list of Enum'"));
+        featureIterator.getChildren().add(createMultiEnumerationAttributeIf("isMultiEnumeration", "multiEnumeration", "aql:feature.getStereotypeEnumerationLiterals()",
+                "aql:'Widget to set \"'+feature.name+'\": expecting a list of Enum.'"));
 
+        // Reference
+        // Mono
+        featureIterator.getChildren().add(createMonoReferenceIf());
+        // Multi
+        featureIterator.getChildren().add(createMultiReferenceIf());
+        
         group.getChildren().add(featureIterator);
-
     }
 
     private FormElementIf createMonoStringAttributeIf(String ifName, String widgetName, String help) {
@@ -173,7 +183,7 @@ public class StereotypeApplicationPage {
         PrimitiveListAddOperation addOperation = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListAddOperation();
         addOperation.getBody().add(createChangeContext("aql:self.addToAttribute(feature.name,newValue)"));
         multiEnumerationWidget.setAddOperation(addOperation);
-        multiEnumerationWidget.setHelpExpression("aql:'Widget to set '+feature.name+': expecting a list of enum literals'");
+        multiEnumerationWidget.setHelpExpression(help);
         multiEnumerationWidget.setIsEnabledExpression(AQL_FEATURE_IS_EDITABLE);
         ifWidget.getChildren().add(multiEnumerationWidget);
         
@@ -190,7 +200,7 @@ public class StereotypeApplicationPage {
                 AQL_SET_STEREOTYPE_FEATURE_VALUE, //
                 "aql:feature.getStereotypeEnumerationLiterals()", //
                 "aql:candidate.toString()", //
-                "aql:'Widget to set '+feature.name+': expecting a enum literal'", //
+                "aql:'Widget to set \"'+feature.name+'\": expecting a enum literal.'", //
                 AQL_FEATURE_IS_EDITABLE);
         ifMonoEnum.getChildren().add(monoEnumRadio);
         return ifMonoEnum;
@@ -204,7 +214,7 @@ public class StereotypeApplicationPage {
                 AQL_FEATURE_NAME, //
                 AQL_GET_STEREOTYPE_FEATURE_VALUE, //
                 AQL_SET_STEREOTYPE_FEATURE_VALUE, //
-                "aql:'Widget to set '+feature.name+': expecting a boolean'", //
+                "aql:'Widget to set \"'+feature.name+'\": expecting a boolean.'", //
                 AQL_FEATURE_IS_EDITABLE);
         ifMonoBoolean.getChildren().add(monoBooleanCheck);
         return ifMonoBoolean;
@@ -220,9 +230,56 @@ public class StereotypeApplicationPage {
         monoBooleanObjectRadio.setValueExpression("aql:self.getStereotypeBooleanObjectValue(feature)");
         monoBooleanObjectRadio.getBody().add(createChangeContext(AQL_SET_STEREOTYPE_FEATURE_VALUE));
         monoBooleanObjectRadio.setCandidatesExpression("aql:feature.getStereotypeBooleanObjectLiterals()");
-        monoBooleanObjectRadio.setHelpExpression("aql:'Widget to set '+feature.name+': expecting a Boolean object'");
+        monoBooleanObjectRadio.setHelpExpression("aql:'Widget to set \"'+feature.name+'\": expecting a Boolean object.'");
         monoBooleanObjectRadio.setIsEnabledExpression(AQL_FEATURE_IS_EDITABLE);
         ifMonoBooleanObject.getChildren().add(monoBooleanObjectRadio);
         return ifMonoBooleanObject;
+    }
+
+    private FormElementIf createMonoReferenceIf() {
+        var ifWidget = FormFactory.eINSTANCE.createFormElementIf();
+        ifWidget.setName("isMonoReference");
+        ifWidget.setPredicateExpression("aql:feature.isMonoReference() and feature.eType.isUMLDataType()");
+        var widget = new MonoReferenceWidgetBuilder() //
+                .name("monoReference") //
+                .label(AQL_FEATURE_NAME) //
+                .help("aql:'Widget to set \"'+feature.name+'\": expecting a single '+self.getFeatureTypeQualifiedName(feature.name)+' object.'") //
+                .isEnable(AQL_FEATURE_IS_EDITABLE) //
+                .owner("") //
+                .type("aql:self.getFeatureTypeQualifiedName(feature.name)") //
+                .value(AQL_GET_STEREOTYPE_FEATURE_VALUE) //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements(feature.name)") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .setOperation("aql:self.updateReference(newValue,feature.name)") //
+                .unsetOperation("aql:item.delete(self, feature.name))") //
+                .clearOperation("aql:self.clearReference(feature.name)") //
+                .build();
+        ifWidget.getChildren().add(widget);
+        return ifWidget;
+    }
+    
+    private FormElementIf createMultiReferenceIf() {
+        var ifWidget = FormFactory.eINSTANCE.createFormElementIf();
+        ifWidget.setName("isMultiReference");
+        ifWidget.setPredicateExpression("aql:feature.isMultiReference() and feature.eType.isUMLDataType()");
+        var widget = new MultiReferenceWidgetBuilder() //
+                .name("multiReference") //
+                .label(AQL_FEATURE_NAME) //
+                .help("aql:'Widget to set \"'+feature.name+'\": expecting a list of '+self.getFeatureTypeQualifiedName(feature.name)+' objects.'") //
+                .isEnable(AQL_FEATURE_IS_EDITABLE) //
+                .owner("") //
+                .type("aql:self.getFeatureTypeQualifiedName(feature.name)") //
+                .value(AQL_GET_STEREOTYPE_FEATURE_VALUE) //
+                .searchScope("aql:self.getAllReachableRootElements()") //
+                .dropdownOptions("aql:self.getAllReachableElements(feature.name)") //
+                .createOperation("aql:parent.create(kind, feature)") //
+                .addOperation("aql:self.addReferenceElement(newValue, feature.name)") //
+                .removeOperation("aql:item.delete(self, feature.name))") //
+                .reorderOperation("aql:self.moveReferenceElement(feature.name, item, fromIndex, toIndex)") //
+                .clearOperation("aql:self.clearReference(feature.name)") //
+                .build();
+        ifWidget.getChildren().add(widget);
+        return ifWidget;
     }
 }

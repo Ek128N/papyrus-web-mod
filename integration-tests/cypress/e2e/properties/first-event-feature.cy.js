@@ -44,14 +44,14 @@ describe('Basic widgets test', () => {
   });
 
   it('Test the primitive list widget handling first event feature', () => {
-    cy.getByTestId('primitive-list-table').get('tbody>tr>td>p').as('prim-items');
-    cy.getByTestId('First event-autocomplete-textfield').find('input').as('prim-input');
+    cy.getByTestId('primitive-list-table-First event').get('tr>td>p').as('prim-items');
+    cy.getByTestId('primitive-list-autocomplete-textfield-First event').find('input').as('prim-input');
 
     // add 'true' value using add button
     cy.get('@prim-input').type('true');
     cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
     cy.get('@dropdown').find('li').contains('true').click();
-    cy.getByTestId('First event-add').click();
+    cy.getByTestId('primitive-list-add-First event').click();
     cy.get('@prim-items').first().should('have.text', 'true');
 
     // add 'false' using keyboard
@@ -72,6 +72,6 @@ describe('Basic widgets test', () => {
     // Add invalid => Empty dropdown and add is disabled
     cy.get('@prim-input').type('invalid value');
     cy.get('.MuiAutocomplete-popper').contains('No options');
-    cy.getByTestId('First event-add').should('have.attr', 'disabled');
+    cy.getByTestId('primitive-list-add-First event').should('have.attr', 'disabled');
   });
 });
