@@ -68,7 +68,7 @@ public class PrimitiveListWidgetDescriptor implements IWidgetDescriptor {
                     .iconURL(props.getIconURL())//
                     .diagnostics(diagnostics)//
                     .items(props.getItems())//
-                    .candidates(props.getCandidates())
+                    .candidatesProvider(props.getCandidatesProvider())
                     .readOnly(props.isReadOnly());
 
             if (props.getIconURL() != null) {

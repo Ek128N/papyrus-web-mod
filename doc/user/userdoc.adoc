@@ -293,6 +293,9 @@ Be aware that the server receives a _String_ value and needs to convert it to th
 For widgets used in the default pages of the _Details_ view, Papyrus Web uses pure _EMF_ implementation to convert the given _String_ into the required _DataType_.
 It is also possible provide a strict list of candidates for enumeration or boolean, for example.
 In that case, the list of possible values are presented in a dropdown whereas the text field is used as a filter of those values.
+This list of possible values is requested to the back end only when it is necessary (when the dropdown menu is presented).
+In case of a _displayExpression_ is specified in the _PrimitiveList_ widget, this expression is evaluated for each candidate.
+Inside this expression, the AQL variable _candidate_ can be used to refer the current candidate value. 
 Once the user chooses the value, it may be added using the plus icon action.
 For example, for a _boolean_ feature, there are only two value allowed _true_ and _false_.
 
@@ -316,6 +319,8 @@ One can control the UI appearance of the action by setting its icon file.
 As an example, the following image shows a paperclip icon for the item action and when the user clicks an information pops up with the clicked item name.
 
 image::primitive-list-with-item-action.png[primitive list with item action, 500, align="center"]
+
+
 
 ======= References
 

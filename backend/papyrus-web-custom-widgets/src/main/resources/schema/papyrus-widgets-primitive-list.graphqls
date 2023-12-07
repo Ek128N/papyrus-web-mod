@@ -1,3 +1,7 @@
+extend type FormDescription {
+  primitiveListCandidates(primitiveListId: ID!): [PrimitiveListCandidate!]!
+}
+
 type PrimitiveListWidget implements Widget {
   id: ID!
   label: String!
@@ -9,7 +13,12 @@ type PrimitiveListWidget implements Widget {
   style: ListStyle
   canAdd : Boolean!
   canReorder: Boolean!
-  candidates: [String!]
+  hasCandidates: Boolean!
+}
+
+type PrimitiveListCandidate {
+  value: String!
+  label: String!
 }
 
 extend type Mutation {

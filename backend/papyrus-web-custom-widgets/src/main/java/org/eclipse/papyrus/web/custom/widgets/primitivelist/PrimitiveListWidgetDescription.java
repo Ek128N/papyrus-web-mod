@@ -55,7 +55,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
     private BiFunction<VariableManager, String, IStatus> newValueHandler;
 
-    private Function<VariableManager, List<?>> candidatesProvider;
+    private Function<VariableManager, List<PrimitiveListCandidate>> candidatesProvider;
 
     private Function<VariableManager, IStatus> reorderHandlerProvider;
 
@@ -87,7 +87,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
         return this.newValueHandler;
     }
 
-    public Function<VariableManager, List<?>> getCandidatesProvider() {
+    public Function<VariableManager, List<PrimitiveListCandidate>> getCandidatesProvider() {
         return this.candidatesProvider;
     }
 
@@ -179,7 +179,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
 
         private BiFunction<VariableManager, String, IStatus> newValueHandler;
 
-        private Function<VariableManager, List<?>> candidatesProvider;
+        private Function<VariableManager, List<PrimitiveListCandidate>> candidatesProvider;
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
@@ -273,7 +273,7 @@ public final class PrimitiveListWidgetDescription extends AbstractWidgetDescript
             return this;
         }
 
-        public Builder candidatesProvider(Function<VariableManager, List<?>> candidatesProvider) {
+        public Builder candidatesProvider(Function<VariableManager, List<PrimitiveListCandidate>> candidatesProvider) {
             this.candidatesProvider = Objects.requireNonNull(candidatesProvider);
             return this;
         }

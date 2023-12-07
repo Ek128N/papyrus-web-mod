@@ -45,6 +45,7 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemAc
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsSwitch;
+import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListCandidate;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetComponent;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.primitiveradio.PrimitiveRadioDescription;
@@ -186,9 +187,9 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         Function<VariableManager, String> itemIdProvider = this::getPrimitiveListItemId;
         Function<VariableManager, String> itemKindProvider = variableManger -> "unknown";
         Function<VariableManager, IStatus> itemDeleteHandlerProvider = this.handleOperation(viewListDescription.getDeleteOperation(), PrimitiveListDeleteOperation::getBody, DELETION_ERROR_MSG);
-        Function<VariableManager, IStatus> itemActionHandlerProvider = this.handleOperation(viewListDescription.getItemActionOperation(), PrimitiveListItemActionOperation::getBody, ITEM_ACTION_ERROR_MSG);
+        Function<VariableManager, IStatus> itemActionHandlerProvider = this.handleOperation(viewListDescription.getItemActionOperation(), PrimitiveListItemActionOperation::getBody,
+                ITEM_ACTION_ERROR_MSG);
         BiFunction<VariableManager, String, IStatus> newValueHandlerProvider = this.getNewValueHandler(viewListDescription.getAddOperation());
-        Function<VariableManager, List<?>> candidatesProvider = this.getOptionsProvider(viewListDescription.getCandidatesExpression());
 
         Function<VariableManager, ListStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewListDescription.getConditionalStyles().stream()//
@@ -221,19 +222,44 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
             builder.helpTextProvider(this.getStringValueProvider(viewListDescription.getHelpExpression()));
         }
         if (viewListDescription.getReorderOperation() != null) {
-            builder.reorderHandlerProvider(this.handleOperation(viewListDescription.getReorderOperation(), PrimitiveListReorderOperation::getBody, "Something went wrong while handling list items reordering."));
+            builder.reorderHandlerProvider(
+                    this.handleOperation(viewListDescription.getReorderOperation(), PrimitiveListReorderOperation::getBody, "Something went wrong while handling list items reordering."));
         }
         if (newValueHandlerProvider != null) {
             builder.newValueHandler(newValueHandlerProvider);
         }
         if (viewListDescription.getCandidatesExpression() != null) {
-            builder.candidatesProvider(candidatesProvider);
+            builder.candidatesProvider(this.getCandidatesProvider(viewListDescription));
         }
         if (viewListDescription.getItemActionOperation() != null) {
             builder.itemActionHandlerProvider(itemActionHandlerProvider);
             builder.itemActionIconURLProvider(this.getStringValueProvider(viewListDescription.getItemActionOperation().getIconURLExpression()));
         }
         return Optional.of(builder.build());
+    }
+
+    private Function<VariableManager, List<PrimitiveListCandidate>> getCandidatesProvider(org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription viewListDescription) {
+        return (variableManager) -> {
+
+            final List<Object> candidates = Optional.ofNullable(viewListDescription.getCandidatesExpression())//
+                    .map(safeExpression -> this.interpreter.evaluateExpression(variableManager.getVariables(), safeExpression).asObjects()//
+                            .orElse(List.of()))
+                    .orElse(List.of());
+
+            return candidates.stream().map(candidate -> this.toPrimitiveCandate(viewListDescription, variableManager, candidate)).toList();
+        };
+    }
+
+    private PrimitiveListCandidate toPrimitiveCandate(org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription viewListDescription, VariableManager variableManager,
+            Object candidate) {
+        if (viewListDescription.getDisplayExpression() != null) {
+            VariableManager child = variableManager.createChild();
+            child.put(PrimitiveListWidgetComponent.CANDIDATE_VARIABLE, candidate);
+            String label = this.getItemLabelProvider(viewListDescription.getDisplayExpression()).apply(child);
+            return new PrimitiveListCandidate(candidate, label);
+        } else {
+            return new PrimitiveListCandidate(candidate, candidate.toString());
+        }
     }
 
     private <T extends EObject> Function<VariableManager, IStatus> handleOperation(T operationOwner, Function<T, EList<Operation>> bodyProvider, String errorMessage) {

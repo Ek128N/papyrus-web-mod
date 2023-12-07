@@ -185,6 +185,7 @@ public class StereotypeApplicationPage {
         multiEnumerationWidget.setLabelExpression(AQL_FEATURE_NAME);
         multiEnumerationWidget.setValueExpression(AQL_GET_STEREOTYPE_FEATURE_VALUE);
         multiEnumerationWidget.setCandidatesExpression(options);
+        
         PrimitiveListDeleteOperation deleteOperation = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListDeleteOperation();
         deleteOperation.getBody().add(createChangeContext("aql:self.removeFromUsingIndex(feature.name,candidateIndex)"));
         multiEnumerationWidget.setDeleteOperation(deleteOperation); 

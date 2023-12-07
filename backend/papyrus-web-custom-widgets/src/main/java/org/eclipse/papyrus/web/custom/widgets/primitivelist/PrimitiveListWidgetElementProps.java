@@ -55,7 +55,7 @@ public final class PrimitiveListWidgetElementProps implements IProps {
 
     private Function<String, IStatus> newValueHandler;
 
-    private List<?> candidates;
+    private Supplier<List<PrimitiveListCandidate>> candidatesProvider;
 
     private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
 
@@ -75,8 +75,8 @@ public final class PrimitiveListWidgetElementProps implements IProps {
         return this.label;
     }
 
-    public List<?> getCandidates() {
-        return this.candidates;
+    public Supplier<List<PrimitiveListCandidate>> getCandidatesProvider() {
+        return this.candidatesProvider;
     }
 
     public Function<ReorderPrimitiveListHandlerParameters, IStatus> getReorderHandler() {
@@ -144,7 +144,7 @@ public final class PrimitiveListWidgetElementProps implements IProps {
 
         private Function<String, IStatus> newValueHandler;
 
-        private List<?> candidates;
+        private Supplier<List<PrimitiveListCandidate>> candidatesProvider;
 
         private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
 
@@ -192,8 +192,8 @@ public final class PrimitiveListWidgetElementProps implements IProps {
             return this;
         }
 
-        public Builder candidatesProvider(List<?> candidates) {
-            this.candidates = Objects.requireNonNull(candidates);
+        public Builder candidatesProvider(Supplier<List<PrimitiveListCandidate>> candidatesProvider) {
+            this.candidatesProvider = Objects.requireNonNull(candidatesProvider);
             return this;
         }
 
@@ -213,7 +213,7 @@ public final class PrimitiveListWidgetElementProps implements IProps {
             primListElementProps.children = Objects.requireNonNull(this.children);
             primListElementProps.helpTextProvider = this.helpTextProvider; // Optional on purpose
             primListElementProps.newValueHandler = this.newValueHandler; // Optional on purpose
-            primListElementProps.candidates = this.candidates; // Optional on purpose
+            primListElementProps.candidatesProvider = this.candidatesProvider; // Optional on purpose
             primListElementProps.reorderHandler = this.reorderHandler; // Optional on purpose
             return primListElementProps;
         }

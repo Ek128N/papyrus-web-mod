@@ -121,7 +121,7 @@ public class PrimitiveListWidgetComponent implements IComponent {
             listElementPropsBuilder.newValueHandler(newValue -> listDescription.getNewValueHandler().apply(variableManager, newValue));
         }
         if (listDescription.getCandidatesProvider() != null) {
-            listElementPropsBuilder.candidatesProvider(listDescription.getCandidatesProvider().apply(variableManager));
+            listElementPropsBuilder.candidatesProvider(() -> listDescription.getCandidatesProvider().apply(variableManager));
         }
         if (listDescription.getReorderHandlerProvider() != null) {
             Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler = input -> {

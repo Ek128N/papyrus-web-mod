@@ -11,7 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-import { gql, useMutation } from '@apollo/client';
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLListItem, PropertySectionLabel, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { Input, InputAdornment } from '@material-ui/core';
@@ -40,10 +40,16 @@ import {
   GQLDeletePrimitiveListItemMutationData,
   GQLDeletePrimitiveListItemPayload,
   GQLErrorPayload,
+  GQLFormDescription,
+  GQLGetPrimitiveListCandidatesQueryData,
+  GQLGetPrimitiveListCandidatesQueryVariables,
+  GQLPrimitiveListCandidate,
   GQLReorderPrimitiveListItemsMutationData,
   GQLReorderPrimitiveListItemsMutationVariables,
   GQLReorderPrimitiveListItemsPayload,
+  GQLRepresentationDescription,
   GQLSuccessPayload,
+  PrimitiveListAutocompleteState,
   PrimitiveListPropertySectionProps,
   PrimitiveListStyleProps,
 } from './PrimitiveListWidgetPropertySection.types';
@@ -132,6 +138,29 @@ export const actionPrimitiveListItemMutation = gql`
   }
 `;
 
+const getPrimitiveListCandidatesQuery = gql`
+  query getPrimitiveListCandidatesQuery($editingContextId: ID!, $representationId: ID!, $primitiveListId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on FormDescription {
+              primitiveListCandidates(primitiveListId: $primitiveListId) {
+                value
+                label
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const isFormDescription = (
+  representationDescription: GQLRepresentationDescription
+): representationDescription is GQLFormDescription => representationDescription.__typename === 'FormDescription';
+
 const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListStyleProps>((theme) => ({
   cell: {
     display: 'flex',
@@ -196,9 +225,14 @@ export const PrimitiveListSection = ({
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const [newValue, setNewValue] = useState('');
+  const [newValue, setNewValue] = useState<GQLPrimitiveListCandidate | null>(null);
   const [openReorderDialog, setOpenReorderDialog] = useState<boolean>(false);
   const classes = usePrimitiveListPropertySectionStyles(props);
+  const [autocompleteState, setAutocompleteState] = useState<PrimitiveListAutocompleteState>({
+    open: false,
+    candidates: null,
+  });
+  const loading = autocompleteState.open && autocompleteState.candidates === null;
 
   let items = [...widget.items];
   if (items.length === 0) {
@@ -233,14 +267,14 @@ export const PrimitiveListSection = ({
     useMutation<GQLAddPrimitiveListItemMutationData>(addPrimitiveListItemMutation);
 
   const onAdd = () => {
-    if (newValue) {
+    if (newValue?.value.length > 0) {
       const variables = {
         input: {
           id: crypto.randomUUID(),
           editingContextId,
           representationId: formId,
           listId: widget.id,
-          newValue,
+          newValue: newValue.value,
         },
       };
       addListItem({ variables });
@@ -281,7 +315,7 @@ export const PrimitiveListSection = ({
       if (addData) {
         const { addPrimitiveListItem } = addData;
         if (isSuccessPayload(addPrimitiveListItem)) {
-          setNewValue('');
+          setNewValue(null);
         }
         if (isErrorPayload(addPrimitiveListItem) || isSuccessPayload(addPrimitiveListItem)) {
           addMessages(addPrimitiveListItem.messages);
@@ -318,7 +352,7 @@ export const PrimitiveListSection = ({
     }
   }, [actionLoading, actionError, actionData]);
 
-  const callActionPrimitvieListItem = (_: MouseEvent<HTMLElement>, item: GQLActionableListItem) => {
+  const callActionPrimitiveListItem = (_, item: GQLActionableListItem) => {
     const variables: GQLActionPrimitiveListItemMutationVariables = {
       input: {
         id: crypto.randomUUID(),
@@ -330,6 +364,56 @@ export const PrimitiveListSection = ({
     };
     actionPrimitiveListItem({ variables });
   };
+
+  const [
+    getPrimitiveListCandidates,
+    { loading: primitiveListCandidatesLoading, data: primitiveListCandidatesData, error: primitiveListCandidatesError },
+  ] = useLazyQuery<GQLGetPrimitiveListCandidatesQueryData, GQLGetPrimitiveListCandidatesQueryVariables>(
+    getPrimitiveListCandidatesQuery
+  );
+
+  useEffect(() => {
+    if (!primitiveListCandidatesLoading) {
+      if (primitiveListCandidatesError) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (primitiveListCandidatesData) {
+        const representationDescription: GQLRepresentationDescription =
+          primitiveListCandidatesData.viewer.editingContext.representation.description;
+        if (isFormDescription(representationDescription)) {
+          setAutocompleteState((prevState) => {
+            return {
+              ...prevState,
+              candidates: representationDescription.primitiveListCandidates,
+            };
+          });
+        }
+      }
+    }
+  }, [primitiveListCandidatesLoading, primitiveListCandidatesData, primitiveListCandidatesError]);
+
+  useEffect(() => {
+    if (loading) {
+      getPrimitiveListCandidates({
+        variables: {
+          editingContextId,
+          representationId: formId,
+          primitiveListId: widget.id,
+        },
+      });
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (!autocompleteState.open) {
+      setAutocompleteState((prevState) => {
+        return {
+          ...prevState,
+          candidates: null,
+        };
+      });
+    }
+  }, [widget]);
 
   const getTableCellContent = (item: GQLActionableListItem): JSX.Element => {
     return (
@@ -344,7 +428,7 @@ export const PrimitiveListSection = ({
         {item.hasAction && (
           <IconButton
             aria-label="action item"
-            onClick={(event) => callActionPrimitvieListItem(event, item)}
+            onClick={(event) => callActionPrimitiveListItem(event, item)}
             size="small"
             disabled={readOnly || widget.readOnly}
             data-testid={`primitive-list-item-action-button-${item.label}`}>
@@ -374,7 +458,7 @@ export const PrimitiveListSection = ({
     <Input
       id={'new-item-text-field' + widget.id}
       type="text"
-      value={newValue}
+      value={newValue?.value || ''}
       fullWidth
       margin="dense"
       placeholder="New Item"
@@ -396,21 +480,47 @@ export const PrimitiveListSection = ({
           onAdd();
         }
       }}
-      onChange={(event) => setNewValue(event.target.value)}
+      onChange={(event) => setNewValue({ value: event.target.value, label: event.target.value })}
     />
   );
+
+  const handleAutocompleteChange = (_, value: GQLPrimitiveListCandidate) => {
+    setNewValue(value);
+  };
 
   const strictValue = (
     <div className={classes.autocomplete}>
       <Autocomplete
-        data-testid={`primitive-list-autocomplete-${widget.label}`}
-        options={widget.candidates}
+        data-testid={`${widget.label}-autocomplete`}
+        open={autocompleteState.open}
+        onOpen={() =>
+          setAutocompleteState((prevState) => {
+            return {
+              ...prevState,
+              open: true,
+            };
+          })
+        }
+        onClose={() =>
+          setAutocompleteState((prevState) => {
+            return {
+              ...prevState,
+              open: false,
+            };
+          })
+        }
+        loading={loading}
+        options={autocompleteState.candidates || []}
+        getOptionLabel={(option: GQLPrimitiveListCandidate) => option.label}
+        getOptionSelected={(option: GQLPrimitiveListCandidate, value: GQLPrimitiveListCandidate) =>
+          option.value === value.value
+        }
         clearOnEscape
         openOnFocus
         fullWidth
         disableClearable
         value={newValue}
-        onChange={(_, value) => setNewValue(value)}
+        onChange={handleAutocompleteChange}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -422,7 +532,7 @@ export const PrimitiveListSection = ({
           />
         )}
         onKeyPress={(event) => {
-          if (event.key === 'Enter') {
+          if (event.key === 'Enter' && newValue) {
             onAdd();
           }
         }}
@@ -441,7 +551,7 @@ export const PrimitiveListSection = ({
 
   const addSection = (
     <TableRow key="Add" data-testid={`primitive-list-add-section-${widget.label}`}>
-      <TableCell className={classes.cell}>{widget.candidates?.length > 0 ? strictValue : freeValue}</TableCell>
+      <TableCell className={classes.cell}>{widget.hasCandidates ? strictValue : freeValue}</TableCell>
     </TableRow>
   );
 

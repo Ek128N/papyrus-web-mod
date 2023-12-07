@@ -41,7 +41,7 @@ export interface PrimitiveListPropertySectionProps {
 export interface EditableGQLList extends GQLWidget {
   canAdd: boolean;
   canReorder: boolean;
-  candidates: string[] | undefined;
+  hasCandidates: boolean;
   items: GQLActionableListItem[];
   style: GQLListStyle;
 }
@@ -122,4 +122,48 @@ export interface GQLActionPrimitiveListItemInput {
   representationId: string;
   listId: string;
   itemId: string;
+}
+
+export interface GQLPrimitiveListCandidate {
+  value: string;
+  label: string;
+}
+
+export interface PrimitiveListAutocompleteState {
+  open: boolean;
+  candidates: GQLPrimitiveListCandidate[] | null;
+}
+
+export interface GQLGetPrimitiveListCandidatesQueryData {
+  viewer: GQLViewer;
+}
+
+export interface GQLViewer {
+  editingContext: GQLEditingContext;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentationMetadata;
+}
+
+export interface GQLRepresentationMetadata {
+  id: string;
+  label: string;
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+  __typename: string;
+}
+
+export interface GQLFormDescription extends GQLRepresentationDescription {
+  primitiveListCandidates: GQLPrimitiveListCandidate[];
+}
+
+export interface GQLGetPrimitiveListCandidatesQueryVariables {
+  editingContextId: string;
+  representationId: string;
+  primitiveListId: string;
 }

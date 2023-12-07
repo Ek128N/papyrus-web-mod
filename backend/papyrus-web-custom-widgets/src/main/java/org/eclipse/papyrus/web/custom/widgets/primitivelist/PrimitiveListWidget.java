@@ -41,7 +41,7 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
     private Function<String, IStatus> newValueHandler;
 
-    private List<?> candidates;
+    private Supplier<List<PrimitiveListCandidate>> candidatesProvider;
 
     private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
 
@@ -57,6 +57,10 @@ public final class PrimitiveListWidget extends AbstractWidget {
         return this.reorderHandler != null;
     }
 
+    public boolean hasCandidates() {
+        return this.candidatesProvider != null;
+    }
+
     public Function<String, IStatus> getNewValueHandler() {
         return this.newValueHandler;
     }
@@ -69,8 +73,8 @@ public final class PrimitiveListWidget extends AbstractWidget {
         return this.style;
     }
 
-    public List<?> getCandidates() {
-        return this.candidates;
+    public Supplier<List<PrimitiveListCandidate>> getCandidatesProvider() {
+        return this.candidatesProvider;
     }
 
     public Function<ReorderPrimitiveListHandlerParameters, IStatus> getReorderHandler() {
@@ -112,7 +116,7 @@ public final class PrimitiveListWidget extends AbstractWidget {
 
         private Function<String, IStatus> newValueHandler;
 
-        private List<?> candidates;
+        private Supplier<List<PrimitiveListCandidate>> candidatesProvider;
 
         private Function<ReorderPrimitiveListHandlerParameters, IStatus> reorderHandler;
 
@@ -160,8 +164,8 @@ public final class PrimitiveListWidget extends AbstractWidget {
             return this;
         }
 
-        public Builder candidates(List<?> candidates) {
-            this.candidates = candidates;
+        public Builder candidatesProvider(Supplier<List<PrimitiveListCandidate>> candidatesProvider) {
+            this.candidatesProvider = candidatesProvider;
             return this;
         }
 
@@ -181,7 +185,7 @@ public final class PrimitiveListWidget extends AbstractWidget {
             list.helpTextProvider = this.helpTextProvider; // Optional on purpose
             list.readOnly = this.readOnly;
             list.newValueHandler = this.newValueHandler; // Optional on purpose
-            list.candidates = this.candidates;
+            list.candidatesProvider = this.candidatesProvider;
             list.reorderHandler = this.reorderHandler; // Optional on purpose
             return list;
         }
