@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
@@ -154,14 +155,15 @@ public class UMLProfileService implements IUMLProfileService {
             if (editingContext instanceof EditingContext) {
                 // This call will load the resource in the resourceSet
                 try {
-                    Optional<Profile> umlProfileOptional = Optional.of(((EditingContext) editingContext).getDomain().getResourceSet().getEObject(URI.createURI(profileURI), true))
-                            .filter(Profile.class::isInstance)//
+                    ResourceSet resourceSet = ((EditingContext) editingContext).getDomain().getResourceSet();
+                    Optional<Profile> umlProfileOptional = Optional.of(resourceSet.getEObject(URI.createURI(profileURI), true)).filter(Profile.class::isInstance)//
                             .map(Profile.class::cast);
 
                     if (umlProfileOptional.isPresent()) {
-                        if (this.isProfileApplicable(pack, umlProfileOptional.get())) {
-                            pack.applyProfile(umlProfileOptional.get());
-
+                        Profile profile = umlProfileOptional.get();
+                        if (this.isProfileApplicable(pack, profile)) {
+                            pack.applyProfile(profile);
+                            this.registerInPackageRegistry(resourceSet, profile);
                             payload = new ApplyProfileSuccessPayload(input.id());
 
                             return payload;
@@ -182,6 +184,17 @@ public class UMLProfileService implements IUMLProfileService {
 
         LOGGER.error(errorMessage);
         return new ErrorPayload(input.id(), errorMessage);
+    }
+
+    private void registerInPackageRegistry(ResourceSet resourceSet, Profile profile) {
+        // For non static profile we need to add the definition package to the registry in order to be able to load and
+        // create element from the dynamic metamodel
+        EPackage definition = profile.getDefinition();
+        String nsURI = definition.getNsURI();
+        org.eclipse.emf.ecore.EPackage.Registry packageRegistry = resourceSet.getPackageRegistry();
+        if (packageRegistry.getEPackage(nsURI) == null) {
+            packageRegistry.put(nsURI, definition);
+        }
     }
 
     private boolean isProfileApplicable(Package pack, Profile profile) {

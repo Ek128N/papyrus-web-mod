@@ -13,12 +13,16 @@
 package org.eclipse.papyrus.web.application.uml.profile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -184,5 +188,36 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
 
         profileLastVersion = this.profileService.getProfileLastVersion(this.getEditingContext(), profileId);
         assertEquals(new UMLProfileVersion(2, 0, 1), profileLastVersion.get());
+
+        // Then try to apply that profile
+
+        Model model = this.create(Model.class);
+
+        // Get generated nsUri for the profile
+        String profileDefinitionNsURI = this.extractNsURI(profileResourceEntity.get().getContent());
+
+        if (profileDefinitionNsURI == null) {
+            fail("Unable to extract nsURI of the profile definition");
+        }
+        Resource umlResource = this.createResource("r2"); //$NON-NLS-1$
+        umlResource.getContents().add(model);
+
+        IPayload applyPayload = this.profileService.applyProfile(this.getEditingContext(), new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(),
+                this.getObjectService().getId(model), URI.createURI("pathmap://WEB_DYNAMIC_PROFILE/" + profileResourceEntity.get().getId().toString() + "#" + profileId).toString())); //$NON-NLS-1$
+        assertTrue(applyPayload instanceof ApplyProfileSuccessPayload);
+
+        // Check that the NS URI has been added to the Package Registry
+        assertNotNull(this.getEditingDomain().getResourceSet().getPackageRegistry().getEPackage(profileDefinitionNsURI));
+
+    }
+
+    private String extractNsURI(String content) {
+        Pattern p = Pattern.compile("http:///schemas/profileNotGenerated/([\\w/_-]*)\"");
+        Matcher matcher = p.matcher(content);
+        if (matcher.find()) {
+            String group = matcher.group(1);
+            return "http:///schemas/profileNotGenerated/" + group;
+        }
+        return null;
     }
 }
