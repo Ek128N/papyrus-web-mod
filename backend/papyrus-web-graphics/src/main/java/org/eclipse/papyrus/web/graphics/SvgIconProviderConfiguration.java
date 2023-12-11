@@ -37,6 +37,8 @@ public class SvgIconProviderConfiguration {
 
     private static final Pattern PATH_REGEX = Pattern.compile(".*(/icons-override/full/obj16/.*\\.svg)");
 
+    private static final Pattern OVERLAY_PATH_REGEX = Pattern.compile(".*(/icons-override/full/ovr16/.*\\.svg)");
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SvgIconProviderConfiguration.class);
 
     @Bean
@@ -44,21 +46,25 @@ public class SvgIconProviderConfiguration {
         HashMap<String, String> iconMap = new HashMap<>();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(resourceLoader);
         try {
-            Resource[] images = resolver.getResources("classpath*:icons-override/full/obj16/*.svg");
-
-            for (Resource r : images) {
-
-                Matcher matcher = PATH_REGEX.matcher(r.getURL().toString());
-                if (matcher.matches()) {
-                    String svgPath = matcher.group(1);
-                    String key = svgPath.replace("/icons-override", "/icons").replace(".svg", "");
-                    iconMap.put(key, svgPath);
-                }
-            }
+            this.computeIconsOverrideMappings(iconMap, resolver, "classpath*:icons-override/full/obj16/*.svg", PATH_REGEX);
+            this.computeIconsOverrideMappings(iconMap, resolver, "classpath*:icons-override/full/ovr16/*.svg", OVERLAY_PATH_REGEX);
         } catch (IOException e) {
             LOGGER.error("Error while searching for svg icons", e);
         }
         return new SvgIconOverrideService(iconMap);
+    }
+
+    private void computeIconsOverrideMappings(HashMap<String, String> iconMap, PathMatchingResourcePatternResolver resolver, String objt16icons, Pattern pattern) throws IOException {
+        Resource[] images = resolver.getResources(objt16icons);
+        for (Resource r : images) {
+
+            Matcher matcher = pattern.matcher(r.getURL().toString());
+            if (matcher.matches()) {
+                String svgPath = matcher.group(1);
+                String key = svgPath.replace("/icons-override", "/icons").replace(".svg", "");
+                iconMap.put(key, svgPath);
+            }
+        }
     }
 
 }
