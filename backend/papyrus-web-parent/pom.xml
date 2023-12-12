@@ -33,7 +33,7 @@
 		<sirius.components.version>2023.12.0</sirius.components.version>
 		<sirius.documentation.version>2023.10.0</sirius.documentation.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>
-		<uml2.version>5.6.0-SNAPSHOT</uml2.version>
+		<uml2.version>5.5.0-SNAPSHOT</uml2.version>
 		<papyrus-uml-domain-services-version>0.18.0-SNAPSHOT</papyrus-uml-domain-services-version>
 	</properties>
 
@@ -60,8 +60,12 @@
 			<url>https://repo.eclipse.org/content/repositories/papyrus-releases/</url>
 		</repository>
 		<repository>
-			<id>github-papyrus-sirius-uml2</id>
-			<url>https://maven.pkg.github.com/PapyrusSirius/uml2</url>
+			<id>repo-eclipse-uml2</id>
+			<url>https://repo.eclipse.org/content/repositories/uml2-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>Eclipse EEF</id>
@@ -344,7 +348,7 @@
 			<dependency>
 				<groupId>org.eclipse.uml2.plugins</groupId>
 				<artifactId>org.eclipse.uml2.uml.edit</artifactId>
-				<version>5.5.0-SNAPSHOT</version>
+				<version>${uml2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.uml2.plugins</groupId>
@@ -354,7 +358,7 @@
 			<dependency>
 				<groupId>org.eclipse.uml2.plugins</groupId>
 				<artifactId>org.eclipse.uml2.uml.resources</artifactId>
-				<version>5.5.0-SNAPSHOT</version>
+				<version>${uml2.version}</version>
 			</dependency>
 
 			<dependency>
@@ -403,25 +407,25 @@
 				<artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
 				<version>2.11.0</version>
 			</dependency>
-			
+
 			<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.common</artifactId>
-			<version>2.21.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore</artifactId>
-			<version>2.23.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.edit</artifactId>
-			<version>2.16.0</version>
-		</dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>org.eclipse.emf.common</artifactId>
+				<version>2.21.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>org.eclipse.emf.ecore</artifactId>
+				<version>2.23.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>org.eclipse.emf.edit</artifactId>
+				<version>2.16.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>
