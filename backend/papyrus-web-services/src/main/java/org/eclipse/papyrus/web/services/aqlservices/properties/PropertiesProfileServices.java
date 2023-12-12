@@ -51,6 +51,15 @@ public class PropertiesProfileServices {
         return false;
     }
 
+    public String getStereotypeLabel(Stereotype candidate) {
+        return candidate.getName() + " (from " + candidate.getProfile().getName() + ")";
+    }
+
+    public String getStereotypeLabel(String qualifiedName) {
+        String[] parts = qualifiedName.split("::");
+        return parts[1] + " (from " + parts[0] + ")";
+    }
+
     /**
      * Apply a stereotype on a {@link Element} given its qualified name.
      *

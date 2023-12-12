@@ -47,7 +47,7 @@ public class ElementProfilePageCustomImpl extends ElementProfilePage {
         appliedStereotypeWidget.setLabelExpression("aql:'Applied stereotypes'");
         appliedStereotypeWidget.setValueExpression("aql:self.getAppliedStereotypes()");
         appliedStereotypeWidget.setCandidatesExpression("aql:self.getNonAppliedApplicableStereotypes().qualifiedName");
-        appliedStereotypeWidget.setDisplayExpression("aql:candidate.name+ ' (from '+candidate.profile.name+')'");
+        appliedStereotypeWidget.setDisplayExpression("aql:candidate.getStereotypeLabel()");
 
         PrimitiveListDeleteOperation deleteOperation = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListDeleteOperation();
         deleteOperation.getBody().add(createChangeContext("aql:self.unapplyStereotype(candidate)"));
