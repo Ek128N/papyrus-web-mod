@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.papyrus.web.services.representations.IRepresentationDescriptionOverrider;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.papyrus.web.sirius.contributions.UnloadingEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -75,8 +76,12 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
 
     private final Timer timer;
 
+    private List<IRepresentationDescriptionOverrider> descriptionOverriders;
+
     public EditingContextSearchServiceCustomImpl(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
-            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService, MeterRegistry meterRegistry) {
+            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService,
+            List<IRepresentationDescriptionOverrider> descriptionOverriders, MeterRegistry meterRegistry) {
+        this.descriptionOverriders = descriptionOverriders;
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
@@ -135,6 +140,22 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
         Map<String, IRepresentationDescription> representationDescriptions = new LinkedHashMap<>();
         var registry = new RepresentationDescriptionRegistry();
         this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
+
+        /**
+         * <p>
+         * This part of the code has been created for bug
+         * https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/97. But once
+         * https://github.com/eclipse-sirius/sirius-web/issues/2809 is fixed this is no longer needed
+         * </p>
+         */
+        for (var descriptionOverrider : this.descriptionOverriders) {
+            for (var ovDescription : descriptionOverrider.getOverridedDescriptions()) {
+                registry.getRepresentationDescription(ovDescription.getId()).ifPresentOrElse(__ -> registry.add(ovDescription), () -> {
+                    this.logger.error("There is no exisitng representation with id " + ovDescription.getId());
+                });
+            }
+        }
+
         registry.getRepresentationDescriptions().forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
         this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptions(editingContextId, editingDomain)
                 .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));

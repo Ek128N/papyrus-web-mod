@@ -57,7 +57,7 @@ describe('Stereotype application page tests', () => {
     });
   });
 
-  //Before each reload the project and select  Class item and dispay Stereotype 1 tab
+  //Before each reload the project and select  Class item and display Stereotype 1 tab
   beforeEach(() => {
     cy.wrap(projectId).as('projectId');
     cy.visit(`/projects/${projectId}/edit`);
@@ -273,6 +273,55 @@ describe('Stereotype application page tests', () => {
     refreshView();
 
     checkReferenceValues('testMultiRefToMetaclass', ['UseCase1', 'UseCase2', 'UseCase3']);
+  });
+
+  it('Check mono reference to stereotype application', () => {
+    // multi ref to stereotype application => testMonoReftoStereotype2
+    checkReferenceValues('testMonoReftoStereotype2', []);
+    checkReferenceDropdownContent('testMonoReftoStereotype2', ['Activity']);
+    selectReferenceDropdownValue('testMonoReftoStereotype2', 'Activity');
+    checkReferenceValues('testMonoReftoStereotype2', ['Activity']);
+    // remove chip
+    cy.getByTestId('reference-value-Activity').find('svg').click();
+    checkReferenceValues('testMonoReftoStereotype2', []);
+
+    // select reference value using dialog
+    cy.getByTestId('testMonoReftoStereotype2-more').click();
+    cy.getByTestId('browse-modal').should('be.visible').as('dialog');
+    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('model4test-toggle').should('be.visible').click();
+    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('Activity').should('be.visible').click();
+    cy.get('@dialog')
+      .findByTestId('tree-root-elements')
+      .findByTestId('Activity')
+      .parent()
+      .parent()
+      .should('have.attr', 'data-testid', 'selected');
+    cy.get('@dialog').findByTestId('select-value').click();
+  });
+
+  it('Check multi reference to stereotype application', () => {
+    // multi ref to stereotype application => testMultiReftoStereotype2
+    checkReferenceValues('testMultiReftoStereotype2', []);
+    checkReferenceDropdownContent('testMultiReftoStereotype2', ['Activity']);
+    selectReferenceDropdownValue('testMultiReftoStereotype2', 'Activity');
+    checkReferenceValues('testMultiReftoStereotype2', ['Activity']);
+    // remove chip
+    cy.getByTestId('testMultiReftoStereotype2').findByTestId('reference-value-Activity').find('svg').click();
+    checkReferenceValues('testMultiReftoStereotype2', []);
+    // select reference value using dialog
+    cy.getByTestId('testMultiReftoStereotype2-more').click();
+    cy.getByTestId('transfer-modal').should('be.visible').as('dialog');
+    checkReferenceTransferModalRightContent([]);
+    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('model4test-toggle').should('be.visible').click();
+    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('Activity').should('be.visible').click();
+    cy.get('@dialog')
+      .findByTestId('tree-root-elements')
+      .findByTestId('Activity')
+      .parent()
+      .parent()
+      .should('have.attr', 'data-testid', 'selected');
+    cy.get('@dialog').findByTestId('move-right').click();
+    cy.get('@dialog').findByTestId('close-transfer-modal').click();
   });
 
   const loadProject = () => {

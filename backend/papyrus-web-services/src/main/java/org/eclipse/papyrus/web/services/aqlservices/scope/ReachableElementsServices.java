@@ -14,13 +14,16 @@
 package org.eclipse.papyrus.web.services.aqlservices.scope;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.papyrus.uml.domain.services.profile.StereotypeUtil;
 import org.eclipse.papyrus.uml.domain.services.scope.ElementRootCandidateSeachProvider;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Package;
 
 /**
@@ -72,6 +75,40 @@ public class ReachableElementsServices {
      */
     public List<Notifier> getAllReachableRootElements(EObject self) {
         return new ElementRootCandidateSeachProvider().getReachableRoots(self);
+    }
+
+    /**
+     * Gets all {@link Element}s on which a stereotype is applied that is compliant with the given reference.
+     *
+     * @param self
+     *            a source EObject
+     * @param referenceName
+     *            the name of EReference of this object that targets a Stereotype Application
+     * @return a list of elements
+     */
+    public List<Element> getAllReachableStereotypeApplicationsBaseElements(EObject self, String referenceName) {
+        EReference ref = (EReference) self.eClass().getEStructuralFeature(referenceName);
+        return this.getAllReachableStereotypeApplications(self, ref.getEReferenceType()).stream()//
+                .map(StereotypeUtil::getBaseElement)//
+                .filter(e -> e != null)//
+                .toList();
+    }
+
+    private List<EObject> getAllReachableStereotypeApplications(EObject self, EClass typeClass) {
+        Class<?> type = typeClass.getInstanceClass();
+        Predicate<EObject> filter;
+        if (type != null) {
+            // Used for static profile (profile with generated java code)
+            filter = type::isInstance;
+        } else {
+            // Used for dynamic profile (profile with no generated java code)
+            filter = e -> typeClass.isSuperTypeOf(e.eClass());
+        }
+        List<Notifier> roots = new ElementRootCandidateSeachProvider().getReachableRoots(self);
+        return roots.stream().flatMap(r -> EMFUtils.allContainedObjectOfType(r, Element.class))//
+                .flatMap(e -> e.getStereotypeApplications().stream())//
+                .filter(filter)//
+                .toList();
     }
 
     /**

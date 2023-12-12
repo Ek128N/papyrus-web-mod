@@ -100,7 +100,7 @@ public class EditingContextSearchServiceCustomImplTests {
         EditingDomainFactoryServiceCustomImpl editingDomainFactoryService = new EditingDomainFactoryServiceCustomImpl(editingContextEPackageService, editingContextMetadataProvider,
                 composedAdapterFactory, ePackageRegistry, Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchServiceCustomImpl(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
+                new IDynamicRepresentationDescriptionService.NoOp(), List.of(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);
@@ -148,7 +148,7 @@ public class EditingContextSearchServiceCustomImplTests {
         EditingDomainFactoryServiceCustomImpl editingDomainFactoryService = new EditingDomainFactoryServiceCustomImpl(editingContextEPackageService, editingContextMetadataProvider,
                 composedAdapterFactory, ePackageRegistry, Optional.empty(), new IStaticPathmapResourceRegistry.NoOp(), new NoOpProfileRepository(), Optional.empty());
         IEditingContextSearchService editingContextSearchService = new EditingContextSearchServiceCustomImpl(projectRepository, documentRepository, editingDomainFactoryService, List.of(),
-                new IDynamicRepresentationDescriptionService.NoOp(), new SimpleMeterRegistry());
+                new IDynamicRepresentationDescriptionService.NoOp(), List.of(), new SimpleMeterRegistry());
         IEditingContext editingContext = editingContextSearchService.findById(projectId.toString()).get();
 
         assertThat(editingContext).isInstanceOf(EditingContext.class);

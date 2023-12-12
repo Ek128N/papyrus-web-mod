@@ -103,6 +103,12 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-persistence</artifactId>
 		</dependency>
+		<!-- Temporary dependency required for overriding the default model brower representation -->
+		<!-- This interface has been created for bug https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/97. But once https://github.com/eclipse-sirius/sirius-web/issues/2809 is fixed this is no longer needed -->
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services</artifactId>

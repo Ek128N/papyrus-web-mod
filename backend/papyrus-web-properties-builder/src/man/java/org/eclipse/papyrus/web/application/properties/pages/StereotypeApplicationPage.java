@@ -37,6 +37,12 @@ import org.eclipse.sirius.components.view.form.PageDescription;
  */
 public class StereotypeApplicationPage {
 
+    private static final String AQL_SELF_CLEAR_REFERENCE_FEATURE_NAME = "aql:self.clearReference(feature.name)";
+
+    private static final String AQL_SELF_GET_ALL_REACHABLE_ROOT_ELEMENTS = "aql:self.getAllReachableRootElements()";
+
+    private static final String AQL_SELF_GET_FEATURE_TYPE_QUALIFIED_NAME_FEATURE_NAME = "aql:self.getFeatureTypeQualifiedName(feature.name)";
+
     private static final String AQL_GET_STEREOTYPE_FEATURE_VALUE = "aql:self.getStereotypeFeatureValue(feature)";
 
     private static final String AQL_SET_STEREOTYPE_FEATURE_VALUE = "aql:self.setStereotypeFeatureValue(feature,newValue)";
@@ -101,9 +107,11 @@ public class StereotypeApplicationPage {
 
         // Reference
         // Mono
-        featureIterator.getChildren().add(createMonoReferenceIf());
+        featureIterator.getChildren().add(createMonoUMLReferenceIf());
+        featureIterator.getChildren().add(createMonoStereotypeReferenceIf());
         // Multi
-        featureIterator.getChildren().add(createMultiReferenceIf());
+        featureIterator.getChildren().add(createMultiUMLReferenceIf());
+        featureIterator.getChildren().add(createMultiStereotypeReferenceIf());
         
         group.getChildren().add(featureIterator);
     }
@@ -236,7 +244,53 @@ public class StereotypeApplicationPage {
         return ifMonoBooleanObject;
     }
 
-    private FormElementIf createMonoReferenceIf() {
+    private FormElementIf createMonoStereotypeReferenceIf() {
+        var ifWidget = FormFactory.eINSTANCE.createFormElementIf();
+        ifWidget.setName("isMonoStereotypeReference");
+        ifWidget.setPredicateExpression("aql:feature.isMonoReference() and feature.eType.isStereotypeDataType()");
+        var widget = new MonoReferenceWidgetBuilder() //
+                .name("monoStereotypeReference") //
+                .label(AQL_FEATURE_NAME) //
+                .help("aql:'Widget to set \"'+feature.name+'\": expecting a single '+self.getFeatureTypeQualifiedName(feature.name)+' stereotyped element.'") //
+                .isEnable(AQL_FEATURE_IS_EDITABLE) //
+                .owner("") //
+                .type(AQL_SELF_GET_FEATURE_TYPE_QUALIFIED_NAME_FEATURE_NAME) //
+                .value("aql:self.getStereotypeFeatureBaseElementValue(feature)") //
+                .searchScope(AQL_SELF_GET_ALL_REACHABLE_ROOT_ELEMENTS) //
+                .dropdownOptions("aql:self.getAllReachableStereotypeApplicationsBaseElements(feature.name)") //
+                .createOperation("") //
+                .setOperation("aql:self.addStereotypeApplicationFromBase(newValue,feature.name,feature.eType)") //
+                .unsetOperation("aql:item.removeStereotypeApplicationFromBase(self, feature.name,feature.eType))") //
+                .clearOperation(AQL_SELF_CLEAR_REFERENCE_FEATURE_NAME) //
+                .build();
+        ifWidget.getChildren().add(widget);
+        return ifWidget;
+    }
+
+    private FormElementIf createMultiStereotypeReferenceIf() {
+        var ifWidget = FormFactory.eINSTANCE.createFormElementIf();
+        ifWidget.setName("isMultiStereotypeReference");
+        ifWidget.setPredicateExpression("aql:feature.isMultiReference() and feature.eType.isStereotypeDataType()");
+        var widget = new MultiReferenceWidgetBuilder() //
+                .name("multiStereotypeReference") //
+                .label(AQL_FEATURE_NAME) //
+                .help("aql:'Widget to set \"'+feature.name+'\": expecting a list of '+self.getFeatureTypeQualifiedName(feature.name)+' stereotyped elements.'") //
+                .isEnable(AQL_FEATURE_IS_EDITABLE) //
+                .owner("") //
+                .type(AQL_SELF_GET_FEATURE_TYPE_QUALIFIED_NAME_FEATURE_NAME) //
+                .value("aql:self.getStereotypeFeatureBaseElementValue(feature)") //
+                .searchScope(AQL_SELF_GET_ALL_REACHABLE_ROOT_ELEMENTS) //
+                .dropdownOptions("aql:self.getAllReachableStereotypeApplicationsBaseElements(feature.name)") //
+                .createOperation("") //
+                .addOperation("aql:self.addReferenceStereotypeApplicationfromBase(newValue, feature.name, feature.eType)") //
+                .removeOperation("aql:item.removeStereotypeApplicationFromBase(self, feature.name,feature.eType))") //
+                .reorderOperation("aql:self.moveReferenceStereotypeApplicationFromBase(feature.name, item, feature.eType, fromIndex, toIndex)") //
+                .clearOperation(AQL_SELF_CLEAR_REFERENCE_FEATURE_NAME) //
+                .build();
+        ifWidget.getChildren().add(widget);
+        return ifWidget;
+    }
+    private FormElementIf createMonoUMLReferenceIf() {
         var ifWidget = FormFactory.eINSTANCE.createFormElementIf();
         ifWidget.setName("isMonoReference");
         ifWidget.setPredicateExpression("aql:feature.isMonoReference() and feature.eType.isUMLDataType()");
@@ -246,20 +300,20 @@ public class StereotypeApplicationPage {
                 .help("aql:'Widget to set \"'+feature.name+'\": expecting a single '+self.getFeatureTypeQualifiedName(feature.name)+' object.'") //
                 .isEnable(AQL_FEATURE_IS_EDITABLE) //
                 .owner("") //
-                .type("aql:self.getFeatureTypeQualifiedName(feature.name)") //
+                .type(AQL_SELF_GET_FEATURE_TYPE_QUALIFIED_NAME_FEATURE_NAME) //
                 .value(AQL_GET_STEREOTYPE_FEATURE_VALUE) //
-                .searchScope("aql:self.getAllReachableRootElements()") //
+                .searchScope(AQL_SELF_GET_ALL_REACHABLE_ROOT_ELEMENTS) //
                 .dropdownOptions("aql:self.getAllReachableElements(feature.name)") //
                 .createOperation("aql:parent.create(kind, feature)") //
                 .setOperation("aql:self.updateReference(newValue,feature.name)") //
                 .unsetOperation("aql:item.delete(self, feature.name))") //
-                .clearOperation("aql:self.clearReference(feature.name)") //
+                .clearOperation(AQL_SELF_CLEAR_REFERENCE_FEATURE_NAME) //
                 .build();
         ifWidget.getChildren().add(widget);
         return ifWidget;
     }
     
-    private FormElementIf createMultiReferenceIf() {
+    private FormElementIf createMultiUMLReferenceIf() {
         var ifWidget = FormFactory.eINSTANCE.createFormElementIf();
         ifWidget.setName("isMultiReference");
         ifWidget.setPredicateExpression("aql:feature.isMultiReference() and feature.eType.isUMLDataType()");
@@ -269,15 +323,15 @@ public class StereotypeApplicationPage {
                 .help("aql:'Widget to set \"'+feature.name+'\": expecting a list of '+self.getFeatureTypeQualifiedName(feature.name)+' objects.'") //
                 .isEnable(AQL_FEATURE_IS_EDITABLE) //
                 .owner("") //
-                .type("aql:self.getFeatureTypeQualifiedName(feature.name)") //
+                .type(AQL_SELF_GET_FEATURE_TYPE_QUALIFIED_NAME_FEATURE_NAME) //
                 .value(AQL_GET_STEREOTYPE_FEATURE_VALUE) //
-                .searchScope("aql:self.getAllReachableRootElements()") //
+                .searchScope(AQL_SELF_GET_ALL_REACHABLE_ROOT_ELEMENTS) //
                 .dropdownOptions("aql:self.getAllReachableElements(feature.name)") //
                 .createOperation("aql:parent.create(kind, feature)") //
                 .addOperation("aql:self.addReferenceElement(newValue, feature.name)") //
                 .removeOperation("aql:item.delete(self, feature.name))") //
                 .reorderOperation("aql:self.moveReferenceElement(feature.name, item, fromIndex, toIndex)") //
-                .clearOperation("aql:self.clearReference(feature.name)") //
+                .clearOperation(AQL_SELF_CLEAR_REFERENCE_FEATURE_NAME) //
                 .build();
         ifWidget.getChildren().add(widget);
         return ifWidget;

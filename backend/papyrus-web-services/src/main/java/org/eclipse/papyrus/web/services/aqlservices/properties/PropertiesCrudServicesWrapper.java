@@ -15,8 +15,10 @@ package org.eclipse.papyrus.web.services.aqlservices.properties;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -24,11 +26,13 @@ import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.modify.IFeatureModifier;
+import org.eclipse.papyrus.uml.domain.services.profile.StereotypeUtil;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesCrudServices;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.uml.domain.services.status.Status;
+import org.eclipse.uml2.uml.Element;
 
 /**
  * Papyrus web UML Domain CRUD services wrapper class. This class wraps all services defined in
@@ -69,6 +73,52 @@ public class PropertiesCrudServicesWrapper {
      */
     public boolean delete(Object selectedObject, EObject target, String refName) {
         return this.delegate.delete(selectedObject, target, refName);
+    }
+
+    /**
+     * Removes from the stereotype application of the given base Element from the EReference of the
+     * ownerStereotypeApplication.
+     *
+     * @param baseElementToRemove
+     *            The base element linked to the stereotype application to remove
+     * @param ownerStereotypeApplication
+     *            the owner of EReference to modify
+     * @param refName
+     *            the name of the EReference to be modified
+     * @param stereotypeApplicationtype
+     *            the type of the stereotype applied on baseElementToRemove to be removed
+     * @return <code>true</code> if the element is removed, <code>false</code> otherwise.
+     */
+    public boolean removeStereotypeApplicationFromBase(Element baseElementToRemove, EObject ownerStereotypeApplication, String refName, EClass stereotypeApplicationtype) {
+        Optional<EObject> stereotypeApplicationToRemove = baseElementToRemove.getStereotypeApplications().stream().filter(st -> stereotypeApplicationtype.isSuperTypeOf(st.eClass())).findFirst();
+        return stereotypeApplicationToRemove.map(st -> this.delegate.delete(st, ownerStereotypeApplication, refName)).orElse(false);
+    }
+
+    /**
+     * Moves the stereotype application (defined by a base element and a type) inside the reference value list. The
+     * stereotype application is moved from the given {@code from} index to the given {@code to} index. Nothing is done
+     * if the element at the {@code from} position is not the given element to move.
+     *
+     * @param ownerStereotypeApplication
+     *            the owner of the reference
+     * @param refName
+     *            the reference name
+     * @param baseElementToMove
+     *            the element to move
+     * @param stereotypeApplicationtype
+     *            the type of the stereotype application to move
+     * @param from
+     *            the starting index
+     * @param to
+     *            the destination index
+     * @return target object
+     */
+    public EObject moveReferenceStereotypeApplicationFromBase(EObject ownerStereotypeApplication, String refName, Element baseElementToMove, EClass stereotypeApplicationtype, int from, int to) {
+        EObject stereotypeApplication = StereotypeUtil.getStereotypeApplication(baseElementToMove, stereotypeApplicationtype);
+        if (stereotypeApplication != null) {
+            this.moveReferenceElement(ownerStereotypeApplication, refName, stereotypeApplication, from, to);
+        }
+        return ownerStereotypeApplication;
     }
 
     /**
@@ -178,6 +228,66 @@ public class PropertiesCrudServicesWrapper {
             added = false;
         }
         return added;
+    }
+
+    /**
+     * Adds a list of elements (defined by their base element and a stereotype type) to the multi-valued reference. An
+     * stereotype application is not added if it is already in the reference value list.
+     *
+     * @param target
+     *            the owner of the reference
+     * @param newElements
+     *            the list of element to add to the reference
+     * @param refName
+     *            the name of the reference to update
+     * @param stereotypeApplicationtype
+     *            the type of the stereotype application to move
+     * @return <code>true</code> if <strong>all</strong> elements have been properly added, and <code>false</code>
+     *         otherwise.
+     */
+    public boolean addReferenceStereotypeApplicationfromBase(EObject target, List<Element> newElements, String refName, EClass stereotypeApplicationtype) {
+
+        List<EObject> newStereotypeApplication = newElements.stream()//
+                .map(element -> StereotypeUtil.getStereotypeApplication(element, stereotypeApplicationtype))//
+                .filter(e -> e != null)//
+                .toList();
+
+        return this.addReferenceElement(target, newStereotypeApplication, refName);
+    }
+
+    /**
+     * Adds a stereotype application(s) (define by a baseElement and a type) to the reference of another stereotype
+     * application.
+     *
+     * @param ownerStereotypeApplication
+     *            the stereotype application about to be modified
+     * @param baseElementToAdd
+     *            the base element to add. It could either be a list of {@link Element} or a unique {@link Element}
+     * @param refName
+     *            the name of the EReference about to be modified
+     * @param stereotypeApplicationtype
+     *            the type of the stereotype application extracted from the base Element(s)
+     * @return <code>true</code> if success, <code>false</code> otherwise
+     */
+    public boolean addStereotypeApplicationFromBase(EObject ownerStereotypeApplication, List<Element> baseElementsToAdd, String refName, EClass stereotypeApplicationtype) {
+
+        List<EObject> newStereotypeApplication = baseElementsToAdd.stream()//
+                .map(element -> StereotypeUtil.getStereotypeApplication(element, stereotypeApplicationtype))//
+                .filter(e -> e != null)//
+                .toList();
+
+        return this.delegate.updateReference(ownerStereotypeApplication, newStereotypeApplication, refName);
+    }
+
+    public boolean addStereotypeApplicationFromBase(EObject ownerStereotypeApplication, Element baseElementToAdd, String refName, EClass stereotypeApplicationtype) {
+
+        EObject stereotypeApplication = StereotypeUtil.getStereotypeApplication(baseElementToAdd, stereotypeApplicationtype);
+        if (stereotypeApplication != null) {
+
+            return this.delegate.updateReference(ownerStereotypeApplication, stereotypeApplication, refName);
+        }
+
+        return false;
     }
 
     /**
