@@ -6,7 +6,7 @@ ifndef::imagesdir[:imagesdir: imgs]
 == Development FAQ
 :toc:
 
-=== How to overidde a Sirius Web service
+=== How to override a Sirius Web service
 
 In some cases you will need to override service to provided by Sirius Web.
 To do so, create a custom implementation of the service and use the annotation `org.eclipse.papyrus.web.sirius.contributions.ServiceOverride`.
@@ -27,7 +27,7 @@ ComponentRealization -> Model::Activity::CollaborationUse::ComponentRealization
 This indicates that this concept can be found inside `CollaborationUse` which is a child of `Activity`.
 
 
-=== How to modify the predefined language list of the lanugage expression widget
+=== How to modify the predefined language list of the language expression widget
 
 OpaqueExpressions, OpaqueActions, OpaqueBehaviors and FunctionBehaviors UML elements have a special property `language` that can be edited in the UML tab of the Details panel with a dedicated widget. This widget allows to choose a language among a predefined list. At the moment, this list of language names is hardcoded in the backend code. This is list is located in:
 
@@ -603,8 +603,44 @@ Additional information on how to contribute custom tools to a diagram is availab
 ==== GraphQL queries
 GraphQL queries are sent by the frontend to access data from the backend. As an example, a GraphQL query (`getMetaclassMetadatas`) is used by the `PapyrusPopupToolContribution` to retrieve all the metaclasses available in the editing context.
 
-These queries are defined in a similar way mutations are, with backend DTOs and event handlers. Note that queries don't need a _data fetcher_, they are directly handled by the event handlers.
+These queries are defined in a similar way mutations are, with backend DTOs and event handlers. Note that queries does not need a _data fetcher_, they are directly handled by the event handlers.
 
+=== How to launch locally Cypress tests as CI does
+
+Sometimes Cypress tests encounter problems during the CI build when a branch is pushed for PR for instance.
+It may occur that these tests passed locally and so it is difficult to find what is the cause of this failure.
+In such situation, we need to reproduce the same running environment to be able to fix issues.
+
+==== Step 1 Build the fat jar
+
+From the root folder of the frontend (`papyrus-web/frontend`) run the following commands:
+
+ 1. `npm ci`
+ 2. `npm run build`
+
+From the root folder of the project (`papyrus`) run the following commands:
+
+ 1. `mkdir -p backend/papyrus-web-frontend/src/main/resources/static`
+ 2. `cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resources/static`
+ 3. `mvn -U -B clean verify -f backend/pom.xml`
+
+==== Step 2 Prepare and run the Docker image
+
+For demonstration purpose, let say that the current version of Papyrus-web is `2023.12.0`, in the project root folder run the following commands:
+
+ 1. `sed -e "s|VERSION|2023.12.0|" backend/papyrus-web-application/Dockerfile.template > backend/papyrus-web-application/Dockerfile`
+ 2. `docker build -t papyrusweb backend/papyrus-web-application`
+ 3. `docker-compose -f backend/papyrus-web-application/docker-compose.yml up -d`
+
+The current version should be adapted in the first command.
+
+==== Step 3 Run the integration Cypress tests
+
+From the integration tests folder (`papyrus-web/integration-tests`) run the final command to launch Cypress:
+
+ 1. `npm start` 
+
+Cypress is running tests on `8080` port to reach papyrus-web server.
 
 
 
