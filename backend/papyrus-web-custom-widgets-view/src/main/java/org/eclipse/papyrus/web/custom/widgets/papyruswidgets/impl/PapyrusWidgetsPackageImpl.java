@@ -1316,8 +1316,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
                 MonoReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_OwnerExpression(), theViewPackage.getInterpretedExpression(), "ownerExpression", null, 0, 1, MonoReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getMonoReferenceWidgetDescription_Type(), theViewPackage.getDomainType(), "type", null, 0, 1, MonoReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getMonoReferenceWidgetDescription_Type(), theViewPackage.getInterpretedExpression(), "type", null, 0, 1, MonoReferenceWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, MonoReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_CandidatesSearchScopeExpression(), theViewPackage.getInterpretedExpression(), "candidatesSearchScopeExpression", null, 0, 1,
@@ -1344,8 +1344,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
                 MultiReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_OwnerExpression(), theViewPackage.getInterpretedExpression(), "ownerExpression", null, 0, 1, MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getMultiReferenceWidgetDescription_Type(), theViewPackage.getDomainType(), "type", null, 0, 1, MultiReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getMultiReferenceWidgetDescription_Type(), theViewPackage.getInterpretedExpression(), "type", null, 0, 1, MultiReferenceWidgetDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_CandidatesSearchScopeExpression(), theViewPackage.getInterpretedExpression(), "candidatesSearchScopeExpression", null, 0, 1,
@@ -1408,8 +1408,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
                 ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_Many(), this.ecorePackage.getEBoolean(), "many", null, 0, 1, ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getContainmentReferenceWidgetDescription_Type(), theViewPackage.getDomainType(), "type", null, 0, 1, ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getContainmentReferenceWidgetDescription_Type(), theViewPackage.getInterpretedExpression(), "type", null, 0, 1, ContainmentReferenceWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_OwnerExpression(), theViewPackage.getInterpretedExpression(), "ownerExpression", null, 0, 1,
                 ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1,

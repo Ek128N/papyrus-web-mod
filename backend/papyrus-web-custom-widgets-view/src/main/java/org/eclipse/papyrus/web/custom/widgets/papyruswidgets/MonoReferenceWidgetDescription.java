@@ -114,7 +114,7 @@ public interface MonoReferenceWidgetDescription extends WidgetDescription {
      * @return the value of the '<em>Type</em>' attribute.
      * @see #setType(String)
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getMonoReferenceWidgetDescription_Type()
-     * @model dataType="org.eclipse.sirius.components.view.DomainType"
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
      * @generated
      */
     String getType();
