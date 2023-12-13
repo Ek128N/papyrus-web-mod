@@ -23,6 +23,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public record CreateMetaclassImportInput(UUID id, String editingContextId, String representationId, String diagramElementId, List<String> metaclassIds) implements IDiagramInput {
+public record CreateMetaclassImportInput(UUID id, String editingContextId, String representationId, String diagramElementId, List<String> metaclassIds, double x, double y) implements IDiagramInput {
 
 }

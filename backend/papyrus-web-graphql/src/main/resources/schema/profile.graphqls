@@ -98,6 +98,8 @@ input CreateMetaclassImportInput {
 	representationId: ID!
 	diagramElementId: ID!
 	metaclassIds: [ID!]!
+	x: Float!
+	y: Float!
 }
 
 union PublishProfilePayload = ErrorPayload | PublishProfileSuccessPayload

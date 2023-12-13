@@ -56,4 +56,6 @@ export interface GQLCreateMetaclassImportInput {
   representationId: string;
   diagramElementId: string;
   metaclassIds: string[];
+  x: number;
+  y: number;
 }

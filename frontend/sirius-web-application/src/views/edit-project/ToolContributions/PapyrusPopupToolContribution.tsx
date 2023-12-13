@@ -56,7 +56,11 @@ const createMetaclassImportMutation = gql`
   }
 `;
 
-export const PapyrusPopupToolContribution = ({ diagramElementId }: DiagramPaletteToolContributionComponentProps) => {
+export const PapyrusPopupToolContribution = ({
+  diagramElementId,
+  x,
+  y,
+}: DiagramPaletteToolContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const { addErrorMessage } = useMultiToast();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
@@ -69,6 +73,8 @@ export const PapyrusPopupToolContribution = ({ diagramElementId }: DiagramPalett
         editingContextId,
         representationId,
         diagramElementId,
+        x,
+        y,
         metaclassIds: selectedElementIds,
       },
     };
