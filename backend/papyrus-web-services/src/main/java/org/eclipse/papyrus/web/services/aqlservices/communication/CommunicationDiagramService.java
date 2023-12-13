@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.uml2.uml.BehavioredClassifier;
 import org.eclipse.uml2.uml.DurationObservation;
 import org.eclipse.uml2.uml.ExecutionSpecification;
 import org.eclipse.uml2.uml.Lifeline;
@@ -92,6 +93,17 @@ public class CommunicationDiagramService extends AbstractDiagramService {
                 this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
                 new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
         return dropProvider;
+    }
+
+    /**
+     * Check if a Communication diagram can be created from the given {@code context}.
+     *
+     * @param context
+     *            the target element used to create Communication description
+     * @return {@code true} if the Communication diagram can be created, {@code false} otherwise.
+     */
+    public boolean canCreateDiagramCOD(EObject context) {
+        return !this.isContainedInProfileResource(context) && (context instanceof Package || context instanceof BehavioredClassifier);
     }
 
     /**

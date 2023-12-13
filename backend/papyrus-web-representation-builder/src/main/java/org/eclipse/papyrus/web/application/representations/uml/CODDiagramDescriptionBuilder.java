@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
-import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.builders.CallbackAdapter;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -74,12 +73,12 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      * Initializes the builder.
      */
     public CODDiagramDescriptionBuilder() {
-        super(COD_PREFIX, COD_REP_NAME, UMLPackage.eINSTANCE.getInteraction());
+        super(COD_PREFIX, COD_REP_NAME, UMLPackage.eINSTANCE.getNamedElement());
     }
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
-        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(CommunicationDiagramServices.CAN_CREATE_DIAGRAM));
 
         NodeDescription codInteractionDescription = this.createDiagramInteractionDescription(diagramDescription);
         this.createLifelineDescriptionInNodeDescription(codInteractionDescription);

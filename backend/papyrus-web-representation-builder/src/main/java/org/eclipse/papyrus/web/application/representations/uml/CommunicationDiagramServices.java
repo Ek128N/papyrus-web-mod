@@ -25,6 +25,11 @@ import org.eclipse.uml2.uml.TimeObservation;
 public class CommunicationDiagramServices extends Services {
 
     /**
+     * The name of the service that checks if the diagram can be created.
+     */
+    public static final String CAN_CREATE_DIAGRAM = "canCreateDiagramCOD";
+
+    /**
      * The name of the service that creates a {@link Message}.
      */
     public static final String CREATE_MESSAGE = "createMessageCOD";
