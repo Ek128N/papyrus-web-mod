@@ -218,7 +218,9 @@ public class ProfileDiagramService extends AbstractDiagramService {
      * @param editingContext
      *            the editing context used to perform the operation
      * @param representationId
-     *            the identifier of the graphical element to use to create the {@link ElementImport} view
+     *            the identifier of the graphical representation where the {@link ElementImport} view is created
+     * @param diagramElementId
+     *            the identifier of the graphical container where the {@link ElementImport} view is created
      * @param metaclassId
      *            the identifier of the UML metaclass to reference in the created {@link ElementImport}
      * @param diagramContext
@@ -240,23 +242,51 @@ public class ProfileDiagramService extends AbstractDiagramService {
             if (optProfile.isPresent()) {
                 Profile profile = optProfile.get();
                 Optional<Class> optMetaclass = this.getObjectService().getObject(editingContext, metaclassId).map(Class.class::cast);
-                if (optMetaclass.isPresent() && !this.profileHasImportElementForMetaclass(profile, optMetaclass.get())) {
-                    ElementImport createdElementImport = (ElementImport) this.create(profile, UMLPackage.eINSTANCE.getElementImport().getName(),
-                            UMLPackage.eINSTANCE.getNamespace_ElementImport().getName(), null, diagramContext, Map.of());
-                    createdElementImport.setImportedElement(optMetaclass.get());
-
-                    Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
-                            .getConvertedNode(PRDDiagramDescriptionBuilder.PRD_REP_NAME);
-
-                    IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, convertedNodes);
-                    if (diagramElement == null) {
-                        result = createViewHelper.createRootView(createdElementImport.getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+                ElementImport elementImport = null;
+                if (optMetaclass.isPresent()) {
+                    Optional<ElementImport> optionalElementImport = this.getImportElementForMetaclass(profile, optMetaclass.get());
+                    if (optionalElementImport.isPresent()) {
+                        elementImport = optionalElementImport.get();
                     } else {
-                        result = createViewHelper.createChildView(createdElementImport.getImportedElement(), diagramElement, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
+                        elementImport = (ElementImport) this.create(profile, UMLPackage.eINSTANCE.getElementImport().getName(), UMLPackage.eINSTANCE.getNamespace_ElementImport().getName(), null,
+                                diagramContext, Map.of());
+                        elementImport.setImportedElement(optMetaclass.get());
                     }
                 }
-
+                if (elementImport != null) {
+                    boolean isNodePresent = diagramContext.getDiagram().getNodes().stream() //
+                            .anyMatch(p -> optMetaclass.get().getName().equals(p.getTargetObjectLabel()));
+                    if (!isNodePresent) {
+                        result = this.createMetaclassNode(diagramContext, diagramElement, elementImport);
+                    }
+                }
             }
+        }
+        return result;
+    }
+
+    /**
+     * Create a Metaclass node in given {@code ParentNodeQuery} representing the imported element of given
+     * {@code elementImport}.
+     *
+     * @param diagramContext
+     *            the graphical context
+     * @param parentNode
+     *            the parent node of the Metaclass node
+     * @param elementImport
+     *            the semantic {@link ElementImport} with imported element represented by the Metaclass node
+     * @return {@code true} if a creation request has been made, {@code false} otherwise
+     */
+    private boolean createMetaclassNode(IDiagramContext diagramContext, Node parentNode, ElementImport elementImport) {
+        boolean result;
+        Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
+                .getConvertedNode(PRDDiagramDescriptionBuilder.PRD_REP_NAME);
+
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, convertedNodes);
+        if (parentNode == null) {
+            result = createViewHelper.createRootView(elementImport.getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+        } else {
+            result = createViewHelper.createChildView(elementImport.getImportedElement(), parentNode, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
         }
         return result;
     }
@@ -284,19 +314,18 @@ public class ProfileDiagramService extends AbstractDiagramService {
     }
 
     /**
-     * Returns whether the provided {@code profile} contains an {@link ElementImport} for the provided
-     * {@code metaclass}.
+     * Get {@link ElementImport} contained by the provided {@code profile} for the provided {@code metaclass}.
      *
      * @param profile
      *            the {@link Profile} to check
      * @param metaclass
      *            the metaclass to find in the provided {@link Profile}
-     * @return {@code true} if the {@code profile} contains an {@link ElementImport} for the provided {@code metaclass},
-     *         {@code false} otherwise
+     * @return {@link ElementImport} contained by the provided {@code profile} for the provided {@code metaclass}, , or
+     *         an empty {@link Optional} if not found.
      */
-    private boolean profileHasImportElementForMetaclass(Profile profile, Class metaclass) {
+    private Optional<ElementImport> getImportElementForMetaclass(Profile profile, Class metaclass) {
         return profile.getElementImports().stream() //
-                .anyMatch(elementImport -> Objects.equals(elementImport.getImportedElement(), metaclass));
+                .filter(elementImport -> Objects.equals(elementImport.getImportedElement(), metaclass)).findFirst();
     }
 
     private Optional<Node> getDiagramElement(IEditingContext editingContext, Diagram diagram, String diagramElementId) {
