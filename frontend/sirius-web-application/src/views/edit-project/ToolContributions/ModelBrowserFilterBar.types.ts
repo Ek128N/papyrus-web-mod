@@ -15,4 +15,5 @@ export interface ModelBrowserFilterBarProps {
   onTextChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onTextClear: () => void;
   text: string | null;
+  onFocus: boolean;
 }

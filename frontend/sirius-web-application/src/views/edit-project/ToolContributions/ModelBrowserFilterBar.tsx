@@ -33,7 +33,7 @@ const useFilterBarStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.text.disabled,
   },
 }));
-export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: ModelBrowserFilterBarProps) => {
+export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text, onFocus }: ModelBrowserFilterBarProps) => {
   const classes = useFilterBarStyles();
 
   return (
@@ -46,7 +46,7 @@ export const ModelBrowserFilterBar = ({ onTextChange, onTextClear, text }: Model
         spellCheck={false}
         size="small"
         margin="none"
-        autoFocus={true}
+        autoFocus={onFocus}
         multiline={false}
         fullWidth
         value={text}

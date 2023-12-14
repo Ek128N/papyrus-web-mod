@@ -97,6 +97,7 @@ export const FilterableSortableList = ({
   onClick,
   onDoubleClick,
   selectedItems,
+  onFocusFilter,
 }: FilterableSortableListProps) => {
   const classes = useStyles();
   const [state, setState] = useState<FilterableSortableListState>({
@@ -126,6 +127,7 @@ export const FilterableSortableList = ({
           })
         }
         text={state.filterBarText}
+        onFocus={onFocusFilter}
       />
       <span className={classes.title}>Selected</span>
       <div className={classes.borderStyle}>

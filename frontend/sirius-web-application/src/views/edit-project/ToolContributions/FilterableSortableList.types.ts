@@ -19,6 +19,7 @@ export interface FilterableSortableListProps {
   onDoubleClick: () => void;
   onClick: (event: React.MouseEvent<Element, MouseEvent>, item: ItemWithIcon) => void;
   selectedItems: ItemWithIcon[];
+  onFocusFilter: boolean;
 }
 
 export interface FilterableSortableListState {

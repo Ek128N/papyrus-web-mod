@@ -164,6 +164,7 @@ export const TransferModal = ({ items, onClose }: TransferModalProps) => {
                 onClick={onClick}
                 onDoubleClick={handleDispatchRight}
                 selectedItems={state.leftSelection}
+                onFocusFilter={true}
               />
             </div>
           </Grid>
@@ -210,6 +211,7 @@ export const TransferModal = ({ items, onClose }: TransferModalProps) => {
                 onClick={onClick}
                 onDoubleClick={handleDispatchLeft}
                 selectedItems={state.rightSelection}
+                onFocusFilter={false}
               />
             </div>
           </Grid>
