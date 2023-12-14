@@ -485,9 +485,16 @@ public class ViewBuilder {
 
     public EdgeDescription createDefaultSynchonizedDomainBaseEdgeDescription(EClass eClass, String semanticCandidateExpression, Supplier<List<NodeDescription>> source,
             Supplier<List<NodeDescription>> targets) {
+        return this.createDefaultSynchonizedDomainBaseEdgeDescription(eClass, semanticCandidateExpression, source, targets, true);
+    }
+
+    public EdgeDescription createDefaultSynchonizedDomainBaseEdgeDescription(EClass eClass, String semanticCandidateExpression, Supplier<List<NodeDescription>> source,
+            Supplier<List<NodeDescription>> targets, boolean isDirectEditActivated) {
         EdgeDescription result = this.createSynchonizedDomainBaseEdgeDescription(this.idBuilder.getDomainBaseEdgeId(eClass), eClass, semanticCandidateExpression, source, targets);
         this.addDefaultDeleteTool(result);
-        this.addDirectEditTool(result);
+        if (isDirectEditActivated) {
+            this.addDirectEditTool(result);
+        }
         return result;
     }
 

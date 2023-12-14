@@ -127,6 +127,7 @@ public class RepresentationValidatorTests {
         // behavior because they represent a metaclass from the UML metamodel and thus cannot be deleted.
         validator.excludeFromDeleteToolValidation(isNotMetaclassAndNotCompartment);
         validator.excludeFromDirectEditValidation(isNotMetaclassAndNotCompartment);
+        validator.excludeFromDirectEditValidation(p -> !this.isPrdDirectEditDisabled(p));
 
         List<Status> validations = validator.validate(diagram);
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
@@ -141,13 +142,21 @@ public class RepresentationValidatorTests {
         DiagramDescription diagram = new UCDDiagramDescriptionBuilder().createDiagramDescription(ViewFactory.eINSTANCE.createView());
 
         DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
-
+        validator.excludeFromDirectEditValidation(p -> !this.isUcdDirectEditDisabled(p));
         List<Status> validations = validator.validate(diagram);
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
 
         if (!errors.isEmpty()) {
             Assertions.fail(MessageFormat.format("Invalid Use Case Diagram description \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
         }
+    }
+
+    private boolean isUcdDirectEditDisabled(DiagramElementDescription p) {
+        return "UCD_PackageMerge_DomainEdge".equals(p.getName()) || "UCD_PackageImport_DomainEdge".equals(p.getName()) || "UCD_Generalization_DomainEdge".equals(p.getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
+    private boolean isPrdDirectEditDisabled(DiagramElementDescription p) {
+        return "PRD_Generalization_DomainEdge".equals(p.getName()); //$NON-NLS-1$
     }
 
     private boolean isTransitionEdge(DiagramElementDescription p) {

@@ -826,7 +826,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         EClass generalization = this.umlPackage.getGeneralization();
         EdgeDescription prdGeneralizationDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(generalization,
-                this.getQueryBuilder().queryAllReachableExactType(generalization), sourceDescriptionSupplier, targetDescriptionSupplier);
+                this.getQueryBuilder().queryAllReachableExactType(generalization), sourceDescriptionSupplier, targetDescriptionSupplier, false);
         prdGeneralizationDescription.getStyle().setLineStyle(LineStyle.SOLID);
         prdGeneralizationDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
         prdGeneralizationDescription.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
