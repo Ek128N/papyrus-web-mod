@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_Hkw1QHlmEe62BY85_4ZzFQ" name="model4test">
-  <ownedComment xmi:type="uml:Comment" xmi:id="_Hkw1QXlmEe62BY85_4ZzFQ">
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="__Ga8YJqVEe6WBNrIMif74A" name="model4test">
+  <ownedComment xmi:type="uml:Comment" xmi:id="__Ga8YZqVEe6WBNrIMif74A">
     <body>Comment</body>
   </ownedComment>
-  <packageImport xmi:type="uml:PackageImport" xmi:id="_Hkw1QnlmEe62BY85_4ZzFQ">
+  <ownedRule xmi:type="uml:DurationConstraint" xmi:id="__Ga8YpqVEe6WBNrIMif74A" name="DurationConstraint"/>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="__Ga8Y5qVEe6WBNrIMif74A">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
-  <packagedElement xmi:type="uml:Package" xmi:id="_Hkw1Q3lmEe62BY85_4ZzFQ" name="Package"/>
-  <packagedElement xmi:type="uml:Abstraction" xmi:id="_Hkw1RHlmEe62BY85_4ZzFQ" name="Abstraction" client="_Hkw1QHlmEe62BY85_4ZzFQ" supplier="_Hkw1Q3lmEe62BY85_4ZzFQ"/>
-  <packagedElement xmi:type="uml:Activity" xmi:id="_Hkw1RXlmEe62BY85_4ZzFQ" name="Activity" node="_Hkw1RnlmEe62BY85_4ZzFQ">
-    <node xmi:type="uml:CentralBufferNode" xmi:id="_Hkw1RnlmEe62BY85_4ZzFQ"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_Hkw1R3lmEe62BY85_4ZzFQ" name="Class">
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_Hkw1SHlmEe62BY85_4ZzFQ" name="Operation1"/>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_Hkw1SXlmEe62BY85_4ZzFQ" name="Operation2"/>
-    <nestedClassifier xmi:type="uml:Association" xmi:id="_Hkw1SnlmEe62BY85_4ZzFQ" name="Association" memberEnd="_Hkw1S3lmEe62BY85_4ZzFQ _Hkw1THlmEe62BY85_4ZzFQ">
-      <ownedEnd xmi:type="uml:Property" xmi:id="_Hkw1S3lmEe62BY85_4ZzFQ" name="from" type="_Hkw1RXlmEe62BY85_4ZzFQ" association="_Hkw1SnlmEe62BY85_4ZzFQ"/>
-      <ownedEnd xmi:type="uml:Property" xmi:id="_Hkw1THlmEe62BY85_4ZzFQ" name="to" type="_Hkw1RXlmEe62BY85_4ZzFQ" association="_Hkw1SnlmEe62BY85_4ZzFQ"/>
+  <ownedTemplateSignature xmi:type="uml:TemplateSignature" xmi:id="__Ga8ZJqVEe6WBNrIMif74A" parameter="__Ga8ZZqVEe6WBNrIMif74A __Ga8ZpqVEe6WBNrIMif74A __Ga8Z5qVEe6WBNrIMif74A">
+    <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="__Ga8ZZqVEe6WBNrIMif74A"/>
+    <ownedParameter xmi:type="uml:ConnectableElementTemplateParameter" xmi:id="__Ga8ZpqVEe6WBNrIMif74A"/>
+    <ownedParameter xmi:type="uml:OperationTemplateParameter" xmi:id="__Ga8Z5qVEe6WBNrIMif74A"/>
+  </ownedTemplateSignature>
+  <packagedElement xmi:type="uml:Package" xmi:id="__Ga8aJqVEe6WBNrIMif74A" name="Package"/>
+  <packagedElement xmi:type="uml:Abstraction" xmi:id="__Ga8aZqVEe6WBNrIMif74A" name="Abstraction" client="__Ga8YJqVEe6WBNrIMif74A" supplier="__Ga8aJqVEe6WBNrIMif74A"/>
+  <packagedElement xmi:type="uml:Activity" xmi:id="__Ga8apqVEe6WBNrIMif74A" name="Activity" group="__Ga8bZqVEe6WBNrIMif74A"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="__Ga8cJqVEe6WBNrIMif74A" name="Class">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="__Ga8cZqVEe6WBNrIMif74A" name="Operation1"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="__Ga8cpqVEe6WBNrIMif74A" name="Operation2"/>
+    <nestedClassifier xmi:type="uml:Association" xmi:id="__Ga8c5qVEe6WBNrIMif74A" name="Association" memberEnd="__Ga8dJqVEe6WBNrIMif74A __Ga8dZqVEe6WBNrIMif74A">
+      <ownedEnd xmi:type="uml:Property" xmi:id="__Ga8dJqVEe6WBNrIMif74A" name="from" type="__Ga8apqVEe6WBNrIMif74A" association="__Ga8c5qVEe6WBNrIMif74A"/>
+      <ownedEnd xmi:type="uml:Property" xmi:id="__Ga8dZqVEe6WBNrIMif74A" name="to" type="__Ga8apqVEe6WBNrIMif74A" association="__Ga8c5qVEe6WBNrIMif74A"/>
     </nestedClassifier>
   </packagedElement>
-  <packagedElement xmi:type="uml:DurationObservation" xmi:id="_Hkw1TXlmEe62BY85_4ZzFQ" name="DurationObservation"/>
-  <packagedElement xmi:type="uml:LiteralBoolean" xmi:id="_Hkw1TnlmEe62BY85_4ZzFQ" name="LiteralBoolean"/>
-  <packagedElement xmi:type="uml:FunctionBehavior" xmi:id="_Hkw1T3lmEe62BY85_4ZzFQ" name="FunctionBehavior"/>
-  <packagedElement xmi:type="uml:UseCase" xmi:id="_Hkw1UHlmEe62BY85_4ZzFQ" name="UseCase1"/>
-  <packagedElement xmi:type="uml:UseCase" xmi:id="_Hkw1UXlmEe62BY85_4ZzFQ" name="UseCase2"/>
+  <packagedElement xmi:type="uml:DurationObservation" xmi:id="__Ga8dpqVEe6WBNrIMif74A" name="DurationObservation"/>
+  <packagedElement xmi:type="uml:LiteralBoolean" xmi:id="__Ga8d5qVEe6WBNrIMif74A" name="LiteralBoolean"/>
+  <packagedElement xmi:type="uml:FunctionBehavior" xmi:id="__Ga8eJqVEe6WBNrIMif74A" name="FunctionBehavior"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="__Ga8eZqVEe6WBNrIMif74A" name="UseCase1"/>
+  <packagedElement xmi:type="uml:UseCase" xmi:id="__Ga8epqVEe6WBNrIMif74A" name="UseCase2"/>
 </uml:Model>

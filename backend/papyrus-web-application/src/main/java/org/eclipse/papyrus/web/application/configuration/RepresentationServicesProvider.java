@@ -39,6 +39,7 @@ import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesHelpCon
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesImageServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesMemberEndServicesWrapper;
 import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesProfileServices;
+import org.eclipse.papyrus.web.services.aqlservices.properties.PropertiesReferenceTypeServices;
 import org.eclipse.papyrus.web.services.aqlservices.scope.ReachableElementsServices;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
@@ -119,6 +120,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             services.add(PropertiesProfileServices.class);
             services.add(ReachableElementsServices.class);
             services.add(PropertiesStereotypeApplicationServices.class);
+            services.add(PropertiesReferenceTypeServices.class);
         }
     }
 }
