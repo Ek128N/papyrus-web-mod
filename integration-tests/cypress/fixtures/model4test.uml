@@ -14,7 +14,7 @@
   </ownedTemplateSignature>
   <packagedElement xmi:type="uml:Package" xmi:id="__Ga8aJqVEe6WBNrIMif74A" name="Package"/>
   <packagedElement xmi:type="uml:Abstraction" xmi:id="__Ga8aZqVEe6WBNrIMif74A" name="Abstraction" client="__Ga8YJqVEe6WBNrIMif74A" supplier="__Ga8aJqVEe6WBNrIMif74A"/>
-  <packagedElement xmi:type="uml:Activity" xmi:id="__Ga8apqVEe6WBNrIMif74A" name="Activity" group="__Ga8bZqVEe6WBNrIMif74A"/>
+  <packagedElement xmi:type="uml:Activity" xmi:id="__Ga8apqVEe6WBNrIMif74A" name="Activity"/>
   <packagedElement xmi:type="uml:Class" xmi:id="__Ga8cJqVEe6WBNrIMif74A" name="Class">
     <ownedOperation xmi:type="uml:Operation" xmi:id="__Ga8cZqVEe6WBNrIMif74A" name="Operation1"/>
     <ownedOperation xmi:type="uml:Operation" xmi:id="__Ga8cpqVEe6WBNrIMif74A" name="Operation2"/>

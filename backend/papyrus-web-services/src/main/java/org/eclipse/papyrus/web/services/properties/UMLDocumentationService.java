@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
@@ -45,6 +46,8 @@ public class UMLDocumentationService {
      * element.
      */
     private static final String SOURCE_ANNOTATION_GEN_MODEL = "http://www.eclipse.org/emf/2002/GenModel"; //$NON-NLS-1$
+
+    private static final String SOURCE_ANNOTATION_DUPLICATES = "duplicates"; //$NON-NLS-1$
 
     /**
      * The key of the EAnnotation details map used to get the documentation for each model element.
@@ -80,8 +83,7 @@ public class UMLDocumentationService {
             if (eClassifier instanceof EClass) {
                 EClass clazz = (EClass) eClassifier;
                 for (EStructuralFeature feature : clazz.getEAllStructuralFeatures()) {
-                    EAnnotation eAnnotation = feature.getEAnnotation(SOURCE_ANNOTATION_GEN_MODEL);
-                    String doc = this.extractDescriptionFromEAnnotation(eAnnotation);
+                    String doc = this.findDocumentation(clazz, feature);
                     String docKey = this.getDocumentationEntryKey(eClassifier.getName(), feature.getName());
                     this.documentationEntries.put(docKey, doc);
                 }
@@ -94,6 +96,24 @@ public class UMLDocumentationService {
         String description = this.extractDescriptionFromEAnnotation(eAnnotation).concat(MULTIPLICITY_DOC_EXAMPLE);
         String docKey = this.getDocumentationEntryKey(multiplicityElementTypeName, "");
         this.documentationEntries.put(docKey, description);
+    }
+
+    private String findDocumentation(EClass clazz, EStructuralFeature feature) {
+        EAnnotation docAnnotation = feature.getEAnnotation(SOURCE_ANNOTATION_GEN_MODEL);
+        // this feature may have redefined its documentation
+        EAnnotation dupAnnotation = clazz.getEAnnotation(SOURCE_ANNOTATION_DUPLICATES);
+        if (dupAnnotation != null) {
+            EReference redefinedRef = dupAnnotation.getContents()//
+                    .stream()//
+                    .filter(EReference.class::isInstance)//
+                    .map(EReference.class::cast)//
+                    .filter(ref -> feature.getName().equals(ref.getName()))//
+                    .findFirst().orElse(null);
+            if (redefinedRef != null) {
+                docAnnotation = redefinedRef.getEAnnotation(SOURCE_ANNOTATION_GEN_MODEL);
+            }
+        }
+        return this.extractDescriptionFromEAnnotation(docAnnotation);
     }
 
     /**
