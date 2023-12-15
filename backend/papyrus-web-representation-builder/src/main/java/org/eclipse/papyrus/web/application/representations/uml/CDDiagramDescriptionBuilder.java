@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
+import org.eclipse.papyrus.web.application.representations.view.builders.CallbackAdapter;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
@@ -123,35 +124,36 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
 
         EClass association = this.pack.getAssociation();
-        EdgeDescription padAssociation = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(association, this.getQueryBuilder().queryAllReachableExactType(association),
+        EdgeDescription cdAssociation = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(association, this.getQueryBuilder().queryAllReachableExactType(association),
                 sourceAndTargetDescriptionsSupplier, sourceAndTargetDescriptionsSupplier);
-        padAssociation.getStyle().setLineStyle(LineStyle.SOLID);
-        padAssociation.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
-        padAssociation.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
+        cdAssociation.getStyle().setLineStyle(LineStyle.SOLID);
+        cdAssociation.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
+        cdAssociation.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
 
-        this.registerCallback(padAssociation, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, this.getViewBuilder().createDefaultDomainBasedEdgeTool(padAssociation, this.pack.getPackage_PackagedElement()));
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier,
-                    this.createSpecializedAssociationDomainBasedEdgeTool("New Composite Association", ClassDiagramServices.CREATION_COMPOSITE_ASSOCIATION));
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier,
-                    this.createSpecializedAssociationDomainBasedEdgeTool("New Shared Association", ClassDiagramServices.CREATION_SHARED_ASSOCIATION));
+        EdgeTool associationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdAssociation, this.pack.getPackage_PackagedElement());
+        EdgeTool compositeAssociationTool = this.createSpecializedAssociationDomainBasedEdgeTool("New Composite Association", ClassDiagramServices.CREATION_COMPOSITE_ASSOCIATION, cdAssociation);
+        EdgeTool sharedAssociationTool = this.createSpecializedAssociationDomainBasedEdgeTool("New Shared Association", ClassDiagramServices.CREATION_SHARED_ASSOCIATION, cdAssociation);
+        this.registerCallback(cdAssociation, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, associationTool);
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, compositeAssociationTool);
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, sharedAssociationTool);
         });
 
-        padAssociation.setBeginLabelExpression(this.getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
-        padAssociation.getPalette().setBeginLabelEditTool(this.getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_TARGET)));
+        cdAssociation.setBeginLabelExpression(this.getQueryBuilder().createDomainBaseEdgeSourceLabelExpression());
+        cdAssociation.getPalette().setBeginLabelEditTool(this.getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_TARGET)));
 
-        padAssociation.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
-        padAssociation.getPalette().setEndLabelEditTool(this.getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_SOURCE)));
+        cdAssociation.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
+        cdAssociation.getPalette().setEndLabelEditTool(this.getViewBuilder().createDirectEditTool(CallQuery.queryServiceOnSelf(ClassDiagramServices.GET_ASSOCIATION_SOURCE)));
 
         // Can be improve once https://github.com/PapyrusSirius/papyrus-web/issues/208 is closed
-        new AssociationEdgeCustomStyleBuilder(padAssociation).addCustomArowStyles();
+        new AssociationEdgeCustomStyleBuilder(cdAssociation).addCustomArowStyles();
 
-        diagramDescription.getEdgeDescriptions().add(padAssociation);
+        diagramDescription.getEdgeDescriptions().add(cdAssociation);
 
-        this.getViewBuilder().addDefaultReconnectionTools(padAssociation);
+        this.getViewBuilder().addDefaultReconnectionTools(cdAssociation);
     }
 
-    private EdgeTool createSpecializedAssociationDomainBasedEdgeTool(String specializationName, String serviceName) {
+    private EdgeTool createSpecializedAssociationDomainBasedEdgeTool(String specializationName, String serviceName, EdgeDescription cdAssociation) {
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(specializationName);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
@@ -164,7 +166,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                         EDITING_CONTEXT, //
                         DIAGRAM_CONTEXT);
         changeContext.setExpression(query);
-
+        cdAssociation.eAdapters().add(new CallbackAdapter(() -> {
+            List<NodeDescription> targetNodeDescriptions = cdAssociation.getTargetNodeDescriptions();
+            tool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
+        }));
         tool.getBody().add(changeContext);
         return tool;
     }
@@ -195,6 +200,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getPackage_PackagedElement().getName())); // $NON-NLS-1$
 
         ChangeContext changeContext = this.getViewBuilder().createChangeContextOperation(toolQuery);
+        containmentLinkEdge.eAdapters().add(new CallbackAdapter(() -> {
+            List<NodeDescription> targetNodeDescriptions = containmentLinkEdge.getTargetNodeDescriptions();
+            tool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
+        }));
         tool.getBody().add(changeContext);
         this.registerCallback(containmentLinkEdge, () -> {
             CreationToolsUtil.addEdgeCreationTool(sourceProvider, tool);
@@ -226,6 +235,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getClass_NestedClassifier().getName())); // $NON-NLS-1$
 
         ChangeContext changeContext = this.getViewBuilder().createChangeContextOperation(toolQuery);
+        containmentLinkEdge.eAdapters().add(new CallbackAdapter(() -> {
+            List<NodeDescription> targetNodeDescriptions = containmentLinkEdge.getTargetNodeDescriptions();
+            tool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
+        }));
         tool.getBody().add(changeContext);
         this.registerCallback(containmentLinkEdge, () -> {
             CreationToolsUtil.addEdgeCreationTool(sourceProvider, tool);
@@ -236,35 +249,35 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
 
         EClass generalization = this.pack.getGeneralization();
-        EdgeDescription padGeneralization = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(generalization, this.getQueryBuilder().queryAllReachableExactType(generalization),
+        EdgeDescription cdGeneralization = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(generalization, this.getQueryBuilder().queryAllReachableExactType(generalization),
                 sourceAndTargetDescriptionsSupplier, sourceAndTargetDescriptionsSupplier);
-        padGeneralization.getStyle().setLineStyle(LineStyle.SOLID);
-        padGeneralization.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
-        this.registerCallback(padGeneralization, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier,
-                    this.getViewBuilder().createDefaultDomainBasedEdgeTool(padGeneralization, this.pack.getClassifier_Generalization()));
+        cdGeneralization.getStyle().setLineStyle(LineStyle.SOLID);
+        cdGeneralization.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+        EdgeTool cdGeneralizationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdGeneralization, this.pack.getClassifier_Generalization());
+        this.registerCallback(cdGeneralization, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, cdGeneralizationCreationTool);
         });
 
-        diagramDescription.getEdgeDescriptions().add(padGeneralization);
+        diagramDescription.getEdgeDescriptions().add(cdGeneralization);
 
-        this.getViewBuilder().addDefaultReconnectionTools(padGeneralization);
+        this.getViewBuilder().addDefaultReconnectionTools(cdGeneralization);
     }
 
     private void createInterfaceRealizationDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getBehavioredClassifier());
         Supplier<List<NodeDescription>> targetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getInterface());
 
-        EdgeDescription padInterfaceRealization = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getInterfaceRealization(),
+        EdgeDescription cdInterfaceRealization = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getInterfaceRealization(),
                 this.getQueryBuilder().queryAllReachableExactType(this.pack.getInterfaceRealization()), sourceDescriptionsSupplier, targetDescriptionsSupplier);
-        padInterfaceRealization.getStyle().setLineStyle(LineStyle.DASH);
-        padInterfaceRealization.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
-        this.registerCallback(padInterfaceRealization, () -> {
-            CreationToolsUtil.addEdgeCreationTool(sourceDescriptionsSupplier,
-                    this.getViewBuilder().createDefaultDomainBasedEdgeTool(padInterfaceRealization, this.pack.getBehavioredClassifier_InterfaceRealization()));
+        cdInterfaceRealization.getStyle().setLineStyle(LineStyle.DASH);
+        cdInterfaceRealization.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+        EdgeTool cdInterfaceRealizationCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdInterfaceRealization, this.pack.getBehavioredClassifier_InterfaceRealization());
+        this.registerCallback(cdInterfaceRealization, () -> {
+            CreationToolsUtil.addEdgeCreationTool(sourceDescriptionsSupplier, cdInterfaceRealizationCreationTool);
         });
-        diagramDescription.getEdgeDescriptions().add(padInterfaceRealization);
+        diagramDescription.getEdgeDescriptions().add(cdInterfaceRealization);
 
-        this.getViewBuilder().addDefaultReconnectionTools(padInterfaceRealization);
+        this.getViewBuilder().addDefaultReconnectionTools(cdInterfaceRealization);
     }
 
     private void createEnumerationDescription(DiagramDescription diagramDescription) {
@@ -491,61 +504,61 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private void createDependencyDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> namedElementDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
-        EdgeDescription padDependency = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getDependency(),
+        EdgeDescription cdDependency = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getDependency(),
                 this.getQueryBuilder().queryAllReachableExactType(this.pack.getDependency()), namedElementDescriptions, namedElementDescriptions);
-        padDependency.getStyle().setLineStyle(LineStyle.DASH);
-        padDependency.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(padDependency, this.pack.getPackage_PackagedElement());
-        this.registerCallback(padDependency, () -> {
+        cdDependency.getStyle().setLineStyle(LineStyle.DASH);
+        cdDependency.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdDependency, this.pack.getPackage_PackagedElement());
+        this.registerCallback(cdDependency, () -> {
             CreationToolsUtil.addEdgeCreationTool(namedElementDescriptions, creationTool);
         });
-        diagramDescription.getEdgeDescriptions().add(padDependency);
+        diagramDescription.getEdgeDescriptions().add(cdDependency);
 
-        this.getViewBuilder().addDefaultReconnectionTools(padDependency);
+        this.getViewBuilder().addDefaultReconnectionTools(cdDependency);
     }
 
     private void createAbstractionDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> namedElementDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
-        EdgeDescription padAbstraction = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getAbstraction(),
+        EdgeDescription cdAbstraction = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getAbstraction(),
                 this.getQueryBuilder().queryAllReachableExactType(this.pack.getAbstraction()), namedElementDescriptions, namedElementDescriptions);
-        padAbstraction.getStyle().setLineStyle(LineStyle.DASH);
-        padAbstraction.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(padAbstraction, this.pack.getPackage_PackagedElement());
-        this.registerCallback(padAbstraction, () -> {
+        cdAbstraction.getStyle().setLineStyle(LineStyle.DASH);
+        cdAbstraction.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdAbstraction, this.pack.getPackage_PackagedElement());
+        this.registerCallback(cdAbstraction, () -> {
             CreationToolsUtil.addEdgeCreationTool(namedElementDescriptions, creationTool);
         });
-        diagramDescription.getEdgeDescriptions().add(padAbstraction);
+        diagramDescription.getEdgeDescriptions().add(cdAbstraction);
 
-        this.getViewBuilder().addDefaultReconnectionTools(padAbstraction);
+        this.getViewBuilder().addDefaultReconnectionTools(cdAbstraction);
     }
 
     private void createPackageMergeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
-        EdgeDescription padPackageMerge = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getPackageMerge(),
+        EdgeDescription cdPackageMerge = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getPackageMerge(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getPackageMerge()), packageDescriptions, packageDescriptions);
-        padPackageMerge.getStyle().setLineStyle(LineStyle.DASH);
-        padPackageMerge.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageMerge, this.pack.getPackage_PackageMerge());
-        this.registerCallback(padPackageMerge, () -> {
+        cdPackageMerge.getStyle().setLineStyle(LineStyle.DASH);
+        cdPackageMerge.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdPackageMerge, this.pack.getPackage_PackageMerge());
+        this.registerCallback(cdPackageMerge, () -> {
             CreationToolsUtil.addEdgeCreationTool(packageDescriptions, creationTool);
         });
-        diagramDescription.getEdgeDescriptions().add(padPackageMerge);
-        this.getViewBuilder().addDefaultReconnectionTools(padPackageMerge);
+        diagramDescription.getEdgeDescriptions().add(cdPackageMerge);
+        this.getViewBuilder().addDefaultReconnectionTools(cdPackageMerge);
     }
 
     private void createPackageImportDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
-        EdgeDescription padPackageImport = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getPackageImport(),
+        EdgeDescription cdPackageImport = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getPackageImport(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getPackageImport()), packageDescriptions, packageDescriptions);
-        padPackageImport.getStyle().setLineStyle(LineStyle.DASH);
-        padPackageImport.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        cdPackageImport.getStyle().setLineStyle(LineStyle.DASH);
+        cdPackageImport.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
 
-        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(padPackageImport, this.pack.getNamespace_PackageImport());
-        this.registerCallback(padPackageImport, () -> {
+        EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdPackageImport, this.pack.getNamespace_PackageImport());
+        this.registerCallback(cdPackageImport, () -> {
             CreationToolsUtil.addEdgeCreationTool(packageDescriptions, creationTool);
         });
-        diagramDescription.getEdgeDescriptions().add(padPackageImport);
-        this.getViewBuilder().addDefaultReconnectionTools(padPackageImport);
+        diagramDescription.getEdgeDescriptions().add(cdPackageImport);
+        this.getViewBuilder().addDefaultReconnectionTools(cdPackageImport);
 
     }
 
