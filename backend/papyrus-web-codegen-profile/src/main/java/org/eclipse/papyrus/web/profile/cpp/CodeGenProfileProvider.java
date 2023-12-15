@@ -28,7 +28,7 @@ public class CodeGenProfileProvider implements IUMLProfileProvider {
 
     @Override
     public List<UMLProfileMetadata> getUMLProfiles() {
-        return List.of(new UMLProfileMetadata("CodeGen", "pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ")); //$NON-NLS-1$//$NON-NLS-2$
+        return List.of(new UMLProfileMetadata("CodeGen", "pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ", "")); //$NON-NLS-1$//$NON-NLS-2$
     }
 
 }

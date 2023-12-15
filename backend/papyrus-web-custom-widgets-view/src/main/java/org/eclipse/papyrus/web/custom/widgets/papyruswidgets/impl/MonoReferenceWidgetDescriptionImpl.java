@@ -726,8 +726,7 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
     @Override
     public EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this,
-                    PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this, PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

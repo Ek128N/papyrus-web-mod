@@ -518,6 +518,16 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
+    public EAttribute getPrimitiveListItemActionOperation_PreconditionExpression() {
+        return (EAttribute) this.primitiveListItemActionOperationEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getMonoReferenceWidgetDescription() {
         return this.monoReferenceWidgetDescriptionEClass;
     }
@@ -1144,6 +1154,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.primitiveListItemActionOperationEClass = this.createEClass(PRIMITIVE_LIST_ITEM_ACTION_OPERATION);
         this.createEReference(this.primitiveListItemActionOperationEClass, PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY);
         this.createEAttribute(this.primitiveListItemActionOperationEClass, PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION);
+        this.createEAttribute(this.primitiveListItemActionOperationEClass, PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION);
 
         this.monoReferenceWidgetDescriptionEClass = this.createEClass(MONO_REFERENCE_WIDGET_DESCRIPTION);
         this.createEAttribute(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION);
@@ -1309,6 +1320,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEReference(this.getPrimitiveListItemActionOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListItemActionOperation.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveListItemActionOperation_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1,
+                PrimitiveListItemActionOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getPrimitiveListItemActionOperation_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1,
                 PrimitiveListItemActionOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.monoReferenceWidgetDescriptionEClass, MonoReferenceWidgetDescription.class, "MonoReferenceWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

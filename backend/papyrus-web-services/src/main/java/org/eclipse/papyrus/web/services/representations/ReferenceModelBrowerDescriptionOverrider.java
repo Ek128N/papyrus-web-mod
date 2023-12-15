@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -113,29 +114,39 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private boolean buildStereotypePredicate(VariableManager variableManager) {
 
-        String stereotypeQName = this.getStereotypeQualifiedName(variableManager);
+        Predicate<Element> elementFilter = this.getStereotypeQualifiedName(variableManager);
         var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
-        if (optionalSelf.isPresent() && stereotypeQName != null) {
+        if (optionalSelf.isPresent() && elementFilter != null) {
             EObject self = optionalSelf.get();
-            return self instanceof Element element && element.getAppliedStereotype(stereotypeQName) != null;
+            return self instanceof Element element && elementFilter.test(element);
         }
 
         return false;
     }
 
-    private String getStereotypeQualifiedName(VariableManager variableManager) {
+    private Predicate<Element> getStereotypeQualifiedName(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String targetType = parameters.get(TARGET_TYPE).get(0);
+
             String ePackageName = this.emfKindService.getEPackageName(targetType);
             String eClassName = this.emfKindService.getEClassName(targetType);
 
-            return ePackageName + "::" + eClassName;
+            // We need this to handle case where stereotype are named with non compliant EMF EClass name (for example
+            // when using a - in there name)
+            return element -> this.hasStereotypeMatchingEClass(ePackageName, eClassName, element);
         } else {
             return null;
         }
+    }
+
+    private boolean hasStereotypeMatchingEClass(String ePackageName, String eClassName, Element element) {
+        return element.getAppliedStereotypes().stream().anyMatch(s -> {
+            EClass def = s.getDefinition();
+            return def != null && def.getName().equals(eClassName) && def.getEPackage().getName().equals(ePackageName);
+        });
     }
 
     private boolean isStereotypePredicate(VariableManager variableManager) {

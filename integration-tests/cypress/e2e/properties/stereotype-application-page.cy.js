@@ -13,54 +13,26 @@
  *****************************************************************************/
 
 describe('Stereotype application page tests', () => {
-  /**
-   * For each test, we start with a fresh new project containing all concepts gathered in one single model
-   */
+  const instanceProjectName = 'Cypress Test - Stereotype application page - Instance';
+  const profileProjectName = 'Cypress Test - Stereotype application page - Profile';
+  const profileName = 'StereotypeApplicationPageTests-Profile';
 
-  var projectId;
+  const context = {};
+
   before(() => {
-    cy.deleteAllProjects();
-    // first load and publish the profile
-    cy.createProject('Cypress Project profile').then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document-icon').click();
-        cy.fixture('DynamicProfileTypeTests.profile.uml', { mimeType: 'text/xml' }).as('DynamicProfileTypeTests');
-        cy.getByTestId('file')
-          .selectFile(
-            {
-              contents: '@DynamicProfileTypeTests',
-              fileName: 'DynamicProfileTypeTests.profile.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
-            },
-            { force: true }
-          )
-          .then(() => {
-            cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('DynamicProfileTypeTests.profile.uml-more').should('exist').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
-            cy.getByTestId('DynamicProfileTypeTests-more').first().click();
-            cy.getByTestId('publish-profile').should('be.visible').click();
-            cy.getByTestId('publish-profile-dialog')
-              .findByTestId('publish-profile-author')
-              .find('input')
-              .type('Jerome');
-            cy.getByTestId('publish-profile-publish')
-              .should('not.have.class', 'Mui-disabled')
-              .should('be.visible')
-              .click();
-          });
-      });
+    // In case the profile is published by another test that do not clean its data
+    cy.deletePublishedDynamicProfileByName(profileName);
+    cy.deleteProjectByName(instanceProjectName);
+    cy.deleteProjectByName(profileProjectName);
 
-      loadProject();
+    cy.createTestProfileProject(context, profileProjectName, profileName);
+    cy.createTestProject(context, instanceProjectName, 'model4test', 'Profile').then(() => {
       applyProfileAndStereotypes();
     });
   });
 
-  //Before each reload the project and select  Class item and display Stereotype 1 tab
   beforeEach(() => {
-    cy.wrap(projectId).as('projectId');
-    cy.visit(`/projects/${projectId}/edit`);
+    cy.visit(`/projects/${context.projectId}/edit`);
     cy.getByTestId('model4test.uml-more').should('be.visible').click();
     cy.getByTestId('expand-all').should('be.visible').click();
     cy.getByTestId('Class').click();
@@ -324,40 +296,16 @@ describe('Stereotype application page tests', () => {
     cy.get('@dialog').findByTestId('close-transfer-modal').click();
   });
 
-  const loadProject = () => {
-    cy.createProject('Cypress Project').then((res) => {
-      projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document-icon').click();
-        cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
-        cy.getByTestId('file')
-          .selectFile(
-            {
-              contents: '@model4test',
-              fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
-            },
-            { force: true }
-          )
-          .then(() => {
-            cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
-          });
-      });
-    });
-  };
-
   const applyProfileAndStereotypes = () => {
     cy.getByTestId('model4test-more').should('be.visible').click();
     cy.getByTestId('apply-profile').should('be.visible').click();
     cy.get('[aria-labelledby="applyProfileModalProfileLabel"]').should('not.have.class', 'Mui-disabled').click();
-    cy.get('#menu-').find('ul').children().contains('DynamicProfileTypeTests').first().click();
+    cy.get('#menu-').find('ul').children().contains(profileName).first().click();
     cy.getByTestId('apply-profile-submit').should('exist').click();
     // Apply stereotype2 on Activity
-    applyStereotypeOn('Stereotype2', 'Activity');
+    applyStereotypeOn(`${profileName}::Stereotype2`, 'Activity');
     // Apply stereotype1 on Class
-    applyStereotypeOn('Stereotype1', 'Class');
+    applyStereotypeOn(`${profileName}::Stereotype1`, 'Class');
     // check Stereotype1 page is present
     cy.activateDetailsTab('Stereotype1');
   };
@@ -374,7 +322,7 @@ describe('Stereotype application page tests', () => {
     cy.getByTestId('stereotype').should('not.have.class', 'Mui-disabled').click();
     cy.get('#menu-')
       .find(`ul[aria-labelledby="newDocumentModalStereotypeDescriptionLabel"]`)
-      .findByTestId(`DynamicProfileTypeTests::${stereotype}`)
+      .findByTestId(stereotype)
       .click();
     cy.getByTestId('apply-stereotype-submit').click();
   };

@@ -58,6 +58,7 @@ extend type Mutation {
   applyStereotype(input: ApplyStereotypeInput!): ApplyStereotypePayload!
   publishProfile(input: PublishProfileInput!): PublishProfilePayload!
   createMetaclassImport(input: CreateMetaclassImportInput): CreateMetaclassImportPayload
+  deletePublishedDynamicProfileByName(input : String!): DeleteProfilePayload
 }
 
 input ApplyStereotypeInput {
@@ -70,6 +71,12 @@ input ApplyStereotypeInput {
 union ApplyStereotypePayload = ErrorPayload|ApplyStereotypeSuccessPayload
 
 type ApplyStereotypeSuccessPayload {
+  id: ID!
+}
+
+union DeleteProfilePayload = ErrorPayload|DeleteProfileSuccessPayload
+
+type DeleteProfileSuccessPayload {
   id: ID!
 }
 

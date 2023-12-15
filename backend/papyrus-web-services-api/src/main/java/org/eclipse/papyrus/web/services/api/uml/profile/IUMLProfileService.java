@@ -44,6 +44,13 @@ public interface IUMLProfileService {
     IPayload publishProfile(IEditingContext editingContext, PublishProfileInput publishProfileInput);
 
     /**
+     * Deletes all profiles with the given name.
+     *
+     * @return a payload
+     */
+    IPayload deletePublishedDynamicProfileByName(String profileName);
+
+    /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
      * @author lfasani
@@ -67,6 +74,11 @@ public interface IUMLProfileService {
 
         @Override
         public IPayload publishProfile(IEditingContext editingContext, PublishProfileInput publishProfileInput) {
+            return null;
+        }
+
+        @Override
+        public IPayload deletePublishedDynamicProfileByName(String profileName) {
             return null;
         }
     }

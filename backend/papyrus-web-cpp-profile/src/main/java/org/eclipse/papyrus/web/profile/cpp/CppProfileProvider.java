@@ -28,7 +28,7 @@ public class CppProfileProvider implements IUMLProfileProvider {
 
     @Override
     public List<UMLProfileMetadata> getUMLProfiles() {
-        return List.of(new UMLProfileMetadata("C and C++", "pathmap://PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml#_j9REUByGEduN1bTiWJ0lyw")); //$NON-NLS-1$//$NON-NLS-2$
+        return List.of(new UMLProfileMetadata("C and C++", "pathmap://PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml#_j9REUByGEduN1bTiWJ0lyw", "")); //$NON-NLS-1$//$NON-NLS-2$
     }
 
 }

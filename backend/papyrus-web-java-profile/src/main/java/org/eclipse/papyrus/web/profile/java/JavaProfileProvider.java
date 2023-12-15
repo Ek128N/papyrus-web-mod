@@ -28,7 +28,7 @@ public class JavaProfileProvider implements IUMLProfileProvider {
 
     @Override
     public List<UMLProfileMetadata> getUMLProfiles() {
-        return List.of(new UMLProfileMetadata("Java", "pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw")); //$NON-NLS-1$//$NON-NLS-2$
+        return List.of(new UMLProfileMetadata("Java", "pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw", "")); //$NON-NLS-1$//$NON-NLS-2$
     }
 
 }

@@ -28,7 +28,7 @@ public class TransformationProfileProvider implements IUMLProfileProvider {
 
     @Override
     public List<UMLProfileMetadata> getUMLProfiles() {
-        return List.of(new UMLProfileMetadata("Transformation", "pathmap://TRAFO_PROFILE/Transformation.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ")); //$NON-NLS-1$//$NON-NLS-2$
+        return List.of(new UMLProfileMetadata("Transformation", "pathmap://TRAFO_PROFILE/Transformation.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ", "")); //$NON-NLS-1$//$NON-NLS-2$
     }
 
 }

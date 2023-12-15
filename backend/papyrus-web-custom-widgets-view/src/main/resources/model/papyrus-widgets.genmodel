@@ -45,6 +45,7 @@
     <genClasses ecoreClass="papyrus-widgets.ecore#//PrimitiveListItemActionOperation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//PrimitiveListItemActionOperation/body"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListItemActionOperation/iconURLExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//PrimitiveListItemActionOperation/preconditionExpression"/>
     </genClasses>
     <genClasses ecoreClass="papyrus-widgets.ecore#//MonoReferenceWidgetDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//MonoReferenceWidgetDescription/isEnabledExpression"/>

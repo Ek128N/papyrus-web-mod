@@ -29,9 +29,15 @@ public class UMLProfileMetadata {
      */
     private final String uriPath;
 
-    public UMLProfileMetadata(String label, String uriPath) {
+    /**
+     * The last version of the UML profile file in the project.
+     */
+    private String version;
+
+    public UMLProfileMetadata(String label, String uriPath, String version) {
         this.label = Objects.requireNonNull(label);
         this.uriPath = Objects.requireNonNull(uriPath);
+        this.version = Objects.requireNonNull(version);
     }
 
     public String getLabel() {
@@ -42,9 +48,13 @@ public class UMLProfileMetadata {
         return this.uriPath;
     }
 
+    public String getVersion() {
+        return this.version;
+    }
+
     @Override
     public String toString() {
-        String pattern = "{0} '{'label: {1}, uriPath: {2}'}'"; //$NON-NLS-1$
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.label, this.uriPath);
+        String pattern = "{0} '{'label: {1}, uriPath: {2}, version: {3}'}'"; //$NON-NLS-1$
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.label, this.uriPath, this.version);
     }
 }

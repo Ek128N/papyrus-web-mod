@@ -505,13 +505,22 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION = 1;
 
     /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION = 2;
+
+    /**
      * The number of structural features of the '<em>Primitive List Item Action Operation</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION_FEATURE_COUNT = 2;
+    int PRIMITIVE_LIST_ITEM_ACTION_OPERATION_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Primitive List Item Action Operation</em>' class. <!-- begin-user-doc -->
@@ -1644,6 +1653,18 @@ public interface PapyrusWidgetsPackage extends EPackage {
     EAttribute getPrimitiveListItemActionOperation_IconURLExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation#getPreconditionExpression
+     * <em>Precondition Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Precondition Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation#getPreconditionExpression()
+     * @see #getPrimitiveListItemActionOperation()
+     * @generated
+     */
+    EAttribute getPrimitiveListItemActionOperation_PreconditionExpression();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription <em>Mono Reference
      * Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2574,6 +2595,14 @@ public interface PapyrusWidgetsPackage extends EPackage {
          * @generated
          */
         EAttribute PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION = eINSTANCE.getPrimitiveListItemActionOperation_IconURLExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Precondition Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION = eINSTANCE.getPrimitiveListItemActionOperation_PreconditionExpression();
 
         /**
          * The meta object literal for the

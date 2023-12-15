@@ -351,8 +351,7 @@ public class PrimitiveListWidgetDescriptionImpl extends WidgetDescriptionImpl im
     @Override
     public EList<ConditionalListDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalListDescriptionStyle.class, this,
-                    PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalListDescriptionStyle.class, this, PapyrusWidgetsPackage.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
     }

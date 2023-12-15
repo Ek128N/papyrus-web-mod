@@ -40,6 +40,8 @@ import org.eclipse.sirius.components.view.Operation;
  * <em>Body</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListItemActionOperationImpl#getIconURLExpression
  * <em>Icon URL Expression</em>}</li>
+ * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PrimitiveListItemActionOperationImpl#getPreconditionExpression
+ * <em>Precondition Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,6 +76,26 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
      * @ordered
      */
     protected String iconURLExpression = ICON_URL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getPreconditionExpression()
+     * @generated
+     * @ordered
+     */
+    protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -136,6 +158,30 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
      * @generated
      */
     @Override
+    public String getPreconditionExpression() {
+        return this.preconditionExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPreconditionExpression(String newPreconditionExpression) {
+        String oldPreconditionExpression = this.preconditionExpression;
+        this.preconditionExpression = newPreconditionExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION, oldPreconditionExpression,
+                    this.preconditionExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY:
@@ -157,6 +203,8 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
                 return this.getBody();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION:
                 return this.getIconURLExpression();
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION:
+                return this.getPreconditionExpression();
             default:
                 return super.eGet(featureID, resolve, coreType);
         }
@@ -178,6 +226,9 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION:
                 this.setIconURLExpression((String) newValue);
                 return;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression((String) newValue);
+                return;
             default:
                 super.eSet(featureID, newValue);
                 return;
@@ -198,6 +249,9 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION:
                 this.setIconURLExpression(ICON_URL_EXPRESSION_EDEFAULT);
                 return;
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION:
+                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+                return;
             default:
                 super.eUnset(featureID);
                 return;
@@ -216,6 +270,8 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
                 return this.body != null && !this.body.isEmpty();
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION:
                 return ICON_URL_EXPRESSION_EDEFAULT == null ? this.iconURLExpression != null : !ICON_URL_EXPRESSION_EDEFAULT.equals(this.iconURLExpression);
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION:
+                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             default:
                 return super.eIsSet(featureID);
         }
@@ -234,6 +290,8 @@ public class PrimitiveListItemActionOperationImpl extends MinimalEObjectImpl.Con
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (iconURLExpression: ");
         result.append(this.iconURLExpression);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
         result.append(')');
         return result.toString();
     }

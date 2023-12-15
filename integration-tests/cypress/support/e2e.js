@@ -18,3 +18,5 @@ import './testIdCommands';
 import './detailsCommands';
 import './childrenCommands';
 import './dragCommands';
+import './profilCommands';
+import './projectsCommands';

@@ -313,7 +313,7 @@ Triggering this reorder icon opens a dialog in which the user can change the ord
 image::primitive-list-reorder-dialog.png[width=300, height=360, align="center"]
 
 The primitive list custom widget can be configured to have a single extra action on each item.
-This item action is optional but its setting is for all items or none. 
+This item action is optional and can be deactivated using the _PrimitiveListItemActionOperation.preconditionExpression_. 
 One can control the UI appearance of the action by setting its icon file.
 
 As an example, the following image shows a paperclip icon for the item action and when the user clicks an information pops up with the clicked item name.
@@ -447,6 +447,22 @@ Creating a new _Comment_ from the _Applied comments_ list of selected element ha
 
 * first a new _Comment_ is created somewhere (as defined in the Creation dialog)
 * next, the selected element is added inside the _Annotated element_ of this new comment to ensure that these relations are in-sync.   
+
+===== Profile Panel
+
+On an _Element_ selection, the _Applied Stereotype_ widget provides the capacities to:
+
+* Apply a stereotype: Use the dropdown or start entering the name of the _Steretype_.
+* Unapply a stereotype: Use the trash icon aside from the _Stereotype_ item.
+
+If a _Package_ is selected, the _Applied profiles_ widget provides the capacities to:
+
+* Apply a profile: Use the dropdown or start entering the name of the _Profile_.
+* Unapply a profile: Use the trash icon aside from the _Profile_ item.
+* Update a profile: If a newer version of the profile is availble, use the refresh button aside from the _Profile_ item.
+
+WARNING: Be aware that the refresh action first unapplies the profile (and so remove all stereotypes) then applies the new version of the profile (but the stereotypes are not reapplied).
+
 
 ==== Related Elements
 

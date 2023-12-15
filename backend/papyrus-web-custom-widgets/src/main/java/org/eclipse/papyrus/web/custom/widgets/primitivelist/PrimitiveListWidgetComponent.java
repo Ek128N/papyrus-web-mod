@@ -97,6 +97,12 @@ public class PrimitiveListWidgetComponent implements IComponent {
             if (listDescription.getItemActionHandlerProvider() != null) {
                 itemBuilder.actionHandler(() -> listDescription.getItemActionHandlerProvider().apply(itemVariableManager));
             }
+            Function<VariableManager, Boolean> itemActionPreconditionHandler = listDescription.getItemActionPreconditionHandler();
+            if (itemActionPreconditionHandler != null) {
+                itemBuilder.actionPreconditionHandler(() -> {
+                    return itemActionPreconditionHandler.apply(itemVariableManager);
+                });
+            }
             if (listDescription.getItemActionIconURLProvider() != null) {
                 itemBuilder.actionIconURL(listDescription.getItemActionIconURLProvider().apply(itemVariableManager));
             }

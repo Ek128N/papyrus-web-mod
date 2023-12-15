@@ -16,6 +16,7 @@ package org.eclipse.papyrus.web.custom.widgets.primitivelist.dto;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import org.eclipse.sirius.components.annotations.Immutable;
@@ -43,6 +44,8 @@ public final class PrimitiveListItem {
     private Supplier<IStatus> actionHandler;
 
     private String actionIconURL;
+
+    private BooleanSupplier actionPreconditionHandler;
 
     private PrimitiveListItem() {
         // Prevent instantiation
@@ -73,7 +76,7 @@ public final class PrimitiveListItem {
     }
 
     public boolean hasAction() {
-        return this.actionHandler != null;
+        return this.actionHandler != null && (this.actionPreconditionHandler == null || this.actionPreconditionHandler.getAsBoolean());
     }
 
     public Supplier<IStatus> getActionHandler() {
@@ -117,6 +120,8 @@ public final class PrimitiveListItem {
 
         private String actionIconURL;
 
+        private BooleanSupplier actionPreconditionHandler;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -151,6 +156,11 @@ public final class PrimitiveListItem {
             return this;
         }
 
+        public Builder actionPreconditionHandler(BooleanSupplier actionPreconditionHandler) {
+            this.actionPreconditionHandler = actionPreconditionHandler;
+            return this;
+        }
+
         public Builder actionIconURL(String actionIconURL) {
             this.actionIconURL = actionIconURL;
             return this;
@@ -166,6 +176,7 @@ public final class PrimitiveListItem {
             listItem.iconURL = Objects.requireNonNull(this.iconURL);
             listItem.actionHandler = this.actionHandler; // Optional on purpose
             listItem.actionIconURL = this.actionIconURL; // Optional on purpose
+            listItem.actionPreconditionHandler = this.actionPreconditionHandler; // Optional on purpose
             return listItem;
         }
     }

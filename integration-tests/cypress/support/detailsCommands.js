@@ -28,3 +28,21 @@ Cypress.Commands.add('activateDetailsTab', (tabName) => {
 Cypress.Commands.add('inDetailsCurrentTab', () => {
   return cy.get('[data-testid="view-Details"]');
 });
+/**
+ * Adds a item in a primitive list widget in a strict mode
+ * @param primitiveListName name of the primitive list
+ * @param itemValue the value to add (available in the autocomplete component)
+ */
+Cypress.Commands.add('addItemInPrimitiveListStrictMode', (primitiveListName, itemValue) => {
+  cy.getByTestId(`primitive-list-autocomplete-textfield-${primitiveListName}`).click();
+  cy.get(`.MuiAutocomplete-popper`)
+    .should('be.visible')
+    .find(`ul > li`)
+    .contains(itemValue)
+    .should('be.visible')
+    .click();
+  cy.getByTestId(`primitive-list-add-${primitiveListName}`).should('not.have.class', 'Mui-disabled').click();
+  cy.getByTestId(`primitive-list-table-${primitiveListName}`)
+    .findByTestId(`primitive-list-item-${itemValue}`)
+    .should('exist');
+});

@@ -29,7 +29,7 @@ public class StandardProfileProvider implements IUMLProfileProvider {
     @Override
     public List<UMLProfileMetadata> getUMLProfiles() {
         // @formatter:off
-        return List.of(new UMLProfileMetadata("Standard", "pathmap://UML_PROFILES/Standard.profile.uml#_0")); //$NON-NLS-1$//$NON-NLS-2$
+        return List.of(new UMLProfileMetadata("Standard", "pathmap://UML_PROFILES/Standard.profile.uml#_0", "")); //$NON-NLS-1$//$NON-NLS-2$
         // @formatter:on
     }
 }

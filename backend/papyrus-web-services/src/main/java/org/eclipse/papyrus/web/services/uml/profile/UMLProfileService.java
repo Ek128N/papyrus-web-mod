@@ -45,6 +45,7 @@ import org.eclipse.papyrus.web.persistence.entities.ProfileResourceEntity;
 import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.api.dto.ApplyProfileInput;
 import org.eclipse.papyrus.web.services.api.dto.ApplyProfileSuccessPayload;
+import org.eclipse.papyrus.web.services.api.dto.DeleteProfileSuccessPayload;
 import org.eclipse.papyrus.web.services.api.uml.profile.IUMLProfileService;
 import org.eclipse.papyrus.web.services.api.uml.profile.PublishProfileInput;
 import org.eclipse.papyrus.web.services.api.uml.profile.PublishProfileSuccessPayload;
@@ -109,7 +110,13 @@ public class UMLProfileService implements IUMLProfileService {
             resource.load(inputStream, null);
             return EMFUtils.allContainedObjectOfType(resource, Profile.class).map(profile -> {
                 String profileId = profile.eResource().getURIFragment(profile);
-                return new UMLProfileMetadata(profile.getName(), resource.getURI() + "#" + profileId); //$NON-NLS-1$
+                EPackage definition = profile.getDefinition();
+                EAnnotation eAnnotation = definition.getEAnnotation("PapyrusVersion");
+                String version = "";
+                if (eAnnotation != null) {
+                    version = eAnnotation.getDetails().get("Version");
+                }
+                return new UMLProfileMetadata(profile.getName(), resource.getURI() + "#" + profileId, version); //$NON-NLS-1$
             }).toList();
         } catch (IOException exception) {
             LOGGER.warn(exception.getMessage(), exception);
@@ -286,6 +293,28 @@ public class UMLProfileService implements IUMLProfileService {
         }
 
         return payload;
+    }
+
+    @Override
+    public IPayload deletePublishedDynamicProfileByName(String name) {
+        StreamSupport.stream(this.profileRepository.findAll().spliterator(), false).filter(pr -> this.hasName(pr, name)).forEach(pr -> {
+            this.profileRepository.delete(pr);
+        });
+        return new DeleteProfileSuccessPayload(UUID.randomUUID());
+    }
+
+    private boolean hasName(ProfileResourceEntity profileResourceEntity, String profileName) {
+
+        // No need to resoveProxies
+        Resource resource = this.createResource(profileResourceEntity.getId().toString());
+        try (var inputStream = new ByteArrayInputStream(profileResourceEntity.getContent().getBytes())) {
+            resource.load(inputStream, null);
+            return EMFUtils.allContainedObjectOfType(resource, Profile.class).anyMatch(p -> profileName.equals(p.getName()));
+        } catch (IOException exception) {
+            LOGGER.warn(exception.getMessage(), exception);
+            return false;
+        }
+
     }
 
     private IPayload doPublishProfile(IEditingContext editingContext, PublishProfileInput publishProfileInput, Profile profile) {

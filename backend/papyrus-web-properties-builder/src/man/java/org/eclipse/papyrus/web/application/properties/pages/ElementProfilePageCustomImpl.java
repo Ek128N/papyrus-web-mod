@@ -18,10 +18,13 @@ import org.eclipse.papyrus.web.application.properties.ViewElementsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.form.FormElementIf;
+import org.eclipse.sirius.components.view.form.FormFactory;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.PageDescription;
@@ -42,6 +45,51 @@ public class ElementProfilePageCustomImpl extends ElementProfilePage {
         GroupDescription group = viewElementFactory.createGroupDescription("element_profile_group", "", "var:self", GroupDisplayMode.LIST);
         page.getGroups().add(group);
 
+        // Profile widget
+        FormElementIf packageIfFom = FormFactory.eINSTANCE.createFormElementIf();
+        group.getChildren().add(packageIfFom);
+        packageIfFom.setPredicateExpression("aql:self.oclIsKindOf(uml::Package)");
+        createAppliedProfileWidget(packageIfFom);
+
+        // Stereotype widget
+        createAppliedStereotypeWidget(group);
+    }
+
+    @Override
+    protected void createPackageProfileGroup(PageDescription page) {
+        // Prevent the creation of group.
+        // Put everything in element_profile_group with a ifform
+    }
+
+    private void createAppliedProfileWidget(FormElementIf group) {
+
+        PrimitiveListWidgetDescription appliedProfileWidget = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription();
+        appliedProfileWidget.setName("appliedProfiles");
+        appliedProfileWidget.setLabelExpression("aql:'Applied profiles'");
+        appliedProfileWidget.setValueExpression("aql:self.getAppliedProfiles()");
+        appliedProfileWidget.setCandidatesExpression("aql:self.getNonAppliedProfilePaths()");
+        appliedProfileWidget.setDisplayExpression("aql:self.getProfileLabel(candidate)");
+        appliedProfileWidget.setHelpExpression("aql:'The List of Applied Profiles'");
+        appliedProfileWidget.setIsEnabledExpression("aql:true");
+
+        PrimitiveListDeleteOperation deleteOperation = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListDeleteOperation();
+        deleteOperation.getBody().add(createChangeContext("aql:self.unapplyProfile(candidate)"));
+        appliedProfileWidget.setDeleteOperation(deleteOperation);
+
+        PrimitiveListAddOperation addOperation = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListAddOperation();
+        addOperation.getBody().add(createChangeContext("aql:self.applyProfile(editingContext,newValue)"));
+        appliedProfileWidget.setAddOperation(addOperation);
+
+        PrimitiveListItemActionOperation refreshAction = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListItemActionOperation();
+        refreshAction.getBody().add(createChangeContext("aql:self.reapplyProfile(candidate)"));
+        refreshAction.setIconURLExpression("aql:'/icons/replay.svg'");
+        refreshAction.setPreconditionExpression("aql:self.isProfileNotUpToDate(candidate)");
+        appliedProfileWidget.setItemActionOperation(refreshAction);
+
+        group.getChildren().add(appliedProfileWidget);
+    }
+
+    private void createAppliedStereotypeWidget(GroupDescription group) {
         PrimitiveListWidgetDescription appliedStereotypeWidget = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription();
         appliedStereotypeWidget.setName("appliedStereotypes");
         appliedStereotypeWidget.setLabelExpression("aql:'Applied stereotypes'");

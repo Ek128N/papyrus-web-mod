@@ -65,6 +65,7 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
             super.getPropertyDescriptors(object);
 
             this.addIconURLExpressionPropertyDescriptor(object);
+            this.addPreconditionExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -80,6 +81,19 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
                 this.getString("_UI_PrimitiveListItemActionOperation_iconURLExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListItemActionOperation_iconURLExpression_feature", "_UI_PrimitiveListItemActionOperation_type"),
                 PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addPreconditionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_PrimitiveListItemActionOperation_preconditionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListItemActionOperation_preconditionExpression_feature", "_UI_PrimitiveListItemActionOperation_type"),
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -156,6 +170,7 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
 
         switch (notification.getFeatureID(PrimitiveListItemActionOperation.class)) {
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION:
+            case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case PapyrusWidgetsPackage.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY:

@@ -14,6 +14,61 @@
 import { v4 as uuid } from 'uuid';
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
 
+/**
+ * Command that delete a project given its name
+ *
+ * @param projectName the name of the project to delete
+ */
+Cypress.Commands.add('deleteProjectByName', (projectName) => {
+  const getProjectsQuery = `
+  query getProjects($page: Int!) {
+    viewer {
+      projects(page: $page) {
+        edges {
+          node {
+            id,
+            name
+          }
+        }
+      }
+    }
+  }
+  `;
+  cy.request({
+    method: 'POST',
+    mode: 'cors',
+    url,
+    body: { query: getProjectsQuery, variables: { page: 0 } },
+  }).then((res) => {
+    const projectIds = res.body.data.viewer.projects.edges
+      .filter((edge) => edge.node.name == projectName)
+      .map((edge) => edge.node.id);
+
+    const deleteProjectQuery = `
+    mutation deleteProject($input: DeleteProjectInput!) {
+      deleteProject(input: $input) {
+        __typename
+      }
+    }
+    `;
+    projectIds.forEach((projectId) => {
+      const variables = {
+        input: {
+          id: uuid(),
+          projectId,
+        },
+      };
+
+      cy.request({
+        method: 'POST',
+        mode: 'cors',
+        url,
+        body: { query: deleteProjectQuery, variables },
+      });
+    });
+  });
+});
+
 Cypress.Commands.add('deleteAllProjects', () => {
   const getProjectsQuery = `
   query getProjects($page: Int!) {

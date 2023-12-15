@@ -1,0 +1,118 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+import { v4 as uuid } from 'uuid';
+const url = Cypress.env('baseAPIUrl') + '/api/graphql';
+
+/**
+ * Create a new project and upload the model4test.uml. Then it may select a element and select a tab.
+ * Note that the new project id is added to the context in the field "projectId".
+ *
+ * @param context a context object use to inject the project id
+ * @param projectName the name of the project
+ * @param elementToSelect an optional element to select
+ * @param tabToSelect an optional tab to select
+ */
+Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect, tabToSelect) => {
+  cy.createProject(projectName).then((res) => {
+    context.projectId = res.body.data.createProject.project.id;
+    cy.visit(`/projects/${context.projectId}/edit`).then((res) => {
+      cy.getByTestId('upload-document-icon').click();
+      cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
+      cy.getByTestId('file')
+        .selectFile(
+          {
+            contents: '@model4test',
+            fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
+          },
+          { force: true }
+        )
+        .then(() => {
+          cy.getByTestId('upload-document-submit').click();
+          cy.getByTestId('model4test.uml-more').should('be.visible').click();
+          cy.getByTestId('expand-all').should('be.visible').click();
+
+          if (elementToSelect) {
+            cy.getByTestId('model4test.uml-more').should('be.visible').click();
+            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.getByTestId(elementToSelect).should('exist').click();
+            if (tabToSelect) {
+              cy.activateDetailsTab(tabToSelect);
+            }
+          }
+        });
+    });
+  });
+});
+
+/**
+ * Create a new project and upload DynamicProfileTypeTests.profile.uml. Then it may publish the given profile.
+ * Note that the new project id is added to the context in the field "profileProjectId".
+ * 
+ * @param context a context object use to inject the project id
+ * @param projectName the name of the project
+ * @param elementToSelect an optional element to select
+ * @param tabToSelect an optional tab to select
+ */
+Cypress.Commands.add('createTestProfileProject', (context, projectName, profileName, publishProfile = true) => {
+  // first load and publish the profile
+  cy.createProject(projectName).then((res) => {
+    context.profileProjectId = res.body.data.createProject.project.id;
+    cy.visit(`/projects/${context.profileProjectId}/edit`).then((res) => {
+      cy.getByTestId('upload-document-icon').click();
+      cy.fixture('DynamicProfileTypeTests.profile.uml', { mimeType: 'text/xml' }).as('DynamicProfileTypeTests');
+      cy.getByTestId('file')
+        .selectFile(
+          {
+            contents: '@DynamicProfileTypeTests',
+            fileName: 'DynamicProfileTypeTests.profile.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
+          },
+          { force: true }
+        )
+        .then(() => {
+          cy.getByTestId('upload-document-submit').click();
+
+          cy.getByTestId('DynamicProfileTypeTests.profile.uml-more').should('exist').click();
+          cy.getByTestId('rename-tree-item').should('be.visible').click();
+          cy.getByTestId('DynamicProfileTypeTests.profile.uml')
+            .get('input')
+            .should('exist')
+            .clear()
+            .type(profileName + '.profile.uml');
+
+          cy.getByTestId('DynamicProfileTypeTests.profile.uml-more').should('exist').click();
+          cy.getByTestId('expand-all').should('be.visible').click();
+
+          cy.getByTestId('DynamicProfileTypeTests').should('be.visible').first().click();
+          cy.getByTestId('input-Name').should('be.visible').clear().type(profileName);
+          
+          // Lose focus
+          cy.getByTestId('page-tab-UML').should('be.visible').click();
+
+          cy.getByTestId(`${profileName}-more`).first().click();
+
+          if (publishProfile) {
+            cy.getByTestId('publish-profile').should('be.visible').click();
+            cy.getByTestId('publish-profile-dialog')
+              .findByTestId('publish-profile-author')
+              .find('input')
+              .type('Jerome');
+            cy.getByTestId('publish-profile-publish')
+              .should('not.have.class', 'Mui-disabled')
+              .should('be.visible')
+              .click();
+          }
+        });
+    });
+  });
+});

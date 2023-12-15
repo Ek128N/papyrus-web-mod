@@ -51,6 +51,7 @@ import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetD
 import org.eclipse.papyrus.web.custom.widgets.primitiveradio.PrimitiveRadioDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
+import org.eclipse.sirius.components.compatibility.utils.BooleanValueProvider;
 import org.eclipse.sirius.components.compatibility.utils.StringValueProvider;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -231,11 +232,21 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         if (viewListDescription.getCandidatesExpression() != null) {
             builder.candidatesProvider(this.getCandidatesProvider(viewListDescription));
         }
-        if (viewListDescription.getItemActionOperation() != null) {
-            builder.itemActionHandlerProvider(itemActionHandlerProvider);
-            builder.itemActionIconURLProvider(this.getStringValueProvider(viewListDescription.getItemActionOperation().getIconURLExpression()));
-        }
+        this.configureItemAction(viewListDescription, itemActionHandlerProvider, builder);
+
         return Optional.of(builder.build());
+    }
+
+    private void configureItemAction(org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription viewListDescription,
+            Function<VariableManager, IStatus> itemActionHandlerProvider, PrimitiveListWidgetDescription.Builder builder) {
+        PrimitiveListItemActionOperation itemActionOperation = viewListDescription.getItemActionOperation();
+        if (itemActionOperation != null) {
+            builder.itemActionHandlerProvider(itemActionHandlerProvider);
+            builder.itemActionIconURLProvider(this.getStringValueProvider(itemActionOperation.getIconURLExpression()));
+            if (itemActionOperation.getPreconditionExpression() != null) {
+                builder.itemActionPreconditionHandler(this.getBooleanValueProvider(itemActionOperation.getPreconditionExpression()));
+            }
+        }
     }
 
     private Function<VariableManager, List<PrimitiveListCandidate>> getCandidatesProvider(org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription viewListDescription) {
@@ -378,6 +389,11 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
     private StringValueProvider getStringValueProvider(String valueExpression) {
         String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
         return new StringValueProvider(this.interpreter, safeValueExpression);
+    }
+
+    private BooleanValueProvider getBooleanValueProvider(String valueExpression) {
+        String safeValueExpression = Optional.ofNullable(valueExpression).orElse("");
+        return new BooleanValueProvider(this.interpreter, safeValueExpression);
     }
 
     @Override

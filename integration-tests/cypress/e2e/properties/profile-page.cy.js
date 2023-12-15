@@ -1,0 +1,118 @@
+/*****************************************************************************
+ * Copyright (c) 2023 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+/*
+ * Test used for the profile page
+ */
+describe('Stereotype application page tests', () => {
+  const instanceProjectName = 'Cypress Test - Profil page - Instance';
+  const profileProjectName = 'Cypress Test - Profil page - Profile';
+  const profileName = 'ProfilPageTest-Profile';
+
+  const context = {};
+
+  before(() => {
+    // In case the profile is published by another test that do not clean its data
+    cy.deletePublishedDynamicProfileByName(profileName);
+    cy.deleteProjectByName(instanceProjectName);
+    cy.deleteProjectByName(profileProjectName);
+
+    cy.createTestProfileProject(context, profileProjectName, profileName);
+  });
+
+  beforeEach(() => {
+    cy.createTestProject(context, instanceProjectName, 'model4test', 'Profile');
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(instanceProjectName);
+  });
+
+  after(() => {
+    cy.deletePublishedDynamicProfileByName(profileName);
+    cy.deleteProjectByName(profileProjectName);
+  });
+
+  it('Check static profile application', () => {
+    // Apply Java profile
+    cy.addItemInPrimitiveListStrictMode('Applied profiles', 'Standard');
+
+    // Check there is no refresh button
+    cy.getByTestId('primitive-list-item-action-button-Standard').should('not.exist');
+
+    // Apply one stereotype
+    cy.addItemInPrimitiveListStrictMode('Applied stereotypes', 'ModelLibrary (from StandardProfile)');
+
+    // Unapply stereotype
+    cy.getByTestId('primitive-list-item-delete-button-ModelLibrary (from StandardProfile)').click();
+    cy.getByTestId(`primitive-list-table-Applied stereotypes`)
+      .findByTestId(`primitive-list-item-ModelLibrary (from StandardProfile)`)
+      .should('not.exist');
+
+    // Unapply profile
+    cy.getByTestId('primitive-list-item-delete-button-Standard').click();
+    cy.getByTestId(`primitive-list-table-Applied profiles`)
+      .findByTestId(`primitive-list-item-Standard`)
+      .should('not.exist');
+  });
+
+  it('Check dynamic profile application', () => {
+    cy.visit(`/projects/${context.projectId}/edit`).then((res) => {
+      cy.getByTestId('model4test.uml-more').should('be.visible').click();
+      cy.getByTestId('expand-all').should('be.visible').click();
+      cy.getByTestId('model4test').should('exist').click();
+      cy.activateDetailsTab('Profile');
+
+      // Apply Java profile
+      cy.addItemInPrimitiveListStrictMode('Applied profiles', `${profileName} (0.0.1)`);
+
+      // Check there is no refresh action
+      cy.getByTestId(`primitive-list-item-action-button-${profileName} (0.0.1)`).should('not.exist');
+
+      // Apply one stereotype
+      cy.addItemInPrimitiveListStrictMode('Applied stereotypes', `Stereotype1 (from ${profileName})`);
+    });
+
+    // Publich a new version the profile to a new version
+    cy.visit(`/projects/${context.profileProjectId}/edit`).then((res) => {
+      cy.getByTestId(`${profileName}.profile.uml-more`).should('exist').click();
+      cy.getByTestId('expand-all').should('be.visible').click();
+      cy.getByTestId(`${profileName}-more`).first().click();
+      cy.getByTestId('publish-profile').should('be.visible').click();
+
+      cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-author').find('input').type('Jerome');
+      cy.getByTestId('publish-profile-publish').should('not.have.class', 'Mui-disabled').should('be.visible').click();
+    });
+
+    // Go back to the project
+    cy.visit(`/projects/${context.projectId}/edit`).then((res) => {
+      cy.getByTestId('model4test.uml-more').should('be.visible').click();
+      cy.getByTestId('expand-all').should('be.visible').click();
+      cy.getByTestId('model4test').click();
+      cy.activateDetailsTab('Profile');
+
+      //Check there is a refresh button
+      cy.getByTestId(`primitive-list-item-action-button-${profileName} (0.0.1)`).click();
+
+      //The version should be updated to version 0.0.2
+      cy.getByTestId(`primitive-list-table-Applied profiles`)
+        .findByTestId(`primitive-list-item-${profileName} (0.0.2)`)
+        .should('exist');
+
+      // The steretoype should be deleted due to reapplication of the profile
+      cy.getByTestId(`primitive-list-table-Applied stereotypes`)
+        .findByTestId(`primitive-list-item-content-None`)
+        .should('exist');
+    });
+  });
+});
