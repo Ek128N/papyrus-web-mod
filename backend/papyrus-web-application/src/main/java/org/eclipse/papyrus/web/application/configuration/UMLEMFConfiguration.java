@@ -17,6 +17,7 @@ import java.util.Map;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
@@ -45,6 +46,11 @@ public class UMLEMFConfiguration {
     @Bean
     public AdapterFactory umlAdapterFactory() {
         return new UMLItemProviderAdapterFactory();
+    }
+
+    @Bean
+    public AdapterFactory ecoreAdapterFactory() {
+        return new EcoreItemProviderAdapterFactory();
     }
 
     @Bean
