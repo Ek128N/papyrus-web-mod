@@ -446,17 +446,70 @@ Creating a new _Comment_ from the _Applied comments_ list of selected element ha
 
 On an _Element_ selection, the _Applied Stereotype_ widget provides the capacities to:
 
-* Apply a stereotype: Use the dropdown or start entering the name of the _Steretype_.
+* Apply a stereotype: Use the dropdown or start entering the name of the _Stereotype_.
 * Unapply a stereotype: Use the trash icon aside from the _Stereotype_ item.
 
 If a _Package_ is selected, the _Applied profiles_ widget provides the capacities to:
 
 * Apply a profile: Use the dropdown or start entering the name of the _Profile_.
 * Unapply a profile: Use the trash icon aside from the _Profile_ item.
-* Update a profile: If a newer version of the profile is availble, use the refresh button aside from the _Profile_ item.
+* Update a profile: If a newer version of the profile is available, use the refresh button aside from the _Profile_ item.
 
 WARNING: Be aware that the refresh action first unapplies the profile (and so remove all stereotypes) then applies the new version of the profile (but the stereotypes are not reapplied).
 
+===== Stereotype panels
+
+For each stereotype applied on a specific element, a dedicated tab on the _Details_ panel can be open when this element is selected.
+This tab contains all the features provided by the corresponding stereotype for this element.
+According to the kind of each feature, a specific widget is used to handle this feature.
+In the following tables, we are presenting all kind of supported features and the associated widget to handle it in the panel.
+
+====== Attributes
+
+|===
+| *Feature kind* | *Widget*
+| _String_
+| _TextArea_
+| _Boolean_
+| _Checkbox_
+| _Boolean Object_
+| _Primitive Radio_
+| _int or Integer_
+| _Textfield_
+| _float or Float_
+| _Textfield_
+| _double or Double_
+| _Textfield_
+| _Enumeration_
+| _Select_
+|===
+|===
+| *Feature kind* | *Widget*
+| _List of String_
+| _Primitive List_
+| _List of Boolean_
+| _Primitive List_
+| _List of Boolean Object_
+| _Primitive List_
+| _List of int or Integer_
+| _Primitive List_
+| _List of float or Float_
+| _Primitive List_
+| _List of double or Double_
+| _Primitive List_
+| _List of Enumeration_
+| _Primitive List_
+|===
+
+====== References
+
+|===
+| *Feature kind* | *Widget*
+| _reference_
+| _Mono reference_
+| _List of references_
+| _Multi reference_
+|===
 
 ==== Related Elements
 
