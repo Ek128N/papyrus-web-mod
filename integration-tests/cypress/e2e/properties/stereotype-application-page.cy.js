@@ -297,11 +297,8 @@ describe('Stereotype application page tests', () => {
   });
 
   const applyProfileAndStereotypes = () => {
-    cy.getByTestId('model4test-more').should('be.visible').click();
-    cy.getByTestId('apply-profile').should('be.visible').click();
-    cy.get('[aria-labelledby="applyProfileModalProfileLabel"]').should('not.have.class', 'Mui-disabled').click();
-    cy.get('#menu-').find('ul').children().contains(profileName).first().click();
-    cy.getByTestId('apply-profile-submit').should('exist').click();
+    cy.applyProfileByMenu('model4test', profileName);
+
     // Apply stereotype2 on Activity
     applyStereotypeOn(`${profileName}::Stereotype2`, 'Activity');
     // Apply stereotype1 on Class

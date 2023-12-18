@@ -91,7 +91,6 @@ public class AdvancedPropertiesDescriptionProvider {
         GroupDescription groupDescription = this.getGroupDescription();
 
         groupDescriptions.add(groupDescription);
-        groupDescriptions.add(this.getStereotypeGroupDescription());
 
         List<PageDescription> pageDescriptions = new ArrayList<>();
         PageDescription firstPageDescription = this.getPageDescription(groupDescriptions);
@@ -146,34 +145,6 @@ public class AdvancedPropertiesDescriptionProvider {
                 .canCreatePredicate(variableManager -> this.canCreatePage(variableManager))
                 .build();
         // @formatter:on
-    }
-
-    private GroupDescription getStereotypeGroupDescription() {
-        List<AbstractControlDescription> controlDescriptions = new ArrayList<>();
-        // @formatter:off
-        ForDescription forDescriptionStereotypes = ForDescription.newForDescription("forElement") //$NON-NLS-1$
-                .iterator("element")
-                .targetObjectIdProvider(this.semanticTargetIdProvider)
-                .iterableProvider(varMan -> this.getSelfElement(varMan))
-                .controlDescriptions(List.of(new AppliedStereotypeIfDescriptionProvider(this.propertiesValidationProvider, this.objectService, this.semanticTargetIdProvider).getIfDescription()))
-                .build();
-        // @formatter:on
-
-        controlDescriptions.add(forDescriptionStereotypes);
-
-        // @formatter:off
-        return GroupDescription.newGroupDescription("groupIdStereotypes") //$NON-NLS-1$
-                .idProvider(variableManager -> "Core Properties Applied Stereotypes") //$NON-NLS-1$
-                .labelProvider(variableManager -> "Stereotypes") //$NON-NLS-1$
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
-                .controlDescriptions(controlDescriptions)
-                .build();
-        // @formatter:on
-
-    }
-
-    private List<Element> getSelfElement(VariableManager varMan) {
-        return varMan.get(VariableManager.SELF, Element.class).map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
     private GroupDescription getGroupDescription() {

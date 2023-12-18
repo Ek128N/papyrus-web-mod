@@ -11,9 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 describe('/projects/:projectId/edit - Diagram Context Menu', () => {
+  const instanceProjectName = 'Cypress Test - ProfileMenu';
+
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(instanceProjectName);
+    cy.createProject(instanceProjectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then(() => {
@@ -28,22 +30,21 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     });
   });
 
+  afterEach(() => {
+    cy.deleteProjectByName(instanceProjectName);
+  });
+
   /**
    * Test validating the application of a static profile and a stereotype. Use Java profile.
    */
   it('Test Apply static profile and stereotype', () => {
-    // open Apply profile dialog
-    cy.getByTestId('Model-more').should('be.visible').click();
-    cy.getByTestId('apply-profile').should('be.visible').click();
+    // Apply profile Standard
+    cy.applyProfileByMenu('Model', 'Java');
 
-    // open select
-    cy.getByTestId('profile').should('be.visible').contains('Standard'); // need to wait that select is populated
-    cy.getByTestId('profile').click();
-    cy.get('div#menu-.MuiPopover-root').should('be.visible').find('ul > li').eq(2).click(); // 2 => Java
-    cy.getByTestId('apply-profile-submit').click();
     cy.getByTestId('Model-more').click();
     cy.getByTestId('expand-all').should('be.visible').click();
     cy.getByTestId('ProfileApplication').should('be.visible').click();
+
     // wait until details panel is populated (previous click finished)
     cy.getByTestId('view-Details').findByTestId('Is strict').should('be.visible');
     // before switching to Advanced tab
@@ -65,11 +66,9 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
       .click();
     // Verify stereotype applied
     cy.getByTestId('Model').click();
-    cy.activateDetailsTab('Advanced').should('be.visible').as('details');
-    cy.getByTestId('table-Applied stereotypes')
-      .findByTestId('representation-PapyrusJava::ExternLibrary')
-      .contains('PapyrusJava::ExternLibrary')
+    cy.activateDetailsTab('Profile').should('be.visible').as('details');
+    cy.getByTestId('primitive-list-table-Applied stereotypes')
+      .findByTestId('primitive-list-item-content-ExternLibrary (from PapyrusJava)')
       .should('be.visible');
-    cy.getByTestId('ExternLibrary').should('be.visible');
   });
 });

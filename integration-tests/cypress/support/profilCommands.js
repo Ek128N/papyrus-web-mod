@@ -32,3 +32,17 @@ Cypress.Commands.add('deletePublishedDynamicProfileByName', (profileName) => {
     body: { query: deletePublishProfileMutation, variables: { name: profileName } },
   });
 });
+
+/**
+ * Apply a profile (using menu) on a given element
+ *
+ * @param elementName the name of the element on which the profile needs to be applied
+ * @param profileName the name of the profile to apply
+ */
+Cypress.Commands.add('applyProfileByMenu', (elementName, profileName) => {
+  cy.getByTestId(`${elementName}-more`).should('be.visible').click();
+  cy.getByTestId('apply-profile').should('be.visible').click();
+  cy.get('[aria-labelledby="applyProfileModalProfileLabel"]').should('not.have.class', 'Mui-disabled').click();
+  cy.get('#menu-').find('ul').children().contains(profileName).first().click();
+  cy.getByTestId('apply-profile-submit').should('exist').click();
+});

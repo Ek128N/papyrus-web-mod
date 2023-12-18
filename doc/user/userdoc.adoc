@@ -106,13 +106,7 @@ To apply a stereotype:
 * Use the contextual menu _Apply Stereotype_ on an element
 * Select the _Stereotype_ to apply
 
-This stereotype is now displayed in the widget _Applied Stereotypes_ in the _Detail_ panel.
-
-To edit the properties of a _Stereotype_, select the matching _Stereotype Application_ from the _Explorer_ panel.
-
-____
-🗒️ *Note:* You can navigate to a _Stereotype Application_ using the widget _Applied Stereotypes_ in the _Detail_ panel.
-____
+The properties of this stereotype are now displayed in there own tab in the _Detail_ panel.
 
 === Validation panel
 
