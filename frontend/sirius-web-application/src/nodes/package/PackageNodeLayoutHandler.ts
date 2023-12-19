@@ -26,7 +26,6 @@ import {
   INodeLayoutHandler,
   NodeData,
   setBorderNodesPosition,
-  computePreviousPosition,
   computePreviousSize,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node } from 'reactflow';
@@ -89,7 +88,6 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
-      const previousPosition = computePreviousPosition(previousNode, node);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -97,21 +95,37 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
         if (child.position.y < borderWidth + headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint + rectangularNodePadding };
         }
-      } else if (previousPosition) {
-        child.position = previousPosition;
+      } else if (previousNode) {
+        child.position = previousNode.position;
         if (previousNode && previousNode.position.y < headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: headerHeightFootprint + rectangularNodePadding };
         } else {
           child.position = child.position;
         }
+        // Force the position.x to rectangularNodePadding if the child is moved outside the west border.
+        if (previousNode && previousNode.position.x < 0) {
+          child.position = { ...child.position, x: rectangularNodePadding };
+        }
       } else {
         child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
+        const previousSibling = directNodesChildren[index - 1];
+        if (previousSibling) {
+          child.position = getChildNodePosition(
+            visibleNodes,
+            child,
+            labelElement,
+            false,
+            false,
+            borderWidth,
+            previousSibling
+          );
+        }
         if (child.position.y < headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: child.position.y + headerHeightFootprint };
         }
-        const previousSibling = directNodesChildren[index - 1];
-        if (previousSibling) {
-          child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
+        // Force the position.x to rectangularNodePadding if the child is moved outside the west border.
+        if (child.position.x < 0) {
+          child.position = { ...child.position, x: rectangularNodePadding };
         }
       }
     });
