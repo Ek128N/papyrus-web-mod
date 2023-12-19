@@ -139,7 +139,12 @@ public class PropertiesCrudServicesWrapper {
      * Replacement of {@link PropertiesCrudServices#updateReference(EObject, Object, String)}.
      */
     public boolean updateReference(EObject target, Object objectToSet, String refName) {
-        return this.delegate.updateReference(target, objectToSet, refName);
+        try {
+            return this.delegate.updateReference(target, objectToSet, refName);
+        } catch (IllegalArgumentException e) {
+            this.logger.log(MessageFormat.format("Unable to update reference ''{0}'': ''{1}''", refName, e.getMessage()), ILogLevel.WARNING);
+            return false;
+        }
     }
 
     /**
