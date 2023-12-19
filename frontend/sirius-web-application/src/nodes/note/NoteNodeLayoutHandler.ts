@@ -24,8 +24,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node } from 'reactflow';
 import { NoteNodeData } from './NoteNode.types';
-
-const rectangularNodePadding = 20;
+import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 
 export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -42,18 +41,14 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
+
+    const nodeElement = document.getElementById(`${node.id}-noteNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    const labelWidth =
-      rectangularNodePadding +
-      (labelElement?.getBoundingClientRect().width ?? 0) +
-      rectangularNodePadding +
-      borderWidth * 2;
-    const labelHeight =
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
+    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 8 + 20;
+    const labelHeight = getHeaderFootprint(labelElement, true, false);
 
     const nodeWidth = labelWidth;
     const nodeHeight = labelHeight + borderWidth * 2;

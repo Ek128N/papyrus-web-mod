@@ -31,7 +31,6 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -321,7 +320,7 @@ public class NoteStyleDescriptionBuilder {
         noteStyleDescription.setDefaultWidthExpression("200"); //$NON-NLS-1$
         noteStyleDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
 
-        NoteNodeStyleDescription style = (NoteNodeStyleDescription) noteStyleDescription.getStyle();
+        NodeStyleDescription style = noteStyleDescription.getStyle();
         style.setShowIcon(true);
         style.setColor(this.color);
 

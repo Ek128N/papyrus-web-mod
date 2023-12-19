@@ -377,7 +377,7 @@ public class ViewBuilder {
         return nodeStyle;
     }
 
-    public NoteNodeStyleDescription createNoteNodeStyle() {
+    public NodeStyleDescription createNoteNodeStyle() {
         NoteNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createNoteNodeStyleDescription();
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(true);

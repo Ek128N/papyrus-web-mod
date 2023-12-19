@@ -49,7 +49,7 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
+    const nodeElement = document.getElementById(`${node.id}-packageNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
     if (directChildren.length > 0) {
       this.handleParentNode(

@@ -47,7 +47,6 @@ import org.eclipse.papyrus.web.application.representations.view.builders.NodeDes
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
 import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.ViewBuilder;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -355,7 +354,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         commentDescription.setDefaultWidthExpression("200");
         commentDescription.setDefaultHeightExpression("100");
 
-        NoteNodeStyleDescription style = (NoteNodeStyleDescription) commentDescription.getStyle();
+        NodeStyleDescription style = commentDescription.getStyle();
         style.setShowIcon(false);
         style.setColor(this.styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);

@@ -88,7 +88,6 @@ const toNoteNode = (
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '8px 20px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
