@@ -13,7 +13,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.containmentreference;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +20,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.custom.widgets.AQLInterpreterProvider;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
@@ -47,8 +45,6 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
-import org.eclipse.uml2.uml.UMLFactory;
-import org.eclipse.uml2.uml.UMLPackage;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -107,56 +103,38 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
                 .toList();
     }
 
-    private ChildCreationDescription createChildCreationDescription(EObject instance) {
-        String id = instance.eClass().getEPackage().getName() + "::" + instance.eClass().getName();
-        List<String> iconURL = this.objectService.getImagePath(instance);
-        String label = instance.eClass().getName();
+    private ChildCreationDescription createChildCreationDescription(EClass eClass) {
+        String id = eClass.getEPackage().getName() + "::" + eClass.getName();
+        List<String> iconURL = this.objectService.getImagePath(eClass.getEPackage().getEFactoryInstance().create(eClass));
+        String label = eClass.getName();
         return new ChildCreationDescription(id, label, iconURL);
     }
 
-    private List<EObject> getInstanciableTypesOf(IEditingContext editingContext, String referenceKind) {
+    private List<EClass> getInstanciableTypesOf(IEditingContext editingContext, String referenceKind) {
         Optional<Registry> optionalRegistry = this.getPackageRegistry(editingContext);
         if (optionalRegistry.isPresent() && !referenceKind.isBlank() && referenceKind.startsWith(SemanticKindConstants.PREFIX)) {
             var ePackageRegistry = optionalRegistry.get();
             String ePackageName = this.emfKindService.getEPackageName(referenceKind);
             String eClassName = this.emfKindService.getEClassName(referenceKind);
-            List<EObject> res = new ArrayList<>();
             Optional<EPackage> optionalPackage = this.emfKindService.findEPackage(ePackageRegistry, ePackageName);
             if (optionalPackage.isPresent()) {
                 var pack = optionalPackage.get();
-                this.getInstanciableTypesOf(eClassName, pack, res);
+                return this.collectNonAbstractTypes(eClassName, pack);
             }
-            return res;
         }
         return List.of();
     }
 
-    private void getInstanciableTypesOf(String eClassName, EPackage pack, List<EObject> types) {
-        Optional<EObject> optional = this.createInstanceOf(eClassName);
-        if (optional.isPresent()) {
-            types.add(optional.get());
+    private List<EClass> collectNonAbstractTypes(String eClassName, EPackage pack) {
+        EClassifier targetType = pack.getEClassifier(eClassName);
+        if (targetType instanceof EClass targetEClass) {
+            return EMFUtils.allContainedObjectOfType(targetType.getEPackage(), EClass.class).filter(eClass -> this.isNonAbstractSubTypes(targetEClass, eClass)).toList();
         }
-        TreeIterator<EObject> allContents = pack.eAllContents();
-        allContents.forEachRemaining(eObject -> {
-            if (eObject instanceof EClass eClass) {
-                EList<EClass> eSuperTypes = eClass.getESuperTypes();
-                if (eSuperTypes.stream().anyMatch(superType -> eClassName.equals(superType.getName()))) {
-                    this.getInstanciableTypesOf(eClass.getName(), pack, types);
-                }
-            }
-        });
+        return List.of();
     }
 
-    private Optional<EObject> createInstanceOf(String type) {
-        final EClass eClass;
-        EClassifier classifier = UMLPackage.eINSTANCE.getEClassifier(type);
-        if (classifier instanceof EClass) {
-            eClass = (EClass) classifier;
-            if (!eClass.isAbstract()) {
-                return Optional.of(UMLFactory.eINSTANCE.create(eClass));
-            }
-        }
-        return Optional.empty();
+    private boolean isNonAbstractSubTypes(EClass targetEClass, EClass eClass) {
+        return !eClass.isAbstract() && !eClass.isInterface() && targetEClass.isSuperTypeOf(eClass);
     }
 
     private Optional<Registry> getPackageRegistry(IEditingContext editingContext) {
@@ -179,7 +157,7 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
         if (optionalWidgetDescription.isPresent()) {
             var reference = optionalWidgetDescription.get();
             var optionalView = this.getViewFromWidgetDescription(reference);
-            if (optionalView.isPresent() && reference.getName()  != null) {
+            if (optionalView.isPresent() && reference.getName() != null) {
                 var createOperation = reference.getCreateElementOperation();
                 VariableManager variableManager = this.createVariableManagerForElementCreation(parent, childCreationDescriptionId, reference.getName());
                 VariableManager childVariableManager = variableManager.createChild();
