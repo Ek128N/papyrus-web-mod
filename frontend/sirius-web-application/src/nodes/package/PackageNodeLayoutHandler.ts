@@ -30,9 +30,9 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node } from 'reactflow';
 import { PackageNodeData } from './PackageNode.types';
+import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 
 const rectangularNodePadding: number = 8;
-const headerHeightFootprint = 33;
 
 export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -81,6 +81,7 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const headerHeightFootprint = getHeaderFootprint(labelElement, true, false);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
