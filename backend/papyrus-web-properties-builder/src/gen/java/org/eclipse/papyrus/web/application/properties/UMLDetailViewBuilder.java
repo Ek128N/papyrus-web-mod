@@ -113,7 +113,7 @@ public class UMLDetailViewBuilder {
         pages.add(new GateUmlPage(factory, colorRegistry).create());
         pages.add(new GeneralOrderingUmlPage(factory, colorRegistry).create());
         pages.add(new GeneralizationUmlPage(factory, colorRegistry).create());
-        pages.add(new GeneralizationSetUmlPage(factory, colorRegistry).create());
+        pages.add(new GeneralizationSetUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new ImageUmlPage(factory, colorRegistry).create());
         pages.add(new IncludeUmlPage(factory, colorRegistry).create());
         pages.add(new InformationFlowUmlPage(factory, colorRegistry).create());
