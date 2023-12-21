@@ -18,7 +18,7 @@
  * @param {string} tabName the label of the tab
  */
 Cypress.Commands.add('activateDetailsTab', (tabName) => {
-  cy.getByTestId(`page-tab-${tabName}`).click();
+  cy.getByTestId(`page-tab-${tabName}`).should('exist').click();
   return cy.get('[data-testid="view-Details"]');
 });
 
