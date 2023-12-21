@@ -77,8 +77,8 @@ public class UMLDetailViewBuilder {
         pages.add(new ConstraintUmlPage(factory, colorRegistry).create());
         pages.add(new ContinuationUmlPage(factory, colorRegistry).create());
         pages.add(new ControlFlowUmlPage(factory, colorRegistry).create());
-        pages.add(new CreateLinkActionUmlPage(factory, colorRegistry).create());
-        pages.add(new CreateLinkObjectActionUmlPage(factory, colorRegistry).create());
+        pages.add(new CreateLinkActionUmlPageCustomImpl(factory, colorRegistry).create());
+        pages.add(new CreateLinkObjectActionUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new CreateObjectActionUmlPage(factory, colorRegistry).create());
         pages.add(new DataStoreNodeUmlPage(factory, colorRegistry).create());
         pages.add(new DataTypeUmlPage(factory, colorRegistry).create());
@@ -86,7 +86,7 @@ public class UMLDetailViewBuilder {
         pages.add(new DependencyUmlPage(factory, colorRegistry).create());
         pages.add(new DeploymentUmlPage(factory, colorRegistry).create());
         pages.add(new DeploymentSpecificationUmlPage(factory, colorRegistry).create());
-        pages.add(new DestroyLinkActionUmlPage(factory, colorRegistry).create());
+        pages.add(new DestroyLinkActionUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new DestroyObjectActionUmlPage(factory, colorRegistry).create());
         pages.add(new DeviceUmlPage(factory, colorRegistry).create());
         pages.add(new DurationUmlPage(factory, colorRegistry).create());
