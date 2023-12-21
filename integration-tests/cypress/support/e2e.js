@@ -20,3 +20,4 @@ import './childrenCommands';
 import './dragCommands';
 import './profilCommands';
 import './projectsCommands';
+import './explorerCommands';

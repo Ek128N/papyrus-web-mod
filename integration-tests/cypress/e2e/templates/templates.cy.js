@@ -25,7 +25,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
    * Test validating creation and deletion of a representation created in a project made using template
    */
   it('Test CPP SM Template', () => {
-    cy.getByTestId('SimpleSM.uml').dblclick();
+    cy.expandAll('SimpleSM.uml');
     cy.getByTestId('CppSMTemplate-more').should('be.visible').click();
 
     cy.getByTestId('new-representation').click();
