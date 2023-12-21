@@ -156,7 +156,7 @@ public class UMLDetailViewBuilder {
         pages.add(new OpaqueBehaviorUmlPage(factory, colorRegistry).create());
         pages.add(new OpaqueExpressionUmlPage(factory, colorRegistry).create());
         pages.add(new OperationUmlPage(factory, colorRegistry).create());
-        pages.add(new OperationTemplateParameterUmlPage(factory, colorRegistry).create());
+        pages.add(new OperationTemplateParameterUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new OutputPinUmlPageCustomImpl(factory, colorRegistry).create());
         pages.add(new PackageUmlPage(factory, colorRegistry).create());
         pages.add(new PackageImportUmlPageCustomImpl(factory, colorRegistry).create());
