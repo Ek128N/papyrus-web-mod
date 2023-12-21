@@ -77,6 +77,12 @@ public class PropertiesCrudServicesWrapper {
      * Replacement of {@link PropertiesCrudServices#delete(Object, EObject, String)}.
      */
     public boolean delete(Object selectedObject, EObject target, String refName) {
+        EStructuralFeature feature = target.eClass().getEStructuralFeature(refName);
+        if (feature instanceof EReference ref && ref.isContainer() && selectedObject instanceof EObject selectedEObject) {
+            this.logger.log(MessageFormat.format("Removing ''{0}'' from ''{1}''  would destroy ''{2}'' by making it an orphan in the containment tree.", this.logger.getLabelForLog(selectedEObject),
+                    refName, this.logger.getLabelForLog(target)), ILogLevel.WARNING);
+            return false;
+        }
         return this.delegate.delete(selectedObject, target, refName);
     }
 
