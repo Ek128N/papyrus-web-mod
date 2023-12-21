@@ -65,7 +65,12 @@ public class PropertiesCrudServicesWrapper {
      * Replacement of {@link PropertiesCrudServices#create(EObject, String, String)}.
      */
     public EObject create(EObject target, String typeName, String refName) {
-        return this.delegate.create(target, typeName, refName);
+        try {
+            return this.delegate.create(target, typeName, refName);
+        } catch (IllegalArgumentException e) {
+            this.logger.log(MessageFormat.format("Unable to create ''{0}'' in reference ''{1}'': ''{2}''", typeName, refName, e.getMessage()), ILogLevel.WARNING);
+            return null;
+        }
     }
 
     /**
