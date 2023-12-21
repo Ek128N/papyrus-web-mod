@@ -35,7 +35,9 @@ public class PackageImportUmlPageCustomImpl extends PackageImportUmlPage {
                 .name("importedPackage") //
                 .label("aql:'Imported package'") //
                 .help("aql:self.getFeatureDescription('importedPackage')") //
-                .isEnable("aql:false") //
+                // We need this feature to be editable since it is the main entry point to compute the candidates for
+                // all references
+                .isEnable("aql:true") //
                 .owner("") //
                 .type("aql:self.getFeatureTypeQualifiedName('importedPackage')") //
                 .value("feature:importedPackage") //
