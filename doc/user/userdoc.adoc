@@ -389,6 +389,20 @@ For a mono-valued reference the selected value replace the existing one, whereas
 * The user can type some text in the values area to filter dropdown list content.
 * Each value element has a cross icon to remove it from the reference. +
 Since this is a non-containment reference, the removed element is only removed from its value and the referenced element still exists in the model.
+
+[WARNING]
+====
+In some widgets the following warning message will be displayed when trying to remove an element using the cross button.
+
+`Removing 'XXX' from 'YYY' would destroy 'ZZZ' by making it an orphan in the containment tree.`
+
+The element is *not* removed from the list.
+This security prevents you to remove the element because this would cause the deletion of the current selected item.
+In most case, the currently edited reference is an _eOpposite_ of the reference that is currenlty containing the displayed element.
+This is the case for the widget _Context_ on a _Constraint_.
+====
+
+
 * Clicking value elements inside the reference navigates to those elements. 
 
 Rule for searching candidate values of non-containment reference
@@ -408,6 +422,24 @@ The following algorithm is used to perform this search:
 Since the above search rule is using _PackageImport_ element and its `importedPackage` reference, this rule cannot be applied to this specific reference.
 Therefore, a special treatment is applied for this reference in order to compute the list of reachable _Package_ elements from a _PackageImport_ element.
 In this special case, the collection of reachable elements is built by browsing all the loaded resources to collect every contained _Package_ elements.
+====
+
+[WARNING]
+====
+In some case, the following warning message will be displayed:
+
+`Unable to update reference 'XXX': 'newYYY' must be an instance of ZZZ`
+
+Or
+
+`Unable to create 'WWW' in reference 'XXX': 'newYYY' must be an instance of ZZZ`
+
+when creating a new element using the + button.
+
+For most cases, it is caused by an incompatible type in an _eOpposite_ feature.
+It means that the selected type is valid for editing the current reference but it has an _eOpposite_ reference that cannot contain the current element.
+This is mostly caused by the use of reference type redifinition in the _UML_ metamodel (look for "redefine" _EAnnotations_).
+For example, this is the case when creating an _Activity_ in widget _Owned parameter element_ on _TemplateParameter_ concept.
 ====
 
 ===== Definition panel
