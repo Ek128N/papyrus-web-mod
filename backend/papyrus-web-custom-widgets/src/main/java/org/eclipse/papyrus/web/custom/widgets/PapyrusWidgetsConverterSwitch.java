@@ -402,6 +402,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
 
         var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId) //
                 .targetObjectIdProvider(this.semanticTargetIdProvider) //
+                .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))//
                 .idProvider(new WidgetIdProvider()) //
                 .labelProvider(variableManager -> new StringValueProvider(this.interpreter, referenceDescription.getLabelExpression()).apply(variableManager)) //
                 .optionsProvider(this.getOptionsProvider(referenceDescription.getDropdownOptionsExpression())) //
@@ -441,6 +442,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId) //
                 .targetObjectIdProvider(this.semanticTargetIdProvider) //
                 .idProvider(new WidgetIdProvider()) //
+                .isReadOnlyProvider(this.getReadOnlyValueProvider(referenceDescription.getIsEnabledExpression()))//
                 .labelProvider(variableManager -> new StringValueProvider(this.interpreter, referenceDescription.getLabelExpression()).apply(variableManager)) //
                 .optionsProvider(this.getOptionsProvider(referenceDescription.getDropdownOptionsExpression())) //
                 .iconURLProvider(variableManager -> List.of()) //
