@@ -262,11 +262,9 @@ In the following table, we present the mapping between basic types and their ass
 
 Here is https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_details_view[the Sirius documentation] of all those widgets.
 
-====== Custom widgets
+Beside these standard widgets, some UML 2 concepts have properties that need a special UI to manage their data. The following sections detail of each custom widget we introduced.
 
-Some UML 2 concepts have properties that need a special UI to manage their data. Here are the details of each custom widget.
-
-======= Language Expression
+====== Language Expression
 
 A language expression custom widget has been introduced to manage a couple of connected lists in the following concepts:
 
@@ -287,7 +285,7 @@ Languages can be reordered using up or down actions of the toolbar. Since the li
 
 Removing a language can be done using the trash icon action of its toolbar. No confirmation is required before deleting a language element.
 
-======= Primitive List
+====== Primitive List
 
 The primitive list custom widget aims to provide capabilities to visualize and edit _EAttributes_ which represent more than one value.
 
@@ -327,9 +325,7 @@ As an example, the following image shows a paperclip icon for the item action an
 
 image::primitive-list-with-item-action.png[primitive list with item action, 500, align="center"]
 
-
-
-======= References
+====== References
 
 Depending on the nature of the reference, we handle it differently. 
 Containment references use a dedicated custom widget, while non-containment references use Sirius components reference widgets.
