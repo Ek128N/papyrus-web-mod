@@ -47,6 +47,7 @@ import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDes
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextPersistenceService;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -86,6 +87,8 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
 
     protected String rootObjectId;
 
+    protected String intermediateRootObjectId;
+
     protected String representationId;
 
     protected String documentId;
@@ -101,6 +104,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
 
     @Autowired
     protected DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
+
+    @Autowired
+    protected IEditingContextPersistenceService persistenceService;
 
     @Autowired
     private CreateProjectMutationRunner projectCreator;
@@ -213,6 +219,17 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
         this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, "TEST");
         this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+    }
+
+    public void setUpWithIntermediateRoot(String intermediateRootName, EClass intermediateRootType) {
+        this.projectId = this.projectCreator.createProject("Instance");
+        this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeDescriptionRegistryConfigurer.EMPTY_ID);
+        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
+        EObject intermediateRoot = this.createSemanticElement(this.getRootSemanticElement(), UML.getPackage_PackagedElement(), intermediateRootType, intermediateRootType.getName());
+        this.intermediateRootObjectId = this.getObjectService().getId(intermediateRoot);
+        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.intermediateRootObjectId, this.representationName, "TEST");
+        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.applyEditLabelTool(this.getDiagram().getNodes().get(0).getInsideLabel().getId(), intermediateRootName);
     }
 
     /**
@@ -770,5 +787,44 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         this.applyEdgeCreationTool(sourceNode.getId(), targetNode.getId(), edgeCreationTool);
         assertThat(this.getDiagram().getEdges()).as("Diagram doesn't contain the created edge").hasSize(diagramEdgeCount + 1);
         return this.getDiagram().getEdges().get(diagramEdgeCount).getId();
+    }
+
+    /**
+     * Creates a semantic element of the given {@code type} in the given {@code parentElement}, with the given
+     * {@code name}.
+     * <p>
+     * This method operates at the semantic level. It doesn't create a graphical element. The created element is
+     * contained in {@code parentElement} through the {@code containmentReference} reference.
+     * </p>
+     * <p>
+     * <b>Note:</b> this method doesn't set the name of the element if {@code type} isn't a sub-type of
+     * {@link NamedElement}.
+     * </p>
+     * <p>
+     * This method is typically used to create semantic elements to drop.
+     * </p>
+     *
+     * @param parentElement
+     *            the semantic element containing the created element
+     * @param containmentReference
+     *            the reference containing the created element
+     * @param type
+     *            the type of the created element
+     * @param name
+     *            the name of the created element
+     * @return the created element
+     */
+    protected EObject createSemanticElement(EObject parentElement, EReference containmentReference, EClass type, String name) {
+        String parentElementId = this.getObjectService().getId(parentElement);
+        int numberOfChildren = ((List<?>) parentElement.eGet(containmentReference)).size();
+        this.applyCreateChildTool(parentElementId, containmentReference, type);
+        IEditingContext editingContext = this.getEditingContext();
+        EObject updatedParentElement = (EObject) this.getObjectService().getObject(editingContext, parentElementId).get();
+        EObject createdObject = (EObject) ((List<?>) updatedParentElement.eGet(containmentReference)).get(numberOfChildren);
+        if (createdObject instanceof NamedElement namedElement) {
+            namedElement.setName(name);
+            this.persistenceService.persist(editingContext);
+        }
+        return createdObject;
     }
 }
