@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.application.tools.profile;
 
 import java.util.stream.Stream;
 
+import org.eclipse.papyrus.uml.domain.services.labels.UMLCharacters;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
 import org.eclipse.papyrus.web.application.tools.checker.LabelGraphicalChecker;
@@ -30,7 +31,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * Tests edit label tools in the Use Case Diagram.
+ * Tests edit label tools in the Profile Diagram.
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -62,23 +63,23 @@ public class PRDEditLabelTest extends EditLabelTest {
 
     private static final String CONSTRAINT_LABEL_SUFFIX = System.lineSeparator() + "{{OCL} true}";
 
-    private static final String DATA_TYPE_LABEL_PREFIX = "«dataType»" + System.lineSeparator();
+    private static final String DATA_TYPE_LABEL_PREFIX = UMLCharacters.ST_LEFT + "dataType" + UMLCharacters.ST_RIGHT + System.lineSeparator();
 
-    private static final String ENUMERATION_LABEL_PREFIX = "«enumeration»" + System.lineSeparator();
+    private static final String ENUMERATION_LABEL_PREFIX = UMLCharacters.ST_LEFT + "enumeration" + UMLCharacters.ST_RIGHT + System.lineSeparator();
 
     private static final String OPERATION_LABEL_PREFIX = "+ ";
 
     private static final String OPERATION_LABEL_SUFFIX = "()";
 
-    private static final String PRIMITIVE_TYPE_LABEL_PREFIX = "«primitive»" + System.lineSeparator();
+    private static final String PRIMITIVE_TYPE_LABEL_PREFIX = UMLCharacters.ST_LEFT + "primitive" + UMLCharacters.ST_RIGHT + System.lineSeparator();
 
-    private static final String PROFILE_LABEL_PREFIX = "«profile»" + System.lineSeparator();
+    private static final String PROFILE_LABEL_PREFIX = UMLCharacters.ST_LEFT + "profile" + UMLCharacters.ST_RIGHT + System.lineSeparator();
 
     private static final String PROPERTY_LABEL_PREFIX = "+ ";
 
     private static final String PROPERTY_LABEL_SUFFIX = ": <Undefined> [1]";
 
-    private static final String STEREOTYPE_LABEL_PREFIX = "«stereotype»" + System.lineSeparator();
+    private static final String STEREOTYPE_LABEL_PREFIX = UMLCharacters.ST_LEFT + "stereotype" + UMLCharacters.ST_RIGHT + System.lineSeparator();
 
     public PRDEditLabelTest() {
         super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());

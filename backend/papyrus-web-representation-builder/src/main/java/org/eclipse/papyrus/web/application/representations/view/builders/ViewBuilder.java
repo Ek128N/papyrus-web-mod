@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -29,7 +29,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomnodesFactory;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Operation;
@@ -364,28 +364,28 @@ public class ViewBuilder {
     }
 
     public EllipseNodeStyleDescription createEllipseNodeStyle() {
-        EllipseNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createEllipseNodeStyleDescription();
+        EllipseNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription();
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(true);
         return nodeStyle;
     }
 
     public PackageNodeStyleDescription createPackageNodeStyle() {
-        PackageNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createPackageNodeStyleDescription();
+        PackageNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription();
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(true);
         return nodeStyle;
     }
 
     public NodeStyleDescription createNoteNodeStyle() {
-        NoteNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createNoteNodeStyleDescription();
+        NoteNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription();
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(true);
         return nodeStyle;
     }
 
     public RectangleWithExternalLabelNodeStyleDescription createRectangleWithExternalLabelNodeStyle() {
-        RectangleWithExternalLabelNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription();
+        RectangleWithExternalLabelNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription();
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(true);
         return nodeStyle;

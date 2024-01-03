@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -275,7 +275,6 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * @see GraphicalDeleteNodeFromDiagramMutationRunner
      */
     protected void applyNodeGraphicalDeletionTool(String diagramElementToDeleteId) {
-        // TODO : check that "Delete from diagram" tool exists
         this.deleteFromDiagramMutationRunner.graphicalDeleteNodeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
     }
 
@@ -289,7 +288,6 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * @see DeleteFromDiagramMutationRunner
      */
     protected void applyNodeSemanticDeletionTool(String diagramElementToDeleteId) {
-        // TODO : check that "Delete from model" tool exists
         this.deleteFromDiagramMutationRunner.semanticDeleteNodeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
     }
 
@@ -303,7 +301,6 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * @see DeleteFromDiagramMutationRunner
      */
     protected void applyEdgeSemanticDeletionTool(String diagramElementToDeleteId) {
-        // TODO : check that "Delete from model" tool exists
         this.deleteFromDiagramMutationRunner.semanticDeleteEdgeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
     }
 

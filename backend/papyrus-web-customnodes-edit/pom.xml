@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (c) 2023 CEA LIST, Obeo
+Copyright (c) 2023, 2024 CEA LIST, Obeo
 
  All rights reserved. This program and the accompanying materials
  are made available under the terms of the Eclipse Public License 2.0
@@ -75,6 +75,25 @@ Copyright (c) 2023 CEA LIST, Obeo
 						<goals>
 							<goal>check</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+            			<phase>generate-sources</phase>
+            			<goals>
+              				<goal>add-source</goal>
+            			</goals>
+						<configuration>
+             				<sources>
+                				<source>src/main/java</source>
+                				<source>src-gen/main/java</source>
+          				    </sources>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

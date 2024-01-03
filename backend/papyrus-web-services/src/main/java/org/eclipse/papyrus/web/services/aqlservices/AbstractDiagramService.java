@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -254,6 +254,17 @@ public abstract class AbstractDiagramService {
     }
 
     /**
+     * Log a given message in developer logger and user interface.
+     *
+     * @param message
+     *            the message to display
+     */
+    private void logWarnMessage(String message) {
+        LOGGER.warn(message);
+        this.logger.log(message, ILogLevel.WARNING);
+    }
+
+    /**
      * Destroys the given semantic element represented by a node.
      *
      * @param semanticElement
@@ -284,8 +295,7 @@ public abstract class AbstractDiagramService {
                                 .map(Object::toString)//
                                 .collect(Collectors.joining(ITEM_SEP));
                         String errorMessage = destroyerStatus.getMessage() + ": " + elements;
-                        LOGGER.warn(errorMessage);
-                        this.logger.log(errorMessage, ILogLevel.WARNING);
+                        this.logWarnMessage(errorMessage);
                     }
                 }
                 break;
@@ -331,8 +341,7 @@ public abstract class AbstractDiagramService {
                                 .map(Object::toString)//
                                 .collect(Collectors.joining(ITEM_SEP));
                         String errorMessage = destroyerStatus.getMessage() + ": " + elements;
-                        LOGGER.warn(errorMessage);
-                        this.logger.log(errorMessage, ILogLevel.WARNING);
+                        this.logWarnMessage(errorMessage);
                     }
                 }
                 break;
@@ -398,8 +407,7 @@ public abstract class AbstractDiagramService {
     public EObject addValueTo(EObject featureOwner, String featureName, Object value) {
         Status status = this.buildFeatureModifier(featureOwner).addValue(featureOwner, featureName, value);
         if (status.getState() == State.FAILED) {
-            LOGGER.warn(status.getMessage());
-            this.logger.log(status.getMessage(), ILogLevel.WARNING);
+            this.logWarnMessage(status.getMessage());
         }
         return featureOwner;
     }
@@ -418,8 +426,7 @@ public abstract class AbstractDiagramService {
     public EObject removeValueFrom(EObject featureOwner, String featureName, Object value) {
         Status status = this.buildFeatureModifier(featureOwner).removeValue(featureOwner, featureName, value);
         if (status.getState() == State.FAILED) {
-            LOGGER.warn(status.getMessage());
-            this.logger.log(status.getMessage(), ILogLevel.WARNING);
+            this.logWarnMessage(status.getMessage());
         }
         return featureOwner;
     }
@@ -503,8 +510,7 @@ public abstract class AbstractDiagramService {
         final EObject result;
         if (!canCreateStatus.isValid()) {
             errorMessage = "Creation failed : " + canCreateStatus.getMessage();
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
             result = null;
         } else {
             CreationStatus status = this.buildDomainBasedEdgeCreator(source).createDomainBasedEdge(source, target, type, containementReferenceName, represenationQuery, sourceNode, targetNode);
@@ -513,8 +519,7 @@ public abstract class AbstractDiagramService {
 
             if (status.getState() == State.FAILED) {
                 errorMessage = "Creation failed : " + status.getMessage();
-                LOGGER.warn(errorMessage);
-                this.logger.log(errorMessage, ILogLevel.WARNING);
+                this.logWarnMessage(errorMessage);
             }
 
         }
@@ -582,16 +587,14 @@ public abstract class AbstractDiagramService {
         String errorMessage = null;
         if (parent == null) {
             errorMessage = "Unable to create an element on nothing";
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
             result = null;
         } else {
             // Workaround for missing precondition on edges
             CheckStatus canCreateStatus = this.buildElementCreationChecker().canCreate(parent, type, referenceName);
             if (!canCreateStatus.isValid()) {
                 errorMessage = "Can not create : " + canCreateStatus.getMessage();
-                LOGGER.warn(errorMessage);
-                this.logger.log(errorMessage, ILogLevel.WARNING);
+                this.logWarnMessage(errorMessage);
                 result = null;
             } else {
 
@@ -601,8 +604,7 @@ public abstract class AbstractDiagramService {
 
                 if (status.getState() == State.FAILED) {
                     errorMessage = "Creation failed : " + status.getMessage();
-                    LOGGER.warn(errorMessage);
-                    this.logger.log(errorMessage, ILogLevel.WARNING);
+                    this.logWarnMessage(errorMessage);
                 }
             }
         }
@@ -657,8 +659,7 @@ public abstract class AbstractDiagramService {
             return this.create(parent, type, referenceName, parentNode, diagramContext, capturedNodeDescriptions);
         }).orElseGet(() -> {
             String errorMessage = MessageFormat.format("Unable to get the parent view of {0}", sibling);
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
             return sibling;
         });
     }
@@ -683,12 +684,10 @@ public abstract class AbstractDiagramService {
             CheckStatus status = new ElementDomainBasedEdgeReconnectSourceBehaviorProvider(this.getEditableChecker(), represenationQuery).reconnectSource(domainBaseEdge, oldSource, newSource,
                     reconnectionTargetView);
             if (!status.isValid()) {
-                LOGGER.warn(status.getMessage());
-                this.logger.log(status.getMessage(), ILogLevel.WARNING);
+                this.logWarnMessage(status.getMessage());
             }
         } else {
-            LOGGER.warn(checkStatus.getMessage());
-            this.logger.log(checkStatus.getMessage(), ILogLevel.WARNING);
+            this.logWarnMessage(checkStatus.getMessage());
         }
         return domainBaseEdge;
     }
@@ -738,12 +737,10 @@ public abstract class AbstractDiagramService {
         if (checkStatus.isValid()) {
             CheckStatus status = new ElementDomainBasedEdgeReconnectTargetBehaviorProvider(represenationQuery).reconnectTarget(domainBaseEdge, oldTarget, newTarget, reconnectionTargetView);
             if (!status.isValid()) {
-                LOGGER.warn(status.getMessage());
-                this.logger.log(status.getMessage(), ILogLevel.WARNING);
+                this.logWarnMessage(status.getMessage());
             }
         } else {
-            LOGGER.warn(checkStatus.getMessage());
-            this.logger.log(checkStatus.getMessage(), ILogLevel.WARNING);
+            this.logWarnMessage(checkStatus.getMessage());
         }
         return domainBaseEdge;
     }
@@ -770,8 +767,7 @@ public abstract class AbstractDiagramService {
             source.getAnnotatedElements().add((Element) newTarget);
         } else {
             String errorMessage = "Can't reconnect to the new target. It is not an Element";
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
         }
 
         return source;
@@ -795,8 +791,7 @@ public abstract class AbstractDiagramService {
             source.getConstrainedElements().add(element);
         } else {
             String errorMessage = "Can't reconnect to the new target. It is not an Element";
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
         }
         return source;
     }
@@ -821,16 +816,14 @@ public abstract class AbstractDiagramService {
         final EReference ref;
         if (candidateReferences.isEmpty()) {
             errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove);
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
             ref = null;
         } else {
             ref = candidateReferences.get(0);
             if (candidateReferences.size() > 1) {
                 errorMessage = MessageFormat.format("More than one containment reference to contain {0} : {1}", objectToMove.eClass().getName(),
                         candidateReferences.stream().map(f -> f.getName()).collect(joining(ITEM_SEP)));
-                LOGGER.warn(errorMessage);
-                this.logger.log(errorMessage, ILogLevel.WARNING);
+                this.logWarnMessage(errorMessage);
             }
         }
 
@@ -867,8 +860,7 @@ public abstract class AbstractDiagramService {
         final EReference ref;
         if (!(refCandidate instanceof EReference) || !((EReference) refCandidate).isContainment()) {
             String errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove);
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
             ref = null;
         } else {
             ref = (EReference) refCandidate;
@@ -889,8 +881,7 @@ public abstract class AbstractDiagramService {
         final EObject result;
         if (EMFUtils.getAncestors(EObject.class, newOwner).contains(objectToMove)) {
             String errorMessage = MessageFormat.format("Impossible to move this {0} in this {1}. It would create a containment loop.", objectToMove.eClass().getName(), newOwner.eClass().getName());
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
             // Workaround for https://github.com/eclipse-sirius/sirius-components/issues/1343
             result = AbstractDiagramService.FAILURE_OBJECT;
         } else {
@@ -925,8 +916,7 @@ public abstract class AbstractDiagramService {
             newSource.getAnnotatedElements().add((Element) target);
         } else {
             String errorMessage = "The target element should be an element";
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
         }
 
         return target;
@@ -949,8 +939,7 @@ public abstract class AbstractDiagramService {
             newSource.getConstrainedElements().add(element);
         } else {
             String errorMessage = "The target element should be an Element";
-            LOGGER.warn(errorMessage);
-            this.logger.log(errorMessage, ILogLevel.WARNING);
+            this.logWarnMessage(errorMessage);
         }
         return target;
     }

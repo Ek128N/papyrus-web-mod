@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,7 @@ import graphql.GraphQL;
  * <p>
  * Creating a subscription allows to perform graphical-level operations via GraphQL mutations. Tests that require such
  * graphical operation need to create the subscription before performing any graphical-level operation (see
- * {@link #createSubscription(UUID, UUID)}).
+ * {@link #createSubscription(String, String)}).
  * </p>
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>

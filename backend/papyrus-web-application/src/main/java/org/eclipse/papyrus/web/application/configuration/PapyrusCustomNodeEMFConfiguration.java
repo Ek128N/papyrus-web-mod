@@ -15,9 +15,9 @@ package org.eclipse.papyrus.web.application.configuration;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomnodesPackage;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.PapyrusCustomnodesItemProviderAdapterFactory;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.customimpl.PapyrusCustomnodesItemProviderAdapterFactoryCustomImpl;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.PapyrusCustomNodesItemProviderAdapterFactory;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.customimpl.PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl;
 import org.eclipse.sirius.components.emf.configuration.ChildExtenderProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.springframework.context.annotation.Bean;
@@ -30,18 +30,34 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class PapyrusCustomNodeEMFConfiguration {
+
+    /**
+     * Provide custom {@link EPackage}.
+     *
+     * @return custom {@link EPackage}
+     */
     @Bean
     public EPackage papyrusCustomNodeEPackage() {
-        return PapyrusCustomnodesPackage.eINSTANCE;
+        return PapyrusCustomNodesPackage.eINSTANCE;
     }
 
+    /**
+     * Provide custom {@link AdapterFactory}.
+     *
+     * @return custom {@link AdapterFactory}
+     */
     @Bean
     public AdapterFactory papyrusCustomNodeAdapterFactory() {
-        return new PapyrusCustomnodesItemProviderAdapterFactoryCustomImpl();
+        return new PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl();
     }
 
+    /**
+     * Provide custom {@link ChildExtenderProvider}.
+     *
+     * @return custom {@link ChildExtenderProvider}
+     */
     @Bean
     public ChildExtenderProvider papyrusCustomNodeChildExtenderProvider() {
-        return new ChildExtenderProvider(DiagramPackage.eNS_URI, PapyrusCustomnodesItemProviderAdapterFactory.DiagramChildCreationExtender::new);
+        return new ChildExtenderProvider(DiagramPackage.eNS_URI, PapyrusCustomNodesItemProviderAdapterFactory.DiagramChildCreationExtender::new);
     }
 }

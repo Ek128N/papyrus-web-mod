@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -154,11 +154,11 @@ public class ProfileDiagramService extends AbstractDiagramService {
     }
 
     /**
-     * Provides Meta{@link Class} candidates.
+     * Provides Metaclass candidates.
      *
      * @param container
-     *            the current container in which looking for the Meta{@link Class}.
-     * @return the Meta{@link Class} list.
+     *            the current container in which looking for the Metaclass.
+     * @return the Metaclass list.
      */
     public List<? extends Class> getMetaclassPRD(EObject container) {
         List<? extends Class> importedElementCandidates = List.of();
