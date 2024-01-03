@@ -89,6 +89,14 @@ The _Explorer toolbar_ contains global _Project_ actions:
   When Synchronization with _Representation_ is *enabled*, selecting a graphical element in the diagram will *_Reveal_* and *_Select_* the semantic element corresponding in the _Explorer_ tree. +
   When Synchronization with _Representation_ is *disabled*, selecting a graphical element in the diagram will *_Select_* the semantic element corresponding in the _Explorer_ tree only if it has already been revealed.
 
+==== Publish profile
+
+Publish a profile in a dedicated database so it can be used by other projects.
+If the profile is already published, a new version is pushed to the database.
+
+WARNING: Be aware that if a project already uses this profile it will not be notified that a new version is available until the project is unloaded which means that nobody has this project opened during 7 seconds.
+
+
 ==== Apply profile
 
 To apply a profile use the contextual menu from the root _Model_ element.
@@ -107,6 +115,11 @@ To apply a stereotype:
 * Select the _Stereotype_ to apply
 
 The properties of this stereotype are now displayed in there own tab in the _Detail_ panel.
+
+
+
+
+
 
 === Validation panel
 
@@ -486,8 +499,6 @@ If a _Package_ is selected, the _Applied profiles_ widget provides the capacitie
 * Apply a profile: Use the dropdown or start entering the name of the _Profile_.
 * Unapply a profile: Use the trash icon aside from the _Profile_ item.
 * Update a profile: If a newer version of the profile is available, use the refresh button aside from the _Profile_ item.
-
-WARNING: Be aware that the refresh action first unapplies the profile (and so remove all stereotypes) then applies the new version of the profile (but the stereotypes are not reapplied).
 
 ===== Stereotype panels
 

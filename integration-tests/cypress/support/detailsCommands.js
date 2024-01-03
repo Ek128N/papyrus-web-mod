@@ -34,7 +34,7 @@ Cypress.Commands.add('inDetailsCurrentTab', () => {
  * @param itemValue the value to add (available in the autocomplete component)
  */
 Cypress.Commands.add('addItemInPrimitiveListStrictMode', (primitiveListName, itemValue) => {
-  cy.getByTestId(`primitive-list-autocomplete-textfield-${primitiveListName}`).click();
+  cy.getByTestId(`primitive-list-autocomplete-textfield-${primitiveListName}`).should('be.visible').click();
   cy.get(`.MuiAutocomplete-popper`)
     .should('be.visible')
     .find(`ul > li`)

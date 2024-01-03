@@ -81,7 +81,7 @@ public class ElementProfilePageCustomImpl extends ElementProfilePage {
         appliedProfileWidget.setAddOperation(addOperation);
 
         PrimitiveListItemActionOperation refreshAction = PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListItemActionOperation();
-        refreshAction.getBody().add(createChangeContext("aql:self.reapplyProfile(candidate)"));
+        refreshAction.getBody().add(createChangeContext("aql:self.reapplyProfile(editingContext,candidate)"));
         refreshAction.setIconURLExpression("aql:'/icons/replay.svg'");
         refreshAction.setPreconditionExpression("aql:self.isProfileNotUpToDate(candidate)");
         appliedProfileWidget.setItemActionOperation(refreshAction);

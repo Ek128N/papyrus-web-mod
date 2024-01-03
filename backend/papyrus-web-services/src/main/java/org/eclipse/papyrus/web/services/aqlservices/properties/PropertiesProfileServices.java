@@ -194,10 +194,9 @@ public class PropertiesProfileServices {
      *            the profile to re-apply
      * @return the package
      */
-    public EObject reapplyProfile(Package self, Profile profile) {
+    public EObject reapplyProfile(Package self, IEditingContext editingContext, Profile profile) {
         if (ProfileUtil.isDirty(self, profile)) {
-            self.unapplyProfile(profile);
-            self.applyProfile(profile);
+            this.applyProfile(self, editingContext, EcoreUtil.getURI(profile).toString());
         } else {
             this.logger.log(MessageFormat.format("No update available on profile {0}", profile.getName()), ILogLevel.INFO);
         }

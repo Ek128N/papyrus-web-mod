@@ -34,6 +34,17 @@ describe('Stereotype application page tests', () => {
     cy.createTestProject(context, instanceProjectName, 'model4test', 'Profile');
   });
 
+  const checkReferenceTransferModalRightContent = (values) => {
+    cy.getByTestId('transfer-modal')
+      .should('be.visible')
+      .findByTestId('selected-items-list')
+      .find('li')
+      .should(($lis) => {
+        const optionTexts = $lis.toArray().map((el) => el.getAttribute('data-testid'));
+        expect(optionTexts).to.deep.eq(values);
+      });
+  };
+
   afterEach(() => {
     cy.deleteProjectByName(instanceProjectName);
   });
@@ -80,6 +91,12 @@ describe('Stereotype application page tests', () => {
       cy.getByTestId(`primitive-list-item-action-button-${profileName} (0.0.1)`).should('not.exist');
 
       // Apply one stereotype
+      cy.addItemInPrimitiveListStrictMode('Applied stereotypes', `Stereotype2 (from ${profileName})`);
+
+      // Apply stereotype 2 on class
+      cy.getByTestId('Class').first().should('exist').click();
+      cy.getByTestId('view-Details').findByTestId('Name').should('be.visible');
+      cy.activateDetailsTab('Profile');
       cy.addItemInPrimitiveListStrictMode('Applied stereotypes', `Stereotype1 (from ${profileName})`);
     });
 
@@ -92,6 +109,9 @@ describe('Stereotype application page tests', () => {
 
       cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-author').find('input').type('Jerome');
       cy.getByTestId('publish-profile-publish').should('not.have.class', 'Mui-disabled').should('be.visible').click();
+
+      // We need to wait 7 sec to be sure that the ResourceSet of the first project is unloaded
+      cy.wait(7000);
     });
 
     // Go back to the project
@@ -109,10 +129,23 @@ describe('Stereotype application page tests', () => {
         .findByTestId(`primitive-list-item-${profileName} (0.0.2)`)
         .should('exist');
 
-      // The steretoype should be deleted due to reapplication of the profile
+      // The steretoype should not be deleted due to reapplication of the profile
       cy.getByTestId(`primitive-list-table-Applied stereotypes`)
-        .findByTestId(`primitive-list-item-content-None`)
+        .findByTestId(`primitive-list-item-Stereotype2 (from ProfilPageTest-Profile)`)
         .should('exist');
+
+      // Check that the properties are still working
+      cy.getByTestId('Class').first().should('exist').click();
+      cy.getByTestId('view-Details').findByTestId('Name').should('be.visible');
+      cy.activateDetailsTab('Stereotype1');
+
+      // Check the dialog content to reference a stereotype application
+      cy.getByTestId('testMultiReftoStereotype2-more').click();
+      cy.getByTestId('transfer-modal').should('be.visible').as('dialog');
+      checkReferenceTransferModalRightContent([]);
+      cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('model4test').should('be.visible').click();
+      cy.get('@dialog').findByTestId('move-right').click();
+      cy.get('@dialog').findByTestId('close-transfer-modal').click();
     });
   });
 });

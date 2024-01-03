@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-describe('Basic widgets test', () => {
+describe('Applied Comments tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
@@ -57,7 +57,11 @@ describe('Basic widgets test', () => {
     cy.get('@comments').findByTestId('reference-value-Comment').find('svg').should('be.visible').click();
     // check that Comment no longer references Class in annotatedElement
     cy.getByTestId('Comment').should('be.visible').click();
-    cy.activateDetailsTab('UML').findByTestId('Annotated element').find('.MuiChip-root').should('have.length', 0);
+    cy.getByTestId('view-Details')
+      .findByTestId('Annotated element')
+      .should('be.visible')
+      .find('.MuiChip-root')
+      .should('have.length', 0);
   });
 
   it('From Class.appliedComments', () => {
@@ -73,7 +77,7 @@ describe('Basic widgets test', () => {
       .type('Comment{downArrow}{enter}');
     // check comment.annotatedElement is containing Class
     cy.getByTestId('Comment').should('be.visible').click();
-    cy.activateDetailsTab('UML').as('uml');
+    cy.getByTestId('view-Details').as('uml');
     cy.get('@uml').findByTestId('Annotated element').find('.MuiChip-root').should('have.length', 1);
     cy.get('@uml').findByTestId('Annotated element').findByTestId('reference-value-Class').should('be.visible');
     // remove Class element from annotatedElement
@@ -115,7 +119,7 @@ describe('Basic widgets test', () => {
     // click on new Comment
     cy.getByTestId('reference-value-').click();
     // check that comment is annotating Class
-    cy.activateDetailsTab('UML').as('uml');
+    cy.getByTestId('view-Details').as('uml');
     cy.get('@uml').findByTestId('Annotated element').find('.MuiChip-root').should('have.length', 1);
     cy.get('@uml').findByTestId('Annotated element').findByTestId('reference-value-Class').should('be.visible');
   });

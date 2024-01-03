@@ -168,15 +168,11 @@ public class UMLProfileService implements IUMLProfileService {
 
                     if (umlProfileOptional.isPresent()) {
                         Profile profile = umlProfileOptional.get();
-                        if (this.isProfileApplicable(pack, profile)) {
-                            pack.applyProfile(profile);
-                            this.registerInPackageRegistry(resourceSet, profile);
-                            payload = new ApplyProfileSuccessPayload(input.id());
+                        pack.applyProfile(profile);
+                        this.registerInPackageRegistry(resourceSet, profile);
+                        payload = new ApplyProfileSuccessPayload(input.id());
 
-                            return payload;
-                        } else {
-                            errorMessage = MessageFormat.format("The profile with id {0} is already applied on the package with id {1}", profileURI, packageUMLId); //$NON-NLS-1$
-                        }
+                        return payload;
                     } else {
                         errorMessage = MessageFormat.format("No profile found with id {0}", profileURI); //$NON-NLS-1$
                     }
@@ -202,10 +198,6 @@ public class UMLProfileService implements IUMLProfileService {
         if (packageRegistry.getEPackage(nsURI) == null) {
             packageRegistry.put(nsURI, definition);
         }
-    }
-
-    private boolean isProfileApplicable(Package pack, Profile profile) {
-        return !pack.getAppliedProfiles().contains(profile);
     }
 
     @Override
