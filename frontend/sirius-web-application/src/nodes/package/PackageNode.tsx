@@ -37,7 +37,6 @@ const packageNodeStyle = (
 ): React.CSSProperties => {
   const packageContainerStyle: React.CSSProperties = {
     display: 'flex',
-    overflow: 'hidden',
     padding: '0px',
     width: '100%',
     height: '100%',
@@ -75,6 +74,7 @@ const packageHeaderStyle = (
     borderRightColor: getCSSColor(String(style.borderColor), theme),
     borderLeftColor: getCSSColor(String(style.borderColor), theme),
     borderTopColor: getCSSColor(String(style.borderColor), theme),
+    overflowX: 'clip',
   };
 
   if (selected) {
