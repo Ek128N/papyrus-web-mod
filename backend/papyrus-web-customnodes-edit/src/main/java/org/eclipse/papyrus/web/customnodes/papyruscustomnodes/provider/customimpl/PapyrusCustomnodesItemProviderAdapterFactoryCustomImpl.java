@@ -1,0 +1,61 @@
+/*****************************************************************************
+ * Copyright (c) 2024 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+package org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.customimpl;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.PapyrusCustomnodesItemProviderAdapterFactory;
+
+/**
+ * Custom implementation of {@link PapyrusCustomnodesItemProviderAdapterFactory}.
+ *
+ * @author Jerome Gout
+ */
+public class PapyrusCustomnodesItemProviderAdapterFactoryCustomImpl extends PapyrusCustomnodesItemProviderAdapterFactory {
+
+    @Override
+    public Adapter createEllipseNodeStyleDescriptionAdapter() {
+        if (this.ellipseNodeStyleDescriptionItemProvider == null) {
+            this.ellipseNodeStyleDescriptionItemProvider = new EllipseNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+
+        return this.ellipseNodeStyleDescriptionItemProvider;
+    }
+
+    @Override
+    public Adapter createNoteNodeStyleDescriptionAdapter() {
+        if (this.noteNodeStyleDescriptionItemProvider == null) {
+            this.noteNodeStyleDescriptionItemProvider = new NoteNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+
+        return this.noteNodeStyleDescriptionItemProvider;
+    }
+
+    @Override
+    public Adapter createPackageNodeStyleDescriptionAdapter() {
+        if (this.packageNodeStyleDescriptionItemProvider == null) {
+            this.packageNodeStyleDescriptionItemProvider = new PackageNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+
+        return this.packageNodeStyleDescriptionItemProvider;
+    }
+
+    @Override
+    public Adapter createRectangleWithExternalLabelNodeStyleDescriptionAdapter() {
+        if (this.rectangleWithExternalLabelNodeStyleDescriptionItemProvider == null) {
+            this.rectangleWithExternalLabelNodeStyleDescriptionItemProvider = new RectangleWithExternalLabelNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+
+        return this.rectangleWithExternalLabelNodeStyleDescriptionItemProvider;
+    }
+}

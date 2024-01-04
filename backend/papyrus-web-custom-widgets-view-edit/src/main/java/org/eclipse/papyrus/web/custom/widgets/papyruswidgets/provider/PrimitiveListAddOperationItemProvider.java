@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under
@@ -97,13 +97,13 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This returns CreateInstance.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns PrimitiveListAddOperation.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CreateInstance.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/PrimitiveListAddOperation"));
     }
 
     /**

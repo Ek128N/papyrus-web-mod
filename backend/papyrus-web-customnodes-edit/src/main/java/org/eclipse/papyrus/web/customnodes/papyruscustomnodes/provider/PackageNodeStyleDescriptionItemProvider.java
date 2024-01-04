@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 CEA LIST, Obeo
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -211,11 +211,11 @@ public class PackageNodeStyleDescriptionItemProvider extends StyleItemProvider {
     /**
      * This returns PackageNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/PackageNodeStyle.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/PackageNodeStyleDescription"));
     }
 
     /**

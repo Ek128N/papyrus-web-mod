@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under
@@ -184,11 +184,11 @@ public class MultiReferenceWidgetDescriptionItemProvider extends WidgetDescripti
     /**
      * This returns MultiReferenceWidgetDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/multi-reference.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiReferenceWidgetDescription"));
     }
 
     /**

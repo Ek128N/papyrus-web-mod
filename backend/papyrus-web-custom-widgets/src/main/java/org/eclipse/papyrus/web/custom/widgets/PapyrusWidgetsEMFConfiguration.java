@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.PapyrusWidgetsItemProviderAdapterFactory;
+import org.eclipse.papyrus.web.custom.widgets.providers.PapyrusWidgetsItemProviderAdapterFactoryCustomImpl;
 import org.eclipse.sirius.components.emf.configuration.ChildExtenderProvider;
 import org.eclipse.sirius.components.view.form.FormPackage;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +37,7 @@ public class PapyrusWidgetsEMFConfiguration {
 
     @Bean
     public AdapterFactory papyrusWidgetsAdapterFactory() {
-        return new PapyrusWidgetsItemProviderAdapterFactory();
+        return new PapyrusWidgetsItemProviderAdapterFactoryCustomImpl();
     }
 
     @Bean

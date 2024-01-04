@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under
@@ -187,11 +187,11 @@ public interface PrimitiveListWidgetDescription extends WidgetDescription {
     void setIsEnabledExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Delete Operation</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDeleteOperation}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Delete Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
-     * @return the value of the '<em>Delete Operation</em>' containment reference list.
+     * @return the value of the '<em>Delete Operation</em>' containment reference.
+     * @see #setDeleteOperation(PrimitiveListDeleteOperation)
      * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getPrimitiveListWidgetDescription_DeleteOperation()
      * @model containment="true"
      * @generated

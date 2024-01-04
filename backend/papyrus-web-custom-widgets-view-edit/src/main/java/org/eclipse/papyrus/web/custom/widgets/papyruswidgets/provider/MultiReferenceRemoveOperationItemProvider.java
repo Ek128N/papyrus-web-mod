@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under
@@ -99,11 +99,11 @@ public class MultiReferenceRemoveOperationItemProvider extends ItemProviderAdapt
     /**
      * This returns MultiReferenceRemoveOperation.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiReferenceRemove.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiReferenceRemoveOperation"));
     }
 
     /**

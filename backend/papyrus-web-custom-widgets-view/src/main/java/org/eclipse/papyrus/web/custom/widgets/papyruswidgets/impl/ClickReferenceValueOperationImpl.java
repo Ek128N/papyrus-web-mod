@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under
@@ -42,8 +42,8 @@ import org.eclipse.sirius.components.view.Operation;
  */
 public class ClickReferenceValueOperationImpl extends MinimalEObjectImpl.Container implements ClickReferenceValueOperation {
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @see #getBody()
      * @generated
