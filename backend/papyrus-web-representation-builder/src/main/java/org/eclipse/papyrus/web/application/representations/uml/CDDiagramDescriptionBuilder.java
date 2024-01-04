@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -78,6 +78,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
+
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
 
         this.createPackageDescription(diagramDescription);
         this.createModelDescription(diagramDescription);

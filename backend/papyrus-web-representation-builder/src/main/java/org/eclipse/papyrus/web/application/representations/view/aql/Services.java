@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -73,5 +73,10 @@ public class Services {
     public static final String IS_NOT_VISUAL_DESCENDANT = "isNotVisualDescendant";
 
     public static final String REMOVE_VALUE_FROM = "removeValueFrom";
+
+    /**
+     * The name of the service that check is the root model is not a Profile model.
+     */
+    public static final String IS_NOT_PROFILE_MODEL = "isNotProfileModel";
 
 }

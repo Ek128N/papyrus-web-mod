@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.IfQuery;
+import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -70,6 +71,8 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
+
         this.createClassifierAndChildrenDescription(diagramDescription);
 
         this.createConnectorDescription(diagramDescription);
@@ -105,8 +108,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         connectorDescription.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
         // Use ConnectorEnd#partWithPort to handle complex Connector edges
         connectorDescription.setPreconditionExpression(new CallQuery(Variables.SELF)//
-                .callService("shouldDisplayConnector",
-                        Variables.SEMANTIC_EDGE_SOURCE, //
+                .callService("shouldDisplayConnector", Variables.SEMANTIC_EDGE_SOURCE, //
                         Variables.SEMANTIC_EDGE_TARGET, //
                         Variables.GRAPHICAL_EDGE_SOURCE, //
                         Variables.GRAPHICAL_EDGE_TARGET, //

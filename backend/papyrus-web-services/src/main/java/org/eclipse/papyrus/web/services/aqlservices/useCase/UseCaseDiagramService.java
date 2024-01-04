@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -135,17 +135,5 @@ public class UseCaseDiagramService extends AbstractDiagramService {
             useCaseCandidates = classifierContainer.getOwnedUseCases();
         }
         return useCaseCandidates;
-    }
-
-    /**
-     * Check if the resource of a given {@link Object} is not a Profile model.
-     *
-     * @param context
-     *            context used to create diagram on
-     *
-     * @return <code>true</code> if the resource is a profile model, <code>false</code> otherwise.
-     */
-    public boolean isNotProfileModel(EObject context) {
-        return !this.isContainedInProfileResource(context);
     }
 }

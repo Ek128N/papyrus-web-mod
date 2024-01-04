@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
+import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -104,7 +105,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         // create diagram tool sections
         this.createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
-        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.IS_NOT_PROFILE_MODEL));
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
 
         // create node descriptions with their tools
         this.createDiagramActivityAsSubjectDescription(diagramDescription);
