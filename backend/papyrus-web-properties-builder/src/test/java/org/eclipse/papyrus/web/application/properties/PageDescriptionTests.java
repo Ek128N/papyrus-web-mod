@@ -96,7 +96,7 @@ public class PageDescriptionTests {
             if (name == null || name.isBlank()) {
                 result.add(Status.error("Missing name on" + d));
             } else if (pageName.contains(name)) {
-                result.add(Status.error("Dupplicated name" + d.getName()));
+                result.add(Status.error("Duplicated name" + d.getName()));
             } else {
                 pageName.add(name);
             }
