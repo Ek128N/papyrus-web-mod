@@ -51,7 +51,7 @@ public class EditingContextProfileLastVersionDataFetcher implements IDataFetcher
     @Override
     public CompletableFuture<UMLProfileVersion> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
-        String elementId = environment.getArgument("profileId"); //$NON-NLS-1$
+        String elementId = environment.getArgument("profileId");
 
         GetProfileLastVersionInput input = new GetProfileLastVersionInput(UUID.randomUUID(), elementId);
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)//

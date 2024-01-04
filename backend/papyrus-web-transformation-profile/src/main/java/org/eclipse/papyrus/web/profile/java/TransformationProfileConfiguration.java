@@ -37,10 +37,10 @@ public class TransformationProfileConfiguration {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("Initializing EPackage Registry for Transformation profile"); //$NON-NLS-1$
+        LOGGER.info("Initializing EPackage Registry for Transformation profile");
         Map<String, URI> ePackageNsURIToProfileLocationMap = UMLPlugin.getEPackageNsURIToProfileLocationMap();
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/Transformation/1", //$NON-NLS-1$
-                URI.createURI("pathmap://TRAFO_PROFILE/Transformation.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ")); //$NON-NLS-1$
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/Transformation/1",
+                URI.createURI("pathmap://TRAFO_PROFILE/Transformation.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"));
     }
 
     @Bean

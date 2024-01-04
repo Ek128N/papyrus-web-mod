@@ -69,13 +69,13 @@ public class ProfileDiagramServiceTests extends AbstractDiagramTest {
         // initialize root profile
         Profile profile = this.create(Profile.class);
         PackageImport packageImport = this.create(PackageImport.class);
-        Model umlModel = (Model) this.getResourceSet().getEObject(URI.createURI("pathmap://UML_METAMODELS/UML.metamodel.uml#_0"), true); //$NON-NLS-1$
+        Model umlModel = (Model) this.getResourceSet().getEObject(URI.createURI("pathmap://UML_METAMODELS/UML.metamodel.uml#_0"), true);
         packageImport.setImportedPackage(umlModel);
 
         // create elementImport with Metaclass
         ElementImport elementImport = this.create(ElementImport.class);
         Class metaClass = EMFUtils.allContainedObjectOfType(umlModel, Class.class)//
-                .filter(s -> "Actor".equals(s.getName()))// //$NON-NLS-1$
+                .filter(s -> "Actor".equals(s.getName()))//
                 .findFirst().get();
         elementImport.setImportedElement(metaClass);
         profile.getElementImports().add(elementImport);

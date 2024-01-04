@@ -42,7 +42,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class UMLProjectTemplateInitializer implements IProjectTemplateInitializer {
-    private static final String UML_MODEL_TITLE = "Model.uml"; //$NON-NLS-1$
+    private static final String UML_MODEL_TITLE = "Model.uml";
 
     private final Logger logger = LoggerFactory.getLogger(UMLProjectTemplateInitializer.class);
 
@@ -83,11 +83,11 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
 
     private Optional<RepresentationMetadata> initializeUMLWithPrimitivesProjectContents(IEditingContext editingContext) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml"); //$NON-NLS-1$
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml");
             return resource.flatMap(r -> this.createPackageDiagram(editingContext, r))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
-            this.logger.error("Error while creating template", e); //$NON-NLS-1$
+            this.logger.error("Error while creating template", e);
         }
         return Optional.empty();
     }
@@ -100,7 +100,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                 .getConvertedNode(PADDiagramDescriptionBuilder.PD_REP_NAME);
 
         return this.diagramBuilderService
-                .createDiagram(editingContext, diagramDescription -> PADDiagramDescriptionBuilder.PD_REP_NAME.equals(diagramDescription.getLabel()), model, "Root Package Diagram") //$NON-NLS-1$
+                .createDiagram(editingContext, diagramDescription -> PADDiagramDescriptionBuilder.PD_REP_NAME.equals(diagramDescription.getLabel()), model, "Root Package Diagram")
                 .flatMap(diagram -> {
                     return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
                         this.packageDiagramService.semanticDrop(model, null, editingContext, diagramContext, convertedNodes);

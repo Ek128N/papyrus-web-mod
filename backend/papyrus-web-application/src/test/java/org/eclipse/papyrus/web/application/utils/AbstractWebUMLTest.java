@@ -63,7 +63,7 @@ public class AbstractWebUMLTest {
     private IEditingContext editingContext;
 
     static {
-        POSTGRESQL_CONTAINER = new PostgreSQLContainer<>("postgres:latest").withReuse(true); //$NON-NLS-1$
+        POSTGRESQL_CONTAINER = new PostgreSQLContainer<>("postgres:latest").withReuse(true);
         POSTGRESQL_CONTAINER.start();
     }
 
@@ -80,9 +80,9 @@ public class AbstractWebUMLTest {
     // Plug emulated database in application
     @DynamicPropertySource
     public static void registerProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl); //$NON-NLS-1$
-        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername); //$NON-NLS-1$
-        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword); //$NON-NLS-1$
+        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
+        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
     }
 
     protected IObjectService getObjectService() {

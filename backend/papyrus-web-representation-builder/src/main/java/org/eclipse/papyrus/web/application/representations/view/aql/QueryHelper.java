@@ -49,9 +49,9 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
  */
 public class QueryHelper {
 
-    public static final String AQL_PREFIX = "aql:"; //$NON-NLS-1$
+    public static final String AQL_PREFIX = "aql:";
 
-    private static final String S_SEP = "'"; //$NON-NLS-1$
+    private static final String S_SEP = "'";
 
     private final IDomainHelper metamodelHelper;
 
@@ -172,7 +172,7 @@ public class QueryHelper {
 
     public String queryAddValueTo(String variable, EStructuralFeature feature, String value) {
         if (!feature.isMany()) {
-            throw new IllegalStateException("Expected a many valuated feature"); //$NON-NLS-1$
+            throw new IllegalStateException("Expected a many valuated feature");
         }
         return new CallQuery(variable).callService(Services.ADD_VALUE_TO_SERVICE, S_SEP + feature.getName() + S_SEP, value);
     }
@@ -191,7 +191,7 @@ public class QueryHelper {
      * @return a query
      */
     public String queryDestroyNode() {
-        return queryServiceOnSelf(Services.DESTROY_SERVICE, DIAGRAM_CONTEXT, SELECTED_NODE, DELETION_POLICY); // $NON-NLS-1$
+        return queryServiceOnSelf(Services.DESTROY_SERVICE, DIAGRAM_CONTEXT, SELECTED_NODE, DELETION_POLICY);
     }
 
     /**
@@ -200,11 +200,11 @@ public class QueryHelper {
      * @return a query
      */
     public String queryDestroyEdge() {
-        return queryServiceOnSelf(Services.DESTROY_SERVICE, DIAGRAM_CONTEXT, SELECTED_EDGE, DELETION_POLICY); // $NON-NLS-1$
+        return queryServiceOnSelf(Services.DESTROY_SERVICE, DIAGRAM_CONTEXT, SELECTED_EDGE, DELETION_POLICY);
     }
 
     public String emptyString() {
-        return AQL_PREFIX + "''"; //$NON-NLS-1$
+        return AQL_PREFIX + "''";
     }
 
     /**

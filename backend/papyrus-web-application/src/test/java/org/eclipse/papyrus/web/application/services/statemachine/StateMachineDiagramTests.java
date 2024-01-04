@@ -69,19 +69,19 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
 
     private static final String SMD_FINALSTATE_NODE_NAME = ID_BUILDER.getDomainNodeName(UML.getFinalState());
 
-    private static final String SMD_PSEUDOSTATE_IN_REGION_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "InRegion"); //$NON-NLS-1$
+    private static final String SMD_PSEUDOSTATE_IN_REGION_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "InRegion");
 
-    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_MACHINE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "BorderNode_InStateMachine"); //$NON-NLS-1$
+    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_MACHINE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "BorderNode_InStateMachine");
 
-    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "BorderNode_InState"); //$NON-NLS-1$
+    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "BorderNode_InState");
 
     private static final String SMD_TRANSITION_EDGE_NAME = ID_BUILDER.getDomainBaseEdgeId(UML.getTransition());
 
-    private static final String STATE1 = "state1"; //$NON-NLS-1$
+    private static final String STATE1 = "state1";
 
-    private static final String ENTRYPOINT_IN_SM = "pseudostateInSM"; //$NON-NLS-1$
+    private static final String ENTRYPOINT_IN_SM = "pseudostateInSM";
 
-    private static final String ENTRYPOINT_IN_STATE1 = "pseudostateInState1"; //$NON-NLS-1$
+    private static final String ENTRYPOINT_IN_STATE1 = "pseudostateInState1";
 
     private State state1;
 
@@ -165,11 +165,11 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
 
         // check that the StateMachine node is created
         Node stateMachineNode = this.getDiagramHelper().assertGetUniqueMatchingNode(SMD_STATEMACHINE_NODE_NAME, this.stateMachine);
-        assertNotNull("The StateMachine node should be created at the diagram refresh because it is synchronized", stateMachineNode); //$NON-NLS-1$
+        assertNotNull("The StateMachine node should be created at the diagram refresh because it is synchronized", stateMachineNode);
 
         // check that the Region node is created
         Node regionNode = this.getRegionInSMNode();
-        assertNotNull("The Region node should be created because it is synchronized", regionNode); //$NON-NLS-1$
+        assertNotNull("The Region node should be created because it is synchronized", regionNode);
     }
 
     @Test

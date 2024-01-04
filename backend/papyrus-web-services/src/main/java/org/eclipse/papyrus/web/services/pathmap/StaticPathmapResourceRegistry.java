@@ -24,9 +24,9 @@ import org.springframework.core.io.ClassPathResource;
  * @author lfasani
  */
 public class StaticPathmapResourceRegistry implements IStaticPathmapResourceRegistry {
-    private static final String PROTOCOL_PATHMAP = "pathmap"; //$NON-NLS-1$
+    private static final String PROTOCOL_PATHMAP = "pathmap";
 
-    private static final String PREFIX = PROTOCOL_PATHMAP + "://"; //$NON-NLS-1$
+    private static final String PREFIX = PROTOCOL_PATHMAP + "://";
 
     private final Map<URI, ClassPathResource> resourceUriToClassPath = new LinkedHashMap<>();
 

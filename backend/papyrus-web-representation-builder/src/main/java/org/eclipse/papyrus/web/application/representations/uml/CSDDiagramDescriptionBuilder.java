@@ -43,13 +43,13 @@ import org.eclipse.uml2.uml.UMLPackage;
  */
 public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescriptionBuilder {
 
-    public static final String CSD_PREFIX = "CSD_"; //$NON-NLS-1$
+    public static final String CSD_PREFIX = "CSD_";
 
-    public static final String CSD_REP_NAME = "Composite Structure Diagram"; //$NON-NLS-1$
+    public static final String CSD_REP_NAME = "Composite Structure Diagram";
 
-    public static final String IN_PROPERTY = "_InProperty"; //$NON-NLS-1$
+    public static final String IN_PROPERTY = "_InProperty";
 
-    public static final String IN_CLASSIFIER = "_InClassifier"; //$NON-NLS-1$
+    public static final String IN_CLASSIFIER = "_InClassifier";
 
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
@@ -105,7 +105,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         connectorDescription.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
         // Use ConnectorEnd#partWithPort to handle complex Connector edges
         connectorDescription.setPreconditionExpression(new CallQuery(Variables.SELF)//
-                .callService("shouldDisplayConnector", //$NON-NLS-1$
+                .callService("shouldDisplayConnector",
                         Variables.SEMANTIC_EDGE_SOURCE, //
                         Variables.SEMANTIC_EDGE_TARGET, //
                         Variables.GRAPHICAL_EDGE_SOURCE, //
@@ -207,9 +207,9 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         // Create property children
         String typeVariable = queryAttributeOnSelf(this.pack.getTypedElement_Type());
-        String childrenSemanticCandidateExpression = IfQuery.ifExpression(instanceOf(typeVariable, this.pack.getClassifier(), this.getUmlMetaModelHelper())) // $NON-NLS-1$
-                .then(new CallQuery(typeVariable).callOperation(this.pack.getClassifier__AllAttributes())) // $NON-NLS-1$
-                .orElse("Sequence{}").toQuery(); //$NON-NLS-1$
+        String childrenSemanticCandidateExpression = IfQuery.ifExpression(instanceOf(typeVariable, this.pack.getClassifier(), this.getUmlMetaModelHelper())) //
+                .then(new CallQuery(typeVariable).callOperation(this.pack.getClassifier__AllAttributes())) //
+                .orElse("Sequence{}").toQuery();
 
         this.csdPropertyOnProperty = this.getViewBuilder().createSpecializedUnsynchonizedNodeDescription(this.pack.getProperty(), childrenSemanticCandidateExpression, IN_PROPERTY);
 
@@ -228,7 +228,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .then(//
                         new CallQuery(typeVariable)//
                                 .callOperation(this.pack.getClassifier__AllAttributes()))
-                .orElse("Sequence{}").toQuery(); //$NON-NLS-1$
+                .orElse("Sequence{}").toQuery();
 
         NodeDescription port = this.getViewBuilder().createSpecializedPortUnsynchonizedNodeDescription(IN_PROPERTY, this.pack.getPort(), semanticCandidateExpression);
 

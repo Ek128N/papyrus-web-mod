@@ -37,10 +37,10 @@ public class CodegenProfileConfiguration {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("Initializing EPackage Registry for Codegen profile"); //$NON-NLS-1$
+        LOGGER.info("Initializing EPackage Registry for Codegen profile");
         Map<String, URI> ePackageNsURIToProfileLocationMap = UMLPlugin.getEPackageNsURIToProfileLocationMap();
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/Codegen/1", //$NON-NLS-1$
-                URI.createURI("pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ")); //$NON-NLS-1$
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/Codegen/1",
+                URI.createURI("pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"));
     }
 
     @Bean

@@ -41,11 +41,11 @@ import org.junit.jupiter.api.Test;
  */
 public class CodingRulesTests extends AbstractCodingRulesTests {
 
-    private static final String IS = "is"; //$NON-NLS-1$
+    private static final String IS = "is";
 
-    private static final String GET = "get"; //$NON-NLS-1$
+    private static final String GET = "get";
 
-    private static final String TESTCASE_SUFFIX = "TestCases"; //$NON-NLS-1$
+    private static final String TESTCASE_SUFFIX = "TestCases";
 
     @Override
     protected String getProjectRootPackage() {
@@ -136,7 +136,7 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
     }
 
     private DescribedPredicate<JavaClass> isNotTestCase() {
-        return new DescribedPredicate<>("is not a test case") { //$NON-NLS-1$
+        return new DescribedPredicate<>("is not a test case") {
             @Override
             public boolean apply(JavaClass javaClass) {
                 return !javaClass.getName().endsWith(TESTCASE_SUFFIX);
@@ -150,10 +150,10 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
      * @return A predicate which will help us ignore lambda methods
      */
     private DescribedPredicate<JavaMethod> isNotLambda() {
-        return new DescribedPredicate<>("is not a lambda") { //$NON-NLS-1$
+        return new DescribedPredicate<>("is not a lambda") {
             @Override
             public boolean apply(JavaMethod javaMethod) {
-                return !javaMethod.getName().startsWith("lambda$"); //$NON-NLS-1$
+                return !javaMethod.getName().startsWith("lambda$");
             }
         };
     }
@@ -171,7 +171,7 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
      * @return A predicate which can be used to identify business code in a class
      */
     private ArchCondition<JavaClass> notContainBusinessCode() {
-        return new ArchCondition<>("not contain business code") { //$NON-NLS-1$
+        return new ArchCondition<>("not contain business code") {
             @Override
             public void check(JavaClass javaClass, ConditionEvents events) {
                 boolean isConditionSatisfied = true;
@@ -195,9 +195,9 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
                     }
                 }
 
-                String message = "The abstract class does not have any business code"; //$NON-NLS-1$
+                String message = "The abstract class does not have any business code";
                 if (!isConditionSatisfied) {
-                    String pattern = "The abstract class {0} does contain business code, please favor composition over inheritance to share business code"; //$NON-NLS-1$
+                    String pattern = "The abstract class {0} does contain business code, please favor composition over inheritance to share business code";
                     message = MessageFormat.format(pattern, javaClass.getSimpleName());
                 }
                 events.add(new SimpleConditionEvent(javaClass, isConditionSatisfied, message));
@@ -212,10 +212,10 @@ public class CodingRulesTests extends AbstractCodingRulesTests {
      * @return A predicate which help us ignore switch expressions
      */
     private DescribedPredicate<JavaMethod> isNotSwitchTable() {
-        return new DescribedPredicate<>("is not a switch table (whatever that is...)") { //$NON-NLS-1$
+        return new DescribedPredicate<>("is not a switch table (whatever that is...)") {
             @Override
             public boolean apply(JavaMethod javaMethod) {
-                return !javaMethod.getFullName().contains("$SWITCH_TABLE$"); //$NON-NLS-1$
+                return !javaMethod.getFullName().contains("$SWITCH_TABLE$");
             }
         };
     }

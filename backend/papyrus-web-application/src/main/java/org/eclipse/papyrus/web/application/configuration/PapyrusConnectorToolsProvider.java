@@ -100,10 +100,9 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
     }
 
     private ITool newNoOpTool() {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("PapyrusMagicEdgeTool") //$NON-NLS-1$
-                .appliesToDiagramRoot(false)//
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("PapyrusMagicEdgeTool").appliesToDiagramRoot(false)//
                 .handler(v -> new Success(ChangeKind.NOTHING, Map.of()))//
-                .label("None")// //$NON-NLS-1$
+                .label("None")//
                 .targetDescriptions(List.of())//
                 .build();
     }

@@ -131,14 +131,14 @@ public final class SynchronizedDomainBasedEdgeCreationTestHelper {
 
         Optional<Object> optSemanticSource = this.objectService.getObject(this.editingContext, sourceNode.getTargetObjectId());
         if (optSemanticSource.isEmpty()) {
-            fail("Unable to find semantic target element of " + sourceNode); //$NON-NLS-1$
+            fail("Unable to find semantic target element of " + sourceNode);
         }
 
         EObject semanticSource = (EObject) optSemanticSource.get();
 
         Optional<Object> optSemanticTarget = this.objectService.getObject(this.editingContext, targetNode.getTargetObjectId());
         if (optSemanticTarget.isEmpty()) {
-            fail("Unable to find semantic target element of " + targetNode); //$NON-NLS-1$
+            fail("Unable to find semantic target element of " + targetNode);
         }
 
         EObject semanticTarget = (EObject) optSemanticTarget.get();

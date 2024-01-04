@@ -94,7 +94,7 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
     private View createView(ResourceSet resourceSet, String representatioName) {
         // Required to have a unique URIs - workaround https://github.com/eclipse-sirius/sirius-components/issues/1345
         View view = ViewFactory.eINSTANCE.createView();
-        JsonResourceImpl impl = new JsonResourceImpl(URI.createURI("papyrus-rep:///papyrus-web-" + URI.encodeOpaquePart(representatioName, false)), this.ePackagesRegistry); //$NON-NLS-1$
+        JsonResourceImpl impl = new JsonResourceImpl(URI.createURI("papyrus-rep:///papyrus-web-" + URI.encodeOpaquePart(representatioName, false)), this.ePackagesRegistry);
         resourceSet.getResources().add(impl);
         impl.getContents().add(view);
 
@@ -110,7 +110,7 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         for (var description : representationDescriptions) {
             if (description instanceof org.eclipse.sirius.components.diagrams.description.DiagramDescription) {
                 this.viewRegistry.add(diagramDescription, (org.eclipse.sirius.components.diagrams.description.DiagramDescription) description);
-                LOGGER.info(MessageFormat.format("Contributing representation {0} with id{1}", description.getLabel(), description.getId())); //$NON-NLS-1$
+                LOGGER.info(MessageFormat.format("Contributing representation {0} with id{1}", description.getLabel(), description.getId()));
             }
         }
     }

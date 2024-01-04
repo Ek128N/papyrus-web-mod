@@ -57,7 +57,7 @@ public class WebDiagramElementCreator {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
 
         if (parent == null || type == null || referenceName == null) {
-            return CreationStatus.createFailingStatus(MessageFormat.format("Invalid input for creation (parent ={0} type ={1} referenceName = {2})", parent, type, referenceName)); //$NON-NLS-1$
+            return CreationStatus.createFailingStatus(MessageFormat.format("Invalid input for creation (parent ={0} type ={1} referenceName = {2})", parent, type, referenceName));
         }
 
         CreationStatus status = this.elementCreator.create(parent, type, referenceName);

@@ -72,7 +72,7 @@ public class UMLProfileService implements IUMLProfileService {
     /**
      * This prefix is used to reference the dynamic profile.
      */
-    public static final String WEB_DYNAMIC_PROFILE_RESOURCE_PREFIX = "pathmap://WEB_DYNAMIC_PROFILE/"; //$NON-NLS-1$
+    public static final String WEB_DYNAMIC_PROFILE_RESOURCE_PREFIX = "pathmap://WEB_DYNAMIC_PROFILE/";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UMLProfileService.class);
 
@@ -116,7 +116,7 @@ public class UMLProfileService implements IUMLProfileService {
                 if (eAnnotation != null) {
                     version = eAnnotation.getDetails().get("Version");
                 }
-                return new UMLProfileMetadata(profile.getName(), resource.getURI() + "#" + profileId, version); //$NON-NLS-1$
+                return new UMLProfileMetadata(profile.getName(), resource.getURI() + "#" + profileId, version);
             }).toList();
         } catch (IOException exception) {
             LOGGER.warn(exception.getMessage(), exception);
@@ -142,7 +142,7 @@ public class UMLProfileService implements IUMLProfileService {
 
     private Resource createResource(String resourceId) {
         URI resourceUri = URI.createURI(UMLProfileService.WEB_DYNAMIC_PROFILE_RESOURCE_PREFIX + resourceId);
-        Resource.Factory factory = (Factory) this.factoryRegistry.getExtensionToFactoryMap().get("uml"); //$NON-NLS-1$
+        Resource.Factory factory = (Factory) this.factoryRegistry.getExtensionToFactoryMap().get("uml");
         return factory.createResource(resourceUri);
     }
 
@@ -155,7 +155,7 @@ public class UMLProfileService implements IUMLProfileService {
                 .filter(Package.class::isInstance)//
                 .map(Package.class::cast);
 
-        String errorMessage = "The profile application failed"; //$NON-NLS-1$
+        String errorMessage = "The profile application failed";
         if (umlPackageOptional.isPresent()) {
             Package pack = umlPackageOptional.get();
 
@@ -174,15 +174,15 @@ public class UMLProfileService implements IUMLProfileService {
 
                         return payload;
                     } else {
-                        errorMessage = MessageFormat.format("No profile found with id {0}", profileURI); //$NON-NLS-1$
+                        errorMessage = MessageFormat.format("No profile found with id {0}", profileURI);
                     }
                     // CHECKSTYLE:OFF
                 } catch (RuntimeException e) {
-                    errorMessage = MessageFormat.format("No profile found with id {0} : {1}", profileURI, e.getMessage()); //$NON-NLS-1$
+                    errorMessage = MessageFormat.format("No profile found with id {0} : {1}", profileURI, e.getMessage());
                 }
             }
         } else {
-            errorMessage = MessageFormat.format("No Package found with id {0}", packageUMLId); //$NON-NLS-1$
+            errorMessage = MessageFormat.format("No Package found with id {0}", packageUMLId);
         }
 
         LOGGER.error(errorMessage);
@@ -243,23 +243,23 @@ public class UMLProfileService implements IUMLProfileService {
 
     private Optional<UMLProfileVersion> getVersionFromProfile(Profile profile) {
         Optional<UMLProfileVersion> versionOpt = Optional.empty();
-        EAnnotation eAnnotationMain = profile.getEAnnotation("http://www.eclipse.org/uml2/2.0.0/UML"); //$NON-NLS-1$
+        EAnnotation eAnnotationMain = profile.getEAnnotation("http://www.eclipse.org/uml2/2.0.0/UML");
         Optional<EPackage> ePackageOpt = eAnnotationMain.getContents().stream()//
                 .filter(EPackage.class::isInstance)//
                 .map(EPackage.class::cast)//
                 .findFirst();
         if (ePackageOpt.isPresent()) {
-            versionOpt = ePackageOpt.map(ePackage -> ((EModelElement) ePackage).getEAnnotation("PapyrusVersion"))// //$NON-NLS-1$
-                    .map(eAnnotation -> eAnnotation.getDetails().get("Version")) // //$NON-NLS-1$
+            versionOpt = ePackageOpt.map(ePackage -> ((EModelElement) ePackage).getEAnnotation("PapyrusVersion"))//
+                    .map(eAnnotation -> eAnnotation.getDetails().get("Version")) //
                     .map(strVersion -> {
                         UMLProfileVersion profileLastVersion = null;
-                        String[] versions = strVersion.split("\\."); //$NON-NLS-1$
+                        String[] versions = strVersion.split("\\.");
                         if (versions.length == 3) {
                             try {
                                 profileLastVersion = new UMLProfileVersion(Integer.parseInt(versions[0]), Integer.parseInt(versions[1]), Integer.parseInt(versions[2]));
                             } catch (NumberFormatException e) {
-                                LOGGER.error(MessageFormat.format("Invalid version format of profile {0} in profile resource with id {0}", profile.getName(), //$NON-NLS-1$
-                                        profile.eResource().getURI().lastSegment()));
+                                LOGGER.error(
+                                        MessageFormat.format("Invalid version format of profile {0} in profile resource with id {0}", profile.getName(), profile.eResource().getURI().lastSegment()));
                             }
                         }
 
@@ -281,7 +281,7 @@ public class UMLProfileService implements IUMLProfileService {
         if (profileOpt.isPresent()) {
             payload = this.doPublishProfile(editingContext, publishProfileInput, profileOpt.get());
         } else {
-            payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". No profile with id " + publishProfileInput.objectId()); //$NON-NLS-1$
+            payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". No profile with id " + publishProfileInput.objectId());
         }
 
         return payload;
@@ -318,19 +318,19 @@ public class UMLProfileService implements IUMLProfileService {
                 if (profilePublish) {
                     payload = new PublishProfileSuccessPayload(publishProfileInput.id());
                 } else {
-                    payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". Failed to save the profile."); //$NON-NLS-1$
+                    payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". Failed to save the profile.");
                 }
             } else {
-                payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". Failed to generate the ecore EPackage meta-model."); //$NON-NLS-1$
+                payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". Failed to generate the ecore EPackage meta-model.");
             }
         } else {
-            payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". The profile is not a root profile."); //$NON-NLS-1$
+            payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". The profile is not a root profile.");
         }
         return payload;
     }
 
     private ErrorPayload buildErrorPublishProfilePayload(UUID inputId, String message) {
-        String baseMsg = MessageFormat.format("Failed to publish the dynamic profile of id {0}", inputId); //$NON-NLS-1$
+        String baseMsg = MessageFormat.format("Failed to publish the dynamic profile of id {0}", inputId);
         return new ErrorPayload(inputId, baseMsg + message);
     }
 

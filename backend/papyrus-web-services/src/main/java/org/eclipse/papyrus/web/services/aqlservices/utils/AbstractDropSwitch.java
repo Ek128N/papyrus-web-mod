@@ -39,7 +39,7 @@ public class AbstractDropSwitch extends UMLSwitch<Boolean> {
     // Duplicated from org.eclipse.papyrus.web.application.representations.IdBuilder
     // Keep in sync
     // Workaround https://github.com/PapyrusSirius/papyrus-web/issues/165
-    protected static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$
+    protected static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode";
 
     /**
      * Logger used to log error when Drag and Drop fails.

@@ -28,13 +28,13 @@ public class TransformationPathMapProvider implements IPathMapProvider {
 
     @Override
     public List<PathMapMetadata> getPathmaps() {
-        return List.of(new PathMapMetadata("TRAFO_PROFILE/Transformation.profile.uml", "model/Transformation.profile.uml")); //$NON-NLS-1$ //$NON-NLS-2$
+        return List.of(new PathMapMetadata("TRAFO_PROFILE/Transformation.profile.uml", "model/Transformation.profile.uml"));
         // TODO
         // Waiting for refactoring of org.eclipse.papyrus.designer.transformation.library to remove incompatible
         // dependencies
-        // new PathMapMetadata("DML_TRAFO/sysinterfaces.uml", "models/library/sysinterfaces.uml"), //$NON-NLS-1$
-        // //$NON-NLS-2$
-        // new PathMapMetadata("DML_TRAFO/trafos.uml", "models/library/trafos.uml")//$NON-NLS-1$ //$NON-NLS-2$
+        // new PathMapMetadata("DML_TRAFO/sysinterfaces.uml", "models/library/sysinterfaces.uml"),
+        //
+        // new PathMapMetadata("DML_TRAFO/trafos.uml", "models/library/trafos.uml")
         // );
     }
 

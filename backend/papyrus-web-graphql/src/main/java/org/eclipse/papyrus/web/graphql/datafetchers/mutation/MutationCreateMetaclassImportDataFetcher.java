@@ -46,7 +46,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = "Mutation", field = MutationCreateMetaclassImportDataFetcher.CREATE_METACLASS_IMPORT_FIELD)
 public class MutationCreateMetaclassImportDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String CREATE_METACLASS_IMPORT_FIELD = "createMetaclassImport"; //$NON-NLS-1$
+    public static final String CREATE_METACLASS_IMPORT_FIELD = "createMetaclassImport";
 
     private final ObjectMapper objectMapper;
 

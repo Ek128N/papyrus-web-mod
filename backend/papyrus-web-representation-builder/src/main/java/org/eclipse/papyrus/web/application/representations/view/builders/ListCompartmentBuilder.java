@@ -135,9 +135,9 @@ public class ListCompartmentBuilder {
      */
     protected NodeDescription createLabelIconInsideCompartmentDescription(NodeDescription parent) {
         NodeDescription description = new NodeDescriptionBuilder(idBuilder, queryBuilder, childrenType, viewBuider.createIconAndlabelStyle(true), metamodelHelper)//
-                .name(idBuilder.getListItemDomainNodeName(childrenType, metamodelHelper.toEClass(parent.getDomainType()))) // $NON-NLS-1$
+                .name(idBuilder.getListItemDomainNodeName(childrenType, metamodelHelper.toEClass(parent.getDomainType()))) //
                 .semanticCandidateExpression(semanticCandidateExpression)//
-                .labelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "false", "true")) // //$NON-NLS-1$ //$NON-NLS-2$
+                .labelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "false", "true")) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(createDirectEditTool())//
                 .deleteTool(viewBuider.createNodeDeleteTool(childrenType.getName()))//
@@ -145,8 +145,8 @@ public class ListCompartmentBuilder {
 
         // Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164
         NodeDescription fakeNode = new NodeDescriptionBuilder(idBuilder, queryBuilder, childrenType, viewBuider.createIconAndlabelStyle(true), metamodelHelper)//
-                .name(idBuilder.getFakeChildNodeId(description)) // $NON-NLS-1$
-                .semanticCandidateExpression("aql:Sequence{}") //$NON-NLS-1$
+                .name(idBuilder.getFakeChildNodeId(description)) //
+                .semanticCandidateExpression("aql:Sequence{}")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .build();
         registerCallback(fakeNode, () -> {
@@ -178,7 +178,7 @@ public class ListCompartmentBuilder {
      * @return a new NodeTool
      */
     private NodeTool createSiblingCreationTool(EReference containementRef, EClass newType) {
-        return viewBuider.createSiblingCreationTool(idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType); // $NON-NLS-1$
+        return viewBuider.createSiblingCreationTool(idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType);
     }
 
     private void registerCallback(EObject owner, Runnable r) {

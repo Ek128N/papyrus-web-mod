@@ -28,9 +28,9 @@ public class CppPathMapProvider implements IPathMapProvider {
 
     @Override
     public List<PathMapMetadata> getPathmaps() {
-        return List.of(new PathMapMetadata("PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml", "profiles/C_Cpp.profile.uml"), //$NON-NLS-1$ //$NON-NLS-2$
-                new PathMapMetadata("PapyrusC_Cpp_LIBRARIES/AnsiCLibrary.uml", "models/AnsiCLibrary.uml"), //$NON-NLS-1$ //$NON-NLS-2$
-                new PathMapMetadata("PapyrusC_Cpp_LIBRARIES/osal.uml", "models/osal.uml")//$NON-NLS-1$ //$NON-NLS-2$
+        return List.of(new PathMapMetadata("PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml", "profiles/C_Cpp.profile.uml"),
+                new PathMapMetadata("PapyrusC_Cpp_LIBRARIES/AnsiCLibrary.uml", "models/AnsiCLibrary.uml"),
+                new PathMapMetadata("PapyrusC_Cpp_LIBRARIES/osal.uml", "models/osal.uml")
         );
     }
 

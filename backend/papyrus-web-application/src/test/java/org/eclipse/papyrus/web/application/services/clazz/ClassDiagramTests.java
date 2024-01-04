@@ -402,9 +402,9 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Class clazz = this.createIn(Class.class, pack);
 
         Interface nestedInterface = this.createIn(Interface.class, clazz);
-        nestedInterface.setName("Interface1"); //$NON-NLS-1$
+        nestedInterface.setName("Interface1");
 
-        Profile standardProfile = (Profile) this.getResourceSet().getEObject(URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml#_0"), true); //$NON-NLS-1$
+        Profile standardProfile = (Profile) this.getResourceSet().getEObject(URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml#_0"), true);
         pack.applyProfile(standardProfile);
         assertEquals(1, pack.getAllAppliedProfiles().size());
 
@@ -416,10 +416,10 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         Node interfaceNode = this.getServiceTester().assertSemanticDrop(nestedInterface, nestedClassifierCmp, getLabelNodeId(UML.getClassifier(), UML.getClass_()));
 
         // Checks that there is no keyword and everything is on one line
-        assertEquals("Interface1", interfaceNode.getInsideLabel().getText()); //$NON-NLS-1$
+        assertEquals("Interface1", interfaceNode.getInsideLabel().getText());
 
         Stereotype stereotype = EMFUtils.allContainedObjectOfType(standardProfile, Stereotype.class)//
-                .filter(s -> "Realization".equals(s.getName()))// //$NON-NLS-1$
+                .filter(s -> "Realization".equals(s.getName()))//
                 .findFirst().get();
 
         nestedInterface.applyStereotype(stereotype);
@@ -429,7 +429,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         this.getDiagramHelper().refresh();
 
         interfaceNode = this.getDiagramHelper().assertGetUniqueMatchingNode(getLabelNodeId(UML.getClassifier(), UML.getClass_()), nestedInterface);
-        assertEquals(UMLCharacters.ST_LEFT + "Realization" + UMLCharacters.ST_RIGHT + " Interface1", interfaceNode.getInsideLabel().getText()); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals(UMLCharacters.ST_LEFT + "Realization" + UMLCharacters.ST_RIGHT + " Interface1", interfaceNode.getInsideLabel().getText());
 
     }
 

@@ -28,8 +28,8 @@ public class JavaPathMapProvider implements IPathMapProvider {
 
     @Override
     public List<PathMapMetadata> getPathmaps() {
-        return List.of(new PathMapMetadata("PapyrusJava_PROFILES/PapyrusJava.profile.uml", "profiles/PapyrusJava.profile.uml"), //$NON-NLS-1$ //$NON-NLS-2$
-                new PathMapMetadata("PapyrusJava_LIBRARIES/JavaLibrary.uml", "models/JavaLibrary.uml")); //$NON-NLS-1$ //$NON-NLS-2$
+        return List.of(new PathMapMetadata("PapyrusJava_PROFILES/PapyrusJava.profile.uml", "profiles/PapyrusJava.profile.uml"),
+                new PathMapMetadata("PapyrusJava_LIBRARIES/JavaLibrary.uml", "models/JavaLibrary.uml"));
     }
 
 }

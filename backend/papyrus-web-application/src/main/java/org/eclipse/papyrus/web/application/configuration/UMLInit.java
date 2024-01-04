@@ -37,23 +37,23 @@ public class UMLInit {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("Initializing EPackage Registry"); //$NON-NLS-1$
+        LOGGER.info("Initializing EPackage Registry");
         // Those mapping are normally done using extension point in Eclipse platform
         Map<String, URI> ePackageNsURIToProfileLocationMap = UMLPlugin.getEPackageNsURIToProfileLocationMap();
 
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/Papyrus/2014/profile/profileExternalization", //$NON-NLS-1$
-                URI.createURI("pathmap://PAPYRUS_PROFILEEXT/ProfileExternalization.profile.uml#_Mzzc0EWjEeSNXJj2G3jVCw")); //$NON-NLS-1$
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/documentation", //$NON-NLS-1$
-                URI.createURI("pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA")); //$NON-NLS-1$
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard", // //$NON-NLS-1$
-                URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml#_0")); //$NON-NLS-1$
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/Papyrus/2014/common/filters", //$NON-NLS-1$
-                URI.createURI("pathmap://PAPYRUS_FILTERS/filters.uml#_u1APUG86EeSumdlFUM6GVw")); //$NON-NLS-1$
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/Papyrus/2014/diagram/assistant", //$NON-NLS-1$
-                URI.createURI("pathmap://PAPYRUS_MODELING_ASSISTANTS/assistant.merged.uml#_0")); //$NON-NLS-1$
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/ocl/2015/OCLforUML", //$NON-NLS-1$
-                URI.createURI("pathmap://OCL_PROFILES/OCLforUML.profile.uml#_0")); //$NON-NLS-1$
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/uml2/schemas/Ecore/5", //$NON-NLS-1$
-                URI.createURI("pathmap://UML_PROFILES/Ecore.profile.uml#_0")); //$NON-NLS-1$
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/Papyrus/2014/profile/profileExternalization",
+                URI.createURI("pathmap://PAPYRUS_PROFILEEXT/ProfileExternalization.profile.uml#_Mzzc0EWjEeSNXJj2G3jVCw"));
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/documentation",
+                URI.createURI("pathmap://PAPYRUS_DOCUMENTATION/Papyrus.profile.uml#_H9068AEYEeCIz8iAxBJnfA"));
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard", //
+                URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml#_0"));
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/Papyrus/2014/common/filters",
+                URI.createURI("pathmap://PAPYRUS_FILTERS/filters.uml#_u1APUG86EeSumdlFUM6GVw"));
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/Papyrus/2014/diagram/assistant",
+                URI.createURI("pathmap://PAPYRUS_MODELING_ASSISTANTS/assistant.merged.uml#_0"));
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/ocl/2015/OCLforUML",
+                URI.createURI("pathmap://OCL_PROFILES/OCLforUML.profile.uml#_0"));
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/uml2/schemas/Ecore/5",
+                URI.createURI("pathmap://UML_PROFILES/Ecore.profile.uml#_0"));
     }
 }

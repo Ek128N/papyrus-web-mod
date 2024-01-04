@@ -101,14 +101,14 @@ public class DiagramDescriptionDescriptionValidator {
                 .filter(this.excludedFromDirectEditValidation)//
                 .filter(d -> d.getPalette().getLabelEditTool() == null).forEach(d -> {
                     if (d instanceof NodeDescription || this.isDomainBasedEdge(d)) {
-                        result.add(Status.error("Missing direct edit tool on " + d.getName())); //$NON-NLS-1$
+                        result.add(Status.error("Missing direct edit tool on " + d.getName()));
                     }
                 });
         EMFUtils.allContainedObjectOfType(description, EdgeDescription.class)//
                 .filter(this.excludedFromDirectEditValidation)//
                 .filter(d -> d.getPalette().getCenterLabelEditTool() == null).forEach(d -> {
                     if (d instanceof NodeDescription || this.isDomainBasedEdge(d)) {
-                        result.add(Status.error("Missing direct edit tool on " + d.getName())); //$NON-NLS-1$
+                        result.add(Status.error("Missing direct edit tool on " + d.getName()));
                     }
                 });
         return result;
@@ -129,7 +129,7 @@ public class DiagramDescriptionDescriptionValidator {
 
         EMFUtils.allContainedObjectOfType(description, NodeDescription.class)//
                 .filter(this.excludedFromDeleteToolValidation).filter(d -> d.getPalette().getDeleteTool() == null).forEach(d -> {
-                    result.add(Status.error("Missing deletion tool on " + d.getName())); //$NON-NLS-1$
+                    result.add(Status.error("Missing deletion tool on " + d.getName()));
                 });
         return result;
     }
@@ -141,9 +141,9 @@ public class DiagramDescriptionDescriptionValidator {
         EMFUtils.allContainedObjectOfType(description, DiagramElementDescription.class).forEach(d -> {
             String name = d.getName();
             if (name == null || name.isBlank()) {
-                result.add(Status.error("Missing name on" + d)); //$NON-NLS-1$
+                result.add(Status.error("Missing name on" + d));
             } else if (names.contains(name)) {
-                result.add(Status.error("Duplicated name" + d.getName())); //$NON-NLS-1$
+                result.add(Status.error("Duplicated name" + d.getName()));
             } else {
                 names.add(name);
             }
@@ -176,12 +176,12 @@ public class DiagramDescriptionDescriptionValidator {
                 .filter(nodeDescription -> nodeDescription.getName().equals(AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS)) //
                 .toList();
         if (sharedDescriptions.size() > 1) {
-            result.add(Status.error("Duplicated " + AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS)); //$NON-NLS-1$
+            result.add(Status.error("Duplicated " + AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS));
         }
         if (!sharedDescriptions.isEmpty()) {
             NodeDescription sharedDescription = sharedDescriptions.get(0);
             if (!UMLHelper.toEClass(sharedDescription.getDomainType()).equals(UMLPackage.eINSTANCE.getElement())) {
-                String errorMessage = MessageFormat.format("{0} domain type is {1} but should be {2}", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS, sharedDescription.getDomainType(), //$NON-NLS-1$
+                String errorMessage = MessageFormat.format("{0} domain type is {1} but should be {2}", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS, sharedDescription.getDomainType(),
                         UMLPackage.eINSTANCE.getElement());
                 result.add(Status.error(errorMessage));
             }
@@ -190,11 +190,11 @@ public class DiagramDescriptionDescriptionValidator {
             for (NodeDescription childSharedDescription : childrenSharedDescriptions) {
                 List<NodeDescription> reusingNodes = this.getReusingNodes(description, childSharedDescription);
                 if (reusingNodes.size() < 2) {
-                    String errorMessage = MessageFormat.format("Shared NodeDescription {0} should be reused by at least 2 NodeDescriptions", childSharedDescription.getName()); //$NON-NLS-1$
+                    String errorMessage = MessageFormat.format("Shared NodeDescription {0} should be reused by at least 2 NodeDescriptions", childSharedDescription.getName());
                     result.add(Status.error(errorMessage));
                 }
                 if (!childSharedDescription.getName().contains(AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)) {
-                    String errorMessage = MessageFormat.format("Shared NodeDescription {0} should be suffixed by \'SHARED\'", childSharedDescription.getName()); //$NON-NLS-1$
+                    String errorMessage = MessageFormat.format("Shared NodeDescription {0} should be suffixed by \'SHARED\'", childSharedDescription.getName());
                     result.add(Status.error(errorMessage));
                 }
             }
@@ -217,27 +217,27 @@ public class DiagramDescriptionDescriptionValidator {
     private List<Status> checkNodeDescriptionHasEmptyPalette(NodeDescription nodeDescription) {
         List<Status> result = new ArrayList<>();
         if (nodeDescription.getPalette().getDeleteTool() != null) {
-            String errorMessage = MessageFormat.format("{0} shouldn't contain a delete tool", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("{0} shouldn't contain a delete tool", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS);
             result.add(Status.error(errorMessage));
         }
         if (nodeDescription.getPalette().getLabelEditTool() != null) {
-            String errorMessage = MessageFormat.format("{0} shouldn't contain a label edit tool", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("{0} shouldn't contain a label edit tool", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS);
             result.add(Status.error(errorMessage));
         }
         if (!nodeDescription.getPalette().getNodeTools().isEmpty()) {
-            String errorMessage = MessageFormat.format("{0} shouldn't contain node tools", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("{0} shouldn't contain node tools", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS);
             result.add(Status.error(errorMessage));
         }
         if (!nodeDescription.getPalette().getEdgeTools().isEmpty()) {
-            String errorMessage = MessageFormat.format("{0} shouldn't contain edge tools", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("{0} shouldn't contain edge tools", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS);
             result.add(Status.error(errorMessage));
         }
         if (!nodeDescription.getPalette().getToolSections().isEmpty()) {
-            String errorMessage = MessageFormat.format("{0} shoudln't contain tool sections", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("{0} shoudln't contain tool sections", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS);
             result.add(Status.error(errorMessage));
         }
         if (!nodeDescription.getSemanticCandidatesExpression().equals("aql:Sequence{}")) {
-            String errorMessage = MessageFormat.format("{0} semantic candidate expression should be 'aql:Sequence{}'", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("{0} semantic candidate expression should be 'aql:Sequence{}'", AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS);
             result.add(Status.error(errorMessage));
         }
         return result;
@@ -256,14 +256,14 @@ public class DiagramDescriptionDescriptionValidator {
         EMFUtils.allContainedObjectOfType(description, NodeDescription.class).forEach(nodeDescription -> {
             for (NodeDescription reusedChildNode : nodeDescription.getReusedChildNodeDescriptions()) {
                 if (!(reusedChildNode.eContainer() instanceof NodeDescription parentNode && parentNode.getName().equals(AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS))) {
-                    String errorMessage = MessageFormat.format("Reused NodeDescription {0} should be contained in {1} if it is reused at least 2 times, or be a direct children of {2}", //$NON-NLS-1$
+                    String errorMessage = MessageFormat.format("Reused NodeDescription {0} should be contained in {1} if it is reused at least 2 times, or be a direct children of {2}",
                             reusedChildNode.getName(), AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS, nodeDescription.getName());
                     results.add(Status.error(errorMessage));
                 }
             }
             for (NodeDescription reusedBorderNode : nodeDescription.getReusedBorderNodeDescriptions()) {
                 if (!(reusedBorderNode.eContainer() instanceof NodeDescription parentNode && parentNode.getName().equals(AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS))) {
-                    String errorMessage = MessageFormat.format("Reused NodeDescription {0} should be contained in {1} if it is reused at least 2 times, or be a direct children of {2}", //$NON-NLS-1$
+                    String errorMessage = MessageFormat.format("Reused NodeDescription {0} should be contained in {1} if it is reused at least 2 times, or be a direct children of {2}",
                             reusedBorderNode.getName(), AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS, nodeDescription.getName());
                     results.add(Status.error(errorMessage));
                 }

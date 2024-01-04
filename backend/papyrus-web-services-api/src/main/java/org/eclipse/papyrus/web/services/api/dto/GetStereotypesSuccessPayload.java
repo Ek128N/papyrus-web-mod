@@ -48,7 +48,7 @@ public final class GetStereotypesSuccessPayload implements IPayload {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'id: {1}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'id: {1}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.id);
     }
 }

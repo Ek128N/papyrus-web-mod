@@ -28,8 +28,8 @@ public class CodeGenPathMapProvider implements IPathMapProvider {
 
     @Override
     public List<PathMapMetadata> getPathmaps() {
-        return List.of(new PathMapMetadata("Codegen_PROFILES/Codegen.profile.uml", "profiles/Codegen.profile.uml"), //$NON-NLS-1$ //$NON-NLS-2$
-                new PathMapMetadata("Codegen_PROFILES/languages.uml", "profiles/languages.uml")); //$NON-NLS-1$ //$NON-NLS-2$
+        return List.of(new PathMapMetadata("Codegen_PROFILES/Codegen.profile.uml", "profiles/Codegen.profile.uml"),
+                new PathMapMetadata("Codegen_PROFILES/languages.uml", "profiles/languages.uml"));
     }
 
 }

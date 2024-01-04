@@ -41,7 +41,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLEMFConfiguration {
 
-    private static final String PROTOCOL_PATHMAP = "pathmap"; //$NON-NLS-1$
+    private static final String PROTOCOL_PATHMAP = "pathmap";
 
     @Bean
     public AdapterFactory umlAdapterFactory() {

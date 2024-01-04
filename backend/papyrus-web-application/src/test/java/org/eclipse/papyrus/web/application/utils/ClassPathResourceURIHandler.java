@@ -29,10 +29,10 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class ClassPathResourceURIHandler extends URIHandlerImpl {
 
-    public static final String CLASSPATH = "classpath"; //$NON-NLS-1$
+    public static final String CLASSPATH = "classpath";
 
     public static URI createURI(String path) {
-        return URI.createGenericURI(CLASSPATH, path, null); // $NON-NLS-1$
+        return URI.createGenericURI(CLASSPATH, path, null);
     }
 
     @Override

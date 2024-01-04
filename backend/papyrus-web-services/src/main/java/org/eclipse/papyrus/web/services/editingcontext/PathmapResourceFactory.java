@@ -72,18 +72,18 @@ public class PathmapResourceFactory implements Factory {
             UUID uuid = UUID.fromString(resourceUri.lastSegment());
             boolean exists = this.profileRepository.existsById(uuid);
             if (exists) {
-                return this.createResource(resourceUri, "uml"); //$NON-NLS-1$
+                return this.createResource(resourceUri, "uml");
             } else {
-                this.logger.warn("The static or dynamic resource {} does not exists : {}", resourceUri); //$NON-NLS-1$
+                this.logger.warn("The static or dynamic resource {} does not exists : {}", resourceUri);
             }
         } catch (IllegalArgumentException e) {
-            this.logger.warn("Invalid URI format {}", resourceUri); //$NON-NLS-1$
+            this.logger.warn("Invalid URI format {}", resourceUri);
         }
         return Optional.empty();
     }
 
     private String getFileExtension(String fileName) {
-        String[] parts = fileName.split("\\."); //$NON-NLS-1$
+        String[] parts = fileName.split("\\.");
         if (parts.length > 0) {
             return parts[parts.length - 1];
         }

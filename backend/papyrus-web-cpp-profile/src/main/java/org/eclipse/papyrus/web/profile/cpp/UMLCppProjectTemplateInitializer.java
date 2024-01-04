@@ -63,9 +63,9 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
 
     private static final List<String> HANDLED_DIAGRAMS = List.of(UMLCppProjectTemplateProvider.UML_CPP_TEMPLATE_ID, UMLCppProjectTemplateProvider.UML_CPP_SM_TEMPLATE_ID);
 
-    private static final String CPP_TEMPLATE_FILE = "CppTemplate.uml"; //$NON-NLS-1$
+    private static final String CPP_TEMPLATE_FILE = "CppTemplate.uml";
 
-    private static final String CPP_SM_TEMPLATE_FILE = "SimpleSM.uml"; //$NON-NLS-1$
+    private static final String CPP_SM_TEMPLATE_FILE = "SimpleSM.uml";
 
     private final Logger logger = LoggerFactory.getLogger(UMLCppProjectTemplateInitializer.class);
 
@@ -120,7 +120,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
             return resource.flatMap(r -> this.createMainCppClassDiagram(editingContext, r))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
-            this.logger.error("Error while creating template", e); //$NON-NLS-1$
+            this.logger.error("Error while creating template", e);
         }
         return Optional.empty();
     }
@@ -129,7 +129,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
         return this.diagramBuilderService
-                .createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), r.getContents().get(0), "Main") //$NON-NLS-1$
+                .createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), r.getContents().get(0), "Main")
                 .flatMap(diagram -> this.semanticDropMainClassAndComment(editingContext, r, convertedNodes, diagram))//
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
@@ -143,7 +143,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
             Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Diagram diagram) {
         // Drop the main class and its comment
         Model model = (Model) r.getContents().get(0);
-        org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "Main".equals(m.getName())).findFirst().get(); //$NON-NLS-1$
+        org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "Main".equals(m.getName())).findFirst().get();
         Comment comment = model.getOwnedComments().stream().filter(c -> c.getAnnotatedElements().contains(mainClass)).findFirst().get();
         return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
             this.classDiagramService.semanticDrop(mainClass, null, editingContext, diagramContext, convertedNodes);
@@ -169,7 +169,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
     }
 
     private boolean filter(DiagramNavigator diagramNav, Node v) {
-        return "CD_Class_Operations_CompartmentNode".equals(diagramNav.getDescription(v).get().getName()); //$NON-NLS-1$
+        return "CD_Class_Operations_CompartmentNode".equals(diagramNav.getDescription(v).get().getName());
     }
 
     private Optional<RepresentationMetadata> initializeCppSMProjectContents(IEditingContext editingContext) {
@@ -183,7 +183,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
 
             });
         } catch (IOException e) {
-            this.logger.error("Error while creating template", e); //$NON-NLS-1$
+            this.logger.error("Error while creating template", e);
         }
         if (diagrams.isEmpty()) {
             return Optional.empty();
@@ -195,7 +195,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
     private Optional<Diagram> createMainCppSMClassDiagram(IEditingContext editingContext, Resource r) {
 
         Optional<Diagram> optDiagram = this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()),
-                r.getContents().get(0), "SimpleSM_"); //$NON-NLS-1$
+                r.getContents().get(0), "SimpleSM_");
 
         Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
@@ -212,7 +212,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
 
     private Optional<? extends Diagram> dropMainClassAndComment(IEditingContext editingContext, Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes,
             Model model, Diagram diagram) {
-        org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "SimpleSM".equals(m.getName())).findFirst().get(); //$NON-NLS-1$
+        org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "SimpleSM".equals(m.getName())).findFirst().get();
         return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
 
             // Get the linked comment
@@ -236,7 +236,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
 
     private Optional<Diagram> createStateMachineDiagram(StateMachine stateMachine, IEditingContext editingContext) {
         Optional<Diagram> diag = this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> SMDDiagramDescriptionBuilder.SMD_REP_NAME.equals(diagramDescription.getLabel()),
-                stateMachine, "SM Diagram"); //$NON-NLS-1$
+                stateMachine, "SM Diagram");
 
         return diag.flatMap(diagram -> this.diagramBuilderService.refreshDiagram(diagram, editingContext))// Display
                                                                                                           // synchronized

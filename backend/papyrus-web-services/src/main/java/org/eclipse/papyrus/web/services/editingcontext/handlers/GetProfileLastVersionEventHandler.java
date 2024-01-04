@@ -76,7 +76,7 @@ public class GetProfileLastVersionEventHandler implements IEditingContextEventHa
             if (profileLastVersion.isPresent()) {
                 payload = new GetProfileLastVersionSuccessPayload(input.id(), profileLastVersion.get());
             } else {
-                payload = new ErrorPayload(input.id(), "Failed to retrieve the current version of the profile"); //$NON-NLS-1$
+                payload = new ErrorPayload(input.id(), "Failed to retrieve the current version of the profile");
             }
         }
         payloadSink.tryEmitValue(payload);

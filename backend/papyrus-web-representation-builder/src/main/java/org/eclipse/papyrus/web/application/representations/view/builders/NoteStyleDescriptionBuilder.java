@@ -317,8 +317,8 @@ public class NoteStyleDescriptionBuilder {
             noteStyleDescription.setName(this.name);
         }
 
-        noteStyleDescription.setDefaultWidthExpression("200"); //$NON-NLS-1$
-        noteStyleDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
+        noteStyleDescription.setDefaultWidthExpression("200");
+        noteStyleDescription.setDefaultHeightExpression("100");
 
         NodeStyleDescription style = noteStyleDescription.getStyle();
         style.setShowIcon(true);
@@ -351,7 +351,7 @@ public class NoteStyleDescriptionBuilder {
                     () -> this.collectNodesWithDomain(diagramDescription, this.domainType), //
                     () -> this.collectNodesWithDomain(diagramDescription, this.annotedDomainType));
             DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
-            deleteTool.setName("Remove " + this.domainType.getName()); // $NON_NLS-1$
+            deleteTool.setName("Remove " + this.domainType.getName());
             ChangeContext deleteToolChangeContext = ViewFactory.eINSTANCE.createChangeContext();
             deleteToolChangeContext
                     .setExpression(CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, this.queryBuilder.aqlString(this.noteToElementReference.getName()), Variables.SEMANTIC_EDGE_TARGET));
@@ -366,7 +366,7 @@ public class NoteStyleDescriptionBuilder {
         // Create the edge creation tool and attach it to the noteStyleDescription. This has to be done even if the Edge
         // already exists in the diagram.
         noteStyleDescription.eAdapters().add(new CallbackAdapter(() -> {
-            EdgeTool creationTool = this.viewBuilder.createFeatureBasedEdgeTool("New Link", //$NON-NLS-1$
+            EdgeTool creationTool = this.viewBuilder.createFeatureBasedEdgeTool("New Link",
                     this.queryBuilder.queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.noteToElementReference, Variables.SEMANTIC_EDGE_TARGET), //
                     this.collectNodesWithDomain(diagramDescription, this.annotedDomainType));
             this.edgesToolSection.getEdgeTools().add(creationTool);

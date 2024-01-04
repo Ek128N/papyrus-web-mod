@@ -66,9 +66,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private static final String NEW_CONTAINMENT_LINK_TOOL_LABEL = "New Containment Link";
 
-    public static final String CLASSIFIER_CONTAINMENT_LINK_EDGE_ID = CD_PREFIX + "_ClassifierContainmentLink_FeatureEdge"; //$NON-NLS-1$
+    public static final String CLASSIFIER_CONTAINMENT_LINK_EDGE_ID = CD_PREFIX + "_ClassifierContainmentLink_FeatureEdge";
 
-    public static final String PACKAGE_CONTAINMENT_LINK_EDGE_ID = CD_PREFIX + "_PackageContainmentLink_FeatureEdge"; //$NON-NLS-1$
+    public static final String PACKAGE_CONTAINMENT_LINK_EDGE_ID = CD_PREFIX + "_PackageContainmentLink_FeatureEdge";
 
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
@@ -186,7 +186,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 sourceProvider, //
                 targetProvider);
 
-        containmentLinkEdge.setPreconditionExpression(new CallQuery(GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, GRAPHICAL_EDGE_TARGET, CACHE)); // $NON-NLS-1$
+        containmentLinkEdge.setPreconditionExpression(new CallQuery(GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, GRAPHICAL_EDGE_TARGET, CACHE));
 
         containmentLinkEdge.getStyle().setSourceArrowStyle(ArrowStyle.CROSSED_CIRCLE);
 
@@ -197,7 +197,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(NEW_CONTAINMENT_LINK_TOOL_LABEL); //
 
-        String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getPackage_PackagedElement().getName())); // $NON-NLS-1$
+        String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getPackage_PackagedElement().getName()));
 
         ChangeContext changeContext = this.getViewBuilder().createChangeContextOperation(toolQuery);
         containmentLinkEdge.eAdapters().add(new CallbackAdapter(() -> {
@@ -222,7 +222,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 sourceProvider, //
                 targetProvider);
 
-        containmentLinkEdge.setPreconditionExpression(new CallQuery(GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, GRAPHICAL_EDGE_TARGET, CACHE)); // $NON-NLS-1$
+        containmentLinkEdge.setPreconditionExpression(new CallQuery(GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, GRAPHICAL_EDGE_TARGET, CACHE));
 
         containmentLinkEdge.getStyle().setSourceArrowStyle(ArrowStyle.CROSSED_CIRCLE);
 
@@ -232,7 +232,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(NEW_CONTAINMENT_LINK_TOOL_LABEL); //
 
-        String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getClass_NestedClassifier().getName())); // $NON-NLS-1$
+        String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getClass_NestedClassifier().getName()));
 
         ChangeContext changeContext = this.getViewBuilder().createChangeContextOperation(toolQuery);
         containmentLinkEdge.eAdapters().add(new CallbackAdapter(() -> {

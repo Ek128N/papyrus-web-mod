@@ -45,11 +45,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class StateMachineDiagramService extends AbstractDiagramService {
 
-    public static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30"; //$NON-NLS-1$
+    public static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30";
 
-    public static final String FORK_NODE_DEFAULT_WIDTH = "50"; //$NON-NLS-1$
+    public static final String FORK_NODE_DEFAULT_WIDTH = "50";
 
-    public static final String FORK_NODE_DEFAULT_HEIGHT = "150"; //$NON-NLS-1$
+    public static final String FORK_NODE_DEFAULT_HEIGHT = "150";
 
     /**
      * Logger used to report errors and warnings to the user.

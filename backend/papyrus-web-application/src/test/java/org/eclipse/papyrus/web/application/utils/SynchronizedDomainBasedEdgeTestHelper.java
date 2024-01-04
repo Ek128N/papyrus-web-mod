@@ -104,8 +104,8 @@ public final class SynchronizedDomainBasedEdgeTestHelper {
     }
 
     public Edge assertDisplayedOnDiagram() {
-        Objects.requireNonNull(this.sourceNodeId, "No source node found. Did you update the diagram before assert"); //$NON-NLS-1$
-        Objects.requireNonNull(this.targetNodeId, "No target node found. Did you update the diagram before assert"); //$NON-NLS-1$
+        Objects.requireNonNull(this.sourceNodeId, "No source node found. Did you update the diagram before assert");
+        Objects.requireNonNull(this.targetNodeId, "No target node found. Did you update the diagram before assert");
 
         Edge edge = this.representationHelper.getMatchingEdge(Optional.of(this.getDomainBasedEdgeDescriptionName()), //
                 Optional.of(this.objectService.getId(this.domainBasedEdge)), Optional.of(this.sourceNodeId), Optional.of(this.targetNodeId));

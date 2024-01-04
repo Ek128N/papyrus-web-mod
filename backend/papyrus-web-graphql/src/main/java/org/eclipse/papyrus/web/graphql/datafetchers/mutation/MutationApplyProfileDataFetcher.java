@@ -44,7 +44,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = "Mutation", field = MutationApplyProfileDataFetcher.APPLY_PROFILE_FIELD)
 public class MutationApplyProfileDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String APPLY_PROFILE_FIELD = "applyProfile"; //$NON-NLS-1$
+    public static final String APPLY_PROFILE_FIELD = "applyProfile";
 
     private final ObjectMapper objectMapper;
 

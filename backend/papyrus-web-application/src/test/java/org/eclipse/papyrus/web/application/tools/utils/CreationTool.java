@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.EClass;
  */
 public class CreationTool {
 
-    private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))"); //$NON-NLS-1$
+    private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))");
 
     /**
      * The name of the tool section containing the tool.

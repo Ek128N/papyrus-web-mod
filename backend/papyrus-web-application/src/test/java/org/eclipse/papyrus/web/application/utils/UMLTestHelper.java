@@ -51,7 +51,7 @@ public class UMLTestHelper {
         if (defaultContainementRef.isPresent()) {
             return this.createIn(type, parent, defaultContainementRef.get().getName());
         } else {
-            Assertions.fail(MessageFormat.format("Unable to find a containement reference for {0} in {1}", type.getSimpleName(), parent)); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Unable to find a containement reference for {0} in {1}", type.getSimpleName(), parent));
             return null;
         }
     }
@@ -68,15 +68,15 @@ public class UMLTestHelper {
 
         EStructuralFeature ref = parent.eClass().getEStructuralFeature(containmentRefName);
         if (ref == null || !(ref instanceof EReference)) {
-            Assertions.fail("Invalid reference name"); //$NON-NLS-1$
+            Assertions.fail("Invalid reference name");
         }
 
         if (ref.isDerived()) {
-            Assertions.fail(ref.getName() + " is a derived feature."); //$NON-NLS-1$
+            Assertions.fail(ref.getName() + " is a derived feature.");
         }
         EReference eRef = (EReference) ref;
         if (!eRef.getEType().isInstance(newElement)) {
-            fail(MessageFormat.format("Invalid reference {0} for element{1}", eRef.getName(), newElement)); //$NON-NLS-1$
+            fail(MessageFormat.format("Invalid reference {0} for element{1}", eRef.getName(), newElement));
         }
         if (ref.isMany()) {
             ((List) parent.eGet(ref)).add(newElement);

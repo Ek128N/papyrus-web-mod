@@ -32,7 +32,7 @@ import graphql.schema.DataFetchingEnvironment;
 @MutationDataFetcher(type = "Mutation", field = MutationDeletePublishedDynamicProfileDataFetcher.DELETE_PUBLISHED_PROFILE_PROFILE_FIELD)
 public class MutationDeletePublishedDynamicProfileDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String DELETE_PUBLISHED_PROFILE_PROFILE_FIELD = "deletePublishedDynamicProfileByName"; //$NON-NLS-1$
+    public static final String DELETE_PUBLISHED_PROFILE_PROFILE_FIELD = "deletePublishedDynamicProfileByName";
 
     private final ObjectMapper objectMapper;
 

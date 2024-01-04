@@ -51,7 +51,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitializer {
-    private static final String UML_MODEL_TITLE = "JavaTemplate.uml"; //$NON-NLS-1$
+    private static final String UML_MODEL_TITLE = "JavaTemplate.uml";
 
     private final Logger logger = LoggerFactory.getLogger(UMLJavaProjectTemplateInitializer.class);
 
@@ -97,11 +97,11 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
 
     private Optional<RepresentationMetadata> initializeUMLJavaProjectContents(IEditingContext editingContext) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "JavaTemplate.uml"); //$NON-NLS-1$
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "JavaTemplate.uml");
             return resource.flatMap(r -> this.createMainClassDiagram(editingContext, r))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
-            this.logger.error("Error while creating template", e); //$NON-NLS-1$
+            this.logger.error("Error while creating template", e);
         }
         return Optional.empty();
     }
@@ -110,7 +110,7 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
         Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
         Model model = (Model) r.getContents().get(0);
-        return this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), model, "Main") //$NON-NLS-1$
+        return this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), model, "Main")
                 .flatMap(diagram -> this.semanticDropClassAndComment(editingContext, convertedNodes, model, diagram))//
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
@@ -121,7 +121,7 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
 
     private Optional<? extends Diagram> semanticDropClassAndComment(IEditingContext editingContext,
             Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes, Model model, Diagram diagram) {
-        org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "Main".equals(m.getName())).findFirst().get(); //$NON-NLS-1$
+        org.eclipse.uml2.uml.Class mainClass = (Class) model.getOwnedMembers().stream().filter(m -> m instanceof Class && "Main".equals(m.getName())).findFirst().get();
         return this.diagramBuilderService.updateDiagram(diagram, editingContext, diagramContext -> {
             // Get the linked comment
             Comment classComment = model.getOwnedComments().stream().filter(c -> c.getAnnotatedElements().contains(mainClass)).findFirst().get();
@@ -148,7 +148,7 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
     }
 
     private boolean filter(DiagramNavigator diagramNav, Node v) {
-        return "CD_Class_Operations_CompartmentNode".equals(diagramNav.getDescription(v).get().getName()); //$NON-NLS-1$
+        return "CD_Class_Operations_CompartmentNode".equals(diagramNav.getDescription(v).get().getName());
     }
 
 }

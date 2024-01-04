@@ -71,7 +71,7 @@ public class UMLStereotypeService implements IUMLStereotypeService {
     }
 
     private String buildStereotypeQualifiedName(Stereotype stereotype) {
-        return stereotype.getProfile().getName() + "::" + stereotype.getLabel(); //$NON-NLS-1$
+        return stereotype.getProfile().getName() + "::" + stereotype.getLabel();
     }
 
     @Override
@@ -90,11 +90,11 @@ public class UMLStereotypeService implements IUMLStereotypeService {
             if (elementOpt.isPresent()) {
                 stereotypeApplication = Optional.ofNullable(elementOpt.get().applyStereotype(stereotypeOpt.get()));
             } else {
-                LOGGER.warn("The element of id {0} has not been found", elementUMLId); //$NON-NLS-1$
+                LOGGER.warn("The element of id {0} has not been found", elementUMLId);
             }
             // @formatter:on
         } else {
-            LOGGER.warn("The stereotype of id {0} has not been found", stereotypeId); //$NON-NLS-1$
+            LOGGER.warn("The stereotype of id {0} has not been found", stereotypeId);
         }
 
         return stereotypeApplication;

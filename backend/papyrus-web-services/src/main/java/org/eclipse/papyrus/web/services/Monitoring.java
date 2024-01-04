@@ -19,9 +19,9 @@ package org.eclipse.papyrus.web.services;
  */
 public final class Monitoring {
 
-    public static final String EVENT_HANDLER = "papyrusweb_eventhandlers"; //$NON-NLS-1$
+    public static final String EVENT_HANDLER = "papyrusweb_eventhandlers";
 
-    public static final String NAME = "name"; //$NON-NLS-1$
+    public static final String NAME = "name";
 
     private Monitoring() {
         // Prevent instantiation

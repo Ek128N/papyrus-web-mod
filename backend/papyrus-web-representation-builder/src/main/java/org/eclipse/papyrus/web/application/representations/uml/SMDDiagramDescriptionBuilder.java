@@ -44,18 +44,18 @@ import org.eclipse.uml2.uml.UMLPackage;
  */
 public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescriptionBuilder {
 
-    public static final String SMD_REP_NAME = "State Machine Diagram"; //$NON-NLS-1$
+    public static final String SMD_REP_NAME = "State Machine Diagram";
 
-    public static final String SMD_PREFIX = "SMD_"; //$NON-NLS-1$
+    public static final String SMD_PREFIX = "SMD_";
 
     public static final int STATEMACHINE_NODE_BORDER_RADIUS = 10;
 
-    private static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30"; //$NON-NLS-1$
+    private static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30";
 
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
     public SMDDiagramDescriptionBuilder() {
-        super(SMD_PREFIX, SMD_REP_NAME, UMLPackage.eINSTANCE.getStateMachine()); // $NON-NLS-1$
+        super(SMD_PREFIX, SMD_REP_NAME, UMLPackage.eINSTANCE.getStateMachine());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // The only way is to define a delete tool that does nothing
         smdStateMachineNodeDesc.getPalette().setDeleteTool(DiagramFactory.eINSTANCE.createDeleteTool());
 
-        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InStateMachine"); //$NON-NLS-1$
+        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InStateMachine");
         this.createPseudostateBorderNodeDescription(smdStateMachineNodeDesc, this.umlPackage.getStateMachine_ConnectionPoint(), specializedDomainNodeName);
 
         NodeDescription regionNodeDescription = this.createRegionNodeDescription(smdStateMachineNodeDesc, diagramDescription);
@@ -139,14 +139,14 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         regionNodeDescription.getChildrenDescriptions().add(stateNodeDesc);
 
-        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InState"); //$NON-NLS-1$
+        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InState");
         this.createPseudostateBorderNodeDescription(stateNodeDesc, this.umlPackage.getState_ConnectionPoint(), specializedDomainNodeName);
 
         return stateNodeDesc;
     }
 
     private void createFinalStateNodeDescription(NodeDescription regionNodeDescription) {
-        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("FinalState_24dp.svg".getBytes()).toString(), false); //$NON-NLS-1$
+        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("FinalState_24dp.svg".getBytes()).toString(), false);
         imageNodeStyle.setBorderSize(0);
 
         NodeDescription finalStateNodeDesc = this.newNodeBuilder(this.umlPackage.getFinalState(), imageNodeStyle)//
@@ -165,7 +165,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         List<PseudostateKind> pseudostateKinds = new ArrayList<>(List.of(PseudostateKind.values()));
         pseudostateKinds.removeAll(List.of(PseudostateKind.ENTRY_POINT_LITERAL, PseudostateKind.EXIT_POINT_LITERAL));
 
-        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "InRegion"); //$NON-NLS-1$
+        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "InRegion");
         NodeDescription pseudostateNodeDesc = this.createPseudoStateNodeDescription(regionNodeDescription, this.umlPackage.getRegion_Subvertex(), pseudostateKinds, specializedDomainNodeName);
 
         regionNodeDescription.getChildrenDescriptions().add(pseudostateNodeDesc);
@@ -183,10 +183,10 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         List<ConditionalNodeStyle> conditionalNodeStyles = new ArrayList<>();
         List<NodeTool> creationTools = new ArrayList<>();
         for (PseudostateKind pseudostateKind : pseudostateKinds) {
-            String condition = "aql:self.kind = uml::PseudostateKind::" + pseudostateKind.getLiteral(); //$NON-NLS-1$
+            String condition = "aql:self.kind = uml::PseudostateKind::" + pseudostateKind.getLiteral();
             String literal = pseudostateKind.getLiteral();
             String literalName = literal.substring(0, 1).toUpperCase() + literal.substring(1);
-            String imageName = literalName + ".svg"; //$NON-NLS-1$
+            String imageName = literalName + ".svg";
 
             NodeStyleDescription nodeStyle;
             if (pseudostateKind.equals(PseudostateKind.FORK_LITERAL) || pseudostateKind.equals(PseudostateKind.JOIN_LITERAL)) {

@@ -119,7 +119,7 @@ public class DiagramNavigationService implements IDiagramNavigationService {
                     result = parentNode.getChildNodes();
                     break;
                 default:
-                    throw new IllegalStateException(MessageFormat.format("Unknown enum {0}", borderNodeStatus)); //$NON-NLS-1$
+                    throw new IllegalStateException(MessageFormat.format("Unknown enum {0}", borderNodeStatus));
             }
         } else {
             result = List.of();

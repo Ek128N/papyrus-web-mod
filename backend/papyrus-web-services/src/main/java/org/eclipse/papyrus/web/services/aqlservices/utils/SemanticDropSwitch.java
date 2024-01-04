@@ -272,7 +272,7 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             for (EObject eObjectToDisplay : status.getElementsToDisplay()) {
                 PackageableElement importedElement = ((ElementImport) eObjectToDisplay).getImportedElement();
                 if (importedElement == null) {
-                    String errorMesasge = "Only ElementImport with imported element can be drag and dropped"; //$NON-NLS-1$
+                    String errorMesasge = "Only ElementImport with imported element can be drag and dropped";
                     LOGGER.warn(errorMesasge);
                     this.logger.log(status.getMessage(), ILogLevel.WARNING);
                 } else if (this.targetNode != null) {

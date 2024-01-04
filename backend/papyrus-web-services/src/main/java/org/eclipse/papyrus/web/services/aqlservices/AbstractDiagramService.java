@@ -123,7 +123,7 @@ public abstract class AbstractDiagramService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDiagramService.class);
 
-    private static final String ITEM_SEP = ","; //$NON-NLS-1$
+    private static final String ITEM_SEP = ",";
 
     private final IObjectService objectService;
 
@@ -283,7 +283,7 @@ public abstract class AbstractDiagramService {
                         String elements = destroyerStatus.getElements().stream()//
                                 .map(Object::toString)//
                                 .collect(Collectors.joining(ITEM_SEP));
-                        String errorMessage = destroyerStatus.getMessage() + ": " + elements; //$NON-NLS-1$
+                        String errorMessage = destroyerStatus.getMessage() + ": " + elements;
                         LOGGER.warn(errorMessage);
                         this.logger.log(errorMessage, ILogLevel.WARNING);
                     }
@@ -330,7 +330,7 @@ public abstract class AbstractDiagramService {
                         String elements = destroyerStatus.getElements().stream()//
                                 .map(Object::toString)//
                                 .collect(Collectors.joining(ITEM_SEP));
-                        String errorMessage = destroyerStatus.getMessage() + ": " + elements; //$NON-NLS-1$
+                        String errorMessage = destroyerStatus.getMessage() + ": " + elements;
                         LOGGER.warn(errorMessage);
                         this.logger.log(errorMessage, ILogLevel.WARNING);
                     }
@@ -456,11 +456,11 @@ public abstract class AbstractDiagramService {
 
         if (displayStereotypes) {
             builder.withPrefixLabelProvider(new StereotypeLabelPrefixProvider())//
-                    .withPrefixSeparator(" "); //$NON-NLS-1$
+                    .withPrefixSeparator(" ");
         }
         if (displayKeyword) {
             builder.withPrefixLabelProvider(new KeywordLabelProvider())//
-                    .withKeywordSeparator(" "); //$NON-NLS-1$
+                    .withKeywordSeparator(" ");
         }
         return builder.build().getLabel(semanticObject);
     }
@@ -502,7 +502,7 @@ public abstract class AbstractDiagramService {
         CheckStatus canCreateStatus = this.buildDomainBasedEdgeCreationChecker().canCreate(source, target, type, containementReferenceName, represenationQuery, sourceNode, targetNode);
         final EObject result;
         if (!canCreateStatus.isValid()) {
-            errorMessage = "Creation failed : " + canCreateStatus.getMessage(); //$NON-NLS-1$
+            errorMessage = "Creation failed : " + canCreateStatus.getMessage();
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
             result = null;
@@ -581,7 +581,7 @@ public abstract class AbstractDiagramService {
         final EObject result;
         String errorMessage = null;
         if (parent == null) {
-            errorMessage = "Unable to create an element on nothing"; //$NON-NLS-1$
+            errorMessage = "Unable to create an element on nothing";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
             result = null;
@@ -589,7 +589,7 @@ public abstract class AbstractDiagramService {
             // Workaround for missing precondition on edges
             CheckStatus canCreateStatus = this.buildElementCreationChecker().canCreate(parent, type, referenceName);
             if (!canCreateStatus.isValid()) {
-                errorMessage = "Can not create : " + canCreateStatus.getMessage(); //$NON-NLS-1$
+                errorMessage = "Can not create : " + canCreateStatus.getMessage();
                 LOGGER.warn(errorMessage);
                 this.logger.log(errorMessage, ILogLevel.WARNING);
                 result = null;
@@ -600,7 +600,7 @@ public abstract class AbstractDiagramService {
                 result = status.getElement();
 
                 if (status.getState() == State.FAILED) {
-                    errorMessage = "Creation failed : " + status.getMessage(); //$NON-NLS-1$
+                    errorMessage = "Creation failed : " + status.getMessage();
                     LOGGER.warn(errorMessage);
                     this.logger.log(errorMessage, ILogLevel.WARNING);
                 }
@@ -656,7 +656,7 @@ public abstract class AbstractDiagramService {
         return new DiagramNavigator(this.diagramNavigationService, diagramContext.getDiagram(), capturedNodeDescriptions).getParentNode(siblingView).map(parentNode -> {
             return this.create(parent, type, referenceName, parentNode, diagramContext, capturedNodeDescriptions);
         }).orElseGet(() -> {
-            String errorMessage = MessageFormat.format("Unable to get the parent view of {0}", sibling); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("Unable to get the parent view of {0}", sibling);
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
             return sibling;
@@ -769,7 +769,7 @@ public abstract class AbstractDiagramService {
             source.getAnnotatedElements().remove(oldTarget);
             source.getAnnotatedElements().add((Element) newTarget);
         } else {
-            String errorMessage = "Can't reconnect to the new target. It is not an Element"; //$NON-NLS-1$
+            String errorMessage = "Can't reconnect to the new target. It is not an Element";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
         }
@@ -794,7 +794,7 @@ public abstract class AbstractDiagramService {
             source.getConstrainedElements().remove(oldTarget);
             source.getConstrainedElements().add(element);
         } else {
-            String errorMessage = "Can't reconnect to the new target. It is not an Element"; //$NON-NLS-1$
+            String errorMessage = "Can't reconnect to the new target. It is not an Element";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
         }
@@ -820,14 +820,14 @@ public abstract class AbstractDiagramService {
         String errorMessage = null;
         final EReference ref;
         if (candidateReferences.isEmpty()) {
-            errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove); //$NON-NLS-1$
+            errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove);
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
             ref = null;
         } else {
             ref = candidateReferences.get(0);
             if (candidateReferences.size() > 1) {
-                errorMessage = MessageFormat.format("More than one containment reference to contain {0} : {1}", objectToMove.eClass().getName(), //$NON-NLS-1$
+                errorMessage = MessageFormat.format("More than one containment reference to contain {0} : {1}", objectToMove.eClass().getName(),
                         candidateReferences.stream().map(f -> f.getName()).collect(joining(ITEM_SEP)));
                 LOGGER.warn(errorMessage);
                 this.logger.log(errorMessage, ILogLevel.WARNING);
@@ -866,7 +866,7 @@ public abstract class AbstractDiagramService {
 
         final EReference ref;
         if (!(refCandidate instanceof EReference) || !((EReference) refCandidate).isContainment()) {
-            String errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("Impossible for a {0} to contain a {1}", newOwner.eClass().getName(), objectToMove);
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
             ref = null;
@@ -888,7 +888,7 @@ public abstract class AbstractDiagramService {
     private EObject moveIn(EObject objectToMove, EObject newOwner, final EReference ref) {
         final EObject result;
         if (EMFUtils.getAncestors(EObject.class, newOwner).contains(objectToMove)) {
-            String errorMessage = MessageFormat.format("Impossible to move this {0} in this {1}. It would create a containment loop.", objectToMove.eClass().getName(), newOwner.eClass().getName()); //$NON-NLS-1$
+            String errorMessage = MessageFormat.format("Impossible to move this {0} in this {1}. It would create a containment loop.", objectToMove.eClass().getName(), newOwner.eClass().getName());
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
             // Workaround for https://github.com/eclipse-sirius/sirius-components/issues/1343
@@ -924,7 +924,7 @@ public abstract class AbstractDiagramService {
             oldSource.getAnnotatedElements().remove(target);
             newSource.getAnnotatedElements().add((Element) target);
         } else {
-            String errorMessage = "The target element should be an element"; //$NON-NLS-1$
+            String errorMessage = "The target element should be an element";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
         }
@@ -948,7 +948,7 @@ public abstract class AbstractDiagramService {
             oldSource.getConstrainedElements().remove(element);
             newSource.getConstrainedElements().add(element);
         } else {
-            String errorMessage = "The target element should be an Element"; //$NON-NLS-1$
+            String errorMessage = "The target element should be an Element";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
         }

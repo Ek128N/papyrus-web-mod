@@ -39,16 +39,16 @@ import org.eclipse.uml2.uml.UMLPackage;
  */
 public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescriptionBuilder {
 
-    public static final String PD_REP_NAME = "Package Diagram"; //$NON-NLS-1$
+    public static final String PD_REP_NAME = "Package Diagram";
 
-    public static final String PAD_PREFIX = "PAD_"; //$NON-NLS-1$
+    public static final String PAD_PREFIX = "PAD_";
 
-    public static final String CONTAINMENT_LINK_EDGE_ID = PAD_PREFIX + "_ContainmentLink_FeatureEdge"; //$NON-NLS-1$
+    public static final String CONTAINMENT_LINK_EDGE_ID = PAD_PREFIX + "_ContainmentLink_FeatureEdge";
 
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
     public PADDiagramDescriptionBuilder() {
-        super(PAD_PREFIX, PD_REP_NAME, UMLPackage.eINSTANCE.getPackage()); // $NON-NLS-1$
+        super(PAD_PREFIX, PD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
     @Override
@@ -73,20 +73,20 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         Supplier<List<NodeDescription>> sourceAndTargetProvider = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
 
         EdgeDescription containmentLinkEdge = this.getViewBuilder().createFeatureEdgeDescription(//
-                CONTAINMENT_LINK_EDGE_ID, // $NON-NLS-1$
+                CONTAINMENT_LINK_EDGE_ID, //
                 this.getQueryBuilder().emptyString(), //
                 CallQuery.queryAttributeOnSelf(this.pack.getPackage_NestedPackage()), //
                 sourceAndTargetProvider, //
                 sourceAndTargetProvider);
 
-        containmentLinkEdge.setPreconditionExpression(new CallQuery(Variables.GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, Variables.GRAPHICAL_EDGE_TARGET, Variables.CACHE)); // $NON-NLS-1$
+        containmentLinkEdge.setPreconditionExpression(new CallQuery(Variables.GRAPHICAL_EDGE_SOURCE).callService(Services.IS_NOT_VISUAL_DESCENDANT, Variables.GRAPHICAL_EDGE_TARGET, Variables.CACHE));
 
         containmentLinkEdge.getStyle().setSourceArrowStyle(ArrowStyle.CROSSED_CIRCLE);
 
         diagramDescription.getEdgeDescriptions().add(containmentLinkEdge);
         this.registerCallback(containmentLinkEdge, () -> {
             // Create containment Link tool
-            String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE); // $NON-NLS-1$
+            String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE);
             EdgeTool tool = this.getViewBuilder().createFeatureBasedEdgeTool("New Containment Link", toolQuery, this.collectNodesWithDomain(diagramDescription, this.pack.getPackage()));
             CreationToolsUtil.addEdgeCreationTool(sourceAndTargetProvider, tool);
         });

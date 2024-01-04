@@ -54,7 +54,7 @@ public class UMLProfileMetadata {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'label: {1}, uriPath: {2}, version: {3}'}'"; //$NON-NLS-1$
+        String pattern = "{0} '{'label: {1}, uriPath: {2}, version: {3}'}'";
         return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.label, this.uriPath, this.version);
     }
 }

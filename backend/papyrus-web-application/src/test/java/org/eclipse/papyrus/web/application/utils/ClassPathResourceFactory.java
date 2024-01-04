@@ -43,7 +43,7 @@ public class ClassPathResourceFactory implements Factory {
 
     private Resource createResource(URI uri, String fileExtension) {
         final Resource resource;
-        if ("json".equals(fileExtension)) { //$NON-NLS-1$
+        if ("json".equals(fileExtension)) {
             resource = new JSONResourceFactory().createResource(uri);
         } else {
             Object factory = this.delegate.getExtensionToFactoryMap().get(fileExtension);
@@ -57,7 +57,7 @@ public class ClassPathResourceFactory implements Factory {
     }
 
     private String getFileExtension(String fileName) {
-        String[] parts = fileName.split("\\."); //$NON-NLS-1$
+        String[] parts = fileName.split("\\.");
         if (parts.length > 0) {
             return parts[parts.length - 1];
         }

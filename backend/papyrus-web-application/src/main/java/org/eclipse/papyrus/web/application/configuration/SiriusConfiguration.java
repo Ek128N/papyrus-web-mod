@@ -30,6 +30,6 @@ public class SiriusConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "org.eclipse.sirius.web.features", name = "studioDefinition")
     public ISiriusConfiguration domainModelerDefinition() {
-        return () -> List.of("description/domain.odesign"); //$NON-NLS-1$
+        return () -> List.of("description/domain.odesign");
     }
 }

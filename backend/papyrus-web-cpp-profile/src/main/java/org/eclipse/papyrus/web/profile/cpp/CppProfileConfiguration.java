@@ -37,10 +37,10 @@ public class CppProfileConfiguration {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("Initializing EPackage Registry for CPP profile"); //$NON-NLS-1$
+        LOGGER.info("Initializing EPackage Registry for CPP profile");
         Map<String, URI> ePackageNsURIToProfileLocationMap = UMLPlugin.getEPackageNsURIToProfileLocationMap();
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/C_Cpp/1", //$NON-NLS-1$
-                URI.createURI("pathmap://PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml#_j9REUByGEduN1bTiWJ0lyw")); //$NON-NLS-1$
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/C_Cpp/1",
+                URI.createURI("pathmap://PapyrusC_Cpp_PROFILES/C_Cpp.profile.uml#_j9REUByGEduN1bTiWJ0lyw"));
     }
 
     @Bean

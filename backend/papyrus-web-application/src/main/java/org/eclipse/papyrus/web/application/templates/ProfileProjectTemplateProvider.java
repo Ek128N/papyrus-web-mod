@@ -30,14 +30,14 @@ public class ProfileProjectTemplateProvider implements IProjectTemplateProvider 
     /**
      * ID used to identify Profile project creation.
      */
-    public static final String PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID = "DefaultProfileWithPrimitiveAndUml"; //$NON-NLS-1$
+    public static final String PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID = "DefaultProfileWithPrimitiveAndUml";
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         // @formatter:off
         var profileWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID)
-                .label("Profile") //$NON-NLS-1$
-                .imageURL("/images/Profile.svg") //$NON-NLS-1$
+                .label("Profile")
+                .imageURL("/images/Profile.svg")
                 .natures(List.of())
                 .build();
         // @formatter:on

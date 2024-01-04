@@ -83,19 +83,19 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
         Class aClass = this.create(Class.class);
         model.getPackagedElements().add(aClass);
 
-        Resource umlResource = this.createResource("r1"); //$NON-NLS-1$
+        Resource umlResource = this.createResource("r1");
         umlResource.getContents().add(model);
 
-        this.editingDomain.getResourceSet().getResource(URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml"), true); //$NON-NLS-1$
+        this.editingDomain.getResourceSet().getResource(URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml"), true);
         IPayload payload = this.profileService.applyProfile(this.getEditingContext(), new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(), this.getObjectService().getId(model),
-                URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml#_0").toString())); //$NON-NLS-1$
+                URI.createURI("pathmap://UML_PROFILES/Standard.profile.uml#_0").toString()));
         assertTrue(payload instanceof ApplyProfileSuccessPayload);
 
         EList<ProfileApplication> appliedProfiles = model.getProfileApplications();
         assertEquals(1, appliedProfiles.size());
 
         ProfileApplication appliedProfile = appliedProfiles.get(0);
-        assertEquals("StandardProfile", appliedProfile.getAppliedProfile().getName()); //$NON-NLS-1$
+        assertEquals("StandardProfile", appliedProfile.getAppliedProfile().getName());
     }
 
     /**
@@ -106,9 +106,9 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
     @Test
     public void testLoadModelWithStaticProfile() throws IOException {
 
-        Resource modelWithProfileResource = this.createResource("modelWithStandardProfile"); //$NON-NLS-1$
+        Resource modelWithProfileResource = this.createResource("modelWithStandardProfile");
 
-        try (var input = new ClassPathResource("profile/UMLModelWithStandardProfile.json").getInputStream()) { //$NON-NLS-1$
+        try (var input = new ClassPathResource("profile/UMLModelWithStandardProfile.json").getInputStream()) {
             modelWithProfileResource.load(input, Collections.emptyMap());
         }
 
@@ -117,16 +117,16 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
         EList<Profile> appliedProfiles = model.getAllAppliedProfiles();
         assertEquals(1, appliedProfiles.size());
 
-        PackageableElement classOneStereotype = model.getPackagedElement("ClassOneStereotype"); //$NON-NLS-1$
+        PackageableElement classOneStereotype = model.getPackagedElement("ClassOneStereotype");
         EList<Stereotype> c1Stereotypes = classOneStereotype.getAppliedStereotypes();
         assertEquals(1, c1Stereotypes.size());
-        assertEquals("Utility", c1Stereotypes.get(0).getName()); //$NON-NLS-1$
+        assertEquals("Utility", c1Stereotypes.get(0).getName());
 
-        PackageableElement classTwoStereotypes = model.getPackagedElement("ClassTwoStereotypes"); //$NON-NLS-1$
+        PackageableElement classTwoStereotypes = model.getPackagedElement("ClassTwoStereotypes");
         EList<Stereotype> c2Stereotypes = classTwoStereotypes.getAppliedStereotypes();
         assertEquals(2, c2Stereotypes.size());
-        assertEquals("Auxiliary", c2Stereotypes.get(0).getName()); //$NON-NLS-1$
-        assertEquals("Focus", c2Stereotypes.get(1).getName()); //$NON-NLS-1$
+        assertEquals("Auxiliary", c2Stereotypes.get(0).getName());
+        assertEquals("Focus", c2Stereotypes.get(1).getName());
 
     }
 
@@ -137,15 +137,15 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
     public void invalidProfileResourceContentInvalidURI() {
         Model model = this.create(Model.class);
 
-        Resource umlResource = this.createResource("r2"); //$NON-NLS-1$
+        Resource umlResource = this.createResource("r2");
         umlResource.getContents().add(model);
 
         IPayload payload = this.profileService.applyProfile(this.getEditingContext(),
-                new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(), this.getObjectService().getId(model), URI.createURI("fake:/tot").toString())); //$NON-NLS-1$
+                new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(), this.getObjectService().getId(model), URI.createURI("fake:/tot").toString()));
         assertTrue(payload instanceof ErrorPayload);
 
         payload = this.profileService.applyProfile(this.getEditingContext(),
-                new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(), this.getObjectService().getId(model), URI.createURI("fake/test").toString())); //$NON-NLS-1$
+                new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(), this.getObjectService().getId(model), URI.createURI("fake/test").toString()));
         assertTrue(payload instanceof ErrorPayload);
     }
 
@@ -156,19 +156,19 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
      */
     @Test
     public void testProfilePublication() throws IOException {
-        Resource modelWithProfileResource = this.createResource("profileResource"); //$NON-NLS-1$
+        Resource modelWithProfileResource = this.createResource("profileResource");
 
-        try (var input = new ClassPathResource("profile/profile.json").getInputStream()) { //$NON-NLS-1$
+        try (var input = new ClassPathResource("profile/profile.json").getInputStream()) {
             modelWithProfileResource.load(input, Collections.emptyMap());
         }
 
-        String profileId = "7420affe-b576-4013-b5d2-02cb0f3c48b1"; //$NON-NLS-1$
-        String version1 = "1.0.1"; //$NON-NLS-1$
-        String version2 = "2.0.1"; //$NON-NLS-1$
-        String comment = "comment"; //$NON-NLS-1$
-        String copyright = "copyright"; //$NON-NLS-1$
-        String date = "date"; //$NON-NLS-1$
-        String author = "author"; //$NON-NLS-1$
+        String profileId = "7420affe-b576-4013-b5d2-02cb0f3c48b1";
+        String version1 = "1.0.1";
+        String version2 = "2.0.1";
+        String comment = "comment";
+        String copyright = "copyright";
+        String date = "date";
+        String author = "author";
 
         IPayload payload = this.profileService.publishProfile(this.getEditingContext(),
                 new PublishProfileInput(UUID.randomUUID(), this.getEditingContext().getId(), profileId, version1, comment, copyright, date, author, true));
@@ -205,11 +205,11 @@ public class UMLProfileServiceTests extends AbstractWebUMLTest {
         if (profileDefinitionNsURI == null) {
             fail("Unable to extract nsURI of the profile definition");
         }
-        Resource umlResource = this.createResource("r2"); //$NON-NLS-1$
+        Resource umlResource = this.createResource("r2");
         umlResource.getContents().add(model);
 
         IPayload applyPayload = this.profileService.applyProfile(this.getEditingContext(), new ApplyProfileInput(UUID.randomUUID(), this.getEditingContext().getId(),
-                this.getObjectService().getId(model), URI.createURI("pathmap://WEB_DYNAMIC_PROFILE/" + profileResourceEntity.get().getId().toString() + "#" + profileId).toString())); //$NON-NLS-1$
+                this.getObjectService().getId(model), URI.createURI("pathmap://WEB_DYNAMIC_PROFILE/" + profileResourceEntity.get().getId().toString() + "#" + profileId).toString()));
         assertTrue(applyPayload instanceof ApplyProfileSuccessPayload);
 
         // Check that the NS URI has been added to the Package Registry

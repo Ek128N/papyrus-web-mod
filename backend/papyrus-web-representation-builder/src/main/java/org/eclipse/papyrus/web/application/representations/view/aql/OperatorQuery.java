@@ -38,17 +38,17 @@ public class OperatorQuery {
     }
 
     public OperatorQuery and(String expression2) {
-        this.expression1 = expression1 + " and " + trimAqlPrefix(expression2); //$NON-NLS-1$
+        this.expression1 = expression1 + " and " + trimAqlPrefix(expression2);
         return this;
     }
 
     public OperatorQuery or(String expression2) {
-        this.expression1 = expression1 + " or " + trimAqlPrefix(expression2); //$NON-NLS-1$
+        this.expression1 = expression1 + " or " + trimAqlPrefix(expression2);
         return this;
     }
 
     public OperatorQuery not() {
-        this.expression1 = "not " + expression1; //$NON-NLS-1$
+        this.expression1 = "not " + expression1;
         return this;
     }
 

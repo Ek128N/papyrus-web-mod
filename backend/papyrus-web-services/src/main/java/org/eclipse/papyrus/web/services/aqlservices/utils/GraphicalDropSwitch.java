@@ -284,7 +284,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
         Boolean isViewCreated = Boolean.TRUE;
         PackageableElement importedElement = elementImport.getImportedElement();
         if (importedElement == null) {
-            String errorMessage = "Only ElementImport with imported element can be drag and dropped"; //$NON-NLS-1$
+            String errorMessage = "Only ElementImport with imported element can be drag and dropped";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
         } else if (parentNode != null) {

@@ -48,13 +48,13 @@ public class IfQuery {
     }
 
     public String toQuery() {
-        String base = AQL_PREFIX + "if " + trimAqlPrefix(condition) + " then " + trimAqlPrefix(ifTrue); //$NON-NLS-1$ //$NON-NLS-2$
+        String base = AQL_PREFIX + "if " + trimAqlPrefix(condition) + " then " + trimAqlPrefix(ifTrue);
 
         if (orElse != null) {
-            base += " else " + trimAqlPrefix(orElse); //$NON-NLS-1$
+            base += " else " + trimAqlPrefix(orElse);
         }
 
-        base += " endif"; //$NON-NLS-1$
+        base += " endif";
         return base;
     }
 }

@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class Status {
 
-    public static final Status OK_SATUS = new Status(Severity.OK, ""); //$NON-NLS-1$
+    public static final Status OK_SATUS = new Status(Severity.OK, "");
 
     private final Severity severity;
 

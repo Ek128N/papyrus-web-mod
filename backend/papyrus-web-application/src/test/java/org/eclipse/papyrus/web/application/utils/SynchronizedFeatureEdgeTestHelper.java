@@ -88,8 +88,8 @@ public final class SynchronizedFeatureEdgeTestHelper {
 
     public void assertEdgeDisplayedOnDiagram() {
 
-        Objects.requireNonNull(this.sourceNodeId, "No source node found. Did you update the diagram before assert"); //$NON-NLS-1$
-        Objects.requireNonNull(this.targetNodeId, "No target node found. Did you update the diagram before assert"); //$NON-NLS-1$
+        Objects.requireNonNull(this.sourceNodeId, "No source node found. Did you update the diagram before assert");
+        Objects.requireNonNull(this.targetNodeId, "No target node found. Did you update the diagram before assert");
 
         Edge edge = this.representationHelper.getMatchingEdge(Optional.of(this.edgeDescriptionId), //
                 Optional.empty(), Optional.of(this.sourceNodeId), Optional.of(this.targetNodeId));

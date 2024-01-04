@@ -324,7 +324,7 @@ public class ViewBuilder {
     public DeleteTool createNodeDeleteTool(String conceptName) {
         DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
 
-        deleteTool.setName("Delete " + conceptName); //$NON-NLS-1$
+        deleteTool.setName("Delete " + conceptName);
 
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(this.queryBuilder.queryDestroyNode());
@@ -336,7 +336,7 @@ public class ViewBuilder {
     public DeleteTool createEdgeDeleteTool(String conceptName) {
         DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
 
-        deleteTool.setName("Delete " + conceptName); //$NON-NLS-1$
+        deleteTool.setName("Delete " + conceptName);
 
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(this.queryBuilder.queryDestroyEdge());
@@ -552,7 +552,7 @@ public class ViewBuilder {
 
     public EdgeTool createDefaultDomainBasedEdgeTool(EdgeDescription description, EReference contaimentRef) {
         if (!description.isIsDomainBasedEdge()) {
-            throw new IllegalArgumentException("Expecting a domain based edge but got " + description); //$NON-NLS-1$
+            throw new IllegalArgumentException("Expecting a domain based edge but got " + description);
         }
         return this.createDomainBasedEdgeTool(this.idBuilder.getCreationToolId(description), description, contaimentRef);
     }

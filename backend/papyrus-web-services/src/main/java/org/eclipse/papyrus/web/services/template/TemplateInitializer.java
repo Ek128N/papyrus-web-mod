@@ -53,7 +53,7 @@ public class TemplateInitializer {
         super();
         this.projectRepository = projectRepository;
         this.documentRepository = documentRepository;
-        this.stereotypeBuilder = new StereotypeBuilder("classpath-model-loader", meterRegistry); //$NON-NLS-1$
+        this.stereotypeBuilder = new StereotypeBuilder("classpath-model-loader", meterRegistry);
     }
 
     public Optional<Resource> initializeResourceFromClasspathFile(IEditingContext editingContext, String newResourceName, String filePath) throws IOException {
@@ -66,7 +66,7 @@ public class TemplateInitializer {
         Optional<UUID> optionalEditingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && optionalEditingContextUUID.isPresent()) {
             UUID editingContextUUID = optionalEditingContextUUID.get();
-            var optionalDocumentEntity = this.createDocument(editingContextUUID, newResourceName, this.loadModelAsJSON(filePath)); // $NON-NLS-1$
+            var optionalDocumentEntity = this.createDocument(editingContextUUID, newResourceName, this.loadModelAsJSON(filePath));
             if (optionalDocumentEntity.isPresent()) {
                 DocumentEntity documentEntity = optionalDocumentEntity.get();
 

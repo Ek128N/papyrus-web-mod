@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
  */
 public class RepresentationValidatorTests {
 
-    private static final String EOL = "\n"; //$NON-NLS-1$
+    private static final String EOL = "\n";
 
     @Test
     public void validateCompositeStructure() {
@@ -52,7 +52,7 @@ public class RepresentationValidatorTests {
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Composite Structure Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Invalid Composite Structure Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
         }
     }
 
@@ -75,7 +75,7 @@ public class RepresentationValidatorTests {
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Package Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Invalid Package Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
         }
     }
 
@@ -92,7 +92,7 @@ public class RepresentationValidatorTests {
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Class Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Invalid Class Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
         }
     }
 
@@ -112,7 +112,7 @@ public class RepresentationValidatorTests {
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).collect(toList());
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Class Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Invalid Class Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
         }
     }
 
@@ -133,7 +133,7 @@ public class RepresentationValidatorTests {
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Profile Diagram description : \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Invalid Profile Diagram description : \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
         }
     }
 
@@ -147,20 +147,20 @@ public class RepresentationValidatorTests {
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();
 
         if (!errors.isEmpty()) {
-            Assertions.fail(MessageFormat.format("Invalid Use Case Diagram description \n{0}", errors.stream().map(e -> e.getMessage()).collect(joining(EOL)))); //$NON-NLS-1$
+            Assertions.fail(MessageFormat.format("Invalid Use Case Diagram description \n{0}", errors.stream().map(Status::getMessage).collect(joining(EOL))));
         }
     }
 
     private boolean isUcdDirectEditDisabled(DiagramElementDescription p) {
-        return "UCD_PackageMerge_DomainEdge".equals(p.getName()) || "UCD_PackageImport_DomainEdge".equals(p.getName()) || "UCD_Generalization_DomainEdge".equals(p.getName()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return "UCD_PackageMerge_DomainEdge".equals(p.getName()) || "UCD_PackageImport_DomainEdge".equals(p.getName()) || "UCD_Generalization_DomainEdge".equals(p.getName());
     }
 
     private boolean isPrdDirectEditDisabled(DiagramElementDescription p) {
-        return "PRD_Generalization_DomainEdge".equals(p.getName()); //$NON-NLS-1$
+        return "PRD_Generalization_DomainEdge".equals(p.getName());
     }
 
     private boolean isTransitionEdge(DiagramElementDescription p) {
-        return "SMD_Transition_DomainEdge".equals(p.getName()); //$NON-NLS-1$
+        return "SMD_Transition_DomainEdge".equals(p.getName());
     }
 
     private boolean isNotCompartment(DiagramElementDescription diagramelementdescription1) {

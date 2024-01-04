@@ -26,14 +26,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLProjectTemplateProvider implements IProjectTemplateProvider {
 
-    public static final String UML_WITH_PRIMITIVES_TEMPLATE_ID = "DefaultUMLWithPrimitive"; //$NON-NLS-1$
+    public static final String UML_WITH_PRIMITIVES_TEMPLATE_ID = "DefaultUMLWithPrimitive";
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         // @formatter:off
         var umlWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(UML_WITH_PRIMITIVES_TEMPLATE_ID)
-                .label("UML") //$NON-NLS-1$
-                .imageURL("/images/UML.svg") //$NON-NLS-1$
+                .label("UML")
+                .imageURL("/images/UML.svg")
                 .natures(List.of())
                 .build();
         // @formatter:on

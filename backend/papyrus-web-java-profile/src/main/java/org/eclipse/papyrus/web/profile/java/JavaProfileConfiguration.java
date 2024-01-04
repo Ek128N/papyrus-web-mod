@@ -37,10 +37,10 @@ public class JavaProfileConfiguration {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("Initializing EPackage Registry for Java profile"); //$NON-NLS-1$
+        LOGGER.info("Initializing EPackage Registry for Java profile");
         Map<String, URI> ePackageNsURIToProfileLocationMap = UMLPlugin.getEPackageNsURIToProfileLocationMap();
-        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/PapyrusJava/1", //$NON-NLS-1$
-                URI.createURI("pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw")); //$NON-NLS-1$
+        ePackageNsURIToProfileLocationMap.put("http://www.eclipse.org/papyrus/PapyrusJava/1",
+                URI.createURI("pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw"));
     }
 
     @Bean

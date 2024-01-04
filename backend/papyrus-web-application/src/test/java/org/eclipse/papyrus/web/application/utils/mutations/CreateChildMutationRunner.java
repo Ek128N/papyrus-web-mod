@@ -47,7 +47,7 @@ import graphql.GraphQL;
 @Service
 public class CreateChildMutationRunner {
 
-    private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))"); //$NON-NLS-1$
+    private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))");
 
     private static String query = """
                    mutation createChild($input: CreateChildInput!) {

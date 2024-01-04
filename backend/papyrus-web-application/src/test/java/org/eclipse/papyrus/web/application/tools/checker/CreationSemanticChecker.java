@@ -112,7 +112,7 @@ public abstract class CreationSemanticChecker implements Checker {
     protected final Collection<?> getContainmentFeatureValue() {
         final EReference owningFeature = this.containmentFeature;
         if (!owningFeature.isMany()) {
-            throw new UnsupportedOperationException("The case where the owning feature is not multi-valued is not yet implemented"); //$NON-NLS-1$
+            throw new UnsupportedOperationException("The case where the owning feature is not multi-valued is not yet implemented");
         }
         return (Collection<?>) this.expectedOwnerSupplier.get().eGet(this.containmentFeature);
     }

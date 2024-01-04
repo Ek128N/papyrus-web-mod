@@ -45,7 +45,7 @@ import reactor.core.publisher.Mono;
 @MutationDataFetcher(type = "Mutation", field = MutationApplyStereotypeDataFetcher.APPLY_STEREOTYPE_FIELD)
 public class MutationApplyStereotypeDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<IPayload>> {
 
-    public static final String APPLY_STEREOTYPE_FIELD = "applyStereotype"; //$NON-NLS-1$
+    public static final String APPLY_STEREOTYPE_FIELD = "applyStereotype";
 
     private final ObjectMapper objectMapper;
 

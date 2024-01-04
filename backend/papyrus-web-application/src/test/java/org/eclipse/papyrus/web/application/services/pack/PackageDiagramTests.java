@@ -167,7 +167,7 @@ public class PackageDiagramTests extends AbstractDiagramTest {
                 .emulateCreationTool()//
                 .assertEdgeCreation();
 
-        assertEquals("", edge.getCenterLabel().getText()); //$NON-NLS-1$
+        assertEquals("", edge.getCenterLabel().getText());
 
     }
 

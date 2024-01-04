@@ -26,21 +26,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLCppProjectTemplateProvider implements IProjectTemplateProvider {
 
-    public static final String UML_CPP_TEMPLATE_ID = "UMLCppProject"; //$NON-NLS-1$
+    public static final String UML_CPP_TEMPLATE_ID = "UMLCppProject";
 
-    public static final String UML_CPP_SM_TEMPLATE_ID = "UMLCppSMProject"; //$NON-NLS-1$
+    public static final String UML_CPP_SM_TEMPLATE_ID = "UMLCppSMProject";
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         // @formatter:off
         var cppTemplate = ProjectTemplate.newProjectTemplate(UML_CPP_TEMPLATE_ID)
-                .label("C++") //$NON-NLS-1$
-                .imageURL("/images/CppTemplate.png") //$NON-NLS-1$
+                .label("C++")
+                .imageURL("/images/CppTemplate.png")
                 .natures(List.of())
                 .build();
         var cppSMProjectTeamplte = ProjectTemplate.newProjectTemplate(UML_CPP_SM_TEMPLATE_ID)
-                .label("C++ SM") //$NON-NLS-1$
-                .imageURL("/images/CppSMTemplate.png") //$NON-NLS-1$
+                .label("C++ SM")
+                .imageURL("/images/CppSMTemplate.png")
                 .natures(List.of())
                 .build();
         // @formatter:on

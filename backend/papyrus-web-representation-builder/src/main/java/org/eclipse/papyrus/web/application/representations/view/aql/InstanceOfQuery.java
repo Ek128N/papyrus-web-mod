@@ -40,6 +40,6 @@ public class InstanceOfQuery {
     }
 
     public String instanceOf(EClass classifier) {
-        return AQL_PREFIX + trimAqlPrefix(variable) + ".oclIsKindOf(" + metamodelHelper.getDomain(classifier) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        return AQL_PREFIX + trimAqlPrefix(variable) + ".oclIsKindOf(" + metamodelHelper.getDomain(classifier) + ")";
     }
 }

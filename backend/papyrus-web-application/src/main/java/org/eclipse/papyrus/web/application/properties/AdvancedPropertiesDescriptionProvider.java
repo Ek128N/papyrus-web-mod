@@ -105,7 +105,7 @@ public class AdvancedPropertiesDescriptionProvider {
                 .map(this.objectService::getId)
                 .orElse(null);
 
-        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("UMLAdvancedPropertyViewForm".getBytes()).toString()) //$NON-NLS-1$
+        return FormDescription.newFormDescription(UUID.nameUUIDFromBytes("UMLAdvancedPropertyViewForm".getBytes()).toString())
                 .label("Default form description")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(labelProvider)

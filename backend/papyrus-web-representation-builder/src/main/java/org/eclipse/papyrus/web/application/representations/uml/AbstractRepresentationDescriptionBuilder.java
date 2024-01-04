@@ -87,22 +87,22 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     /**
      * The String used to suffix the name of shared {@link NodeDescription}s.
      */
-    public static final String SHARED_SUFFIX = "SHARED"; //$NON-NLS-1$
+    public static final String SHARED_SUFFIX = "SHARED";
 
     /**
      * The name of the parent {@link NodeDescription} containing all the shared {@link NodeDescription}s.
      */
-    public static final String SHARED_DESCRIPTIONS = "SHARED_DESCRIPTIONS"; //$NON-NLS-1$
+    public static final String SHARED_DESCRIPTIONS = "SHARED_DESCRIPTIONS";
 
     /**
      * Nodes tool section name.
      */
-    public static final String NODES = "Nodes"; //$NON-NLS-1$
+    public static final String NODES = "Nodes";
 
     /**
      * Edges tool section name.
      */
-    public static final String EDGES = "Edges"; //$NON-NLS-1$
+    public static final String EDGES = "Edges";
 
     protected StyleProvider styleProvider;
 
@@ -154,7 +154,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
 
         DiagramDescription diagramDescription = this.getViewBuilder().buildDiagramDescription(this.representationName, this.representationDomainClass);
 
-        diagramDescription.setTitleExpression(MessageFormat.format("aql:''{0}''", this.representationName)); //$NON-NLS-1$
+        diagramDescription.setTitleExpression(MessageFormat.format("aql:''{0}''", this.representationName));
 
         this.fillDescription(diagramDescription);
 
@@ -195,11 +195,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 // * UMLPackage.eINSTANCE.getBehavioralFeature_IsAbstract()
 
                 // Abstract
-                EStructuralFeature abstractFeature = domainType.getEStructuralFeature("isAbstract"); //$NON-NLS-1$
+                EStructuralFeature abstractFeature = domainType.getEStructuralFeature("isAbstract");
                 boolean canBeAbstract = abstractFeature != null;
 
                 // Static
-                EStructuralFeature staticFeature = domainType.getEStructuralFeature("isStatic"); //$NON-NLS-1$
+                EStructuralFeature staticFeature = domainType.getEStructuralFeature("isStatic");
                 boolean canBeStatic = staticFeature != null;
 
                 if (canBeAbstract && canBeStatic) {
@@ -368,7 +368,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 () -> this.collectNodesWithDomain(diagramDescription, this.pack.getElement()));
 
         DeleteTool deleteTool = DiagramFactory.eINSTANCE.createDeleteTool();
-        deleteTool.setName("Remove annotated element"); //$NON-NLS-1$
+        deleteTool.setName("Remove annotated element");
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(
                 CallQuery.queryServiceOnSelf(Services.REMOVE_VALUE_FROM, this.getQueryBuilder().aqlString(this.pack.getComment_AnnotatedElement().getName()), Variables.SEMANTIC_EDGE_TARGET));
@@ -383,7 +383,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         diagramDescription.getEdgeDescriptions().add(annotedElementEdge);
 
         this.registerCallback(commentDescription, () -> {
-            EdgeTool creationTool = this.getViewBuilder().createFeatureBasedEdgeTool("Link", //$NON-NLS-1$
+            EdgeTool creationTool = this.getViewBuilder().createFeatureBasedEdgeTool("Link",
                     this.getQueryBuilder().queryAddValueTo(Variables.SEMANTIC_EDGE_SOURCE, this.pack.getComment_AnnotatedElement(), Variables.SEMANTIC_EDGE_TARGET), //
                     this.collectNodesWithDomain(diagramDescription, this.pack.getElement()));
             commentDescription.getPalette().getEdgeTools().add(creationTool);
@@ -594,7 +594,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                 List.of(sourceReconnectionOperation)));
 
         ChangeContext targetReconnectionOperation = this.getViewBuilder().createChangeContextOperation(//
-                new CallQuery(Variables.EDGE_SEMANTIC_ELEMENT).callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, // $NON-NLS-1$
+                new CallQuery(Variables.EDGE_SEMANTIC_ELEMENT).callService(Services.RECONNECT_COMMENT_ANNOTATED_ELEMENT_EDGE_TARGET_SERVICE, Variables.SEMANTIC_RECONNECTION_SOURCE, //
                         Variables.SEMANTIC_RECONNECTION_TARGET));
         annotedElementEdge.getPalette().getEdgeReconnectionTools().add(this.getViewBuilder().createTargetReconnectionTool(annotedElementEdge, //
                 this.getIdBuilder().getTargetReconnectionToolId(annotedElementEdge), //
@@ -855,7 +855,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     protected NodeDescription createSharedDescription(DiagramDescription diagramDescription) {
         NodeDescription sharedNodeDescription = this.newNodeBuilder(UMLPackage.eINSTANCE.getElement(), this.getViewBuilder().createRectangularNodeStyle(false, false)) //
                 .name(SHARED_DESCRIPTIONS) //
-                .semanticCandidateExpression("aql:Sequence{}") //$NON-NLS-1$
+                .semanticCandidateExpression("aql:Sequence{}")
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .build();

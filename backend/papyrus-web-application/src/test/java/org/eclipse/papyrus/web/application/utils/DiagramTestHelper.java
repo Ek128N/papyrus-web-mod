@@ -244,13 +244,13 @@ public class DiagramTestHelper {
     private NodeDescription getNodeDescriptionByName(String nodeDescriptionName) {
         return this.viewDiagramDescriptionService.getNodeDescriptionByName(this.diagramDescription, nodeDescriptionName)//
                 .map(this::getConvertedNodeDescription)//
-                .orElseThrow(() -> new NoSuchElementException("Unable to find node description with name " + nodeDescriptionName)); //$NON-NLS-1$
+                .orElseThrow(() -> new NoSuchElementException("Unable to find node description with name " + nodeDescriptionName));
     }
 
     private Predicate<Node> buildNodeDescriptionNamePredicate(String descriptionName) {
         NodeDescription pDesc = this.getNodeDescriptionByName(descriptionName);
         if (pDesc == null) {
-            throw new IllegalArgumentException("Unable to get description for name " + descriptionName); //$NON-NLS-1$
+            throw new IllegalArgumentException("Unable to get description for name " + descriptionName);
         } else {
             return n -> pDesc.getId().equals(n.getDescriptionId());
         }
@@ -275,7 +275,7 @@ public class DiagramTestHelper {
     public EObject getSemanticElement(Node node) {
         Optional<Object> optSemanticOwner = this.objectService.getObject(this.editingContext, node.getTargetObjectId());
         if (optSemanticOwner.isEmpty()) {
-            fail("Unable to find semantic element of " + node); //$NON-NLS-1$
+            fail("Unable to find semantic element of " + node);
         }
         EObject semanticSibling = (EObject) optSemanticOwner.get();
         return semanticSibling;
@@ -291,7 +291,7 @@ public class DiagramTestHelper {
     public EObject getSemanticElement(Edge edge) {
         Optional<Object> optSemanticOwner = this.objectService.getObject(this.editingContext, edge.getTargetObjectId());
         if (optSemanticOwner.isEmpty()) {
-            fail("Unable to find semantic element of " + edge); //$NON-NLS-1$
+            fail("Unable to find semantic element of " + edge);
         }
         EObject semanticSibling = (EObject) optSemanticOwner.get();
         return semanticSibling;
@@ -372,9 +372,9 @@ public class DiagramTestHelper {
                 .filter(e -> name.equals(e.getName())).collect(toList());
 
         if (matchingElements.isEmpty()) {
-            throw new AssertException("No node desciption with name " + name); //$NON-NLS-1$
+            throw new AssertException("No node desciption with name " + name);
         } else if (matchingElements.size() > 1) {
-            throw new AssertException("More than one node description with same  " + name); //$NON-NLS-1$
+            throw new AssertException("More than one node description with same  " + name);
         } else {
             return matchingElements.get(0);
         }
@@ -402,14 +402,14 @@ public class DiagramTestHelper {
         List<Node> matchingNodes = navigator.getMatchingNodes(this.editingContext, NodeMatcher.buildSemanticAndNodeMatcher(BorderNodeStatus.BOTH, semanticPredicate, nodePredicate));
 
         if (matchingNodes.size() == 0) {
-            fail("Unable to find a node"); //$NON-NLS-1$
+            fail("Unable to find a node");
 
         } else if (matchingNodes.size() > 1) {
             String matchinString = matchingNodes.stream()//
                     .map(n -> this.objectService.getObject(this.editingContext, n.getTargetObjectId()))//
                     .map(s -> this.objectService.getLabel(s))//
                     .collect(joining());
-            fail(MessageFormat.format("More than one node matching predicates :{0} ", matchinString)); //$NON-NLS-1$
+            fail(MessageFormat.format("More than one node matching predicates :{0} ", matchinString));
 
         }
         return matchingNodes.get(0);
@@ -432,7 +432,7 @@ public class DiagramTestHelper {
 
         Edge matchingEdge = this.getMatchingEdge(Optional.of(descriptionName), Optional.of(this.objectService.getId(newElement)), Optional.of(source.getId()), Optional.of(target.getId()));
         if (matchingEdge == null) {
-            fail("No domain base edge given the matching criteria"); //$NON-NLS-1$
+            fail("No domain base edge given the matching criteria");
         }
 
         return matchingEdge;
@@ -519,7 +519,7 @@ public class DiagramTestHelper {
     public Edge assertGetUniqueFeatureBasedEdge(String expectedDescriptionName, Node expectedSource, Node expectedTarget) {
         Edge matchingEdge = this.getMatchingEdge(Optional.of(expectedDescriptionName), Optional.empty(), Optional.of(expectedSource.getId()), Optional.of(expectedTarget.getId()));
         if (matchingEdge == null) {
-            fail("No feature base edge given the matching criteria"); //$NON-NLS-1$
+            fail("No feature base edge given the matching criteria");
         }
 
         return matchingEdge;
@@ -538,7 +538,7 @@ public class DiagramTestHelper {
     public void assertNoFeatureBasedEdge(String expectedDescriptionName, Node expectedSource, Node expectedTarget) {
         Edge matchingEdge = this.getMatchingEdge(Optional.of(expectedDescriptionName), Optional.empty(), Optional.of(expectedSource.getId()), Optional.of(expectedTarget.getId()));
         if (matchingEdge != null) {
-            fail("There is one edge between the source and target node: Expected none"); //$NON-NLS-1$
+            fail("There is one edge between the source and target node: Expected none");
         }
     }
 
@@ -553,7 +553,7 @@ public class DiagramTestHelper {
     public void assertNoFeatureEdgeStartingFrom(String expectedDescriptionName, Node expectedSource) {
         Edge matchingEdge = this.getMatchingEdge(Optional.of(expectedDescriptionName), Optional.empty(), Optional.of(expectedSource.getId()), Optional.empty());
         if (matchingEdge != null) {
-            fail("A matching edge has been found whereas none was expected"); //$NON-NLS-1$
+            fail("A matching edge has been found whereas none was expected");
         }
     }
 

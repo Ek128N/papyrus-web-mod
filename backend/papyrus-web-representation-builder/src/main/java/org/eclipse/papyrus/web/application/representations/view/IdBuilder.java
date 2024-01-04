@@ -32,21 +32,21 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * @author Arthur Daussy
  */
 public class IdBuilder {
-    public static final String SPACE = " "; //$NON-NLS-1$
+    public static final String SPACE = " ";
 
-    public static final String NEW = "New "; //$NON-NLS-1$
+    public static final String NEW = "New ";
 
-    public static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode"; //$NON-NLS-1$
+    public static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode";
 
     private static final String GRAPHICAL_DROP_TOOL = "GraphicalDropTool_";
 
     private static final String FAKE_CHILD_LABEL_NODE = "_FakeChildLabelNode";
 
-    private static final String LABEL_NODE_PREFIX = "LabelNode"; //$NON-NLS-1$
+    private static final String LABEL_NODE_PREFIX = "LabelNode";
 
-    private static final String UNDERSCORE = "_"; //$NON-NLS-1$
+    private static final String UNDERSCORE = "_";
 
-    private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))"); //$NON-NLS-1$
+    private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))");
 
     private final String diagramPrefix;
 
@@ -72,7 +72,7 @@ public class IdBuilder {
     }
 
     public String getSiblingCreationToolId(EClass newElementType) {
-        return NEW + " Sibling " + this.findWordsInMixedCase(newElementType.getName()).stream().collect(joining(SPACE)); //$NON-NLS-1$
+        return NEW + " Sibling " + this.findWordsInMixedCase(newElementType.getName()).stream().collect(joining(SPACE));
     }
 
     /**
@@ -100,16 +100,16 @@ public class IdBuilder {
     }
 
     public String getDomainBaseEdgeId(EClass domain) {
-        return this.diagramPrefix + domain.getName() + "_DomainEdge"; //$NON-NLS-1$
+        return this.diagramPrefix + domain.getName() + "_DomainEdge";
     }
 
     public String getFeatureBaseEdgeId(EStructuralFeature feature) {
-        return this.diagramPrefix + feature.getEContainingClass().getName() + UNDERSCORE + feature.getName() + "_FeatureEdge"; //$NON-NLS-1$
+        return this.diagramPrefix + feature.getEContainingClass().getName() + UNDERSCORE + feature.getName() + "_FeatureEdge";
     }
 
     private String getBaseName(DiagramElementDescription description) {
         String base = this.findWordsInMixedCase(this.metamodelHelper.toEClass(description.getDomainType()).getName()).stream().collect(joining(SPACE));
-        return base; // $NON-NLS-1$
+        return base;
     }
 
     public String getDomainNodeName(EClass domain) {
@@ -129,23 +129,23 @@ public class IdBuilder {
     }
 
     public String getListItemDomainNodeName(EClass domain, EClass parentContainer) {
-        return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSCORE + LABEL_NODE_PREFIX; //$NON-NLS-1$
+        return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSCORE + LABEL_NODE_PREFIX;
     }
 
     public String getNodeGraphicalDropToolName(NodeDescription nodeToCreate) {
-        return this.diagramPrefix + GRAPHICAL_DROP_TOOL + this.getBaseName(nodeToCreate); // $NON-NLS-1$
+        return this.diagramPrefix + GRAPHICAL_DROP_TOOL + this.getBaseName(nodeToCreate);
     }
 
     public String getSpecializedNodeGraphicalDropToolName(NodeDescription nodeToCreate, String specialization) {
-        return this.diagramPrefix + GRAPHICAL_DROP_TOOL + this.getBaseName(nodeToCreate) + UNDERSCORE + specialization; // $NON-NLS-1$
+        return this.diagramPrefix + GRAPHICAL_DROP_TOOL + this.getBaseName(nodeToCreate) + UNDERSCORE + specialization;
     }
 
     public String getDiagramSemanticDropToolName() {
-        return this.diagramPrefix + "SemanticDropTool"; //$NON-NLS-1$
+        return this.diagramPrefix + "SemanticDropTool";
     }
 
     public String getDiagramGraphicalDropToolName() {
-        return this.diagramPrefix + "GraphicalDropTool"; //$NON-NLS-1$
+        return this.diagramPrefix + "GraphicalDropTool";
     }
 
     public String getCreationToolId(EdgeDescription description) {
@@ -153,15 +153,15 @@ public class IdBuilder {
             return NEW + this.getBaseName(description);
         }
         // Improve this
-        return this.diagramPrefix + this.getBaseName(description) + "_EdgeTool"; //$NON-NLS-1$
+        return this.diagramPrefix + this.getBaseName(description) + "_EdgeTool";
     }
 
     public String getSourceReconnectionToolId(EdgeDescription padPackageMerge) {
-        return padPackageMerge.getName() + "_SourceReconnectionTool"; //$NON-NLS-1$
+        return padPackageMerge.getName() + "_SourceReconnectionTool";
     }
 
     public String getTargetReconnectionToolId(EdgeDescription padPackageMerge) {
-        return padPackageMerge.getName() + "_TargetReconnectionTool"; //$NON-NLS-1$
+        return padPackageMerge.getName() + "_TargetReconnectionTool";
     }
 
 }

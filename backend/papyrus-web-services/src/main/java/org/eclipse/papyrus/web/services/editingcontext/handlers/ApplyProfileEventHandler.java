@@ -79,7 +79,7 @@ public class ApplyProfileEventHandler implements IEditingContextEventHandler {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 message = null;
             } else {
-                message = "The profile application failed"; //$NON-NLS-1$
+                message = "The profile application failed";
             }
         } else {
             message = this.messageService.invalidInput(input.getClass().getSimpleName(), ApplyProfileInput.class.getSimpleName());

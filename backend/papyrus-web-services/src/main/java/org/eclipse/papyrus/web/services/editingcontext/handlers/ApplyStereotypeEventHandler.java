@@ -84,7 +84,7 @@ public class ApplyStereotypeEventHandler implements IEditingContextEventHandler 
                 payload = new ApplyStereotypeSuccessPayload(input.id());
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
             } else {
-                message = "The stereotype application failed"; //$NON-NLS-1$
+                message = "The stereotype application failed";
             }
         }
 

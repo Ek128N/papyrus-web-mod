@@ -68,22 +68,22 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     /**
      * The name of the representation handled by this builder.
      */
-    public static final String UCD_REP_NAME = "Use Case Diagram"; //$NON-NLS-1$
+    public static final String UCD_REP_NAME = "Use Case Diagram";
 
     /**
      * The prefix of the representation handled by this builder.
      */
-    public static final String UCD_PREFIX = "UCD_"; //$NON-NLS-1$
+    public static final String UCD_PREFIX = "UCD_";
 
     /**
      * The suffix of "Classifier as Subject" creation tool
      */
-    private static final String AS_SUBJECT = " as Subject"; //$NON-NLS-1$
+    private static final String AS_SUBJECT = " as Subject";
 
     /**
      * Subject tool section name.
      */
-    private static final String SUBJECT = "Subject"; //$NON-NLS-1$
+    private static final String SUBJECT = "Subject";
 
     /**
      * Factory used to create UML elements.
@@ -178,7 +178,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createDiagramActorDescription(DiagramDescription diagramDescription) {
-        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true); //$NON-NLS-1$
+        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true);
         actorNodeStyle.setBorderSize(0);
 
         EClass actorEClass = this.umlPackage.getActor();
@@ -189,8 +189,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
-        ucdDiagramActorDescription.setDefaultWidthExpression("70"); //$NON-NLS-1$
-        ucdDiagramActorDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
+        ucdDiagramActorDescription.setDefaultWidthExpression("70");
+        ucdDiagramActorDescription.setDefaultHeightExpression("100");
         ucdDiagramActorDescription.setKeepAspectRatio(true);
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramActorDescription);
@@ -288,8 +288,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
-        ucdDiagramUseCaseDescription.setDefaultWidthExpression("204"); //$NON-NLS-1$
-        ucdDiagramUseCaseDescription.setDefaultHeightExpression("104"); //$NON-NLS-1$
+        ucdDiagramUseCaseDescription.setDefaultWidthExpression("204");
+        ucdDiagramUseCaseDescription.setDefaultHeightExpression("104");
 
         diagramDescription.getNodeDescriptions().add(ucdDiagramUseCaseDescription);
 
@@ -357,7 +357,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createSharedActorDescription(DiagramDescription diagramDescription) {
-        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true); //$NON-NLS-1$
+        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true);
         actorNodeStyle.setBorderSize(0);
 
         EClass actorEClass = this.umlPackage.getActor();
@@ -368,8 +368,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
                 .build();
-        ucdPackageActorDescription.setDefaultWidthExpression("70"); //$NON-NLS-1$
-        ucdPackageActorDescription.setDefaultHeightExpression("100"); //$NON-NLS-1$
+        ucdPackageActorDescription.setDefaultWidthExpression("70");
+        ucdPackageActorDescription.setDefaultHeightExpression("100");
         ucdPackageActorDescription.setKeepAspectRatio(true);
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdPackageActorDescription);
 
@@ -454,8 +454,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
                 .build();
 
-        ucdSharedUseCaseDescription.setDefaultWidthExpression("204"); //$NON-NLS-1$
-        ucdSharedUseCaseDescription.setDefaultHeightExpression("104"); //$NON-NLS-1$
+        ucdSharedUseCaseDescription.setDefaultWidthExpression("204");
+        ucdSharedUseCaseDescription.setDefaultHeightExpression("104");
 
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdSharedUseCaseDescription);
 

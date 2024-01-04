@@ -200,7 +200,7 @@ public class ViewHelper implements IViewHelper {
                 this.diagramOperationsService.createView(this.diagramContext, semanticElement, Optional.ofNullable(selectedNode), nodeDescription, containmentKind);
                 return true;
             } else {
-                LOGGER.warn("A representation of this element alredy exist in the digram"); //$NON-NLS-1$
+                LOGGER.warn("A representation of this element alredy exist in the digram");
             }
 
         }
@@ -328,7 +328,7 @@ public class ViewHelper implements IViewHelper {
                 .sorted(Comparator.comparingInt(n -> -1 * this.computeDistanceToElement(UMLHelper.toEClass(n.getDomainType())))).collect(toList());
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidate = candidates.stream().filter(c -> UMLHelper.toEClass(c.getDomainType()) == eClass).findFirst();
         if (candidates.isEmpty()) {
-            LOGGER.error(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName)); //$NON-NLS-1$
+            LOGGER.error(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName));
             return null;
         } else {
             org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = null;
@@ -339,7 +339,7 @@ public class ViewHelper implements IViewHelper {
             }
             if (candidates.size() > 1) {
                 LOGGER.info(
-                        MessageFormat.format("More than one candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName())); //$NON-NLS-1$
+                        MessageFormat.format("More than one candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName()));
             }
             return byDefault;
 

@@ -45,24 +45,24 @@ public class UMLDocumentationService {
      * Value of the "source" attribute to get the right EAnnotation which contains the documentation for each model
      * element.
      */
-    private static final String SOURCE_ANNOTATION_GEN_MODEL = "http://www.eclipse.org/emf/2002/GenModel"; //$NON-NLS-1$
+    private static final String SOURCE_ANNOTATION_GEN_MODEL = "http://www.eclipse.org/emf/2002/GenModel";
 
-    private static final String SOURCE_ANNOTATION_DUPLICATES = "duplicates"; //$NON-NLS-1$
+    private static final String SOURCE_ANNOTATION_DUPLICATES = "duplicates";
 
     /**
      * The key of the EAnnotation details map used to get the documentation for each model element.
      */
-    private static final String DOCUMENTATION_ANNOTATION_DETAILS_KEY = "documentation"; //$NON-NLS-1$
+    private static final String DOCUMENTATION_ANNOTATION_DETAILS_KEY = "documentation";
 
     /**
      * The pattern used to match additional documentation from superclasses.
      */
-    private static final String SUPERCLASS_DOCUMENTATION_PATTERN = "<p>.*</p>"; //$NON-NLS-1$
+    private static final String SUPERCLASS_DOCUMENTATION_PATTERN = "<p>.*</p>";
 
     /**
      * The example of valid formats for the multiplicity text widget, displayed in the Help content.
      */
-    private static final String MULTIPLICITY_DOC_EXAMPLE = "Example of valid formats: 1, 0..12, 1..*, *"; //$NON-NLS-1$
+    private static final String MULTIPLICITY_DOC_EXAMPLE = "Example of valid formats: 1, 0..12, 1..*, *";
 
     private Map<String, String> documentationEntries;
 

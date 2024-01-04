@@ -505,7 +505,7 @@ public class CreateMetaclassImportEventHandler implements IDiagramEventHandler {
                 message = null;
             } else {
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), createMetaclassImportInput);
-                message = "The metaclass import creation failed"; //$NON-NLS-1$
+                message = "The metaclass import creation failed";
             }
         } else {
             message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ApplyProfileInput.class.getSimpleName());

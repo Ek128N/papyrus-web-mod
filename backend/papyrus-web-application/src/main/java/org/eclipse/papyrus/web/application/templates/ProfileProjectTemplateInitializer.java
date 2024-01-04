@@ -42,7 +42,7 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
     /**
      * Name of the new resource.
      */
-    private static final String PROFILE_MODEL_TITLE = "Profile.profile.uml"; //$NON-NLS-1$
+    private static final String PROFILE_MODEL_TITLE = "Profile.profile.uml";
 
     /**
      * Logger used to log error when model creation fails.
@@ -98,11 +98,11 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
 
     private Optional<RepresentationMetadata> initializeProfileWithPrimitivesAndUmlProjectContents(IEditingContext editingContext) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, PROFILE_MODEL_TITLE, "DefaultProfileWithPrimitiveAndUml.uml"); //$NON-NLS-1$
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, PROFILE_MODEL_TITLE, "DefaultProfileWithPrimitiveAndUml.uml");
             return resource.flatMap(r -> this.createProfileDiagram(editingContext, r))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
-            this.logger.error("Error while creating template", e); //$NON-NLS-1$
+            this.logger.error("Error while creating template", e);
         }
         return Optional.empty();
     }
@@ -111,7 +111,7 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
         Profile profile = (Profile) r.getContents().get(0);
 
         return this.diagramBuilderService
-                .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram") //$NON-NLS-1$
+                .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram")
                 .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);

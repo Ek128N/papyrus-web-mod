@@ -93,9 +93,9 @@ public class PageDescriptionTests {
         pageDescriptions.forEach(d -> {
             String name = d.getName();
             if (name == null || name.isBlank()) {
-                result.add(Status.error("Missing name on" + d)); //$NON-NLS-1$
+                result.add(Status.error("Missing name on" + d));
             } else if (pageName.contains(name)) {
-                result.add(Status.error("Dupplicated name" + d.getName())); //$NON-NLS-1$
+                result.add(Status.error("Dupplicated name" + d.getName()));
             } else {
                 pageName.add(name);
             }

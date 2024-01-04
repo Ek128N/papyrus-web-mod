@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public class CallQuery {
 
-    private static final String CALL_SEP = "."; //$NON-NLS-1$
+    private static final String CALL_SEP = ".";
 
     private final String variable;
 
@@ -39,15 +39,15 @@ public class CallQuery {
     }
 
     public String callOperation(EOperation operation) {
-        return AQL_PREFIX + trimAqlPrefix(variable) + CALL_SEP + operation.getName() + "()"; //$NON-NLS-1$
+        return AQL_PREFIX + trimAqlPrefix(variable) + CALL_SEP + operation.getName() + "()";
     }
 
     public String accessFeature(EStructuralFeature feature) {
-        return AQL_PREFIX + trimAqlPrefix(variable) + CALL_SEP + feature.getName(); // $NON-NLS-1$
+        return AQL_PREFIX + trimAqlPrefix(variable) + CALL_SEP + feature.getName();
     }
 
     public String callService(String serviceName, String... parameters) {
-        return AQL_PREFIX + trimAqlPrefix(variable) + CALL_SEP + serviceName + "(" + Stream.of(parameters).collect(joining(",")) + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return AQL_PREFIX + trimAqlPrefix(variable) + CALL_SEP + serviceName + "(" + Stream.of(parameters).collect(joining(",")) + ")";
     }
 
     public static String queryAttributeOnSelf(EStructuralFeature feature) {
