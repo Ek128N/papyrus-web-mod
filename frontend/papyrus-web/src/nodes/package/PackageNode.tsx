@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -19,13 +19,15 @@ import {
   ConnectionTargetHandle,
   DiagramElementPalette,
   Label,
+  NodeContext,
+  NodeContextValue,
   useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { PackageNodeData } from './PackageNode.types';
 
@@ -33,6 +35,7 @@ const packageNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const packageContainerStyle: React.CSSProperties = {
@@ -46,8 +49,8 @@ const packageNodeStyle = (
     backgroundColor: 'transparent',
   };
 
-  if (selected) {
-    packageContainerStyle.outline = `${theme.palette.primary.main} solid 1px`;
+  if (selected || hovered) {
+    packageContainerStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return packageContainerStyle;
@@ -57,6 +60,7 @@ const packageHeaderStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean,
   labelWidth: number
 ): React.CSSProperties => {
@@ -77,8 +81,8 @@ const packageHeaderStyle = (
     overflowX: 'clip',
   };
 
-  if (selected) {
-    packageHeaderStyle.outline = `${theme.palette.primary.main} solid 1px`;
+  if (selected || hovered) {
+    packageHeaderStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return packageHeaderStyle;
@@ -88,6 +92,7 @@ const packageContainerStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const packageNodeStyle: React.CSSProperties = {
@@ -101,11 +106,18 @@ const packageContainerStyle = (
     borderColor: getCSSColor(String(style.borderColor), theme),
   };
 
-  if (selected) {
-    packageNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+  if (selected || hovered) {
+    packageNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return packageNodeStyle;
+};
+
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
 };
 
 export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeData>) => {
@@ -113,6 +125,7 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -136,10 +149,10 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
 
   return (
     <>
-      <NodeResizer color={theme.palette.primary.main} isVisible={selected} />
+      <NodeResizer handleStyle={{ ...resizeHandleStyle(theme) }} color={theme.palette.selected} isVisible={selected} />
       <div
         style={{
-          ...packageNodeStyle(theme, data.style, selected, data.faded),
+          ...packageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
@@ -150,7 +163,14 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <div
           style={{
-            ...packageHeaderStyle(theme, data.style, selected, data.faded, data.label ? data.label.text.length : 0),
+            ...packageHeaderStyle(
+              theme,
+              data.style,
+              selected,
+              hoveredNode?.id === id,
+              data.faded,
+              data.label ? data.label.text.length : 0
+            ),
             ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
             ...dropFeedbackStyle,
           }}>
@@ -158,7 +178,7 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
         </div>
         <div
           style={{
-            ...packageContainerStyle(theme, data.style, selected, data.faded),
+            ...packageContainerStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
             ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
             ...dropFeedbackStyle,
           }}

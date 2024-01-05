@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  ***************************************************************************/
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
@@ -84,7 +85,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
     color: theme.palette.secondary.main,
   },
   selected: {
-    color: theme.palette.primary.main,
+    color: theme.palette.selected,
   },
   propertySectionLabel: {
     display: 'flex',
@@ -95,10 +96,12 @@ const useStyles = makeStyles<Theme>((theme) => ({
 
 type PropertySectionComponentProps = WidgetProps<GQLLanguageExpression>;
 
-export const LanguageExpressionPreview = ({ widget, selection }: PropertySectionComponentProps) => {
+export const LanguageExpressionPreview = ({ widget }: PropertySectionComponentProps) => {
   const classes = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<boolean>(false);
+
+  const { selection } = useSelection();
 
   const ref = useRef<HTMLInputElement | null>(null);
 

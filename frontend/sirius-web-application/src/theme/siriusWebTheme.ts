@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,26 +38,34 @@ export const baseTheme: Theme = createTheme({
       dark: '#9B0B00',
       light: '#E43F33',
     },
+    success: {
+      main: '#43A047',
+      dark: '#327836',
+      light: '#4EBA54',
+    },
+    warning: {
+      main: '#FF9800',
+      dark: '#D98200',
+      light: '#FFB800',
+    },
+    info: {
+      main: '#2196F3',
+      dark: '#1D7DCC',
+      light: '#24A7FF',
+    },
     divider: '#B3BFC5',
     navigation: {
       leftBackground: '#BE1A7880',
       rightBackground: '#261E5880',
     },
+    navigationBar: {
+      border: '#BE1A78',
+      background: '#261E58',
+    },
+    selected: '#BE1A78',
     action: {
       hover: '#BE1A7826',
       selected: '#BE1A7842',
-    },
-  },
-  props: {
-    MuiAppBar: {
-      color: 'secondary',
-    },
-  },
-  overrides: {
-    MuiSnackbarContent: {
-      root: {
-        backgroundColor: '#7269A4',
-      },
     },
   },
 });

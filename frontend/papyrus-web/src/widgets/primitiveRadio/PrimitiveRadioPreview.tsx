@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,7 @@
  *  Obeo - Initial API and implementation
  ***************************************************************************/
 
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
@@ -25,7 +26,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
     color: theme.palette.secondary.main,
   },
   selected: {
-    color: theme.palette.primary.main,
+    color: theme.palette.selected,
   },
   propertySectionLabel: {
     display: 'flex',
@@ -36,9 +37,11 @@ const useStyles = makeStyles<Theme>((theme) => ({
 
 type PropertySectionComponentProps = WidgetProps<GQLPrimitiveRadio>;
 
-export const PrimitiveRadioPreview = ({ widget, selection }: PropertySectionComponentProps) => {
+export const PrimitiveRadioPreview = ({ widget }: PropertySectionComponentProps) => {
   const classes = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
+
+  const { selection } = useSelection();
 
   const ref = useRef<HTMLInputElement | null>(null);
 

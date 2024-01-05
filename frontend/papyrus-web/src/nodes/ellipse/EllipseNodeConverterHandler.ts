@@ -1,22 +1,20 @@
-/*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
+/*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *  Obeo - Initial API and implementation
- *****************************************************************************/
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 import {
+  AlignmentMap,
   BorderNodePositon,
   ConnectionHandle,
   GQLDiagram,
-  convertHandles,
-  convertLabelStyle,
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
@@ -24,24 +22,22 @@ import {
   GQLViewModifier,
   IConvertEngine,
   INodeConverterHandler,
+  convertHandles,
+  convertLabelStyle,
   convertLineStyle,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
-import {
-  GQLRectangleWithExternalLabelNodeStyle,
-  RectangleWithExternalLabelNodeData,
-} from './RectangleWithExternalLabelNode.types';
+import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
-
-const toRectangleWithExternalLabelNode = (
+const toEllipseNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLRectangleWithExternalLabelNodeStyle>,
+  gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<RectangleWithExternalLabelNodeData> => {
+): Node<EllipseNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -57,7 +53,7 @@ const toRectangleWithExternalLabelNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: RectangleWithExternalLabelNodeData = {
+  const data: EllipseNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -99,13 +95,16 @@ const toRectangleWithExternalLabelNode = (
       iconURL: labelStyle.iconURL,
     };
 
-    data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-    data.label.style = { ...data.label.style, justifyContent: 'center' };
+    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
+    if (alignement.isPrimaryVerticalAlignment) {
+      data.style = { ...data.style, alignItems: 'stretch' };
+      data.label.style = { ...data.label.style, justifyContent: 'center' };
+    }
   }
 
-  const node: Node<RectangleWithExternalLabelNodeData> = {
+  const node: Node<EllipseNodeData> = {
     id,
-    type: 'rectangleWithExternalLabelNode',
+    type: 'ellipseNode',
     data,
     position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
@@ -134,15 +133,15 @@ const toRectangleWithExternalLabelNode = (
   return node;
 };
 
-export class RectangleWithExternalLabelNodeConverterHandler implements INodeConverterHandler {
+export class EllipseNodeConverterHandler implements INodeConverterHandler {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'RectangleWithExternalLabelNodeStyle';
+    return gqlNode.style.__typename === 'EllipseNodeStyle';
   }
 
   handle(
     convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLRectangleWithExternalLabelNodeStyle>,
+    gqlNode: GQLNode<GQLEllipseNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
@@ -150,9 +149,7 @@ export class RectangleWithExternalLabelNodeConverterHandler implements INodeConv
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = this.findNodeDescription(nodeDescriptions, gqlNode.descriptionId);
-    nodes.push(
-      toRectangleWithExternalLabelNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges)
-    );
+    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription ?? undefined, isBorderNode, gqlEdges));
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],

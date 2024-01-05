@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  AlignmentMap,
   BorderNodePositon,
   ConnectionHandle,
   GQLDiagram,
@@ -27,17 +26,18 @@ import {
   convertLineStyle,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
-import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
+import { GQLNoteNodeStyle, NoteNodeData } from './NoteNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
-const toEllipseNode = (
+
+const toNoteNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLEllipseNodeStyle>,
+  gqlNode: GQLNode<GQLNoteNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<EllipseNodeData> => {
+): Node<NoteNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -53,7 +53,7 @@ const toEllipseNode = (
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
 
-  const data: EllipseNodeData = {
+  const data: NoteNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -88,23 +88,24 @@ const toEllipseNode = (
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '8px 16px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
     };
 
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      data.style = { ...data.style, alignItems: 'stretch' };
-      data.label.style = { ...data.label.style, justifyContent: 'center' };
-    }
+    data.style = {
+      ...data.style,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    };
+    data.label.style = { ...data.label.style, justifyContent: 'top' };
   }
 
-  const node: Node<EllipseNodeData> = {
+  const node: Node<NoteNodeData> = {
     id,
-    type: 'ellipseNode',
+    type: 'noteNode',
     data,
     position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
@@ -133,15 +134,15 @@ const toEllipseNode = (
   return node;
 };
 
-export class EllipseNodeConverterHandler implements INodeConverterHandler {
+export class NoteNodeConverterHandler implements INodeConverterHandler {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'EllipseNodeStyle';
+    return gqlNode.style.__typename === 'NoteNodeStyle';
   }
 
   handle(
     convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLEllipseNodeStyle>,
+    gqlNode: GQLNode<GQLNoteNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
@@ -149,7 +150,7 @@ export class EllipseNodeConverterHandler implements INodeConverterHandler {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = this.findNodeDescription(nodeDescriptions, gqlNode.descriptionId);
-    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription ?? undefined, isBorderNode, gqlEdges));
+    nodes.push(toNoteNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,44 +10,41 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloProvider } from '@apollo/client';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import {
-  Representation,
-  RepresentationComponent,
-  RepresentationComponentRegistry,
-  RepresentationContext,
-  RepresentationContextValue,
-  ServerContext,
-  theme,
-} from '@eclipse-sirius/sirius-components-core';
-import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams';
-import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
-import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import {
-  FormRepresentation,
   GQLWidget,
+  PropertySectionComponent,
   PropertySectionComponentRegistry,
   PropertySectionContext,
   PropertySectionContextValue,
   WidgetContribution,
 } from '@eclipse-sirius/sirius-components-forms';
 import {
+  GQLReferenceWidget,
   ReferenceIcon,
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { ApolloGraphQLClient } from './ApolloGraphQLClient';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { PapyrusIcon } from './core/PapyrusIcon';
-import { Main } from './main/Main';
-import { ToastProvider } from './toast/ToastProvider';
+import { EllipseNode } from './nodes/ellipse/EllipseNode';
+import { EllipseNodeConverterHandler } from './nodes/ellipse/EllipseNodeConverterHandler';
+import { EllipseNodeLayoutHandler } from './nodes/ellipse/EllipseNodeLayoutHandler';
+import { NoteNode } from './nodes/note/NoteNode';
+import { NoteNodeConverterHandler } from './nodes/note/NoteNodeConverterHandler';
+import { NoteNodeLayoutHandler } from './nodes/note/NoteNodeLayoutHandler';
+import { RectangleWithExternalLabelNode } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNode';
+import { RectangleWithExternalLabelNodeConverterHandler } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverterHandler';
+import { RectangleWithExternalLabelNodeLayoutHandler } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeLayoutHandler';
+import { PackageNode } from './nodes/package/PackageNode';
+import { PackageNodeConverterHandler } from './nodes/package/PackageNodeConverterHandler';
+import { PackageNodeLayoutHandler } from './nodes/package/PackageNodeLayoutHandler';
 import { SliderPreview } from './widgets/SliderPreview';
+import { GQLSlider } from './widgets/SliderFragment.types';
 import { SliderPropertySection } from './widgets/SliderPropertySection';
 import { ContainmentReferenceIcon } from './widgets/containmentReference/ContainmentReferenceIcon';
 import ContainmentReferenceSection from './widgets/containmentReference/ContainmentReferenceSection';
@@ -57,7 +54,12 @@ import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveLis
 import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidgetPropertySection';
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
-import { SiriusWebApplication, Views } from '@papyrus-web/sirius-web-application';
+import {
+  SiriusWebApplication,
+  Views,
+  NodeTypeRegistry,
+  DiagramRepresentationConfiguration,
+} from '@papyrus-web/sirius-web-application';
 import { ContainmentReferencePreview } from './widgets/containmentReference/ContainmentReferencePreview';
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { LanguageExpressionPreview } from './widgets/languageExpression/LanguageExpressionPreview';
@@ -203,10 +205,50 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
   propertySectionsRegistry,
 };
 
+const nodeTypeRegistryValue: NodeTypeRegistry = {
+  graphQLNodeStyleFragments: [
+    {
+      type: 'EllipseNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+    {
+      type: 'PackageNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+    {
+      type: 'RectangleWithExternalLabelNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+    {
+      type: 'NoteNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+  ],
+  nodeLayoutHandlers: [
+    new EllipseNodeLayoutHandler(),
+    new PackageNodeLayoutHandler(),
+    new RectangleWithExternalLabelNodeLayoutHandler(),
+    new NoteNodeLayoutHandler(),
+  ],
+  nodeConverterHandlers: [
+    new EllipseNodeConverterHandler(),
+    new PackageNodeConverterHandler(),
+    new RectangleWithExternalLabelNodeConverterHandler(),
+    new NoteNodeConverterHandler(),
+  ],
+  nodeTypeContributions: [
+    <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
+    <NodeTypeContribution component={PackageNode} type={'packageNode'} />,
+    <NodeTypeContribution component={RectangleWithExternalLabelNode} type={'rectangleWithExternalLabelNode'} />,
+    <NodeTypeContribution component={NoteNode} type={'noteNode'} />,
+  ],
+};
+
 ReactDOM.render(
   <PropertySectionContext.Provider value={propertySectionRegistryValue}>
     <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
       <Views applicationIcon={<PapyrusIcon />} applicationBarMenu={<Help />} />
+      <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistryValue} />+{' '}
     </SiriusWebApplication>
   </PropertySectionContext.Provider>,
   document.getElementById('root')

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,13 +18,15 @@ import {
   ConnectionTargetHandle,
   DiagramElementPalette,
   Label,
+  NodeContext,
+  NodeContextValue,
   useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { EllipseNodeData } from './EllipseNode.types';
 
@@ -32,6 +34,7 @@ const ellipseNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const ellipseNodeStyle: React.CSSProperties = {
@@ -46,11 +49,18 @@ const ellipseNodeStyle = (
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
   };
 
-  if (selected) {
-    ellipseNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+  if (selected || hovered) {
+    ellipseNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return ellipseNodeStyle;
+};
+
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
 };
 
 export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeData>) => {
@@ -58,6 +68,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -68,14 +79,15 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
   return (
     <>
       <NodeResizer
-        color={theme.palette.primary.main}
+        handleStyle={{ ...resizeHandleStyle(theme) }}
+        color={theme.palette.selected}
         isVisible={selected}
         shouldResize={() => !data.isBorderNode}
         keepAspectRatio={data.nodeDescription?.keepAspectRatio}
       />
       <div
         style={{
-          ...ellipseNodeStyle(theme, data.style, selected, data.faded),
+          ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}

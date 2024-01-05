@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -19,13 +19,15 @@ import {
   ConnectionTargetHandle,
   DiagramElementPalette,
   Label,
+  NodeContext,
+  NodeContextValue,
   useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Theme, useTheme } from '@material-ui/core/styles';
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { RectangleWithExternalLabelNodeData } from './RectangleWithExternalLabelNode.types';
 
@@ -33,6 +35,7 @@ const rectangleWithExternalLabelInnerRectangleStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const rectangleWithExternalLabelNodeStyle: React.CSSProperties = {
@@ -46,8 +49,8 @@ const rectangleWithExternalLabelInnerRectangleStyle = (
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
   };
 
-  if (selected) {
-    rectangleWithExternalLabelNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+  if (selected || hovered) {
+    rectangleWithExternalLabelNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return rectangleWithExternalLabelNodeStyle;
@@ -57,6 +60,7 @@ const rectangleWithExternalLabelNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
+  hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
   const rectangleWithExternalLabelNodeStyle: React.CSSProperties = {
@@ -70,11 +74,18 @@ const rectangleWithExternalLabelNodeStyle = (
     backgroundColor: 'transparent',
   };
 
-  if (selected) {
-    rectangleWithExternalLabelNodeStyle.outline = `${theme.palette.primary.main} solid 1px`;
+  if (selected || hovered) {
+    rectangleWithExternalLabelNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
   return rectangleWithExternalLabelNodeStyle;
+};
+
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
 };
 
 export const RectangleWithExternalLabelNode = memo(
@@ -83,6 +94,7 @@ export const RectangleWithExternalLabelNode = memo(
     const { onDrop, onDragOver } = useDrop();
     const { newConnectionStyleProvider } = useConnector();
     const { style: dropFeedbackStyle } = useDropNodeStyle(id);
+    const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
 
     const handleOnDrop = (event: React.DragEvent) => {
       onDrop(event, id);
@@ -93,7 +105,8 @@ export const RectangleWithExternalLabelNode = memo(
     return (
       <>
         <NodeResizer
-          color={theme.palette.primary.main}
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          color={theme.palette.selected}
           isVisible={selected}
           // Force false here to handle mutualized NodeDescriptions for SMD PseudoStates.
           // The other nodes need to have the aspect ratio, but RectanguleWithExternalLabelNodes
@@ -102,7 +115,7 @@ export const RectangleWithExternalLabelNode = memo(
         />
         <div
           style={{
-            ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, data.faded),
+            ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
             ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
             ...dropFeedbackStyle,
           }}
@@ -115,7 +128,13 @@ export const RectangleWithExternalLabelNode = memo(
           <ConnectionHandles connectionHandles={data.connectionHandles} />
           <div
             style={{
-              ...rectangleWithExternalLabelInnerRectangleStyle(theme, data.style, selected, data.faded),
+              ...rectangleWithExternalLabelInnerRectangleStyle(
+                theme,
+                data.style,
+                selected,
+                hoveredNode?.id === id,
+                data.faded
+              ),
               ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
               ...dropFeedbackStyle,
             }}

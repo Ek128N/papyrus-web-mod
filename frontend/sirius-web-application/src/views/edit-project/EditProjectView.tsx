@@ -11,15 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
-import { Representation, Toast, Workbench, WorkbenchViewContribution } from '@eclipse-sirius/sirius-components-core';
+import {
+  Representation,
+  Selection,
+  SelectionContextProvider,
+  Toast,
+  Workbench,
+  WorkbenchViewContribution,
+} from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramPaletteToolContext,
   DiagramPaletteToolContextValue,
   DiagramPaletteToolContribution,
   NodeData,
-  NodeTypeContext,
-  NodeTypeContextValue,
-  NodeTypeContribution,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
 import {
@@ -46,18 +50,6 @@ import { useEffect, useState } from 'react';
 import { generatePath, useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { useNodes } from 'reactflow';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { EllipseNode } from '../../nodes/ellipse/EllipseNode';
-import { EllipseNodeConverterHandler } from '../../nodes/ellipse/EllipseNodeConverterHandler';
-import { EllipseNodeLayoutHandler } from '../../nodes/ellipse/EllipseNodeLayoutHandler';
-import { NoteNode } from '../../nodes/note/NoteNode';
-import { NoteNodeConverterHandler } from '../../nodes/note/NoteNodeConverterHandler';
-import { NoteNodeLayoutHandler } from '../../nodes/note/NoteNodeLayoutHandler';
-import { RectangleWithExternalLabelNode } from '../../nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNode';
-import { RectangleWithExternalLabelNodeConverterHandler } from '../../nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverterHandler';
-import { RectangleWithExternalLabelNodeLayoutHandler } from '../../nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeLayoutHandler';
-import { PackageNode } from '../../nodes/package/PackageNode';
-import { PackageNodeConverterHandler } from '../../nodes/package/PackageNodeConverterHandler';
-import { PackageNodeLayoutHandler } from '../../nodes/package/PackageNodeLayoutHandler';
 import { OnboardArea } from '../../onboarding/OnboardArea';
 import { UMLModelTreeItemContextMenuContribution } from '../../profile/apply-profile/UMLModelTreeItemContextMenuContribution';
 import { UMLElementTreeItemContextMenuContribution } from '../../profile/apply-stereotype/UMLElementTreeItemContextMenuContribution';
@@ -156,6 +148,19 @@ export const EditProjectView = () => {
     }
   }, [editProjectView, projectId, routeMatch, history, representation, representationId]);
 
+  let initialSelection: Selection = null;
+  if (representation) {
+    initialSelection = {
+      entries: [
+        {
+          id: representation?.id,
+          label: representation?.label,
+          kind: representation?.kind,
+        },
+      ],
+    };
+  }
+
   let main = null;
   if (editProjectView === 'loaded' && project) {
     const onRepresentationSelected = (representationSelected: Representation) => {
@@ -227,83 +232,42 @@ export const EditProjectView = () => {
       />,
     ];
 
-    const nodeTypeRegistryValue: NodeTypeContextValue = {
-      graphQLNodeStyleFragments: [
-        {
-          type: 'EllipseNodeStyle',
-          fields: `borderColor borderSize borderStyle color`,
-        },
-        {
-          type: 'PackageNodeStyle',
-          fields: `borderColor borderSize borderStyle color`,
-        },
-        {
-          type: 'RectangleWithExternalLabelNodeStyle',
-          fields: `borderColor borderSize borderStyle color`,
-        },
-        {
-          type: 'NoteNodeStyle',
-          fields: `borderColor borderSize borderStyle color`,
-        },
-      ],
-      nodeLayoutHandlers: [
-        new EllipseNodeLayoutHandler(),
-        new PackageNodeLayoutHandler(),
-        new RectangleWithExternalLabelNodeLayoutHandler(),
-        new NoteNodeLayoutHandler(),
-      ],
-      nodeConverterHandlers: [
-        new EllipseNodeConverterHandler(),
-        new PackageNodeConverterHandler(),
-        new RectangleWithExternalLabelNodeConverterHandler(),
-        new NoteNodeConverterHandler(),
-      ],
-      nodeTypeContributions: [
-        <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
-        <NodeTypeContribution component={PackageNode} type={'packageNode'} />,
-        <NodeTypeContribution component={RectangleWithExternalLabelNode} type={'rectangleWithExternalLabelNode'} />,
-        <NodeTypeContribution component={NoteNode} type={'noteNode'} />,
-      ],
-    };
-
     main = (
       <TreeItemContextMenuContext.Provider value={treeItemContextMenuContributions}>
         <TreeToolBarContext.Provider value={treeToolBarContributions}>
           <DiagramPaletteToolContext.Provider value={diagramPaletteToolContributions}>
-            <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-              <Workbench
-                editingContextId={project.currentEditingContext.id}
-                initialRepresentationSelected={representation}
-                onRepresentationSelected={onRepresentationSelected}
-                mainAreaComponent={OnboardArea}
-                readOnly={false}>
-                <WorkbenchViewContribution
-                  side="left"
-                  title="Explorer"
-                  icon={<AccountTreeIcon />}
-                  component={ExplorerView}
-                />
-                <WorkbenchViewContribution
-                  side="left"
-                  title="Validation"
-                  icon={<WarningIcon />}
-                  component={ValidationView}
-                />
-                <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
-                <WorkbenchViewContribution
-                  side="right"
-                  title="Representations"
-                  icon={<Filter />}
-                  component={RepresentationsView}
-                />
-                <WorkbenchViewContribution
-                  side="right"
-                  title="Related Elements"
-                  icon={<LinkIcon />}
-                  component={RelatedElementsView}
-                />
-              </Workbench>
-            </NodeTypeContext.Provider>
+            <Workbench
+              editingContextId={project.currentEditingContext.id}
+              initialRepresentationSelected={representation}
+              onRepresentationSelected={onRepresentationSelected}
+              mainAreaComponent={OnboardArea}
+              readOnly={false}>
+              <WorkbenchViewContribution
+                side="left"
+                title="Explorer"
+                icon={<AccountTreeIcon />}
+                component={ExplorerView}
+              />
+              <WorkbenchViewContribution
+                side="left"
+                title="Validation"
+                icon={<WarningIcon />}
+                component={ValidationView}
+              />
+              <WorkbenchViewContribution side="right" title="Details" icon={<MenuIcon />} component={DetailsView} />
+              <WorkbenchViewContribution
+                side="right"
+                title="Representations"
+                icon={<Filter />}
+                component={RepresentationsView}
+              />
+              <WorkbenchViewContribution
+                side="right"
+                title="Related Elements"
+                icon={<LinkIcon />}
+                component={RelatedElementsView}
+              />
+            </Workbench>
           </DiagramPaletteToolContext.Provider>
         </TreeToolBarContext.Provider>
       </TreeItemContextMenuContext.Provider>
@@ -325,8 +289,17 @@ export const EditProjectView = () => {
     navbar = <EditProjectNavbar project={project} />;
   }
 
+  if (editProjectView !== 'loaded') {
+    return (
+      <div className={classes.editProjectView}>
+        {navbar}
+        {main}
+      </div>
+    );
+  }
+
   return (
-    <>
+    <SelectionContextProvider initialSelection={initialSelection}>
       <div className={classes.editProjectView}>
         {navbar}
         {main}
@@ -336,6 +309,6 @@ export const EditProjectView = () => {
         open={toast === 'visible'}
         onClose={() => dispatch({ type: 'HIDE_TOAST' } as HideToastEvent)}
       />
-    </>
+    </SelectionContextProvider>
   );
 };

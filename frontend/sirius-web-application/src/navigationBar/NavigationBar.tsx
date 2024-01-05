@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,12 +29,13 @@ const useNavigationBarStyles = makeStyles((theme) => ({
   },
   appBarHeader: {
     height: '4px',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.navigationBar.border,
   },
   toolbar: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: theme.palette.navigationBar.background,
   },
   left: {
     display: 'flex',

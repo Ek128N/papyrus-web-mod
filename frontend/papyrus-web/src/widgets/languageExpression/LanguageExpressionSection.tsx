@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -211,7 +211,6 @@ export const LanguageExpressionSection = ({
   const [newLanguage, setNewLanguage] = useState('');
   const [currentBody, setCurrentBody] = useState('');
   const [knownLanguagesSelected, setKnownLanguagesSelected] = useState(false);
-  const [newLanguageSelected, setNewLanguageSelected] = useState(false);
 
   const [addLanguageApi, { loading: addLanguageLoading, data: addLanguageData, error: addLanguageError }] = useMutation<
     GQLAddLanguageData,
@@ -352,7 +351,6 @@ export const LanguageExpressionSection = ({
 
   const closeAddLanguageDialog = () => {
     setKnownLanguagesSelected(false);
-    setNewLanguageSelected(false);
     setAddLanguageDialogOpen(false);
   };
 
@@ -366,13 +364,11 @@ export const LanguageExpressionSection = ({
 
   const handleKnownLanguagesFocusGained = () => {
     setKnownLanguagesSelected(true);
-    setNewLanguageSelected(false);
     setNewLanguage('');
   };
 
   const handleNewLanguageFocusGained = () => {
     setKnownLanguagesSelected(false);
-    setNewLanguageSelected(true);
     setSelectedPredefinedLanguage('');
   };
 
@@ -501,7 +497,7 @@ export const LanguageExpressionSection = ({
           <DialogContentText>Known languages</DialogContentText>
           <List
             style={{
-              border: `2px solid ${knownLanguagesSelected ? theme.palette.primary.main : 'rgba(0, 0, 0, .125)'}`,
+              border: `2px solid ${knownLanguagesSelected ? theme.palette.selected : 'rgba(0, 0, 0, .125)'}`,
               borderRadius: '4px',
             }}
             data-testid="le-add-language-dialog-know-languages"

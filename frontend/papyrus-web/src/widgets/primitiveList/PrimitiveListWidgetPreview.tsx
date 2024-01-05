@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,7 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { getTextDecorationLineValue, GQLList, ListStyleProps } from '@eclipse-sirius/sirius-components-forms';
 import { TextField } from '@material-ui/core';
@@ -42,7 +43,7 @@ const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
     marginRight: theme.spacing(2),
   },
   selected: {
-    color: theme.palette.primary.main,
+    color: theme.palette.selected,
   },
   propertySectionLabel: {
     display: 'flex',
@@ -53,7 +54,7 @@ const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
 
 type PrimitiveListWidgetProps = WidgetProps<GQLList>;
 
-export const PrimitiveListWidgetPreview = ({ widget, selection }: PrimitiveListWidgetProps) => {
+export const PrimitiveListWidgetPreview = ({ widget }: PrimitiveListWidgetProps) => {
   const props: ListStyleProps = {
     color: widget.style?.color ?? null,
     fontSize: widget.style?.fontSize ?? null,
@@ -66,6 +67,8 @@ export const PrimitiveListWidgetPreview = ({ widget, selection }: PrimitiveListW
 
   const [selected, setSelected] = useState<Boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
+
+  const { selection } = useSelection();
 
   useEffect(() => {
     if (ref.current && selection.entries.find((entry) => entry.id === widget.id)) {

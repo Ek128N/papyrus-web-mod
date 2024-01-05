@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useLazyQuery } from '@apollo/client';
-import { MainAreaComponentProps } from '@eclipse-sirius/sirius-components-core';
+import { MainAreaComponentProps, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { NewDocumentArea } from './NewDocumentArea';
@@ -77,10 +77,11 @@ const useOnboardAreaStyles = makeStyles((theme) => ({
   box: {},
 }));
 
-export const OnboardArea = ({ editingContextId, selection, setSelection, readOnly }: MainAreaComponentProps) => {
+export const OnboardArea = ({ editingContextId, readOnly }: MainAreaComponentProps) => {
   const classes = useOnboardAreaStyles();
   const [state, setState] = useState<OnboardAreaState>(INITIAL_STATE);
   const { editingContextActions, representationDescriptions, representations } = state;
+  const { selection } = useSelection();
 
   const objectId = selection.entries.length > 0 ? selection.entries[0].id : '';
 
@@ -106,22 +107,19 @@ export const OnboardArea = ({ editingContextId, selection, setSelection, readOnl
   }, [editingContextId, objectId, loading, data, error]);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} data-testid="onboard-area">
       <div className={classes.grid}>
         <NewDocumentArea
           editingContextId={editingContextId}
           editingContextActions={editingContextActions}
-          setSelection={setSelection}
           readOnly={readOnly}
         />
         <NewRepresentationArea
           editingContextId={editingContextId}
           representationDescriptions={representationDescriptions}
-          selection={selection}
-          setSelection={setSelection}
           readOnly={readOnly}
         />
-        <RepresentationsArea representations={representations} setSelection={setSelection} />
+        <RepresentationsArea representations={representations} />
       </div>
     </div>
   );
