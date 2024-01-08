@@ -13,15 +13,17 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
+import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
+import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
+import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -31,10 +33,10 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.tools.ITool;
-import org.eclipse.sirius.components.diagrams.tools.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.diagrams.tools.SingleClickOnTwoDiagramElementsTool;
-import org.eclipse.sirius.components.representations.Success;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,17 +47,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDiagramService.class);
+
     private final PapyrusRepresentationDescriptionRegistry papyrusViewRegistry;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
+    /**
+     * Logger used to report errors and warnings to the user.
+     */
+    private ServiceLogger logger;
+
     public PapyrusConnectorToolsProvider(PapyrusRepresentationDescriptionRegistry papyrusViewRegistry, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IDiagramDescriptionService diagramDescriptionService) {
+            IDiagramDescriptionService diagramDescriptionService, ServiceLogger serviceLogger) {
         this.papyrusViewRegistry = Objects.requireNonNull(papyrusViewRegistry);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
+        this.logger = serviceLogger;
     }
 
     @Override
@@ -71,7 +81,7 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
         var optTargetDiagramElementDescriptionId = this.mapDiagramElementToDescriptionId(targetDiagramElement);
 
         boolean diagramElementDescriptionsPresent = optDiagramDescription.isPresent() && optSourceDiagramElementDescriptionId.isPresent() && optTargetDiagramElementDescriptionId.isPresent();
-        List<ITool> result = null;
+        List<ITool> result = List.of();
         if (diagramElementDescriptionsPresent && optDiagramDescription.get() instanceof DiagramDescription) {
 
             DiagramDescription diagramDescription = (DiagramDescription) optDiagramDescription.get();
@@ -92,20 +102,24 @@ public class PapyrusConnectorToolsProvider implements IConnectorToolsProvider {
 
         }
 
-        if (result == null || result.isEmpty()) {
-            // Workaround for bug https://github.com/eclipse-sirius/sirius-components/issues/1378
-            return List.of(this.newNoOpTool());
-        } else {
-            return result;
+        if (result.isEmpty()) {
+            String sourceName = "null";
+            if (sourceDiagramElement instanceof Node node) {
+                sourceName = node.getTargetObjectKind();
+            } else if (sourceDiagramElement instanceof Edge edge) {
+                sourceName = edge.getTargetObjectKind();
+            }
+            String targetName = "null";
+            if (targetDiagramElement instanceof Node node) {
+                targetName = node.getTargetObjectKind();
+            } else if (targetDiagramElement instanceof Edge edge) {
+                targetName = edge.getTargetObjectKind();
+            }
+            String message = MessageFormat.format("Cannot find an EdgeDescription matching the selected source ({0}) and target ({1})", sourceName, targetName);
+            LOGGER.warn(message);
+            this.logger.log(message, ILogLevel.WARNING);
         }
-    }
-
-    private ITool newNoOpTool() {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("PapyrusMagicEdgeTool").appliesToDiagramRoot(false)//
-                .handler(v -> new Success(ChangeKind.NOTHING, Map.of()))//
-                .label("None")//
-                .targetDescriptions(List.of())//
-                .build();
+        return result;
     }
 
     private Optional<String> mapDiagramElementToDescriptionId(Object object) {
