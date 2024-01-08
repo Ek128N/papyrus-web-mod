@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -73,6 +74,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * The prefix of the representation handled by this builder.
      */
     public static final String PRD_PREFIX = "PRD_";
+
+    /**
+     * AQL expression to set children not draggable from its container.
+     */
+    private static final String CHILD_NOT_DRAGGABLE_EXPRESSION = "aql:false";
 
     /**
      * The name of the {@link NodeDescription} representing a metaclass on the diagram.
@@ -206,8 +212,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createDiagramEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.umlPackage.getEnumeration();
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         NodeDescription prdDiagramEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
@@ -389,9 +397,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createSharedEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.umlPackage.getEnumeration();
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         NodeDescription prdSharedEnumerationDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(enumerationEClass, SHARED_SUFFIX)) //
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
@@ -641,8 +651,10 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * @return the created {@link NodeDescription}
      */
     private NodeDescription createDiagramNodeDescriptionForClassifier(DiagramDescription diagramDescription, EClass classifierEClass) {
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         NodeDescription prdDiagramClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierEClass.getName()))//
@@ -671,9 +683,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * @return the created {@link NodeDescription}
      */
     private NodeDescription createSharedNodeDescriptionForClassifier(DiagramDescription diagramDescription, EClass classifierEClass) {
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         NodeDescription prdSharedClassifierDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(classifierEClass, SHARED_SUFFIX)) //
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierEClass.getName()))//
