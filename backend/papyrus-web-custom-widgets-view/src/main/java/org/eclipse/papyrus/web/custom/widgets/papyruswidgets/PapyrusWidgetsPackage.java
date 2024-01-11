@@ -48,7 +48,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      *
      * @generated
      */
-    String eNS_URI = "https://www.eclipse.org/papyrus/widgets/";
+    String eNS_URI = "http://www.eclipse.org/papyrus-web/widgets/";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->

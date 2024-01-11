@@ -166,6 +166,10 @@ public class CreateElementInReferenceOperationItemProvider extends ItemProviderA
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CREATE_ELEMENT_IN_REFERENCE_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CREATE_ELEMENT_IN_REFERENCE_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CREATE_ELEMENT_IN_REFERENCE_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CREATE_ELEMENT_IN_REFERENCE_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

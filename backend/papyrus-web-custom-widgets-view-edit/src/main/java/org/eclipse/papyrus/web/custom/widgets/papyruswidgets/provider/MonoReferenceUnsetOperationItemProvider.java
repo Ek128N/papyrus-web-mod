@@ -166,6 +166,10 @@ public class MonoReferenceUnsetOperationItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_UNSET_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_UNSET_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_UNSET_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_UNSET_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

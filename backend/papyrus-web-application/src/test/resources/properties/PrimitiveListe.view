@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:papyruswidgets="https://www.eclipse.org/papyrus/widgets/" xmlns:view="http://www.eclipse.org/sirius-web/view">
+<view:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:form="http://www.eclipse.org/sirius-web/form" xmlns:papyruswidgets="http://www.eclipse.org/papyrus-web/widgets/" xmlns:view="http://www.eclipse.org/sirius-web/view">
   <descriptions xmi:type="form:FormDescription" name="PrimitiveListe.view" domainType="uml::Element" titleExpression="aql:'Comment rep'">
     <pages xmi:type="form:PageDescription">
       <groups xmi:type="form:GroupDescription">

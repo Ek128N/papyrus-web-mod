@@ -166,6 +166,10 @@ public class PrimitiveListAddOperationItemProvider extends ItemProviderAdapter
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ADD_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

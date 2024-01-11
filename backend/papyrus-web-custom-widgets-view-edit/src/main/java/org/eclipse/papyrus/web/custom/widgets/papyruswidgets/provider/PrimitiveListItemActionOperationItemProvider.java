@@ -201,6 +201,10 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

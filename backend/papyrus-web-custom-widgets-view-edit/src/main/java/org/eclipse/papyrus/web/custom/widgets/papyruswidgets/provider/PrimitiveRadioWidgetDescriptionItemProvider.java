@@ -209,6 +209,10 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

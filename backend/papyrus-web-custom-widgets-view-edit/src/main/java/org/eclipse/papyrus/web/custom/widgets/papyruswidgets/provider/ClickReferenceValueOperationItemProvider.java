@@ -166,6 +166,10 @@ public class ClickReferenceValueOperationItemProvider extends ItemProviderAdapte
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CLICK_REFERENCE_VALUE_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CLICK_REFERENCE_VALUE_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CLICK_REFERENCE_VALUE_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CLICK_REFERENCE_VALUE_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
     }
 
     /**
