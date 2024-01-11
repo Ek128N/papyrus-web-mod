@@ -248,9 +248,11 @@ public class ProfileDiagramService extends AbstractDiagramService {
                     if (optionalElementImport.isPresent()) {
                         elementImport = optionalElementImport.get();
                     } else {
-                        elementImport = (ElementImport) this.create(profile, UMLPackage.eINSTANCE.getElementImport().getName(), UMLPackage.eINSTANCE.getNamespace_ElementImport().getName(), null,
-                                diagramContext, Map.of());
-                        elementImport.setImportedElement(optMetaclass.get());
+                        // Use null as target node because ElementImport are represented as Nodes, even if they are
+                        // semantically Relationships. This means that the creation tool doesn't have a target, just a
+                        // container that acts as a source.
+                        elementImport = (ElementImport) this.createDomainBasedEdge(profile, optMetaclass.get(), UMLPackage.eINSTANCE.getElementImport().getName(),
+                                UMLPackage.eINSTANCE.getNamespace_ElementImport().getName(), diagramElement, null, editingContext, diagramContext);
                     }
                 }
                 if (elementImport != null) {
