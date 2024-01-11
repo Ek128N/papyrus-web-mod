@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -200,7 +200,7 @@ public class ViewHelper implements IViewHelper {
                 this.diagramOperationsService.createView(this.diagramContext, semanticElement, Optional.ofNullable(selectedNode), nodeDescription, containmentKind);
                 return true;
             } else {
-                LOGGER.warn("A representation of this element alredy exist in the digram");
+                LOGGER.warn("A representation of this element alredy exist in the diagram");
             }
 
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.aqlservices.utils;
 
+import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -184,18 +185,29 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
 
     @Override
     public Boolean caseClass(Class umlClass) {
-        EObject droppedElement = umlClass;
+        Boolean isDragAndDropValid = Boolean.FALSE;
         if (umlClass.isMetaclass()) {
-            EObject elementImportParent = null;
-            Optional<Node> parentMetaclassNode = this.diagramNavigator.getParentNode(this.droppedNode);
-            if (parentMetaclassNode.isEmpty()) {
-                elementImportParent = this.getSemanticDiagram();
+            EObject existingElementImportInTarget = this.getElementImportReferencingMetaclass(umlClass, this.getSemanticNode(this.targetNode));
+            if (existingElementImportInTarget != null) {
+                String duplicatedMetaclassMessage = MessageFormat.format("Cannot drag and drop Metaclass {0} in {1}, a Metaclass with the same identifier already exists.",
+                        this.droppedNode.getTargetObjectLabel(), this.targetNode.getTargetObjectLabel());
+                LOGGER.warn(duplicatedMetaclassMessage);
+                this.logger.log(duplicatedMetaclassMessage, ILogLevel.WARNING);
             } else {
-                elementImportParent = this.getSemanticNode(parentMetaclassNode.get());
+                EObject elementImportParent = null;
+                Optional<Node> parentMetaclassNode = this.diagramNavigator.getParentNode(this.droppedNode);
+                if (parentMetaclassNode.isEmpty()) {
+                    elementImportParent = this.getSemanticDiagram();
+                } else {
+                    elementImportParent = this.getSemanticNode(parentMetaclassNode.get());
+                }
+                EObject droppedElement = this.getElementImportReferencingMetaclass(umlClass, elementImportParent);
+                isDragAndDropValid = this.defaultCase(droppedElement);
             }
-            droppedElement = this.getElementImportReferencingMetaclass(umlClass, this.droppedNode, elementImportParent);
+        } else {
+            isDragAndDropValid = this.defaultCase(umlClass);
         }
-        return this.defaultCase(droppedElement);
+        return isDragAndDropValid;
     }
 
     @Override
@@ -262,7 +274,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
         for (Node matchingChildNode : elementNode.getChildNodes()) {
             EObject semanticNode = this.getSemanticNode(matchingChildNode);
             if (semanticNode instanceof org.eclipse.uml2.uml.Class umlClass && umlClass.isMetaclass()) {
-                isDragAndDropValid = this.createElementImportView((ElementImport) this.getElementImportReferencingMetaclass(umlClass, matchingChildNode, semanticElement), fakeParentNode);
+                isDragAndDropValid = this.createElementImportView((ElementImport) this.getElementImportReferencingMetaclass(umlClass, semanticElement), fakeParentNode);
             } else {
                 isDragAndDropValid = isDragAndDropValid && this.viewHelper.createChildView(semanticNode, fakeParentNode, null);
             }
@@ -358,13 +370,11 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
      *
      * @param metaClass
      *            the metaClass referenced by the {@link ElementImport}
-     * @param graphicalNode
-     *            the node representing the Metaclass referenced by the {@link ElementImport}
      * @param elementImportParent
      *            the semantic parent of the {@link ElementImport}
      * @return the {@link ElementImport} referencing the given metaClass
      */
-    private EObject getElementImportReferencingMetaclass(Class metaClass, Node graphicalNode, EObject elementImportParent) {
+    private EObject getElementImportReferencingMetaclass(Class metaClass, EObject elementImportParent) {
         EObject droppedElement = null;
         Optional<ElementImport> optionalElementImport = Optional.of(elementImportParent).filter(Profile.class::isInstance).map(Profile.class::cast).map(profile -> profile.getElementImport(metaClass));
         if (optionalElementImport.isPresent()) {

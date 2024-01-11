@@ -254,9 +254,16 @@ public class ProfileDiagramService extends AbstractDiagramService {
                     }
                 }
                 if (elementImport != null) {
-                    boolean isNodePresent = diagramContext.getDiagram().getNodes().stream() //
-                            .anyMatch(p -> optMetaclass.get().getName().equals(p.getTargetObjectLabel()));
-                    if (!isNodePresent) {
+                    boolean isNodePresentInParent = false;
+                    if (diagramElement != null) {
+                        isNodePresentInParent = diagramElement.getChildNodes().stream() //
+                                .anyMatch(p -> optMetaclass.get().getName().equals(p.getTargetObjectLabel()));
+                    } else {
+                        // The node is created on the diagram
+                        isNodePresentInParent = diagramContext.getDiagram().getNodes().stream() //
+                                .anyMatch(p -> optMetaclass.get().getName().equals(p.getTargetObjectLabel()));
+                    }
+                    if (!isNodePresentInParent) {
                         result = this.createMetaclassNode(diagramContext, diagramElement, elementImport);
                     }
                 }
