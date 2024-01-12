@@ -488,13 +488,13 @@ Creating a new _Comment_ from the _Applied comments_ list of selected element ha
 On an _Element_ selection, the _Applied Stereotype_ widget provides the capacities to:
 
 * Apply a stereotype: Use the dropdown or start entering the name of the _Stereotype_.
-* Unapply a stereotype: Use the trash icon aside from the _Stereotype_ item.
+* Unapply a stereotype: Use the trash icon next to the _Stereotype_ item.
 
 If a _Package_ is selected, the _Applied profiles_ widget provides the capacities to:
 
 * Apply a profile: Use the dropdown or start entering the name of the _Profile_.
-* Unapply a profile: Use the trash icon aside from the _Profile_ item.
-* Update a profile: If a newer version of the profile is available, use the refresh button aside from the _Profile_ item.
+* Unapply a profile: Use the trash icon next to the _Profile_ item.
+* Update a profile: If a newer version of the profile is available, use the refresh button next to the _Profile_ item.
 
 ===== Stereotype panels
 
