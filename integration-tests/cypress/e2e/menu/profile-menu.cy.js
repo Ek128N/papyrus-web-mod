@@ -39,7 +39,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
    * Test validating the application of a static profile and a stereotype. Use Java profile.
    */
   it('Test Apply static profile and stereotype', () => {
-    // Apply profile Standard
+    // Apply profile Java
     cy.applyProfileByMenu('Model', 'Java');
 
     cy.expandAll('Model');
