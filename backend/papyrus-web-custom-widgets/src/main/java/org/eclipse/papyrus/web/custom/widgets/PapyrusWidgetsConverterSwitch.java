@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -184,7 +184,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         Function<VariableManager, Boolean> isReadOnlyProvider = this.getReadOnlyValueProvider(viewListDescription.getIsEnabledExpression());
         Function<VariableManager, List<?>> valueProvider = this.getValuesProvider(viewListDescription.getValueExpression());
         Function<VariableManager, String> displayProvider = this.getItemLabelProvider(viewListDescription.getDisplayExpression());
-        Function<VariableManager, Boolean> isDeletableProvider = varMan -> viewListDescription.getDeleteOperation() != null;
+        Function<VariableManager, Boolean> isDeletableProvider = variableManager -> viewListDescription.getDeleteOperation() != null;
         Function<VariableManager, String> itemIdProvider = this::getPrimitiveListItemId;
         Function<VariableManager, String> itemKindProvider = variableManger -> "unknown";
         Function<VariableManager, IStatus> itemDeleteHandlerProvider = this.handleOperation(viewListDescription.getDeleteOperation(), PrimitiveListDeleteOperation::getBody, DELETION_ERROR_MSG);
@@ -275,7 +275,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
 
     private <T extends EObject> Function<VariableManager, IStatus> handleOperation(T operationOwner, Function<T, EList<Operation>> bodyProvider, String errorMessage) {
         if (operationOwner == null || bodyProvider.apply(operationOwner).isEmpty()) {
-            return varMan -> new Success();
+            return variableManager -> new Success();
         }
         return this.handleOperation(bodyProvider.apply(operationOwner), errorMessage);
     }
@@ -329,8 +329,8 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         if (valueExpression != null) {
             return this.getStringValueProvider(valueExpression);
         } else {
-            return varMan -> {
-                return varMan.get(PrimitiveListWidgetComponent.CANDIDATE_VARIABLE, Object.class).map(Object::toString).orElse("");
+            return variableManager -> {
+                return variableManager.get(PrimitiveListWidgetComponent.CANDIDATE_VARIABLE, Object.class).map(Object::toString).orElse("");
             };
         }
     }

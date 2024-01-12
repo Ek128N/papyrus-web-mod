@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -63,12 +63,12 @@ public class LanguageExpressionComponentTest {
         variableManager.put(VariableManager.SELF, this.ob);
 
         LanguageExpressionDescription description = LanguageExpressionDescription.newLanguageExpressionDescription(LE_WIDGET_ID)
-                .idProvider(varMan -> LE_WIDGET_ID)
-                .labelProvider(varMan -> "")
-                .isReadOnlyProvider(varMan -> false)
-                .helpTextProvider(varMan -> "")
-                .iconURLProvider(var -> List.of())
-                .targetObjectIdProvider(varMan -> UUID.randomUUID().toString())
+                .idProvider(varManager -> LE_WIDGET_ID)
+                .labelProvider(varManager -> "")
+                .isReadOnlyProvider(varManager -> false)
+                .helpTextProvider(varManager -> "")
+                .iconURLProvider(varManager -> List.of())
+                .targetObjectIdProvider(varManager -> UUID.randomUUID().toString())
                 .build();
 
 

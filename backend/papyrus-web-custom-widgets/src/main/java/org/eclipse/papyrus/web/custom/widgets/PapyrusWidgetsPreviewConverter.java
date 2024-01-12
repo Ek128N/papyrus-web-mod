@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -58,13 +58,13 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, languageExpressionDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-        var builder = LanguageExpressionDescription.newLanguageExpressionDescription(UUID.randomUUID().toString()).idProvider(vm -> id)
-                .labelProvider(varMan -> this.getWidgetLabel(languageExpressionDescription, "Language Expression"))//
-                .iconURLProvider(varMan -> List.of()) //
-                .targetObjectIdProvider(varMan -> "")//
-                .isReadOnlyProvider(varMan -> false);
+        var builder = LanguageExpressionDescription.newLanguageExpressionDescription(UUID.randomUUID().toString()).idProvider(varManager -> id)
+                .labelProvider(varManager -> this.getWidgetLabel(languageExpressionDescription, "Language Expression"))//
+                .iconURLProvider(varManager -> List.of()) //
+                .targetObjectIdProvider(varManager -> "")//
+                .isReadOnlyProvider(varManager -> false);
 
-        builder.helpTextProvider(varMan -> "Help expression");
+        builder.helpTextProvider(varManager -> "Help expression");
 
         return builder.build();
     }
@@ -74,15 +74,15 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, primitiveRadioDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-        var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(UUID.randomUUID().toString()).idProvider(vm -> id) //
-                .targetObjectIdProvider(varMan -> "")//
-                .labelProvider(varMan -> this.getWidgetLabel(primitiveRadioDescription, "Primitive radio")) //
-                .iconURLProvider(varMan -> List.of()) //
-                .isReadOnlyProvider(varMan -> false) //
-                .candidateValueProvider(varMan -> "") //
-                .candidateListProvider(varMan -> List.of("Option1", "Option2", "Option3")) //
-                .newValueHandler(varMan -> new Success()) //
-                .helpTextProvider(varMan -> "Help text");
+        var builder = PrimitiveRadioDescription.newPrimitiveRadioDescription(UUID.randomUUID().toString()).idProvider(varManager -> id) //
+                .targetObjectIdProvider(varManager -> "")//
+                .labelProvider(varManager -> this.getWidgetLabel(primitiveRadioDescription, "Primitive radio")) //
+                .iconURLProvider(varManager -> List.of()) //
+                .isReadOnlyProvider(varManager -> false) //
+                .candidateValueProvider(varManager -> "") //
+                .candidateListProvider(varManager -> List.of("Option1", "Option2", "Option3")) //
+                .newValueHandler(varManager -> new Success()) //
+                .helpTextProvider(varManager -> "Help text");
 
         return builder.build();
 
@@ -95,30 +95,30 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescription.Builder builder = org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescription
                 .newPrimitiveListDescription(UUID.randomUUID().toString())//
-                .idProvider(varMan -> id)//
-                .labelProvider(vm -> this.getWidgetLabel(viewListDescription, "Primitive List"))//
-                .iconURLProvider(varMan -> List.of())//
-                .isReadOnlyProvider(varMan -> false)//
-                .itemsProvider(varMan -> List.of())//
-                .itemKindProvider(varMan -> "")//
-                .itemDeleteHandlerProvider((vm) -> new Success())//
-                .itemIdProvider(varMan -> "")//
-                .itemLabelProvider(vm -> "")//
-                .targetObjectIdProvider(varMan -> "")//
-                .itemDeletableProvider(vm -> true)//
-                .styleProvider(varMan -> {
+                .idProvider(varManager -> id)//
+                .labelProvider(varManager -> this.getWidgetLabel(viewListDescription, "Primitive List"))//
+                .iconURLProvider(varManager -> List.of())//
+                .isReadOnlyProvider(varManager -> false)//
+                .itemsProvider(varManager -> List.of())//
+                .itemKindProvider(varManager -> "")//
+                .itemDeleteHandlerProvider(varManager -> new Success())//
+                .itemIdProvider(varManager -> "")//
+                .itemLabelProvider(varManager -> "")//
+                .targetObjectIdProvider(varManager -> "")//
+                .itemDeletableProvider(varManager -> true)//
+                .styleProvider(varManager -> {
                     ListDescriptionStyle style = viewListDescription.getStyle();
                     if (style == null) {
                         return null;
                     }
                     return new ListStyleProvider(style).apply(this.variableManager);
                 })//
-                .diagnosticsProvider(varMan -> List.of())//
-                .newValueHandler((vm, value) -> new Success())//
+                .diagnosticsProvider(varManager -> List.of())//
+                .newValueHandler((varManager, value) -> new Success())//
                 .kindProvider(object -> "")//
                 .messageProvider(object -> "");
         if (viewListDescription.getHelpExpression() != null && !viewListDescription.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(vm -> this.getWidgetHelpText(viewListDescription));
+            builder.helpTextProvider(varManager -> this.getWidgetHelpText(viewListDescription));
         }
 
         return builder.build();
@@ -145,11 +145,11 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         return helpText;
     }
 
-    private ReferenceWidgetStyle getWidgetStyle(ReferenceWidgetDescriptionStyle style, VariableManager varMan) {
+    private ReferenceWidgetStyle getWidgetStyle(ReferenceWidgetDescriptionStyle style, VariableManager varManager) {
         if (style == null) {
             return null;
         }
-        return new ReferenceWidgetStyleProvider(style).apply(varMan);
+        return new ReferenceWidgetStyleProvider(style).apply(varManager);
     }
 
     @Override
@@ -158,29 +158,29 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, description);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder = org.eclipse.papyrus.web.custom.widgets.containmentreference.ContainmentReferenceWidgetDescription.newContainmentReferenceWidgetDescription(UUID.randomUUID().toString()) //
-                .targetObjectIdProvider(varMan -> "") //
-                .idProvider(varMan -> id) //
-                .labelProvider(varMan -> this.getWidgetLabel(description, "Containment Reference")) //
-                .isReadOnlyProvider(varMan -> false) //
-                .iconURLProvider(varMan -> List.of()) //
-                .itemsProvider(varMan -> List.of()) //
-                .itemIdProvider(varMan -> "") //
-                .itemKindProvider(varMan -> "") //
-                .itemLabelProvider(varMan -> "") //
-                .itemIconURLProvider(varMan -> List.of()) //
-                .ownerKindProvider(varMan -> "") //
-                .referenceKindProvider(varMan -> "") //
-                .isManyProvider(varMan -> true)
-                .styleProvider(varMan -> this.getWidgetStyle(description.getStyle(), varMan)) //
-                .ownerIdProvider(varMan -> "") //
-                .diagnosticsProvider(varMan -> List.of()) //
+                .targetObjectIdProvider(varManager -> "") //
+                .idProvider(varManager -> id) //
+                .labelProvider(varManager -> this.getWidgetLabel(description, "Containment Reference")) //
+                .isReadOnlyProvider(varManager -> false) //
+                .iconURLProvider(varManager -> List.of()) //
+                .itemsProvider(varManager -> List.of()) //
+                .itemIdProvider(varManager -> "") //
+                .itemKindProvider(varManager -> "") //
+                .itemLabelProvider(varManager -> "") //
+                .itemIconURLProvider(varManager -> List.of()) //
+                .ownerKindProvider(varManager -> "") //
+                .referenceKindProvider(varManager -> "") //
+                .isManyProvider(varManager -> true)
+                .styleProvider(varManager -> this.getWidgetStyle(description.getStyle(), varManager)) //
+                .ownerIdProvider(varManager -> "") //
+                .diagnosticsProvider(varManager -> List.of()) //
                 .kindProvider(object -> "") //
                 .messageProvider(object -> "") //
-                .itemClickHandlerProvider(varMan -> new Success()) //
-                .itemRemoveHandlerProvider(varMan -> new Success()) //
-                .moveHandlerProvider(varMan -> new Success());
+                .itemClickHandlerProvider(varManager -> new Success()) //
+                .itemRemoveHandlerProvider(varManager -> new Success()) //
+                .moveHandlerProvider(varManager -> new Success());
         if (description.getHelpExpression() != null && !description.getHelpExpression().isBlank()) {
-            builder.helpTextProvider(vm -> this.getWidgetHelpText(description));
+            builder.helpTextProvider(varManager -> this.getWidgetHelpText(description));
         }
         return builder.build();
     }
@@ -191,38 +191,38 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, referenceDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder =  ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
-                .idProvider(vm -> id)
-                .targetObjectIdProvider(vm -> "")
-                .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Mono Reference"))
-                .iconURLProvider(varMan -> List.of())
-                .isReadOnlyProvider(varMan -> false)
-                .itemsProvider(varMan -> List.of())
-                .optionsProvider(varMan -> List.of())
-                .itemIdProvider(varMan -> "")
-                .itemKindProvider(varMan -> "")
-                .itemLabelProvider(varMan -> "")
-                .itemKindProvider(varMan -> "")
-                .itemLabelProvider(varMan -> "")
-                .itemIconURLProvider(varMan -> List.of())
-                .ownerKindProvider(varMan -> "")
-                .referenceKindProvider(varMan -> "")
-                .isContainmentProvider(varMan -> false)
-                .isManyProvider(varMan -> false)
-                .ownerIdProvider(varMan -> "")
-                .itemClickHandlerProvider(varMan -> new Success())
-                .ownerIdProvider(varMan -> "")
-                .clearHandlerProvider(varMan -> new Success())
-                .itemRemoveHandlerProvider(varMan -> new Success())
-                .setHandlerProvider(varMan -> new Success())
-                .addHandlerProvider(varMan -> new Success())
-                .moveHandlerProvider(varMan -> new Success())
-                .styleProvider(varMan -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
-                .diagnosticsProvider(varMan -> List.of())
+                .idProvider(varManager -> id)
+                .targetObjectIdProvider(varManager -> "")
+                .labelProvider(varManager -> this.getWidgetLabel(referenceDescription, "Mono Reference"))
+                .iconURLProvider(varManager -> List.of())
+                .isReadOnlyProvider(varManager -> false)
+                .itemsProvider(varManager -> List.of())
+                .optionsProvider(varManager -> List.of())
+                .itemIdProvider(varManager -> "")
+                .itemKindProvider(varManager -> "")
+                .itemLabelProvider(varManager -> "")
+                .itemKindProvider(varManager -> "")
+                .itemLabelProvider(varManager -> "")
+                .itemIconURLProvider(varManager -> List.of())
+                .ownerKindProvider(varManager -> "")
+                .referenceKindProvider(varManager -> "")
+                .isContainmentProvider(varManager -> false)
+                .isManyProvider(varManager -> false)
+                .ownerIdProvider(varManager -> "")
+                .itemClickHandlerProvider(varManager -> new Success())
+                .ownerIdProvider(varManager -> "")
+                .clearHandlerProvider(varManager -> new Success())
+                .itemRemoveHandlerProvider(varManager -> new Success())
+                .setHandlerProvider(varManager -> new Success())
+                .addHandlerProvider(varManager -> new Success())
+                .moveHandlerProvider(varManager -> new Success())
+                .styleProvider(varManager -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
+                .diagnosticsProvider(varManager -> List.of())
                 .kindProvider(object -> "")
                 .messageProvider(object -> "");
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             String helpText = this.getWidgetHelpText(referenceDescription);
-            builder.helpTextProvider(varMan -> helpText);
+            builder.helpTextProvider(varManager -> helpText);
         }
         return builder.build();
     }
@@ -233,38 +233,38 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, referenceDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
-            .idProvider(vm -> id)
-            .targetObjectIdProvider(vm -> "")
-            .labelProvider(vm -> this.getWidgetLabel(referenceDescription, "Multi Reference"))
-            .iconURLProvider(varMan -> List.of())
-            .isReadOnlyProvider(varMan -> false)
-            .itemsProvider(varMan -> List.of())
-            .optionsProvider(varMan -> List.of())
-            .itemIdProvider(varMan -> "")
-            .itemKindProvider(varMan -> "")
-            .itemLabelProvider(varMan -> "")
-            .itemKindProvider(varMan -> "")
-            .itemLabelProvider(varMan -> "")
-            .itemIconURLProvider(varMan -> List.of())
-            .ownerKindProvider(varMan -> "")
-            .referenceKindProvider(varMan -> "")
-            .isContainmentProvider(varMan -> false)
-            .isManyProvider(varMan -> true)
-            .ownerIdProvider(varMan -> "")
-            .itemClickHandlerProvider(varMan -> new Success())
-            .ownerIdProvider(varMan -> "")
-            .clearHandlerProvider(varMan -> new Success())
-            .itemRemoveHandlerProvider(varMan -> new Success())
-            .setHandlerProvider(varMan -> new Success())
-            .addHandlerProvider(varMan -> new Success())
-            .moveHandlerProvider(varMan -> new Success())
-            .styleProvider(varMan -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
-            .diagnosticsProvider(varMan -> List.of())
+            .idProvider(varManager -> id)
+            .targetObjectIdProvider(varManager -> "")
+            .labelProvider(varManager -> this.getWidgetLabel(referenceDescription, "Multi Reference"))
+            .iconURLProvider(varManager -> List.of())
+            .isReadOnlyProvider(varManager -> false)
+            .itemsProvider(varManager -> List.of())
+            .optionsProvider(varManager -> List.of())
+            .itemIdProvider(varManager -> "")
+            .itemKindProvider(varManager -> "")
+            .itemLabelProvider(varManager -> "")
+            .itemKindProvider(varManager -> "")
+            .itemLabelProvider(varManager -> "")
+            .itemIconURLProvider(varManager -> List.of())
+            .ownerKindProvider(varManager -> "")
+            .referenceKindProvider(varManager -> "")
+            .isContainmentProvider(varManager -> false)
+            .isManyProvider(varManager -> true)
+            .ownerIdProvider(varManager -> "")
+            .itemClickHandlerProvider(varManager -> new Success())
+            .ownerIdProvider(varManager -> "")
+            .clearHandlerProvider(varManager -> new Success())
+            .itemRemoveHandlerProvider(varManager -> new Success())
+            .setHandlerProvider(varManager -> new Success())
+            .addHandlerProvider(varManager -> new Success())
+            .moveHandlerProvider(varManager -> new Success())
+            .styleProvider(varManager -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
+            .diagnosticsProvider(varManager -> List.of())
             .kindProvider(object -> "")
             .messageProvider(object -> "");
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             String helpText = this.getWidgetHelpText(referenceDescription);
-            builder.helpTextProvider(varMan -> helpText);
+            builder.helpTextProvider(varManager -> helpText);
         }
         return builder.build();
     }
