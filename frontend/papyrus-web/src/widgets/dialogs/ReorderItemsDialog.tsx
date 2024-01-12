@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -21,8 +21,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import { useState } from 'react';
-import { IconURL } from '../IconURL';
 import { ReorderItemsDialogProps, ReorderItemsDialogState } from './ReorderItemsDialog.types';
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 
 const useStyles = makeStyles((theme) => ({
   dialogContent: {
@@ -119,7 +119,7 @@ const ReorderItemsDialog = ({ items, onClose, moveElement }: ReorderItemsDialogP
                   <DragHandleIcon />
                 </ListItemIcon>
                 <ListItemIcon className={classes.dragIcon}>
-                  <IconURL iconURL={iconURL} alt={label} />
+                  <IconOverlay iconURL={iconURL} alt={label} />
                 </ListItemIcon>
                 <ListItemText id={`containment-reference-reorder-item-${id}-label`} primary={label} />
               </ListItem>

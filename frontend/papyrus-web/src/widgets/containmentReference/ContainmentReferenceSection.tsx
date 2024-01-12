@@ -12,7 +12,7 @@
  *  Obeo - Initial API and implementation
  ***************************************************************************/
 
-import { useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { getCSSColor, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import {
@@ -32,7 +32,6 @@ import IconButton from '@material-ui/core/IconButton';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { useEffect, useState } from 'react';
-import { IconURL } from '../IconURL';
 import {
   ContainmentReferenceDialogKind,
   GQLClickContainmentReferenceItemMutationData,
@@ -484,7 +483,7 @@ const ContainmentReferenceSection = ({
               data-testid={`${item.label}`}
               icon={
                 <div>
-                  <IconURL iconURL={item.iconURL} alt={item.label} />
+                  <IconOverlay iconURL={item.iconURL} alt={item.label} />
                 </div>
               }
               clickable={!readOnly && !widget.readOnly}

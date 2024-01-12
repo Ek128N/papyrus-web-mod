@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,7 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLListItem, PropertySectionLabel, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
 import { Input, InputAdornment } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
@@ -29,7 +29,6 @@ import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BubbleChartIcon from '@material-ui/icons/BubbleChart';
 import { MouseEvent, useContext, useEffect, useState } from 'react';
-import { IconURL } from '../IconURL';
 import {
   GQLActionPrimitiveListItemMutationData,
   GQLActionPrimitiveListItemMutationVariables,
@@ -418,7 +417,7 @@ export const PrimitiveListSection = ({
   const getTableCellContent = (item: GQLActionableListItem): JSX.Element => {
     return (
       <TableCell className={classes.cell}>
-        <IconURL iconURL={item.iconURL} alt={item.label} />
+        <IconOverlay iconURL={item.iconURL} alt={item.label} />
         <Typography
           className={classes.style}
           color="textPrimary"

@@ -12,7 +12,7 @@
  *  Obeo - Initial API and implementation
  ***************************************************************************/
 
-import { useSelection } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,7 +23,6 @@ import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { GQLContainmentReferenceWidget } from './ContainmentReferenceFragment.types';
 import ReorderIcon from './ReorderIcon';
-import { IconURL } from '../IconURL';
 
 const useStyles = makeStyles<Theme>((theme) => ({
   style: {
@@ -95,7 +94,7 @@ export const ContainmentReferencePreview = ({ widget }: PropertySectionComponent
             data-testid={`${label}`}
             icon={
               <div>
-                <IconURL iconURL={['/api/images/icons-override/full/obj16/Class.svg']} alt={label} />
+                <IconOverlay iconURL={['/api/images/icons-override/full/obj16/Class.svg']} alt={label} />
               </div>
             }
             onDelete={() => console.log('deleted')}
