@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ describe('Profile definition page test', () => {
     
     it('published profile is properly displayed in Definition page', ()=> {
         // publish the profile
-        cy.getByTestId('testProfile-more').should('be.visible').click();
+        cy.getByTestId('Profile-more').should('be.visible').click();
         cy.get('.MuiPopover-root').findByTestId('publish-profile').should('be.visible').click();
         cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-author').find('input').type('Jerome');
         cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-comment').find('textarea').first().type('comment content');
@@ -42,11 +42,11 @@ describe('Profile definition page test', () => {
 
     it('published profile can be removed', ()=> {
         // publish the profile twice
-        cy.getByTestId('testProfile-more').should('be.visible').click();
+        cy.getByTestId('Profile-more').should('be.visible').click();
         cy.get('.MuiPopover-root').findByTestId('publish-profile').should('be.visible').click();
         cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-publish').should('be.visible').click();
 
-        cy.getByTestId('testProfile-more').should('be.visible').click();
+        cy.getByTestId('Profile-more').should('be.visible').click();
         cy.get('.MuiPopover-root').findByTestId('publish-profile').should('be.visible').click();
         cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-publish').should('be.visible').click();
         
