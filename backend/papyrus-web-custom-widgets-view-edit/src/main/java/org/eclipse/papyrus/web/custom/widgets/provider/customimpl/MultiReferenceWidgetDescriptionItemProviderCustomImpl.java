@@ -11,25 +11,25 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.custom.widgets.providers;
+package org.eclipse.papyrus.web.custom.widgets.provider.customimpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.PrimitiveListAddOperationItemProvider;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.MultiReferenceWidgetDescriptionItemProvider;
 
 /**
- * Custom implementation of {@linkplain PrimitiveListAddOperationItemProvider} to avoid "@generated NOT".
+ * Custom implementation of {@linkplain MultiReferenceWidgetDescriptionItemProvider} to avoid "@generated NOT".
  *
  * @author Jerome Gout
  */
-public class PrimitiveListAddOperationItemProviderCustomImpl extends PrimitiveListAddOperationItemProvider {
+public class MultiReferenceWidgetDescriptionItemProviderCustomImpl extends MultiReferenceWidgetDescriptionItemProvider {
 
-    public PrimitiveListAddOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
+    public MultiReferenceWidgetDescriptionItemProviderCustomImpl(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CreateInstance.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/multi-reference.svg"));
     }
 
 }

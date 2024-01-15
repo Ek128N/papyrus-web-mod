@@ -14,10 +14,6 @@
  */
 package org.eclipse.papyrus.web.custom.widgets;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.sirius.components.view.form.provider.FormEditPlugin;
@@ -62,34 +58,6 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
     @Override
     public ResourceLocator getPluginResourceLocator() {
         return plugin;
-    }
-
-    @Override
-    protected Object doGetImage(String key) throws IOException {
-        URL url = new URL(this.getBaseURL() + "icons/" + key + extensionFor(key));
-        InputStream inputStream = url.openStream();
-        inputStream.close();
-        return url;
-    }
-
-    /**
-     * Computes the file extension to be used with the key to specify an image resource.
-     *
-     * @param key
-     *            the key for the imagine.
-     * @return the file extension to be used with the key to specify an image resource.
-     */
-    protected static String extensionFor(String key) {
-        String result = ".gif";
-        int index = key.lastIndexOf('.');
-        if (index != -1) {
-            String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
-                    || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
-                result = "";
-            }
-        }
-        return result;
     }
 
     /**

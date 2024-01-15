@@ -11,25 +11,25 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.custom.widgets.providers;
+package org.eclipse.papyrus.web.custom.widgets.provider.customimpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.PrimitiveListWidgetDescriptionItemProvider;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.MonoReferenceUnsetOperationItemProvider;
 
 /**
- * Custom implementation of {@linkplain PrimitiveListWidgetDescriptionItemProvider} to avoid "@generated NOT".
+ * Custom implementation of {@linkplain MonoReferenceUnsetOperationItemProvider} to avoid "@generated NOT".
  *
  * @author Jerome Gout
  */
-public class PrimitiveListWidgetDescriptionItemProviderCustomImpl extends PrimitiveListWidgetDescriptionItemProvider {
+public class MonoReferenceUnsetOperationItemProviderCustomImpl extends MonoReferenceUnsetOperationItemProvider {
 
-    public PrimitiveListWidgetDescriptionItemProviderCustomImpl(AdapterFactory adapterFactory) {
+    public MonoReferenceUnsetOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/PrimitiveListDescription.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/UnsetValue.svg"));
     }
 
 }

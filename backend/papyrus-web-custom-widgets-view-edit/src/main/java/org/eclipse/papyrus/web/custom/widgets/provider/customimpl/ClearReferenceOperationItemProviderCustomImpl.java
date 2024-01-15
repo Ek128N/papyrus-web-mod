@@ -11,24 +11,24 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.custom.widgets.providers;
+package org.eclipse.papyrus.web.custom.widgets.provider.customimpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.LanguageExpressionWidgetDescriptionItemProvider;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.ClearReferenceOperationItemProvider;
 
 /**
- * Custom implementation of {@linkplain LanguageExpressionWidgetDescriptionItemProvider} to avoid "@generated NOT".
+ * Custom implementation of {@linkplain ClearReferenceOperationItemProvider} to avoid "@generated NOT".
  *
  * @author Jerome Gout
  */
-public class LanguageExpressionWidgetDescriptionItemProviderCustomImpl extends LanguageExpressionWidgetDescriptionItemProvider {
+public class ClearReferenceOperationItemProviderCustomImpl extends ClearReferenceOperationItemProvider {
 
-    public LanguageExpressionWidgetDescriptionItemProviderCustomImpl(AdapterFactory adapterFactory) {
+    public ClearReferenceOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/LanguageExpression.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DeleteElement.svg"));
     }
 }

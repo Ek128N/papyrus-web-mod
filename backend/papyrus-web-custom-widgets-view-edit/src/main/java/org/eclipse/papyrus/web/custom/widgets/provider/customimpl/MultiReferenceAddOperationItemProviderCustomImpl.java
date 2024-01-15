@@ -11,24 +11,25 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.custom.widgets.providers;
+package org.eclipse.papyrus.web.custom.widgets.provider.customimpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.ContainmentReferenceWidgetDescriptionItemProvider;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.MultiReferenceAddOperationItemProvider;
 
 /**
- * Custom implementation of {@linkplain ContainmentReferenceWidgetDescriptionItemProvider} to avoid "@generated NOT".
+ * Custom implementation of {@linkplain MultiReferenceAddOperationItemProvider} to avoid "@generated NOT".
  *
  * @author Jerome Gout
  */
-public class ContainmentReferenceWidgetDescriptionItemProviderCustomImpl extends ContainmentReferenceWidgetDescriptionItemProvider {
+public class MultiReferenceAddOperationItemProviderCustomImpl extends MultiReferenceAddOperationItemProvider {
 
-    public ContainmentReferenceWidgetDescriptionItemProviderCustomImpl(AdapterFactory adapterFactory) {
+    public MultiReferenceAddOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/containment-reference.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiReferenceAdd.svg"));
     }
+
 }

@@ -11,25 +11,24 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.custom.widgets.providers;
+package org.eclipse.papyrus.web.custom.widgets.provider.customimpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.MultiReferenceWidgetDescriptionItemProvider;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.ClickReferenceValueOperationItemProvider;
 
 /**
- * Custom implementation of {@linkplain MultiReferenceWidgetDescriptionItemProvider} to avoid "@generated NOT".
+ * Custom implementation of {@linkplain ClickReferenceValueOperationItemProvider} to avoid "@generated NOT".
  *
  * @author Jerome Gout
  */
-public class MultiReferenceWidgetDescriptionItemProviderCustomImpl extends MultiReferenceWidgetDescriptionItemProvider {
+public class ClickReferenceValueOperationItemProviderCustomImpl extends ClickReferenceValueOperationItemProvider {
 
-    public MultiReferenceWidgetDescriptionItemProviderCustomImpl(AdapterFactory adapterFactory) {
+    public ClickReferenceValueOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/multi-reference.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ClickReferenceValue.svg"));
     }
-
 }

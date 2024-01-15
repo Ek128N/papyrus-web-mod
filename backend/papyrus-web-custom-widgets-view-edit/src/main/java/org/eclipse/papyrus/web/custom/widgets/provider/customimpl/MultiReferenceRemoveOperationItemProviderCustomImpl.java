@@ -11,24 +11,25 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.custom.widgets.providers;
+package org.eclipse.papyrus.web.custom.widgets.provider.customimpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.ClickReferenceValueOperationItemProvider;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider.MultiReferenceRemoveOperationItemProvider;
 
 /**
- * Custom implementation of {@linkplain ClickReferenceValueOperationItemProvider} to avoid "@generated NOT".
+ * Custom implementation of {@linkplain MultiReferenceRemoveOperationItemProvider} to avoid "@generated NOT".
  *
  * @author Jerome Gout
  */
-public class ClickReferenceValueOperationItemProviderCustomImpl extends ClickReferenceValueOperationItemProvider {
+public class MultiReferenceRemoveOperationItemProviderCustomImpl extends MultiReferenceRemoveOperationItemProvider {
 
-    public ClickReferenceValueOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
+    public MultiReferenceRemoveOperationItemProviderCustomImpl(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ClickReferenceValue.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/MultiReferenceRemove.svg"));
     }
+
 }
