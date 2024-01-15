@@ -86,7 +86,9 @@ public class RepresentationValidatorTests {
         DiagramDescriptionDescriptionValidator validator = this.buildeDefaultValidator();
 
         Predicate<DiagramElementDescription> isNotActivityRoot = p -> !p.getName().equals("AD_Activity");
-        validator.excludeFromDeleteToolValidation(isNotActivityRoot);
+        Predicate<DiagramElementDescription> isNotDecisionNodeNote = p -> !p.getName().equals("AD_DecisionNode_Note_SHARED");
+        validator.excludeFromDeleteToolValidation(isNotActivityRoot.and(isNotDecisionNodeNote));
+        validator.excludeFromDirectEditValidation(isNotDecisionNodeNote);
         List<Status> validations = validator.validate(diagram);
 
         List<Status> errors = validations.stream().filter(v -> !v.isValid()).toList();

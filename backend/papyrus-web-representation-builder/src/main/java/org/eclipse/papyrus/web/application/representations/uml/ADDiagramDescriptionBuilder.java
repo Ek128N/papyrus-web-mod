@@ -18,14 +18,18 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Varia
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SELECTED_NODE;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.uml.domain.services.create.ElementCreator;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
+import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeDescriptionBuilder;
+import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
@@ -779,6 +783,10 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link DecisionNode}.
+     * <p>
+     * This method also creates the {@link NodeDescription} and {@link EdgeDescription} for the note associated to
+     * {@link DecisionNode}s with a decision input.
+     * </p>
      *
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
@@ -787,6 +795,42 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      */
     private void createSharedDecisionNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getDecisionNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
+
+        NodeStyleDescription nodeStyleDescription = this.getViewBuilder().createNoteNodeStyle();
+        nodeStyleDescription.setShowIcon(false);
+        nodeStyleDescription.setColor(this.styleProvider.getNoteColor());
+        NodeDescription adDecisionNodeNoteDescription = this.newNodeBuilder(this.umlPackage.getDecisionNode(), nodeStyleDescription) //
+                .name(this.getIdBuilder().getDomainNodeName(this.umlPackage.getDecisionNode()) + "_Note_" + SHARED_SUFFIX) //
+                .labelExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_DECISION_INPUT_NOTE_LABEL))
+                .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
+                .build();
+        adDecisionNodeNoteDescription
+                .setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.SHOW_DECISION_NODE_NOTE, Variables.DIAGRAM_CONTEXT, "previousDiagram", Variables.EDITING_CONTEXT));
+
+        adDecisionNodeNoteDescription.setDefaultWidthExpression(NoteStyleDescriptionBuilder.DEFAULT_NOTE_WIDTH);
+        adDecisionNodeNoteDescription.setDefaultHeightExpression(NoteStyleDescriptionBuilder.DEFAULT_NOTE_HEIGHT);
+
+        this.adSharedDescription.getChildrenDescriptions().add(adDecisionNodeNoteDescription);
+
+        this.registerCallback(adDecisionNodeNoteDescription, () -> {
+            Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription,
+                    List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()), List.of(this.umlPackage.getSequenceNode()));
+            this.reusedNodeDescriptionInOwners(adDecisionNodeNoteDescription, ownerNodeDescriptions.get());
+        });
+
+        Predicate<NodeDescription> isDecisionNodeNoteDescription = nodeDescription -> Objects.equals(nodeDescription.getName(), adDecisionNodeNoteDescription.getName());
+
+        EdgeDescription adDecisionNodeNoteEdgeDescription = this.getViewBuilder().createFeatureEdgeDescription(//
+                this.getIdBuilder().getFeatureBaseEdgeId(this.umlPackage.getDecisionNode_DecisionInput()), //
+                this.getQueryBuilder().emptyString(), //
+                this.getQueryBuilder().querySelf(),
+                () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getDecisionNode()).stream().filter(isDecisionNodeNoteDescription.negate()).toList(), //
+                () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getDecisionNode()).stream().filter(isDecisionNodeNoteDescription).toList());
+
+        adDecisionNodeNoteEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
+        adDecisionNodeNoteEdgeDescription.getStyle().setLineStyle(LineStyle.DASH);
+        diagramDescription.getEdgeDescriptions().add(adDecisionNodeNoteEdgeDescription);
     }
 
     /**
@@ -1769,5 +1813,31 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
             LOGGER.warn("Cannot find the image for domain type {0}", domainType.getName());
         }
         return result;
+    }
+
+    /**
+     * Collects all the {@link NodeDescription} matching the given {@code domains}, excluding the ones matching the
+     * provided {@code forbiddenDomains}.
+     * <p>
+     * This method is typically used to collect a given domain class and exclude some of its sub-classes. It also
+     * excludes {@code AD_DecisionNode_Note_SHARED}, which shouldn't be searchable with this method.
+     * </p>
+     *
+     * @param description
+     *            the diagram description
+     * @param domains
+     *            the list of matching domain types
+     * @param forbiddenDomains
+     *            the list of domain types to exclude
+     * @return a list of matching {@link NodeDescription}
+     */
+    @Override
+    protected List<NodeDescription> collectNodesWithDomainAndFilter(DiagramDescription description, List<EClass> domains, List<EClass> forbiddenDomains) {
+        List<NodeDescription> forbiddenDescription = this.collectNodesWithDomain(description, forbiddenDomains.toArray(EClass[]::new));
+        return this.collectNodesWithDomain(description, domains.toArray(EClass[]::new)).stream() //
+                .filter(nd -> !SHARED_DESCRIPTIONS.equals(nd.getName())) //
+                .filter(nd -> !Objects.equals(nd.getName(), "AD_DecisionNode_Note_SHARED")) //
+                .filter(nd -> !forbiddenDescription.contains(nd)) //
+                .toList();
     }
 }

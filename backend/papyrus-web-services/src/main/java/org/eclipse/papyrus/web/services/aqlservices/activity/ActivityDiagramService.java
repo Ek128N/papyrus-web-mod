@@ -17,13 +17,17 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
+import org.eclipse.papyrus.uml.domain.services.labels.UMLCharacters;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
@@ -37,9 +41,13 @@ import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;
+import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher;
+import org.eclipse.papyrus.web.sirius.contributions.query.NodeMatcher.BorderNodeStatus;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.uml2.uml.AcceptEventAction;
@@ -48,7 +56,9 @@ import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.ActivityGroup;
 import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioredClassifier;
+import org.eclipse.uml2.uml.DecisionNode;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.ExpansionNode;
@@ -80,6 +90,11 @@ public class ActivityDiagramService extends AbstractDiagramService {
      * The width/height to use for Hourglass nodes used to represent AcceptEventAction.
      */
     private static final String HOURGLASS_NODE_SIZE = "80";
+
+    /**
+     * The keyword displayed in {@link DecisionNode}'s notes.
+     */
+    private static final String DECISION_INPUT = "decisionInput";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ActivityDiagramService.class);
 
@@ -578,4 +593,68 @@ public class ActivityDiagramService extends AbstractDiagramService {
         return canCreateStatus.isValid();
     }
 
+    /**
+     * Returns whether the {@link DecisionNode}'s note should be displayed.
+     * <p>
+     * This method ensures that the {@link DecisionNode}'s note is never displayed if the {@link DecisionNode} is not
+     * visible, and if its decision input is not set. This is done by inspecting the {@code diagramContext}'s
+     * creation/deletion requests, as well as the {@code previousDiagram} to check if the {@link DecisionNode} was
+     * previously displayed.
+     * </p>
+     *
+     * @param decisionNode
+     *            the {@link DecisionNode} to check
+     * @param diagramContext
+     *            the context of the diagram
+     * @param previousDiagram
+     *            the previous state of the diagram
+     * @param editingContext
+     *            the editing context
+     * @return {@code true} if the {@link DecisionNode}'s note should be displayed, {@code false} otherwise
+     */
+    public boolean showDecisionNodeNote(DecisionNode decisionNode, DiagramContext diagramContext, Diagram previousDiagram, IEditingContext editingContext) {
+        List<Node> previousDecisionNode = this.getDiagramNavigationService().getMatchingNodes(previousDiagram, editingContext,
+                NodeMatcher.buildSemanticAndNodeMatcher(BorderNodeStatus.BOTH,
+                        semanticObject -> Objects.equals(decisionNode, semanticObject),
+                        // Filter out Note node to make sure the actual DecisionNode is visible
+                        node -> !(Objects.equals(node.getType(), "customnode:note"))));
+        boolean isDeletingDecisionNode = false;
+        boolean isCreatingDecisionNode = false;
+        if (!previousDecisionNode.isEmpty()) {
+            isDeletingDecisionNode = diagramContext.getViewDeletionRequests().stream() //
+                    .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), previousDecisionNode.get(0).getId()));
+        }
+        isCreatingDecisionNode = diagramContext.getViewCreationRequests().stream() //
+                .anyMatch(viewCreationRequest -> Objects.equals(viewCreationRequest.getTargetObjectId(), this.getObjectService().getId(decisionNode)));
+        boolean showDecisionNodeNote = false;
+        if (!previousDecisionNode.isEmpty() && !isDeletingDecisionNode) {
+            // The DecisionNode was already displayed on the diagram, and we aren't currently deleting it. In this case
+            // we want to show the DecisionNode note if its decision input is set. This ensures that a note that was
+            // previously visible stays visible.
+            showDecisionNodeNote = decisionNode != null && decisionNode.getDecisionInput() != null;
+        } else if (isCreatingDecisionNode && (previousDecisionNode.isEmpty() || isDeletingDecisionNode)) {
+            // We are currently creating the DecisionNode, either via a simple creation request, or via a graphical drag
+            // & drop (which is decomposed into a deletion request and a creation request). In this case we want to show
+            // the DecisionNode note if its decision input is set. This ensures that the note is visible directly after
+            // the node creation, or after a graphical drag & drop.
+            showDecisionNodeNote = decisionNode != null && decisionNode.getDecisionInput() != null;
+        }
+        return showDecisionNodeNote;
+    }
+
+    /**
+     * Provides the label to display on the note attached to a {@link DecisionNode} if the
+     * {@link DecisionNode#getDecisionInput()} feature is set.
+     *
+     * @param decisionNode
+     *            the {@link DecisionNode} from which retrieving the note label.
+     * @return the label or empty string if it cannot be computed.
+     */
+    public String getDecisionInputNoteLabel(DecisionNode decisionNode) {
+        return Optional.ofNullable(decisionNode).map(DecisionNode::getDecisionInput).map(this::computeDecisionInputLabel).orElse(UMLCharacters.EMPTY);
+    }
+
+    private String computeDecisionInputLabel(Behavior behavior) {
+        return UMLCharacters.ST_LEFT + DECISION_INPUT + UMLCharacters.ST_RIGHT + UMLCharacters.SPACE + behavior.getName();
+    }
 }

@@ -17,6 +17,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.uml2.uml.ActionInputPin;
 import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
+import org.eclipse.uml2.uml.DecisionNode;
 import org.eclipse.uml2.uml.ExpansionNode;
 import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.InterruptibleActivityRegion;
@@ -29,6 +30,16 @@ import org.eclipse.uml2.uml.ValuePin;
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
 public class ActivityDiagramServices extends Services {
+
+    /**
+     * The name of the service that checks if the diagram can be created.
+     */
+    public static final String CAN_CREATE_DIAGRAM = "canCreateDiagramAD";
+
+    /**
+     * The name of the service that checks if an element of a given type can be created in a given parent.
+     */
+    public static final String CAN_CREATE_INTO_PARENT = "canCreateIntoParentAD";
 
     /**
      * The name of the service that retrieves AcceptEventAction height computation expression.
@@ -86,6 +97,11 @@ public class ActivityDiagramServices extends Services {
     public static final String GET_ACTIVITY_PARTITION_CANDIDATES = "getActivityPartitionCandidatesAD";
 
     /**
+     * The name of the service that computes {@link DecisionNode}'s label.
+     */
+    public static final String GET_DECISION_INPUT_NOTE_LABEL = "getDecisionInputNoteLabel";
+
+    /**
      * The name of the service that retrieves {@link ExpansionNode} candidates.
      */
     public static final String GET_EXPANSION_NODE_CANDIDATES = "getExpansionNodesCandidatesAD";
@@ -111,13 +127,7 @@ public class ActivityDiagramServices extends Services {
     public static final String GET_VALUE_PIN_CANDIDATES = "getValuePinCandidatesAD";
 
     /**
-     * The name of the service that checks if the diagram can be created.
+     * The name of the service that checks whether a {@link DecisionNode}'s note should be displayed.
      */
-    public static final String CAN_CREATE_DIAGRAM = "canCreateDiagramAD";
-
-    /**
-     * The name of the service that checks if an element of a given type can be created in a given parent.
-     */
-    public static final String CAN_CREATE_INTO_PARENT = "canCreateIntoParentAD";
-
+    public static final String SHOW_DECISION_NODE_NOTE = "showDecisionNodeNote";
 }

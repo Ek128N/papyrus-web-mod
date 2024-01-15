@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.papyrus.uml.domain.services.labels.UMLCharacters;
 import org.eclipse.papyrus.web.application.representations.uml.ADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
@@ -43,6 +44,7 @@ import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.AddStructuralFeatureValueAction;
 import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.DecisionNode;
 import org.eclipse.uml2.uml.ExpansionNode;
 import org.eclipse.uml2.uml.ExpansionRegion;
 import org.eclipse.uml2.uml.InitialNode;
@@ -777,6 +779,20 @@ public class ActivityDiagramServiceTests extends AbstractDiagramTest {
         valuePinNodeCandidates = this.getDiagramService().getValuePinCandidatesAD(addStructuralFeatureValueAction);
         assertEquals(1, valuePinNodeCandidates.size());
         assertTrue(valuePinNodeCandidates.contains(valuePin));
+    }
+
+    /**
+     * Tests {@link ActivityDiagramService#getDecisionInputNoteLabel(DecisionNode)} for {@link DecisionNode}s with and
+     * without {@code decisionInput}.
+     */
+    @Test
+    public void testGetDecisionInputNoteLabel() {
+        DecisionNode decisionNode = this.create(DecisionNode.class);
+        assertEquals(UMLCharacters.EMPTY, this.getDiagramService().getDecisionInputNoteLabel(decisionNode));
+        Activity activity = this.create(Activity.class);
+        activity.setName("TestActivity");
+        decisionNode.setDecisionInput(activity);
+        assertEquals(UMLCharacters.ST_LEFT + "decisionInput" + UMLCharacters.ST_RIGHT + UMLCharacters.SPACE + activity.getName(), this.getDiagramService().getDecisionInputNoteLabel(decisionNode));
     }
 
     private Activity init() {

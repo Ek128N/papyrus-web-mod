@@ -51,11 +51,21 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
  * This builder handles the creation of the node description itself, but also the creation/deletion tools, as well as
  * the edge description between the note and the annotated elements and its corresponding tools.
  * </p>
- * 
+ *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
 @SuppressWarnings("checkstyle:HiddenField")
 public class NoteStyleDescriptionBuilder {
+
+    /**
+     * The default width of notes created with this builder.
+     */
+    public static final String DEFAULT_NOTE_WIDTH = "200";
+
+    /**
+     * The default height of the notes created with this builder.
+     */
+    public static final String DEFAULT_NOTE_HEIGHT = "100";
 
     private IdBuilder idBuilder;
 
@@ -85,7 +95,7 @@ public class NoteStyleDescriptionBuilder {
 
     /**
      * Creates an instance of the builder with the provided parameters.
-     * 
+     *
      * @param idBuilder
      *            the builder used to generate identifiers
      * @param viewBuilder
@@ -104,7 +114,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param domainType
      *            the domain type represented by the created note.
      * @return this builder
@@ -119,7 +129,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param annotedDomainType
      *            the domain type that can be annotated by the note
      * @return this builder
@@ -134,7 +144,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param containmentReference
      *            the reference
      * @return this builder
@@ -149,7 +159,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param noteToElementReference
      *            the reference
      * @return this builder
@@ -164,7 +174,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param color
      *            the color
      * @return this builder
@@ -179,7 +189,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param reconnectSourceService
      *            the name of the service
      * @return this builder
@@ -194,7 +204,7 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This parameter is <b>mandatory</b>.
      * </p>
-     * 
+     *
      * @param reconnectTargetService
      *            the name of the service
      * @return this builder
@@ -210,7 +220,7 @@ public class NoteStyleDescriptionBuilder {
      * This parameter is <b>optional</b>. If it isn't provided, the semantic candidate expression will match the
      * provided containment reference (see {@link #withContainmentReference(EReference)}).
      * </p>
-     * 
+     *
      * @param semanticCandidateExpression
      *            the semantic candidate expression to set in the {@link NodeDescription}
      * @return this builder
@@ -226,7 +236,7 @@ public class NoteStyleDescriptionBuilder {
      * This parameter is <b>optional</b>. If it isn't provided, the name is computed based on the given
      * {@code domainType} (see {@link #withDomainType(EClass)}).
      * </p>
-     * 
+     *
      * @param name
      *            the name of the {@link NodeDescription}
      * @return this builder
@@ -247,11 +257,11 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This method does not create the creation tool for the {@link NodeDescription}.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @return the created {@link NodeDescription}
-     * 
+     *
      * @throws NullPointerException
      *             if one of the mandatory builder parameters is {@code null}.
      */
@@ -272,11 +282,11 @@ public class NoteStyleDescriptionBuilder {
      * <p>
      * This method does not create the creation tool for the {@link NodeDescription}.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      * @return the created {@link NodeDescription}
-     * 
+     *
      * @throws NullPointerException
      *             if one of the mandatory builder parameters is {@code null}.
      */
@@ -293,10 +303,10 @@ public class NoteStyleDescriptionBuilder {
      * This method creates the node description itself, but also the creation/deletion tools, as well as the edge
      * representation between the note and the annotated elements and its corresponding tools.
      * </p>
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
-     * 
+     *
      * @throws NullPointerException
      *             if one of the mandatory builder parameters is {@code null}.
      */
@@ -317,8 +327,8 @@ public class NoteStyleDescriptionBuilder {
             noteStyleDescription.setName(this.name);
         }
 
-        noteStyleDescription.setDefaultWidthExpression("200");
-        noteStyleDescription.setDefaultHeightExpression("100");
+        noteStyleDescription.setDefaultWidthExpression(DEFAULT_NOTE_WIDTH);
+        noteStyleDescription.setDefaultHeightExpression(DEFAULT_NOTE_HEIGHT);
 
         NodeStyleDescription style = noteStyleDescription.getStyle();
         style.setShowIcon(true);
@@ -333,10 +343,10 @@ public class NoteStyleDescriptionBuilder {
 
     /**
      * Builds the {@link EdgeDescription} associated tools for the provided {@code noteStyleDescription}.
-     * 
+     *
      * @param diagramDescription
      *            the {@link DiagramDescription} containing the {@link EdgeDescription}
-     * 
+     *
      * @param noteStyleDescription
      *            the {@link NodeStyleDescription} containing the edge creation tool
      */
@@ -391,7 +401,7 @@ public class NoteStyleDescriptionBuilder {
     /**
      * Collects all {@link NodeDescription} matching the given domain (<b>By default the compartment nodes and the list
      * item are excluded).
-     * 
+     *
      * @param description
      *            the diagram description
      * @param domains
@@ -405,7 +415,7 @@ public class NoteStyleDescriptionBuilder {
 
     /**
      * Collects all {@link NodeDescription} matching the given domain.
-     * 
+     *
      * @param description
      *            the diagram description
      * @param includeCompartment
@@ -429,7 +439,7 @@ public class NoteStyleDescriptionBuilder {
 
     /**
      * Returns whether the provided {@code node} matches the given {@code domains}.
-     * 
+     *
      * @param node
      *            the {@link NodeDescription} to check
      * @param includeCompartment
