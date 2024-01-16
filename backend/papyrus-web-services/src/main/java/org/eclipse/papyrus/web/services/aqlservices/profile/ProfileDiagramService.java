@@ -45,7 +45,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.uml2.uml.Class;
@@ -198,7 +198,7 @@ public class ProfileDiagramService extends AbstractDiagramService {
      * @return the list of metaclasses from the UML metamodel
      */
     public List<? extends Class> getMetaclasses(IEditingContext editingContext) {
-        EditingContext ed = (EditingContext) editingContext;
+        IEMFEditingContext ed = (IEMFEditingContext) editingContext;
         Resource umlMetamodelResource = ed.getDomain().getResourceSet().getResource(URI.createURI(UMLResource.UML_METAMODEL_URI), true);
         Package umlPackage = (Package) EcoreUtil.getObjectByType(umlMetamodelResource.getContents(), UMLPackage.eINSTANCE.getPackage());
         return umlPackage.getOwnedTypes().stream() //

@@ -28,8 +28,8 @@ import org.eclipse.papyrus.web.tests.utils.UMLTestHelper;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +73,7 @@ public class AbstractWebUMLTest {
     public void before() {
         UUID editingContextId = UUID.randomUUID();
         this.editingContext = this.editingContextSearchService.findById(editingContextId.toString()).get();
-        this.editingDomain = ((EditingContext) this.editingContext).getDomain();
+        this.editingDomain = ((IEMFEditingContext) this.editingContext).getDomain();
 
         this.registerClasspathURIHandler();
 

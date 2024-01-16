@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -46,6 +45,7 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -112,8 +112,7 @@ public class PapyrusReferenceCreateElementHandler implements IReferenceWidgetCre
 
     private List<ChildCreationDescription> createChildCreationDescription(EClass eClass, List<EClass> childrenTypes) {
         return eClass.getEAllReferences().stream()//
-                .filter(ref -> ref.isContainment()).flatMap(ref -> this.createChildCreationDescription(ref, childrenTypes).stream())
-                .sorted(Comparator.comparing(ChildCreationDescription::getLabel))
+                .filter(ref -> ref.isContainment()).flatMap(ref -> this.createChildCreationDescription(ref, childrenTypes).stream()).sorted(Comparator.comparing(ChildCreationDescription::getLabel))
                 .toList();
     }
 
@@ -122,8 +121,8 @@ public class PapyrusReferenceCreateElementHandler implements IReferenceWidgetCre
         for (EClass child : childrenTypes) {
             if (ref.getEReferenceType().isSuperTypeOf(child)) {
                 EObject instance = child.getEPackage().getEFactoryInstance().create(child);
-                ChildCreationDescription description = new ChildCreationDescription(ref.getName() + CHILD_CREATION_DESCRIPTION_ID_SEPARATOR + child.getName(), child.getName() + " (in " + ref.getName() + ")",
-                        this.objectService.getImagePath(instance));
+                ChildCreationDescription description = new ChildCreationDescription(ref.getName() + CHILD_CREATION_DESCRIPTION_ID_SEPARATOR + child.getName(),
+                        child.getName() + " (in " + ref.getName() + ")", this.objectService.getImagePath(instance));
                 children.add(description);
             }
         }
@@ -173,7 +172,7 @@ public class PapyrusReferenceCreateElementHandler implements IReferenceWidgetCre
 
     @Override
     public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId, String descriptionId) {
-     // No creation at resource level is allowed in Papyrus
+        // No creation at resource level is allowed in Papyrus
         return Optional.empty();
     }
 
@@ -191,7 +190,7 @@ public class PapyrusReferenceCreateElementHandler implements IReferenceWidgetCre
     }
 
     private Optional<Object> createMultiReferenceChild(IEditingContext editingContext, Object parent, String childCreationDescriptionId, String descriptionId) {
-        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(descriptionId).filter(MultiReferenceWidgetDescription.class::isInstance)
+        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(editingContext, descriptionId).filter(MultiReferenceWidgetDescription.class::isInstance)
                 .map(MultiReferenceWidgetDescription.class::cast);
         if (optionalWidgetDescription.isPresent()) {
             var reference = optionalWidgetDescription.get();
@@ -213,7 +212,7 @@ public class PapyrusReferenceCreateElementHandler implements IReferenceWidgetCre
     }
 
     private Optional<Object> createMonoReferenceChild(IEditingContext editingContext, Object parent, String childCreationDescriptionId, String descriptionId) {
-        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(descriptionId).filter(MonoReferenceWidgetDescription.class::isInstance)
+        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(editingContext, descriptionId).filter(MonoReferenceWidgetDescription.class::isInstance)
                 .map(MonoReferenceWidgetDescription.class::cast);
         if (optionalWidgetDescription.isPresent()) {
             var reference = optionalWidgetDescription.get();

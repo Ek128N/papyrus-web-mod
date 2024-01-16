@@ -23,12 +23,13 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.papyrus.web.services.representations.IRepresentationDescriptionOverrider;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.papyrus.web.sirius.contributions.UnloadingEditingContext;
@@ -38,14 +39,15 @@ import org.eclipse.sirius.components.core.configuration.IRepresentationDescripti
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
-import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
-import org.eclipse.sirius.web.services.editingcontext.api.IDynamicRepresentationDescriptionService;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
+import org.eclipse.sirius.web.services.editingcontext.api.IViewLoader;
 import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,28 +75,33 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
 
     private final List<IRepresentationDescriptionRegistryConfigurer> configurers;
 
-    private final IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService;
+    private final IViewLoader viewLoader;
+
+    private final IViewConverter viewConverter;
 
     private final Timer timer;
 
     private List<IRepresentationDescriptionOverrider> descriptionOverriders;
 
+    // CHECKSTYLE:OFF
     public EditingContextSearchServiceCustomImpl(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
-            List<IRepresentationDescriptionRegistryConfigurer> configurers, IDynamicRepresentationDescriptionService dynamicRepresentationDescriptionService,
-            List<IRepresentationDescriptionOverrider> descriptionOverriders, MeterRegistry meterRegistry) {
+            List<IRepresentationDescriptionRegistryConfigurer> configurers, IViewLoader viewLoader, IViewConverter viewConverter, List<IRepresentationDescriptionOverrider> descriptionOverriders,
+            MeterRegistry meterRegistry) {
+        // CHECKSTYLE:ON
         this.descriptionOverriders = descriptionOverriders;
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
         this.configurers = Objects.requireNonNull(configurers);
-        this.dynamicRepresentationDescriptionService = Objects.requireNonNull(dynamicRepresentationDescriptionService);
+        this.viewLoader = Objects.requireNonNull(viewLoader);
+        this.viewConverter = Objects.requireNonNull(viewConverter);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
     }
 
     @Override
     public boolean existsById(String editingContextId) {
-        return new IDParser().parse(editingContextId).map(editingContextUUID -> this.projectRepository.existsById(editingContextUUID)).orElse(false);
+        return new IDParser().parse(editingContextId).map(this.projectRepository::existsById).orElse(false);
     }
 
     @Override
@@ -108,8 +115,6 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
         // Workaround for bug: https://github.com/eclipse-sirius/sirius-web/issues/1863
         editingDomain.getResourceSet().eAdapters().add(new SelfPreResolvingProxyAdapter());
         ResourceSet resourceSet = editingDomain.getResourceSet();
-        resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
-        resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
         List<DocumentEntity> documentEntities = new IDParser().parse(editingContextId) //
                 .map(this.documentRepository::findAllByProjectId) //
@@ -121,6 +126,7 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
             Resource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
             try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
                 resourceSet.getResources().add(resource);
+
                 resource.load(inputStream, resourceSet.getLoadOptions());
 
                 resource.eAdapters().add(new ResourceMetadataAdapter(documentEntity.getName()));
@@ -137,6 +143,17 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
         resourceSet.eAdapters().add(new NonUMLEditingContextCrossReferenceAdapter());
 
         this.logger.debug("{} documents loaded for the editing context {}", resourceSet.getResources().size(), editingContextId);
+
+        var views = this.viewLoader.load();
+        Map<String, IRepresentationDescription> representationDescriptions = this.getRepresentationDescriptions(editingDomain, views);
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+        return Optional.of(new UnloadingEditingContext(editingContextId, editingDomain, representationDescriptions, views));
+    }
+
+    private Map<String, IRepresentationDescription> getRepresentationDescriptions(EditingDomain editingDomain, List<View> views) {
 
         Map<String, IRepresentationDescription> representationDescriptions = new LinkedHashMap<>();
         var registry = new RepresentationDescriptionRegistry();
@@ -158,14 +175,17 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
         }
 
         registry.getRepresentationDescriptions().forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
-        this.dynamicRepresentationDescriptionService.findDynamicRepresentationDescriptions(editingContextId, editingDomain)
+        List<EPackage> accessibleEPackages = this.getAccessibleEPackages(editingDomain);
+        this.viewConverter.convert(views, accessibleEPackages).stream().filter(Objects::nonNull)
                 .forEach(representationDescription -> representationDescriptions.put(representationDescription.getId(), representationDescription));
 
-        long end = System.currentTimeMillis();
-        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+        return representationDescriptions;
+    }
 
-        // Need this customization to be able to unload the UML resources and so clear the CacheAdapter
-        return Optional.of(new UnloadingEditingContext(editingContextId, editingDomain, representationDescriptions));
+    private List<EPackage> getAccessibleEPackages(EditingDomain editingDomain) {
+        var packageRegistry = editingDomain.getResourceSet().getPackageRegistry();
+
+        return packageRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).toList();
     }
 
     /**

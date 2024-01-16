@@ -29,7 +29,6 @@ import org.eclipse.emf.ecore.resource.ContentHandler;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
@@ -37,9 +36,9 @@ import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -103,7 +102,12 @@ public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFact
     public AdapterFactoryEditingDomain createEditingDomain(String editingContextId) {
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
-        resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
+
+        // Workaround regarding the regression on EMFJSon 2.3.6 that now uses the option
+        // JsonResource.OPTION_EXTENDED_META_DATA for metamodel migration
+        // See commit https://github.com/eclipse-sirius/sirius-emf-json/commit/25da059df31534ce8cdbebf3ced7243951bb9a1f
+        // resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new
+        // BasicExtendedMetaData(resourceSet.getPackageRegistry()));
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
         var isStudioProjectNature = this.editingContextMetadataProvider.getMetadata(editingContextId).natures().stream().map(Nature::natureId)
@@ -160,7 +164,7 @@ public class EditingDomainFactoryServiceCustomImpl implements IEditingDomainFact
 
     private Optional<View> loadStudioColorPalettes(ResourceSet resourceSet) {
         ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
         Resource resource = null;
         Optional<Resource> existingResource = resourceSet.getResources().stream().filter(r -> uri.equals(r.getURI())).findFirst();
         if (existingResource.isEmpty()) {

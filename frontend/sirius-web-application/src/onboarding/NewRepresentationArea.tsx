@@ -131,24 +131,26 @@ export const NewRepresentationArea = ({
           <List dense={true}>
             {readOnly
               ? null
-              : representationDescriptions.map((representationDescription) => {
-                  return (
-                    <ListItem
-                      className={classes.item}
-                      disableGutters
-                      button
-                      key={representationDescription.id}
-                      data-testid={representationDescription.id}
-                      onClick={() => {
-                        onCreateRepresentation(representationDescription.id);
-                      }}>
-                      <ListItemIcon>
-                        <Collections htmlColor="primary" fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText primary={representationDescription.defaultName} />
-                    </ListItem>
-                  );
-                })}
+              : representationDescriptions
+                  .sort((a, b) => a.defaultName.localeCompare(b.defaultName))
+                  .map((representationDescription) => {
+                    return (
+                      <ListItem
+                        className={classes.item}
+                        disableGutters
+                        button
+                        key={representationDescription.id}
+                        data-testid={representationDescription.id}
+                        onClick={() => {
+                          onCreateRepresentation(representationDescription.id);
+                        }}>
+                        <ListItemIcon>
+                          <Collections htmlColor="primary" fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary={representationDescription.defaultName} />
+                      </ListItem>
+                    );
+                  })}
           </List>
         </CardContent>
       </Card>

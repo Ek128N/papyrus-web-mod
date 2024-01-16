@@ -32,16 +32,16 @@ import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { PapyrusIcon } from './core/PapyrusIcon';
 import { EllipseNode } from './nodes/ellipse/EllipseNode';
-import { EllipseNodeConverterHandler } from './nodes/ellipse/EllipseNodeConverterHandler';
+import { EllipseNodeConverter } from './nodes/ellipse/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/ellipse/EllipseNodeLayoutHandler';
 import { NoteNode } from './nodes/note/NoteNode';
-import { NoteNodeConverterHandler } from './nodes/note/NoteNodeConverterHandler';
+import { NoteNodeConverter } from './nodes/note/NoteNodeConverter';
 import { NoteNodeLayoutHandler } from './nodes/note/NoteNodeLayoutHandler';
 import { RectangleWithExternalLabelNode } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNode';
-import { RectangleWithExternalLabelNodeConverterHandler } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverterHandler';
+import { RectangleWithExternalLabelNodeConverter } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverter';
 import { RectangleWithExternalLabelNodeLayoutHandler } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeLayoutHandler';
 import { PackageNode } from './nodes/package/PackageNode';
-import { PackageNodeConverterHandler } from './nodes/package/PackageNodeConverterHandler';
+import { PackageNodeConverter } from './nodes/package/PackageNodeConverter';
 import { PackageNodeLayoutHandler } from './nodes/package/PackageNodeLayoutHandler';
 import { SliderPreview } from './widgets/SliderPreview';
 import { GQLSlider } from './widgets/SliderFragment.types';
@@ -64,8 +64,11 @@ import { ContainmentReferencePreview } from './widgets/containmentReference/Cont
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { LanguageExpressionPreview } from './widgets/languageExpression/LanguageExpressionPreview';
 import { Help } from './core/Help';
+
+import './ReactFlow.css';
 import './Sprotty.css';
 import './fonts.css';
+import './portals.css';
 import './reset.css';
 import './variables.css';
 
@@ -230,11 +233,11 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     new RectangleWithExternalLabelNodeLayoutHandler(),
     new NoteNodeLayoutHandler(),
   ],
-  nodeConverterHandlers: [
-    new EllipseNodeConverterHandler(),
-    new PackageNodeConverterHandler(),
-    new RectangleWithExternalLabelNodeConverterHandler(),
-    new NoteNodeConverterHandler(),
+  nodeConverters: [
+    new EllipseNodeConverter(),
+    new PackageNodeConverter(),
+    new RectangleWithExternalLabelNodeConverter(),
+    new NoteNodeConverter(),
   ],
   nodeTypeContributions: [
     <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,

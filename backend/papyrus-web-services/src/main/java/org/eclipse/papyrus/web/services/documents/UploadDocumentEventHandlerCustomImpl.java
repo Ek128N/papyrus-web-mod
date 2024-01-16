@@ -46,8 +46,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceImpl;
@@ -119,8 +119,8 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
             String projectId = uploadDocumentInput.editingContextId();
             UploadFile file = uploadDocumentInput.file();
 
-            Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext).filter(EditingContext.class::isInstance).map(EditingContext.class::cast)
-                    .map(EditingContext::getDomain);
+            Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext).filter(IEMFEditingContext.class::isInstance).map(IEMFEditingContext.class::cast)
+                    .map(IEMFEditingContext::getDomain);
 
             String name = file.getName().trim();
             if (optionalEditingDomain.isPresent()) {
@@ -269,7 +269,7 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
 
     private void loadStudioColorPalettes(ResourceSet resourceSet) {
         ClassPathResource classPathResource = new ClassPathResource("studioColorPalettes.json");
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
+        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + UUID.nameUUIDFromBytes(classPathResource.getPath().getBytes()));
         Resource resource = new JSONResourceFactory().createResource(uri);
         try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
             resourceSet.getResources().add(resource);

@@ -25,8 +25,8 @@ import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescript
 import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
@@ -82,7 +82,7 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
         // Build the actual FormDescription
 
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
-        URI uri = URI.createURI(EditingContext.RESOURCE_SCHEME + ":///" + NAME_UUID_FROM_BYTES);
+        URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + NAME_UUID_FROM_BYTES);
         Resource resource = new JSONResourceFactory().createResource(uri);
         View view = new UMLDetailViewFromBuilder(UML_DETAIL_VIEW_NAME).build();
         resource.getContents().add(view);

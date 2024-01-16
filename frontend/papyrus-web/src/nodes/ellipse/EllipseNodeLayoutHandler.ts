@@ -66,7 +66,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
 
-      const previousPosition = computePreviousPosition(previousNode, node);
+      const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -141,7 +141,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
-    if (node.data.nodeDescription?.userResizable) {
+    if (node.data.resizedByUser) {
       if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
       } else {

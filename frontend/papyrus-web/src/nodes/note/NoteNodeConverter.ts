@@ -11,19 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
-  BorderNodePositon,
+  BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
+  GQLDiagramDescription,
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
+  GQLNodeLayoutData,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
-  INodeConverterHandler,
+  INodeConverter,
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
+  convertOutsideLabels,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { GQLNoteNodeStyle, NoteNodeData } from './NoteNode.types';
@@ -45,13 +48,19 @@ const toNoteNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
 
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
-  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+  const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
+    (nodeLayoutData) => nodeLayoutData.id === id
+  );
+  const isNew = gqlNodeLayoutData === undefined;
+  const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
   const data: NoteNodeData = {
     targetObjectId,
@@ -65,24 +74,28 @@ const toNoteNode = (
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
     },
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
+    pinned,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     connectionHandles,
     labelEditable,
     isNew,
+    resizedByUser,
   };
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -100,7 +113,7 @@ const toNoteNode = (
       flexDirection: 'column',
       justifyContent: 'flex-start',
     };
-    data.label.style = { ...data.label.style, justifyContent: 'top' };
+    data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'top' };
   }
 
   const node: Node<NoteNodeData> = {
@@ -134,7 +147,7 @@ const toNoteNode = (
   return node;
 };
 
-export class NoteNodeConverterHandler implements INodeConverterHandler {
+export class NoteNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'NoteNodeStyle';
   }
@@ -147,38 +160,36 @@ export class NoteNodeConverterHandler implements INodeConverterHandler {
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
-    const nodeDescription = this.findNodeDescription(nodeDescriptions, gqlNode.descriptionId);
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     nodes.push(toNoteNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
-  }
-
-  findNodeDescription(nodeDescriptions: GQLNodeDescription[], id: string): GQLNodeDescription | null {
-    for (let nodeDescription of nodeDescriptions) {
-      if (nodeDescription.id === id) {
-        return nodeDescription;
-      }
-      if (nodeDescription.childNodeDescriptions) {
-        let subNodeDescription = this.findNodeDescription(nodeDescription.childNodeDescriptions, id);
-        if (subNodeDescription !== null) {
-          return subNodeDescription;
-        }
-      }
-    }
-    return null;
   }
 }

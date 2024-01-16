@@ -57,7 +57,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.ListStyle;
 import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription;
@@ -527,7 +527,7 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
 
     private Function<VariableManager, String> getReferenceKindProvider(String domainTypeExpression) {
         return variableManager -> {
-            var editingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class).map(EditingContext::getDomain);
+            var editingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class).map(IEMFEditingContext::getDomain);
             String type = this.interpreter.evaluateExpression(variableManager.getVariables(), domainTypeExpression).asString().orElse("");
             return editingDomain.flatMap(ed -> this.resolveType(ed, type)).flatMap(eclass -> Optional.of(this.emfKindService.getKind(eclass))).orElse("");
         };

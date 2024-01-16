@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -32,13 +32,14 @@ import org.eclipse.sirius.components.collaborative.widget.reference.browser.Refe
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.uml2.uml.Element;
 import org.springframework.stereotype.Service;
 
@@ -126,7 +127,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private Predicate<Element> getStereotypeQualifiedName(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String targetType = parameters.get(TARGET_TYPE).get(0);
@@ -151,7 +152,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private boolean isStereotypePredicate(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String kind = parameters.get(TARGET_TYPE).get(0);

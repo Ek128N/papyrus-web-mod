@@ -1,44 +1,46 @@
-/*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
+/*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *  Obeo - Initial API and implementation
- *****************************************************************************/
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
 import {
-  BorderNodePositon,
+  AlignmentMap,
+  BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
-  convertHandles,
-  convertLabelStyle,
+  GQLDiagramDescription,
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
+  GQLNodeLayoutData,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
-  INodeConverterHandler,
+  INodeConverter,
+  convertHandles,
+  convertLabelStyle,
   convertLineStyle,
+  convertOutsideLabels,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
-import { GQLPackageNodeStyle, PackageNodeData } from './PackageNode.types';
+import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
-
-const toPackageNode = (
+const toEllipseNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLPackageNodeStyle>,
+  gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
-  gqlEdge: GQLEdge[]
-): Node<PackageNodeData> => {
+  gqlEdges: GQLEdge[]
+): Node<EllipseNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -46,15 +48,21 @@ const toPackageNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdge);
-  const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
+    (nodeLayoutData) => nodeLayoutData.id === id
+  );
+  const isNew = gqlNodeLayoutData === undefined;
+  const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
-  const data: PackageNodeData = {
+  const data: EllipseNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -66,24 +74,28 @@ const toPackageNode = (
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
     },
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
+    pinned,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     connectionHandles,
     labelEditable,
     isNew,
+    resizedByUser,
   };
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -96,17 +108,16 @@ const toPackageNode = (
       iconURL: labelStyle.iconURL,
     };
 
-    data.style = {
-      ...data.style,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    };
+    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
+    if (alignement.isPrimaryVerticalAlignment) {
+      data.style = { ...data.style, alignItems: 'stretch' };
+      data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
+    }
   }
 
-  const node: Node<PackageNodeData> = {
+  const node: Node<EllipseNodeData> = {
     id,
-    type: 'packageNode',
+    type: 'ellipseNode',
     data,
     position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
@@ -135,51 +146,47 @@ const toPackageNode = (
   return node;
 };
 
-export class PackageNodeConverterHandler implements INodeConverterHandler {
+export class EllipseNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'PackageNodeStyle';
+    return gqlNode.style.__typename === 'EllipseNodeStyle';
   }
 
   handle(
     convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLPackageNodeStyle>,
+    gqlNode: GQLNode<GQLEllipseNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
-    const nodeDescription = this.findNodeDescription(nodeDescriptions, gqlNode.descriptionId);
-    nodes.push(toPackageNode(gqlDiagram, gqlNode, parentNode, nodeDescription ?? undefined, isBorderNode, gqlEdges));
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
+    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription ?? undefined, isBorderNode, gqlEdges));
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
-  }
-
-  findNodeDescription(nodeDescriptions: GQLNodeDescription[], id: string): GQLNodeDescription | null {
-    for (let nodeDescription of nodeDescriptions) {
-      if (nodeDescription.id === id) {
-        return nodeDescription;
-      }
-      if (nodeDescription.childNodeDescriptions) {
-        let subNodeDescription = this.findNodeDescription(nodeDescription.childNodeDescriptions, id);
-        if (subNodeDescription !== null) {
-          return subNodeDescription;
-        }
-      }
-    }
-    return null;
   }
 }

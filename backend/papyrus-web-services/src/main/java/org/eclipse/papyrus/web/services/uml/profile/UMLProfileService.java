@@ -56,7 +56,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
 import org.slf4j.Logger;
@@ -160,10 +160,10 @@ public class UMLProfileService implements IUMLProfileService {
         if (umlPackageOptional.isPresent()) {
             Package pack = umlPackageOptional.get();
 
-            if (editingContext instanceof EditingContext) {
+            if (editingContext instanceof IEMFEditingContext) {
                 // This call will load the resource in the resourceSet
                 try {
-                    ResourceSet resourceSet = ((EditingContext) editingContext).getDomain().getResourceSet();
+                    ResourceSet resourceSet = ((IEMFEditingContext) editingContext).getDomain().getResourceSet();
                     Optional<Profile> umlProfileOptional = Optional.of(resourceSet.getEObject(URI.createURI(profileURI), true)).filter(Profile.class::isInstance)//
                             .map(Profile.class::cast);
 

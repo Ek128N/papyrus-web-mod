@@ -13,12 +13,14 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.sirius.contributions;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 
 /**
  * Special EditingContext that unload the Resources on dispose.
@@ -27,8 +29,8 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
  */
 public class UnloadingEditingContext extends EditingContext {
 
-    public UnloadingEditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions) {
-        super(id, editingDomain, representationDescriptions);
+    public UnloadingEditingContext(String id, AdapterFactoryEditingDomain editingDomain, Map<String, IRepresentationDescription> representationDescriptions, List<View> views) {
+        super(id, editingDomain, representationDescriptions, views);
     }
 
     @Override

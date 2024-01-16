@@ -24,8 +24,8 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.papyrus.web.sirius.contributions.StereotypeBuilder;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.persistence.entities.DocumentEntity;
 import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
@@ -59,9 +59,9 @@ public class TemplateInitializer {
 
     public Optional<Resource> initializeResourceFromClasspathFile(IEditingContext editingContext, String newResourceName, String filePath) throws IOException {
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                .filter(EditingContext.class::isInstance)
-                .map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
         Optional<UUID> optionalEditingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && optionalEditingContextUUID.isPresent()) {
             UUID editingContextUUID = optionalEditingContextUUID.get();

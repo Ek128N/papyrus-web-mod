@@ -132,9 +132,9 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
   };
 
   const label: any = {
-    ...data.label,
+    ...data.insideLabel,
     style: {
-      ...data?.label?.style,
+      ...data?.insideLabel?.style,
       whiteSpace: 'pre',
       overflow: 'hidden',
       justifyContent: 'flex-start',
@@ -149,15 +149,23 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
 
   return (
     <>
-      <NodeResizer handleStyle={{ ...resizeHandleStyle(theme) }} color={theme.palette.selected} isVisible={selected} />
+      {data.nodeDescription?.userResizable && (
+        <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          color={theme.palette.selected}
+          isVisible={selected}
+        />
+      )}
       <div
         style={{
           ...packageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`Package - ${data?.label?.text}`}>
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+        data-testid={`Package - ${data?.insideLabel?.text}`}>
+        {selected ? (
+          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+        ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
@@ -169,12 +177,12 @@ export const PackageNode = memo(({ data, id, selected }: NodeProps<PackageNodeDa
               selected,
               hoveredNode?.id === id,
               data.faded,
-              data.label ? data.label.text.length : 0
+              data.insideLabel ? data.insideLabel.text.length : 0
             ),
             ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
             ...dropFeedbackStyle,
           }}>
-          {data.label ? <Label diagramElementId={id} label={label} faded={data.faded} transform="" /> : null}
+          {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} transform="" /> : null}
         </div>
         <div
           style={{

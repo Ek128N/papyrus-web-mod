@@ -11,16 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
-import { DiagramRepresentationConfigurationProps } from './DiagramRepresentationConfiguration.types';
-
-export const defaultNodeTypeRegistry: NodeTypeContextValue = {
-  nodeConverters: [],
-  nodeLayoutHandlers: [],
-  graphQLNodeStyleFragments: [],
-  nodeTypeContributions: [],
-};
-
-export const DiagramRepresentationConfiguration = ({}: DiagramRepresentationConfigurationProps) => {
-  return null;
-};
+.react-grid-item.react-grid-placeholder {
+  background: #be1a78;
+}

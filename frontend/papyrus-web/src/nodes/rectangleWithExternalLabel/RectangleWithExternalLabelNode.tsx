@@ -104,15 +104,17 @@ export const RectangleWithExternalLabelNode = memo(
 
     return (
       <>
-        <NodeResizer
-          handleStyle={{ ...resizeHandleStyle(theme) }}
-          color={theme.palette.selected}
-          isVisible={selected}
-          // Force false here to handle mutualized NodeDescriptions for SMD PseudoStates.
-          // The other nodes need to have the aspect ratio, but RectanguleWithExternalLabelNodes
-          // should not have it.
-          keepAspectRatio={false}
-        />
+        {data.nodeDescription?.userResizable && (
+          <NodeResizer
+            handleStyle={{ ...resizeHandleStyle(theme) }}
+            color={theme.palette.selected}
+            isVisible={selected}
+            // Force false here to handle mutualized NodeDescriptions for SMD PseudoStates.
+            // The other nodes need to have the aspect ratio, but RectanguleWithExternalLabelNodes
+            // should not have it.
+            keepAspectRatio={false}
+          />
+        )}
         <div
           style={{
             ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
@@ -121,8 +123,10 @@ export const RectangleWithExternalLabelNode = memo(
           }}
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
-          data-testid={`RectangleWithExternalLabel - ${data?.label?.text}`}>
-          {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
+          data-testid={`RectangleWithExternalLabel - ${data?.insideLabel?.text}`}>
+          {data.insideLabel ? (
+            <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+          ) : null}
           {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
@@ -140,9 +144,9 @@ export const RectangleWithExternalLabelNode = memo(
             }}
             onDragOver={onDragOver}
             onDrop={handleOnDrop}
-            data-testid={`RectangleWithExternalLabel - ${data?.label?.text}`}>
+            data-testid={`RectangleWithExternalLabel - ${data?.insideLabel?.text}`}>
             {selected ? (
-              <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} />
+              <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
             ) : null}
           </div>
         </div>

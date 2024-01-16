@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import { DiagramRepresentation } from '@eclipse-sirius/sirius-components-diagram
 import { DiagramRepresentation as ReactFlowDiagramRepresentation } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { RepresentationContextProviderProps } from './RepresentationContextProvider.types';
 
 export const RepresentationContextProvider = ({ children }: RepresentationContextProviderProps) => {
@@ -38,6 +39,8 @@ export const RepresentationContextProvider = ({ children }: RepresentationContex
         return FormRepresentation;
       } else if (type === 'FormDescriptionEditor') {
         return FormDescriptionEditorRepresentation;
+      } else if (type === 'Portal') {
+        return PortalRepresentation;
       }
       return null;
     },

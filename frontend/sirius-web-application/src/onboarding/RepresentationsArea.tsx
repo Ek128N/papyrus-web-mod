@@ -40,25 +40,27 @@ export const RepresentationsArea = ({ representations }: RepresentationAreaProps
         <Typography variant="h6">Open an existing Representation</Typography>
         <Typography color="textSecondary">Select the representation to open</Typography>
         <List dense={true}>
-          {representations.map((representation) => {
-            return (
-              <ListItem
-                disableGutters
-                button
-                key={representation.id}
-                data-testid={`onboard-open-${representation.label}`}
-                onClick={() =>
-                  setSelection({
-                    entries: [{ id: representation.id, label: representation.label, kind: representation.kind }],
-                  })
-                }>
-                <ListItemIcon>
-                  <Collections htmlColor="primary" fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={representation.label} />
-              </ListItem>
-            );
-          })}
+          {representations
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .map((representation) => {
+              return (
+                <ListItem
+                  disableGutters
+                  button
+                  key={representation.id}
+                  data-testid={`onboard-open-${representation.label}`}
+                  onClick={() =>
+                    setSelection({
+                      entries: [{ id: representation.id, label: representation.label, kind: representation.kind }],
+                    })
+                  }>
+                  <ListItemIcon>
+                    <Collections htmlColor="primary" fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary={representation.label} />
+                </ListItem>
+              );
+            })}
         </List>
       </CardContent>
     </Card>

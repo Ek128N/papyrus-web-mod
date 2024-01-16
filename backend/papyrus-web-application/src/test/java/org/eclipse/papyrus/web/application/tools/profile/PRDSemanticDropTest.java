@@ -33,7 +33,8 @@ import org.eclipse.papyrus.web.application.tools.profile.utils.PRDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.test.SemanticDropTest;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.tools.utils.ToolSections;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Package;
@@ -150,7 +151,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
     public void testSemanticDropMetaclassOnDiagram() {
         ElementImport elementToDrop = (ElementImport) this.createSemanticElement(this.getRootSemanticElement(), UML.getNamespace_ElementImport(), UML.getElementImport(), "");
         String elementToDropId = this.getObjectService().getId(elementToDrop);
-        EditingContext editingContext = (EditingContext) this.getEditingContext();
+        IEMFEditingContext editingContext = (IEMFEditingContext) this.getEditingContext();
         // Reload the elementToDrop from the current editing context.
         Optional<Object> optObject = this.getObjectService().getObject(editingContext, elementToDropId);
         assertThat(optObject).isPresent();
@@ -307,7 +308,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         this.semanticDropOnContainerCompartment(ENUMERATION_CONTAINER, compartmentName, this.getObjectService().getId(elementToDrop), graphicalChecker);
     }
 
-    private Class getTestMetaclass(EditingContext editingContext) {
+    private Class getTestMetaclass(IEMFEditingContext editingContext) {
         Resource umlMetamodelResource = editingContext.getDomain().getResourceSet().getResource(URI.createURI(UMLResource.UML_METAMODEL_URI), true);
         Package umlPackage = (Package) EcoreUtil.getObjectByType(umlMetamodelResource.getContents(), UMLPackage.eINSTANCE.getPackage());
         Class activityMetaclass = umlPackage.getOwnedTypes().stream() //

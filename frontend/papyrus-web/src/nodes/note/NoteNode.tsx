@@ -89,9 +89,9 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
   };
 
   const updatedLabel: any = {
-    ...data.label,
+    ...data.insideLabel,
     style: {
-      ...data?.label?.style,
+      ...data?.insideLabel?.style,
       paddingLeft: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
       paddingTop: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
       paddingRight: parseInt(data.style.borderWidth?.toString() ?? '1') / 2 + 20 + 'px',
@@ -105,12 +105,14 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
 
   return (
     <>
-      <NodeResizer
-        handleStyle={{ ...resizeHandleStyle(theme) }}
-        color={theme.palette.selected}
-        isVisible={selected}
-        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-      />
+      {data.nodeDescription?.userResizable && (
+        <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          color={theme.palette.selected}
+          isVisible={selected}
+          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        />
+      )}
       <div
         style={{
           ...noteNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
@@ -119,11 +121,15 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`Note - ${data?.label?.text}`}>
+        data-testid={`Note - ${data?.insideLabel?.text}`}>
         <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
-          {data.label ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} transform="" /> : null}
+          {data.insideLabel ? (
+            <Label diagramElementId={id} label={updatedLabel} faded={data.faded} transform="" />
+          ) : null}
         </div>
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+        {selected ? (
+          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+        ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -73,7 +73,7 @@ public class PapyrusReferenceRootCandidateSearchProvider implements IReferenceWi
 
     @Override
     public List<? extends Object> getRootElementsForReference(Object targetElement, String descriptionId, IEditingContext editingContext) {
-        Optional<FormElementDescription> widgetDescription = this.viewSearchService.findViewFormElementDescriptionById(descriptionId);
+        Optional<FormElementDescription> widgetDescription = this.viewSearchService.findViewFormElementDescriptionById(editingContext, descriptionId);
         if (widgetDescription.isPresent()) {
             final String searchExpression;
             if (widgetDescription.get() instanceof MonoReferenceWidgetDescription mono) {

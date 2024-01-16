@@ -78,13 +78,15 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
 
   return (
     <>
-      <NodeResizer
-        handleStyle={{ ...resizeHandleStyle(theme) }}
-        color={theme.palette.selected}
-        isVisible={selected}
-        shouldResize={() => !data.isBorderNode}
-        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-      />
+      {data.nodeDescription?.userResizable && (
+        <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          color={theme.palette.selected}
+          isVisible={selected}
+          shouldResize={() => !data.isBorderNode}
+          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        />
+      )}
       <div
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
@@ -93,9 +95,13 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`Ellipse - ${data?.label?.text}`}>
-        {data.label ? <Label diagramElementId={id} label={data.label} faded={data.faded} transform="" /> : null}
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+        data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
+        {data.insideLabel ? (
+          <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+        ) : null}
+        {selected ? (
+          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+        ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />

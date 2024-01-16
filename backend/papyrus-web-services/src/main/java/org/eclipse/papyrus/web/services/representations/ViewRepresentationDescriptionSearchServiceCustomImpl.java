@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -45,43 +46,43 @@ public class ViewRepresentationDescriptionSearchServiceCustomImpl implements IVi
     }
 
     @Override
-    public Optional<RepresentationDescription> findById(String representationDescriptionId) {
+    public Optional<RepresentationDescription> findById(IEditingContext editingContext, String representationDescriptionId) {
         Optional<RepresentationDescription> papyrusDescription = (Optional) this.papyrusRepresentationDescription.getViewDiagramDescriptionById(representationDescriptionId);
         if (papyrusDescription.isPresent()) {
             return papyrusDescription;
         } else {
-            return this.baseViewRepresentationDescriptionSearchService.findById(representationDescriptionId);
+            return this.baseViewRepresentationDescriptionSearchService.findById(editingContext, representationDescriptionId);
         }
 
     }
 
     @Override
-    public Optional<NodeDescription> findViewNodeDescriptionById(String nodeDescriptionId) {
+    public Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String nodeDescriptionId) {
         Optional<NodeDescription> papyrusDescription = this.papyrusRepresentationDescription.getViewNodeDescriptionById(nodeDescriptionId);
         if (papyrusDescription.isPresent()) {
             return papyrusDescription;
         } else {
 
-            return this.baseViewRepresentationDescriptionSearchService.findViewNodeDescriptionById(nodeDescriptionId);
+            return this.baseViewRepresentationDescriptionSearchService.findViewNodeDescriptionById(editingContext, nodeDescriptionId);
         }
 
     }
 
     @Override
-    public Optional<EdgeDescription> findViewEdgeDescriptionById(String edgeDescriptionId) {
+    public Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId) {
 
         Optional<EdgeDescription> papyrusDescription = this.papyrusRepresentationDescription.getViewEdgeDescriptionById(edgeDescriptionId);
         if (papyrusDescription.isPresent()) {
             return papyrusDescription;
         } else {
-            return this.baseViewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(edgeDescriptionId);
+            return this.baseViewRepresentationDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescriptionId);
         }
 
     }
 
     @Override
-    public Optional<FormElementDescription> findViewFormElementDescriptionById(String formDescriptionId) {
-        return this.baseViewRepresentationDescriptionSearchService.findViewFormElementDescriptionById(formDescriptionId);
+    public Optional<FormElementDescription> findViewFormElementDescriptionById(IEditingContext editingContext, String formDescriptionId) {
+        return this.baseViewRepresentationDescriptionSearchService.findViewFormElementDescriptionById(editingContext, formDescriptionId);
     }
 
 }

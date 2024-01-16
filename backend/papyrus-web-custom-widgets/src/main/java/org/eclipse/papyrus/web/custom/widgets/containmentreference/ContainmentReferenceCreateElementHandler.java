@@ -35,7 +35,6 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -45,6 +44,7 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -153,7 +153,7 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
 
     @Override
     public Optional<Object> createChild(IEditingContext editingContext, Object parent, String childCreationDescriptionId, String descriptionId) {
-        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(descriptionId).filter(ContainmentReferenceWidgetDescription.class::isInstance).map(ContainmentReferenceWidgetDescription.class::cast);
+        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(editingContext, descriptionId).filter(ContainmentReferenceWidgetDescription.class::isInstance).map(ContainmentReferenceWidgetDescription.class::cast);
         if (optionalWidgetDescription.isPresent()) {
             var reference = optionalWidgetDescription.get();
             var optionalView = this.getViewFromWidgetDescription(reference);
