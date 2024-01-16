@@ -104,7 +104,13 @@ public class PropertiesProfileServices {
      */
     public String getStereotypeLabel(String qualifiedName) {
         String[] parts = qualifiedName.split("::");
-        return MessageFormat.format("{0} (from {1})", parts[1], parts[0]);
+        if (parts.length >= 2) {
+            int indexProfile = parts.length - 2;
+            int indexName = parts.length - 1;
+            return MessageFormat.format("{0} (from {1})", parts[indexName], parts[indexProfile]);
+        } else {
+            return "";
+        }
     }
 
     /**
