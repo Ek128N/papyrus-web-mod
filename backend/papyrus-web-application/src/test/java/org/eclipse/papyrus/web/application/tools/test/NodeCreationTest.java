@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -14,6 +14,10 @@
 package org.eclipse.papyrus.web.application.tools.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.tools.checker.Checker;
@@ -87,13 +91,29 @@ public class NodeCreationTest extends AbstractPapyrusWebTest {
         assertThat(diagramElement).as("Cannot find Node container with label " + parentName).isNotNull();
         Node parentNode = (Node) diagramElement;
         int initialNumberOfChild = parentNode.getChildNodes().size();
+        List<String> initialBorderNodeIds = parentNode.getBorderNodes().stream()
+                .map(node -> node.getId())
+                .toList();
+
+        // int initialNumberOfBorderNodes = parentNode.getBorderNodes().size();
         this.applyNodeCreationTool(parentNode.getId(), nodeCreationTool);
         // Reload the parent element to ensure it contains the created element
         IDiagramElement updatedDiagramElement = this.findGraphicalElementByLabel(parentName);
         assertThat(updatedDiagramElement).as(NODE_CONTAINER_IS_NOT_NODE_ERROR).isInstanceOf(Node.class);
         assertThat(updatedDiagramElement).as("Cannot find Node container with label " + parentName).isNotNull();
-        // We assume the created element is always added at the end of the getChildNodes list
-        Node createdNode = ((Node) updatedDiagramElement).getChildNodes().get(initialNumberOfChild);
+        Node updatedNodeElement = (Node) updatedDiagramElement;
+        Node createdNode = null;
+        if (updatedNodeElement.getChildNodes().size() > initialNumberOfChild) {
+            // We assume the created element is always added at the end of the getChildNodes list
+            createdNode = updatedNodeElement.getChildNodes().get(initialNumberOfChild);
+        } else if (updatedNodeElement.getBorderNodes().size() > initialBorderNodeIds.size()) {
+            createdNode = updatedNodeElement.getBorderNodes().stream()
+                    .filter(node -> !initialBorderNodeIds.contains(node.getId()))
+                    .findFirst()
+                    .orElse(null);
+        } else {
+            fail(MessageFormat.format("Cannot find the created node after applying the tool {0}|{1}", nodeCreationTool.getToolSection(), nodeCreationTool.getToolName()));
+        }
         checker.validateRepresentationElement(createdNode);
     }
 

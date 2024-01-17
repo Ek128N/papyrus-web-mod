@@ -14,7 +14,9 @@
 package org.eclipse.papyrus.web.application.tools.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
@@ -87,10 +89,19 @@ public class SemanticDropTest extends AbstractPapyrusWebTest {
         Node parentGraphicalElement = (Node) this.findGraphicalElementByLabel(parentElementLabel);
         String targetElementId = parentGraphicalElement.getId();
         int parentChildCount = parentGraphicalElement.getChildNodes().size();
+        int parentBorderNodeCount = parentGraphicalElement.getBorderNodes().size();
         List<String> droppedElementUUIDs = List.of(droppedElementId);
         this.applyDropOnDiagramTool(targetElementId, droppedElementUUIDs);
         Node parentNode = (Node) this.findGraphicalElementByLabel(parentElementLabel);
-        checker.validateRepresentationElement(parentNode.getChildNodes().get(parentChildCount));
+        Node createdNode = null;
+        if (parentNode.getChildNodes().size() > parentChildCount) {
+            createdNode = parentNode.getChildNodes().get(parentChildCount);
+        } else if (parentNode.getBorderNodes().size() > parentBorderNodeCount) {
+            createdNode = parentNode.getBorderNodes().get(parentBorderNodeCount);
+        } else {
+            fail(MessageFormat.format("Cannot find the created node after the semantic drag & drop of {0} in {1}", droppedElementId, parentElementLabel));
+        }
+        checker.validateRepresentationElement(createdNode);
     }
 
     /**

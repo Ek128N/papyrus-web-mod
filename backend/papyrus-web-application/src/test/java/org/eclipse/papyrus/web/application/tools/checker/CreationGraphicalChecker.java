@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.application.tools.checker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -167,6 +168,9 @@ public abstract class CreationGraphicalChecker implements Checker {
         for (Node subNode : node.getChildNodes()) {
             result += this.getDiagramSize(subNode);
         }
+        for (Node borderNode : node.getBorderNodes()) {
+            result += this.getDiagramSize(borderNode);
+        }
         return result;
     }
 
@@ -199,7 +203,9 @@ public abstract class CreationGraphicalChecker implements Checker {
     private Optional<List<Node>> getGraphicalElementChildNodes(Supplier<IDiagramElement> elementSupplier) {
         Optional<List<Node>> result = Optional.empty();
         if (elementSupplier != null && elementSupplier.get() instanceof Node graphicalElement) {
-            result = Optional.of(graphicalElement.getChildNodes());
+            List<Node> allChilds = new ArrayList<>(graphicalElement.getChildNodes());
+            allChilds.addAll(graphicalElement.getBorderNodes());
+            result = Optional.of(allChilds);
         }
         return result;
     }

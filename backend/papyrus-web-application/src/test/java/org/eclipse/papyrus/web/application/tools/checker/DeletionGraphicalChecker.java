@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -142,13 +142,16 @@ public class DeletionGraphicalChecker implements Checker {
         for (Node subNode : node.getChildNodes()) {
             result += this.getDiagramSize(subNode);
         }
+        for (Node borderNode : node.getBorderNodes()) {
+            result += this.getDiagramSize(borderNode);
+        }
         return result;
     }
 
     private Optional<Integer> getGraphicalElementChildCount(Supplier<IDiagramElement> elementSupplier) {
         Optional<Integer> result = Optional.empty();
         if (elementSupplier != null && elementSupplier.get() instanceof Node graphicalElement) {
-            result = Optional.of(graphicalElement.getChildNodes().size());
+            result = Optional.of(graphicalElement.getChildNodes().size() + graphicalElement.getBorderNodes().size());
         }
         return result;
     }

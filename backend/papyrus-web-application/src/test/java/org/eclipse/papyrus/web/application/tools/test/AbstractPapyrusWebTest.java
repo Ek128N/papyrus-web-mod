@@ -569,6 +569,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         for (Node childNode : node.getChildNodes()) {
             result.addAll(this.findGraphicalElementByLabel(childNode, label));
         }
+        for (Node borderNode : node.getBorderNodes()) {
+            result.addAll(this.findGraphicalElementByLabel(borderNode, label));
+        }
         return result;
 
     }
@@ -680,6 +683,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         }
         for (Node childNode : node.getChildNodes()) {
             result.addAll(this.findGraphicalElementById(childNode, graphicalId));
+        }
+        for (Node borderNode : node.getBorderNodes()) {
+            result.addAll(this.findGraphicalElementById(borderNode, graphicalId));
         }
         return result;
     }
