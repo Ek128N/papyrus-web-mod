@@ -1,22 +1,26 @@
-/*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-describe('Basic widgets test', () => {
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
+const projectName = 'Cypress Project - details-panel';
+
+describe('Details panel tests', () => {
   /**
    * For each test, we start with a fresh new project containing several concepts useful to exercise the properties view
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -32,39 +36,24 @@ describe('Basic widgets test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
           });
       });
     });
   });
 
   /**
-   * Test validating that Detail panel has 4 different pages
+   * Test validating that Detail panel has 4 pages
    */
-  it('Check Details panel contents 4 children', () => {
-    cy.getByTestId('Package').click();
-    cy.activateDetailsTab('Advanced')
+  it('Check the Details panel pages when Package is selected', () => {
+    cy.getByTestId('Package').should('be.visible').click();
+    cy.getByTestId('view-Details')
       .should('be.visible')
       .get('div[role="tablist"] > button')
       .should(($buttons) => {
-        expect($buttons).to.have.length(4);
+        const texts = $buttons.toArray().map((el) => el.innerText);
+        expect(texts).to.have.lengthOf(4);
+        expect(texts).to.deep.eq(['UML', 'Comments', 'Profile', 'Advanced']);
       });
-  });
-
-  /**
-   * Check order of tabs in details panel
-   */
-  it('Check Details panel tabs order', () => {
-    cy.getByTestId('Abstraction').click();
-    cy.inDetailsCurrentTab()
-      .should('be.visible')
-      .find('[role="tablist"]')
-      .children()
-      .then(($els) => {
-        // jQuery => Array => get "innerText" from each
-        return Cypress._.map(Cypress.$.makeArray($els), 'innerText');
-      })
-      .should('deep.equal', ['UML', 'Comments', 'Profile', 'Advanced']);
   });
 });

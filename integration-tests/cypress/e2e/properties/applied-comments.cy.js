@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+const projectName = 'Cypress Project - applied-comments';
+
 describe('Applied Comments tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -32,8 +35,7 @@ describe('Applied Comments tests', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
           });
       });
     });

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+const projectName = 'Cypress Project - member-end-owner';
+
 describe('Member end owner test', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,8 +36,7 @@ describe('Member end owner test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
           });
       });
     });
@@ -47,8 +48,7 @@ describe('Member end owner test', () => {
     cy.checkNoChildren('Activity');
     // Change the owner of 'from' association's member to 'classifier'
     cy.getByTestId('Association').click();
-    cy.activateDetailsTab('UML');
-    cy.getByTestId('primitive-radio-Classifier')
+    cy.activateDetailsTabAndWaitForElement('UML', 'primitive-radio-Classifier')
       .first() // 'from' is the first member end owner
       .as('classifier')
       .click();
@@ -58,9 +58,8 @@ describe('Member end owner test', () => {
     // Verify that Activity has one child ('from')
     cy.checkChildren('Activity', ['from']);
     // Change the owner of 'to' association's member to 'association'
-    cy.activateDetailsTab('UML');
     cy.getByTestId('Association').click();
-    cy.getByTestId('primitive-radio-Association')
+    cy.activateDetailsTabAndWaitForElement('UML', 'primitive-radio-Association')
       .first() // 'from' is the first member end owner
       .as('association')
       .click();

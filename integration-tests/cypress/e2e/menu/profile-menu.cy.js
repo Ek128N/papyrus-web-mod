@@ -1,15 +1,17 @@
-/*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
 describe('/projects/:projectId/edit - Diagram Context Menu', () => {
   const instanceProjectName = 'Cypress Test - ProfileMenu';
 
@@ -24,8 +26,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
         cy.getByTestId('stereotype').click();
         cy.get('li').contains('UML.uml').click();
         cy.getByTestId('create-document').click();
-        cy.getByTestId('Base UML.uml-more').should('be.visible').click();
-        cy.getByTestId('expand-all').should('be.visible').click();
+        cy.expandAll('Base UML.uml');
       });
     });
   });
@@ -41,16 +42,13 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     // Apply profile Standard
     cy.applyProfileByMenu('Model', 'Java');
 
-    cy.getByTestId('Model-more').click();
-    cy.getByTestId('expand-all').should('be.visible').click();
+    cy.expandAll('Model');
     cy.getByTestId('ProfileApplication').should('be.visible').click();
 
     // wait until details panel is populated (previous click finished)
     cy.getByTestId('view-Details').findByTestId('Is strict').should('be.visible');
     // before switching to Advanced tab
-    cy.activateDetailsTab('Advanced').should('be.visible').as('details');
-    cy.get('@details').contains('Core Properties').should('be.visible');
-    cy.get('@details').findByTestId('reference-value-PapyrusJava').should('be.visible').contains('PapyrusJava');
+    cy.activateDetailsTabAndWaitForElement('Advanced', 'reference-value-PapyrusJava').contains('PapyrusJava');
     // Apply stereotype
     cy.getByTestId('Model-more').should('be.visible').click();
     cy.getByTestId('apply-stereotype').should('be.visible').click();
@@ -66,8 +64,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
       .click();
     // Verify stereotype applied
     cy.getByTestId('Model').click();
-    cy.activateDetailsTab('Profile').should('be.visible').as('details');
-    cy.getByTestId('primitive-list-table-Applied stereotypes')
+    cy.activateDetailsTabAndWaitForElement('Profile', 'primitive-list-table-Applied stereotypes')
       .findByTestId('primitive-list-item-content-ExternLibrary (from PapyrusJava)')
       .should('be.visible');
   });

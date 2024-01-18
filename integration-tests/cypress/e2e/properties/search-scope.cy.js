@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+const projectName = 'Cypress Project - search-scope';
+
 describe('Containment reference widget tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,8 +36,7 @@ describe('Containment reference widget tests', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('search-scope.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('search-scope.uml');
           });
       });
     });
@@ -43,13 +44,9 @@ describe('Containment reference widget tests', () => {
 
   it('search scope service test', () => {
     cy.getByTestId('Property1').should('be.visible').click();
-    cy.activateDetailsTab('UML');
     // open dropdown of Type
-    cy.getByTestId('Type').should('be.visible').click();
-    cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
-    // check that primitive types are present (Integer) and other type such as Class2
-    cy.get('@dropdown').findByTestId('option-Integer').should('be.visible');
-    cy.get('@dropdown').findByTestId('option-Class2').should('be.visible');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Type');
+    cy.checkDropdownContent('Type', ['Integer', 'Class2'], false);
     // check within the select dialog (...)
     cy.getByTestId('Type-more').click();
     cy.getByTestId('browse-modal').should('be.visible').as('select-dialog');
@@ -76,10 +73,11 @@ describe('Containment reference widget tests', () => {
     // remove the package import node
     cy.getByTestId('PackageImport-more').should('be.visible').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('PackageImport').should('not.exist');
     // check that no primitive type could be found now
     cy.getByTestId('Property1').should('be.visible').click();
     // open dropdown of Type
-    cy.getByTestId('Type').should('be.visible').click();
+    cy.activateDetailsTabAndWaitForElement('UML', 'Type').click();
     cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
     // only local model types but not primitive type
     cy.get('@dropdown').findByTestId('option-Class1').should('be.visible');
@@ -90,11 +88,6 @@ describe('Containment reference widget tests', () => {
     cy.getByTestId('browse-modal').should('be.visible').as('select-dialog');
     cy.get('@select-dialog').findByTestId('Model-toggle').click();
     cy.get('@select-dialog').findByTestId('PrimitiveTypes').should('not.exist');
-    cy.get('@select-dialog')
-      .findByTestId('tree-root-elements')
-      .children()
-      .should((roots) => {
-        expect(roots).to.have.lengthOf(1);
-      });
+    cy.get('@select-dialog').findByTestId('tree-root-elements').children().should('have.length', 1);
   });
 });

@@ -1,18 +1,20 @@
-/*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
 describe('/projects/:projectId/edit - Diagram Context Menu', () => {
   beforeEach(() => {
-    cy.deleteAllProjects();
+    cy.deleteProjectByName('C++ SM');
     const templateId = 'UMLCppSMProject';
     cy.createProjectFromTemplate(templateId).then((res) => {
       const projectId = res.body.data.createProjectFromTemplate.project.id;
@@ -25,8 +27,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
    * Test validating the deletion of a representation
    */
   it('can delete a representation', () => {
-    cy.getByTestId('SimpleSM.uml-more').should('be.visible').click();
-    cy.getByTestId('expand-all').should('be.visible').click();
+    cy.expandAll('SimpleSM.uml');
     cy.getByTestId('CppSMTemplate-more').should('be.visible').click();
 
     cy.getByTestId('new-representation').click();

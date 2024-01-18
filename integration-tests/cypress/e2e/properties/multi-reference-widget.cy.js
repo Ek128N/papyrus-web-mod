@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+const projectName = 'Cypress Project - multi-reference-widget';
+
 describe('Multi-valued reference widget tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,32 +36,22 @@ describe('Multi-valued reference widget tests', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
             cy.getByTestId('FunctionBehavior').should('be.visible').click();
-            cy.activateDetailsTab('UML');
           });
       });
     });
   });
 
   it('add reference values with dropdown and remove one value', () => {
-    // open dropdown
-    cy.getByTestId('Use case').click();
-    cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
-    // check content
-    cy.get('@dropdown').find('li').should('have.length', 2);
-    cy.get('@dropdown').findByTestId('option-UseCase1').should('be.visible');
-    cy.get('@dropdown').findByTestId('option-UseCase2').should('be.visible');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Use case');
+    cy.checkDropdownContent('Use case', ['UseCase1', 'UseCase2']);
     // add UseCase1
-    cy.get('@dropdown').findByTestId('option-UseCase1').click();
-    // reopen dropdown
-    cy.getByTestId('Use case').click();
-    cy.get('.MuiAutocomplete-popper').should('be.visible').find('ul').as('dropdown');
+    cy.selectDropdownValue('Use case', 'UseCase1');
     // check that UseCase1 is not longer in the dropdown
-    cy.get('@dropdown').find('li').should('have.length', 1);
+    cy.checkDropdownContent('Use case', ['UseCase2']);
     // add UseCase2
-    cy.get('@dropdown').findByTestId('option-UseCase2').should('be.visible').click();
+    cy.selectDropdownValue('Use case', 'UseCase2');
     // check UseCase1 and UseCase2 are in the reference value list
     cy.getByTestId('reference-value-UseCase1').should('be.visible');
     cy.getByTestId('reference-value-UseCase2').should('be.visible');
@@ -73,7 +65,7 @@ describe('Multi-valued reference widget tests', () => {
 
   it('manage reference values with dialog', () => {
     // open ... dialog
-    cy.getByTestId('Use case-more').click();
+    cy.activateDetailsTabAndWaitForElement('UML', 'Use case-more').click();
     cy.get('[role="dialog"]').as('dialog');
     // two roots Primitive types and model4test, expand model4test
     cy.get('@dialog').findByTestId('tree-root-elements').find('li').should('have.length', 2);
@@ -111,7 +103,7 @@ describe('Multi-valued reference widget tests', () => {
   });
 
   it('create new value element and clear reference content', () => {
-    cy.getByTestId('Use case-add').should('be.visible').click();
+    cy.activateDetailsTabAndWaitForElement('UML', 'Use case-add').click();
     cy.get('[role="dialog"]').as('dialog');
     // check only model4test model as root of the tree
     cy.get('@dialog').findByTestId('tree-root-elements').find('li').should('have.length', 1);

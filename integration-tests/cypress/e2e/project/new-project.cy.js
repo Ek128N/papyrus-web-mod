@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+const projectName = 'Cypress Project - new-project';
+
 describe('/new/project', () => {
   beforeEach(() => {
+    cy.deleteProjectByName(projectName);
     cy.visit('/new/project');
   });
 
@@ -34,18 +37,18 @@ describe('/new/project', () => {
     cy.getByTestId('name').type('Cy');
     cy.getByTestId('create-project').should('be.disabled');
 
-    cy.getByTestId('name').type('Cypress Project');
+    cy.getByTestId('name').type(projectName);
     cy.getByTestId('create-project').should('be.enabled');
   });
 
   it('navigates to the edit project view on successful project creation with enter', () => {
-    cy.getByTestId('name').type('Cypress Project{enter}');
+    cy.getByTestId('name').type(`${projectName}{enter}`);
 
     cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects/[a-z0-9-]*/edit'));
   });
 
   it('navigates to the edit project view on successful project creation by clicking on the create button', () => {
-    cy.getByTestId('name').type('Cypress Project');
+    cy.getByTestId('name').type(projectName);
     cy.getByTestId('create-project').click();
 
     cy.url().should('match', new RegExp(Cypress.config().baseUrl + '/projects/[a-z0-9-]*/edit'));

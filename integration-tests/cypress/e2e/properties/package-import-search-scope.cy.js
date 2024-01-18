@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+const projectName = 'Cypress Project - package-import-search-scope';
+
 describe('PackageImport.importedPackage search scope test', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,23 +36,11 @@ describe('PackageImport.importedPackage search scope test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
           });
       });
     });
   });
-
-  const checkDropdownContent = (content) => {
-    cy.get('.MuiAutocomplete-popper').find('ul').as('dropdown');
-    cy.get('@dropdown').find('li').should('have.length', content.length);
-    cy.get('@dropdown')
-      .find('li')
-      .should(($options) => {
-        const optionTexts = $options.toArray().map((el) => el.innerText);
-        expect(optionTexts).to.deep.eq(content);
-      });
-  };
 
   it('PackageImport with standard packages + new non root package', () => {
     // check initial content
@@ -72,7 +62,14 @@ describe('PackageImport.importedPackage search scope test', () => {
     cy.getByTestId('Imported package').should('be.visible').find('.MuiChip-root').should('have.length', 1);
     cy.getByTestId('reference-value-PrimitiveTypes').should('be.visible');
     // check dropdown content
-    cy.getByTestId('Imported package').find('.MuiAutocomplete-endAdornment').find('button').click();
-    checkDropdownContent(['model4test', 'Package', 'Ecore', 'EcorePrimitiveTypes', 'StandardProfile', 'UML', 'Ecore']);
+    cy.checkDropdownContent('Imported package', [
+      'model4test',
+      'Package',
+      'Ecore',
+      'EcorePrimitiveTypes',
+      'StandardProfile',
+      'UML',
+      'Ecore',
+    ]);
   });
 });

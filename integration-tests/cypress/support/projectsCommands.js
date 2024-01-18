@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -39,12 +39,9 @@ Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect
         )
         .then(() => {
           cy.getByTestId('upload-document-submit').click();
-          cy.getByTestId('model4test.uml-more').should('be.visible').click();
-          cy.getByTestId('expand-all').should('be.visible').click();
+          cy.expandAll('model4test.uml');
 
           if (elementToSelect) {
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
             cy.getByTestId(elementToSelect).should('exist').click();
             if (tabToSelect) {
               cy.activateDetailsTab(tabToSelect);
@@ -58,7 +55,7 @@ Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect
 /**
  * Create a new project and upload DynamicProfileTypeTests.profile.uml. Then it may publish the given profile.
  * Note that the new project id is added to the context in the field "profileProjectId".
- * 
+ *
  * @param context a context object use to inject the project id
  * @param projectName the name of the project
  * @param elementToSelect an optional element to select
@@ -90,12 +87,11 @@ Cypress.Commands.add('createTestProfileProject', (context, projectName, profileN
             .clear()
             .type(profileName + '.profile.uml');
 
-          cy.getByTestId('DynamicProfileTypeTests.profile.uml-more').should('exist').click();
-          cy.getByTestId('expand-all').should('be.visible').click();
+          cy.expandAll('DynamicProfileTypeTests.profile.uml');
 
           cy.getByTestId('DynamicProfileTypeTests').should('be.visible').first().click();
           cy.getByTestId('input-Name').should('be.visible').clear().type(profileName);
-          
+
           // Lose focus
           cy.getByTestId('page-tab-UML').should('be.visible').click();
 

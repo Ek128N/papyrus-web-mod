@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -33,10 +33,9 @@ describe('Stereotype application page tests', () => {
 
   beforeEach(() => {
     cy.visit(`/projects/${context.projectId}/edit`);
-    cy.getByTestId('model4test.uml-more').should('be.visible').click();
-    cy.getByTestId('expand-all').should('be.visible').click();
+    cy.expandAll('model4test.uml');
     cy.getByTestId('Class').click();
-    cy.activateDetailsTab('Stereotype1');
+    cy.activateDetailsTabAndWaitForElement('Stereotype1', 'testInt');
   });
 
   it('Check mono string', () => {
@@ -110,7 +109,7 @@ describe('Stereotype application page tests', () => {
   it('Check mono enumeration', () => {
     // mono enumeration => testRefToEnumeration
     cy.getByTestId('testRefToEnumeration').contains('None');
-    selectEnumerationValue('testRefToEnumeration', 'EnumerationLiteral2');
+    chooseSelectValue('testRefToEnumeration', 'EnumerationLiteral2');
 
     // Check persisted value
     refreshView();
@@ -183,11 +182,11 @@ describe('Stereotype application page tests', () => {
   it('Check mono reference to metaclass', () => {
     // mono ref to Metaclass => testMonoRefToMetaclass
     checkReferenceValues('testMonoRefToMetaclass', []);
-    checkReferenceDropdownContent('testMonoRefToMetaclass', ['Activity', 'Class', 'FunctionBehavior']);
+    cy.checkDropdownContent('testMonoRefToMetaclass', ['Activity', 'Class', 'FunctionBehavior']);
     // set reference value using dropdown
-    selectReferenceDropdownValue('testMonoRefToMetaclass', 'FunctionBehavior');
+    cy.selectDropdownValue('testMonoRefToMetaclass', 'FunctionBehavior');
     checkReferenceValues('testMonoRefToMetaclass', ['FunctionBehavior']);
-    checkReferenceDropdownContent('testMonoRefToMetaclass', ['Activity', 'Class']);
+    cy.checkDropdownContent('testMonoRefToMetaclass', ['Activity', 'Class']);
     // remove FunctionBehavior
     cy.getByTestId('reference-value-FunctionBehavior').find('.MuiChip-deleteIcon').click();
     checkReferenceValues('testMonoRefToMetaclass', []);
@@ -219,8 +218,8 @@ describe('Stereotype application page tests', () => {
   it('Check multi reference to metaclass', () => {
     // multi ref to Metaclass => testMultiRefToMetaclass
     checkReferenceValues('testMultiRefToMetaclass', []);
-    checkReferenceDropdownContent('testMultiRefToMetaclass', ['UseCase1', 'UseCase2']);
-    selectReferenceDropdownValue('testMultiRefToMetaclass', 'UseCase1');
+    cy.checkDropdownContent('testMultiRefToMetaclass', ['UseCase1', 'UseCase2']);
+    cy.selectDropdownValue('testMultiRefToMetaclass', 'UseCase1');
     checkReferenceValues('testMultiRefToMetaclass', ['UseCase1']);
     // add another value using the transfer modal
     cy.getByTestId('testMultiRefToMetaclass-more').click();
@@ -250,8 +249,8 @@ describe('Stereotype application page tests', () => {
   it('Check mono reference to stereotype application', () => {
     // multi ref to stereotype application => testMonoReftoStereotype2
     checkReferenceValues('testMonoReftoStereotype2', []);
-    checkReferenceDropdownContent('testMonoReftoStereotype2', ['Activity']);
-    selectReferenceDropdownValue('testMonoReftoStereotype2', 'Activity');
+    cy.checkDropdownContent('testMonoReftoStereotype2', ['Activity']);
+    cy.selectDropdownValue('testMonoReftoStereotype2', 'Activity');
     checkReferenceValues('testMonoReftoStereotype2', ['Activity']);
     // remove chip
     cy.getByTestId('reference-value-Activity').find('svg').click();
@@ -274,8 +273,8 @@ describe('Stereotype application page tests', () => {
   it('Check multi reference to stereotype application', () => {
     // multi ref to stereotype application => testMultiReftoStereotype2
     checkReferenceValues('testMultiReftoStereotype2', []);
-    checkReferenceDropdownContent('testMultiReftoStereotype2', ['Activity']);
-    selectReferenceDropdownValue('testMultiReftoStereotype2', 'Activity');
+    cy.checkDropdownContent('testMultiReftoStereotype2', ['Activity']);
+    cy.selectDropdownValue('testMultiReftoStereotype2', 'Activity');
     checkReferenceValues('testMultiReftoStereotype2', ['Activity']);
     // remove chip
     cy.getByTestId('testMultiReftoStereotype2').findByTestId('reference-value-Activity').find('svg').click();
@@ -304,7 +303,7 @@ describe('Stereotype application page tests', () => {
     // Apply stereotype1 on Class
     applyStereotypeOn(`${profileName}::Stereotype1`, 'Class');
     // check Stereotype1 page is present
-    cy.activateDetailsTab('Stereotype1');
+    cy.activateDetailsTabAndWaitForElement('Stereotype1', 'testInt');
   };
 
   const refreshView = () => {
@@ -367,36 +366,6 @@ describe('Stereotype application page tests', () => {
     });
   };
 
-  const selectEnumerationValue = (selectName, value) => {
-    cy.getByTestId(selectName).click();
-    cy.get('#menu-').should('be.visible').find(`ul > li[data-value="${value}"]`).click();
-  };
-
-  const checkReferenceDropdownContent = (refName, content) => {
-    cy.getByTestId(refName).find('.MuiAutocomplete-endAdornment').find('button').should('exist').click();
-    cy.get('.MuiAutocomplete-popper')
-      .find('ul')
-      .should('exist')
-      .children()
-      .should(($candidates) => {
-        const optionTexts = $candidates.toArray().map((el) => el.innerText);
-        expect(optionTexts).to.deep.eq(content);
-      });
-    // close the dropdown
-    cy.getByTestId(refName).find('.MuiAutocomplete-endAdornment').find('button').should('be.visible').click();
-  };
-
-  const selectReferenceDropdownValue = (refName, value) => {
-    cy.getByTestId(refName).find('.MuiAutocomplete-endAdornment').find('button').should('exist').click();
-    cy.get('.MuiAutocomplete-popper')
-      .find('ul')
-      .should('exist')
-      .children()
-      .contains(value)
-      .should('be.visible')
-      .click();
-  };
-
   const checkReferenceValues = (refName, values) => {
     cy.getByTestId(refName)
       .find('.MuiChip-root')
@@ -425,21 +394,7 @@ describe('Stereotype application page tests', () => {
   };
 
   const createReferenceNewObject = (refName, containerName, childDescription) => {
-    cy.getByTestId(`${refName}-add`).click();
-    cy.getByTestId('create-modal').should('be.visible').as('dialog');
-    cy.get('@dialog')
-      .findByTestId('tree-root-elements')
-      .findByTestId('model4test.uml-toggle')
-      .should('be.visible')
-      .click();
-    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('model4test-toggle').click();
-    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId(containerName).should('be.visible').click();
-    cy.get('@dialog')
-      .findByTestId('tree-root-elements')
-      .findByTestId(containerName)
-      .parent()
-      .parent()
-      .should('have.attr', 'data-testid', 'selected');
+    cy.openReferenceChildCreationDialog(refName, containerName);
     chooseSelectValue('childCreationDescription', childDescription);
     cy.getByTestId('create-object').click();
     cy.getByTestId('create-modal').should('not.exist');

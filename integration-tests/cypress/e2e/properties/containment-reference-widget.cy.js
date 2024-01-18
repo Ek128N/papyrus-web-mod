@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+const projectName = 'Cypress Project - containment-reference-widget';
+
 describe('Containment reference widget tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,8 +36,7 @@ describe('Containment reference widget tests', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
           });
       });
     });
@@ -43,11 +44,11 @@ describe('Containment reference widget tests', () => {
 
   it('handle many values without type choice', () => {
     cy.getByTestId('Class').should('be.visible').click();
-    cy.activateDetailsTab('UML');
     // check that there are two operations under Class ()
     cy.checkChildren('Class', ['Operation1', 'Operation2'], false);
+    cy.activateDetailsTabAndWaitForElement('UML', 'containment-reference-Owned operation').as('reference');
     // check that reference values are there
-    cy.getByTestId('containment-reference-Owned operation').as('reference');
+    cy.getByTestId('containment-reference-Owned operation');
     cy.get('@reference')
       .children()
       .then((chips) => {
@@ -105,8 +106,6 @@ describe('Containment reference widget tests', () => {
     //check Operation3 no longer exists
     cy.get('@reference').findByTestId('Operation3').should('not.exist');
   });
-
-  // it('handle many values with type choice', () => {});
 
   it('handle only one value with type choice', () => {
     // create a Central Buffer node under Activity node

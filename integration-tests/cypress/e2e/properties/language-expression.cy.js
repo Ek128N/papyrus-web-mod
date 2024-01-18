@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -11,13 +11,16 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-describe('Basic widgets test', () => {
+
+const projectName = 'Cypress Project - language-expression';
+
+describe('Language expression tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -33,10 +36,7 @@ describe('Basic widgets test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
-            cy.getByTestId('FunctionBehavior').should('be.visible').click();
-            cy.activateDetailsTab('UML');
+            cy.expandAll('model4test.uml');
           });
       });
     });
@@ -47,8 +47,9 @@ describe('Basic widgets test', () => {
   };
 
   it('Language expression custom widget tests', () => {
+    cy.getByTestId('FunctionBehavior').should('be.visible').click();
+    cy.activateDetailsTabAndWaitForElement('UML', 'le-open-add-language-dialog').click();
     // add predefined: JAVA
-    cy.getByTestId('le-open-add-language-dialog').should('be.visible').click();
     cy.getByTestId('le-add-language-dialog-know-languages')
       .should('be.visible')
       .should('have.css', 'border', '2px solid rgba(0, 0, 0, 0.125)');

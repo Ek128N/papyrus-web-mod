@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+const projectName = 'Cypress Project - project-context-menu';
+
 describe('/projects/:projectId/edit - Project Context Menu', () => {
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.visit(`/projects/${projectId}/edit`);
     });

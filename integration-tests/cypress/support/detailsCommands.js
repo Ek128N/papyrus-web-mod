@@ -23,6 +23,26 @@ Cypress.Commands.add('activateDetailsTab', (tabName) => {
 });
 
 /**
+ * Activate a tab of the Details view according to its name and wait until the given element is visible
+ *
+ * @param {string} tabName the label of the tab
+ * @param {string} element the data-testid of an element to guarantee the tab is correctly open
+ * @returns the searched element
+ */
+Cypress.Commands.add('activateDetailsTabAndWaitForElement', (tabName, element) => {
+  cy.getByTestId(`page-tab-${tabName}`)
+    .should('exist')
+    .then(($tab) => {
+      if (!$tab.hasClass('Mui-selected')) {
+        cy.wrap($tab).click();
+      }
+      return cy.wrap($tab);
+    })
+    .should('have.class', 'Mui-selected');
+  return cy.getByTestId('view-Details').findByTestId(element).should('be.visible');
+});
+
+/**
  * Return the root element of Details panel
  */
 Cypress.Commands.add('inDetailsCurrentTab', () => {

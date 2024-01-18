@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,20 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-const projectName = `Cypress Project`;
-
-/**
- * Checks that the project with the supplied name is visible in the project list by the current user.
- */
-const checkProjectIsVisible = (projectName) => {
-  cy.visit('/projects');
-  cy.getByTestId('create').should('exist'); // Wait for the UI to be rendered
-  cy.getByTestId(projectName).should('exist');
-};
+const projectName = `Cypress Project - projects`;
 
 describe('/projects', () => {
   beforeEach(() => {
-    cy.deleteAllProjects();
+    cy.deleteProjectByName(projectName);
     cy.visit('/projects');
   });
 
@@ -38,6 +29,6 @@ describe('/projects', () => {
 
   it('contains the list of projects', () => {
     cy.createProject(projectName).then(() => cy.reload());
-    cy.getByTestId('projects').find('tr').should('have.length', 1);
+    cy.getByTestId('projects').find('tr').contains(projectName).should('be.visible');
   });
 });

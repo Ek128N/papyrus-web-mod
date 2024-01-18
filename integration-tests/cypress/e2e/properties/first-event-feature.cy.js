@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
-describe('Basic widgets test', () => {
+const projectName = 'Cypress Project - first-event-feature';
+
+describe('First event tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,17 +36,15 @@ describe('Basic widgets test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
-            cy.getByTestId('DurationObservation').should('be.visible').click();
-            cy.activateDetailsTab('UML').should('be.visible');
+            cy.expandAll('model4test.uml');
           });
       });
     });
   });
 
   it('Test the primitive list widget handling first event feature', () => {
-    cy.getByTestId('primitive-list-table-First event').get('tr>td>p').as('prim-items');
+    cy.getByTestId('DurationObservation').should('be.visible').click();
+    cy.activateDetailsTabAndWaitForElement('UML', 'primitive-list-table-First event').find('tr>td>p').as('prim-items');
     cy.getByTestId('primitive-list-autocomplete-textfield-First event').find('input').as('prim-input');
 
     // add 'true' value using add button

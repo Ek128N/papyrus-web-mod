@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the erms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,9 @@ import 'cypress-file-upload';
 import './serverCommands';
 import './testIdCommands';
 import './detailsCommands';
-import './childrenCommands';
 import './dragCommands';
 import './profilCommands';
 import './projectsCommands';
 import './explorerCommands';
+import './autocompleteCommands';
+import './referenceCommands';

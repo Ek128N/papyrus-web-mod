@@ -1,22 +1,26 @@
-/*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
-describe('Basic widgets test', () => {
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
+
+const projectName = 'Cypress Project - basicWidgets';
+
+describe('Basic widgets tests', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -32,8 +36,7 @@ describe('Basic widgets test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
+            cy.expandAll('model4test.uml');
           });
       });
     });
@@ -44,16 +47,15 @@ describe('Basic widgets test', () => {
    */
   it('Test Text description', () => {
     cy.getByTestId('Package').click();
-    cy.activateDetailsTab('UML').findByTestId('Name').should('be.visible').find('input').as('nameField');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Name').find('input').as('nameField');
     // Verify the name of the Package
     cy.get('@nameField').should('have.value', 'Package');
     // change the Package name
-    cy.get('@nameField').clear().type('myPackage{enter}');
+    cy.get('@nameField').clear().type('myPackage{enter}', { delay: 50 });
     // click somewhere else (advanced tab)
-    cy.activateDetailsTab('Advanced').contains('Core Properties').should('be.visible');
+    cy.activateDetailsTabAndWaitForElement('Advanced', 'group-Core Properties');
     // return to check new value has been properly persisted
-    cy.activateDetailsTab('UML').findByTestId('Name').should('be.visible');
-    cy.getByTestId('Name').find('input').should('have.value', 'myPackage');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Name').find('input').should('have.value', 'myPackage');
   });
 
   /**
@@ -61,8 +63,7 @@ describe('Basic widgets test', () => {
    */
   it('Test Textarea description', () => {
     cy.getByTestId('Comment').click();
-    cy.activateDetailsTab('UML');
-    cy.getByTestId('Body').should('be.visible').find('textarea').eq(0).as('textarea');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Body').find('textarea').eq(0).as('textarea');
     // Verify comment content
     cy.get('@textarea').should('have.value', 'Comment');
     // update the comment
@@ -76,17 +77,15 @@ describe('Basic widgets test', () => {
    */
   it('Test Checkbox description', () => {
     cy.getByTestId('Activity').click();
-    cy.activateDetailsTab('UML');
-    cy.getByTestId('Is abstract').should('be.visible').find('input').as('checkbox');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Is abstract').find('input').as('checkbox');
     // Verify default value is not checked
     cy.get('@checkbox').should('be.not.checked');
     // Check the checkbox
     cy.get('@checkbox').check().should('be.checked');
     // click somewhere else (advanced tab)
-    cy.activateDetailsTab('Advanced').contains('Core Properties').should('be.visible');
+    cy.activateDetailsTabAndWaitForElement('Advanced', 'group-Core Properties');
     // return to check new value has been properly persisted
-    cy.activateDetailsTab('UML');
-    cy.getByTestId('Is abstract').should('be.visible').find('input').should('be.checked');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Is abstract').find('input').should('be.checked');
   });
 
   /**
@@ -94,8 +93,7 @@ describe('Basic widgets test', () => {
    */
   it('Test Select description', () => {
     cy.getByTestId('Class').click();
-    cy.activateDetailsTab('UML');
-    cy.getByTestId('Visibility').as('select');
+    cy.activateDetailsTabAndWaitForElement('UML', 'Visibility').as('select');
     // Verify that default visibility is public
     cy.get('@select').should(($select) => {
       expect($select).to.contain('public');
@@ -146,7 +144,7 @@ describe('Basic widgets test', () => {
 
     // Select LiteralBoolean in Explorer
     cy.getByTestId('LiteralBoolean').eq(0).click();
-    cy.activateDetailsTab('UML');
+    cy.activateDetailsTabAndWaitForElement('UML', 'flexbox-Value');
     retrieveValuesElement();
     // Verify that True is not checked and False is checked
     cy.get('@true').should(($c) => {
@@ -162,12 +160,11 @@ describe('Basic widgets test', () => {
     // check TRUE
     cy.get('@true').check().should('be.checked');
     // Verify that in Advanced tab, the value has been changed
-    cy.activateDetailsTab('Advanced');
-    cy.getByTestId('Value').should('be.visible').find('input').should('be.checked');
+    cy.activateDetailsTabAndWaitForElement('Advanced', 'Value').should('be.visible').find('input').should('be.checked');
     // check value in Advanced tab, the value is now true
     cy.getByTestId('Value').find('input').check().should('be.checked');
     // back to UML tab
-    cy.activateDetailsTab('UML');
+    cy.activateDetailsTabAndWaitForElement('UML', 'flexbox-Value');
     retrieveValuesElement();
     // Verify that True is checked and False is not checked
     cy.get('@true').should('be.checked');
@@ -179,9 +176,8 @@ describe('Basic widgets test', () => {
    */
   it('Test Member end group', () => {
     cy.getByTestId('Association').click();
-    cy.activateDetailsTab('UML')
+    cy.activateDetailsTabAndWaitForElement('UML', 'group-')
       // Verify that there are 3 groups in UML page (1 for properties and 2 memberEnds)
-      .findByTestId('group-')
       .should('have.length', 3)
       // Retrieve the first MemberEnd
       .eq(1)
@@ -204,7 +200,7 @@ describe('Basic widgets test', () => {
   it('Test Multiplicity widget', () => {
     cy.getByTestId('Association').click();
     // Retrieve the first MemberEnd
-    cy.activateDetailsTab('UML').findByTestId('flexbox-Member End').eq(0).as('memberEnd');
+    cy.activateDetailsTabAndWaitForElement('UML', 'flexbox-Member End').eq(0).as('memberEnd');
     cy.get('@memberEnd').findByTestId('Multiplicity').should('be.visible').find('input').as('multiplicityInput');
     // Change multiplicity value with error
     cy.get('@multiplicityInput').should('have.value', '1').clear().type('WRONG MULTIPLICITY{enter}');
@@ -216,8 +212,7 @@ describe('Basic widgets test', () => {
     cy.get('@multiplicityInput').clear().type('0..1{enter}');
     // Verify the entered multiplicity
     cy.getByTestId('from').should('be.visible').click();
-    cy.activateDetailsTab('UML')
-      .findByTestId('Multiplicity')
+    cy.activateDetailsTabAndWaitForElement('UML', 'Multiplicity')
       .eq(0)
       .should('be.visible')
       .find('input[name="Multiplicity"]')

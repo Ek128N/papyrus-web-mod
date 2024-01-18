@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 CEA LIST
+ * Copyright (c) 2023, 2024 CEA LIST
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+const projectName = 'Cypress Project - stereotypes';
+
 describe('/projects', () => {
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`);

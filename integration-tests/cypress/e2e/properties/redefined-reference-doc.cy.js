@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,13 +12,15 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 
+const projectName = 'Cypress Project - redefined-reference-doc';
+
 describe('Redefined reference types test', () => {
   /**
    * For each test, we start with a fresh new project containing all concepts gathered in one single model
    */
   beforeEach(() => {
-    cy.deleteAllProjects();
-    cy.createProject('Cypress Project').then((res) => {
+    cy.deleteProjectByName(projectName);
+    cy.createProject(projectName).then((res) => {
       const projectId = res.body.data.createProject.project.id;
       cy.wrap(projectId).as('projectId');
       cy.visit(`/projects/${projectId}/edit`).then((res) => {
@@ -34,18 +36,15 @@ describe('Redefined reference types test', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
-            cy.getByTestId('model4test.uml-more').should('be.visible').click();
-            cy.getByTestId('expand-all').should('be.visible').click();
-            cy.getByTestId('Class').should('be.visible').click();
-            cy.activateDetailsTab('UML');
+            cy.expandAll('model4test.uml');
           });
       });
     });
   });
 
   it('check Class.ownedAttribute has the correct tooltip info', () => {
-    cy.getByTestId('containment-reference-Owned attribute')
-      .should('be.visible')
+    cy.getByTestId('Class').should('be.visible').click();
+    cy.activateDetailsTabAndWaitForElement('UML', 'containment-reference-Owned attribute')
       .children()
       .first()
       .children()
