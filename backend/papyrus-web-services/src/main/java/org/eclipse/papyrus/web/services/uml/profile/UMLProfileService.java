@@ -221,7 +221,7 @@ public class UMLProfileService implements IUMLProfileService {
 
                     try (var inputStream = new ByteArrayInputStream(profileResourceEntity.getContent().getBytes())) {
                         resource.load(inputStream, null);
-                        return this.getLastProfileVersion(resource, profileOpt.get());
+                        return this.getLastProfileVersion(resource, profileId);
                     } catch (IOException exception) {
                         LOGGER.warn(exception.getMessage(), exception);
                     }
@@ -235,11 +235,15 @@ public class UMLProfileService implements IUMLProfileService {
         return versionOpt;
     }
 
-    private Optional<UMLProfileVersion> getLastProfileVersion(Resource resourceOfPublishedProfile, Profile profileOfUmlResource) {
+    private Optional<UMLProfileVersion> getLastProfileVersion(Resource resourceOfPublishedProfile, String profileId) {
         return EMFUtils.allContainedObjectOfType(resourceOfPublishedProfile, Profile.class)//
-                .filter(profile -> profile.getName() != null && profile.getName().equals(profileOfUmlResource.getName()))//
+                .filter(profile -> this.matchId(resourceOfPublishedProfile, profileId, profile))//
                 .findFirst() //
                 .flatMap(this::getVersionFromProfile);
+    }
+
+    private boolean matchId(Resource resourceOfPublishedProfile, String profileId, Profile profile) {
+        return profileId.equals(resourceOfPublishedProfile.getURIFragment(profile));
     }
 
     private Optional<UMLProfileVersion> getVersionFromProfile(Profile profile) {
