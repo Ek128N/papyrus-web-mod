@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,14 +42,12 @@ public class DiagramOperationsService implements IDiagramOperationsService {
     public void createView(IDiagramContext diagramContext, EObject semanticElement, Optional<Node> optionalParentNode, NodeDescription nodeDescription, NodeContainmentKind containmentKind) {
         String targetObjectId = this.objectService.getId(semanticElement);
         String parentElementId = optionalParentNode.map(Node::getId).orElseGet(() -> diagramContext.getDiagram().getId());
-        // @formatter:off
         ViewCreationRequest viewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                 .parentElementId(parentElementId)
                 .targetObjectId(targetObjectId)
                 .descriptionId(nodeDescription.getId())
                 .containmentKind(containmentKind)
                 .build();
-        // @formatter:on
         diagramContext.getViewCreationRequests().add(viewCreationRequest);
     }
 

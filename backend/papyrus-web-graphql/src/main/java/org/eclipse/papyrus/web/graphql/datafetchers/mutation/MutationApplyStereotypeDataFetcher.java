@@ -65,11 +65,9 @@ public class MutationApplyStereotypeDataFetcher implements IDataFetcherWithField
         Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, ApplyStereotypeInput.class);
 
-        // @formatter:off
         Mono<IPayload> defaultIfEmpty = this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
             .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()));
         return defaultIfEmpty.log().toFuture();
-        // @formatter:on
     }
 
 }

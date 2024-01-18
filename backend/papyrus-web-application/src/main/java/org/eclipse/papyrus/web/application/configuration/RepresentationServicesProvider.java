@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -59,11 +59,9 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
-        // @formatter:off
         return view.getDescriptions().stream()
-                .flatMap(representationDescription -> this.getRepresentationServicesClass(representationDescription).stream())
+                .flatMap(representationDescription -> this.getRepresentationServicesClass(representationDescription).stream()) //
                 .collect(Collectors.toList());
-        // @formatter:on
     }
 
     private List<Class<?>> getRepresentationServicesClass(RepresentationDescription representationDescription) {

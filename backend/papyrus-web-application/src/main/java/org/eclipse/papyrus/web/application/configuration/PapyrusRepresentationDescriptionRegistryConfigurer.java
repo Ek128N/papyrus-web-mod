@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -72,12 +72,11 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
 
-        // @formatter:off
         List<EPackage> staticEPackages = this.ePackagesRegistry.values().stream()
                 .filter(EPackage.class::isInstance)
                 .map(EPackage.class::cast)
                 .collect(Collectors.toList());
-        // @formatter:on
+
         this.register(resourceSet, staticEPackages, new CSDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, CSDDiagramDescriptionBuilder.CSD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new PADDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, PADDiagramDescriptionBuilder.PD_REP_NAME)));
         this.register(resourceSet, staticEPackages, new SMDDiagramDescriptionBuilder().createDiagramDescription(this.createView(resourceSet, SMDDiagramDescriptionBuilder.SMD_REP_NAME)));

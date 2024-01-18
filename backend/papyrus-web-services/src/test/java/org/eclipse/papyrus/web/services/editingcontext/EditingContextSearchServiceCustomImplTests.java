@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,37 +50,35 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
  */
 public class EditingContextSearchServiceCustomImplTests {
 
-    // @formatter:off
     private static final String CONTENT = """
-        {
-          "json": {
-            "version": "1.0",
-            "encoding": "utf-8"
-          },
-          "ns": {
-            "ecore": "http://www.eclipse.org/emf/2002/Ecore"
-          },
-          "content": [
             {
-              "eClass": "ecore:EPackage",
-              "data": {
-                "name": "ecore",
-                "nsURI": "http://www.eclipse.org/emf/2002/Ecore",
-                "nsPrefix": "ecore",
-                "eClassifiers": [
-                  {
-                    "eClass": "ecore:EClass",
-                    "data": {
-                      "name": "AClass"
-                    }
+              "json": {
+                "version": "1.0",
+                "encoding": "utf-8"
+              },
+              "ns": {
+                "ecore": "http://www.eclipse.org/emf/2002/Ecore"
+              },
+              "content": [
+                {
+                  "eClass": "ecore:EPackage",
+                  "data": {
+                    "name": "ecore",
+                    "nsURI": "http://www.eclipse.org/emf/2002/Ecore",
+                    "nsPrefix": "ecore",
+                    "eClassifiers": [
+                      {
+                        "eClass": "ecore:EClass",
+                        "data": {
+                          "name": "AClass"
+                        }
+                      }
+                    ]
                   }
-                ]
-              }
+                }
+              ]
             }
-          ]
-        }
-        """;
-    // @formatter:on
+            """;
 
     @Test
     public void testEditingContextWithNoDocuments() {
@@ -165,21 +163,17 @@ public class EditingContextSearchServiceCustomImplTests {
     private void assertProperResourceLoading(Resource resource, DocumentEntity documentEntity) {
         assertThat(resource).isNotNull();
         assertThat(resource.eAdapters()).hasSize(3);
-        // @formatter:off
         var optionalDocumentMetadataAdapter = resource.eAdapters().stream()
                 .filter(ResourceMetadataAdapter.class::isInstance)
                 .map(ResourceMetadataAdapter.class::cast)
                 .findFirst();
-        // @formatter:on
         assertThat(optionalDocumentMetadataAdapter).isPresent();
         assertThat(optionalDocumentMetadataAdapter.get().getName()).isEqualTo(documentEntity.getName());
 
-        // @formatter:off
         var optionalCrossReferencerAdapter = resource.eAdapters().stream()
                 .filter(ECrossReferenceAdapter.class::isInstance)
                 .map(ECrossReferenceAdapter.class::cast)
                 .findFirst();
-        // @formatter:on
         assertThat(optionalCrossReferencerAdapter).isPresent();
     }
 }

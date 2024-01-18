@@ -58,12 +58,10 @@ public class TemplateInitializer {
     }
 
     public Optional<Resource> initializeResourceFromClasspathFile(IEditingContext editingContext, String newResourceName, String filePath) throws IOException {
-        // @formatter:off
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getDomain);
-        // @formatter:on
         Optional<UUID> optionalEditingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && optionalEditingContextUUID.isPresent()) {
             UUID editingContextUUID = optionalEditingContextUUID.get();

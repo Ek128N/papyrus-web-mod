@@ -41,12 +41,10 @@ public class ViewDiagramDescriptionService implements IViewDiagramDescriptionSer
 
     @Override
     public Optional<DiagramDescription> getDiagramDescription(Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
-        // @formatter:off
         return capturedNodeDescriptions.keySet().stream()
                 .map(nd -> this.emfNavigationService.getAncestor(DiagramDescription.class, nd))
                 .filter(Objects::nonNull)
                 .findFirst();
-        // @formatter:on
     }
 
     @Override

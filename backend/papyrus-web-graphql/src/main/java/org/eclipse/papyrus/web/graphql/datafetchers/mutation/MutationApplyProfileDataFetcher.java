@@ -64,11 +64,9 @@ public class MutationApplyProfileDataFetcher implements IDataFetcherWithFieldCoo
         Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, ApplyProfileInput.class);
 
-        // @formatter:off
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
-        // @formatter:on
     }
 
 }

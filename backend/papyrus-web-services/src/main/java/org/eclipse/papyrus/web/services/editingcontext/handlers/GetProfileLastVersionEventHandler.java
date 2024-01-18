@@ -53,11 +53,9 @@ public class GetProfileLastVersionEventHandler implements IEditingContextEventHa
         this.messageService = Objects.requireNonNull(messageService);
         this.profileService = Objects.requireNonNull(stereotypeService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override

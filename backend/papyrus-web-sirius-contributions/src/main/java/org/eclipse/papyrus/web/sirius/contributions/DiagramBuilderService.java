@@ -84,13 +84,11 @@ public class DiagramBuilderService implements IDiagramBuilderService {
     }
 
     private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, Predicate<DiagramDescription> diagamDescriptionMatcher) {
-        // @formatter:off
         return this.representationDescriptionSearchService.findAll(editingContext).values().stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .filter(diagamDescriptionMatcher)
                 .findFirst();
-        // @formatter:on
     }
 
     @Override

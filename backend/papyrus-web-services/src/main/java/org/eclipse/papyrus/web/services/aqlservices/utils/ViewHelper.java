@@ -112,11 +112,9 @@ public class ViewHelper implements IViewHelper {
     @FactoryMethod
     public static IViewHelper create(IObjectService objectService, IViewDiagramDescriptionService viewDiagramService, IDiagramOperationsService diagramOperationsService,
             IDiagramContext diagramContext, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
-        // @formatter:off
         return viewDiagramService.getDiagramDescription(capturedNodeDescriptions)
-                                .map(dd -> (IViewHelper) new ViewHelper(objectService, diagramOperationsService, diagramContext, dd, capturedNodeDescriptions))
-                                .orElse(new IViewHelper.NoOp());
-        // @formatter:on
+                .map(dd -> (IViewHelper) new ViewHelper(objectService, diagramOperationsService, diagramContext, dd, capturedNodeDescriptions))
+                .orElse(new IViewHelper.NoOp());
 
     }
 

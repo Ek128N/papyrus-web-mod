@@ -33,7 +33,6 @@ public class UMLCppProjectTemplateProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        // @formatter:off
         var cppTemplate = ProjectTemplate.newProjectTemplate(UML_CPP_TEMPLATE_ID)
                 .label("C++")
                 .imageURL("/images/CppTemplate.png")
@@ -44,7 +43,6 @@ public class UMLCppProjectTemplateProvider implements IProjectTemplateProvider {
                 .imageURL("/images/CppSMTemplate.png")
                 .natures(List.of())
                 .build();
-        // @formatter:on
         return List.of(cppTemplate, cppSMProjectTeamplte);
     }
 

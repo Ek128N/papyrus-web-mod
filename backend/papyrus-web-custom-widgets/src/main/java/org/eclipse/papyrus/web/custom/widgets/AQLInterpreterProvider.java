@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -61,7 +61,6 @@ public class AQLInterpreterProvider {
     public AQLInterpreter createInterpreter(View view, IEditingContext editingContext) {
         List<EPackage> visibleEPackages = this.getAccessibleEPackages(editingContext);
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        // @formatter:off
         List<Object> serviceInstances = this.javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(view).stream())
                 .map(serviceClass -> {
@@ -75,7 +74,6 @@ public class AQLInterpreterProvider {
                 .filter(Objects::nonNull)
                 .map(Object.class::cast)
                 .toList();
-        // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 }

@@ -47,13 +47,11 @@ public class UMLStereotypeService implements IUMLStereotypeService {
 
     @Override
     public List<UMLStereotypeMetadata> getApplicableStereotypeOn(IEditingContext editingContext, String elementUMLId) {
-        // @formatter:off
         List<UMLStereotypeMetadata> stereotypeMetadatas = this.objectService.getObject(editingContext, elementUMLId)
-            .filter(Element.class::isInstance)
-            .map(Element.class::cast)
-            .map(this::collectUnappliedStereotypes)
-            .orElse(Collections.emptyList());
-        // @formatter:on
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .map(this::collectUnappliedStereotypes)
+                .orElse(Collections.emptyList());
         return stereotypeMetadatas;
     }
 
@@ -78,22 +76,18 @@ public class UMLStereotypeService implements IUMLStereotypeService {
     @Override
     public Optional<Object> applyStereotype(IEditingContext editingContext, String elementUMLId, String stereotypeId) {
         Optional<Object> stereotypeApplication = Optional.empty();
-        // @formatter:off
         Optional<Stereotype> stereotypeOpt = this.objectService.getObject(editingContext, stereotypeId)
                 .filter(Stereotype.class::isInstance)
                 .map(Stereotype.class::cast);
 
         if (stereotypeOpt.isPresent()) {
-            Optional<Element> elementOpt = this.objectService.getObject(editingContext, elementUMLId)
-                .filter(Element.class::isInstance)
-                .map(Element.class::cast);
+            Optional<Element> elementOpt = this.objectService.getObject(editingContext, elementUMLId).filter(Element.class::isInstance).map(Element.class::cast);
 
             if (elementOpt.isPresent()) {
                 stereotypeApplication = Optional.ofNullable(elementOpt.get().applyStereotype(stereotypeOpt.get()));
             } else {
                 LOGGER.warn("The element of id {0} has not been found", elementUMLId);
             }
-            // @formatter:on
         } else {
             LOGGER.warn("The stereotype of id {0} has not been found", stereotypeId);
         }

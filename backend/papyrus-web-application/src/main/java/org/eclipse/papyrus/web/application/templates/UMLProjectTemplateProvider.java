@@ -31,13 +31,11 @@ public class UMLProjectTemplateProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        // @formatter:off
         var umlWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(UML_WITH_PRIMITIVES_TEMPLATE_ID)
                 .label("UML")
                 .imageURL("/images/UML.svg")
                 .natures(List.of())
                 .build();
-        // @formatter:on
         return List.of(umlWithPrimitivesTemplate);
     }
 

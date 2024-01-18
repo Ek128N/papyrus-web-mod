@@ -53,11 +53,9 @@ public class MutationPublishProfileDataFetcher implements IDataFetcherWithFieldC
         Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, PublishProfileInput.class);
 
-        // @formatter:off
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
-        // @formatter:on
     }
 
 }

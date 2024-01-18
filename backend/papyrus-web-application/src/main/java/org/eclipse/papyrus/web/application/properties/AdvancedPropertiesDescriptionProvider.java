@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,11 +96,8 @@ public class AdvancedPropertiesDescriptionProvider {
         PageDescription firstPageDescription = this.getPageDescription(groupDescriptions);
         pageDescriptions.add(firstPageDescription);
 
-        // @formatter:off
         Function<VariableManager, String> labelProvider = variableManager -> "Properties";
-        // @formatter:on
 
-        // @formatter:off
         Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.objectService::getId)
                 .orElse(null);
@@ -113,7 +110,6 @@ public class AdvancedPropertiesDescriptionProvider {
                 .canCreatePredicate(variableManager -> this.canCreatePage(variableManager))
                 .pageDescriptions(pageDescriptions)
                 .build();
-        // @formatter:on
     }
 
     private boolean canCreatePage(VariableManager variableManager) {
@@ -136,7 +132,6 @@ public class AdvancedPropertiesDescriptionProvider {
 
         Function<VariableManager, String> labelProvider = variableManager -> "Advanced";
 
-        // @formatter:off
         return PageDescription.newPageDescription("UMLAdvancedPropertyViewPage")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
@@ -144,7 +139,6 @@ public class AdvancedPropertiesDescriptionProvider {
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> this.canCreatePage(variableManager))
                 .build();
-        // @formatter:on
     }
 
     private GroupDescription getGroupDescription() {
@@ -157,24 +151,24 @@ public class AdvancedPropertiesDescriptionProvider {
             if (self instanceof EObject) {
                 EObject eObject = (EObject) self;
 
-                // @formatter:off
                 List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class))
                         .filter(IItemPropertySource.class::isInstance)
                         .map(IItemPropertySource.class::cast)
                         .map(iItemPropertySource -> iItemPropertySource.getPropertyDescriptors(eObject))
                         .orElse(new ArrayList<>());
 
-                propertyDescriptors.stream()
+                propertyDescriptors.stream() //
                         .map(propertyDescriptor -> propertyDescriptor.getFeature(eObject))
                         .filter(EStructuralFeature.class::isInstance)
                         .map(EStructuralFeature.class::cast)
-                        // Prevents EReference targeting EModelElements and EObject. (https://github.com/PapyrusSirius/papyrus-web/issues/58)
+                        // Prevents EReference targeting EModelElements and EObject.
+                        // (https://github.com/PapyrusSirius/papyrus-web/issues/58)
                         // * It can return thousands of elements making the UI really slow
-                        // * On some candidates an id cannot be computed (EPackage) causing NPE (nevertheless this case should be fixed in Sirius Component)
+                        // * On some candidates an id cannot be computed (EPackage) causing NPE (nevertheless this case
+                        // should be fixed in Sirius Component)
                         // https://github.com/eclipse-sirius/sirius-components/issues/1433
                         .filter(feature -> feature.getEType() != EcorePackage.eINSTANCE.getEObject() && feature.getEType() != EcorePackage.eINSTANCE.getEModelElement())
                         .forEach(objects::add);
-                // @formatter:on
             }
             return objects;
         };
@@ -187,7 +181,6 @@ public class AdvancedPropertiesDescriptionProvider {
         ifDescriptions.add(new NonDerivedNonContainmentReferenceIfDescriptionProvider(this.composedAdapterFactory, this.objectService, this.semanticTargetIdProvider, this.propertiesValidationProvider,
                 this.feedbackMessageService, this.emfKindService).getIfDescription());
 
-        // @formatter:off
         var numericDataTypes = List.of(
                 EcorePackage.Literals.EINT,
                 EcorePackage.Literals.EINTEGER_OBJECT,
@@ -198,33 +191,27 @@ public class AdvancedPropertiesDescriptionProvider {
                 EcorePackage.Literals.ELONG,
                 EcorePackage.Literals.ELONG_OBJECT,
                 EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT
-                );
-        // @formatter:on
+                EcorePackage.Literals.ESHORT_OBJECT);
         for (var dataType : numericDataTypes) {
             ifDescriptions.add(new NumberIfDescriptionProvider(dataType, this.composedAdapterFactory, this.propertiesValidationProvider, this.emfMessageService, this.semanticTargetIdProvider)
                     .getIfDescription());
         }
 
-        // @formatter:off
         ForDescription forDescription = ForDescription.newForDescription("forId")
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .iterator(ESTRUCTURAL_FEATURE)
                 .iterableProvider(iterableProvider)
                 .controlDescriptions(ifDescriptions)
                 .build();
-        // @formatter:on
 
         controlDescriptions.add(forDescription);
 
-        // @formatter:off
         return GroupDescription.newGroupDescription("groupId")
                 .idProvider(variableManager -> "Core Properties")
                 .labelProvider(variableManager -> "Core Properties")
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
                 .controlDescriptions(controlDescriptions)
                 .build();
-        // @formatter:on
     }
 
 }

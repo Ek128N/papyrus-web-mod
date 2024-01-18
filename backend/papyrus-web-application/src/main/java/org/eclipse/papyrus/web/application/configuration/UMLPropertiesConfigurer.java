@@ -104,7 +104,6 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();
-        // @formatter:off
         List<Object> serviceInstances = this.javaServiceProviders.stream()
                 .flatMap(provider -> provider.getServiceClasses(view).stream())
                 .map(serviceClass -> {
@@ -118,7 +117,6 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
                 .filter(Objects::nonNull)
                 .map(Object.class::cast)
                 .toList();
-        // @formatter:on
         return new AQLInterpreter(List.of(), serviceInstances, visibleEPackages);
     }
 

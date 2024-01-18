@@ -56,11 +56,9 @@ public class CreateMetaclassImportEventHandler implements IDiagramEventHandler {
         this.profileDiagramService = Objects.requireNonNull(profileDiagramService);
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,11 +97,9 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
         this.editingContextMetadataProvider = Objects.requireNonNull(editingContextMetadataProvider);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -229,12 +227,9 @@ public class UploadDocumentEventHandlerCustomImpl implements IEditingContextEven
      * contains '<', {@link Optional#empty()} otherwise.
      * </p>
      *
-     * @param inputStream
-     *            The {@link InputStream} used to determine which {@link Resource} to create
-     * @param resourceURI
-     *            The {@link URI} to use to create the {@link Resource}
-     * @param resourceSet
-     *            The {@link ResourceSet} used to store the loaded resource
+     * @param inputStream The {@link InputStream} used to determine which {@link Resource} to create
+     * @param resourceURI The {@link URI} to use to create the {@link Resource}
+     * @param resourceSet The {@link ResourceSet} used to store the loaded resource
      * @return a {@link JsonResourceImpl}, a {@link XMIResourceImpl} or {@link Optional#empty()}
      */
     private Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {

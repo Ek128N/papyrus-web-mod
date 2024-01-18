@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2021 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,13 +54,11 @@ public class EditingContextStereotypesDataFetcher implements IDataFetcherWithFie
         String editingContextId = environment.getSource();
         String elementId = environment.getArgument("elementId");
 
-        // @formatter:off
         GetStereotypesInput input = new GetStereotypesInput(UUID.randomUUID(), elementId);
         return this.editingContextEventProcessorRegistry.dispatchEvent(editingContextId, input)
                 .filter(GetStereotypesSuccessPayload.class::isInstance)
                 .map(GetStereotypesSuccessPayload.class::cast)
                 .map(GetStereotypesSuccessPayload::getStereotypes)
                 .toFuture();
-        // @formatter:on
     }
 }

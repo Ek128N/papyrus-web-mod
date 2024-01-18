@@ -69,7 +69,6 @@ public class DocumentServiceCustomImpl implements IDocumentService {
 
     @Override
     public Optional<Document> createDocument(String projectId, String name, String content) {
-        // @formatter:off
         return new IDParser().parse(projectId)
                 .flatMap(this.projectRepository::findById)
                 .map(projectEntity -> {
@@ -83,7 +82,6 @@ public class DocumentServiceCustomImpl implements IDocumentService {
                     Document document = new DocumentMapper().toDTO(documentEntity);
                     return document;
                 });
-        // @formatter:on
     }
 
     @Override
@@ -93,23 +91,19 @@ public class DocumentServiceCustomImpl implements IDocumentService {
 
     @Override
     public Optional<Document> getDocument(String projectId, UUID documentId) {
-        // @formatter:off
         return new IDParser().parse(projectId)
                 .flatMap(projectUUID -> this.documentRepository.findByProjectIdAndId(projectUUID, documentId))
                 .map(new DocumentMapper()::toDTO);
-        // @formatter:on
     }
 
     @Override
     public List<Document> getDocuments(String projectId) {
-        // @formatter:off
         return new IDParser().parse(projectId)
                 .map(this.documentRepository::findAllByProjectId)
                 .orElseGet(List::of)
                 .stream()
                 .map(new DocumentMapper()::toDTO)
                 .collect(Collectors.toUnmodifiableList());
-        // @formatter:on
     }
 
     @Override

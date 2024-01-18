@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -94,12 +94,10 @@ public class PrimitiveListWidgetDescriptor implements IWidgetDescriptor {
     }
 
     private List<Diagnostic> getDiagnosticsFromChildren(List<Object> children) {
-        // @formatter:off
         return children.stream()
                 .filter(Diagnostic.class::isInstance)
                 .map(Diagnostic.class::cast)
                 .toList();
-        // @formatter:on
     }
 
     @Override

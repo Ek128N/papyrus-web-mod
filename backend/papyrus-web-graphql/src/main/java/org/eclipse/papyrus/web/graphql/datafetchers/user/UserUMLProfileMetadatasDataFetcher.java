@@ -51,10 +51,8 @@ public class UserUMLProfileMetadatasDataFetcher implements IDataFetcherWithField
     public DataFetcherResult<List<UMLProfileMetadata>> get(DataFetchingEnvironment environment) throws Exception {
         List<UMLProfileMetadata> profileMetadatas = this.umlProfileService.getAllUMLProfiles();
 
-        // @formatter:off
         return DataFetcherResult.<List<UMLProfileMetadata>> newResult()
                 .data(profileMetadatas)
                 .build();
-        // @formatter:on
     }
 }

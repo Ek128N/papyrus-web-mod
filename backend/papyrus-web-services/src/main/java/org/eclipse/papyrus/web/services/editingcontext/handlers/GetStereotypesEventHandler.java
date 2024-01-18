@@ -54,11 +54,9 @@ public class GetStereotypesEventHandler implements IEditingContextEventHandler {
         this.messageService = Objects.requireNonNull(messageService);
         this.stereotypeService = Objects.requireNonNull(stereotypeService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override

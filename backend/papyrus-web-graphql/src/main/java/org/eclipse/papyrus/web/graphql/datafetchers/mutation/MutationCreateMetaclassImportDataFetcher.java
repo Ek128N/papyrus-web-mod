@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -65,11 +65,9 @@ public class MutationCreateMetaclassImportDataFetcher implements IDataFetcherWit
         Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, CreateMetaclassImportInput.class);
 
-        // @formatter:off
         return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
                 .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
                 .toFuture();
-        // @formatter:on
     }
 
 }

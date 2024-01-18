@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -81,7 +81,6 @@ public class NewValuePrimitiveRadioHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         PrimitiveRadio meoWidget = PrimitiveRadio.newPrimitiveRadio(MEMBER_END_OWNER_ID)
                 .label("label")
                 .newValueHandler(newValueHandler)
@@ -107,7 +106,6 @@ public class NewValuePrimitiveRadioHandlerTests {
                 .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override
@@ -144,7 +142,6 @@ public class NewValuePrimitiveRadioHandlerTests {
             return new Success();
         };
 
-        // @formatter:off
         PrimitiveRadio meoWidget = PrimitiveRadio.newPrimitiveRadio(MEMBER_END_OWNER_ID)
                 .label("label")
                 .newValueHandler(newValueHandler)
@@ -170,7 +167,6 @@ public class NewValuePrimitiveRadioHandlerTests {
                 .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
-        // @formatter:on
 
         IFormQueryService formQueryService = new IFormQueryService.NoOp() {
             @Override

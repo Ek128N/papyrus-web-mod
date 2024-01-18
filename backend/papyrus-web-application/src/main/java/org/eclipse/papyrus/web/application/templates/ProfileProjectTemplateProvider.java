@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -34,13 +34,11 @@ public class ProfileProjectTemplateProvider implements IProjectTemplateProvider 
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        // @formatter:off
         var profileWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID)
                 .label("Profile")
                 .imageURL("/images/Profile.svg")
                 .natures(List.of())
                 .build();
-        // @formatter:on
         return List.of(profileWithPrimitivesTemplate);
     }
 

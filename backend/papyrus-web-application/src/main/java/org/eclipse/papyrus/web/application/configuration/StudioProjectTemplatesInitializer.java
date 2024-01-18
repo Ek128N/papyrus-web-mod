@@ -135,12 +135,12 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private Optional<RepresentationMetadata> initializePapyrusStudioProject(IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
-        // @formatter:off
+
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getDomain);
-        // @formatter:on
+
         Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
@@ -198,12 +198,12 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
 
     private Optional<RepresentationMetadata> initializeStudioProject(IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
-        // @formatter:off
+
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(EditingContext.class::isInstance)
                 .map(EditingContext.class::cast)
                 .map(EditingContext::getDomain);
-        // @formatter:on
+
         Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
@@ -427,13 +427,11 @@ public class StudioProjectTemplatesInitializer implements IProjectTemplateInitia
     }
 
     private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, String label) {
-        // @formatter:off
         return this.representationDescriptionSearchService.findAll(editingContext).values().stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
                 .filter(diagramDescription -> Objects.equals(label, diagramDescription.getLabel()))
                 .findFirst();
-        // @formatter:on
     }
 
     private ColorPalette createColorPalette() {
