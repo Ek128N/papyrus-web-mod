@@ -187,21 +187,29 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
     public Boolean caseClass(Class umlClass) {
         Boolean isDragAndDropValid = Boolean.FALSE;
         if (umlClass.isMetaclass()) {
-            EObject existingElementImportInTarget = this.getElementImportReferencingMetaclass(umlClass, this.getSemanticNode(this.targetNode));
+            EObject elementImportTargetParent = null;
+            if (this.targetNode == null) {
+                // diagram container case
+                elementImportTargetParent = this.getSemanticDiagram();
+            } else {
+                // node container case
+                elementImportTargetParent = this.getSemanticNode(this.targetNode);
+            }
+            EObject existingElementImportInTarget = this.getElementImportReferencingMetaclass(umlClass, elementImportTargetParent);
             if (existingElementImportInTarget != null) {
                 String duplicatedMetaclassMessage = MessageFormat.format("Cannot drag and drop Metaclass {0} in {1}, a Metaclass with the same identifier already exists.",
                         this.droppedNode.getTargetObjectLabel(), this.targetNode.getTargetObjectLabel());
                 LOGGER.warn(duplicatedMetaclassMessage);
                 this.logger.log(duplicatedMetaclassMessage, ILogLevel.WARNING);
             } else {
-                EObject elementImportParent = null;
+                EObject elementImportSourceParent = null;
                 Optional<Node> parentMetaclassNode = this.diagramNavigator.getParentNode(this.droppedNode);
                 if (parentMetaclassNode.isEmpty()) {
-                    elementImportParent = this.getSemanticDiagram();
+                    elementImportSourceParent = this.getSemanticDiagram();
                 } else {
-                    elementImportParent = this.getSemanticNode(parentMetaclassNode.get());
+                    elementImportSourceParent = this.getSemanticNode(parentMetaclassNode.get());
                 }
-                EObject droppedElement = this.getElementImportReferencingMetaclass(umlClass, elementImportParent);
+                EObject droppedElement = this.getElementImportReferencingMetaclass(umlClass, elementImportSourceParent);
                 isDragAndDropValid = this.defaultCase(droppedElement);
             }
         } else {
