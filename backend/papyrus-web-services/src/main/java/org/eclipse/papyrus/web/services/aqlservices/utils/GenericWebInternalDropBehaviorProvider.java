@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -17,8 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.web.services.aqlservices.IWebInternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 
@@ -43,7 +43,7 @@ public class GenericWebInternalDropBehaviorProvider implements IWebInternalSourc
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     /**
      * Constructor.
@@ -55,7 +55,7 @@ public class GenericWebInternalDropBehaviorProvider implements IWebInternalSourc
      * @param logger
      *            Logger used to report errors and warnings to the user
      */
-    public GenericWebInternalDropBehaviorProvider(IViewHelper viewHelper, DiagramNavigator diagramNavigator, ServiceLogger logger) {
+    public GenericWebInternalDropBehaviorProvider(IViewHelper viewHelper, DiagramNavigator diagramNavigator, ILogger logger) {
         this.diagramNavigator = diagramNavigator;
         this.viewHelper = Objects.requireNonNull(viewHelper);
         this.logger = logger;

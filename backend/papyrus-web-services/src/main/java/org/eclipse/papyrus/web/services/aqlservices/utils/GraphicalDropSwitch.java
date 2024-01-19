@@ -25,12 +25,12 @@ import org.eclipse.papyrus.uml.domain.services.drop.IInternalSourceToRepresentat
 import org.eclipse.papyrus.uml.domain.services.drop.IInternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.modify.IFeatureModifier;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.uml.domain.services.status.Status;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.Class;
@@ -76,7 +76,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     /**
      * Constructor.
@@ -98,7 +98,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
      *            Logger used to report errors and warnings to the user
      */
     public GraphicalDropSwitch(Optional<Node> optionalTargetNode, Optional<EObject> optionalOldSemanticContainer, Optional<EObject> optionalNewSemanticContainer, IViewHelper viewHelper,
-            DiagramNavigator diagramNavigator, Node droppedNode, ServiceLogger logger) {
+            DiagramNavigator diagramNavigator, Node droppedNode, ILogger logger) {
         if (optionalTargetNode.isPresent()) {
             // case DnD on node
             this.targetNode = Objects.requireNonNull(optionalTargetNode.get());

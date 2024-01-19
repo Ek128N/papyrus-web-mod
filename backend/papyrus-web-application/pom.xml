@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ Copyright (c) 2022, 2024 CEA LIST, Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -101,7 +101,12 @@
 			<artifactId>papyrus-web-customnodes-edit</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-tests</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 
 		<!-- External Dependencies -->

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -28,11 +28,11 @@ import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
-import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.application.utils.ElementMatcher;
 import org.eclipse.papyrus.web.application.utils.LabelStyleCheck;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.statemachine.StateMachineDiagramService;
+import org.eclipse.papyrus.web.tests.utils.MockLogger;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.FinalState;
@@ -356,7 +356,7 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
     @Override
     protected AbstractDiagramService buildService() {
         return new StateMachineDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
-                new MockServiceLogger());
+                new MockLogger());
     }
 
     @Override

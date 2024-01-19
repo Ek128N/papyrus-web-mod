@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -22,10 +22,10 @@ import org.eclipse.papyrus.web.custom.widgets.containmentreference.dto.MoveConta
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
+import org.eclipse.sirius.components.collaborative.forms.messages.ICollaborativeFormMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -50,7 +50,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class MoveContainmentReferenceItemEventHandler implements IFormEventHandler {
 
-    private final ICollaborativeDiagramMessageService messageService;
+    private final ICollaborativeFormMessageService messageService;
 
     private final Counter counter;
 
@@ -58,7 +58,7 @@ public class MoveContainmentReferenceItemEventHandler implements IFormEventHandl
 
     private final IObjectService objectService;
 
-    public MoveContainmentReferenceItemEventHandler(IFormQueryService formQueryService, ICollaborativeDiagramMessageService messageService, MeterRegistry meterRegistry, IObjectService objectService) {
+    public MoveContainmentReferenceItemEventHandler(IFormQueryService formQueryService, ICollaborativeFormMessageService messageService, MeterRegistry meterRegistry, IObjectService objectService) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
         this.objectService = Objects.requireNonNull(objectService);

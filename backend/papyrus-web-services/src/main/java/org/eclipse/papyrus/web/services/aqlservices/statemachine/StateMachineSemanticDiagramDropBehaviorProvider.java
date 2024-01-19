@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -17,8 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.SemanticDropSwitch;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
@@ -43,7 +43,7 @@ public class StateMachineSemanticDiagramDropBehaviorProvider implements IWebExte
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     /**
      * Constructor.
@@ -59,8 +59,7 @@ public class StateMachineSemanticDiagramDropBehaviorProvider implements IWebExte
      * @param logger
      *            Logger used to report errors and warnings to the user
      */
-    public StateMachineSemanticDiagramDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, DiagramNavigator diagramNavigator,
-            ServiceLogger logger) {
+    public StateMachineSemanticDiagramDropBehaviorProvider(IEditingContext editionContext, IViewHelper viewHelper, IObjectService objectService, DiagramNavigator diagramNavigator, ILogger logger) {
         this.diagramNavigator = Objects.requireNonNull(diagramNavigator);
         this.editionContext = Objects.requireNonNull(editionContext);
         this.viewHelper = Objects.requireNonNull(viewHelper);

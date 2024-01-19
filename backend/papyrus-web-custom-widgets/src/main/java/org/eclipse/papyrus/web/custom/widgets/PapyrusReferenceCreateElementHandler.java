@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -71,12 +71,12 @@ public class PapyrusReferenceCreateElementHandler implements IReferenceWidgetCre
 
     private final IViewRepresentationDescriptionSearchService viewSearchService;
 
-    private final AQLInterpreterProvider interpreterProvider;
+    private final IAQLInterpreterProvider interpreterProvider;
 
     private final IEditService editService;
 
     public PapyrusReferenceCreateElementHandler(IEMFKindService emfKindService, IObjectService objectService, IViewRepresentationDescriptionSearchService viewSearchService,
-            AQLInterpreterProvider interpreterProvider, IEditService editService) {
+            IAQLInterpreterProvider interpreterProvider, IEditService editService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.objectService = Objects.requireNonNull(objectService);
         this.viewSearchService = Objects.requireNonNull(viewSearchService);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,9 @@ import org.eclipse.papyrus.uml.domain.services.create.diagrams.CompositeStructur
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeInitializer;
 import org.eclipse.papyrus.uml.domain.services.edges.diagrams.CompositeStructureDomainBasedEdgeContainerProvider;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramElementHelper;
@@ -57,10 +57,10 @@ public class CompositeStructureDiagramService extends AbstractDiagramService {
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     public CompositeStructureDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService,
-            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ServiceLogger logger) {
+            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ILogger logger) {
         super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
         this.logger = logger;
     }

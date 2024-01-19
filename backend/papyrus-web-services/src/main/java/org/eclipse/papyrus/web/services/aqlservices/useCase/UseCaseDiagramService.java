@@ -18,10 +18,10 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.services.aqlservices.IWebExternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.services.aqlservices.IWebInternalSourceToRepresentationDropBehaviorProvider;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.services.aqlservices.utils.ViewHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
@@ -50,7 +50,7 @@ public class UseCaseDiagramService extends AbstractDiagramService {
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     /**
      * Constructor.
@@ -70,7 +70,7 @@ public class UseCaseDiagramService extends AbstractDiagramService {
      *            Logger used to report errors and warnings to the user
      */
     public UseCaseDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService, IEditableChecker editableChecker,
-            IViewDiagramDescriptionService viewDiagramService, ServiceLogger logger) {
+            IViewDiagramDescriptionService viewDiagramService, ILogger logger) {
         super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
         this.logger = logger;
     }

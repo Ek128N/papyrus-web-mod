@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -11,29 +11,24 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.application.services;
+package org.eclipse.papyrus.web.tests.utils;
 
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * This class is used to mock the behavior of {@link ServiceLogger}.
+ * This class is used to mock the behavior of {@link ILogger}.
  *
- * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
+ * @author Jerome Gout
  *
  */
-public class MockServiceLogger extends ServiceLogger {
+public class MockLogger implements ILogger {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MockServiceLogger.class);
-
-    public MockServiceLogger() {
-        super(null, null);
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockLogger.class);
 
     @Override
     public void log(String message, ILogLevel level) {

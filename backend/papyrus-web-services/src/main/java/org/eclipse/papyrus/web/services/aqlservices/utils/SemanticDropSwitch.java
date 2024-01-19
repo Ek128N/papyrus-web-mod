@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -28,11 +28,11 @@ import org.eclipse.papyrus.uml.domain.services.drop.IExternalSourceToRepresentat
 import org.eclipse.papyrus.uml.domain.services.drop.IExternalSourceToRepresentationDropChecker;
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeSourceProvider;
 import org.eclipse.papyrus.uml.domain.services.edges.ElementDomainBasedEdgeTargetsProvider;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.status.CheckStatus;
 import org.eclipse.papyrus.uml.domain.services.status.State;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.uml2.uml.ActivityEdge;
@@ -71,7 +71,7 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     /**
      * Constructor.
@@ -86,7 +86,7 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
      * @param logger
      *            Logger used to report errors and warnings to the user
      */
-    public SemanticDropSwitch(Optional<Node> optionalSelectedNode, IViewHelper viewHelper, DiagramNavigator diagramNavigator, ServiceLogger logger) {
+    public SemanticDropSwitch(Optional<Node> optionalSelectedNode, IViewHelper viewHelper, DiagramNavigator diagramNavigator, ILogger logger) {
         if (optionalSelectedNode.isPresent()) {
             // case DnD on node
             this.targetNode = Objects.requireNonNull(optionalSelectedNode.get());

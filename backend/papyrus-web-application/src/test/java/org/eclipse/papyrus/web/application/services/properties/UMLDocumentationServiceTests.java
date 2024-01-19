@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -40,5 +40,14 @@ public class UMLDocumentationServiceTests extends AbstractWebUMLTest {
         String classElementName = UMLPackage.eINSTANCE.getClass_().getName();
         String entryKey = this.documentationService.getDocumentationEntryKey(classElementName, "name");
         assertEquals("The name of the NamedElement.\n", this.documentationService.getDocumentation(entryKey));
+    }
+
+    @Test
+    public void testRedefinedDocumentation() {
+        // this test covers the issue described at
+        // https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/54
+        String className = UMLPackage.eINSTANCE.getDurationConstraint().getName();
+        String entryKey = this.documentationService.getDocumentationEntryKey(className, "specification");
+        assertEquals("The DurationInterval constraining the duration.\n", this.documentationService.getDocumentation(entryKey));
     }
 }

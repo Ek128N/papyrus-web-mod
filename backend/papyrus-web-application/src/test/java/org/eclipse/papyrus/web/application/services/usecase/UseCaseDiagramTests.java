@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -25,8 +25,8 @@ import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
-import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.useCase.UseCaseDiagramService;
+import org.eclipse.papyrus.web.tests.utils.MockLogger;
 import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Package;
@@ -175,7 +175,7 @@ public class UseCaseDiagramTests extends AbstractDiagramTest {
     @Override
     protected UseCaseDiagramService buildService() {
         return new UseCaseDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(),
-                new MockServiceLogger());
+                new MockLogger());
     }
 
     @Override

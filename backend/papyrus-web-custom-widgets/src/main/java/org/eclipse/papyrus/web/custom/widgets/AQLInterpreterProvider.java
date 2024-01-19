@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
  * @author Jerome Gout
  */
 @Service
-public class AQLInterpreterProvider {
+public class AQLInterpreterProvider implements IAQLInterpreterProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AQLInterpreterProvider.class);
 
@@ -58,6 +58,7 @@ public class AQLInterpreterProvider {
         }
     }
 
+    @Override
     public AQLInterpreter createInterpreter(View view, IEditingContext editingContext) {
         List<EPackage> visibleEPackages = this.getAccessibleEPackages(editingContext);
         AutowireCapableBeanFactory beanFactory = this.applicationContext.getAutowireCapableBeanFactory();

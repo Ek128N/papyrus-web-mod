@@ -11,7 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *******************************************************************************/
-package org.eclipse.papyrus.web.application.utils;
+package org.eclipse.papyrus.web.tests.utils;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -25,12 +25,12 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.UMLFactory;
-import org.junit.jupiter.api.Assertions;
 
 /**
  * Helper class used to ease the creation of tests with UML elements.
  *
  * @author Arthur Daussy
+ * @author Jerome Gout
  */
 public class UMLTestHelper {
 
@@ -52,7 +52,7 @@ public class UMLTestHelper {
         if (defaultContainementRef.isPresent()) {
             return this.createIn(type, parent, defaultContainementRef.get().getName());
         } else {
-            Assertions.fail(MessageFormat.format("Unable to find a containement reference for {0} in {1}", type.getSimpleName(), parent));
+            fail(MessageFormat.format("Unable to find a containement reference for {0} in {1}", type.getSimpleName(), parent));
             return null;
         }
     }
@@ -69,20 +69,20 @@ public class UMLTestHelper {
 
         EStructuralFeature ref = parent.eClass().getEStructuralFeature(containmentRefName);
         if (ref == null || !(ref instanceof EReference)) {
-            Assertions.fail("Invalid reference name");
-        }
-
-        if (ref.isDerived()) {
-            Assertions.fail(ref.getName() + " is a derived feature.");
-        }
-        EReference eRef = (EReference) ref;
-        if (!eRef.getEType().isInstance(newElement)) {
-            fail(MessageFormat.format("Invalid reference {0} for element{1}", eRef.getName(), newElement));
-        }
-        if (ref.isMany()) {
-            ((List) parent.eGet(ref)).add(newElement);
+            fail("Invalid reference name");
         } else {
-            parent.eSet(ref, newElement);
+            if (ref.isDerived()) {
+                fail(ref.getName() + " is a derived feature.");
+            }
+            EReference eRef = (EReference) ref;
+            if (!eRef.getEType().isInstance(newElement)) {
+                fail(MessageFormat.format("Invalid reference {0} for element{1}", eRef.getName(), newElement));
+            }
+            if (ref.isMany()) {
+                ((List) parent.eGet(ref)).add(newElement);
+            } else {
+                parent.eSet(ref, newElement);
+            }
         }
 
         return newElement;

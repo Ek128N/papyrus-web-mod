@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
-import org.eclipse.papyrus.web.custom.widgets.AQLInterpreterProvider;
+import org.eclipse.papyrus.web.custom.widgets.IAQLInterpreterProvider;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.sirius.components.core.URLParser;
@@ -64,11 +64,11 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
 
     private final IViewRepresentationDescriptionSearchService viewSearchService;
 
-    private final AQLInterpreterProvider interpreterProvider;
+    private final IAQLInterpreterProvider interpreterProvider;
 
     private final IEditService editService;
 
-    public ContainmentReferenceCreateElementHandler(IEMFKindService emfKindService, IObjectService objectService, IViewRepresentationDescriptionSearchService viewSearchService, AQLInterpreterProvider interpreterProvider, IEditService editService) {
+    public ContainmentReferenceCreateElementHandler(IEMFKindService emfKindService, IObjectService objectService, IViewRepresentationDescriptionSearchService viewSearchService, IAQLInterpreterProvider interpreterProvider, IEditService editService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.objectService = Objects.requireNonNull(objectService);
         this.viewSearchService = Objects.requireNonNull(viewSearchService);

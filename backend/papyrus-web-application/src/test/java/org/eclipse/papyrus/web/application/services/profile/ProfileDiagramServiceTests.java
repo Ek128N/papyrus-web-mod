@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -21,8 +21,8 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.application.services.AbstractDiagramTest;
-import org.eclipse.papyrus.web.application.services.MockServiceLogger;
 import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
+import org.eclipse.papyrus.web.tests.utils.MockLogger;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.ElementImport;
@@ -89,7 +89,7 @@ public class ProfileDiagramServiceTests extends AbstractDiagramTest {
     @Override
     protected ProfileDiagramService buildService() {
         return new ProfileDiagramService(this.getObjectService(), this.getDiagramNavigationService(), this.getDiagramOperationsService(), e -> true, this.getViewDiagramDescriptionService(), null,
-                null, null, new MockServiceLogger());
+                null, null, new MockLogger());
     }
 
     @Override

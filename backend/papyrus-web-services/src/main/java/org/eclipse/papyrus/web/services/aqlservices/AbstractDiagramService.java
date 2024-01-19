@@ -67,6 +67,7 @@ import org.eclipse.papyrus.uml.domain.services.labels.StereotypeLabelPrefixProvi
 import org.eclipse.papyrus.uml.domain.services.labels.domains.DefaultNamedElementNameProvider;
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.modify.IFeatureModifier;
+import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
 import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeReconnectSourceBehaviorProvider;
 import org.eclipse.papyrus.uml.domain.services.reconnect.ElementDomainBasedEdgeReconnectTargetBehaviorProvider;
@@ -138,10 +139,10 @@ public abstract class AbstractDiagramService {
     /**
      * Logger used to report errors and warnings to the user.
      */
-    private ServiceLogger logger;
+    private ILogger logger;
 
     public AbstractDiagramService(IObjectService objectService, IDiagramNavigationService diagramNavigationService, IDiagramOperationsService diagramOperationsService,
-            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ServiceLogger logger) {
+            IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ILogger logger) {
         this.editableChecker = editableChecker;
         this.viewDiagramService = Objects.requireNonNull(viewDiagramService);
         this.objectService = Objects.requireNonNull(objectService);
