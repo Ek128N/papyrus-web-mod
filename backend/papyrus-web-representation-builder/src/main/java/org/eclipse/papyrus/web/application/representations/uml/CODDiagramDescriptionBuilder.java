@@ -96,7 +96,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
 
     /**
      * Creates the {@link NodeDescription} representing an UML {@link Interaction}.
-     * 
+     *
      * @param diagramDescription
      *            the Communication {@link DiagramDescription} containing the created {@link NodeDescription}
      * @return the {@link NodeDescription} representing an UML {@link Interaction}.
@@ -125,7 +125,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
 
     /**
      * Create the {@link NodeDescription} and creation tool representing an UML {@link Lifeline}.
-     * 
+     *
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the {@link Lifeline} {@link NodeDescription}
      */
@@ -148,7 +148,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
 
     /**
      * Create the {@link NodeDescription} and creation tool representing an UML {@link DurationObservation}.
-     * 
+     *
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the {@link DurationObservation} {@link NodeDescription}
      */
@@ -177,7 +177,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
 
     /**
      * Create the {@link NodeDescription} and creation tool representing an UML {@link TimeObservation}.
-     * 
+     *
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the {@link TimeObservation} {@link NodeDescription}
      */
@@ -207,7 +207,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
 
     /**
      * Create the {@link EdgeDescription} representing an UML {@link Message}.
-     * 
+     *
      * @param diagramDescription
      *            the Communication {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
