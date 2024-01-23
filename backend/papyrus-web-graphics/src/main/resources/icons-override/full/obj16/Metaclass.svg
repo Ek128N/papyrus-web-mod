@@ -1,93 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="18"
-   height="16"
-   viewBox="0 0 4.7624999 4.2333332"
-   version="1.1"
-   id="svg8"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs2">
-    <linearGradient
-       id="linearGradient872">
-      <stop
-         style="stop-color:#cae2f9;stop-opacity:1;"
-         offset="0"
-         id="stop868" />
-      <stop
-         style="stop-color:#fdfeff;stop-opacity:1"
-         offset="1"
-         id="stop870" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient872"
-       id="linearGradient874"
-       x1="144.28606"
-       y1="144.28606"
-       x2="23.45978"
-       y2="3.8806121"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.02749953,0,0,0.02749953,0.07478381,0.0794096)" />
-  </defs>
-  <g
-     id="g2493">
-    <g
-       id="g882">
-      <path
-         id="rect881"
-         style="fill:url(#linearGradient874);fill-opacity:1;stroke:#4d81b4;stroke-width:0.147143;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         d="M 0.7199168,0.18612462 H 4.0425832 V 4.0472087 H 0.7199168 Z" />
-      <path
-         style="fill:none;stroke:#4d81b4;stroke-width:0.105833;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="M 0.75931004,3.2307897 H 4.0001094"
-         id="path883" />
-      <path
-         style="fill:none;stroke:#4d81b4;stroke-width:0.105833;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="M 0.76383798,2.4261953 H 4.0065784"
-         id="path883-3" />
-      <rect
-         style="fill:#4b7eb0;fill-opacity:0;stroke:none;stroke-width:0.109139;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.827451"
-         id="rect840"
-         width="3.2866614"
-         height="2.2400708"
-         x="0.71991682"
-         y="0.18612462" />
-	  <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:1.5875px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:0.264583"
-		 x="0.9192345"
-         y="2.0010216"
-         id="text844"
-         transform="scale(0.96782898,1.0332404)"><tspan
-           id="tspan842"
-           x="0.9192345"
-           y="2.0010216"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5875px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#4d81b4;fill-opacity:1;stroke-width:0.264583">&lt;</tspan></text> 
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:1.5875px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:0.264583"
-		 x="1.7792345"
-         y="2.0010216"
-         id="text844"
-         transform="scale(0.96782898,1.0332404)"><tspan
-           id="tspan842"
-           x="1.7792345"
-           y="2.0010216"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5875px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#4d81b4;fill-opacity:1;stroke-width:0.264583">M</tspan></text> 
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:1.5875px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:0.264583"
-		 x="3.0692345"
-         y="2.0010216"
-         id="text844"
-         transform="scale(0.96782898,1.0332404)"><tspan
-           id="tspan842"
-           x="3.0692345"
-           y="2.0010216"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5875px;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#4d81b4;fill-opacity:1;stroke-width:0.264583">&gt;</tspan></text> 
-
-	</g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16">
+    <defs>
+        <linearGradient id="a">
+            <stop offset="0" style="stop-color:#cae2f9;stop-opacity:1"/>
+            <stop offset="1" style="stop-color:#fdfeff;stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient xlink:href="#a" id="b" x1="144.286" x2="23.46" y1="144.286" y2="3.881" gradientTransform="translate(.075 .08)scale(.0275)" gradientUnits="userSpaceOnUse"/>
+    </defs>
+    <path d="M.72.186h3.323v3.861H.72Z" style="fill:url(#b);fill-opacity:1;stroke:#4d81b4;stroke-width:.28973162;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" transform="translate(-.219 .694)scale(3.45147)"/>
+    <path d="M.76 3.23H4M.764 2.426h3.243" style="fill:none;stroke:#4d81b4;stroke-width:.2317853;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" transform="translate(-.219 .694)scale(3.45147)"/>
+    <path fill="none" d="M.72.186h3.287v2.24H.72z" style="fill:#4b7eb0;fill-opacity:0;stroke:none;stroke-width:.109139;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:.827451" transform="translate(-.219 .694)scale(3.45147)"/>
+    <text xml:space="preserve" x=".919" y="2.001" style="font-style:normal;font-weight:400;font-size:1.5875px;line-height:1.25;font-family:sans-serif;letter-spacing:0;word-spacing:0;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:.28973123;stroke-miterlimit:4;stroke-dasharray:none" transform="matrix(3.34044 0 0 3.5662 -.219 .694)"><tspan x=".919" y="2.001" style="font-style:normal;font-variant:normal;font-weight:700;font-stretch:normal;font-size:1.5875px;font-family:Arial;-inkscape-font-specification:&quot;Arial Bold&quot;;fill:#4d81b4;fill-opacity:1;stroke-width:.28973123;stroke-miterlimit:4;stroke-dasharray:none">&lt;</tspan></text>
+    <text xml:space="preserve" x="1.779" y="2.001" style="font-style:normal;font-weight:400;font-size:1.5875px;line-height:1.25;font-family:sans-serif;letter-spacing:0;word-spacing:0;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:.28973123;stroke-miterlimit:4;stroke-dasharray:none" transform="matrix(3.34044 0 0 3.5662 -.219 .694)"><tspan x="1.779" y="2.001" style="font-style:normal;font-variant:normal;font-weight:700;font-stretch:normal;font-size:1.5875px;font-family:Arial;-inkscape-font-specification:&quot;Arial Bold&quot;;fill:#4d81b4;fill-opacity:1;stroke-width:.28973123;stroke-miterlimit:4;stroke-dasharray:none">M</tspan></text>
+    <text xml:space="preserve" x="3.069" y="2.001" style="font-style:normal;font-weight:400;font-size:1.5875px;line-height:1.25;font-family:sans-serif;letter-spacing:0;word-spacing:0;fill:#4d81b4;fill-opacity:1;stroke:none;stroke-width:.28973123;stroke-miterlimit:4;stroke-dasharray:none" transform="matrix(3.34044 0 0 3.5662 -.219 .694)"><tspan x="3.069" y="2.001" style="font-style:normal;font-variant:normal;font-weight:700;font-stretch:normal;font-size:1.5875px;font-family:Arial;-inkscape-font-specification:&quot;Arial Bold&quot;;fill:#4d81b4;fill-opacity:1;stroke-width:.28973123;stroke-miterlimit:4;stroke-dasharray:none">&gt;</tspan></text>
 </svg>
