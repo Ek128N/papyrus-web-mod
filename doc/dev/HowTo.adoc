@@ -1,0 +1,81 @@
+ifndef::imagesdir[:imagesdir: imgs]
+:tip-caption: 💡
+:warning-caption: ⚠️
+:toclevels: 4
+
+== Development FAQ
+:toc:
+
+=== How to override a Sirius Web service
+
+In some cases you will need to override service to provided by Sirius Web.
+To do so, create a custom implementation of the service and use the annotation `org.eclipse.papyrus.web.sirius.contributions.ServiceOverride`.
+You need to specify the overridden service in the annotation.
+This information is only here to keep tracks.
+It is important when bumping _sirius component_ version in order to keeps tracks of the changes applied to the overridden services.
+
+=== How to find/use all concepts model
+
+In order to populate UML tab of Details panel with each UML concept content, we created a single model that contains all UML concepts. This model can be uploaded inside Papyrus web (via `Upload Model` from Explorer view). The UML file is located inside the following directory:
+```
+<papyrus-web repo>/backend/papyrus-web-application/src/test/resources/models/all-concepts/
+```
+In order to locate each concept inside the model, we defined an index giving the path of each UML concept inside this model. This file, `all-concepts.txt` is located inside the same above directory. For instance, the concept `ComponentRealization` has the following entry in the index:
+```
+ComponentRealization -> Model::Activity::CollaborationUse::ComponentRealization
+```
+This indicates that this concept can be found inside `CollaborationUse` which is a child of `Activity`.
+
+=== How to debug ReactFlow diagrams ?
+
+In order to activate debug mode, developer should use `sirius.components.diagram.debug=true` option into `/papyrus-web-application/src/main/resources/application-dev.properties`.
+
+image::debugMode.png[Debug Mode,400, align="center"]
+
+=== How to access graphical elements in preconditions from the DSL View ?
+While most node and edge preconditions are computed on semantic information only, some preconditions need to check additional graphical information, such as the presence of a specific node/edge in the diagram. This is for example the case on the _DecisionNode_ from the Activity diagram, which has a note associated to it if the _DecisionNode#decisionInput_ reference is set. On top of this semantic precondition, we want to ensure that the note is visible only when the _DecisionNode_ itself is visible on the diagram. 
+
+This graphical information is accessible via two variables that can be passed to the service evaluating the precondition:
+
+- _DiagramContext_: contains the creation/deletion requests currently processed
+- Previous _Diagram_: the last version of the diagram displayed to the user
+
+[TIP]
+The current state of the diagram is unknown at the time preconditions are evaluated (it is being computed by evaluated these preconditions). That's why the diagram variable is not available in the service and we have to use the previous diagram to manipulate node and edges.
+
+Combining these variables, it is possible to know if a node/edge was previously visible, and if it is intended to be deleted/created, and adapt the result of the precondition based on it. The example below shows how these variables (combined with the semantic checks) are used to evaluate the precondition of the _DecisionNode_'s note:
+
+[source, java]
+-----
+public boolean showDecisionNodeNote(DecisionNode decisionNode, DiagramContext diagramContext, Diagram previousDiagram, IEditingContext editingContext) {
+    // Check if the DecisionNode was already visible on the previous version of the diagram
+    List<Node> previousDecisionNode = this.getDiagramNavigationService().getMatchingNodes(previousDiagram, editingContext,
+            NodeMatcher.buildSemanticAndNodeMatcher(BorderNodeStatus.BOTH,
+                    semanticObject -> Objects.equals(decisionNode, semanticObject),
+                    node -> !(Objects.equals(node.getType(), "customnode:note"))));
+    boolean isDeletingDecisionNode = false;
+    boolean isCreatingDecisionNode = false;
+    if (!previousDecisionNode.isEmpty()) {
+        // The DecisionNode was represented on the previous version of the diagram, in this case we want to check if the current DiagramContext
+        // contains a deletion request for it.
+        isDeletingDecisionNode = diagramContext.getViewDeletionRequests().stream() //
+                .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), previousDecisionNode.get(0).getId()));
+    }
+    isCreatingDecisionNode = diagramContext.getViewCreationRequests().stream() //
+            .anyMatch(viewCreationRequest -> Objects.equals(viewCreationRequest.getTargetObjectId(), this.getObjectService().getId(decisionNode)));
+    boolean showDecisionNodeNote = false;
+    if (!previousDecisionNode.isEmpty() && !isDeletingDecisionNode) {
+        // The DecisionNode was already displayed on the diagram, and we aren't currently deleting it. In this case
+        // we want to show the DecisionNode note if its decision input is set. This ensures that a note that was
+        // previously visible stays visible.
+        showDecisionNodeNote = decisionNode != null && decisionNode.getDecisionInput() != null;
+    } else if (isCreatingDecisionNode && (previousDecisionNode.isEmpty() || isDeletingDecisionNode)) {
+        // We are currently creating the DecisionNode, either via a simple creation request, or via a graphical drag
+        // & drop (which is decomposed into a deletion request and a creation request). In this case we want to show
+        // the DecisionNode note if its decision input is set. This ensures that the note is visible directly after
+        // the node creation, or after a graphical drag & drop.
+        showDecisionNodeNote = decisionNode != null && decisionNode.getDecisionInput() != null;
+    }
+    return showDecisionNodeNote;
+}
+-----

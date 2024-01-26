@@ -512,3 +512,15 @@ Additional information on how to contribute custom tools to a diagram is availab
 GraphQL queries are sent by the frontend to access data from the backend. As an example, a GraphQL query (`getMetaclassMetadatas`) is used by the `PapyrusPopupToolContribution` to retrieve all the metaclasses available in the editing context.
 
 These queries are defined in a similar way mutations are, with backend DTOs and event handlers. Note that queries does not need a _data fetcher_, they are directly handled by the event handlers.
+
+
+==== Add process before and after input handle
+Developer has the capacity to make programmatically some actions before and after the input processing. These actions can make some semantic changes.
+
+[TIP]
+Input is extracted from the request sent by the frontend.
+
+For example, the pre-process should be able to change the input. This is the case on Communication and Activity diagrams. User can launch diagram creation on the root _Model_ and the created diagram is linked to an intermediate created semantic element (an _Interaction_ or an _Activity_) instead of the input _Model_ .
+ 
+Two interfaces are available to define actions before or after input processing : `IInputPreProcessor` and `IOutputPreProcessor`.
+If developers want to define some action before input processing, they should create a service class (with tag `@Service`) that implements `IInputPreProcessor` interface and then fill the `preProcess` method. 
