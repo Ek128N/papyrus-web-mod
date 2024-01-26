@@ -189,6 +189,44 @@ image::graphicalDragAndDrop.png[Labels Overview,400, align="center"]
 ===== Reconnection
 Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element.
 
+==== Activity Diagram
+
+Activity diagrams help to focus on workflows. They are therefore particularly suitable for modeling control flows and data flows. They allow to graphically represent the behavior of a method or the course of a use case. 
+
+image::diagActivity.png[Activity Diagram Overview,900, align="center"]
+
+===== Specific Features on Creation
+- When creating an _ActivityPartition_ in an _Activity_, the partition is added in the _Activity#partition_ feature of the _Activity_. This feature is a subset of the _Activity#OwnedGroup_ containment feature.
+- An _AcceptEventAction_ is represented with an hourglass when it has exactly one _Trigger_ that references a _TimeEvent_ in its _Trigger#event_ feature.
+
+===== Specific Features on _Pin_
+- The _Pin_ creation tool is deactivated if several containment features are possible to own the _Pin_.
+- On an UML element, if the feature multiplicity is _[0..1]_ or _[1..1]_ or _[1..*]_, a _Pin_ is created at the same time as the element creation. 
+- The _Pin_ name is set with the name of the feature, if the feature is _[0..1]_ or _[1..1]_.
+
+===== Specific Features on Container
+Some containers do not contain semantically their graphical nodes. This is the case for _ActivityPartition_ and _InterruptibleActivityRegion_.
+_ActivityNodes_ contained in those containers are owned by the first parent _Activity_.
+
+image::graphicalContainerNotSemanticContainer.png[Activity Node Graphical Container,400, align="center"]
+
+===== Specific Features on _DecisionNode_
+A note attached to the _DecisionNode_ is displayed when the _DecisionNode#decisionInput_ feature is set.
+This note only appears if the _DecisionNode_ node is displayed.
+
+image::decisionNode.png[Decision Node,400, align="center"]
+
+===== Specific Features on Direct Edit
+- The direct edit tool doesn't perform any modification on the root _Activity_ nor _Constraint_/_Comment_ Links.
+
+===== Specific Features on Deletion
+- The semantic deletion tool doesn't perform any deletion on root _Activity_.
+- The graphical deletion tool doesn't perform any deletion on root _Activity_ and _Pin_ (that are synchronized).
+
+===== Specific Features on Graphical Drag&Drop
+- All border nodes (_Pin_, _ExpansionNode_ and _ActivityParameterNode_) cannot be drag and dropped.
+
+
 ==== Communication Diagram
 
 The communication diagram is a graphical description used to represent the methods of communication between objects. Communication diagrams are simplified representations of sequence diagrams focused on specific messages exchanged by lifelines. 
@@ -197,24 +235,32 @@ Note that these diagrams aren't intended to represent data manipulation involved
 image::diagCommunication.png[Communication Diagram Overview,800, align="center"]
 
 ===== Specific Features on Label
-- The label of a Lifeline representing a Property is the name of the Property instead of the _Lifeline_ name.
-
-===== Specific Features on Deletion
-- The semantic and graphical deletion tools don't perform any deletion on the root Interaction.
-
-===== Specific Features on Edge creation
-- Messages can only be created between Lifelines and the message orientation is displayed with an arrow on the target side of the edge. 
+- The label of a _Lifeline_ representing a _Property_ is the name of the _Property_ instead of the _Lifeline_ name.
 
 ===== Specific Features on Direct Edit
-- The direct edit tool doesn't perform any modification on the root Interaction nor Constraint/Comment Links.
+- The direct edit tool doesn't perform any modification on the root _Interaction_ nor _Constraint_/_Comment_ Links.
+
+===== Specific Features on Deletion
+- The semantic and graphical deletion tools don't perform any deletion on the root _Interaction_.
+
+===== Specific Features on Edge creation
+- _Messages_ can only be created between _Lifelines_ and the _Message_ orientation is displayed with an arrow on the target side of the edge. 
 
 ===== Specific Features on Graphical Drag&Drop
 - No graphical drop is authorized on this diagram because there is no container node.
 
 ===== Specific Features on Semantic Drag&Drop
-- A *Type can be drag and dropped on the root Interaction* of the diagram. This creates a new semantic Property typed with the dropped Type. A Lifeline is also semantically created, representing the new Property (through its _represents_ reference). Finally, the node representing the Lifeline is created on the root Interaction of the diagram.
-- A *Property can be drag and dropped on a Lifeline node*. The Lifeline now represents this Property (through its _represents_ reference).
-- A *Type can be drag and dropped on a Lifeline node*. This creates a new semantic Property typed with the dropped Type. A Lifeline is also semantically created, representing the new Property (through its _represents_ reference).
+- A *_Type_ can be drag and dropped on the root _Interaction_* of the diagram. This creates a new semantic _Property_ typed with the dropped _Type_. A _Lifeline_ is also semantically created, representing the new _Property_ (through its _represents_ reference). Finally, the node representing the _Lifeline_ is created on the root _Interaction_ of the diagram.
+- A *_Property_ can be drag and dropped on a _Lifeline_ node*. The _Lifeline_ now represents this Property (through its _represents_ reference).
+- A *_Type_ can be drag and dropped on a _Lifeline_ node*. This creates a new semantic _Property_ typed with the dropped _Type_. A _Lifeline_ is also semantically created, representing the new _Property_ (through its _represents_ reference).
+
+==== Portal representation
+
+A portal can be created anywhere (on any semantic element in the project) and is just a kind of dashboard where the end-user can add other representations (of any kind) so that they can be all opened at the same time.
+
+image::portalRepresentation.png[Portal Representation,1000, align="center"]
+
+See https://github.com/eclipse-sirius/sirius-web/blob/master/doc/iterations/2024.1/shapes/add_support_for_portal_representation.adoc[Portal Documentation] for more details.
 
 ==== Profile Diagram
 
@@ -223,16 +269,16 @@ The Profile diagram provide a way to extend an UML model. They are based on addi
 image::diagProfile.png[Profile Diagram Overview,800, align="center"]
 
 ===== Specific Features on Label
-- The label of an Element Import is the label of the UML metaclass it references as its _imported element_.
+- The label of an _ElementImport_ is the label of the UML metaclass it references as its _imported element_.
 
 ===== Specific Features on Direct Edit
-- The direct edit tool doesn't perform any modification on UML metaclasses, Generalization and Link (from Constraint or Comment).
+- The direct edit tool doesn't perform any modification on UML metaclasses, _Generalization_ and _Link_ (from _Constraint_ or _Comment_).
 
 ===== Specific Features on Semantic Drag&Drop
-- The semantic drag and drop of an Element Import with an UML metaclass as its _imported element_ on the Profile diagram produces a Node with the name of the UML metaclass as its label. Note that it is not possible to drag and drop Element Import with no _imported element_ or with an _imported element_ that is not an UML metaclass. 
+- The semantic drag and drop of an _ElementImport_ with an UML metaclass as its _imported element_ on the Profile diagram produces a Node with the name of the UML metaclass as its label. Note that it is not possible to drag and drop _ElementImport_ with no _imported element_ or with an _imported element_ that is not an UML metaclass. 
 
 ===== Specific Features on Reconnection
-- Reconnecting an Extension target to a different Class updates the Stereotype property _type_.
+- Reconnecting an _Extension_ target to a different _Class_ updates the _Stereotype_ property _type_.
 
 
 
@@ -243,11 +289,7 @@ The UseCase diagram is a graphical description used to represent the different w
 image::diagUseCase.png[UseCase Diagram Overview,800, align="center"]
 
 ===== Specific Features on Direct Edit
-- The direct edit tool doesn't perform any modification on Link (from Constraint or Comment), Generalization, PackageImport and PackageMerge.
-
-
-===== Specific Features on Direct Edit
-- The direct edit tool doesn't perform any modification on Generalization, PackageImport, PackageMerge and Link (from Constraint or Comment).
+- The direct edit tool doesn't perform any modification on _Generalization_, _PackageImport_, _PackageMerge_ and _Link_ (from _Constraint_ or _Comment_).
 
 [[right-side-panel]]
 === Right side panel
