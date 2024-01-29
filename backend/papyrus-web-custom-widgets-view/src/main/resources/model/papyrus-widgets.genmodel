@@ -58,7 +58,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/setOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/unsetOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/clearOperation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/clickOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MonoReferenceWidgetDescription/conditionalStyles"/>
     </genClasses>
@@ -74,7 +73,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/removeOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/clearOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/reorderOperation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/clickOperation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//MultiReferenceWidgetDescription/conditionalStyles"/>
     </genClasses>

@@ -648,8 +648,9 @@ public class PackageNodeStyleDescriptionImpl extends StyleImpl implements Packag
                 return this.isShowIcon();
             case PapyrusCustomNodesPackage.PACKAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 return this.getLabelIcon();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -696,8 +697,10 @@ public class PackageNodeStyleDescriptionImpl extends StyleImpl implements Packag
             case PapyrusCustomNodesPackage.PACKAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -744,8 +747,10 @@ public class PackageNodeStyleDescriptionImpl extends StyleImpl implements Packag
             case PapyrusCustomNodesPackage.PACKAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -780,8 +785,9 @@ public class PackageNodeStyleDescriptionImpl extends StyleImpl implements Packag
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case PapyrusCustomNodesPackage.PACKAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**

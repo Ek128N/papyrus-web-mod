@@ -653,8 +653,9 @@ public class RectangleWithExternalLabelNodeStyleDescriptionImpl extends StyleImp
                 return this.isShowIcon();
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 return this.getLabelIcon();
+            default:
+                return super.eGet(featureID, resolve, coreType);
         }
-        return super.eGet(featureID, resolve, coreType);
     }
 
     /**
@@ -701,8 +702,10 @@ public class RectangleWithExternalLabelNodeStyleDescriptionImpl extends StyleImp
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
                 return;
+            default:
+                super.eSet(featureID, newValue);
+                return;
         }
-        super.eSet(featureID, newValue);
     }
 
     /**
@@ -749,8 +752,10 @@ public class RectangleWithExternalLabelNodeStyleDescriptionImpl extends StyleImp
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
                 return;
+            default:
+                super.eUnset(featureID);
+                return;
         }
-        super.eUnset(featureID);
     }
 
     /**
@@ -785,8 +790,9 @@ public class RectangleWithExternalLabelNodeStyleDescriptionImpl extends StyleImp
                 return this.showIcon != SHOW_ICON_EDEFAULT;
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
+            default:
+                return super.eIsSet(featureID);
         }
-        return super.eIsSet(featureID);
     }
 
     /**

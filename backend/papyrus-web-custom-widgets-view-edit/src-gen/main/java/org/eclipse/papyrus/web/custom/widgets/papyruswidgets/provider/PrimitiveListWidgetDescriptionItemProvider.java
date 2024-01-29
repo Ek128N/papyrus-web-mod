@@ -73,10 +73,17 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveListWidgetDescription_valueExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListWidgetDescription_valueExpression_feature", "_UI_PrimitiveListWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__VALUE_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -85,10 +92,17 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addDisplayExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveListWidgetDescription_displayExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListWidgetDescription_displayExpression_feature", "_UI_PrimitiveListWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DISPLAY_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -98,10 +112,17 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addCandidatesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveListWidgetDescription_candidatesExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListWidgetDescription_candidatesExpression_feature", "_UI_PrimitiveListWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -111,10 +132,17 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveListWidgetDescription_isEnabledExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListWidgetDescription_isEnabledExpression_feature", "_UI_PrimitiveListWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -225,21 +253,23 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createListDescriptionStyle()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE,
+                FormFactory.eINSTANCE.createListDescriptionStyle()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createConditionalListDescriptionStyle()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE,
+                FormFactory.eINSTANCE.createConditionalListDescriptionStyle()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES, FormFactory.eINSTANCE.createConditionalListDescriptionStyle()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES,
+                FormFactory.eINSTANCE.createConditionalListDescriptionStyle()));
 
-        newChildDescriptors.add(
-                this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListDeleteOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__DELETE_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListDeleteOperation()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListAddOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ADD_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListAddOperation()));
 
-        newChildDescriptors.add(
-                this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListReorderOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__REORDER_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListReorderOperation()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__ITEM_ACTION_OPERATION,
                 PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListItemActionOperation()));
@@ -256,11 +286,12 @@ public class PrimitiveListWidgetDescriptionItemProvider extends WidgetDescriptio
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE
-                || childFeature == PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
+        boolean qualify = childFeature == PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__STYLE ||
+                childFeature == PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2",
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

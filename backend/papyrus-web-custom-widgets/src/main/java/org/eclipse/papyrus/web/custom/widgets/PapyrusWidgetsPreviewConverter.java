@@ -47,7 +47,6 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
 
     private final FormDescriptionEditorDescription formDescriptionEditorDescription;
 
-
     public PapyrusWidgetsPreviewConverter(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription) {
         this.variableManager = variableManager;
         this.formDescriptionEditorDescription = formDescriptionEditorDescription;
@@ -190,7 +189,7 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         VariableManager childVariableManager = this.variableManager.createChild();
         childVariableManager.put(VariableManager.SELF, referenceDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
-        var builder =  ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
+        var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
                 .idProvider(varManager -> id)
                 .targetObjectIdProvider(varManager -> "")
                 .labelProvider(varManager -> this.getWidgetLabel(referenceDescription, "Mono Reference"))
@@ -209,7 +208,6 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
                 .isContainmentProvider(varManager -> false)
                 .isManyProvider(varManager -> false)
                 .ownerIdProvider(varManager -> "")
-                .itemClickHandlerProvider(varManager -> new Success())
                 .ownerIdProvider(varManager -> "")
                 .clearHandlerProvider(varManager -> new Success())
                 .itemRemoveHandlerProvider(varManager -> new Success())
@@ -233,35 +231,34 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
         childVariableManager.put(VariableManager.SELF, referenceDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder = ReferenceWidgetDescription.newReferenceWidgetDescription(UUID.randomUUID().toString())
-            .idProvider(varManager -> id)
-            .targetObjectIdProvider(varManager -> "")
-            .labelProvider(varManager -> this.getWidgetLabel(referenceDescription, "Multi Reference"))
-            .iconURLProvider(varManager -> List.of())
-            .isReadOnlyProvider(varManager -> false)
-            .itemsProvider(varManager -> List.of())
-            .optionsProvider(varManager -> List.of())
-            .itemIdProvider(varManager -> "")
-            .itemKindProvider(varManager -> "")
-            .itemLabelProvider(varManager -> "")
-            .itemKindProvider(varManager -> "")
-            .itemLabelProvider(varManager -> "")
-            .itemIconURLProvider(varManager -> List.of())
-            .ownerKindProvider(varManager -> "")
-            .referenceKindProvider(varManager -> "")
-            .isContainmentProvider(varManager -> false)
-            .isManyProvider(varManager -> true)
-            .ownerIdProvider(varManager -> "")
-            .itemClickHandlerProvider(varManager -> new Success())
-            .ownerIdProvider(varManager -> "")
-            .clearHandlerProvider(varManager -> new Success())
-            .itemRemoveHandlerProvider(varManager -> new Success())
-            .setHandlerProvider(varManager -> new Success())
-            .addHandlerProvider(varManager -> new Success())
-            .moveHandlerProvider(varManager -> new Success())
-            .styleProvider(varManager -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
-            .diagnosticsProvider(varManager -> List.of())
-            .kindProvider(object -> "")
-            .messageProvider(object -> "");
+                .idProvider(varManager -> id)
+                .targetObjectIdProvider(varManager -> "")
+                .labelProvider(varManager -> this.getWidgetLabel(referenceDescription, "Multi Reference"))
+                .iconURLProvider(varManager -> List.of())
+                .isReadOnlyProvider(varManager -> false)
+                .itemsProvider(varManager -> List.of())
+                .optionsProvider(varManager -> List.of())
+                .itemIdProvider(varManager -> "")
+                .itemKindProvider(varManager -> "")
+                .itemLabelProvider(varManager -> "")
+                .itemKindProvider(varManager -> "")
+                .itemLabelProvider(varManager -> "")
+                .itemIconURLProvider(varManager -> List.of())
+                .ownerKindProvider(varManager -> "")
+                .referenceKindProvider(varManager -> "")
+                .isContainmentProvider(varManager -> false)
+                .isManyProvider(varManager -> true)
+                .ownerIdProvider(varManager -> "")
+                .ownerIdProvider(varManager -> "")
+                .clearHandlerProvider(varManager -> new Success())
+                .itemRemoveHandlerProvider(varManager -> new Success())
+                .setHandlerProvider(varManager -> new Success())
+                .addHandlerProvider(varManager -> new Success())
+                .moveHandlerProvider(varManager -> new Success())
+                .styleProvider(varManager -> this.getWidgetStyle(referenceDescription.getStyle(), this.variableManager))
+                .diagnosticsProvider(varManager -> List.of())
+                .kindProvider(object -> "")
+                .messageProvider(object -> "");
         if (referenceDescription.getHelpExpression() != null && !referenceDescription.getHelpExpression().isBlank()) {
             String helpText = this.getWidgetHelpText(referenceDescription);
             builder.helpTextProvider(varManager -> helpText);

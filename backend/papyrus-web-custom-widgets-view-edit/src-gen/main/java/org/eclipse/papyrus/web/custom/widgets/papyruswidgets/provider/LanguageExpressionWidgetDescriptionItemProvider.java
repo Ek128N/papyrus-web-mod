@@ -68,10 +68,17 @@ public class LanguageExpressionWidgetDescriptionItemProvider extends WidgetDescr
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_LanguageExpressionWidgetDescription_isEnabledExpression_feature", "_UI_LanguageExpressionWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.LANGUAGE_EXPRESSION_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**

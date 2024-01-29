@@ -78,6 +78,11 @@ export const siriusWebTheme = createTheme(
           backgroundColor: baseTheme.palette.primary.main,
         },
       },
+      MuiTooltip: {
+        tooltip: {
+          backgroundColor: baseTheme.palette.common.black,
+        },
+      },
     },
   },
   baseTheme

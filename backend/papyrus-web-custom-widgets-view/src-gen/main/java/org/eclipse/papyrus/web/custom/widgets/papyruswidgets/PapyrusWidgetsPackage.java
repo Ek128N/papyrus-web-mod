@@ -657,22 +657,13 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 9;
 
     /**
-     * The feature id for the '<em><b>Click Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int MONO_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 10;
-
-    /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 11;
+    int MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -681,7 +672,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 12;
+    int MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The number of structural features of the '<em>Mono Reference Widget Description</em>' class. <!-- begin-user-doc
@@ -690,7 +681,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MONO_REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 13;
+    int MONO_REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The number of operations of the '<em>Mono Reference Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -836,22 +827,13 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
-     * The feature id for the '<em><b>Click Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 11;
-
-    /**
      * The feature id for the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 12;
+    int MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 11;
 
     /**
      * The feature id for the '<em><b>Conditional Styles</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -860,7 +842,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MULTI_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 13;
+    int MULTI_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
      * The number of structural features of the '<em>Multi Reference Widget Description</em>' class. <!-- begin-user-doc
@@ -869,7 +851,7 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int MULTI_REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 14;
+    int MULTI_REFERENCE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 13;
 
     /**
      * The number of operations of the '<em>Multi Reference Widget Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1797,18 +1779,6 @@ public interface PapyrusWidgetsPackage extends EPackage {
 
     /**
      * Returns the meta object for the containment reference
-     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getClickOperation
-     * <em>Click Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Click Operation</em>'.
-     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getClickOperation()
-     * @see #getMonoReferenceWidgetDescription()
-     * @generated
-     */
-    EReference getMonoReferenceWidgetDescription_ClickOperation();
-
-    /**
-     * Returns the meta object for the containment reference
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getStyle
      * <em>Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1973,18 +1943,6 @@ public interface PapyrusWidgetsPackage extends EPackage {
      * @generated
      */
     EReference getMultiReferenceWidgetDescription_ReorderOperation();
-
-    /**
-     * Returns the meta object for the containment reference
-     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getClickOperation
-     * <em>Click Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the containment reference '<em>Click Operation</em>'.
-     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getClickOperation()
-     * @see #getMultiReferenceWidgetDescription()
-     * @generated
-     */
-    EReference getMultiReferenceWidgetDescription_ClickOperation();
 
     /**
      * Returns the meta object for the containment reference
@@ -2696,14 +2654,6 @@ public interface PapyrusWidgetsPackage extends EPackage {
         EReference MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION = eINSTANCE.getMonoReferenceWidgetDescription_ClearOperation();
 
         /**
-         * The meta object literal for the '<em><b>Click Operation</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference MONO_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION = eINSTANCE.getMonoReferenceWidgetDescription_ClickOperation();
-
-        /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc
          * --> <!-- end-user-doc -->
          *
@@ -2817,14 +2767,6 @@ public interface PapyrusWidgetsPackage extends EPackage {
          * @generated
          */
         EReference MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION = eINSTANCE.getMultiReferenceWidgetDescription_ReorderOperation();
-
-        /**
-         * The meta object literal for the '<em><b>Click Operation</b></em>' containment reference feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EReference MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION = eINSTANCE.getMultiReferenceWidgetDescription_ClickOperation();
 
         /**
          * The meta object literal for the '<em><b>Style</b></em>' containment reference feature. <!-- begin-user-doc

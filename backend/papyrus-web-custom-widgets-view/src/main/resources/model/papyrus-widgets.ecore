@@ -68,8 +68,6 @@
         eType="#//MonoReferenceUnsetOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="clearOperation" lowerBound="1"
         eType="#//ClearReferenceOperation" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clickOperation" eType="#//ClickReferenceValueOperation"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass platform:/resource/sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ReferenceWidgetDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
@@ -95,9 +93,7 @@
         eType="#//ClearReferenceOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reorderOperation" eType="#//MultiReferenceReorderOperation"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clickOperation" eType="#//ClickReferenceValueOperation"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass platform:/resource/sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ReferenceWidgetDescriptionStyle"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass ../../../../../sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ReferenceWidgetDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="ecore:EClass platform:/resource/sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ConditionalReferenceWidgetDescriptionStyle"

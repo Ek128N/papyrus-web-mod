@@ -157,19 +157,26 @@ public class MultiReferenceReorderOperationItemProvider extends ItemProviderAdap
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

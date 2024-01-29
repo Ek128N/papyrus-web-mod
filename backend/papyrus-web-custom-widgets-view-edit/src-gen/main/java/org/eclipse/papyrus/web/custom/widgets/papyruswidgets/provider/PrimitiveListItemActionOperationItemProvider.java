@@ -77,10 +77,17 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
      * @generated
      */
     protected void addIconURLExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveListItemActionOperation_iconURLExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListItemActionOperation_iconURLExpression_feature", "_UI_PrimitiveListItemActionOperation_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__ICON_URL_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -90,10 +97,17 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
      * @generated
      */
     protected void addPreconditionExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveListItemActionOperation_preconditionExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveListItemActionOperation_preconditionExpression_feature", "_UI_PrimitiveListItemActionOperation_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__PRECONDITION_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -192,19 +206,26 @@ public class PrimitiveListItemActionOperationItemProvider extends ItemProviderAd
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createLet()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY, ViewFactory.eINSTANCE.createIf()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_ITEM_ACTION_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

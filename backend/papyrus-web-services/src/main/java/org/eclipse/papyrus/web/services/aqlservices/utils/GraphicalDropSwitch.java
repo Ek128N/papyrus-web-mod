@@ -199,8 +199,8 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             if (existingElementImportInTarget != null) {
                 String duplicatedMetaclassMessage = MessageFormat.format("Cannot drag and drop Metaclass {0} in {1}, a Metaclass with the same identifier already exists.",
                         this.droppedNode.getTargetObjectLabel(), this.targetNode.getTargetObjectLabel());
-                LOGGER.warn(duplicatedMetaclassMessage);
                 this.logger.log(duplicatedMetaclassMessage, ILogLevel.WARNING);
+                throw new InvalidDropException(duplicatedMetaclassMessage);
             } else {
                 EObject elementImportSourceParent = null;
                 Optional<Node> parentMetaclassNode = this.diagramNavigator.getParentNode(this.droppedNode);
@@ -253,10 +253,10 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
                 isDragAndDropValid = this.createElementImportView((ElementImport) droppedElement, this.targetNode);
             } else {
                 isDragAndDropValid = isDragAndDropValid && this.createDefaultView(droppedElement);
-            }
 
-            // create views for children of the dropped node
-            isDragAndDropValid = isDragAndDropValid && this.createChildViews(droppedElement, this.targetNode, this.droppedNode);
+                // create views for children of the dropped node
+                isDragAndDropValid = isDragAndDropValid && this.createChildViews(droppedElement, this.targetNode, this.droppedNode);
+            }
 
             // Delete view from the old container node
             isDragAndDropValid = isDragAndDropValid && this.viewHelper.deleteView(this.droppedNode);

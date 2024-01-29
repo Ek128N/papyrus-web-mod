@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
-import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceAddOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceRemoveOperation;
@@ -65,8 +64,6 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * <em>Clear Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.MultiReferenceWidgetDescriptionImpl#getReorderOperation
  * <em>Reorder Operation</em>}</li>
- * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.MultiReferenceWidgetDescriptionImpl#getClickOperation
- * <em>Click Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.MultiReferenceWidgetDescriptionImpl#getStyle
  * <em>Style</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.MultiReferenceWidgetDescriptionImpl#getConditionalStyles
@@ -245,16 +242,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
      * @ordered
      */
     protected MultiReferenceReorderOperation reorderOperation;
-
-    /**
-     * The cached value of the '{@link #getClickOperation() <em>Click Operation</em>}' containment reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getClickOperation()
-     * @generated
-     * @ordered
-     */
-    protected ClickReferenceValueOperation clickOperation;
 
     /**
      * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
@@ -689,55 +676,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
      * @generated
      */
     @Override
-    public ClickReferenceValueOperation getClickOperation() {
-        return this.clickOperation;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetClickOperation(ClickReferenceValueOperation newClickOperation, NotificationChain msgs) {
-        ClickReferenceValueOperation oldClickOperation = this.clickOperation;
-        this.clickOperation = newClickOperation;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION, oldClickOperation,
-                    newClickOperation);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setClickOperation(ClickReferenceValueOperation newClickOperation) {
-        if (newClickOperation != this.clickOperation) {
-            NotificationChain msgs = null;
-            if (this.clickOperation != null)
-                msgs = ((InternalEObject) this.clickOperation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION, null, msgs);
-            if (newClickOperation != null)
-                msgs = ((InternalEObject) newClickOperation).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION, null, msgs);
-            msgs = this.basicSetClickOperation(newClickOperation, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION, newClickOperation, newClickOperation));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public ReferenceWidgetDescriptionStyle getStyle() {
         return this.style;
     }
@@ -812,8 +750,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 return this.basicSetClearOperation(null, msgs);
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION:
                 return this.basicSetReorderOperation(null, msgs);
-            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION:
-                return this.basicSetClickOperation(null, msgs);
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.basicSetStyle(null, msgs);
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -853,8 +789,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 return this.getClearOperation();
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION:
                 return this.getReorderOperation();
-            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION:
-                return this.getClickOperation();
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.getStyle();
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
@@ -905,9 +839,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 return;
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION:
                 this.setReorderOperation((MultiReferenceReorderOperation) newValue);
-                return;
-            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION:
-                this.setClickOperation((ClickReferenceValueOperation) newValue);
                 return;
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
@@ -963,9 +894,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION:
                 this.setReorderOperation((MultiReferenceReorderOperation) null);
                 return;
-            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION:
-                this.setClickOperation((ClickReferenceValueOperation) null);
-                return;
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 this.setStyle((ReferenceWidgetDescriptionStyle) null);
                 return;
@@ -1009,8 +937,6 @@ public class MultiReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl i
                 return this.clearOperation != null;
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION:
                 return this.reorderOperation != null;
-            case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION:
-                return this.clickOperation != null;
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE:
                 return this.style != null;
             case PapyrusWidgetsPackage.MULTI_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:

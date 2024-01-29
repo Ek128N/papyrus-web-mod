@@ -345,14 +345,17 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
              */
             @Override
             public Object caseNodeDescription(NodeDescription object) {
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription()));
 
                 return null;
             }
@@ -364,14 +367,17 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
              */
             @Override
             public Object caseConditionalNodeStyle(ConditionalNodeStyle object) {
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription()));
 
-                this.newChildDescriptors.add(
-                        this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription()));
 
                 return null;
             }

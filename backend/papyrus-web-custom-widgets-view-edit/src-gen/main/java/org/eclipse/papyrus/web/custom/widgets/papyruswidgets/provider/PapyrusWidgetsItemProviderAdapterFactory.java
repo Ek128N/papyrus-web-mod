@@ -726,18 +726,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseGroupDescription(GroupDescription object) {
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }
@@ -749,23 +754,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFlexboxContainerDescription(FlexboxContainerDescription object) {
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
 
-                this.newChildDescriptors
-                        .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }
@@ -777,17 +782,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFormElementFor(FormElementFor object) {
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }
@@ -799,17 +810,23 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
              */
             @Override
             public Object caseFormElementIf(FormElementIf object) {
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createLanguageExpressionWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveRadioWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createPrimitiveListWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createMultiReferenceWidgetDescription()));
 
-                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN, PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
                 return null;
             }

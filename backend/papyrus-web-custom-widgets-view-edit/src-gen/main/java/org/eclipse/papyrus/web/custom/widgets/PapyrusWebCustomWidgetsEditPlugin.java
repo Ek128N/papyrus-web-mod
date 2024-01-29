@@ -46,7 +46,11 @@ public final class PapyrusWebCustomWidgetsEditPlugin extends EMFPlugin {
      * @generated
      */
     public PapyrusWebCustomWidgetsEditPlugin() {
-        super(new ResourceLocator[] { FormEditPlugin.INSTANCE, ReferenceEditPlugin.INSTANCE, ViewEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] {
+                FormEditPlugin.INSTANCE,
+                ReferenceEditPlugin.INSTANCE,
+                ViewEditPlugin.INSTANCE,
+        });
     }
 
     /**

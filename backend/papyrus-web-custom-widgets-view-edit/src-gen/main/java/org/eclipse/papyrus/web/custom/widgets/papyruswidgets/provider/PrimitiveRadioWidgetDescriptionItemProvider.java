@@ -72,10 +72,17 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveRadioWidgetDescription_isEnabledExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveRadioWidgetDescription_isEnabledExpression_feature", "_UI_PrimitiveRadioWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -85,10 +92,17 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      * @generated
      */
     protected void addCandidatesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveRadioWidgetDescription_candidatesExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveRadioWidgetDescription_candidatesExpression_feature", "_UI_PrimitiveRadioWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__CANDIDATES_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -97,10 +111,17 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
      * @generated
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_PrimitiveRadioWidgetDescription_valueExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveRadioWidgetDescription_valueExpression_feature", "_UI_PrimitiveRadioWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__VALUE_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -200,19 +221,26 @@ public class PrimitiveRadioWidgetDescriptionItemProvider extends WidgetDescripti
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createLet()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createIf()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION__BODY,
+                ViewFactory.eINSTANCE.createIf()));
     }
 
     /**

@@ -79,9 +79,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addFontSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_fontSize_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -90,9 +98,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_italic_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__ITALIC,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -101,9 +117,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_bold_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__BOLD,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -112,9 +136,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addUnderlinePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_underline_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__UNDERLINE,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -123,9 +155,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_LabelStyle_strikeThrough_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
+                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -134,9 +174,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addBorderColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderColor_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
-                DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, true, false, false, null, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderColor_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderColor_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR,
+                true,
+                false,
+                false,
+                null,
+                null,
+                null));
     }
 
     /**
@@ -145,9 +193,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addBorderRadiusPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderRadius_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"),
-                DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderRadius_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderRadius_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_RADIUS,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -156,9 +212,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addBorderSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"),
-                DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderSize_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderSize_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_SIZE,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -167,9 +231,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addBorderLineStylePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BorderStyle_borderLineStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
-                DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_BorderStyle_borderLineStyle_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_BorderStyle_borderLineStyle_feature", "_UI_BorderStyle_type"),
+                DiagramPackage.Literals.BORDER_STYLE__BORDER_LINE_STYLE,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -178,10 +250,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addLabelColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_NodeStyleDescription_labelColor_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelColor_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR, true, false, false, null, null, null));
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
+                true,
+                false,
+                false,
+                null,
+                null,
+                null));
     }
 
     /**
@@ -190,10 +269,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addShowIconPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_NodeStyleDescription_showIcon_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_showIcon_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -202,10 +288,17 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
      * @generated
      */
     protected void addLabelIconPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_NodeStyleDescription_labelIcon_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelIcon_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -265,8 +358,10 @@ public class NoteNodeStyleDescriptionItemProvider extends StyleItemProvider {
             case PapyrusCustomNodesPackage.NOTE_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            default:
+                super.notifyChanged(notification);
+                return;
         }
-        super.notifyChanged(notification);
     }
 
     /**

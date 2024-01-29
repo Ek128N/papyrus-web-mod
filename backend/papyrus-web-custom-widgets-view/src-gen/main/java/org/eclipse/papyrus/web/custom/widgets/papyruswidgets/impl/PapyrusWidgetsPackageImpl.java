@@ -638,7 +638,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
-    public EReference getMonoReferenceWidgetDescription_ClickOperation() {
+    public EReference getMonoReferenceWidgetDescription_Style() {
         return (EReference) this.monoReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(10);
     }
 
@@ -648,18 +648,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
-    public EReference getMonoReferenceWidgetDescription_Style() {
-        return (EReference) this.monoReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(11);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getMonoReferenceWidgetDescription_ConditionalStyles() {
-        return (EReference) this.monoReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(12);
+        return (EReference) this.monoReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(11);
     }
 
     /**
@@ -788,7 +778,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
-    public EReference getMultiReferenceWidgetDescription_ClickOperation() {
+    public EReference getMultiReferenceWidgetDescription_Style() {
         return (EReference) this.multiReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(11);
     }
 
@@ -798,18 +788,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
-    public EReference getMultiReferenceWidgetDescription_Style() {
-        return (EReference) this.multiReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(12);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getMultiReferenceWidgetDescription_ConditionalStyles() {
-        return (EReference) this.multiReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(13);
+        return (EReference) this.multiReferenceWidgetDescriptionEClass.getEStructuralFeatures().get(12);
     }
 
     /**
@@ -1167,7 +1147,6 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.createEReference(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__SET_OPERATION);
         this.createEReference(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__UNSET_OPERATION);
         this.createEReference(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION);
-        this.createEReference(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION);
         this.createEReference(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE);
         this.createEReference(this.monoReferenceWidgetDescriptionEClass, MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
 
@@ -1183,7 +1162,6 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.createEReference(this.multiReferenceWidgetDescriptionEClass, MULTI_REFERENCE_WIDGET_DESCRIPTION__REMOVE_OPERATION);
         this.createEReference(this.multiReferenceWidgetDescriptionEClass, MULTI_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION);
         this.createEReference(this.multiReferenceWidgetDescriptionEClass, MULTI_REFERENCE_WIDGET_DESCRIPTION__REORDER_OPERATION);
-        this.createEReference(this.multiReferenceWidgetDescriptionEClass, MULTI_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION);
         this.createEReference(this.multiReferenceWidgetDescriptionEClass, MULTI_REFERENCE_WIDGET_DESCRIPTION__STYLE);
         this.createEReference(this.multiReferenceWidgetDescriptionEClass, MULTI_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
 
@@ -1273,43 +1251,53 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
 
         this.initEClass(this.primitiveRadioWidgetDescriptionEClass, PrimitiveRadioWidgetDescription.class, "PrimitiveRadioWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPrimitiveRadioWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
-                PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveRadioWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveRadioWidgetDescription_CandidatesExpression(), theViewPackage.getInterpretedExpression(), "candidatesExpression", null, 0, 1,
-                PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveRadioWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveRadioWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, PrimitiveRadioWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveRadioWidgetDescription_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveRadioWidgetDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.primitiveListWidgetDescriptionEClass, PrimitiveListWidgetDescription.class, "PrimitiveListWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getPrimitiveListWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, PrimitiveListWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveListWidgetDescription_DisplayExpression(), theViewPackage.getInterpretedExpression(), "displayExpression", null, 0, 1,
-                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveListWidgetDescription_CandidatesExpression(), theViewPackage.getInterpretedExpression(), "candidatesExpression", null, 0, 1,
-                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_Style(), theFormPackage.getListDescriptionStyle(), null, "style", null, 0, 1, PrimitiveListWidgetDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_ConditionalStyles(), theFormPackage.getConditionalListDescriptionStyle(), null, "conditionalStyles", null, 0, -1,
                 PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveListWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
-                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_DeleteOperation(), this.getPrimitiveListDeleteOperation(), null, "deleteOperation", null, 0, 1, PrimitiveListWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_AddOperation(), this.getPrimitiveListAddOperation(), null, "addOperation", null, 0, 1, PrimitiveListWidgetDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_ReorderOperation(), this.getPrimitiveListReorderOperation(), null, "reorderOperation", null, 0, 1,
-                PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveListWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getPrimitiveListWidgetDescription_ItemActionOperation(), this.getPrimitiveListItemActionOperation(), null, "itemActionOperation", null, 0, 1,
                 PrimitiveListWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.primitiveListDeleteOperationEClass, PrimitiveListDeleteOperation.class, "PrimitiveListDeleteOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPrimitiveListDeleteOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListDeleteOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.primitiveListAddOperationEClass, PrimitiveListAddOperation.class, "PrimitiveListAddOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPrimitiveListAddOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListAddOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.primitiveListReorderOperationEClass, PrimitiveListReorderOperation.class, "PrimitiveListReorderOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPrimitiveListReorderOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListReorderOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -1318,19 +1306,23 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEClass(this.primitiveListItemActionOperationEClass, PrimitiveListItemActionOperation.class, "PrimitiveListItemActionOperation", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPrimitiveListItemActionOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, PrimitiveListItemActionOperation.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveListItemActionOperation_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1,
-                PrimitiveListItemActionOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                PrimitiveListItemActionOperation.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPrimitiveListItemActionOperation_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1,
                 PrimitiveListItemActionOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.monoReferenceWidgetDescriptionEClass, MonoReferenceWidgetDescription.class, "MonoReferenceWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
-                MonoReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                MonoReferenceWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_OwnerExpression(), theViewPackage.getInterpretedExpression(), "ownerExpression", null, 0, 1, MonoReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_Type(), theViewPackage.getInterpretedExpression(), "type", null, 0, 1, MonoReferenceWidgetDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, MonoReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMonoReferenceWidgetDescription_CandidatesSearchScopeExpression(), theViewPackage.getInterpretedExpression(), "candidatesSearchScopeExpression", null, 0, 1,
@@ -1340,13 +1332,13 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEReference(this.getMonoReferenceWidgetDescription_CreateElementOperation(), this.getCreateElementInReferenceOperation(), null, "createElementOperation", null, 1, 1,
                 MonoReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMonoReferenceWidgetDescription_SetOperation(), this.getMonoReferenceSetOperation(), null, "setOperation", null, 1, 1, MonoReferenceWidgetDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMonoReferenceWidgetDescription_UnsetOperation(), this.getMonoReferenceUnsetOperation(), null, "unsetOperation", null, 1, 1, MonoReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMonoReferenceWidgetDescription_ClearOperation(), this.getClearReferenceOperation(), null, "clearOperation", null, 1, 1, MonoReferenceWidgetDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getMonoReferenceWidgetDescription_ClickOperation(), this.getClickReferenceValueOperation(), null, "clickOperation", null, 0, 1, MonoReferenceWidgetDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMonoReferenceWidgetDescription_Style(), theReferencePackage.getReferenceWidgetDescriptionStyle(), null, "style", null, 0, 1, MonoReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMonoReferenceWidgetDescription_ConditionalStyles(), theReferencePackage.getConditionalReferenceWidgetDescriptionStyle(), null, "conditionalStyles", null, 0, -1,
@@ -1354,11 +1346,13 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
 
         this.initEClass(this.multiReferenceWidgetDescriptionEClass, MultiReferenceWidgetDescription.class, "MultiReferenceWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
-                MultiReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                MultiReferenceWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_OwnerExpression(), theViewPackage.getInterpretedExpression(), "ownerExpression", null, 0, 1, MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_Type(), theViewPackage.getInterpretedExpression(), "type", null, 0, 1, MultiReferenceWidgetDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1, MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMultiReferenceWidgetDescription_CandidatesSearchScopeExpression(), theViewPackage.getInterpretedExpression(), "candidatesSearchScopeExpression", null, 0, 1,
@@ -1368,14 +1362,16 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEReference(this.getMultiReferenceWidgetDescription_CreateElementOperation(), this.getCreateElementInReferenceOperation(), null, "createElementOperation", null, 1, 1,
                 MultiReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMultiReferenceWidgetDescription_AddOperation(), this.getMultiReferenceAddOperation(), null, "addOperation", null, 1, 1, MultiReferenceWidgetDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMultiReferenceWidgetDescription_RemoveOperation(), this.getMultiReferenceRemoveOperation(), null, "removeOperation", null, 1, 1,
-                MultiReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getMultiReferenceWidgetDescription_ClearOperation(), this.getClearReferenceOperation(), null, "clearOperation", null, 1, 1, MultiReferenceWidgetDescription.class,
+                MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMultiReferenceWidgetDescription_ClearOperation(), this.getClearReferenceOperation(), null, "clearOperation", null, 1, 1, MultiReferenceWidgetDescription.class,
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMultiReferenceWidgetDescription_ReorderOperation(), this.getMultiReferenceReorderOperation(), null, "reorderOperation", null, 0, 1,
-                MultiReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getMultiReferenceWidgetDescription_ClickOperation(), this.getClickReferenceValueOperation(), null, "clickOperation", null, 0, 1, MultiReferenceWidgetDescription.class,
+                MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMultiReferenceWidgetDescription_Style(), theReferencePackage.getReferenceWidgetDescriptionStyle(), null, "style", null, 0, 1, MultiReferenceWidgetDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1384,24 +1380,29 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
 
         this.initEClass(this.monoReferenceSetOperationEClass, MonoReferenceSetOperation.class, "MonoReferenceSetOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getMonoReferenceSetOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, MonoReferenceSetOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.monoReferenceUnsetOperationEClass, MonoReferenceUnsetOperation.class, "MonoReferenceUnsetOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getMonoReferenceUnsetOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, MonoReferenceUnsetOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.createElementInReferenceOperationEClass, CreateElementInReferenceOperation.class, "CreateElementInReferenceOperation", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getCreateElementInReferenceOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, CreateElementInReferenceOperation.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE,
+                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.clickReferenceValueOperationEClass, ClickReferenceValueOperation.class, "ClickReferenceValueOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getClickReferenceValueOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, ClickReferenceValueOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.multiReferenceAddOperationEClass, MultiReferenceAddOperation.class, "MultiReferenceAddOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getMultiReferenceAddOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, MultiReferenceAddOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.multiReferenceRemoveOperationEClass, MultiReferenceRemoveOperation.class, "MultiReferenceRemoveOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getMultiReferenceRemoveOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, MultiReferenceRemoveOperation.class, !IS_TRANSIENT, !IS_VOLATILE,
@@ -1420,9 +1421,11 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_IsEnabledExpression(), theViewPackage.getInterpretedExpression(), "isEnabledExpression", null, 0, 1,
                 ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_Many(), this.ecorePackage.getEBoolean(), "many", null, 0, 1, ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_Type(), theViewPackage.getInterpretedExpression(), "type", null, 0, 1, ContainmentReferenceWidgetDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_OwnerExpression(), theViewPackage.getInterpretedExpression(), "ownerExpression", null, 0, 1,
                 ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getContainmentReferenceWidgetDescription_ValueExpression(), theViewPackage.getInterpretedExpression(), "valueExpression", null, 0, 1,
@@ -1438,7 +1441,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEReference(this.getContainmentReferenceWidgetDescription_Style(), theReferencePackage.getReferenceWidgetDescriptionStyle(), null, "style", null, 0, 1,
                 ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getContainmentReferenceWidgetDescription_ConditionalStyles(), theReferencePackage.getConditionalReferenceWidgetDescriptionStyle(), null, "conditionalStyles", null, 0,
-                -1, ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+                -1,
+                ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

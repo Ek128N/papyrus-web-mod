@@ -48,7 +48,10 @@ public final class CustomNodesEditPlugin extends EMFPlugin {
      * @generated
      */
     public CustomNodesEditPlugin() {
-        super(new ResourceLocator[] { DiagramEditPlugin.INSTANCE, ViewEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] {
+                DiagramEditPlugin.INSTANCE,
+                ViewEditPlugin.INSTANCE,
+        });
     }
 
     /**

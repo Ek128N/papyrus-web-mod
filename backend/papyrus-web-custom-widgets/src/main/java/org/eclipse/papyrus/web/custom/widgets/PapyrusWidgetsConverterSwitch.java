@@ -421,7 +421,6 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
                 .diagnosticsProvider(variableManager -> List.of()) //
                 .kindProvider(object -> "") //
                 .messageProvider(object -> "") //
-                .itemClickHandlerProvider(this.handleOperation(referenceDescription.getClickOperation(), ClickReferenceValueOperation::getBody, CLICKING_ERROR_MSG)) //
                 .clearHandlerProvider(this.handleOperation(referenceDescription.getClearOperation(), ClearReferenceOperation::getBody, "Something went wrong while clearing the reference.")) //
                 .itemRemoveHandlerProvider(
                         this.handleOperation(referenceDescription.getUnsetOperation(), MonoReferenceUnsetOperation::getBody, "Something went wrong while unsetting reference value.")) //
@@ -460,7 +459,6 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
                 .diagnosticsProvider(variableManager -> List.of()) //
                 .kindProvider(object -> "") //
                 .messageProvider(object -> "") //
-                .itemClickHandlerProvider(this.handleOperation(referenceDescription.getClickOperation(), ClickReferenceValueOperation::getBody, CLICKING_ERROR_MSG)) //
                 .clearHandlerProvider(this.handleOperation(referenceDescription.getClearOperation(), ClearReferenceOperation::getBody, "Something went wrong while clearing the reference.")) //
                 .itemRemoveHandlerProvider(this.handleOperation(referenceDescription.getRemoveOperation(), MultiReferenceRemoveOperation::getBody, DELETION_ERROR_MSG)) //
                 .setHandlerProvider(variableManager -> null) // not available in multi

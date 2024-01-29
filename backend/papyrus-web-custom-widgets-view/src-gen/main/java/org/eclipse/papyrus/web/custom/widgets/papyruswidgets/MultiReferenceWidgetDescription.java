@@ -49,8 +49,6 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * <em>Clear Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getReorderOperation
  * <em>Reorder Operation</em>}</li>
- * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getClickOperation
- * <em>Click Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getStyle
  * <em>Style</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getConditionalStyles
@@ -324,30 +322,6 @@ public interface MultiReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setReorderOperation(MultiReferenceReorderOperation value);
-
-    /**
-     * Returns the value of the '<em><b>Click Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Click Operation</em>' containment reference.
-     * @see #setClickOperation(ClickReferenceValueOperation)
-     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getMultiReferenceWidgetDescription_ClickOperation()
-     * @model containment="true"
-     * @generated
-     */
-    ClickReferenceValueOperation getClickOperation();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription#getClickOperation
-     * <em>Click Operation</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Click Operation</em>' containment reference.
-     * @see #getClickOperation()
-     * @generated
-     */
-    void setClickOperation(ClickReferenceValueOperation value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

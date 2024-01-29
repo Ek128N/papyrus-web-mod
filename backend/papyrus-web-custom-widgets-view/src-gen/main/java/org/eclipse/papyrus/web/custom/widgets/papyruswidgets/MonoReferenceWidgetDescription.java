@@ -47,8 +47,6 @@ import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptio
  * <em>Unset Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getClearOperation
  * <em>Clear Operation</em>}</li>
- * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getClickOperation
- * <em>Click Operation</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getStyle
  * <em>Style</em>}</li>
  * <li>{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getConditionalStyles
@@ -298,30 +296,6 @@ public interface MonoReferenceWidgetDescription extends WidgetDescription {
      * @generated
      */
     void setClearOperation(ClearReferenceOperation value);
-
-    /**
-     * Returns the value of the '<em><b>Click Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return the value of the '<em>Click Operation</em>' containment reference.
-     * @see #setClickOperation(ClickReferenceValueOperation)
-     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage#getMonoReferenceWidgetDescription_ClickOperation()
-     * @model containment="true"
-     * @generated
-     */
-    ClickReferenceValueOperation getClickOperation();
-
-    /**
-     * Sets the value of the
-     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription#getClickOperation
-     * <em>Click Operation</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Click Operation</em>' containment reference.
-     * @see #getClickOperation()
-     * @generated
-     */
-    void setClickOperation(ClickReferenceValueOperation value);
 
     /**
      * Returns the value of the '<em><b>Style</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc

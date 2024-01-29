@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -124,7 +124,7 @@ export const PapyrusPopupToolContribution = ({
   if (modal === 'dialog') {
     modalElement = (
       <>
-        <Dialog open={true} onClose={onClose} fullWidth>
+        <Dialog open={true} onClose={onClose} onClick={(event) => event.stopPropagation()} fullWidth>
           <DialogContent>
             <TransferModal editingContextId={editingContextId} items={metaclasses} onClose={onClose} />
           </DialogContent>

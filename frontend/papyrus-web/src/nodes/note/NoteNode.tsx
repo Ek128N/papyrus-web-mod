@@ -30,10 +30,15 @@ import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer, useReactFlow } from 'reactflow';
 import { NoteNodeData } from './NoteNode.types';
 
+const resizeLineStyle = (theme: Theme): React.CSSProperties => {
+  return { borderWidth: theme.spacing(0.15) };
+};
+
 const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   return {
-    width: theme.spacing(0.75),
-    height: theme.spacing(0.75),
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    borderRadius: '100%',
   };
 };
 
@@ -108,6 +113,7 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
       {data.nodeDescription?.userResizable && (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
+          lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
           isVisible={selected}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
@@ -131,7 +137,7 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <svg viewBox={`0 0 ${node.width} ${node.height}`}>
           <path

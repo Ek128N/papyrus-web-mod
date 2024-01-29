@@ -76,10 +76,17 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_MonoReferenceWidgetDescription_isEnabledExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MonoReferenceWidgetDescription_isEnabledExpression_feature", "_UI_MonoReferenceWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -88,10 +95,17 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addOwnerExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_MonoReferenceWidgetDescription_ownerExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MonoReferenceWidgetDescription_ownerExpression_feature", "_UI_MonoReferenceWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__OWNER_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__OWNER_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -100,10 +114,17 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addTypePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_MonoReferenceWidgetDescription_type_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MonoReferenceWidgetDescription_type_feature", "_UI_MonoReferenceWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__TYPE,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -112,10 +133,17 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_MonoReferenceWidgetDescription_valueExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MonoReferenceWidgetDescription_valueExpression_feature", "_UI_MonoReferenceWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__VALUE_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -125,10 +153,17 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addCandidatesSearchScopeExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_MonoReferenceWidgetDescription_candidatesSearchScopeExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MonoReferenceWidgetDescription_candidatesSearchScopeExpression_feature", "_UI_MonoReferenceWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CANDIDATES_SEARCH_SCOPE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CANDIDATES_SEARCH_SCOPE_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -138,10 +173,17 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
      * @generated
      */
     protected void addDropdownOptionsExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
                 this.getString("_UI_MonoReferenceWidgetDescription_dropdownOptionsExpression_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_MonoReferenceWidgetDescription_dropdownOptionsExpression_feature", "_UI_MonoReferenceWidgetDescription_type"),
-                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__DROPDOWN_OPTIONS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__DROPDOWN_OPTIONS_EXPRESSION,
+                true,
+                false,
+                false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null,
+                null));
     }
 
     /**
@@ -160,7 +202,6 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__SET_OPERATION);
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__UNSET_OPERATION);
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION);
-            this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION);
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE);
             this.childrenFeatures.add(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
@@ -235,7 +276,6 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__SET_OPERATION:
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__UNSET_OPERATION:
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION:
-            case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION:
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE:
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
@@ -259,22 +299,20 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CREATE_ELEMENT_OPERATION,
                 PapyrusWidgetsFactory.eINSTANCE.createCreateElementInReferenceOperation()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__SET_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceSetOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__SET_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceSetOperation()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__UNSET_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceUnsetOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__UNSET_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createMonoReferenceUnsetOperation()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createClearReferenceOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CLEAR_OPERATION,
+                PapyrusWidgetsFactory.eINSTANCE.createClearReferenceOperation()));
 
-        newChildDescriptors.add(
-                this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION, PapyrusWidgetsFactory.eINSTANCE.createClickReferenceValueOperation()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE,
+                ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
-        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
-
-        newChildDescriptors
-                .add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE, ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE,
+                ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES,
                 ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
@@ -291,11 +329,12 @@ public class MonoReferenceWidgetDescriptionItemProvider extends WidgetDescriptio
         Object childFeature = feature;
         Object childObject = child;
 
-        boolean qualify = childFeature == PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE
-                || childFeature == PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
+        boolean qualify = childFeature == PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE ||
+                childFeature == PapyrusWidgetsPackage.Literals.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES;
 
         if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
+            return this.getString("_UI_CreateChild_text2",
+                    new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

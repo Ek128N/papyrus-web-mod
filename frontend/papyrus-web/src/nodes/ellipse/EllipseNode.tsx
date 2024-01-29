@@ -56,10 +56,15 @@ const ellipseNodeStyle = (
   return ellipseNodeStyle;
 };
 
+const resizeLineStyle = (theme: Theme): React.CSSProperties => {
+  return { borderWidth: theme.spacing(0.15) };
+};
+
 const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   return {
-    width: theme.spacing(0.75),
-    height: theme.spacing(0.75),
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    borderRadius: '100%',
   };
 };
 
@@ -81,6 +86,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
       {data.nodeDescription?.userResizable && (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
+          lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
           isVisible={selected}
           shouldResize={() => !data.isBorderNode}
@@ -103,7 +109,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
       </div>
     </>
