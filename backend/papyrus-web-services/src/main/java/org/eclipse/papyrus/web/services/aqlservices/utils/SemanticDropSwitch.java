@@ -43,6 +43,7 @@ import org.eclipse.uml2.uml.Connector;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.InterruptibleActivityRegion;
 import org.eclipse.uml2.uml.Message;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Transition;
@@ -329,7 +330,13 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
     private Boolean createDnDEdgeView(final EObject semanticElementEdge) {
         // edge are synchronized : no view need to be created
         // only target and source view can be created if they are not already represented on the diagram
-        return this.createSourceAndTargetView(semanticElementEdge);
+        Boolean areSrceAndTgtCreated = this.createSourceAndTargetView(semanticElementEdge);
+        if (!areSrceAndTgtCreated) {
+            String errorMessage = "Semantic Drag&Drop failed : Source and/or Target view of " + this.getLabel(semanticElementEdge) + " edge cannot be created";
+            LOGGER.warn(errorMessage);
+            this.logger.log(errorMessage, ILogLevel.WARNING);
+        }
+        return areSrceAndTgtCreated;
     }
 
     /**
@@ -433,10 +440,34 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
                 success = this.viewHelper.createRootView(semanticEnd);
             } else {
                 Node node = this.getNodeFromDiagramAndItsChildren(semanticEndContainer);
-                success = this.viewHelper.createChildView(semanticEnd, node);
+                if (node != null) {
+                    success = this.viewHelper.createChildView(semanticEnd, node);
+                } else {
+                    String errorMessage = "Cannot create view for " + this.getLabel(semanticEnd) + " because its parent node " + this.getLabel(semanticEndContainer) + " is not displayed";
+                    LOGGER.warn(errorMessage);
+                    this.logger.log(errorMessage, ILogLevel.WARNING);
+                }
             }
         }
         return success;
+    }
+
+    /**
+     * Label displayed to describe a given {@code element}.
+     *
+     * @param element
+     *            the element to describe
+     * @return the label displayed to describe an element.
+     */
+    private String getLabel(EObject element) {
+        String label = element.eClass().getName();
+        if (element instanceof NamedElement namedElement) {
+            String name = namedElement.getName();
+            if (name != null && !name.isEmpty()) {
+                label = name;
+            }
+        }
+        return label;
     }
 
     /**
