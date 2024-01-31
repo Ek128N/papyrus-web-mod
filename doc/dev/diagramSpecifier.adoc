@@ -3,200 +3,10 @@ ifndef::imagesdir[:imagesdir: imgs]
 :warning-caption: ⚠️
 :toclevels: 4
 
-== Development FAQ
+== Diagram Specifier
 :toc:
 
-=== How to override a Sirius Web service
-
-In some cases you will need to override service to provided by Sirius Web.
-To do so, create a custom implementation of the service and use the annotation `org.eclipse.papyrus.web.sirius.contributions.ServiceOverride`.
-You need to specify the overridden service in the annotation.
-This information is only here to keep tracks.
-It is important when bumping _sirius component_ version in order to keeps tracks of the changes applied to the overridden services.
-
-=== How to find/use all concepts model
-
-In order to populate UML tab of Details panel with each UML concept content, we created a single model that contains all UML concepts. This model can be uploaded inside Papyrus web (via `Upload Model` from Explorer view). The UML file is located inside the following directory:
-```
-<papyrus-web repo>/backend/papyrus-web-application/src/test/resources/models/all-concepts/
-```
-In order to locate each concept inside the model, we defined an index giving the path of each UML concept inside this model. This file, `all-concepts.txt` is located inside the same above directory. For instance, the concept `ComponentRealization` has the following entry in the index:
-```
-ComponentRealization -> Model::Activity::CollaborationUse::ComponentRealization
-```
-This indicates that this concept can be found inside `CollaborationUse` which is a child of `Activity`.
-
-
-=== How to modify the predefined language list of the language expression widget
-
-OpaqueExpressions, OpaqueActions, OpaqueBehaviors and FunctionBehaviors UML elements have a special property `language` that can be edited in the UML tab of the Details panel with a dedicated widget. This widget allows to choose a language among a predefined list. At the moment, this list of language names is hardcoded in the backend code. This is list is located in:
-
-```
-org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionComponent.getPredefinedLanguages()
-```
-
-Here its definition:
-
-[source, java]
------
-  private List<String> getPredefinedLanguages() {
-      return List.of("C", "C++", "JAVA", "Natural Language", "OCL");
-  }
------
-
-=== Pages management in Details panel
-
-This section focus upon the API that can be used to manage pages inside the Details panel of Papyrus web.
-
-==== Main API
-
-The entry point to be able to manage pages in the Details panel is:
-
-[source, java]
---
-org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor
---
-
-The way to follow is to create a Spring service that implements this API and override the following method:
-
-[source, java]
---
-Form postProcess(Form form, VariableManager variableManager)
---
-
-This method will receive an immutable _Form_ instance that represents the Details panel and variables available at this point. 
-Therefore, it is possible to filter/sort/organize pages retrieved from that original _Form_ and return the desired presentation as a *new* _Form_ instance.
-
-==== Papyrus implementation
-
-The Papyrus implementation of this API can be found in the following class:
-
-[source, java]
---
-org.eclipse.papyrus.web.application.properties.services.PapyrusDetailsPostProcessor
---
-
-This implementation sorts pages as it was designed in papyrus desktop: starts with the `UML` tab followed by tabs `Comments` and `Profile` and ends with `Advanced` one.
-
-
-=== How can I test my diagrams?
-Papyrus Web provides a _test framework_ to ease the development of test suites for your diagrams. The framework is a generic testing infrastructure defined at the boundaries of Papyrus Web's _backend_: it simulates the invocation of tools (Node Creation, Edge Creation, etc) via the GraphQL API, and checks the data exposed to the frontend. This approach allows to finely check graphical and semantic data, but cannot perform graphical-level tests through the user interface (this can be done with end-to-end integration tests like Cypress).
-
-The Papyrus Web test framework is defined in the `papyrus-web-application` module (in the `src/tests` directory), in the packages prefixed with _tool_:
-
-image::test-framework-architecture.png[Test Framework Architecture,400, align="center"]
-
-- *org.eclipse.papyrus.web.application.tools.test*: the abstract test classes that can be extended by the specifier to test specific tools. These classes provide a common ground to implement tests, and are designed to allow parameterization of concrete implementations.
-- *org.eclipse.papyrus.web.application.tools.checker*: the generic checkers used by the tests to verify the diagram and the semantic model. These checkers operate at the semantic or graphical level, and can be grouped in a `CombinedChecker`.
--  *org.eclipse.papyrus.web.application.tools.utils*: a set of utility classes that provide common behavior and data for the implementation of test cases. For example, this package contains a default implementation of the `MappingTypes` class, that allows to compute the mapping type associated to a given UML type.
-
-Implementations of the test framework for a specific diagram should follow the same naming/packaging conventions. For example, the Use Case Diagram implementation is defined in the following packages:
-
-- *org.eclipse.papyrus.web.application.tools.usecase*: the concrete implementation of the abstract test classes provided by the framework. These classes allow to test node creation, edge creation, etc in the context of the Use Case Diagram.
-- *org.eclipse.papyrus.web.application.tools.usecase.utils*: utility classes specific to the Use Case Diagram. For example, the `UCDMappingTypes` extends `MappingType` to support Use Case specific mappings.
-
-
-=== How to create custom nodes?
-Custom nodes are project-specific node styles used to extend Sirius Web's default styles. In Papyrus Web, they are typically used to define nodes with specific shapes, such as the _Package_ node or the _Note_ node.
-
-Custom nodes are defined both in the backend (to make them usable in the View DSL) and the frontend (the actual graphical implementation of the node). 
-
-==== Backend
-There are two backend modules related to custom nodes:
-
-- `papyrus-web-customnodes`
-- `papyrus-web-customnodes-edit`
-
-To create a new custom node, open the `papyrus-customnodes.ecore` model and create a new top-level `EClass`. Set its name with the name of your custom node (e.g. _NoteNodeStyleDescription_), and set the super type to `NodeStyleDescription`. Then head to the `papyrus-customnodes.genmodel` file and re-generate the model and edit projects.
-
-[TIP]
-.Update the icon associated to the custom node in Papyrus Studio
-====
-You can update the icon associated to your custom node in the corresponding item provider in `papyrus-web-customnodes-edit`. To do so look for the `getImage` method, and change the path of the image. 
-⚠️ Make sure you edit the Javadoc of the method to add `@generated NOT`, otherwise this change will be lost the next time you generate the code.
-====
-
-Now you need to define the custom node style and its provider in the `papyrus-web-application`. To do so, head to the `org.eclipse.papyrus.web.application.nodes` package, and create two classes for your custom node:
-
-- `MyCustomNodeStyle`: defines the parameters required by your custom node style. Typical parameters include _border color_, _border size_, or _color_, for example. Note that you can add any parameter you need (for example an image URL). These parameters will be passed to the frontend component that handles the rendering of the custom node.
-- `MyCustomNodeStyleProvider`: defines the provider of your custom node. This is the class that hooks your custom node into the Sirius Web framework.
-
-Finally, you need to update the GraphQL schema to make sure the new custom node is correctly sent to the frontend. To do so open the `customnodes.graphqls` file located in `papyrus-web-application`, and add the following content:
-```graphqls
-extend union INodeStyle = MyCustomNodeStyle
-
-type MyCustomNodeStyle {
-  borderColor: String!
-  borderSize: Int!
-  borderStyle: LineStyle!
-  imageURL: String!
-}
-```
-
-The name of the GraphQL type *must* match the name of the class defined in `org.eclipse.papyrus.web.application.nodes`, and the type parameters must also match the parameters of the class.
-
-_Optional_: you can add a method in `ViewBuilder` to ease the creation of your custom style. This is particularly useful when your custom node needs some specific initialization. The code bellow shows such method for the `NoteNodeStyle`:
-[source, java]
-----
-// [ViewBuilder.java]
-public NoteNodeStyleDescription createNoteNodeStyle() {
-    NoteNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createNoteNodeStyleDescription();
-    this.initStyle(nodeStyle);
-    nodeStyle.setShowIcon(true);
-    return nodeStyle;
-}
-----
-
-==== Frontend
-Custom nodes are located in the `sirius-web-application/src/nodes` directory in the frontend. Each node is defined in a dedicated directory that contains 4 files:
-
-- `MyCustomNode.tsx`: the actual implementation of the graphical node. This is where you create the React component that will be rendered to represent your node.
-- `MyCustomNode.types.ts`: the types used by your custom node. This file contains both the properties required by `MyCustomNode.tsx` as well as the definition of the GraphQL type associated to your node.
-- `MyCustomNodeConverterHandler.ts`: the converter that transforms the GraphQL type to your node. This is the place where you can access the styles defined in your GraphQL type and use them to instantiate your node. 
-- `MyCustomNodeLayoutHandler.ts`: the layout of your node. This file defines high-level layout such as how child elements are handled.
-
-[TIP]
-The `sirius-web-application/src/nodes` directory contains various examples of custom nodes used in Papyrus Web.
-
-In addition to the files defining the custom node themselves, you need to edit the file `sirius-web-application/src/views/edit-project/EditProjectView` and update the `nodeTypeRegistryValue` variable to make your custom node usable:
-```typescript
-const nodeTypeRegistryValue: NodeTypeContextValue = {
-      graphQLNodeStyleFragments: [
-        // Other Node Styles already registered
-        {
-          type: 'MyCustomNodeStyle',
-          fields: `borderColor borderSize borderStyle color`,
-        },
-      ],
-      nodeLayoutHandlers: [
-        // Other Node Layout Handlers
-        new MyCustomNodeLayoutHandler(),
-      ],
-      nodeConverterHandlers: [
-        // Other Node Converter Handlers
-        new MyCustomNodeConverterHandler(),
-      ],
-      nodeTypeContributions: [
-        // Other NodeTypeContributions
-        <NodeTypeContribution component={NoteNode} type={'myCustomNode'} />,
-      ],
-    };
-```
-
-The `fields` attribute configures the information passed by the backend that can be retrieved in your custom node implementation. In our example we provide typical attributes that are shared by most of the nodes: `borderColor`, `borderSize`, `borderStyle`, and `color`.
-
-[TIP]
-Additional information on how to create custom nodes is available in the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-node.adoc[Sirius Web documentation].
-
-=== How to create multiple nested views?
-The `IViewHelper` API focuses on the creation of individual graphical elements. It allows to create root element, child elements, but these method do not handle the creation of entire sub-trees of elements. 
-
-Creating such sub-trees is complex because each view creation needs to access the graphical parent of the view to create. These graphical parents aren't available when creating a sub-tree, because they haven't been created yet. 
-
-This can be tackled with `IViewHelper.createFakeNode`, which creates a fake graphical node (i.e. a node that won't be rendered by the frontend) that allows to create multiple view levels. This method is used, as an example, in the `GraphicalDropSwitch`, to create the child views of a dropped node.
-
-
-=== How is organized the code of my diagram?
+=== Architecture Overview
 Implementing a complete diagram representation (e.g. the _Class Diagram_) involves a large amount of work. It is necessary to create the View DSL describing the representation (the nodes, edge, etc of the diagram), but also the services required by your representation, the tests, and hook your implementation into the Papyrus Web framework to make it usable by client users. In the following we describe how this code is structured.
 
 ==== The View DSL
@@ -229,9 +39,8 @@ There are two kinds of test for each diagram:
 - Service tests: these are unit tests ran against the services of your diagram. They are stored in `papyrus-web-application/src/tests/java`, in a dedicated package prefixed with `org.eclipse.papyrus.web.application.services.`
 - Tools tests: these are integration tests that simulate tool invocation and check the state of the diagram/model returned to the frontend. They are also stored in `papyrus-web-application/src/test/java`, in a dedicated package prefixed with `org.eclipse.papyrus.web.application.tools.`. These tests are defined with the <<_how_can_i_test_my_diagrams, Papyrus Web Test Framework>>.
 
-=== How to create a Diagram representation?
+=== Domain definition with tools
 
-==== How to create tools?
 Diagrams need to contain tool to allow the user to interact with them. A diagram can contain several kinds of tools:
 
 - Node/edge creation tools
@@ -315,9 +124,16 @@ this.registerCallback(diagramDescription, () -> {
 diagramDescription.getPalette().setDropNodeTool(ucdGraphicalDropTool);
 ```
 
-==== How to use Shared Descriptions?
+====== How to create multiple nested views?
+The `IViewHelper` API focuses on the creation of individual graphical elements. It allows to create root element, child elements, but these method do not handle the creation of entire sub-trees of elements. 
 
-===== What are shared elements?
+Creating such sub-trees is complex because each view creation needs to access the graphical parent of the view to create. These graphical parents aren't available when creating a sub-tree, because they haven't been created yet. 
+
+This can be tackled with `IViewHelper.createFakeNode`, which creates a fake graphical node (i.e. a node that won't be rendered by the frontend) that allows to create multiple view levels. This method is used, as an example, in the `GraphicalDropSwitch`, to create the child views of a dropped node.
+
+=== Good practices: Shared Description 
+
+==== What are shared elements?
 
 Shared elements are a reuse mechanism we use to avoid the duplication of NodeDescription in our DSL View. They are defined in a `SHARED_DESCRIPTIONS` NodeDescription, and are reused by all the descriptions that can contain them.
 
@@ -325,7 +141,7 @@ This mechanism ensures that a NodeDescription is defined at a single place, whic
 
 Note that some diagrams contain top-level NodeDescriptions in addition to shared elements to represent elements on the diagram background. These top-level NodeDescriptions typically cannot be reused from the `SHARED_DESCRIPTIONS` because their semantic candidate expression is different.
 
-===== When should I use a shared element?
+==== When should I use a shared element?
 
 The rules below cover the use cases where a shared element should be used to avoid code duplication.
 1. A shared element is reused by **at least** two other elements (as child node or border node). Note that being reused by the diagram itself doesn't count.
@@ -340,7 +156,7 @@ The rules below cover the use cases where a shared element should be used to avo
 
 *These rules are validated during the build of Papyrus Web.*
 
-===== Tooling around shared elements
+==== Tooling around shared elements
 
 - Use `AbstractRepresentationDescriptionBuilder#createSharedDescription` to create a shared description for a given diagram. This method takes care of the naming of the shared description, setting its semantic domain, and its semantic candidate expression (rules 4, 5, and 6).
 - Use `AbstractRepresentationDescriptionBuilder#createCommentDescriptionInNodeDescription` and `AbstractRepresentationBuilder#createConstraintDescriptionInNodeDescription` to create constraints and comments in the shared description passed as a parameter (rules 3, 8).
@@ -348,16 +164,108 @@ The rules below cover the use cases where a shared element should be used to avo
 - Use `IdBuilder.getSpecializedDomainNodeName(eClass, AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX)` to create a node description with the `_SHARED` suffix (rule 3).
 - Use `sharedDescriptionNode.getChildrenDescriptions().add(myNodeDescription)` to add a NodeDescription to the `SHARED_DESCRIPTIONS` element. This NodeDescription can be created with the regular creation APIs such as `org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.newNodeBuilder(EClass, NodeStyleDescription)`. In this case it's the user's responsibility to ensure that the NodeDescription complies with the rules defined above. 
 
+=== Domain customization
 
+==== Custom nodes
+Custom nodes are project-specific node styles used to extend Sirius Web's default styles. In Papyrus Web, they are typically used to define nodes with specific shapes, such as the _Package_ node or the _Note_ node.
 
-=== How to create a custom tool?
+Custom nodes are defined both in the backend (to make them usable in the View DSL) and the frontend (the actual graphical implementation of the node). 
+
+===== Backend
+There are two backend modules related to custom nodes:
+
+- `papyrus-web-customnodes`
+- `papyrus-web-customnodes-edit`
+
+To create a new custom node, open the `papyrus-customnodes.ecore` model and create a new top-level `EClass`. Set its name with the name of your custom node (e.g. _NoteNodeStyleDescription_), and set the super type to `NodeStyleDescription`. Then head to the `papyrus-customnodes.genmodel` file and re-generate the model and edit projects.
+
+[TIP]
+.Update the icon associated to the custom node in Papyrus Studio
+====
+You can update the icon associated to your custom node in the corresponding item provider in `papyrus-web-customnodes-edit`. To do so look for the `getImage` method, and change the path of the image. 
+⚠️ Make sure you edit the Javadoc of the method to add `@generated NOT`, otherwise this change will be lost the next time you generate the code.
+====
+
+Now you need to define the custom node style and its provider in the `papyrus-web-application`. To do so, head to the `org.eclipse.papyrus.web.application.nodes` package, and create two classes for your custom node:
+
+- `MyCustomNodeStyle`: defines the parameters required by your custom node style. Typical parameters include _border color_, _border size_, or _color_, for example. Note that you can add any parameter you need (for example an image URL). These parameters will be passed to the frontend component that handles the rendering of the custom node.
+- `MyCustomNodeStyleProvider`: defines the provider of your custom node. This is the class that hooks your custom node into the Sirius Web framework.
+
+Finally, you need to update the GraphQL schema to make sure the new custom node is correctly sent to the frontend. To do so open the `customnodes.graphqls` file located in `papyrus-web-application`, and add the following content:
+```graphqls
+extend union INodeStyle = MyCustomNodeStyle
+
+type MyCustomNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  imageURL: String!
+}
+```
+
+The name of the GraphQL type *must* match the name of the class defined in `org.eclipse.papyrus.web.application.nodes`, and the type parameters must also match the parameters of the class.
+
+_Optional_: you can add a method in `ViewBuilder` to ease the creation of your custom style. This is particularly useful when your custom node needs some specific initialization. The code bellow shows such method for the `NoteNodeStyle`:
+[source, java]
+----
+// [ViewBuilder.java]
+public NoteNodeStyleDescription createNoteNodeStyle() {
+    NoteNodeStyleDescription nodeStyle = PapyrusCustomnodesFactory.eINSTANCE.createNoteNodeStyleDescription();
+    this.initStyle(nodeStyle);
+    nodeStyle.setShowIcon(true);
+    return nodeStyle;
+}
+----
+
+===== Frontend
+Custom nodes are located in the `sirius-web-application/src/nodes` directory in the frontend. Each node is defined in a dedicated directory that contains 4 files:
+
+- `MyCustomNode.tsx`: the actual implementation of the graphical node. This is where you create the React component that will be rendered to represent your node.
+- `MyCustomNode.types.ts`: the types used by your custom node. This file contains both the properties required by `MyCustomNode.tsx` as well as the definition of the GraphQL type associated to your node.
+- `MyCustomNodeConverterHandler.ts`: the converter that transforms the GraphQL type to your node. This is the place where you can access the styles defined in your GraphQL type and use them to instantiate your node. 
+- `MyCustomNodeLayoutHandler.ts`: the layout of your node. This file defines high-level layout such as how child elements are handled.
+
+[TIP]
+The `sirius-web-application/src/nodes` directory contains various examples of custom nodes used in Papyrus Web.
+
+In addition to the files defining the custom node themselves, you need to edit the file `sirius-web-application/src/views/edit-project/EditProjectView` and update the `nodeTypeRegistryValue` variable to make your custom node usable:
+```typescript
+const nodeTypeRegistryValue: NodeTypeContextValue = {
+      graphQLNodeStyleFragments: [
+        // Other Node Styles already registered
+        {
+          type: 'MyCustomNodeStyle',
+          fields: `borderColor borderSize borderStyle color`,
+        },
+      ],
+      nodeLayoutHandlers: [
+        // Other Node Layout Handlers
+        new MyCustomNodeLayoutHandler(),
+      ],
+      nodeConverterHandlers: [
+        // Other Node Converter Handlers
+        new MyCustomNodeConverterHandler(),
+      ],
+      nodeTypeContributions: [
+        // Other NodeTypeContributions
+        <NodeTypeContribution component={NoteNode} type={'myCustomNode'} />,
+      ],
+    };
+```
+
+The `fields` attribute configures the information passed by the backend that can be retrieved in your custom node implementation. In our example we provide typical attributes that are shared by most of the nodes: `borderColor`, `borderSize`, `borderStyle`, and `color`.
+
+[TIP]
+Additional information on how to create custom nodes is available in the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-node.adoc[Sirius Web documentation].
+
+==== Custom tool
 Custom tools are used to add capabilities to a diagram that aren't supported by the default tools. These custom tools can perform complex semantic and graphical operations, open dialogs to ease the creation of elements, etc.
 
 Since these tools are diagram-specific, they require some work on the backend and the frontend of Papyrus Web. In the following we show how to create such custom tool, using the _Import Metaclass_ popup from the Profile diagram as an example.
 
-==== Backend
+===== Backend
 
-===== GraphQL
+====== GraphQL
 When a tool is executed on a diagram, a GraphQL query is sent to the backend to perform the actual operation on the graphical and semantic model. 
 
 Sirius Web tools notify the backend through GraphQL mutations. Custom tools do the same, but the mutation they send need to be specified in the backend. This is done in a `profile.graphqls` file from the `papyrus-web-graphql` module. 
@@ -399,7 +307,7 @@ The `CreateMetaclassImportPayload` specifies that the mutation can return either
 
 Now that we have defined the GraphQL mutation we need to define the backend DTO (Data Transfer Object) that will represent the data, as well as the fetcher and handler that will receive the mutation and execute the actual code performing the requested action.
 
-===== DTO
+====== DTO
 
 We need to create a DTO for the input and the produced payload. This is done in the `papyrus-web-services-api` module, in the `org.eclipse.papyrus.web.services.api.dto` package. We create the following two classes/records:
 
@@ -438,7 +346,7 @@ public final class CreateMetaclassImportSuccessPayload implements IPayload {
 
 The key part here is that the `CreateMetaclassImportInput` record takes as parameters the fields of the `CreateMetaclassImportInput` GraphQL input.
 
-===== Data Fetcher
+====== Data Fetcher
 We now have to define the _data fetcher_ that will receive the GraphQL mutation. This is done in the `papyrus-web-graphql` module, in the `org.eclipse.papyrus.web.graphql.datafetchers.mutation`
 
 ```java
@@ -466,7 +374,7 @@ The data fetcher is bound to the mutation using the `@MutationDataFetcher` annot
 [TIP]
 Data fetchers are only required for mutations. You don't need to create a fetcher for queries, they are directly forwarded to the event processor.
 
-===== Event Handler
+====== Event Handler
 
 Now we can define the event handler that will be used by the event processor to actually perform the backend logic associated to the mutation. This is done in the `papyrus-web-services` module, in the `org.eclipse.papyrus.web.services.editingcontext.handlers` package.
 
@@ -526,7 +434,7 @@ The `canHandle` method let the event processor know if the handler can handle a 
 Our handler implements `IDiagramEventHandler` because it performs both semantic and graphical operations (the import metaclass is created in the model, and the corresponding view is added on the diagram). Handlers that only perform semantic operation should implement `IEditingContextEventHandler`, which doesn't provide an access to the `DiagramContext`, making graphical operations impossible to perform.
 
 
-==== Frontend
+===== Frontend
 
 On the frontend side, a custom tool is a React component that is added in the palette. This component takes a `DiagramPaletteToolContributionComponentProps` as parameter, and sends the GraphQL mutation to the backend. The file `PapyrusPopupToolContribution` shows such component for our _Import Metaclass_ example:
 ```typescript
@@ -600,48 +508,7 @@ The `canHandle` function allows to configure where/when the custom tool should b
 [TIP]
 Additional information on how to contribute custom tools to a diagram is available on the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-tool.adoc[Sirius Web documentation].
  
-==== GraphQL queries
+===== GraphQL queries
 GraphQL queries are sent by the frontend to access data from the backend. As an example, a GraphQL query (`getMetaclassMetadatas`) is used by the `PapyrusPopupToolContribution` to retrieve all the metaclasses available in the editing context.
 
 These queries are defined in a similar way mutations are, with backend DTOs and event handlers. Note that queries does not need a _data fetcher_, they are directly handled by the event handlers.
-
-=== How to launch locally Cypress tests as CI does
-
-Sometimes Cypress tests encounter problems during the CI build when a branch is pushed for PR for instance.
-It may occur that these tests passed locally and so it is difficult to find what is the cause of this failure.
-In such situation, we need to reproduce the same running environment to be able to fix issues.
-
-==== Step 1 Build the fat jar
-
-From the root folder of the frontend (`papyrus-web/frontend`) run the following commands:
-
- 1. `npm ci`
- 2. `npm run build`
-
-From the root folder of the project (`papyrus`) run the following commands:
-
- 1. `mkdir -p backend/papyrus-web-frontend/src/main/resources/static`
- 2. `cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resources/static`
- 3. `mvn -U -B clean verify -f backend/pom.xml`
-
-==== Step 2 Prepare and run the Docker image
-
-For demonstration purpose, let say that the current version of Papyrus-web is `2023.12.0`, in the project root folder run the following commands:
-
- 1. `sed -e "s|VERSION|2023.12.0|" backend/papyrus-web-application/Dockerfile.template > backend/papyrus-web-application/Dockerfile`
- 2. `docker build -t papyrusweb backend/papyrus-web-application`
- 3. `docker-compose -f backend/papyrus-web-application/docker-compose.yml up -d`
-
-The current version should be adapted in the first command.
-
-==== Step 3 Run the integration Cypress tests
-
-From the integration tests folder (`papyrus-web/integration-tests`) run the final command to launch Cypress:
-
- 1. `npm start` 
-
-Cypress is running tests on `8080` port to reach papyrus-web server.
-
-
-
-

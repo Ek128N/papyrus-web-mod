@@ -1,0 +1,59 @@
+ifndef::imagesdir[:imagesdir: imgs]
+:tip-caption: 💡
+:warning-caption: ⚠️
+:toclevels: 4
+
+== Details View Specifier
+:toc:
+
+=== Pages management in Details panel
+
+This section focus upon the API that can be used to manage pages inside the Details panel of Papyrus web.
+
+==== Main API
+
+The entry point to be able to manage pages in the Details panel is:
+
+[source, java]
+--
+org.eclipse.sirius.components.collaborative.forms.api.IFormPostProcessor
+--
+
+The way to follow is to create a Spring service that implements this API and override the following method:
+
+[source, java]
+--
+Form postProcess(Form form, VariableManager variableManager)
+--
+
+This method will receive an immutable _Form_ instance that represents the Details panel and variables available at this point. 
+Therefore, it is possible to filter/sort/organize pages retrieved from that original _Form_ and return the desired presentation as a *new* _Form_ instance.
+
+==== Papyrus implementation
+
+The Papyrus implementation of this API can be found in the following class:
+
+[source, java]
+--
+org.eclipse.papyrus.web.application.properties.services.PapyrusDetailsPostProcessor
+--
+
+This implementation sorts pages as it was designed in papyrus desktop: starts with the `UML` tab followed by tabs `Comments` and `Profile` and ends with `Advanced` one.
+
+=== Predefined language list of the language expression widget
+
+OpaqueExpressions, OpaqueActions, OpaqueBehaviors and FunctionBehaviors UML elements have a special property `language` that can be edited in the UML tab of the Details panel with a dedicated widget. This widget allows to choose a language among a predefined list. At the moment, this list of language names is hardcoded in the backend code. This is list is located in:
+
+```
+org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionComponent.getPredefinedLanguages()
+```
+
+Here its definition:
+
+[source, java]
+-----
+  private List<String> getPredefinedLanguages() {
+      return List.of("C", "C++", "JAVA", "Natural Language", "OCL");
+  }
+-----
+
