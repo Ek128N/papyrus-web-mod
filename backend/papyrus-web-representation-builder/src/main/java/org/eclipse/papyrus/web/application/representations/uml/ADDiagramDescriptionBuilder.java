@@ -466,6 +466,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getReadStructuralFeatureAction(), //
                 this.umlPackage.getSendObjectAction(), //
                 this.umlPackage.getSendSignalAction(), //
+                this.umlPackage.getStartClassifierBehaviorAction(), //
                 this.umlPackage.getTestIdentityAction() //
         );
         this.reuseNodeAndCreateTool(adActionInputPinDescription, diagramDescription, nodeTool, PIN, owners.toArray(EClass[]::new));
@@ -851,7 +852,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
         this.reuseNodeAndCreateTool(adDestroyObjectActionNodeDescription, diagramDescription, adDestroyObjectActionCreationTool, CREATE_OBJECT_ACTION, owners,
-                List.of(this.umlPackage.getSequenceNode()));
+                List.of());
     }
 
     /**
@@ -1758,10 +1759,34 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
     private void createObjectFlowDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(this.umlPackage.getActivityNode()),
-                List.of(this.umlPackage.getInitialNode(), this.umlPackage.getFinalNode()));
-        Supplier<List<NodeDescription>> targetDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(this.umlPackage.getActivityNode()),
-                List.of(this.umlPackage.getInitialNode()));
+        Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(
+                this.umlPackage.getActionInputPin(),
+                this.umlPackage.getInputPin(),
+                this.umlPackage.getOutputPin(),
+                this.umlPackage.getValuePin(),
+                this.umlPackage.getExpansionNode(),
+                this.umlPackage.getDecisionNode(),
+                this.umlPackage.getForkNode(),
+                this.umlPackage.getJoinNode(),
+                this.umlPackage.getMergeNode(),
+                this.umlPackage.getOpaqueAction(),
+                this.umlPackage.getActivityParameterNode()),
+                List.of());
+        Supplier<List<NodeDescription>> targetDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(
+                this.umlPackage.getActionInputPin(),
+                this.umlPackage.getInputPin(),
+                this.umlPackage.getOutputPin(),
+                this.umlPackage.getValuePin(),
+                this.umlPackage.getActivityFinalNode(),
+                this.umlPackage.getDecisionNode(),
+                this.umlPackage.getFlowFinalNode(),
+                this.umlPackage.getForkNode(),
+                this.umlPackage.getJoinNode(),
+                this.umlPackage.getMergeNode(),
+                this.umlPackage.getOpaqueAction(),
+                this.umlPackage.getExpansionNode(),
+                this.umlPackage.getActivityParameterNode()),
+                List.of());
 
         EdgeDescription adObjectFlowDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getObjectFlow(),
                 this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getObjectFlow()), sourceDescriptionSupplier, targetDescriptionSupplier);

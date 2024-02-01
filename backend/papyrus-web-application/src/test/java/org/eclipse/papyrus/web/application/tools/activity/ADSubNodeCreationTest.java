@@ -394,6 +394,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
                 Arguments.of(new ADCreationTool(ADToolSections.STRUCTURED_ACTIVITY_NODE, UML.getConditionalNode()), UML.getConditionalNode(), STRUCTURED_ACTIVITY_NODE_NODE),
                 Arguments.of(new ADCreationTool(ADToolSections.NODES, UML.getConstraint()), UML.getConstraint(), NAMESPACE_OWNED_RULE),
                 Arguments.of(new ADCreationTool(ADToolSections.CREATE_OBJECT_ACTION, UML.getCreateObjectAction()), UML.getCreateObjectAction(), STRUCTURED_ACTIVITY_NODE_NODE),
+                Arguments.of(new ADCreationTool(ADToolSections.CREATE_OBJECT_ACTION, UML.getDestroyObjectAction()), UML.getDestroyObjectAction(), STRUCTURED_ACTIVITY_NODE_NODE),
                 Arguments.of(new ADCreationTool(ADToolSections.EXPANSION_REGION, UML.getExpansionRegion()), UML.getExpansionRegion(), STRUCTURED_ACTIVITY_NODE_NODE),
                 Arguments.of(new ADCreationTool(ADToolSections.PIN, UML.getInputPin()), UML.getInputPin(), STRUCTURED_ACTIVITY_NODE_STRUCTURED_NODE_INPUT),
                 Arguments.of(new ADCreationTool(ADToolSections.STRUCTURED_ACTIVITY_NODE, UML.getLoopNode()), UML.getLoopNode(), STRUCTURED_ACTIVITY_NODE_NODE),

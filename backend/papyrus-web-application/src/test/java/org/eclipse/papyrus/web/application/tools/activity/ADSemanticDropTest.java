@@ -343,6 +343,7 @@ public class ADSemanticDropTest extends SemanticDropTest {
                 Arguments.of(SEQUENCE_NODE_EXECUTABLE_NODE, UML.getClearAssociationAction()), //
                 Arguments.of(SEQUENCE_NODE_EXECUTABLE_NODE, UML.getClearStructuralFeatureAction()), //
                 Arguments.of(NAMESPACE_OWNED_RULE, UML.getConstraint()), //
+                Arguments.of(SEQUENCE_NODE_EXECUTABLE_NODE, UML.getDestroyObjectAction()), //
                 Arguments.of(SEQUENCE_NODE_EXECUTABLE_NODE, UML.getOpaqueAction()), //
                 Arguments.of(SEQUENCE_NODE_EXECUTABLE_NODE, UML.getReadSelfAction()), //
                 Arguments.of(SEQUENCE_NODE_EXECUTABLE_NODE, UML.getReadStructuralFeatureAction()), //
