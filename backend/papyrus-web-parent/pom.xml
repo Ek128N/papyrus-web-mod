@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>papyrus-web</groupId>
 	<artifactId>papyrus-web-parent</artifactId>
-	<version>2024.1.0</version>
+	<version>2024.2.0</version>
 	<name>papyrus-web-parent</name>
 	<description>Parent Pom for Papyrus Web Project</description>
 	<packaging>pom</packaging>
@@ -34,7 +34,7 @@
 		<sirius.documentation.version>2024.1.0</sirius.documentation.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>
 		<uml2.version>5.5.0-SNAPSHOT</uml2.version>
-		<papyrus-uml-domain-services-version>0.20.0-SNAPSHOT</papyrus-uml-domain-services-version>
+		<papyrus-uml-domain-services-version>0.20.0</papyrus-uml-domain-services-version>
 	</properties>
 
 
