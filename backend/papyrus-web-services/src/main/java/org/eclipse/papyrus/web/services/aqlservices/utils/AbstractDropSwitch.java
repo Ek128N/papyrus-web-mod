@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.services.aqlservices.utils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -23,6 +24,7 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.uml2.uml.util.UMLSwitch;
@@ -253,7 +255,22 @@ public class AbstractDropSwitch extends UMLSwitch<Boolean> {
      * @return the semantic target represented by the given node
      */
     protected EObject getSemanticNode(Node node) {
-        return (EObject) this.eObjectResolver.apply(node.getTargetObjectId());
+        return this.getSemanticElementFromId(node.getTargetObjectId());
+    }
+
+    /**
+     * Returns the semantic element matching the provided {@code objectId}.
+     * <p>
+     * The {@code objectId} is typically retrieved from {@link Node}/{@link Edge} element using
+     * {@code getTargetObjectId()}.
+     * </p>
+     *
+     * @param objectId
+     *            the identifier of the semantic element
+     * @return the semantic element matching the provided {@code objectId}
+     */
+    private EObject getSemanticElementFromId(String objectId) {
+        return (EObject) this.eObjectResolver.apply(objectId);
     }
 
     /**
@@ -267,12 +284,25 @@ public class AbstractDropSwitch extends UMLSwitch<Boolean> {
     }
 
     /**
-     * Get the node from the diagram and its children nodes that represents the given semantic element.
+     * Returns the {@link Edge} from the {@link Diagram} that represents the given {@code semanticEdge}.
+     *
+     * @param semanticEdge
+     *            the semantic edge to retrieve the {@link Edge} from
+     * @return the {@link Edge} from the diagram that represents the given {@code semanticEdge}
+     */
+    protected Optional<Edge> getEdgeFromDiagram(EObject semanticEdge) {
+        return this.diagramNavigator.getDiagram().getEdges().stream()
+                .filter(edge -> Objects.equals(semanticEdge, this.getSemanticElementFromId(edge.getTargetObjectId())))
+                .findFirst();
+    }
+
+    /**
+     * Get the {@link Node} from the diagram and its children nodes that represents the given {@code semanticElement}.
      *
      * @param semanticElement
-     *            the semantic element to retrieve the node from
+     *            the semantic element to retrieve the {@link Node} from
      *
-     * @return the node from the diagram and its children nodes that represents the given semantic element
+     * @return the {@link Node} from the diagram and its children nodes that represents the given semantic element
      * @see #getNodeFromParentNodeAndItsChildren(Node, EObject)
      */
     protected Node getNodeFromDiagramAndItsChildren(EObject semanticElement) {

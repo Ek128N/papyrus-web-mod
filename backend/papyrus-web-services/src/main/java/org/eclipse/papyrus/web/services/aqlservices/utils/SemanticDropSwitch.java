@@ -321,22 +321,33 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
 
     /**
      * Create Edge view, its source view and its target view if needed after DnD of Edge.
+     * <p>
+     * This method returns {@code true} if the Edge view is created. Since Edges are synchronized this means that the
+     * source/target of the Edge are represented on the diagram, and the Edge isn't already represented.
+     * </p>
      *
      * @param semanticElementEdge
      *            the semantic element on which the domain based edge is based on
      *
-     * @return {@code true} if source or target view of edge have been created, {@code false} otherwise
+     * @return {@code true} if the Edge view is created, {@code false} otherwise
      */
     private Boolean createDnDEdgeView(final EObject semanticElementEdge) {
-        // edge are synchronized : no view need to be created
-        // only target and source view can be created if they are not already represented on the diagram
-        Boolean areSrceAndTgtCreated = this.createSourceAndTargetView(semanticElementEdge);
-        if (!areSrceAndTgtCreated) {
-            String errorMessage = "Semantic Drag&Drop failed : Source and/or Target view of " + this.getLabel(semanticElementEdge) + " edge cannot be created";
+        Boolean edgeCreated = Boolean.FALSE;
+        if (this.getEdgeFromDiagram(semanticElementEdge).isPresent()) {
+            String errorMessage = "Semantic Drag&Drop failed: the Edge " + this.getLabel(semanticElementEdge) + " is already represented on the diagram";
             LOGGER.warn(errorMessage);
             this.logger.log(errorMessage, ILogLevel.WARNING);
+        } else {
+            // edge are synchronized : no view need to be created
+            // only target and source view can be created if they are not already represented on the diagram
+            edgeCreated = this.createSourceAndTargetView(semanticElementEdge);
+            if (!edgeCreated) {
+                String errorMessage = "Semantic Drag&Drop failed : Source and/or Target view of " + this.getLabel(semanticElementEdge) + " edge cannot be created";
+                LOGGER.warn(errorMessage);
+                this.logger.log(errorMessage, ILogLevel.WARNING);
+            }
         }
-        return areSrceAndTgtCreated;
+        return edgeCreated;
     }
 
     /**
@@ -345,10 +356,10 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
      * @param semanticElementEdge
      *            the semantic element on which the domain based edge is based on
      *
-     * @return {@code true} if source or target view have been created, {@code false} otherwise
+     * @return {@code true} if source or target view have been created or if they already exist, {@code false} otherwise
      */
     private Boolean createSourceAndTargetView(EObject semanticElementEdge) {
-        Boolean success = Boolean.FALSE;
+        Boolean success = Boolean.TRUE;
         Optional<EObject> optionalSemanticSource = Optional.ofNullable(new ElementDomainBasedEdgeSourceProvider().getSource(semanticElementEdge));
         Optional<? extends EObject> optionalSemanticTarget = new ElementDomainBasedEdgeTargetsProvider().getTargets(semanticElementEdge).stream().findFirst();
 
@@ -358,7 +369,7 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             Node sourceNode = this.getNodeFromDiagramAndItsChildren(semanticSource);
             Node targetNode = this.getNodeFromDiagramAndItsChildren(semanticTarget);
             if (sourceNode == null) {
-                success = this.createEndView(semanticSource);
+                success = success && this.createEndView(semanticSource);
             }
             if (targetNode == null) {
                 if (semanticTarget instanceof Class && ((Class) semanticTarget).isMetaclass()) {
@@ -366,13 +377,16 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
                     if (elementImport != null) {
                         // case : class is a Metaclass used by element Import
                         // The graphical container of the metaclass is the same as the ElementImport
-                        success = this.createMetaclassEndViewWithContainer(semanticTarget, elementImport.eContainer());
+                        Boolean isTargetCreated = this.createMetaclassEndViewWithContainer(semanticTarget, elementImport.eContainer());
+                        success = success && isTargetCreated;
                     } else {
                         // case : class is a simple Metaclass, i.e. a Class with Stereotype
-                        success = this.createEndView(semanticTarget);
+                        Boolean isTargetCreated = this.createEndView(semanticTarget);
+                        success = success && isTargetCreated;
                     }
                 } else {
-                    success = this.createEndView(semanticTarget);
+                    Boolean isTargetCreated = this.createEndView(semanticTarget);
+                    success = success && isTargetCreated;
                 }
             }
         }
