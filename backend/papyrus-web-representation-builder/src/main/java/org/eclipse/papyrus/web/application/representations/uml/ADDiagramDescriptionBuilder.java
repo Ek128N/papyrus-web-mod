@@ -17,6 +17,7 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Varia
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.DIAGRAM_CONTEXT;
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SELECTED_NODE;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -211,6 +212,20 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     private UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
     /**
+     * The list of semantic types that are represented as border nodes.
+     * <p>
+     * This list is used to filter drag & drop targets and prevent border nodes from being droppable.
+     * </p>
+     */
+    private final List<EClass> borderNodeTypes = List.of(
+            this.umlPackage.getActionInputPin(),
+            this.umlPackage.getActivityParameterNode(),
+            this.umlPackage.getExpansionNode(),
+            this.umlPackage.getInputPin(),
+            this.umlPackage.getOutputPin(),
+            this.umlPackage.getValuePin());
+
+    /**
      * The <i>shared</i> {@link NodeDescription} for the diagram.
      */
     private NodeDescription adSharedDescription;
@@ -335,7 +350,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         List<EClass> children = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityNode(), this.umlPackage.getActivityPartition(), this.umlPackage.getComment(),
                 this.umlPackage.getConstraint(), this.umlPackage.getInterruptibleActivityRegion());
         this.registerCallback(adActivityDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adActivityGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adActivityDescription.getPalette().setDropNodeTool(adActivityGraphicalDropTool);
@@ -568,7 +583,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         DropNodeTool adActivityPartitionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adActivityPartitionDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getActivityPartition(), this.umlPackage.getComment());
         this.registerCallback(adActivityPartitionDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adActivityPartitionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adActivityPartitionDescription.getPalette().setDropNodeTool(adActivityPartitionGraphicalDropTool);
@@ -610,7 +625,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
         this.reuseNodeAndCreateTool(adBroadcastSignalActionNodeDescription, diagramDescription, adBroadcastSignalActionCreationTool, INVOCATION_ACTION, owners,
-                List.of(this.umlPackage.getConditionalNode()));
+                List.of());
     }
 
     /**
@@ -667,7 +682,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getClearAssociationAction());
         this.reuseNodeAndCreateTool(adClearAssociationActionNodeDescription, diagramDescription, nodeTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
-                List.of(this.umlPackage.getConditionalNode()));
+                List.of());
     }
 
     /**
@@ -726,7 +741,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         DropNodeTool adConditionalNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adConditionalNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
         this.registerCallback(adConditionalNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adConditionalNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adConditionalNodeDescription.getPalette().setDropNodeTool(adConditionalNodeGraphicalDropTool);
@@ -894,7 +909,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         DropNodeTool adExpansionRegionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adExpansionRegionDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
         this.registerCallback(adExpansionRegionDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adExpansionRegionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adExpansionRegionDescription.getPalette().setDropNodeTool(adExpansionRegionGraphicalDropTool);
@@ -1084,7 +1099,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adInterruptibleActivityRegionDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment());
         this.registerCallback(adInterruptibleActivityRegionDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adInterruptibleActivityRegionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adInterruptibleActivityRegionDescription.getPalette().setDropNodeTool(adInterruptibleActivityRegionGraphicalDropTool);
@@ -1152,7 +1167,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         DropNodeTool adLoopNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adLoopNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
         this.registerCallback(adLoopNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adLoopNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adLoopNodeDescription.getPalette().setDropNodeTool(adLoopNodeGraphicalDropTool);
@@ -1479,7 +1494,18 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         DropNodeTool adSequenceNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adSequenceNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
         this.registerCallback(adSequenceNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<EClass> forbiddenTypes = new ArrayList<>();
+            forbiddenTypes.addAll(this.borderNodeTypes);
+            forbiddenTypes.addAll(List.of(
+                    this.umlPackage.getActivityFinalNode(),
+                    this.umlPackage.getDecisionNode(),
+                    this.umlPackage.getFlowFinalNode(),
+                    this.umlPackage.getForkNode(),
+                    this.umlPackage.getInitialNode(),
+                    this.umlPackage.getInputPin(),
+                    this.umlPackage.getJoinNode(),
+                    this.umlPackage.getMergeNode()));
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, forbiddenTypes);
             adSequenceNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adSequenceNodeDescription.getPalette().setDropNodeTool(adSequenceNodeGraphicalDropTool);
@@ -1579,7 +1605,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         DropNodeTool adStructuredActivityNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adStructuredActivityNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
         this.registerCallback(adStructuredActivityNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adStructuredActivityNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adStructuredActivityNodeDescription.getPalette().setDropNodeTool(adStructuredActivityNodeGraphicalDropTool);
@@ -1623,7 +1649,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         List<EClass> children = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityNode(), this.umlPackage.getActivityPartition(), this.umlPackage.getComment(),
                 this.umlPackage.getConstraint(), this.umlPackage.getInterruptibleActivityRegion());
         this.registerCallback(adSubActivityDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adActivityGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         adSubActivityDescription.getPalette().setDropNodeTool(adActivityGraphicalDropTool);
