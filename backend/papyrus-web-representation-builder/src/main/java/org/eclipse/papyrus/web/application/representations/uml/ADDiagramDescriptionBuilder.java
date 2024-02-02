@@ -215,6 +215,9 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      */
     private NodeDescription adSharedDescription;
 
+    /**
+     * Initializes the builder.
+     */
     public ADDiagramDescriptionBuilder() {
         super(AD_PREFIX, AD_REP_NAME, UMLPackage.eINSTANCE.getNamedElement());
     }
