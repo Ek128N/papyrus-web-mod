@@ -49,6 +49,11 @@ import org.eclipse.uml2.uml.Profile;
 public final class GraphicalDropSwitch extends AbstractDropSwitch {
 
     /**
+     * Message to display when graphical Drag&Drop failed.
+     */
+    private static final String GRAPHICAL_DRAG_DROP_FAILED = "Graphical Drag&Drop failed";
+
+    /**
      * Checker in charge of checking if a graphical D&D is possible.
      */
     private IInternalSourceToRepresentationDropChecker dropChecker;
@@ -186,6 +191,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
     @Override
     public Boolean caseClass(Class umlClass) {
         Boolean isDragAndDropValid = Boolean.FALSE;
+        String errorMessage = GRAPHICAL_DRAG_DROP_FAILED;
         if (umlClass.isMetaclass()) {
             EObject elementImportTargetParent = null;
             if (this.targetNode == null) {
@@ -197,10 +203,9 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             }
             EObject existingElementImportInTarget = this.getElementImportReferencingMetaclass(umlClass, elementImportTargetParent);
             if (existingElementImportInTarget != null) {
-                String duplicatedMetaclassMessage = MessageFormat.format("Cannot drag and drop Metaclass {0} in {1}, a Metaclass with the same identifier already exists.",
+                errorMessage = MessageFormat.format("Cannot drag and drop Metaclass {0} in {1}, a Metaclass with the same identifier already exists.",
                         this.droppedNode.getTargetObjectLabel(), this.targetNode.getTargetObjectLabel());
-                this.logger.log(duplicatedMetaclassMessage, ILogLevel.WARNING);
-                throw new InvalidDropException(duplicatedMetaclassMessage);
+                this.logger.log(errorMessage, ILogLevel.WARNING);
             } else {
                 EObject elementImportSourceParent = null;
                 Optional<Node> parentMetaclassNode = this.diagramNavigator.getParentNode(this.droppedNode);
@@ -214,6 +219,9 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             }
         } else {
             isDragAndDropValid = this.defaultCase(umlClass);
+        }
+        if (!isDragAndDropValid) {
+            throw new InvalidDropException(errorMessage);
         }
         return isDragAndDropValid;
     }
@@ -233,6 +241,9 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             dropStatus = this.defaultGraphicalDragAndDrop(object);
         }
         isDragAndDropValid = this.createDragAndDropView(dropStatus, object);
+        if (!isDragAndDropValid) {
+            throw new InvalidDropException(GRAPHICAL_DRAG_DROP_FAILED);
+        }
         return isDragAndDropValid;
     }
 
