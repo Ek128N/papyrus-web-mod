@@ -293,7 +293,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
-          	<exclude>**/org.eclipse.papyrus.web.application.tools.usecase/UCD*Test.java,**/org.eclipse.papyrus.web.application.tools.profile/PRD*Test.java,**/org.eclipse.papyrus.web.application.tools.communication/COD*Test.java,**/org.eclipse.papyrus.web.application.tools.activity/AD*Test.java,**/org.eclipse.papyrus.web.application.tools.component/CPD*Test.java</exclude>
+          	<exclude>**/org.eclipse.papyrus.web.application.tools.usecase/UCD*Test.java,**/org.eclipse.papyrus.web.application.tools.profile/PRD*Test.java,**/org.eclipse.papyrus.web.application.tools.communication/COD*Test.java,**/org.eclipse.papyrus.web.application.tools.activity/AD*Test.java,**/org.eclipse.papyrus.web.application.tools.component/CPD*Test.java,**/org.eclipse.papyrus.web.application.tools.deployment/DD*Test.java</exclude>
           </excludes>
         </configuration>
       </plugin>
