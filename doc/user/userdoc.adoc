@@ -61,6 +61,9 @@ Regarding the representation creation, it is worth noting that _Representations_
 | _Composite Structure Diagram_
 | _Package_
 
+| _Deployment Diagram_
+| _Package_
+
 | _Package_
 | _Package_
 
@@ -280,6 +283,16 @@ image::diagComponent.png[Component Diagram Overview,800, align="center"]
 ===== Specific Features on Semantic Drag&Drop
 - A _Type_ can be drag and dropped on a _Port_ or a _Property_. This sets the _type_ property of the element with the dropped _Type_.
 
+
+==== Deployment Diagram
+
+The deployment diagram is a graphical description used to represent the physical deployment of a system. In this diagram, nodes represent computing resources, on which artifacts (e.g. software components) are allocated. This allocation is represented by the _Deployment_ relationship.
+
+image::diagDeployment.png[Deployment Diagram Overview,800, align="center"]
+
+===== Specific Features on Direct Edit
+- The direct edit tool doesn't perform any modification on _Generalization_ and _Link_ (from _Constraint_ or _Comment_).
+>>>>>>> 01fb93d [36] Add documentation for the Deployment diagram
 
 ==== Portal representation
 
