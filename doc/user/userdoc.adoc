@@ -254,6 +254,33 @@ image::diagCommunication.png[Communication Diagram Overview,800, align="center"]
 - A *_Property_ can be drag and dropped on a _Lifeline_ node*. The _Lifeline_ now represents this Property (through its _represents_ reference).
 - A *_Type_ can be drag and dropped on a _Lifeline_ node*. This creates a new semantic _Property_ typed with the dropped _Type_. A _Lifeline_ is also semantically created, representing the new _Property_ (through its _represents_ reference).
 
+
+==== Component Diagram
+
+The component diagram is a graphical description used to represent how components are wired together to form larger systems. These diagrams depict a high-level structural view of complex systems, and are typically used to verify that a system's required functionality is acceptable. Component diagrams are also used as communication tools between the developers and stakeholders of a system.
+
+image::diagComponent.png[Component Diagram Overview,800, align="center"]
+
+===== Specific Feature on Creation
+- The creation of a _Port_ or _Property_ inside an untyped _Property_ is forbidden (the tool is not visible in the palette).
+- The creation of a _Port_ on a _Port_ (typed and untyped) is forbidden (the tool is not visible in the palette).
+- Creating a _Port_ or _Property_ inside a typed _Property_ creates a graphical element inside the _Property_ node, and a semantic element inside the _Type_ element referenced by the _type_ reference of the property.
+
+===== Specific Features on Label
+- Labels are displayed on a single line in list compartments, even when they contain a keyword.
+- Label of _Ports_ with the _isConjugated_ feature set to true are displayed with the "~" prefix.
+
+
+===== Specific Features on Direct Edit
+- The direct edit tool doesn't perform any modification on _Generalization_ and _Link_ (from _Constraint_ or _Comment_).
+
+===== Specific Features on Graphical Drag&Drop
+- A _Property_ can be drag and dropped in a typed _Property_. This moves the semantic _Property_ inside the _Type_ element typing the containing _Property_. 
+
+===== Specific Features on Semantic Drag&Drop
+- A _Type_ can be drag and dropped on a _Port_ or a _Property_. This sets the _type_ property of the element with the dropped _Type_.
+
+
 ==== Portal representation
 
 A portal can be created anywhere (on any semantic element in the project) and is just a kind of dashboard where the end-user can add other representations (of any kind) so that they can be all opened at the same time.
