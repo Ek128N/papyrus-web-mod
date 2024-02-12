@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.uml.CPDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.tools.checker.NodeCreationGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.component.checker.CPDInterfaceCreationGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.component.utils.CPDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.test.SemanticDropTest;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.tools.utils.ToolSections;

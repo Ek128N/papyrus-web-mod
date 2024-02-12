@@ -36,6 +36,7 @@ import org.eclipse.papyrus.web.application.utils.mutations.CreateProjectMutation
 import org.eclipse.papyrus.web.application.utils.mutations.CreateRepresentationMutationRunner;
 import org.eclipse.papyrus.web.application.utils.mutations.DeleteFromDiagramMutationRunner;
 import org.eclipse.papyrus.web.application.utils.mutations.DiagramEventSubscriptionRunner;
+import org.eclipse.papyrus.web.application.utils.mutations.DropNodeMutationRunner;
 import org.eclipse.papyrus.web.application.utils.mutations.DropOnDiagramMutationRunner;
 import org.eclipse.papyrus.web.application.utils.mutations.EditLabelMutationRunner;
 import org.eclipse.papyrus.web.application.utils.mutations.GetPaletteToolQueryRunner;
@@ -146,6 +147,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
 
     @Autowired
     private DropOnDiagramMutationRunner dropOnDiagramRunner;
+
+    @Autowired
+    private DropNodeMutationRunner dropNodeRunner;
 
     @Autowired
     private DeleteFromDiagramMutationRunner deleteFromDiagramMutationRunner;
@@ -433,6 +437,21 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      */
     protected void applyDropOnDiagramTool(String targetElementId, List<String> droppedElementIds) {
         this.dropOnDiagramRunner.dropOnDiagram(this.projectId, this.representationId, targetElementId, droppedElementIds);
+    }
+
+    /**
+     * Drop the provided {@code droppedElementId} on {@code targetElementId}.
+     * <p>
+     * This method invokes the {@code dropNode} GraphQL mutation to perform the drop.
+     * </p>
+     *
+     * @param droppedElementId
+     *            the graphical identifier of the element to drop
+     * @param targetElementId
+     *            the graphical identifier of the target container element
+     */
+    protected void applyDropNodeTool(String droppedElementId, String targetElementId) {
+        this.dropNodeRunner.dropNode(this.projectId, this.representationId, droppedElementId, targetElementId);
     }
 
     /**

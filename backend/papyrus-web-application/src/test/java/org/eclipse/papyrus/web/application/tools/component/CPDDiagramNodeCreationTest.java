@@ -22,6 +22,7 @@ import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
 import org.eclipse.papyrus.web.application.tools.checker.NodeCreationGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.checker.NodeCreationSemanticChecker;
 import org.eclipse.papyrus.web.application.tools.component.checker.CPDInterfaceCreationGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.component.utils.CPDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.test.NodeCreationTest;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.tools.utils.ToolSections;

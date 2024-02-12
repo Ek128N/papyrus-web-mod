@@ -24,6 +24,7 @@ import org.eclipse.papyrus.web.application.representations.uml.CPDDiagramDescrip
 import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
 import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationSemanticChecker;
+import org.eclipse.papyrus.web.application.tools.component.utils.CPDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.test.EdgeCreationTest;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.tools.utils.ToolSections;

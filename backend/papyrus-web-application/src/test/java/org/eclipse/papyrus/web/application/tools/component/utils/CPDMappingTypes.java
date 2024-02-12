@@ -11,7 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-package org.eclipse.papyrus.web.application.tools.component;
+package org.eclipse.papyrus.web.application.tools.component.utils;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.uml2.uml.UMLPackage;
