@@ -109,6 +109,12 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     protected IEditingContextPersistenceService persistenceService;
 
     @Autowired
+    protected CreateRepresentationMutationRunner representationCreator;
+
+    @Autowired
+    protected IRepresentationSearchService representationSearchService;
+
+    @Autowired
     private CreateProjectMutationRunner projectCreator;
 
     @Autowired
@@ -119,12 +125,6 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
 
     @Autowired
     private IProjectRepository projectRepository;
-
-    @Autowired
-    private CreateRepresentationMutationRunner representationCreator;
-
-    @Autowired
-    private IRepresentationSearchService representationSearchService;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -214,22 +214,49 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      */
     @BeforeEach
     public void setUp() {
-        this.projectId = this.projectCreator.createProject("Instance");
-        this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeDescriptionRegistryConfigurer.EMPTY_ID);
-        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, "TEST");
+        this.setUpWithoutRepresentation();
+        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, this.representationName);
         this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
     }
 
+    /**
+     * Initializes the test environment and creates an {@code intermediateRootType} element with the given
+     * {@code intermediateRootName} label.
+     * <p>
+     * This method creates an {@code intermediateRootType} element and adds it in the root element of the model.
+     * </p>
+     * <p>
+     * This method is typically used to test setup test environment of diagrams that can't be created on the root
+     * element of their semantic model.
+     * </p>
+     *
+     * @param intermediateRootName
+     *            the label of the intermediate element
+     * @param intermediateRootType
+     *            the type of the intermediate element to create
+     */
     public void setUpWithIntermediateRoot(String intermediateRootName, EClass intermediateRootType) {
         this.projectId = this.projectCreator.createProject("Instance");
         this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeDescriptionRegistryConfigurer.EMPTY_ID);
         this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
         EObject intermediateRoot = this.createSemanticElement(this.getRootSemanticElement(), UML.getPackage_PackagedElement(), intermediateRootType, intermediateRootType.getName());
         this.intermediateRootObjectId = this.getObjectService().getId(intermediateRoot);
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.intermediateRootObjectId, this.representationName, "TEST");
+        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.intermediateRootObjectId, this.representationName, this.representationName);
         this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
         this.applyEditLabelTool(this.getDiagram().getNodes().get(0).getInsideLabel().getId(), intermediateRootName);
+    }
+
+    /**
+     * Initializes the test environment without a representation.
+     * <p>
+     * This method is typically used to test diagram creations (see {@link DiagramCreationTest}) where the creation of
+     * the representation is the critical part of the test.
+     * </p>
+     */
+    public void setUpWithoutRepresentation() {
+        this.projectId = this.projectCreator.createProject("Instance");
+        this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeDescriptionRegistryConfigurer.EMPTY_ID);
+        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
     }
 
     /**
@@ -239,6 +266,24 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     public void tearDown() {
         this.editingContextEventProcessorRegistry.dispose();
         this.projectRepository.deleteAll();
+    }
+
+    /**
+     * Creates a {@code representationName} representation on the given {@code semanticElementId}.
+     * <p>
+     * The {@code representationName} to create is configured by the {@code representationName} argument of this class'
+     * constructor. This method invokes the {@code createRepresentation} GraphQL mutation to perform the representation
+     * creation.
+     * </p>
+     *
+     * @param semanticElementId
+     *            the semantic element on which the representation is created
+     *
+     * @see CreateRepresentationMutationRunner
+     */
+    protected void createRepresentation(String semanticElementId) {
+        this.representationId = this.representationCreator.createRepresentation(this.projectId, semanticElementId, this.representationName, this.representationName);
+        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
     }
 
     /**
