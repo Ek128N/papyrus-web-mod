@@ -74,3 +74,12 @@ type OuterFlagNodeStyle {
 	borderSize: Int!
 	borderStyle: LineStyle!
 }
+
+extend union INodeStyle = CuboidNodeStyle
+
+type CuboidNodeStyle {
+	color: String!
+	borderColor: String!
+	borderSize: Int!
+	borderStyle: LineStyle!
+}

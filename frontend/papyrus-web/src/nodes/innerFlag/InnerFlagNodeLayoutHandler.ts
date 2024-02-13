@@ -1,15 +1,16 @@
-/*******************************************************************************
+/*****************************************************************************
  * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- ******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 import {
   Diagram,
   DiagramNodeType,
@@ -89,10 +90,6 @@ export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> 
       }
     });
 
-    console.log('Border Node default size');
-    console.log(borderNodes[0]?.data?.defaultWidth);
-    console.log(borderNodes[0]?.data?.defaultHeight);
-
     // 16px for left and right padding, 20px for the left gap corresponding to the inner flag shape.
     const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 16 + 20;
     const labelHeight = getHeaderFootprint(labelElement, true, false);
@@ -128,7 +125,6 @@ export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> 
     // Update border nodes positions
     borderNodes.forEach((borderNode) => {
       borderNode.extent = getBorderNodeExtent(node, borderNode);
-      console.log(borderNode.extent);
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
   }

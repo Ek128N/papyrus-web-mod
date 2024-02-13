@@ -13,9 +13,9 @@
  *****************************************************************************/
 import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 
-export interface OuterFlagNodeData extends NodeData {}
+export interface CuboidNodeData extends NodeData {}
 
-export interface GQLOuterFlagNodeStyle extends GQLNodeStyle {
+export interface GQLCuboidNodeStyle extends GQLNodeStyle {
   color: string;
   borderColor: string;
   borderStyle: string;

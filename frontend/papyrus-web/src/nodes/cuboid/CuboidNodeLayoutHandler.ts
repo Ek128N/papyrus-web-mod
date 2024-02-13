@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2024 Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,9 +12,14 @@
  *  Obeo - Initial API and implementation
  *****************************************************************************/
 import {
-  computeNodesBox,
   Diagram,
   DiagramNodeType,
+  ILayoutEngine,
+  INodeLayoutHandler,
+  NodeData,
+  computeNodesBox,
+  computePreviousPosition,
+  computePreviousSize,
   findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
@@ -22,35 +27,34 @@ import {
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  ILayoutEngine,
-  INodeLayoutHandler,
-  NodeData,
   setBorderNodesPosition,
-  computePreviousSize,
-  computePreviousPosition,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node } from 'reactflow';
-import { PackageNodeData } from './PackageNode.types';
+import { CuboidNodeData } from './CuboidNode.types';
 import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
-
 const rectangularNodePadding: number = 8;
 
-export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeData> {
+// The number of px reserved on the right & top of the cuboid node to draw perspective lines.
+const cuboidBorder: number = 20;
+// The padding around the label (which is not computed by headerHeightFootprint)
+const labelPadding: number = 18;
+
+export class CuboidNodeLayoutHandler implements INodeLayoutHandler<CuboidNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
-    return node.type === 'packageNode';
+    return node.type === 'cuboidNode';
   }
 
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
-    node: Node<PackageNodeData, 'packageNode'>,
+    node: Node<CuboidNodeData, 'cuboidNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-packageNode-${nodeIndex}`)?.children[0];
+    const nodeElement = document.getElementById(`${node.id}-cuboidNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
     if (directChildren.length > 0) {
       this.handleParentNode(
@@ -71,7 +75,7 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: Diagram | null,
-    node: Node<PackageNodeData, 'packageNode'>,
+    node: Node<CuboidNodeData, 'cuboidNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
@@ -82,8 +86,8 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + 2 * borderWidth + labelPadding;
     const headerHeightFootprint = getHeaderFootprint(labelElement, true, false);
-
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
@@ -95,16 +99,38 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
 
       if (!!createdNode) {
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + headerHeightFootprint + rectangularNodePadding) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint + rectangularNodePadding };
+        if (
+          child.position.y <
+          borderWidth + headerHeightFootprint + rectangularNodePadding + cuboidBorder + labelPadding
+        ) {
+          child.position = {
+            ...child.position,
+            y: borderWidth + headerHeightFootprint + rectangularNodePadding + cuboidBorder + labelPadding,
+          };
+        }
+        if (child.position.x + child.width > node.width - cuboidBorder - rectangularNodePadding - borderWidth) {
+          child.position = {
+            ...child.position,
+            x: node.width - child.width - cuboidBorder - borderWidth - rectangularNodePadding,
+          };
         }
         if (child.position.x < 0) {
           child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else if (previousPosition) {
         child.position = previousPosition;
-        if (child.position.y < headerHeightFootprint + rectangularNodePadding) {
-          child.position = { ...child.position, y: headerHeightFootprint + rectangularNodePadding };
+        if (child.position.y < headerHeightFootprint + rectangularNodePadding + cuboidBorder + labelPadding) {
+          child.position = {
+            ...child.position,
+            y: headerHeightFootprint + rectangularNodePadding + cuboidBorder + labelPadding,
+          };
+        }
+
+        if (child.position.x + child.width > node.width - cuboidBorder - rectangularNodePadding - borderWidth) {
+          child.position = {
+            ...child.position,
+            x: node.width - child.width - cuboidBorder - borderWidth - rectangularNodePadding,
+          };
         }
         // Force the position.x to rectangularNodePadding if the child is moved outside the west border.
         if (child.position.x < 0) {
@@ -124,8 +150,17 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
             previousSibling
           );
         }
-        if (child.position.y < headerHeightFootprint + rectangularNodePadding) {
-          child.position = { ...child.position, y: child.position.y + headerHeightFootprint };
+        if (child.position.y < headerHeightFootprint + rectangularNodePadding + cuboidBorder + labelPadding) {
+          child.position = {
+            ...child.position,
+            y: child.position.y + headerHeightFootprint + cuboidBorder + labelPadding,
+          };
+        }
+        if (child.position.x + child.width > node.width - cuboidBorder - rectangularNodePadding - borderWidth) {
+          child.position = {
+            ...child.position,
+            x: node.width - child.width - cuboidBorder - borderWidth - rectangularNodePadding,
+          };
         }
         // Force the position.x to rectangularNodePadding if the child is moved outside the west border.
         if (child.position.x < 0) {
@@ -146,9 +181,12 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
         directChildrenAwareNodeWidth,
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth,
+        labelWidth + cuboidBorder,
         node.data.defaultWidth ? node.data.defaultWidth : 0
       ) +
-      borderWidth * 2;
+      borderWidth * 2 +
+      cuboidBorder +
+      rectangularNodePadding * 2;
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
@@ -194,18 +232,19 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
 
   private handleLeafNode(
     previousDiagram: Diagram | null,
-    node: Node<PackageNodeData, 'packageNode'>,
+    node: Node<CuboidNodeData, 'cuboidNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
-    _borderWidth: number,
+    borderWidth: number,
     _forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + 2 * borderWidth + labelPadding;
 
     const labelHeight =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const minNodeWith = Math.max(node.data.defaultWidth ? node.data.defaultWidth : 0);
+    const minNodeWith = Math.max(labelWidth + cuboidBorder, node.data.defaultWidth ? node.data.defaultWidth : 0);
     const minNodeheight = Math.max(labelHeight, node.data.defaultHeight ? node.data.defaultHeight : 0);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);

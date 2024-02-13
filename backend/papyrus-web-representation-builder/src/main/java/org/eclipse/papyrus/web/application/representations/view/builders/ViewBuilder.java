@@ -33,6 +33,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
@@ -393,6 +394,13 @@ public class ViewBuilder {
 
     public RectangleWithExternalLabelNodeStyleDescription createRectangleWithExternalLabelNodeStyle() {
         RectangleWithExternalLabelNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription();
+        this.initStyle(nodeStyle);
+        nodeStyle.setShowIcon(true);
+        return nodeStyle;
+    }
+
+    public CuboidNodeStyleDescription createCuboidNodeStyle() {
+        CuboidNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createCuboidNodeStyleDescription();
         this.initStyle(nodeStyle);
         nodeStyle.setShowIcon(true);
         return nodeStyle;

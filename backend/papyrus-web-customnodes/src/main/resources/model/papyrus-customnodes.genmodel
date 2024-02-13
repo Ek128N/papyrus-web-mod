@@ -18,5 +18,6 @@
     <genClasses ecoreClass="papyrus-customnodes.ecore#//NoteNodeStyleDescription"/>
     <genClasses ecoreClass="papyrus-customnodes.ecore#//InnerFlagNodeStyleDescription"/>
     <genClasses ecoreClass="papyrus-customnodes.ecore#//OuterFlagNodeStyleDescription"/>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//CuboidNodeStyleDescription"/>
   </genPackages>
 </genmodel:GenModel>

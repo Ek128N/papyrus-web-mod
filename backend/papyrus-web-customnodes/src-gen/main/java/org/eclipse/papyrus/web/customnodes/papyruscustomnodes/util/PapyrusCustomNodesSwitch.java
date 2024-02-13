@@ -16,6 +16,7 @@ package org.eclipse.papyrus.web.customnodes.papyruscustomnodes.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
@@ -169,6 +170,21 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case PapyrusCustomNodesPackage.CUBOID_NODE_STYLE_DESCRIPTION: {
+                CuboidNodeStyleDescription cuboidNodeStyleDescription = (CuboidNodeStyleDescription) theEObject;
+                T result = this.caseCuboidNodeStyleDescription(cuboidNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(cuboidNodeStyleDescription);
+                if (result == null)
+                    result = this.caseStyle(cuboidNodeStyleDescription);
+                if (result == null)
+                    result = this.caseLabelStyle(cuboidNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(cuboidNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -262,6 +278,21 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseOuterFlagNodeStyleDescription(OuterFlagNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Cuboid Node Style Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Cuboid Node Style Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCuboidNodeStyleDescription(CuboidNodeStyleDescription object) {
         return null;
     }
 

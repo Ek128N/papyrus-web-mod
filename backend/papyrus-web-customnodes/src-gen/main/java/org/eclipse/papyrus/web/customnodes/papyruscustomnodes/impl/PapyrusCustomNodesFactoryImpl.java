@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
@@ -79,6 +80,8 @@ public class PapyrusCustomNodesFactoryImpl extends EFactoryImpl implements Papyr
                 return this.createInnerFlagNodeStyleDescription();
             case PapyrusCustomNodesPackage.OUTER_FLAG_NODE_STYLE_DESCRIPTION:
                 return this.createOuterFlagNodeStyleDescription();
+            case PapyrusCustomNodesPackage.CUBOID_NODE_STYLE_DESCRIPTION:
+                return this.createCuboidNodeStyleDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -148,6 +151,17 @@ public class PapyrusCustomNodesFactoryImpl extends EFactoryImpl implements Papyr
     public OuterFlagNodeStyleDescription createOuterFlagNodeStyleDescription() {
         OuterFlagNodeStyleDescriptionImpl outerFlagNodeStyleDescription = new OuterFlagNodeStyleDescriptionImpl();
         return outerFlagNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CuboidNodeStyleDescription createCuboidNodeStyleDescription() {
+        CuboidNodeStyleDescriptionImpl cuboidNodeStyleDescription = new CuboidNodeStyleDescriptionImpl();
+        return cuboidNodeStyleDescription;
     }
 
     /**

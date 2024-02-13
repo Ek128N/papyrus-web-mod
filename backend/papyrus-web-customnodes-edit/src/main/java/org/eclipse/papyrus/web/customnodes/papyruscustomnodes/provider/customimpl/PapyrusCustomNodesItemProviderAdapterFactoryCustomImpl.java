@@ -24,6 +24,14 @@ import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.provider.PapyrusCu
 public class PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl extends PapyrusCustomNodesItemProviderAdapterFactory {
 
     @Override
+    public Adapter createCuboidNodeStyleDescriptionAdapter() {
+        if (this.cuboidNodeStyleDescriptionItemProvider == null) {
+            this.cuboidNodeStyleDescriptionItemProvider = new CuboidNodeStyleDescriptionItemProviderCustomImpl(this);
+        }
+        return this.cuboidNodeStyleDescriptionItemProvider;
+    }
+
+    @Override
     public Adapter createEllipseNodeStyleDescriptionAdapter() {
         if (this.ellipseNodeStyleDescriptionItemProvider == null) {
             this.ellipseNodeStyleDescriptionItemProvider = new EllipseNodeStyleDescriptionItemProviderCustomImpl(this);
@@ -61,7 +69,7 @@ public class PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl extends Papy
 
     @Override
     public Adapter createInnerFlagNodeStyleDescriptionAdapter() {
-        if(this.innerFlagNodeStyleDescriptionItemProvider == null) {
+        if (this.innerFlagNodeStyleDescriptionItemProvider == null) {
             this.innerFlagNodeStyleDescriptionItemProvider = new InnerFlagNodeStyleDescriptionItemProviderCustomImpl(this);
         }
         return this.innerFlagNodeStyleDescriptionItemProvider;
@@ -69,7 +77,7 @@ public class PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl extends Papy
 
     @Override
     public Adapter createOuterFlagNodeStyleDescriptionAdapter() {
-        if(this.outerFlagNodeStyleDescriptionItemProvider == null) {
+        if (this.outerFlagNodeStyleDescriptionItemProvider == null) {
             this.outerFlagNodeStyleDescriptionItemProvider = new OuterFlagNodeStyleDescriptionItemProviderCustomImpl(this);
         }
         return this.outerFlagNodeStyleDescriptionItemProvider;

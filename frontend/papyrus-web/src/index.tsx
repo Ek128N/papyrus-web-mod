@@ -31,6 +31,9 @@ import LinearScaleOutlinedIcon from '@material-ui/icons/LinearScaleOutlined';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { PapyrusIcon } from './core/PapyrusIcon';
+import { CuboidNodeLayoutHandler } from './nodes/cuboid/CuboidNodeLayoutHandler';
+import { CuboidNodeConverter } from './nodes/cuboid/CuboidNodeConverter';
+import { CuboidNode } from './nodes/cuboid/CuboidNode';
 import { EllipseNode } from './nodes/ellipse/EllipseNode';
 import { EllipseNodeConverter } from './nodes/ellipse/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/ellipse/EllipseNodeLayoutHandler';
@@ -238,6 +241,10 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
       type: 'OuterFlagNodeStyle',
       fields: `borderColor borderSize borderStyle color`,
     },
+    {
+      type: 'CuboidNodeStyle',
+      fields: 'borderColor borderSize borderStyle color',
+    },
   ],
   nodeLayoutHandlers: [
     new EllipseNodeLayoutHandler(),
@@ -246,6 +253,7 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     new NoteNodeLayoutHandler(),
     new InnerFlagNodeLayoutHandler(),
     new OuterFlagNodeLayoutHandler(),
+    new CuboidNodeLayoutHandler(),
   ],
   nodeConverters: [
     new EllipseNodeConverter(),
@@ -254,6 +262,7 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     new NoteNodeConverter(),
     new InnerFlagNodeConverter(),
     new OuterFlagNodeConverter(),
+    new CuboidNodeConverter(),
   ],
   nodeTypeContributions: [
     <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
@@ -262,6 +271,7 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     <NodeTypeContribution component={NoteNode} type={'noteNode'} />,
     <NodeTypeContribution component={InnerFlagNode} type={'innerFlagNode'} />,
     <NodeTypeContribution component={OuterFlagNode} type={'outerFlagNode'} />,
+    <NodeTypeContribution component={CuboidNode} type={'cuboidNode'} />,
   ],
 };
 

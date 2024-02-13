@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 6.3500001 6.3500001"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="CuboidNodeStyle.svg"
+   inkscape:export-filename="CuboidNodeStyle.svg"
+   inkscape:export-xdpi="12.937633"
+   inkscape:export-ydpi="12.937633"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="22.627417"
+     inkscape:cx="16.241359"
+     inkscape:cy="8.131728"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-47.888045,-98.320045)">
+    <path
+       id="rect788"
+       style="fill:#fefefe;stroke:#000000;stroke-width:0.163248;stroke-linecap:square;stroke-dasharray:none"
+       d="m 53.010069,99.53206 v 4.98296 h -4.959993 v -4.98296"
+       sodipodi:nodetypes="cccc" />
+    <path
+       id="rect790"
+       style="fill:#fefefe;stroke:#000000;stroke-width:0.163248;stroke-linecap:square;stroke-dasharray:none"
+       d="m 49.131665,98.52308 h 4.870104 l -0.955817,0.861495 h -4.870101 z" />
+    <path
+       id="rect900"
+       style="fill:#fefefe;stroke:#000000;stroke-width:0.163248;stroke-linecap:square;stroke-dasharray:none"
+       d="m 54.134679,98.524932 v 4.984078 l -1.024633,0.97052"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="rect900.svg"
+       inkscape:export-xdpi="65.580307"
+       inkscape:export-ydpi="65.580307" />
+  </g>
+</svg>

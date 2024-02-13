@@ -16,6 +16,7 @@ package org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
@@ -74,6 +75,13 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     private EClass outerFlagNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass cuboidNodeStyleDescriptionEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -208,6 +216,16 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     @Override
+    public EClass getCuboidNodeStyleDescription() {
+        return this.cuboidNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public PapyrusCustomNodesFactory getPapyrusCustomNodesFactory() {
         return (PapyrusCustomNodesFactory) this.getEFactoryInstance();
     }
@@ -242,6 +260,8 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.innerFlagNodeStyleDescriptionEClass = this.createEClass(INNER_FLAG_NODE_STYLE_DESCRIPTION);
 
         this.outerFlagNodeStyleDescriptionEClass = this.createEClass(OUTER_FLAG_NODE_STYLE_DESCRIPTION);
+
+        this.cuboidNodeStyleDescriptionEClass = this.createEClass(CUBOID_NODE_STYLE_DESCRIPTION);
     }
 
     /**
@@ -281,6 +301,7 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.noteNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.innerFlagNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.outerFlagNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
+        this.cuboidNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -295,6 +316,8 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.initEClass(this.innerFlagNodeStyleDescriptionEClass, InnerFlagNodeStyleDescription.class, "InnerFlagNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         this.initEClass(this.outerFlagNodeStyleDescriptionEClass, OuterFlagNodeStyleDescription.class, "OuterFlagNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        this.initEClass(this.cuboidNodeStyleDescriptionEClass, CuboidNodeStyleDescription.class, "CuboidNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.builders.CallbackAdapter;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -66,8 +67,18 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
     public static final String DD_PREFIX = "DD_";
 
     /**
-     * Factory used to create UML elements.
+     * The default width and height of 3D boxes for {@link Node}s and {@link Device}s.
      */
+    private static final String SIZE_100 = "100";
+
+    /**
+     * The default width of 3D boxes for {@link ExecutionEnvironment}.
+     * <p>
+     * Note that 3D boxes for {@link ExecutionEnvironment} have a height of {@link #SIZE_100}.
+     * </p>
+     */
+    private static final String SIZE_200 = "200";
+
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
     /**
@@ -199,7 +210,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDiagramDeviceDescription(DiagramDescription diagramDescription) {
         NodeDescription ddDiagramDeviceDescription = this.createDiagram3DBoxDescription(diagramDescription, this.umlPackage.getDevice());
-
         // Add dropped tool on Diagram Device container
         DropNodeTool ddDiagramDeviceGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ddDiagramDeviceDescription));
         List<EClass> children = List.of(this.umlPackage.getDeploymentSpecification(), this.umlPackage.getNode());
@@ -218,7 +228,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDiagramExecutionEnvironmentDescription(DiagramDescription diagramDescription) {
         NodeDescription ddDiagramExecutionEnvironmentDescription = this.createDiagram3DBoxDescription(diagramDescription, this.umlPackage.getExecutionEnvironment());
-
+        ddDiagramExecutionEnvironmentDescription.setDefaultWidthExpression(SIZE_200);
         // Add dropped tool on Diagram ExecutionEnvironment container
         DropNodeTool ddDiagramExecutionEnvironmentGraphicalDropTool = this.getViewBuilder()
                 .createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ddDiagramExecutionEnvironmentDescription));
@@ -264,7 +274,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDiagramNodeDescription(DiagramDescription diagramDescription) {
         NodeDescription ddDiagramNodeDescription = this.createDiagram3DBoxDescription(diagramDescription, this.umlPackage.getNode());
-
         // Add dropped tool on Diagram Node container
         DropNodeTool ddDiagramNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ddDiagramNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getArtifact(), this.umlPackage.getNode());
@@ -316,7 +325,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      * @return the created {@link} NodeDescription.
      */
     private NodeDescription createDiagram3DBoxDescription(DiagramDescription diagramDescription, EClass type) {
-        NodeDescription ddClassifierDescription = this.newNodeBuilder(type, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ddClassifierDescription = this.newNodeBuilder(type, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getDomainNodeName(type)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(type))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -324,6 +333,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(type.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(type.getName())) //
                 .build();
+        ddClassifierDescription.setDefaultWidthExpression(SIZE_100);
+        ddClassifierDescription.setDefaultHeightExpression(SIZE_100);
         diagramDescription.getNodeDescriptions().add(ddClassifierDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ddClassifierDescription);
@@ -425,7 +436,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createSharedDeviceDescription(DiagramDescription diagramDescription) {
         EClass deviceEClass = this.umlPackage.getDevice();
-        NodeDescription ddSharedDeviceDescription = this.newNodeBuilder(deviceEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ddSharedDeviceDescription = this.newNodeBuilder(deviceEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(deviceEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_DEVICE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -433,6 +444,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(deviceEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(deviceEClass.getName())) //
                 .build();
+        ddSharedDeviceDescription.setDefaultWidthExpression(SIZE_100);
+        ddSharedDeviceDescription.setDefaultHeightExpression(SIZE_100);
         this.ddSharedDescription.getChildrenDescriptions().add(ddSharedDeviceDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ddSharedDeviceDescription);
@@ -467,7 +480,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createSharedExecutionEnvironmentDescription(DiagramDescription diagramDescription) {
         EClass executionEnvironmentEClass = this.umlPackage.getExecutionEnvironment();
-        NodeDescription ddSharedExecutionEnvironmentDescription = this.newNodeBuilder(executionEnvironmentEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ddSharedExecutionEnvironmentDescription = this.newNodeBuilder(executionEnvironmentEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(executionEnvironmentEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_EXECUTION_ENVIRONMENT_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -475,6 +488,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(executionEnvironmentEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(executionEnvironmentEClass.getName())) //
                 .build();
+        ddSharedExecutionEnvironmentDescription.setDefaultWidthExpression(SIZE_200);
+        ddSharedExecutionEnvironmentDescription.setDefaultHeightExpression(SIZE_100);
         this.ddSharedDescription.getChildrenDescriptions().add(ddSharedExecutionEnvironmentDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ddSharedExecutionEnvironmentDescription);
@@ -509,7 +524,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass nodeEClass = this.umlPackage.getNode();
-        NodeDescription ddSharedNodeDescription = this.newNodeBuilder(nodeEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ddSharedNodeDescription = this.newNodeBuilder(nodeEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(nodeEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_NODE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
@@ -517,6 +532,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(nodeEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(nodeEClass.getName())) //
                 .build();
+        ddSharedNodeDescription.setDefaultWidthExpression(SIZE_100);
+        ddSharedNodeDescription.setDefaultHeightExpression(SIZE_100);
         this.ddSharedDescription.getChildrenDescriptions().add(ddSharedNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ddSharedNodeDescription);

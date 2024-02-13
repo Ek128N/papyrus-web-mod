@@ -867,6 +867,140 @@ public interface PapyrusCustomNodesPackage extends EPackage {
     int OUTER_FLAG_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.CuboidNodeStyleDescriptionImpl <em>Cuboid
+     * Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.CuboidNodeStyleDescriptionImpl
+     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getCuboidNodeStyleDescription()
+     * @generated
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION = 6;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__FONT_SIZE = DiagramPackage.NODE_STYLE_DESCRIPTION__FONT_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__ITALIC = DiagramPackage.NODE_STYLE_DESCRIPTION__ITALIC;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__BOLD = DiagramPackage.NODE_STYLE_DESCRIPTION__BOLD;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__UNDERLINE = DiagramPackage.NODE_STYLE_DESCRIPTION__UNDERLINE;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = DiagramPackage.NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__BORDER_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__BORDER_SIZE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_SIZE;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
+
+    /**
+     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__LABEL_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
+
+    /**
+     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__SHOW_ICON = DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON;
+
+    /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION__LABEL_ICON = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON;
+
+    /**
+     * The number of structural features of the '<em>Cuboid Node Style Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of operations of the '<em>Cuboid Node Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUBOID_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription <em>Ellipse Node Style
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -931,6 +1065,17 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @generated
      */
     EClass getOuterFlagNodeStyleDescription();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription <em>Cuboid Node Style
+     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Cuboid Node Style Description</em>'.
+     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription
+     * @generated
+     */
+    EClass getCuboidNodeStyleDescription();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1020,6 +1165,17 @@ public interface PapyrusCustomNodesPackage extends EPackage {
          * @generated
          */
         EClass OUTER_FLAG_NODE_STYLE_DESCRIPTION = eINSTANCE.getOuterFlagNodeStyleDescription();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.CuboidNodeStyleDescriptionImpl <em>Cuboid
+         * Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.CuboidNodeStyleDescriptionImpl
+         * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getCuboidNodeStyleDescription()
+         * @generated
+         */
+        EClass CUBOID_NODE_STYLE_DESCRIPTION = eINSTANCE.getCuboidNodeStyleDescription();
 
     }
 

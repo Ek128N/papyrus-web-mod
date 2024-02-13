@@ -85,6 +85,15 @@ public interface PapyrusCustomNodesFactory extends EFactory {
     OuterFlagNodeStyleDescription createOuterFlagNodeStyleDescription();
 
     /**
+     * Returns a new object of class '<em>Cuboid Node Style Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Cuboid Node Style Description</em>'.
+     * @generated
+     */
+    CuboidNodeStyleDescription createCuboidNodeStyleDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

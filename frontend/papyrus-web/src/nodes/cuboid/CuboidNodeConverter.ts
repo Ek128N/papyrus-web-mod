@@ -30,18 +30,18 @@ import {
   convertOutsideLabels,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
-import { GQLOuterFlagNodeStyle, OuterFlagNodeData } from './OuterFlagNode.types';
+import { GQLCuboidNodeStyle, CuboidNodeData } from './CuboidNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
-const toOuterFlagNode = (
+const toCuboidNode = (
   gqlDiagram: GQLDiagram,
-  gqlNode: GQLNode<GQLOuterFlagNodeStyle>,
+  gqlNode: GQLNode<GQLCuboidNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
-): Node<OuterFlagNodeData> => {
+): Node<CuboidNodeData> => {
   const {
     targetObjectId,
     targetObjectLabel,
@@ -63,7 +63,7 @@ const toOuterFlagNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
-  const data: OuterFlagNodeData = {
+  const data: CuboidNodeData = {
     targetObjectId,
     targetObjectLabel,
     targetObjectKind,
@@ -91,6 +91,7 @@ const toOuterFlagNode = (
   };
 
   if (insideLabel) {
+    console.log('XXX');
     const labelStyle = insideLabel.style;
     data.insideLabel = {
       id: insideLabel.id,
@@ -102,24 +103,17 @@ const toOuterFlagNode = (
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: '8px 16px',
         textAlign: 'center',
         ...convertLabelStyle(labelStyle),
       },
       iconURL: labelStyle.iconURL,
     };
-
-    data.style = {
-      ...data.style,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    };
-    data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'top' };
   }
 
-  const node: Node<OuterFlagNodeData> = {
+  const node: Node<CuboidNodeData> = {
     id,
-    type: 'outerFlagNode',
+    type: 'cuboidNode',
     data,
     position: defaultPosition,
     hidden: gqlNode.state === GQLViewModifier.Hidden,
@@ -148,15 +142,15 @@ const toOuterFlagNode = (
   return node;
 };
 
-export class OuterFlagNodeConverter implements INodeConverter {
+export class CuboidNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'OuterFlagNodeStyle';
+    return gqlNode.style.__typename === 'CuboidNodeStyle';
   }
 
   handle(
     convertEngine: IConvertEngine,
     gqlDiagram: GQLDiagram,
-    gqlNode: GQLNode<GQLOuterFlagNodeStyle>,
+    gqlNode: GQLNode<GQLCuboidNodeStyle>,
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
@@ -165,7 +159,7 @@ export class OuterFlagNodeConverter implements INodeConverter {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toOuterFlagNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    nodes.push(toCuboidNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
       (nodeDescriptionId) =>

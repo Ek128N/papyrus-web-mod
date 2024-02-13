@@ -29,7 +29,7 @@ import {
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer, useReactFlow } from 'reactflow';
-import { InnerFlagNodeData } from './InnerFlagNode.types';
+import { CuboidNodeData } from './CuboidNode.types';
 
 const resizeLineStyle = (theme: Theme): React.CSSProperties => {
   return { borderWidth: theme.spacing(0.15) };
@@ -43,14 +43,14 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-const innerFlagNodeStyle = (
+const cuboidNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
   selected: boolean,
   hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
-  const innerFlagNodeStyle: React.CSSProperties = {
+  const cuboidNodeStyle: React.CSSProperties = {
     display: 'flex',
     padding: '0px',
     width: '100%',
@@ -63,10 +63,10 @@ const innerFlagNodeStyle = (
   };
 
   if (selected || hovered) {
-    innerFlagNodeStyle.outline = `${theme.palette.selected} solid 1px`;
+    cuboidNodeStyle.outline = `${theme.palette.selected} solid 1px`;
   }
 
-  return innerFlagNodeStyle;
+  return cuboidNodeStyle;
 };
 
 const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean): React.CSSProperties => {
@@ -81,29 +81,20 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
   return svgPathStyle;
 };
 
-export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNodeData>) => {
+// The number of px reserved on the right & top of the cuboid node to draw perspective lines.
+const cuboidBorder: number = 20;
+
+export const CuboidNode = memo(({ data, id, selected }: NodeProps<CuboidNodeData>) => {
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-  const { getNodes } = useReactFlow<InnerFlagNodeData>();
+  const { getNodes } = useReactFlow<CuboidNodeData>();
   const node = getNodes().find((node) => node.id === id);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
-  };
-
-  const updatedLabel: any = {
-    ...data.insideLabel,
-    style: {
-      ...data?.insideLabel?.style,
-      paddingLeft: parseInt(data.style.borderWidth?.toString() ?? '0') + 20 + 8 + 'px',
-      paddingTop: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
-      paddingRight: parseInt(data.style.borderWidth?.toString() ?? '1') / 2 + 8 + 'px',
-      paddingBottom: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
-      height: '100%',
-    },
   };
 
   useRefreshConnectionHandles(id, data.connectionHandles);
@@ -123,17 +114,32 @@ export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNo
       )}
       <div
         style={{
-          ...innerFlagNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+          ...cuboidNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
           ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`InnerFlag - ${data?.insideLabel?.text}`}>
-        <div style={{ position: 'absolute', inset: '0px' }}>
-          {data.insideLabel ? (
-            <Label diagramElementId={id} label={updatedLabel} faded={data.faded} transform="" />
-          ) : null}
+        data-testid={`Cuboid - ${data?.insideLabel?.text}`}>
+        <div
+          // Add a 1px space around the absolute div to make sure it doesn't overlap with the cuboid SVG stroke.
+          style={{
+            position: 'absolute',
+            top: cuboidBorder + 1 + 'px',
+            bottom: '1px',
+            right: cuboidBorder + 1 + 'px',
+            left: '1px',
+          }}>
+          <div>
+            {/* Label */}
+            {data.insideLabel ? (
+              <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
+            ) : null}
+          </div>
+
+          <div style={{ borderTop: `1px solid ${getCSSColor(String(data.style.borderColor), theme)}` }}>
+            {/* Children */}
+          </div>
         </div>
         {selected ? (
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
@@ -142,11 +148,31 @@ export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNo
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <svg viewBox={`0 0 ${node.width} ${node.height}`}>
+          {/* This path represents the external borders of the cuboid */}
           <path
             style={svgPathStyle(theme, data.style, data.faded)}
-            d={`M ${borderOffset},${borderOffset} H ${node.width - borderOffset} V ${
+            d={`M ${borderOffset}, ${borderOffset + cuboidBorder} L ${cuboidBorder + borderOffset}, ${borderOffset} H ${
+              node.width - borderOffset
+            } V ${node.height - (cuboidBorder + borderOffset)} L ${node.width - (cuboidBorder + borderOffset)}, ${
               node.height - borderOffset
-            } H ${borderOffset} L ${20}, ${node.height / 2} Z`}
+            } H ${borderOffset} Z`}
+          />
+
+          {/* This path represents the top and right borders of the cuboid front face */}
+          <path
+            style={svgPathStyle(theme, data.style, data.faded)}
+            d={`M ${borderOffset},${borderOffset + cuboidBorder} H ${node.width - (borderOffset + cuboidBorder)} V ${
+              node.height - borderOffset - 0.3
+            }`}
+            // Add a 0.3 offset to avoid a glitch at the junction of the lines on the bottom right corner of the cuboid.
+          />
+
+          {/* This path represents the diagonal edges on the top-right of the cuboid */}
+          <path
+            style={svgPathStyle(theme, data.style, data.faded)}
+            d={`M ${node.width - (borderOffset + cuboidBorder)},${borderOffset + cuboidBorder} L ${
+              node.width - borderOffset
+            }, ${borderOffset}`}
           />
         </svg>
       </div>
