@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * This class provides style information for the package custom node.
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyleProvider.java).
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -47,9 +48,19 @@ public class PackageNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(PackageNodeStyle.newPackageNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor()).filter(FixedColor.class::isInstance).map(FixedColor.class::cast).map(FixedColor::getValue).orElse("transparent"))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).filter(FixedColor.class::isInstance).map(FixedColor.class::cast).map(FixedColor::getValue).orElse("black"))
-                    .borderSize(nodeStyle.getBorderSize()).borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral())).build());
+                    .color(Optional.ofNullable(nodeStyle.getColor())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse("transparent"))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse("black"))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .build());
         }
 
         return iNodeStyle;

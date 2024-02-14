@@ -1,15 +1,16 @@
-/*******************************************************************************
+/*****************************************************************************
  * Copyright (c) 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.nodes;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * This class provides style information for the custom outer node flag.
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyleProvider.java).
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -56,7 +58,8 @@ public class OuterFlagNodeStyleProvider implements INodeStyleProvider {
                             .map(FixedColor.class::cast)
                             .map(FixedColor::getValue)
                             .orElse("black"))
-                    .borderSize(nodeStyle.getBorderSize()).borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral()))
                     .build());
         }
 

@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+/**
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (packages\sirius-web\frontend\sirius-web\src\nodes\EllipseNode.tsx).
+ */
 import { getCSSColor } from '@eclipse-sirius/sirius-components-core';
 import {
   ConnectionCreationHandles,

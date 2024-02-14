@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 
 /**
  * The package node style.
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyle.java).
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */

@@ -10,6 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+/**
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (packages\sirius-web\frontend\sirius-web\src\nodes\EllipseNodeConverter.tsx).
+ */
 import {
   AlignmentMap,
   BorderNodePosition,
