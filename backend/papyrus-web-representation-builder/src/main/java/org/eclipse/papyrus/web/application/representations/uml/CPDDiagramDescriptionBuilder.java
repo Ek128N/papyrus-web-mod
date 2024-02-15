@@ -26,6 +26,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
@@ -36,6 +37,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.ComponentRealization;
@@ -467,6 +469,21 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createPropertySharedNodeDescription(DiagramDescription diagramDescription) {
         EClass propertyEClass = this.umlPackage.getProperty();
 
+        // Style for Property with attribute isStatic=false and aggregation=shared
+        RectangularNodeStyleDescription rectangularDashNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        rectangularDashNodeStyle.setBorderLineStyle(LineStyle.DASH);
+        ConditionalNodeStyle dashConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(
+                "aql:self.oclIsKindOf(uml::Property) and (uml::AggregationKind::shared = self.oclAsType(uml::Property).aggregation)", //
+                rectangularDashNodeStyle);
+
+        // Style for Property with attribute isStatic=true and aggregation=shared
+        RectangularNodeStyleDescription rectangularDashAndUnderlineNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        rectangularDashAndUnderlineNodeStyle.setBorderLineStyle(LineStyle.DASH);
+        rectangularDashAndUnderlineNodeStyle.setUnderline(true);
+        ConditionalNodeStyle dashAndUnderlineConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(
+                "aql:self.oclIsKindOf(uml::Property) and (uml::AggregationKind::shared = self.oclAsType(uml::Property).aggregation) and self.isStatic", //
+                rectangularDashAndUnderlineNodeStyle);
+
         NodeDescription cpdPropertySharedNodeDescription = this.newNodeBuilder(propertyEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(propertyEClass, CPDDiagramDescriptionBuilder.SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ComponentDiagramServices.GET_PROPERTY_NODE_CANDIDATES))//
@@ -474,6 +491,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(propertyEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(propertyEClass.getName())) //
+                .conditionalStyles(List.of(dashAndUnderlineConditionalStyle, dashConditionalStyle)) //
                 .build();
         this.cpdSharedDescription.getChildrenDescriptions().add(cpdPropertySharedNodeDescription);
 
