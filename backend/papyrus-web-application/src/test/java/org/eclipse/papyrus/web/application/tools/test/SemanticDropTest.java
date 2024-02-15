@@ -14,6 +14,8 @@
 package org.eclipse.papyrus.web.application.tools.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.MessageFormat;
@@ -21,6 +23,12 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.tools.checker.Checker;
+import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeSourceGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeTargetGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 
 /**
@@ -33,6 +41,21 @@ import org.eclipse.sirius.components.diagrams.Node;
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
 public class SemanticDropTest extends AbstractPapyrusWebTest {
+
+    /**
+     * The label suffix used for the identify the source of dropped {@link Edge}.
+     */
+    protected static final String SOURCE = "Source";
+
+    /**
+     * The label suffix used for the identify the target of dropped {@link Edge}.
+     */
+    protected static final String TARGET = "Target";
+
+    /**
+     * The container label used to specify that an element is contained in the diagram.
+     */
+    protected static final String DIAGRAM_LABEL = "Diagram";
 
     private static final String DROPPED_ELEMENT_IS_NULL_ERROR = "droppedElementId cannot be null";
 
@@ -70,6 +93,143 @@ public class SemanticDropTest extends AbstractPapyrusWebTest {
         int diagramChildCount = this.getDiagram().getNodes().size();
         this.applyDropOnDiagramTool(targetElementId, droppedElementUUIDs);
         checker.validateRepresentationElement(this.getDiagram().getNodes().get(diagramChildCount));
+    }
+
+    /**
+     * Drops the provided {@link Edge} on the diagram.
+     * <p>
+     * This method first creates the source and target {@link Node}s and the {@link Edge} with the given
+     * {@link CreationTool}s. It then graphically deletes the source {@link Node}, target {@link Node}, and the
+     * {@link Edge}. This process ensures that the created {@link Edge} is configured the same way a user-created
+     * {@link Edge} would be. The semantic {@link Edge} is then dropped on the diagram, and the result is validated.
+     * </p>
+     *
+     * @param sourceCreationTool
+     *            the creation tool for the source {@link Node} of the {@link Edge} to drop
+     * @param targetCreationTool
+     *            the creation tool for the target {@link Node} of the {@link Edge} to drop
+     * @param edgeCreationTool
+     *            the creation tool used to initialize the {@link Edge}
+     * @param expectedMappingType
+     *            the expected mapping type of the dropped {@link Edge}
+     *
+     * @see #edgeSemanticDropOnContainers(CreationTool, String, CreationTool, String, CreationTool, String, String) to
+     *      test the semantic drag & drop of an edge on containers
+     */
+    protected void edgeSemanticDropOnDiagram(CreationTool sourceCreationTool, CreationTool targetCreationTool, CreationTool edgeCreationTool, String expectedMappingType) {
+        this.edgeSemanticDropOnContainers(sourceCreationTool, DIAGRAM_LABEL, targetCreationTool, DIAGRAM_LABEL, edgeCreationTool, DIAGRAM_LABEL, expectedMappingType);
+    }
+
+    /**
+     * Drops the provided {@link Edge} on the provided {@code edgeContainerLabel}.
+     * <p>
+     * This method first creates the source and target {@link Node}s and the {@link Edge} with the given
+     * {@link CreationTool}s in the given containers. It then graphically deletes the source {@link Node}, target
+     * {@link Node}, and the {@link Edge}. This process ensures that the created {@link Edge} is configured the same way
+     * a user-created {@link Edge} would be. The semantic {@link Edge} is then dropped on the diagram, and the result is
+     * validated.
+     * </p>
+     * <p>
+     * This method can be configured to check the graphical creation of the source/target {@link Node}s in their
+     * respective containers. This is configured with the {@code sourceContainerLabel} and {@code targetContainerLabel}
+     * arguments. Note that these arguments and {@code edgeContainerLabel} can be set to
+     * {@link SemanticDropTest#DIAGRAM_LABEL} to check that the container is the diagram itself.
+     * </p>
+     *
+     * @param sourceCreationTool
+     *            the creation tool for the source {@link Node} of the {@link Edge} to drop
+     * @param sourceContainerLabel
+     *            the label of the container of the source {@link Node}
+     * @param targetCreationTool
+     *            the creation tool for the target {@link Node} of the {@link Edge} to drop
+     * @param targetContainerLabel
+     *            the label of the container of the target {@link Node}
+     * @param edgeCreationTool
+     *            the creation tool used to initialize the {@link Edge}
+     * @param edgeContainerLabel
+     *            the label of the container of the {@link Edge}
+     * @param expectedMappingType
+     *            the expected mapping type of the dropped {@link Edge}
+     * 
+     * @see #edgeSemanticDropOnDiagram(CreationTool, CreationTool, CreationTool, String) to test the semantic drag &
+     *      drop of an edge on the diagram
+     */
+    protected void edgeSemanticDropOnContainers(CreationTool sourceCreationTool, String sourceContainerLabel, CreationTool targetCreationTool, String targetContainerLabel,
+            CreationTool edgeCreationTool, String edgeContainerLabel, String expectedMappingType) {
+
+        String sourceLabel = sourceCreationTool.getToolEClass().getName() + SOURCE;
+        String targetLabel = targetCreationTool.getToolEClass().getName() + TARGET;
+        this.createNodeInParentWithLabel(sourceContainerLabel, sourceCreationTool, sourceLabel);
+        this.createNodeInParentWithLabel(targetContainerLabel, targetCreationTool, targetLabel);
+        EdgeCreationGraphicalChecker edgeChecker = new EdgeCreationGraphicalChecker(this::getDiagram, null, expectedMappingType, this.getCapturedEdges());
+        EdgeSourceGraphicalChecker sourceChecker = new EdgeSourceGraphicalChecker(() -> this.findGraphicalElementByLabel(sourceLabel));
+        EdgeTargetGraphicalChecker targetChecker = new EdgeTargetGraphicalChecker(() -> this.findGraphicalElementByLabel(targetLabel));
+        Checker combinedChecker = new CombinedChecker(edgeChecker, sourceChecker, targetChecker);
+
+        this.createEdge(sourceLabel, targetLabel, edgeCreationTool);
+        assertEquals(1, this.getDiagram().getEdges().size());
+        int initialNumberOfChildrenInSourceContainer = this.getChildCount(sourceContainerLabel);
+        int initialNumberOfChildrenInTargetContainer = this.getChildCount(targetContainerLabel);
+        Edge edge = this.getDiagram().getEdges().get(0);
+        Node sourceNode = (Node) this.findGraphicalElementByLabel(sourceLabel);
+        Node targetNode = (Node) this.findGraphicalElementByLabel(targetLabel);
+        this.applyNodeGraphicalDeletionTool(sourceNode.getId());
+        this.applyNodeGraphicalDeletionTool(targetNode.getId());
+        // Ensure the nodes and the edge have been removed from the diagram
+        assertTrue(this.getDiagram().getEdges().isEmpty());
+        // Reload the containers get the updated lists of children
+        if (sourceContainerLabel.equals(targetContainerLabel)) {
+            assertEquals(initialNumberOfChildrenInSourceContainer - 2, this.getChildCount(sourceContainerLabel));
+        } else {
+            assertEquals(initialNumberOfChildrenInSourceContainer - 1, this.getChildCount(sourceContainerLabel));
+            assertEquals(initialNumberOfChildrenInTargetContainer - 1, this.getChildCount(targetContainerLabel));
+        }
+        // Drop the semantic Edge on its container
+        String edgeContainerId;
+        if (DIAGRAM_LABEL.equals(edgeContainerLabel)) {
+            edgeContainerId = this.representationId;
+        } else {
+            Node edgeContainer = (Node) this.findGraphicalElementByLabel(edgeContainerLabel);
+            edgeContainerId = edgeContainer.getId();
+        }
+
+        this.applyDropOnDiagramTool(edgeContainerId, List.of(edge.getTargetObjectId()));
+        // Ensure the nodes and the edge have been re-created on the diagram
+        assertEquals(1, this.getDiagram().getEdges().size());
+        // Reload the containers to get the updated lists of children
+        assertEquals(initialNumberOfChildrenInSourceContainer, this.getChildCount(sourceContainerLabel));
+        assertEquals(initialNumberOfChildrenInTargetContainer, this.getChildCount(targetContainerLabel));
+        // Validate the created Edge
+        combinedChecker.validateRepresentationElement(this.getDiagram().getEdges().get(0));
+    }
+
+    private void createNodeInParentWithLabel(String parentLabel, CreationTool nodeCreationTool, String nodeLabel) {
+        if (DIAGRAM_LABEL.equals(parentLabel)) {
+            this.createNodeWithLabel(this.representationId, nodeCreationTool, nodeLabel);
+        } else {
+            Node sourceContainerNode = (Node) this.findGraphicalElementByLabel(parentLabel);
+            this.createNodeWithLabel(sourceContainerNode.getId(), nodeCreationTool, nodeLabel);
+        }
+    }
+
+    /**
+     * Returns the number of children directly contained by the {@code label} element.
+     * <p>
+     * This method accepts {@link #DIAGRAM_LABEL} as a parameter, and returns the number of direct children of the
+     * diagram.
+     * </p>
+     *
+     * @param label
+     *            the label of the graphical element to count the children of
+     * @return the number of children
+     */
+    private int getChildCount(String label) {
+        if (DIAGRAM_LABEL.equals(label)) {
+            return this.getDiagram().getNodes().size();
+        } else {
+            Node node = (Node) this.findGraphicalElementByLabel(label);
+            return node.getChildNodes().size() + node.getBorderNodes().size();
+        }
     }
 
     /**

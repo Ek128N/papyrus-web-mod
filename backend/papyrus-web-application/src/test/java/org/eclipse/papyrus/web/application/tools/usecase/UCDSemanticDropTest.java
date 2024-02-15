@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.tools.usecase;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
@@ -24,6 +25,8 @@ import org.eclipse.papyrus.web.application.tools.test.SemanticDropTest;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDCreationTool;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDMappingTypes;
 import org.eclipse.papyrus.web.application.tools.usecase.utils.UCDToolSections;
+import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
+import org.eclipse.papyrus.web.application.tools.utils.ToolSections;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -70,6 +73,42 @@ public class UCDSemanticDropTest extends SemanticDropTest {
         );
     }
 
+    private static Stream<Arguments> dropAbstractionAndDependencyAndRealizationAndUsageParameters() {
+        List<CreationTool> sources = List.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
+        List<CreationTool> targets = List.of(
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()),
+                new UCDCreationTool(UCDToolSections.NODES, UML.getActor()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()),
+                new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()),
+                new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()),
+                new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropAssociationAndGeneralizationParameters() {
+        List<CreationTool> sources = List.of(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
+        List<CreationTool> targets = List.of(
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()),
+                new UCDCreationTool(UCDToolSections.NODES, UML.getActor()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()),
+                new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()),
+                new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropExtendAndIncludeParameters() {
+        return Stream.of(Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()), new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase())));
+    }
+
+    private static Stream<Arguments> dropPackageImportAndPackageMergeParameters() {
+        return Stream.of(Arguments.of(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()), new UCDCreationTool(UCDToolSections.NODES, UML.getPackage())));
+    }
+
     @Override
     @BeforeEach
     public void setUp() {
@@ -110,6 +149,66 @@ public class UCDSemanticDropTest extends SemanticDropTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(CLASS_CONTAINER),
                 UCDMappingTypes.getMappingTypeAsSubNode(elementType), this.getCapturedNodes());
         this.semanticDropOnContainer(CLASS_CONTAINER, this.getObjectService().getId(elementToDrop), graphicalChecker);
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAbstractionAndDependencyAndRealizationAndUsageParameters")
+    public void testSemanticDropAbstraction(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getAbstraction()), UCDMappingTypes.getMappingType(UML.getAbstraction()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAssociationAndGeneralizationParameters")
+    public void testSemanticDropAssociation(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getAssociation()), UCDMappingTypes.getMappingType(UML.getAssociation()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAbstractionAndDependencyAndRealizationAndUsageParameters")
+    public void testSemanticDropDependency(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getDependency()), UCDMappingTypes.getMappingType(UML.getDependency()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropExtendAndIncludeParameters")
+    public void testSemanticDropExtend(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getExtend()), UCDMappingTypes.getMappingType(UML.getExtend()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAssociationAndGeneralizationParameters")
+    public void testSemanticDropGeneralization(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getGeneralization()), UCDMappingTypes.getMappingType(UML.getGeneralization()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropExtendAndIncludeParameters")
+    public void testSemanticDropInclude(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getInclude()), UCDMappingTypes.getMappingType(UML.getInclude()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropPackageImportAndPackageMergeParameters")
+    public void testSemanticDropPackageImport(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getPackageImport()), UCDMappingTypes.getMappingType(UML.getPackageImport()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropPackageImportAndPackageMergeParameters")
+    public void testSemanticDropPackageMerge(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getPackageMerge()), UCDMappingTypes.getMappingType(UML.getPackageMerge()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAbstractionAndDependencyAndRealizationAndUsageParameters")
+    public void testSemanticDropRealization(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getRealization()), UCDMappingTypes.getMappingType(UML.getRealization()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAbstractionAndDependencyAndRealizationAndUsageParameters")
+    public void testSemanticDropUsage(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getUsage()), UCDMappingTypes.getMappingType(UML.getUsage()));
     }
 
 }

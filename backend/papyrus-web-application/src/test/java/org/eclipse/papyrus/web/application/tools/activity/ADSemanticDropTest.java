@@ -28,6 +28,8 @@ import org.eclipse.papyrus.web.application.tools.activity.utils.ADMappingTypes;
 import org.eclipse.papyrus.web.application.tools.activity.utils.ADToolSections;
 import org.eclipse.papyrus.web.application.tools.checker.NodeCreationGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.test.SemanticDropTest;
+import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
+import org.eclipse.papyrus.web.application.tools.utils.ToolSections;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.uml2.uml.ActivityGroup;
 import org.eclipse.uml2.uml.ActivityNode;
@@ -359,6 +361,35 @@ public class ADSemanticDropTest extends SemanticDropTest {
         );
     }
 
+    private static Stream<Arguments> dropControlFlowParameters() {
+        List<CreationTool> sources = List.of(new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getInitialNode()));
+        List<CreationTool> targets = List.of(
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getActivityFinalNode()),
+                new ADCreationTool(ADToolSections.INVOCATION_ACTION, UML.getCallBehaviorAction()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getDecisionNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getFlowFinalNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getForkNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getJoinNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getMergeNode()),
+                new ADCreationTool(ADToolSections.EXECUTABLE_NODE, UML.getOpaqueAction()),
+                new ADCreationTool(ADToolSections.STRUCTURED_ACTIVITY_NODE, UML.getStructuredActivityNode()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropObjectFlowParameters() {
+        List<CreationTool> sources = List.of(new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getDecisionNode()));
+        List<CreationTool> targets = List.of(
+                new ADCreationTool(ADToolSections.NODES, UML.getActivityParameterNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getActivityFinalNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getDecisionNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getFlowFinalNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getForkNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getJoinNode()),
+                new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getMergeNode()),
+                new ADCreationTool(ADToolSections.EXPANSION_REGION, UML.getExpansionNode()));
+        return cartesianProduct(sources, targets);
+    }
+
     @Override
     @BeforeEach
     public void setUp() {
@@ -473,6 +504,27 @@ public class ADSemanticDropTest extends SemanticDropTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(SEQUENCE_NODE_LABEL),
                 ADMappingTypes.getMappingTypeAsSubNode(elementType), this.getCapturedNodes());
         this.semanticDropOnContainer(SEQUENCE_NODE_LABEL, this.getObjectService().getId(elementToDrop), graphicalChecker);
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropControlFlowParameters")
+    public void testSemanticDropControlFlow(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnContainers(sourceCreationTool, ROOT_ACTIVITY, targetCreationTool, ROOT_ACTIVITY, new CreationTool(ToolSections.EDGES, UML.getControlFlow()), ROOT_ACTIVITY,
+                ADMappingTypes.getMappingType(UML.getControlFlow()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropObjectFlowParameters")
+    public void testSemanticDropObjectFlow(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        final String targetContainerLabel;
+        if (UML.getExpansionNode().equals(targetCreationTool.getToolEClass())) {
+            targetContainerLabel = EXPANSION_REGION_LABEL;
+            this.createNodeWithLabel(this.rootActivityId, new ADCreationTool(ADToolSections.EXPANSION_REGION, UML.getExpansionRegion()), EXPANSION_REGION_LABEL);
+        } else {
+            targetContainerLabel = ROOT_ACTIVITY;
+        }
+        this.edgeSemanticDropOnContainers(sourceCreationTool, ROOT_ACTIVITY, targetCreationTool, targetContainerLabel, new CreationTool(ToolSections.EDGES, UML.getObjectFlow()), ROOT_ACTIVITY,
+                ADMappingTypes.getMappingType(UML.getObjectFlow()));
     }
 
     /**

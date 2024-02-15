@@ -13,6 +13,7 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.tools.deployment;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
@@ -98,6 +99,50 @@ public class DDSemanticDropTest extends SemanticDropTest {
                 Arguments.of(UML.getNode_NestedNode(), UML.getDevice()),
                 Arguments.of(UML.getNode_NestedNode(), UML.getExecutionEnvironment()),
                 Arguments.of(UML.getNode_NestedNode(), UML.getNode()));
+    }
+
+    private static Stream<Arguments> dropCommunicationPathParameters() {
+        List<CreationTool> sources = List.of(new CreationTool(ToolSections.NODES, UML.getDevice()));
+        List<CreationTool> targets = List.of(
+                new CreationTool(ToolSections.NODES, UML.getDevice()),
+                new CreationTool(ToolSections.NODES, UML.getExecutionEnvironment()),
+                new CreationTool(ToolSections.NODES, UML.getNode()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropDependencyAndManifestationParameters() {
+        List<CreationTool> sources = List.of(new CreationTool(ToolSections.NODES, UML.getArtifact()));
+        List<CreationTool> targets = List.of(
+                new CreationTool(ToolSections.NODES, UML.getArtifact()),
+                new CreationTool(ToolSections.NODES, UML.getConstraint()),
+                new CreationTool(ToolSections.NODES, UML.getDeploymentSpecification()),
+                new CreationTool(ToolSections.NODES, UML.getDevice()),
+                new CreationTool(ToolSections.NODES, UML.getExecutionEnvironment()),
+                new CreationTool(ToolSections.NODES, UML.getModel()),
+                new CreationTool(ToolSections.NODES, UML.getNode()),
+                new CreationTool(ToolSections.NODES, UML.getPackage()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropDeploymentParameters() {
+        List<CreationTool> sources = List.of(
+                new CreationTool(ToolSections.NODES, UML.getArtifact()),
+                new CreationTool(ToolSections.NODES, UML.getDeploymentSpecification()));
+        List<CreationTool> targets = List.of(
+                new CreationTool(ToolSections.NODES, UML.getDevice()),
+                new CreationTool(ToolSections.NODES, UML.getExecutionEnvironment()),
+                new CreationTool(ToolSections.NODES, UML.getNode()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropGeneralizationParameters() {
+        List<CreationTool> sources = List.of(new CreationTool(ToolSections.NODES, UML.getArtifact()));
+        List<CreationTool> targets = List.of(
+                new CreationTool(ToolSections.NODES, UML.getDeploymentSpecification()),
+                new CreationTool(ToolSections.NODES, UML.getDevice()),
+                new CreationTool(ToolSections.NODES, UML.getExecutionEnvironment()),
+                new CreationTool(ToolSections.NODES, UML.getNode()));
+        return cartesianProduct(sources, targets);
     }
 
     @Override
@@ -197,4 +242,36 @@ public class DDSemanticDropTest extends SemanticDropTest {
                 this.getCapturedNodes());
         this.semanticDropOnContainer(PACKAGE_CONTAINER, this.getObjectService().getId(elementToDrop), graphicalChecker);
     }
+
+    @ParameterizedTest
+    @MethodSource("dropCommunicationPathParameters")
+    public void testSemanticDropCommunicationPath(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getCommunicationPath()),
+                DDMappingTypes.getMappingType(UML.getCommunicationPath()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropDependencyAndManifestationParameters")
+    public void testSemanticDropDependency(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getDependency()), DDMappingTypes.getMappingType(UML.getDependency()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropDeploymentParameters")
+    public void testSemanticDropDeployment(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getDeployment()), DDMappingTypes.getMappingType(UML.getDeployment()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropGeneralizationParameters")
+    public void testSemanticDropGeneralization(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getGeneralization()), DDMappingTypes.getMappingType(UML.getGeneralization()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropDependencyAndManifestationParameters")
+    public void testSemanticDropManifestation(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getManifestation()), DDMappingTypes.getMappingType(UML.getManifestation()));
+    }
+
 }

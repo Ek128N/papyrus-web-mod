@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.application.tools.profile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -118,6 +119,25 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         return Stream.of(//
                 Arguments.of(UML.getEnumeration_OwnedLiteral(), UML.getEnumerationLiteral())//
         );
+    }
+
+    private static Stream<Arguments> dropAssociationAndGeneralizationParameters() {
+        List<CreationTool> sources = List.of(new CreationTool(ToolSections.NODES, UML.getClass_()));
+        List<CreationTool> targets = List.of(
+                new CreationTool(ToolSections.NODES, UML.getClass_()),
+                new CreationTool(ToolSections.NODES, UML.getDataType()),
+                new CreationTool(ToolSections.NODES, UML.getEnumeration()),
+                new CreationTool(ToolSections.NODES, UML.getPrimitiveType()),
+                new CreationTool(ToolSections.NODES, UML.getStereotype()));
+        return cartesianProduct(sources, targets);
+    }
+
+    private static Stream<Arguments> dropExtensionParameters() {
+        List<CreationTool> sources = List.of(new CreationTool(ToolSections.NODES, UML.getStereotype()));
+        List<CreationTool> targets = List.of(
+                new CreationTool(ToolSections.NODES, UML.getClass_()),
+                new CreationTool(ToolSections.NODES, UML.getStereotype()));
+        return cartesianProduct(sources, targets);
     }
 
     @Override
@@ -306,6 +326,24 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.getSubNode(ENUMERATION_CONTAINER, compartmentName),
                 PRDMappingTypes.getMappingTypeAsSubNode(elementType), this.getCapturedNodes());
         this.semanticDropOnContainerCompartment(ENUMERATION_CONTAINER, compartmentName, this.getObjectService().getId(elementToDrop), graphicalChecker);
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAssociationAndGeneralizationParameters")
+    public void testSemanticDropAssociation(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getAssociation()), PRDMappingTypes.getMappingType(UML.getAssociation()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropAssociationAndGeneralizationParameters")
+    public void testSemanticDropGeneralization(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getGeneralization()), PRDMappingTypes.getMappingType(UML.getGeneralization()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropExtensionParameters")
+    public void testSemanticDropExtension(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnDiagram(sourceCreationTool, targetCreationTool, new CreationTool(ToolSections.EDGES, UML.getExtension()), PRDMappingTypes.getMappingType(UML.getExtension()));
     }
 
     private Class getTestMetaclass(IEMFEditingContext editingContext) {

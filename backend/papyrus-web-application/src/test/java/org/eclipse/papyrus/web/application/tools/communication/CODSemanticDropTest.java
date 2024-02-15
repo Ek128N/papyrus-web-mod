@@ -22,6 +22,8 @@ import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescrip
 import org.eclipse.papyrus.web.application.tools.checker.NodeCreationGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.communication.utils.CODMappingTypes;
 import org.eclipse.papyrus.web.application.tools.test.SemanticDropTest;
+import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
+import org.eclipse.papyrus.web.application.tools.utils.ToolSections;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,6 +52,11 @@ public class CODSemanticDropTest extends SemanticDropTest {
                 Arguments.of(UML.getPackage_PackagedElement(), UML.getTimeObservation()));
     }
 
+    private static Stream<Arguments> dropMessageParameters() {
+        return Stream.of(//
+                Arguments.of(new CreationTool(ToolSections.NODES, UML.getLifeline()), new CreationTool(ToolSections.NODES, UML.getLifeline())));
+    }
+
     @Override
     @BeforeEach
     public void setUp() {
@@ -74,6 +81,13 @@ public class CODSemanticDropTest extends SemanticDropTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(ROOT_INTERACTION),
                 CODMappingTypes.getMappingType(elementType), this.getCapturedNodes());
         this.semanticDropOnContainer(ROOT_INTERACTION, this.getObjectService().getId(elementToDrop), graphicalChecker);
+    }
+
+    @ParameterizedTest
+    @MethodSource("dropMessageParameters")
+    public void testSemanticDropMessage(CreationTool sourceCreationTool, CreationTool targetCreationTool) {
+        this.edgeSemanticDropOnContainers(sourceCreationTool, ROOT_INTERACTION, targetCreationTool, ROOT_INTERACTION, new CreationTool(ToolSections.EDGES, UML.getMessage()), ROOT_INTERACTION,
+                CODMappingTypes.getMappingType(UML.getMessage()));
     }
 
 }

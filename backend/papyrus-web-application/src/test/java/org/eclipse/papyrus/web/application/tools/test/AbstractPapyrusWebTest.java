@@ -809,9 +809,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * @see #createSourceAndTargetTopNodes(CreationTool) to create a source and target node in the diagram
      */
     protected void createSourceAndTargetNodes(String parentElementId, CreationTool creationTool) {
-        EClass toolEClass = creationTool.getToolEClass();
-        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + "Source");
-        this.createNodeWithLabel(parentElementId, creationTool, toolEClass.getName() + "Target");
+        EClass creationToolEClass = creationTool.getToolEClass();
+        this.createNodeWithLabel(parentElementId, creationTool, creationToolEClass.getName() + "Source");
+        this.createNodeWithLabel(parentElementId, creationTool, creationToolEClass.getName() + "Target");
     }
 
     /**
