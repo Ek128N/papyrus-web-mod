@@ -36,11 +36,11 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public class DDDiagramNodeCreationTest extends NodeCreationTest {
+public class DDTopNodeCreationTest extends NodeCreationTest {
 
     private static final EReference PACKAGED_ELEMENT = UML.getPackage_PackagedElement();
 
-    public DDDiagramNodeCreationTest() {
+    public DDTopNodeCreationTest() {
         super(DEFAULT_DOCUMENT, DDDiagramDescriptionBuilder.DD_REP_NAME, UML.getModel());
     }
 
@@ -77,6 +77,6 @@ public class DDDiagramNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, null, mappingType, this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType, this::getRootSemanticElement,
                 expectedContainmentReference);
-        this.createNodeOnDiagram(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createTopNode(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

@@ -34,7 +34,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class UCDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
+public class UCDTopNodeGraphicalDeletionTest extends NodeDeletionTest {
 
     private static final String ACTIVITY1 = "Activity1";
 
@@ -54,7 +54,7 @@ public class UCDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
 
     private static final String USE_CASE1 = "UseCase1";
 
-    public UCDDiagramNodeGraphicalDeletionTest() {
+    public UCDTopNodeGraphicalDeletionTest() {
         super(DEFAULT_DOCUMENT, UCDDiagramDescriptionBuilder.UCD_REP_NAME, UML.getModel());
     }
 

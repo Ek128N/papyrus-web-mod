@@ -84,14 +84,14 @@ public class DDReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getArtifact()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getConstraint()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getDeploymentSpecification()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getDevice()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getExecutionEnvironment()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getModel()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getNode()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getPackage()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getArtifact()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getConstraint()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getDeploymentSpecification()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getDevice()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getExecutionEnvironment()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getModel()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getNode()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getPackage()));
     }
 
     @Override

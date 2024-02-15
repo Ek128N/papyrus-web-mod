@@ -124,7 +124,7 @@ public class CPDSubNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(PACKAGE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(PACKAGE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(PACKAGE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Model")
@@ -140,7 +140,7 @@ public class CPDSubNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(MODEL_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(MODEL_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(MODEL_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Component")
@@ -151,7 +151,7 @@ public class CPDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(COMPONENT_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(COMPONENT_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(COMPONENT_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Interface")
@@ -182,7 +182,7 @@ public class CPDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(INTERFACE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainerCompartment(INTERFACE_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNodeOnCompartment(INTERFACE_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @Test
@@ -213,6 +213,6 @@ public class CPDSubNodeCreationTest extends NodeCreationTest {
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(COMPONENT_TYPE), expectedContainmentReference);
         CreationTool nodeCreationTool = new CreationTool(ToolSections.NODES, UML.getProperty());
-        this.createNodeOnContainer(PROPERTY_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(PROPERTY_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

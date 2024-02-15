@@ -493,7 +493,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, ROOT_ACTIVITY);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(ROOT_ACTIVITY), containmentReference);
-        this.createNodeOnContainer(ROOT_ACTIVITY, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(ROOT_ACTIVITY, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create node {1} in ActivityPartition")
@@ -513,7 +513,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(semanticOwnerLabel), containmentReference);
-        this.createNodeOnContainer(ACTIVITY_PARTITION_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(ACTIVITY_PARTITION_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create node {1} in ConditionalNode")
@@ -525,7 +525,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, CONDITIONAL_NODE_LABEL);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(CONDITIONAL_NODE_LABEL), containmentReference);
-        this.createNodeOnContainer(CONDITIONAL_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(CONDITIONAL_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create node {1} in ExpansionRegion")
@@ -543,7 +543,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, EXPANSION_REGION_LABEL);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(EXPANSION_REGION_LABEL), containmentReference);
-        this.createNodeOnContainer(EXPANSION_REGION_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(EXPANSION_REGION_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create node {1} in InterruptibleActivityRegion")
@@ -563,7 +563,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(semanticOwnerLabel), containmentReference);
-        this.createNodeOnContainer(INTERRUPTIBLE_ACTIVITY_REGION_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(INTERRUPTIBLE_ACTIVITY_REGION_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index} Create node {1} in LoopNode")
@@ -575,7 +575,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, LOOP_NODE_LABEL);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(LOOP_NODE_LABEL), containmentReference);
-        this.createNodeOnContainer(LOOP_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(LOOP_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index} Creation node {1} in SequenceNode")
@@ -587,7 +587,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, SEQUENCE_NODE_LABEL);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(SEQUENCE_NODE_LABEL), containmentReference);
-        this.createNodeOnContainer(SEQUENCE_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(SEQUENCE_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index} Create node {1} in StructuredActivityNode")
@@ -599,7 +599,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, STRUCTURED_ACTIVITY_NODE_LABEL);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(STRUCTURED_ACTIVITY_NODE_LABEL), containmentReference);
-        this.createNodeOnContainer(STRUCTURED_ACTIVITY_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(STRUCTURED_ACTIVITY_NODE_LABEL, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index} Create pin {3} in {1}")
@@ -611,7 +611,7 @@ public class ADSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = this.getGraphicalCheckerFor(expectedType, mappingType, parentLabel);
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType, () -> this.findSemanticElementByName(parentLabel),
                 containmentReference);
-        this.createNodeOnContainer(parentLabel, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(parentLabel, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     private NodeCreationGraphicalChecker getGraphicalCheckerFor(EClass expectedType, String mappingType, String graphicalContainerLabel) {

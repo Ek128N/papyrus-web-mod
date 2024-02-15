@@ -92,11 +92,11 @@ public class CPDReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getComponent()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getConstraint()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getInterface()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getModel()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getPackage()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getComponent()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getConstraint()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getInterface()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getModel()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getPackage()));
         this.createNodeWithLabel(this.representationId, new CreationTool(ToolSections.NODES, UML.getComponent()), COMPONENT_CONTAINER);
         String componentContainerId = this.findGraphicalElementByLabel(COMPONENT_CONTAINER).getId();
         this.createSourceAndTargetNodes(componentContainerId, new CreationTool(ToolSections.NODES, UML.getPort()));

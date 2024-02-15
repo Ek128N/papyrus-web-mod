@@ -17,16 +17,17 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.uml.CPDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
-import org.eclipse.papyrus.web.application.tools.checker.DeletionGraphicalChecker;
-import org.eclipse.papyrus.web.application.tools.checker.NodeSemanticDeletionSemanticChecker;
-import org.eclipse.papyrus.web.application.tools.test.EdgeDeletionTest;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationSemanticChecker;
+import org.eclipse.papyrus.web.application.tools.component.utils.CPDMappingTypes;
+import org.eclipse.papyrus.web.application.tools.test.EdgeCreationTest;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.tools.utils.ToolSections;
-import org.eclipse.sirius.components.diagrams.Edge;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,11 +35,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * Tests semantic deletion edge tool at the root of the diagram in the Component Diagram.
+ * Tests edge creation tools in the Component Diagram.
  *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class CPDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
+public class CPDTopNodeEdgeCreationTest extends EdgeCreationTest {
 
     private static final String COMPONENT_CONTAINER = "ComponentContainer";
 
@@ -70,7 +71,7 @@ public class CPDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
 
     private static final String PROPERTY_TARGET = "PropertyTarget";
 
-    public CPDDiagramEdgeSemanticDeletionTest() {
+    public CPDTopNodeEdgeCreationTest() {
         super(DEFAULT_DOCUMENT, CPDDiagramDescriptionBuilder.CPD_REP_NAME, UML.getModel());
     }
 
@@ -108,11 +109,11 @@ public class CPDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getComponent()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getConstraint()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getInterface()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getPackage()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getModel()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getComponent()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getConstraint()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getInterface()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getPackage()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getModel()));
         this.createNodeWithLabel(this.representationId, new CreationTool(ToolSections.NODES, UML.getComponent()), COMPONENT_CONTAINER);
         String componentContainerId = this.findGraphicalElementByLabel(COMPONENT_CONTAINER).getId();
         this.createSourceAndTargetNodes(componentContainerId, new CreationTool(ToolSections.NODES, UML.getPort()));
@@ -127,105 +128,99 @@ public class CPDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
 
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndUsageParameters")
-    public void testDeleteAbstraction(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getAbstraction()));
-        Edge edge = this.getDiagram().getEdges().get(0);
+    public void testCreateAbstraction(String sourceElementLabel, String targetElementLabel) {
         if (sourceElementLabel.equals(COMPONENT_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getComponent_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getAbstraction(), sourceElementLabel,
+                    UML.getComponent_PackagedElement());
         } else if (sourceElementLabel.equals(PACKAGE_SOURCE) || sourceElementLabel.equals(MODEL_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getPackage_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getAbstraction(), sourceElementLabel,
+                    UML.getPackage_PackagedElement());
         } else {
-            this.testDeleteEdge(edge);
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getAbstraction());
         }
     }
 
     @ParameterizedTest
     @MethodSource("componentRealizationParameters")
-    public void testDeleteComponentRealization(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getComponentRealization()));
-        Edge edge = this.getDiagram().getEdges().get(0);
-        this.testDeleteEdge(edge, targetElementLabel, UML.getComponent_Realization());
+    public void testCreateComponentRealization(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getComponentRealization(), targetElementLabel,
+                UML.getComponent_Realization());
     }
 
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndUsageParameters")
-    public void testDeleteDependency(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getDependency()));
-        Edge edge = this.getDiagram().getEdges().get(0);
+    public void testCreateDependency(String sourceElementLabel, String targetElementLabel) {
         if (sourceElementLabel.equals(COMPONENT_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getComponent_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getDependency(), sourceElementLabel,
+                    UML.getComponent_PackagedElement());
         } else if (sourceElementLabel.equals(PACKAGE_SOURCE) || sourceElementLabel.equals(MODEL_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getPackage_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getDependency(), sourceElementLabel,
+                    UML.getPackage_PackagedElement());
         } else {
-            this.testDeleteEdge(edge);
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getDependency());
         }
     }
 
     @ParameterizedTest
     @MethodSource("generalizationAndSubstitutionParameters")
-    public void testDeleteGeneralization(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getGeneralization()));
-        Edge edge = this.getDiagram().getEdges().get(0);
-        this.testDeleteEdge(edge, sourceElementLabel, UML.getClassifier_Generalization());
+    public void testCreateGeneralization(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getGeneralization(), sourceElementLabel,
+                UML.getClassifier_Generalization());
     }
 
     @ParameterizedTest
     @MethodSource("interfaceRealizationParameters")
-    public void testDeleteInterfaceRealization(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getInterfaceRealization()));
-        Edge edge = this.getDiagram().getEdges().get(0);
-        this.testDeleteEdge(edge, sourceElementLabel, UML.getBehavioredClassifier_InterfaceRealization());
+    public void testCreateInterfaceRealization(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getInterfaceRealization(), sourceElementLabel, UML.getBehavioredClassifier_InterfaceRealization());
     }
 
     @ParameterizedTest
     @MethodSource("manifestationParameters")
-    public void testDeleteManifestation(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getManifestation()));
-        Edge edge = this.getDiagram().getEdges().get(0);
+    public void testCreateManifestation(String sourceElementLabel, String targetElementLabel) {
         if (sourceElementLabel.equals(COMPONENT_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getComponent_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getManifestation(), sourceElementLabel,
+                    UML.getComponent_PackagedElement());
         } else if (sourceElementLabel.equals(PACKAGE_SOURCE) || sourceElementLabel.equals(MODEL_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getPackage_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getManifestation(), sourceElementLabel,
+                    UML.getPackage_PackagedElement());
         } else {
-            this.testDeleteEdge(edge);
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getManifestation());
         }
     }
 
     @ParameterizedTest
     @MethodSource("generalizationAndSubstitutionParameters")
-    public void testDeleteSubstitution(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getSubstitution()));
-        Edge edge = this.getDiagram().getEdges().get(0);
-        this.testDeleteEdge(edge, sourceElementLabel, UML.getClassifier_Substitution());
+    public void testCreateSubstitution(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getSubstitution(), sourceElementLabel,
+                UML.getClassifier_Substitution());
     }
 
     @ParameterizedTest
     @MethodSource("abstractionAndDependencyAndUsageParameters")
-    public void testDeleteUsage(String sourceElementLabel, String targetElementLabel) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, UML.getUsage()));
-        Edge edge = this.getDiagram().getEdges().get(0);
+    public void testCreateUsage(String sourceElementLabel, String targetElementLabel) {
         if (sourceElementLabel.equals(COMPONENT_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getComponent_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getUsage(), sourceElementLabel, UML.getComponent_PackagedElement());
         } else if (sourceElementLabel.equals(PACKAGE_SOURCE) || sourceElementLabel.equals(MODEL_SOURCE)) {
-            this.testDeleteEdge(edge, sourceElementLabel, UML.getPackage_PackagedElement());
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getUsage(), sourceElementLabel, UML.getPackage_PackagedElement());
         } else {
-            this.testDeleteEdge(edge);
+            this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getUsage());
         }
     }
 
-    private void testDeleteEdge(Edge edge) {
-        this.testDeleteEdge(edge, null, UML.getPackage_PackagedElement());
+    private void testCreateEdge(String sourceElementLabel, String targetElementLabel, EClass edgeType) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, edgeType, null, UML.getPackage_PackagedElement());
     }
 
-    private void testDeleteEdge(Edge edge, String oldOwnerLabel, EReference oldContainmentReference) {
-        final Supplier<EObject> oldOwnerSupplier;
-        if (oldOwnerLabel == null) {
-            oldOwnerSupplier = this::getRootSemanticElement;
+    private void testCreateEdge(String sourceElementLabel, String targetElementLabel, EClass edgeType, String expectedSemanticOwnerName, EReference expectedContainmentReference) {
+        Supplier<EObject> expectedSemanticOwnerSupplier;
+        if (expectedSemanticOwnerName == null) {
+            expectedSemanticOwnerSupplier = () -> this.getRootSemanticElement();
         } else {
-            oldOwnerSupplier = () -> this.findSemanticElementByName(oldOwnerLabel);
+            expectedSemanticOwnerSupplier = () -> this.findSemanticElementByName(expectedSemanticOwnerName);
         }
-        DeletionGraphicalChecker graphicalChecker = new DeletionGraphicalChecker(this::getDiagram, null);
-        NodeSemanticDeletionSemanticChecker semanticChecker = new NodeSemanticDeletionSemanticChecker(this.getObjectService(), this::getEditingContext, oldOwnerSupplier, oldContainmentReference);
-        this.deleteSemanticEdge(edge, new CombinedChecker(graphicalChecker, semanticChecker));
+        EdgeCreationGraphicalChecker graphicalChecker = new EdgeCreationGraphicalChecker(this::getDiagram, null, CPDMappingTypes.getMappingType(edgeType), this.getCapturedEdges());
+        EdgeCreationSemanticChecker semanticChecker = new EdgeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, edgeType, expectedSemanticOwnerSupplier,
+                expectedContainmentReference);
+        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, edgeType), new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

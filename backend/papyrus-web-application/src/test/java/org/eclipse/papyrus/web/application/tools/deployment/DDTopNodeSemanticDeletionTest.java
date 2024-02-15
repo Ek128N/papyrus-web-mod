@@ -34,7 +34,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public class DDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
+public class DDTopNodeSemanticDeletionTest extends NodeDeletionTest {
 
     private static final String ARTIFACT1 = "Artifact1";
 
@@ -52,7 +52,7 @@ public class DDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
 
     private static final String PACKAGE1 = "Package1";
 
-    public DDDiagramNodeSemanticDeletionTest() {
+    public DDTopNodeSemanticDeletionTest() {
         super(DEFAULT_DOCUMENT, DDDiagramDescriptionBuilder.DD_REP_NAME, UML.getModel());
     }
 

@@ -37,11 +37,11 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class CPDDiagramNodeCreationTest extends NodeCreationTest {
+public class CPDTopNodeCreationTest extends NodeCreationTest {
 
     private static final EReference PACKAGED_ELEMENT = UML.getPackage_PackagedElement();
 
-    public CPDDiagramNodeCreationTest() {
+    public CPDTopNodeCreationTest() {
         super(DEFAULT_DOCUMENT, CPDDiagramDescriptionBuilder.CPD_REP_NAME, UML.getModel());
     }
 
@@ -80,6 +80,6 @@ public class CPDDiagramNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType, this::getRootSemanticElement,
                 expectedContainmentReference);
-        this.createNodeOnDiagram(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createTopNode(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

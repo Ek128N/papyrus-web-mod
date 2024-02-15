@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
 import org.eclipse.papyrus.web.application.tools.checker.DeletionGraphicalChecker;
-import org.eclipse.papyrus.web.application.tools.checker.NodeSemanticDeletionSemanticChecker;
+import org.eclipse.papyrus.web.application.tools.checker.NodeGraphicalDeletionSemanticChecker;
 import org.eclipse.papyrus.web.application.tools.profile.checker.PRDClassifierDeletionGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.profile.checker.PRDEnumerationDeletionGraphicalChecker;
 import org.eclipse.papyrus.web.application.tools.test.NodeDeletionTest;
@@ -33,11 +33,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * Tests semantic deletion node tool at the root of the diagram in the Profile Diagram.
+ * Tests graphical deletion node tool at the root of the diagram in the Profile Diagram.
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public class PRDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
+public class PRDTopNodeGraphicalDeletionTest extends NodeDeletionTest {
 
     private static final String CLASS1 = "Class1";
 
@@ -55,7 +55,7 @@ public class PRDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
 
     private static final String STEREOTYPE1 = "Stereotype1";
 
-    public PRDDiagramNodeSemanticDeletionTest() {
+    public PRDTopNodeGraphicalDeletionTest() {
         super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
@@ -103,8 +103,8 @@ public class PRDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
         } else {
             graphicalChecker = new DeletionGraphicalChecker(this::getDiagram, null);
         }
-        NodeSemanticDeletionSemanticChecker semanticChecker = new NodeSemanticDeletionSemanticChecker(this.getObjectService(), this::getEditingContext, this::getRootSemanticElement,
+        NodeGraphicalDeletionSemanticChecker semanticChecker = new NodeGraphicalDeletionSemanticChecker(this.getObjectService(), this::getEditingContext, this::getRootSemanticElement,
                 containmentReference);
-        this.deleteSemanticNode(elementName, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.deleteGraphicalNode(elementName, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

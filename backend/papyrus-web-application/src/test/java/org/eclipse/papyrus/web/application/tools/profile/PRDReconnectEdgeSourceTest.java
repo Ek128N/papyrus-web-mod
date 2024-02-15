@@ -67,11 +67,11 @@ public class PRDReconnectEdgeSourceTest extends ReconnectEdgeSourceTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getClass_()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getDataType()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getEnumeration()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getPrimitiveType()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getStereotype()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getClass_()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getDataType()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getEnumeration()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getPrimitiveType()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getStereotype()));
     }
 
     @Override

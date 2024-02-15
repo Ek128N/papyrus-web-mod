@@ -78,6 +78,6 @@ public class CODSubNodeCreationTest extends NodeCreationTest {
             semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType, () -> this.findSemanticElementByName(ROOT_INTERACTION),
                     expectedContainmentReference);
         }
-        this.createNodeOnContainer(ROOT_INTERACTION, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(ROOT_INTERACTION, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

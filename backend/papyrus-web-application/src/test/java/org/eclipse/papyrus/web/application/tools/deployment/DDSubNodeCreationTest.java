@@ -125,7 +125,7 @@ public class DDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(ARTIFACT_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(ARTIFACT_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(ARTIFACT_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Device")
@@ -136,7 +136,7 @@ public class DDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(DEVICE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(DEVICE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(DEVICE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in ExecutionEnvironment")
@@ -147,7 +147,7 @@ public class DDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(EXECUTION_ENVIRONMENT_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(EXECUTION_ENVIRONMENT_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(EXECUTION_ENVIRONMENT_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Model")
@@ -158,7 +158,7 @@ public class DDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(MODEL_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(MODEL_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(MODEL_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Node")
@@ -169,7 +169,7 @@ public class DDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(NODE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(NODE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(NODE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Package")
@@ -180,6 +180,6 @@ public class DDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(PACKAGE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(PACKAGE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(PACKAGE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

@@ -89,15 +89,15 @@ public class UCDReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getActor()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getActor()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
     }
 
     @Override

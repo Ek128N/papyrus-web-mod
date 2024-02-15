@@ -241,9 +241,9 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     protected void fillDescription(DiagramDescription diagramDescription) {
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_DIAGRAM));
 
-        this.createDiagramActivityNodeDescription(diagramDescription);
-        this.createObjectFlowDescription(diagramDescription);
-        this.createControlFlowDescription(diagramDescription);
+        this.createActivityTopNodeDescription(diagramDescription);
+        this.createObjectFlowEdgeDescription(diagramDescription);
+        this.createControlFlowEdgeDescription(diagramDescription);
         this.createSharedNodeDescriptions(diagramDescription);
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
@@ -264,53 +264,53 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getSequenceNode(), //
                 this.umlPackage.getStructuredActivityNode());
         this.adSharedDescription = this.createSharedDescription(diagramDescription);
-        this.createCommentDescriptionInNodeDescription(diagramDescription, this.adSharedDescription, NODES,
+        this.createCommentSubNodeDescription(diagramDescription, this.adSharedDescription, NODES,
                 this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX), commentOwners);
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, this.adSharedDescription, NODES,
+        this.createConstraintSubNodeDescription(diagramDescription, this.adSharedDescription, NODES,
                 this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getConstraint(), SHARED_SUFFIX), constraintOwners);
-        this.createSharedAcceptCallActionNodeDescription(diagramDescription);
-        this.createSharedAcceptEventActionNodeDescription(diagramDescription);
-        this.createSharedActionInputPinNodeDescription(diagramDescription);
-        this.createSharedActivityFinalNodeDescription(diagramDescription);
-        this.createSharedActivityParameterNodeNodeDescription(diagramDescription);
-        this.createSharedActivityPartitionDescription(diagramDescription);
-        this.createSharedAddStructuralFeatureValueActionNodeDescription(diagramDescription);
-        this.createSharedBroadcastSignalActionNodeDescription(diagramDescription);
-        this.createSharedCallBehaviorActionNodeDescription(diagramDescription);
-        this.createSharedCallOperationActionNodeDescription(diagramDescription);
-        this.createSharedClearAssociationActionNodeDescription(diagramDescription);
-        this.createSharedClearStructuralFeatureActionNodeDescription(diagramDescription);
-        this.createSharedConditionalNodeDescription(diagramDescription);
-        this.createSharedCreateObjectActionNodeDescription(diagramDescription);
-        this.createSharedDecisionNodeDescription(diagramDescription);
-        this.createSharedDestroyObjectActionNodeDescription(diagramDescription);
-        this.createSharedExpansionRegionNodeDescription(diagramDescription);
-        this.createSharedFlowFinalNodeDescription(diagramDescription);
-        this.createSharedForkNodeDescription(diagramDescription);
-        this.createSharedInitialNodeDescription(diagramDescription);
-        this.createSharedInputPinNodeDescription(diagramDescription);
-        this.createSharedInterruptibleActivityRegionDescription(diagramDescription);
-        this.createSharedJoinNodeDescription(diagramDescription);
-        this.createSharedLoopNodeDescription(diagramDescription);
-        this.createSharedMergeNodeDescription(diagramDescription);
-        this.createSharedOpaqueActionNodeDescription(diagramDescription);
-        this.createSharedOutputPinNodeDescription(diagramDescription);
-        this.createSharedReadExtentActionNodeDescription(diagramDescription);
-        this.createSharedReadIsClassifiedObjectActionNodeDescription(diagramDescription);
-        this.createSharedReadSelfActionNodeDescription(diagramDescription);
-        this.createSharedReadStructuralFeatureActionNodeDescription(diagramDescription);
-        this.createSharedReclassifyObjectActionNodeDescription(diagramDescription);
-        this.createSharedReduceActionNodeDescription(diagramDescription);
-        this.createSharedSendObjectActionNodeDescription(diagramDescription);
-        this.createSharedSendSignalActionNodeDescription(diagramDescription);
-        this.createSharedSequenceNodeDescription(diagramDescription);
-        this.createSharedStartClassifierBehaviorActionNodeDescription(diagramDescription);
-        this.createSharedStartObjectBehaviorActionNodeDescription(diagramDescription);
-        this.createSharedStructuredActivityNodeDescription(diagramDescription);
-        this.createSharedSubActivityDescription(diagramDescription);
-        this.createSharedTestIdentityActionNodeDescription(diagramDescription);
-        this.createSharedValuePinNodeDescription(diagramDescription);
-        this.createSharedValueSpecificationActionNodeDescription(diagramDescription);
+        this.createAcceptCallActionSharedNodeDescription(diagramDescription);
+        this.createAcceptEventActionSharedNodeDescription(diagramDescription);
+        this.createActionInputPinSharedNodeDescription(diagramDescription);
+        this.createActivityFinalNodeSharedNodeDescription(diagramDescription);
+        this.createActivityParameterNodeSharedNodeDescription(diagramDescription);
+        this.createActivityPartitionSharedNodeDescription(diagramDescription);
+        this.createAddStructuralFeatureValueActionSharedNodeDescription(diagramDescription);
+        this.createBroadcastSignalActionSharedNodeDescription(diagramDescription);
+        this.createCallBehaviorActionSharedNodeDescription(diagramDescription);
+        this.createCallOperationActionSharedNodeDescription(diagramDescription);
+        this.createClearAssociationActionSharedNodeDescription(diagramDescription);
+        this.createClearStructuralFeatureActionSharedNodeDescription(diagramDescription);
+        this.createConditionalNodeSharedNodeDescription(diagramDescription);
+        this.createCreateObjectActionSharedNodeDescription(diagramDescription);
+        this.createDecisionNodeSharedNodeDescription(diagramDescription);
+        this.createDestroyObjectActionSharedNodeDescription(diagramDescription);
+        this.createExpansionRegionSharedNodeDescription(diagramDescription);
+        this.createFlowFinalNodeSharedNodeDescription(diagramDescription);
+        this.createForkNodeSharedNodeDescription(diagramDescription);
+        this.createInitialNodeSharedNodeDescription(diagramDescription);
+        this.createInputPinSharedNodeDescription(diagramDescription);
+        this.createInterruptibleActivityRegionSharedNodeDescription(diagramDescription);
+        this.createJoinNodeSharedNodeDescription(diagramDescription);
+        this.createLoopNodeSharedNodeDescription(diagramDescription);
+        this.createMergeNodeSharedNodeDescription(diagramDescription);
+        this.createOpaqueActionSharedNodeDescription(diagramDescription);
+        this.createOutputPinSharedNodeDescription(diagramDescription);
+        this.createReadExtentActionSharedNodeDescription(diagramDescription);
+        this.createReadIsClassifiedObjectActionSharedNodeDescription(diagramDescription);
+        this.createReadSelfActionSharedNodeDescription(diagramDescription);
+        this.createReadStructuralFeatureActionSharedNodeDescription(diagramDescription);
+        this.createReclassifyObjectActionSharedNodeDescription(diagramDescription);
+        this.createReduceActionSharedNodeDescription(diagramDescription);
+        this.createSendObjectActionSharedNodeDescription(diagramDescription);
+        this.createSendSignalActionSharedNodeDescription(diagramDescription);
+        this.createSequenceNodeSharedNodeDescription(diagramDescription);
+        this.createStartClassifierBehaviorActionSharedNodeDescription(diagramDescription);
+        this.createStartObjectBehaviorActionSharedNodeDescription(diagramDescription);
+        this.createStructuredActivityNodeSharedNodeDescription(diagramDescription);
+        this.createActivitySharedNodeDescription(diagramDescription);
+        this.createTestIdentityActionSharedNodeDescription(diagramDescription);
+        this.createValuePinSharedNodeDescription(diagramDescription);
+        this.createValueSpecificationActionSharedNodeDescription(diagramDescription);
     }
 
     /**
@@ -326,36 +326,36 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedSubActivityDescription(NodeDescription, DiagramDescription)
      */
-    private NodeDescription createDiagramActivityNodeDescription(DiagramDescription diagramDescription) {
+    private NodeDescription createActivityTopNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
 
         EClass activityEClass = this.umlPackage.getActivity();
-        NodeDescription adActivityDescription = this.newNodeBuilder(activityEClass, rectangularNodeStyle) //
+        NodeDescription adActivityTopNodeDescription = this.newNodeBuilder(activityEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getDomainNodeName(activityEClass)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf()) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityEClass.getName())) //
                 .build();
-        adActivityDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
-        adActivityDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
-        diagramDescription.getNodeDescriptions().add(adActivityDescription);
+        adActivityTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
+        adActivityTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
+        diagramDescription.getNodeDescriptions().add(adActivityTopNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adActivityDescription);
-        this.addToolSections(adActivityDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
+        this.createDefaultToolSectionsInNodeDescription(adActivityTopNodeDescription);
+        this.addToolSections(adActivityTopNodeDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
                 EXECUTABLE_NODE, ACCEPT_EVENT_ACTION);
 
-        DropNodeTool adActivityGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adActivityDescription));
+        DropNodeTool adActivityGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adActivityTopNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityNode(), this.umlPackage.getActivityPartition(), this.umlPackage.getComment(),
                 this.umlPackage.getConstraint(), this.umlPackage.getInterruptibleActivityRegion());
-        this.registerCallback(adActivityDescription, () -> {
+        this.registerCallback(adActivityTopNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adActivityGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adActivityDescription.getPalette().setDropNodeTool(adActivityGraphicalDropTool);
+        adActivityTopNodeDescription.getPalette().setDropNodeTool(adActivityGraphicalDropTool);
 
-        return adActivityDescription;
+        return adActivityTopNodeDescription;
     }
 
     private void addToolSections(NodeDescription parentNodeDescription, String... toolSectionNames) {
@@ -372,15 +372,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedAcceptCallActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adAcceptCallActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getAcceptCallAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adAcceptCallActionNodeDescription);
+    private void createAcceptCallActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adAcceptCallActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getAcceptCallAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adAcceptCallActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adAcceptCallActionNodeDescription);
-        this.addToolSections(adAcceptCallActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adAcceptCallActionSharedNodeDescription);
+        this.addToolSections(adAcceptCallActionSharedNodeDescription, PIN);
 
-        NodeTool adAcceptCallActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getAcceptCallAction());
-        this.reuseNodeAndCreateTool(adAcceptCallActionNodeDescription, diagramDescription, adAcceptCallActionCreationTool, ACCEPT_EVENT_ACTION, this.umlPackage.getActivity(),
+        NodeTool adAcceptCallActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getAcceptCallAction());
+        this.reuseNodeAndCreateTool(adAcceptCallActionSharedNodeDescription, diagramDescription, adAcceptCallActionSharedNodeCreationTool, ACCEPT_EVENT_ACTION, this.umlPackage.getActivity(),
                 this.umlPackage.getActivityGroup());
     }
 
@@ -391,7 +391,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedAcceptEventActionNodeDescription(DiagramDescription diagramDescription) {
+    private void createAcceptEventActionSharedNodeDescription(DiagramDescription diagramDescription) {
         // create hourglass conditional style
         String imageFile = "AcceptTimeEventAction.svg";
         ImageNodeStyleDescription adHourglassNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(imageFile.getBytes()).toString(), true);
@@ -400,7 +400,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 adHourglassNodeStyleDescription);
 
         // create AcceptEventAction node description
-        EClass domainType = this.umlPackage.getAcceptEventAction();
+        EClass acceptEventActionEClass = this.umlPackage.getAcceptEventAction();
         NodeStyleDescription adFlagNodeStyleDescription = PapyrusCustomNodesFactory.eINSTANCE.createInnerFlagNodeStyleDescription();
         adFlagNodeStyleDescription.setColor(this.styleProvider.getNodeColor());
         adFlagNodeStyleDescription.setBorderColor(this.styleProvider.getBorderNodeColor());
@@ -408,24 +408,24 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adFlagNodeStyleDescription.setLabelColor(this.styleProvider.getNodeLabelColor());
         adFlagNodeStyleDescription.setShowIcon(true);
 
-        NodeDescription adAcceptEventActionNodeDescription = this.newNodeBuilder(domainType, adFlagNodeStyleDescription) //
-                .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
+        NodeDescription adAcceptEventActionSharedNodeDescription = this.newNodeBuilder(acceptEventActionEClass, adFlagNodeStyleDescription) //
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(acceptEventActionEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
-                .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
-                .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName())) //
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(acceptEventActionEClass.getName())) //
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(acceptEventActionEClass.getName())) //
                 .conditionalStyles(List.of(hourglassConditionalStyle)) //
                 .build();
-        adAcceptEventActionNodeDescription.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.COMPUTE_ACCEPT_EVENT_ACTION_WIDTH));
-        adAcceptEventActionNodeDescription.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.COMPUTE_ACCEPT_EVENT_ACTION_HEIGHT));
+        adAcceptEventActionSharedNodeDescription.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.COMPUTE_ACCEPT_EVENT_ACTION_WIDTH));
+        adAcceptEventActionSharedNodeDescription.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.COMPUTE_ACCEPT_EVENT_ACTION_HEIGHT));
 
-        this.adSharedDescription.getChildrenDescriptions().add(adAcceptEventActionNodeDescription);
+        this.adSharedDescription.getChildrenDescriptions().add(adAcceptEventActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adAcceptEventActionNodeDescription);
-        this.addToolSections(adAcceptEventActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adAcceptEventActionSharedNodeDescription);
+        this.addToolSections(adAcceptEventActionSharedNodeDescription, PIN);
 
-        NodeTool adAcceptEventActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getAcceptEventAction());
-        this.reuseNodeAndCreateTool(adAcceptEventActionNodeDescription, diagramDescription, adAcceptEventActionCreationTool, ACCEPT_EVENT_ACTION, this.umlPackage.getActivity(),
+        NodeTool adAcceptEventActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getAcceptEventAction());
+        this.reuseNodeAndCreateTool(adAcceptEventActionSharedNodeDescription, diagramDescription, adAcceptEventActionSharedNodeCreationTool, ACCEPT_EVENT_ACTION, this.umlPackage.getActivity(),
                 this.umlPackage.getActivityGroup());
     }
 
@@ -435,28 +435,28 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedActionInputPinNodeDescription(DiagramDescription diagramDescription) {
+    private void createActionInputPinSharedNodeDescription(DiagramDescription diagramDescription) {
         ImageNodeStyleDescription actionInputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getActionInputPin()), true);
         actionInputPinStyle.setPositionDependentRotation(true);
         NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
-        NodeDescription adActionInputPinDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getActionInputPin(), actionInputPinStyle,
+        NodeDescription adActionInputPinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getActionInputPin(), actionInputPinStyle,
                 this.getUmlMetaModelHelper()).name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getActionInputPin(), SHARED_SUFFIX)) //
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                         .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTION_INPUT_PIN_CANDIDATES)).conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
                         .build();
-        adActionInputPinDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
-        adActionInputPinDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
-        this.getViewBuilder().addDirectEditTool(adActionInputPinDescription);
-        this.getViewBuilder().addDefaultDeleteTool(adActionInputPinDescription);
-        this.adSharedDescription.getBorderNodesDescriptions().add(adActionInputPinDescription);
+        adActionInputPinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
+        adActionInputPinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
+        this.getViewBuilder().addDirectEditTool(adActionInputPinSharedNodeDescription);
+        this.getViewBuilder().addDefaultDeleteTool(adActionInputPinSharedNodeDescription);
+        this.adSharedDescription.getBorderNodesDescriptions().add(adActionInputPinSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adActionInputPinDescription);
+        this.createDefaultToolSectionsInNodeDescription(adActionInputPinSharedNodeDescription);
 
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getActionInputPin()), ActivityDiagramServices.CREATE_ACTION_INPUT_PIN,
+        NodeTool adActionInputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getActionInputPin()), ActivityDiagramServices.CREATE_ACTION_INPUT_PIN,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
-        nodeTool.setPreconditionExpression(
+        adActionInputPinSharedNodeCreationTool.setPreconditionExpression(
                 CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getActionInputPin().getName())));
         List<EClass> owners = List.of(this.umlPackage.getAddStructuralFeatureValueAction(), //
                 this.umlPackage.getAddVariableValueAction(), //
@@ -487,7 +487,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getStartClassifierBehaviorAction(), //
                 this.umlPackage.getTestIdentityAction() //
         );
-        this.reuseNodeAndCreateTool(adActionInputPinDescription, diagramDescription, nodeTool, PIN, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(adActionInputPinSharedNodeDescription, diagramDescription, adActionInputPinSharedNodeCreationTool, PIN, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -498,7 +498,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedCustomImageNodeDescription(NodeDescription, EClass, EReference, DiagramDescription)
      */
-    private void createSharedActivityFinalNodeDescription(DiagramDescription diagramDescription) {
+    private void createActivityFinalNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getActivityFinalNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
     }
 
@@ -525,11 +525,11 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedActivityParameterNodeNodeDescription(DiagramDescription diagramDescription) {
+    private void createActivityParameterNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         NodeStyleDescription adActivityParameterNodeNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle(true, false);
         EClass activityParameterNodeEClass = this.umlPackage.getActivityParameterNode();
 
-        NodeDescription adActivityParameterNodeDescription = this.newNodeBuilder(activityParameterNodeEClass, adActivityParameterNodeNodeStyleDescription)
+        NodeDescription adActivityParameterNodeSharedNodeDescription = this.newNodeBuilder(activityParameterNodeEClass, adActivityParameterNodeNodeStyleDescription)
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(activityParameterNodeEClass, SHARED_SUFFIX))
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES))
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -537,16 +537,16 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityParameterNodeEClass.getName()))
                 .build();
 
-        adActivityParameterNodeDescription.setDefaultWidthExpression("80");
-        adActivityParameterNodeDescription.setDefaultHeightExpression("20");
+        adActivityParameterNodeSharedNodeDescription.setDefaultWidthExpression("80");
+        adActivityParameterNodeSharedNodeDescription.setDefaultHeightExpression("20");
 
-        this.adSharedDescription.getBorderNodesDescriptions().add(adActivityParameterNodeDescription);
+        this.adSharedDescription.getBorderNodesDescriptions().add(adActivityParameterNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adActivityParameterNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(adActivityParameterNodeSharedNodeDescription);
 
-        NodeTool adActivityParameterNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivity_OwnedNode(), this.umlPackage.getActivityParameterNode());
+        NodeTool adActivityParameterNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivity_OwnedNode(), this.umlPackage.getActivityParameterNode());
         List<EClass> owners = List.of(this.umlPackage.getActivity());
-        this.reuseNodeAndCreateTool(adActivityParameterNodeDescription, diagramDescription, adActivityParameterNodeCreationTool, NODES, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(adActivityParameterNodeSharedNodeDescription, diagramDescription, adActivityParameterNodeSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -555,11 +555,11 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedActivityPartitionDescription(DiagramDescription diagramDescription) {
+    private void createActivityPartitionSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
 
         EClass activityPartitionEClass = this.umlPackage.getActivityPartition();
-        NodeDescription adActivityPartitionDescription = this.newNodeBuilder(activityPartitionEClass, rectangularNodeStyle) //
+        NodeDescription adActivityPartitionSharedNodeDescription = this.newNodeBuilder(activityPartitionEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(activityPartitionEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_PARTITION_CANDIDATES)) //
@@ -567,26 +567,26 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(activityPartitionEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityPartitionEClass.getName())) //
                 .build();
-        adActivityPartitionDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adActivityPartitionDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        this.adSharedDescription.getChildrenDescriptions().add(adActivityPartitionDescription);
+        adActivityPartitionSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adActivityPartitionSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        this.adSharedDescription.getChildrenDescriptions().add(adActivityPartitionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adActivityPartitionDescription);
-        this.addToolSections(adActivityPartitionDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
+        this.createDefaultToolSectionsInNodeDescription(adActivityPartitionSharedNodeDescription);
+        this.addToolSections(adActivityPartitionSharedNodeDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
                 EXECUTABLE_NODE, ACCEPT_EVENT_ACTION);
 
-        NodeTool subPartitionNodeTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivityPartition_Subpartition(), activityPartitionEClass);
-        this.reuseNodeAndCreateTool(adActivityPartitionDescription, diagramDescription, subPartitionNodeTool, ACTIVITY_GROUP, activityPartitionEClass);
+        NodeTool adActivityPartitionSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivityPartition_Subpartition(), activityPartitionEClass);
+        this.reuseNodeAndCreateTool(adActivityPartitionSharedNodeDescription, diagramDescription, adActivityPartitionSharedNodeCreationTool, ACTIVITY_GROUP, activityPartitionEClass);
         NodeTool activityPartitionNodeTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivity_Partition(), activityPartitionEClass);
-        this.reuseNodeAndCreateTool(adActivityPartitionDescription, diagramDescription, activityPartitionNodeTool, ACTIVITY_GROUP, this.umlPackage.getActivity());
+        this.reuseNodeAndCreateTool(adActivityPartitionSharedNodeDescription, diagramDescription, activityPartitionNodeTool, ACTIVITY_GROUP, this.umlPackage.getActivity());
 
-        DropNodeTool adActivityPartitionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adActivityPartitionDescription));
+        DropNodeTool adActivityPartitionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adActivityPartitionSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getActivityPartition(), this.umlPackage.getComment());
-        this.registerCallback(adActivityPartitionDescription, () -> {
+        this.registerCallback(adActivityPartitionSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adActivityPartitionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adActivityPartitionDescription.getPalette().setDropNodeTool(adActivityPartitionGraphicalDropTool);
+        adActivityPartitionSharedNodeDescription.getPalette().setDropNodeTool(adActivityPartitionGraphicalDropTool);
     }
 
     /**
@@ -596,15 +596,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedAddStructuralFeatureValueActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adAddStructuralFeatureValueActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getAddStructuralFeatureValueAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adAddStructuralFeatureValueActionNodeDescription);
+    private void createAddStructuralFeatureValueActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adAddStructuralFeatureValueActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getAddStructuralFeatureValueAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adAddStructuralFeatureValueActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adAddStructuralFeatureValueActionNodeDescription);
-        this.addToolSections(adAddStructuralFeatureValueActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adAddStructuralFeatureValueActionSharedNodeDescription);
+        this.addToolSections(adAddStructuralFeatureValueActionSharedNodeDescription, PIN);
 
-        NodeTool adAddStructuralFeatureValueActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getAddStructuralFeatureValueAction());
-        this.reuseNodeAndCreateTool(adAddStructuralFeatureValueActionNodeDescription, diagramDescription, adAddStructuralFeatureValueActionCreationTool, STRUCTURAL_FEATURE,
+        NodeTool adAddStructuralFeatureValueActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getAddStructuralFeatureValueAction());
+        this.reuseNodeAndCreateTool(adAddStructuralFeatureValueActionSharedNodeDescription, diagramDescription, adAddStructuralFeatureValueActionSharedNodeCreationTool, STRUCTURAL_FEATURE,
                 this.umlPackage.getActivity(), this.umlPackage.getActivityGroup());
     }
 
@@ -615,16 +615,16 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedBroadcastSignalActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adBroadcastSignalActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getBroadcastSignalAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adBroadcastSignalActionNodeDescription);
-        this.createDefaultToolSectionsInNodeDescription(adBroadcastSignalActionNodeDescription);
-        this.addToolSections(adBroadcastSignalActionNodeDescription, PIN);
+    private void createBroadcastSignalActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adBroadcastSignalActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getBroadcastSignalAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adBroadcastSignalActionSharedNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(adBroadcastSignalActionSharedNodeDescription);
+        this.addToolSections(adBroadcastSignalActionSharedNodeDescription, PIN);
 
-        NodeTool adBroadcastSignalActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getBroadcastSignalAction());
+        NodeTool adBroadcastSignalActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getBroadcastSignalAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adBroadcastSignalActionNodeDescription, diagramDescription, adBroadcastSignalActionCreationTool, INVOCATION_ACTION, owners,
+        this.reuseNodeAndCreateTool(adBroadcastSignalActionSharedNodeDescription, diagramDescription, adBroadcastSignalActionSharedNodeCreationTool, INVOCATION_ACTION, owners,
                 List.of());
     }
 
@@ -635,15 +635,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedCallBehaviorActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adCallBehaviorActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCallBehaviorAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adCallBehaviorActionNodeDescription);
+    private void createCallBehaviorActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adCallBehaviorActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCallBehaviorAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adCallBehaviorActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adCallBehaviorActionNodeDescription);
-        this.addToolSections(adCallBehaviorActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adCallBehaviorActionSharedNodeDescription);
+        this.addToolSections(adCallBehaviorActionSharedNodeDescription, PIN);
 
-        NodeTool adCallBehaviorActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getCallBehaviorAction());
-        this.reuseNodeAndCreateTool(adCallBehaviorActionNodeDescription, diagramDescription, adCallBehaviorActionCreationTool, INVOCATION_ACTION, this.umlPackage.getActivity(),
+        NodeTool adCallBehaviorActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getCallBehaviorAction());
+        this.reuseNodeAndCreateTool(adCallBehaviorActionSharedNodeDescription, diagramDescription, adCallBehaviorActionSharedNodeCreationTool, INVOCATION_ACTION, this.umlPackage.getActivity(),
                 this.umlPackage.getActivityGroup());
     }
 
@@ -654,15 +654,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedCallOperationActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adCallOperationActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCallOperationAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adCallOperationActionNodeDescription);
+    private void createCallOperationActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adCallOperationActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCallOperationAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adCallOperationActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adCallOperationActionNodeDescription);
-        this.addToolSections(adCallOperationActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adCallOperationActionSharedNodeDescription);
+        this.addToolSections(adCallOperationActionSharedNodeDescription, PIN);
 
-        NodeTool adCallOperationActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getCallOperationAction());
-        this.reuseNodeAndCreateTool(adCallOperationActionNodeDescription, diagramDescription, adCallOperationActionCreationTool, INVOCATION_ACTION, this.umlPackage.getActivity(),
+        NodeTool adCallOperationActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getCallOperationAction());
+        this.reuseNodeAndCreateTool(adCallOperationActionSharedNodeDescription, diagramDescription, adCallOperationActionSharedNodeCreationTool, INVOCATION_ACTION, this.umlPackage.getActivity(),
                 this.umlPackage.getActivityGroup());
     }
 
@@ -673,15 +673,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedClearAssociationActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adClearAssociationActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getClearAssociationAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adClearAssociationActionNodeDescription);
+    private void createClearAssociationActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adClearAssociationActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getClearAssociationAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adClearAssociationActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adClearAssociationActionNodeDescription);
-        this.addToolSections(adClearAssociationActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adClearAssociationActionSharedNodeDescription);
+        this.addToolSections(adClearAssociationActionSharedNodeDescription, PIN);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getClearAssociationAction());
-        this.reuseNodeAndCreateTool(adClearAssociationActionNodeDescription, diagramDescription, nodeTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adClearAssociationActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getClearAssociationAction());
+        this.reuseNodeAndCreateTool(adClearAssociationActionSharedNodeDescription, diagramDescription, adClearAssociationActionSharedNodeCreationTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of());
     }
 
@@ -692,17 +692,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedClearStructuralFeatureActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adClearStructuralFeatureActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getClearStructuralFeatureAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adClearStructuralFeatureActionNodeDescription);
+    private void createClearStructuralFeatureActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adClearStructuralFeatureActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getClearStructuralFeatureAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adClearStructuralFeatureActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adClearStructuralFeatureActionNodeDescription);
-        this.addToolSections(adClearStructuralFeatureActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adClearStructuralFeatureActionSharedNodeDescription);
+        this.addToolSections(adClearStructuralFeatureActionSharedNodeDescription, PIN);
 
-        NodeTool adClearStructuralFeatureActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getClearStructuralFeatureAction());
+        NodeTool adClearStructuralFeatureActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getClearStructuralFeatureAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adClearStructuralFeatureActionNodeDescription, diagramDescription, adClearStructuralFeatureActionCreationTool, STRUCTURAL_FEATURE, owners,
+        this.reuseNodeAndCreateTool(adClearStructuralFeatureActionSharedNodeDescription, diagramDescription, adClearStructuralFeatureActionSharedNodeCreationTool, STRUCTURAL_FEATURE, owners,
                 List.of());
     }
 
@@ -712,12 +712,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedConditionalNodeDescription(DiagramDescription diagramDescription) {
+    private void createConditionalNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass conditionalNodeEClass = this.umlPackage.getConditionalNode();
-        NodeDescription adConditionalNodeDescription = this.newNodeBuilder(conditionalNodeEClass, rectangularNodeStyle) //
+        NodeDescription adConditionalNodeSharedNodeDescription = this.newNodeBuilder(conditionalNodeEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(conditionalNodeEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
@@ -725,26 +725,26 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(conditionalNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(conditionalNodeEClass.getName())) //
                 .build();
-        adConditionalNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adConditionalNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        this.adSharedDescription.getChildrenDescriptions().add(adConditionalNodeDescription);
+        adConditionalNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adConditionalNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        this.adSharedDescription.getChildrenDescriptions().add(adConditionalNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adConditionalNodeDescription);
-        this.addToolSections(adConditionalNodeDescription, PIN, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
+        this.createDefaultToolSectionsInNodeDescription(adConditionalNodeSharedNodeDescription);
+        this.addToolSections(adConditionalNodeSharedNodeDescription, PIN, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
                 ACCEPT_EVENT_ACTION);
 
-        NodeTool adConditionalNodeCreationTool = this.createStructuredActivityNodeCreationTool(conditionalNodeEClass);
+        NodeTool adConditionalNodeSharedNodeCreationTool = this.createStructuredActivityNodeCreationTool(conditionalNodeEClass);
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adConditionalNodeDescription, diagramDescription, adConditionalNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners, List.of());
+        this.reuseNodeAndCreateTool(adConditionalNodeSharedNodeDescription, diagramDescription, adConditionalNodeSharedNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners, List.of());
 
-        DropNodeTool adConditionalNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adConditionalNodeDescription));
+        DropNodeTool adConditionalNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adConditionalNodeSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
-        this.registerCallback(adConditionalNodeDescription, () -> {
+        this.registerCallback(adConditionalNodeSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adConditionalNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adConditionalNodeDescription.getPalette().setDropNodeTool(adConditionalNodeGraphicalDropTool);
+        adConditionalNodeSharedNodeDescription.getPalette().setDropNodeTool(adConditionalNodeGraphicalDropTool);
     }
 
     /**
@@ -754,17 +754,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedCreateObjectActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adCreateObjectActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCreateObjectAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adCreateObjectActionNodeDescription);
+    private void createCreateObjectActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adCreateObjectActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCreateObjectAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adCreateObjectActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adCreateObjectActionNodeDescription);
-        this.addToolSections(adCreateObjectActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adCreateObjectActionSharedNodeDescription);
+        this.addToolSections(adCreateObjectActionSharedNodeDescription, PIN);
 
-        NodeTool adCreateObjectActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getCreateObjectAction());
+        NodeTool adCreateObjectActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getCreateObjectAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adCreateObjectActionNodeDescription, diagramDescription, adCreateObjectActionCreationTool, CREATE_OBJECT_ACTION, owners,
+        this.reuseNodeAndCreateTool(adCreateObjectActionSharedNodeDescription, diagramDescription, adCreateObjectActionSharedNodeCreationTool, CREATE_OBJECT_ACTION, owners,
                 List.of());
     }
 
@@ -783,20 +783,20 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(domainType), true);
         imageNodeStyle.setBorderSize(0);
 
-        NodeDescription nodeDescription = this.newNodeBuilder(domainType, imageNodeStyle) //
+        NodeDescription adCustomImageActivityNodeSharedNodeDescription = this.newNodeBuilder(domainType, imageNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName())).build();
-        nodeDescription.setDefaultWidthExpression(SIZE_30);
-        nodeDescription.setDefaultHeightExpression(SIZE_30);
-        this.adSharedDescription.getChildrenDescriptions().add(nodeDescription);
+        adCustomImageActivityNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_30);
+        adCustomImageActivityNodeSharedNodeDescription.setDefaultHeightExpression(SIZE_30);
+        this.adSharedDescription.getChildrenDescriptions().add(adCustomImageActivityNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(nodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(adCustomImageActivityNodeSharedNodeDescription);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(domainType);
-        this.reuseNodeAndCreateTool(nodeDescription, diagramDescription, nodeTool, ACTIVITY_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adCustomImageActivityNodeSharedNodeCreationTool = this.createActivityNodeCreationTool(domainType);
+        this.reuseNodeAndCreateTool(adCustomImageActivityNodeSharedNodeDescription, diagramDescription, adCustomImageActivityNodeSharedNodeCreationTool, ACTIVITY_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of(this.umlPackage.getSequenceNode()));
     }
 
@@ -812,33 +812,33 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedCustomImageNodeDescription(NodeDescription, EClass, EReference, DiagramDescription)
      */
-    private void createSharedDecisionNodeDescription(DiagramDescription diagramDescription) {
+    private void createDecisionNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getDecisionNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
 
         NodeStyleDescription nodeStyleDescription = this.getViewBuilder().createNoteNodeStyle();
         nodeStyleDescription.setShowIcon(false);
         nodeStyleDescription.setColor(this.styleProvider.getNoteColor());
-        NodeDescription adDecisionNodeNoteDescription = this.newNodeBuilder(this.umlPackage.getDecisionNode(), nodeStyleDescription) //
+        NodeDescription adDecisionNodeNoteSharedNodeDescription = this.newNodeBuilder(this.umlPackage.getDecisionNode(), nodeStyleDescription) //
                 .name(this.getIdBuilder().getDomainNodeName(this.umlPackage.getDecisionNode()) + "_Note_" + SHARED_SUFFIX) //
                 .labelExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_DECISION_INPUT_NOTE_LABEL))
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .build();
-        adDecisionNodeNoteDescription
+        adDecisionNodeNoteSharedNodeDescription
                 .setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.SHOW_DECISION_NODE_NOTE, Variables.DIAGRAM_CONTEXT, "previousDiagram", Variables.EDITING_CONTEXT));
 
-        adDecisionNodeNoteDescription.setDefaultWidthExpression(NoteStyleDescriptionBuilder.DEFAULT_NOTE_WIDTH);
-        adDecisionNodeNoteDescription.setDefaultHeightExpression(NoteStyleDescriptionBuilder.DEFAULT_NOTE_HEIGHT);
+        adDecisionNodeNoteSharedNodeDescription.setDefaultWidthExpression(NoteStyleDescriptionBuilder.DEFAULT_NOTE_WIDTH);
+        adDecisionNodeNoteSharedNodeDescription.setDefaultHeightExpression(NoteStyleDescriptionBuilder.DEFAULT_NOTE_HEIGHT);
 
-        this.adSharedDescription.getChildrenDescriptions().add(adDecisionNodeNoteDescription);
+        this.adSharedDescription.getChildrenDescriptions().add(adDecisionNodeNoteSharedNodeDescription);
 
-        this.registerCallback(adDecisionNodeNoteDescription, () -> {
+        this.registerCallback(adDecisionNodeNoteSharedNodeDescription, () -> {
             Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription,
                     List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()), List.of(this.umlPackage.getSequenceNode()));
-            this.reusedNodeDescriptionInOwners(adDecisionNodeNoteDescription, ownerNodeDescriptions.get());
+            this.reusedNodeDescriptionInOwners(adDecisionNodeNoteSharedNodeDescription, ownerNodeDescriptions.get());
         });
 
-        Predicate<NodeDescription> isDecisionNodeNoteDescription = nodeDescription -> Objects.equals(nodeDescription.getName(), adDecisionNodeNoteDescription.getName());
+        Predicate<NodeDescription> isDecisionNodeNoteDescription = nodeDescription -> Objects.equals(nodeDescription.getName(), adDecisionNodeNoteSharedNodeDescription.getName());
 
         EdgeDescription adDecisionNodeNoteEdgeDescription = this.getViewBuilder().createFeatureEdgeDescription(//
                 this.getIdBuilder().getFeatureBaseEdgeId(this.umlPackage.getDecisionNode_DecisionInput()), //
@@ -859,17 +859,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedDestroyObjectActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adDestroyObjectActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getDestroyObjectAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adDestroyObjectActionNodeDescription);
+    private void createDestroyObjectActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adDestroyObjectActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getDestroyObjectAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adDestroyObjectActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adDestroyObjectActionNodeDescription);
-        this.addToolSections(adDestroyObjectActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adDestroyObjectActionSharedNodeDescription);
+        this.addToolSections(adDestroyObjectActionSharedNodeDescription, PIN);
 
-        NodeTool adDestroyObjectActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getDestroyObjectAction());
+        NodeTool adDestroyObjectActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getDestroyObjectAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adDestroyObjectActionNodeDescription, diagramDescription, adDestroyObjectActionCreationTool, CREATE_OBJECT_ACTION, owners,
+        this.reuseNodeAndCreateTool(adDestroyObjectActionSharedNodeDescription, diagramDescription, adDestroyObjectActionSharedNodeCreationTool, CREATE_OBJECT_ACTION, owners,
                 List.of());
     }
 
@@ -879,12 +879,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedExpansionRegionNodeDescription(DiagramDescription diagramDescription) {
+    private void createExpansionRegionSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass expansionRegionEClass = this.umlPackage.getExpansionRegion();
-        NodeDescription adExpansionRegionDescription = this.newNodeBuilder(expansionRegionEClass, rectangularNodeStyle) //
+        NodeDescription adExpansionRegionSharedNodeDescription = this.newNodeBuilder(expansionRegionEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(expansionRegionEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
@@ -892,27 +892,27 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(expansionRegionEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(expansionRegionEClass.getName())) //
                 .build();
-        adExpansionRegionDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adExpansionRegionDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        this.adSharedDescription.getChildrenDescriptions().add(adExpansionRegionDescription);
+        adExpansionRegionSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adExpansionRegionSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        this.adSharedDescription.getChildrenDescriptions().add(adExpansionRegionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adExpansionRegionDescription);
-        this.addToolSections(adExpansionRegionDescription, ACTIVITY_NODE, PIN, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
+        this.createDefaultToolSectionsInNodeDescription(adExpansionRegionSharedNodeDescription);
+        this.addToolSections(adExpansionRegionSharedNodeDescription, ACTIVITY_NODE, PIN, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
                 ACCEPT_EVENT_ACTION);
 
-        this.createInputOutputExpansionNodeNodeDescription(adExpansionRegionDescription, diagramDescription);
+        this.createInputOutputExpansionNodeNodeDescription(adExpansionRegionSharedNodeDescription, diagramDescription);
 
-        NodeTool nodeTool = this.createStructuredActivityNodeCreationTool(expansionRegionEClass);
+        NodeTool adExpansionRegionSharedNodeCreationTool = this.createStructuredActivityNodeCreationTool(expansionRegionEClass);
         List<EClass> owners = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adExpansionRegionDescription, diagramDescription, nodeTool, EXPANSION_REGION, owners, List.of());
+        this.reuseNodeAndCreateTool(adExpansionRegionSharedNodeDescription, diagramDescription, adExpansionRegionSharedNodeCreationTool, EXPANSION_REGION, owners, List.of());
 
-        DropNodeTool adExpansionRegionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adExpansionRegionDescription));
+        DropNodeTool adExpansionRegionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adExpansionRegionSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
-        this.registerCallback(adExpansionRegionDescription, () -> {
+        this.registerCallback(adExpansionRegionSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adExpansionRegionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adExpansionRegionDescription.getPalette().setDropNodeTool(adExpansionRegionGraphicalDropTool);
+        adExpansionRegionSharedNodeDescription.getPalette().setDropNodeTool(adExpansionRegionGraphicalDropTool);
     }
 
     /**
@@ -923,7 +923,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedCustomImageNodeDescription(NodeDescription, EClass, EReference, DiagramDescription)
      */
-    private void createSharedFlowFinalNodeDescription(DiagramDescription diagramDescription) {
+    private void createFlowFinalNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getFlowFinalNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
     }
 
@@ -933,24 +933,24 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedForkNodeDescription(DiagramDescription diagramDescription) {
+    private void createForkNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass forkNodeEClass = this.umlPackage.getForkNode();
         RectangleWithExternalLabelNodeStyleDescription nodeStyle = this.getViewBuilder().createRectangleWithExternalLabelNodeStyle();
 
-        NodeDescription adForkNodeDescription = this.newNodeBuilder(forkNodeEClass, nodeStyle) //
+        NodeDescription adForkNodeSharedNodeDescription = this.newNodeBuilder(forkNodeEClass, nodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(forkNodeEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(forkNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(forkNodeEClass.getName())).build();
-        adForkNodeDescription.setDefaultWidthExpression(SIZE_50);
-        adForkNodeDescription.setDefaultHeightExpression("150");
-        this.adSharedDescription.getChildrenDescriptions().add(adForkNodeDescription);
+        adForkNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_50);
+        adForkNodeSharedNodeDescription.setDefaultHeightExpression("150");
+        this.adSharedDescription.getChildrenDescriptions().add(adForkNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adForkNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(adForkNodeSharedNodeDescription);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(forkNodeEClass);
-        this.reuseNodeAndCreateTool(adForkNodeDescription, diagramDescription, nodeTool, ACTIVITY_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adForkNodeSharedNodeCreationTool = this.createActivityNodeCreationTool(forkNodeEClass);
+        this.reuseNodeAndCreateTool(adForkNodeSharedNodeDescription, diagramDescription, adForkNodeSharedNodeCreationTool, ACTIVITY_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of(this.umlPackage.getSequenceNode()));
     }
 
@@ -962,7 +962,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedCustomImageNodeDescription(NodeDescription, EClass, EReference, DiagramDescription)
      */
-    private void createSharedInitialNodeDescription(DiagramDescription diagramDescription) {
+    private void createInitialNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getInitialNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
     }
 
@@ -982,25 +982,25 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     private void createInputOutputExpansionNodeNodeDescription(NodeDescription parentDescription, DiagramDescription diagramDescription) {
         ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getExpansionNode()), true);
         EClass expansionNodeEClass = this.umlPackage.getExpansionNode();
-        NodeDescription inputExpansionNodeDescription = this.newNodeBuilder(expansionNodeEClass, imageNodeStyle)
+        NodeDescription adInputExpansionNodeSharedNodeDescription = this.newNodeBuilder(expansionNodeEClass, imageNodeStyle)
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_EXPANSION_NODE_CANDIDATES))
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(expansionNodeEClass.getName()))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(expansionNodeEClass.getName()))
                 .build();
 
-        inputExpansionNodeDescription.setDefaultWidthExpression(SIZE_30);
-        inputExpansionNodeDescription.setDefaultHeightExpression("10");
-        parentDescription.getBorderNodesDescriptions().add(inputExpansionNodeDescription);
+        adInputExpansionNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_30);
+        adInputExpansionNodeSharedNodeDescription.setDefaultHeightExpression("10");
+        parentDescription.getBorderNodesDescriptions().add(adInputExpansionNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(inputExpansionNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(adInputExpansionNodeSharedNodeDescription);
 
-        NodeTool inputExpansionNodeTool = this.getViewBuilder().createCreationTool("New Input " + this.umlPackage.getExpansionNode().getName(), ActivityDiagramServices.CREATE_EXPANSION_NODE,
+        NodeTool adInputExpansionNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool("New Input " + this.umlPackage.getExpansionNode().getName(), ActivityDiagramServices.CREATE_EXPANSION_NODE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES, String.valueOf(true)));
-        this.reuseNodeAndCreateTool(inputExpansionNodeDescription, diagramDescription, inputExpansionNodeTool, EXPANSION_REGION, this.umlPackage.getExpansionRegion());
+        this.reuseNodeAndCreateTool(adInputExpansionNodeSharedNodeDescription, diagramDescription, adInputExpansionNodeSharedNodeCreationTool, EXPANSION_REGION, this.umlPackage.getExpansionRegion());
         NodeTool outputExpansionNodeTool = this.getViewBuilder().createCreationTool("New Output " + this.umlPackage.getExpansionNode().getName(), ActivityDiagramServices.CREATE_EXPANSION_NODE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES, String.valueOf(false)));
-        this.reuseNodeAndCreateTool(inputExpansionNodeDescription, diagramDescription, outputExpansionNodeTool, EXPANSION_REGION, this.umlPackage.getExpansionRegion());
+        this.reuseNodeAndCreateTool(adInputExpansionNodeSharedNodeDescription, diagramDescription, outputExpansionNodeTool, EXPANSION_REGION, this.umlPackage.getExpansionRegion());
     }
 
     /**
@@ -1009,28 +1009,28 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedInputPinNodeDescription(DiagramDescription diagramDescription) {
+    private void createInputPinSharedNodeDescription(DiagramDescription diagramDescription) {
         ImageNodeStyleDescription inputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getInputPin()), true);
         inputPinStyle.setPositionDependentRotation(true);
         NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
-        NodeDescription adInputPinDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getInputPin(), inputPinStyle, this.getUmlMetaModelHelper())
+        NodeDescription adInputPinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getInputPin(), inputPinStyle, this.getUmlMetaModelHelper())
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getInputPin(), SHARED_SUFFIX)) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_INPUT_PIN_CANDIDATES)).conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
                 .build();
-        adInputPinDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
-        adInputPinDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
-        this.getViewBuilder().addDirectEditTool(adInputPinDescription);
-        this.getViewBuilder().addDefaultDeleteTool(adInputPinDescription);
-        this.adSharedDescription.getBorderNodesDescriptions().add(adInputPinDescription);
+        adInputPinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
+        adInputPinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
+        this.getViewBuilder().addDirectEditTool(adInputPinSharedNodeDescription);
+        this.getViewBuilder().addDefaultDeleteTool(adInputPinSharedNodeDescription);
+        this.adSharedDescription.getBorderNodesDescriptions().add(adInputPinSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adInputPinDescription);
+        this.createDefaultToolSectionsInNodeDescription(adInputPinSharedNodeDescription);
 
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getInputPin()), ActivityDiagramServices.CREATE_INPUT_PIN,
+        NodeTool adInputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getInputPin()), ActivityDiagramServices.CREATE_INPUT_PIN,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
-        nodeTool.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getInputPin().getName())));
+        adInputPinSharedNodeCreationTool.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getInputPin().getName())));
         List<EClass> owners = List.of(this.umlPackage.getBroadcastSignalAction(), //
                 this.umlPackage.getConditionalNode(), //
                 this.umlPackage.getCreateLinkAction(), //
@@ -1061,7 +1061,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getTestIdentityAction(), //
                 this.umlPackage.getUnmarshallAction()//
         );
-        this.reuseNodeAndCreateTool(adInputPinDescription, diagramDescription, nodeTool, PIN, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(adInputPinSharedNodeDescription, diagramDescription, adInputPinSharedNodeCreationTool, PIN, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -1070,12 +1070,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedInterruptibleActivityRegionDescription(DiagramDescription diagramDescription) {
+    private void createInterruptibleActivityRegionSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, false);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass interruptibleActivityRegionEClass = this.umlPackage.getInterruptibleActivityRegion();
-        NodeDescription adInterruptibleActivityRegionDescription = this.newNodeBuilder(interruptibleActivityRegionEClass, rectangularNodeStyle) //
+        NodeDescription adInterruptibleActivityRegionSharedNodeDescription = this.newNodeBuilder(interruptibleActivityRegionEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(interruptibleActivityRegionEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_INTERRUPTIBLE_ACTIVITY_REGION_CANDIDATES)) //
@@ -1083,26 +1083,26 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(interruptibleActivityRegionEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interruptibleActivityRegionEClass.getName())) //
                 .build();
-        adInterruptibleActivityRegionDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adInterruptibleActivityRegionDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        adInterruptibleActivityRegionDescription.setLabelExpression("");
-        this.adSharedDescription.getChildrenDescriptions().add(adInterruptibleActivityRegionDescription);
+        adInterruptibleActivityRegionSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adInterruptibleActivityRegionSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        adInterruptibleActivityRegionSharedNodeDescription.setLabelExpression("");
+        this.adSharedDescription.getChildrenDescriptions().add(adInterruptibleActivityRegionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adInterruptibleActivityRegionDescription);
-        this.addToolSections(adInterruptibleActivityRegionDescription, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
+        this.createDefaultToolSectionsInNodeDescription(adInterruptibleActivityRegionSharedNodeDescription);
+        this.addToolSections(adInterruptibleActivityRegionSharedNodeDescription, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
                 EXECUTABLE_NODE, ACCEPT_EVENT_ACTION);
 
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivity_OwnedGroup(), interruptibleActivityRegionEClass);
-        this.reuseNodeAndCreateTool(adInterruptibleActivityRegionDescription, diagramDescription, nodeTool, ACTIVITY_GROUP, this.umlPackage.getActivity());
+        NodeTool adInterruptibleActivityRegionSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActivity_OwnedGroup(), interruptibleActivityRegionEClass);
+        this.reuseNodeAndCreateTool(adInterruptibleActivityRegionSharedNodeDescription, diagramDescription, adInterruptibleActivityRegionSharedNodeCreationTool, ACTIVITY_GROUP, this.umlPackage.getActivity());
 
         DropNodeTool adInterruptibleActivityRegionGraphicalDropTool = this.getViewBuilder()
-                .createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adInterruptibleActivityRegionDescription));
+                .createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adInterruptibleActivityRegionSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment());
-        this.registerCallback(adInterruptibleActivityRegionDescription, () -> {
+        this.registerCallback(adInterruptibleActivityRegionSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adInterruptibleActivityRegionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adInterruptibleActivityRegionDescription.getPalette().setDropNodeTool(adInterruptibleActivityRegionGraphicalDropTool);
+        adInterruptibleActivityRegionSharedNodeDescription.getPalette().setDropNodeTool(adInterruptibleActivityRegionGraphicalDropTool);
     }
 
     /**
@@ -1111,24 +1111,24 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedJoinNodeDescription(DiagramDescription diagramDescription) {
+    private void createJoinNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass joinNodeEClass = this.umlPackage.getJoinNode();
         RectangleWithExternalLabelNodeStyleDescription nodeStyle = this.getViewBuilder().createRectangleWithExternalLabelNodeStyle();
 
-        NodeDescription adJoinNodeDescription = this.newNodeBuilder(joinNodeEClass, nodeStyle) //
+        NodeDescription adJoinNodeSharedNodeDescription = this.newNodeBuilder(joinNodeEClass, nodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(joinNodeEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(joinNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(joinNodeEClass.getName())).build();
-        adJoinNodeDescription.setDefaultWidthExpression(SIZE_50);
-        adJoinNodeDescription.setDefaultHeightExpression("150");
-        this.adSharedDescription.getChildrenDescriptions().add(adJoinNodeDescription);
+        adJoinNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_50);
+        adJoinNodeSharedNodeDescription.setDefaultHeightExpression("150");
+        this.adSharedDescription.getChildrenDescriptions().add(adJoinNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adJoinNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(adJoinNodeSharedNodeDescription);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(joinNodeEClass);
-        this.reuseNodeAndCreateTool(adJoinNodeDescription, diagramDescription, nodeTool, ACTIVITY_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adJoinNodeSharedNodeCreationTool = this.createActivityNodeCreationTool(joinNodeEClass);
+        this.reuseNodeAndCreateTool(adJoinNodeSharedNodeDescription, diagramDescription, adJoinNodeSharedNodeCreationTool, ACTIVITY_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of(this.umlPackage.getSequenceNode()));
     }
 
@@ -1138,12 +1138,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedLoopNodeDescription(DiagramDescription diagramDescription) {
+    private void createLoopNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass loopNodeEClass = this.umlPackage.getLoopNode();
-        NodeDescription adLoopNodeDescription = this.newNodeBuilder(loopNodeEClass, rectangularNodeStyle) //
+        NodeDescription adLoopNodeSharedNodeDescription = this.newNodeBuilder(loopNodeEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(loopNodeEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
@@ -1151,26 +1151,26 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(loopNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(loopNodeEClass.getName())) //
                 .build();
-        adLoopNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adLoopNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        this.adSharedDescription.getChildrenDescriptions().add(adLoopNodeDescription);
+        adLoopNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adLoopNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        this.adSharedDescription.getChildrenDescriptions().add(adLoopNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adLoopNodeDescription);
-        this.addToolSections(adLoopNodeDescription, ACTIVITY_NODE, PIN, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
+        this.createDefaultToolSectionsInNodeDescription(adLoopNodeSharedNodeDescription);
+        this.addToolSections(adLoopNodeSharedNodeDescription, ACTIVITY_NODE, PIN, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
                 ACCEPT_EVENT_ACTION);
 
-        NodeTool adLoopNodeCreationTool = this.createStructuredActivityNodeCreationTool(loopNodeEClass);
+        NodeTool adLoopNodeSharedNodeCreationTool = this.createStructuredActivityNodeCreationTool(loopNodeEClass);
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adLoopNodeDescription, diagramDescription, adLoopNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners, List.of());
+        this.reuseNodeAndCreateTool(adLoopNodeSharedNodeDescription, diagramDescription, adLoopNodeSharedNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners, List.of());
 
-        DropNodeTool adLoopNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adLoopNodeDescription));
+        DropNodeTool adLoopNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adLoopNodeSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
-        this.registerCallback(adLoopNodeDescription, () -> {
+        this.registerCallback(adLoopNodeSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adLoopNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adLoopNodeDescription.getPalette().setDropNodeTool(adLoopNodeGraphicalDropTool);
+        adLoopNodeSharedNodeDescription.getPalette().setDropNodeTool(adLoopNodeGraphicalDropTool);
     }
 
     /**
@@ -1181,7 +1181,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedCustomImageNodeDescription(NodeDescription, EClass, EReference, DiagramDescription)
      */
-    private void createSharedMergeNodeDescription(DiagramDescription diagramDescription) {
+    private void createMergeNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getMergeNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
     }
 
@@ -1192,15 +1192,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedOpaqueActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adOpaqueActionDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getOpaqueAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adOpaqueActionDescription);
+    private void createOpaqueActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adOpaqueActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getOpaqueAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adOpaqueActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adOpaqueActionDescription);
-        this.addToolSections(adOpaqueActionDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adOpaqueActionSharedNodeDescription);
+        this.addToolSections(adOpaqueActionSharedNodeDescription, PIN);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getOpaqueAction());
-        this.reuseNodeAndCreateTool(adOpaqueActionDescription, diagramDescription, nodeTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adOpaqueActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getOpaqueAction());
+        this.reuseNodeAndCreateTool(adOpaqueActionSharedNodeDescription, diagramDescription, adOpaqueActionSharedNodeCreationTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of());
 
     }
@@ -1211,29 +1211,29 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedOutputPinNodeDescription(DiagramDescription diagramDescription) {
+    private void createOutputPinSharedNodeDescription(DiagramDescription diagramDescription) {
         ImageNodeStyleDescription outputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getOutputPin()), true);
         outputPinStyle.setPositionDependentRotation(true);
         NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
-        NodeDescription adOutputPinDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getOutputPin(), outputPinStyle, this.getUmlMetaModelHelper())
+        NodeDescription adOutputPinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getOutputPin(), outputPinStyle, this.getUmlMetaModelHelper())
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getOutputPin(), SHARED_SUFFIX)) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_OUTPUT_PIN_CANDIDATES)) //
                 .conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
                 .build();
-        adOutputPinDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
-        adOutputPinDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
-        this.getViewBuilder().addDirectEditTool(adOutputPinDescription);
-        this.getViewBuilder().addDefaultDeleteTool(adOutputPinDescription);
-        this.adSharedDescription.getBorderNodesDescriptions().add(adOutputPinDescription);
+        adOutputPinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
+        adOutputPinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
+        this.getViewBuilder().addDirectEditTool(adOutputPinSharedNodeDescription);
+        this.getViewBuilder().addDefaultDeleteTool(adOutputPinSharedNodeDescription);
+        this.adSharedDescription.getBorderNodesDescriptions().add(adOutputPinSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adOutputPinDescription);
+        this.createDefaultToolSectionsInNodeDescription(adOutputPinSharedNodeDescription);
 
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getOutputPin()), ActivityDiagramServices.CREATE_OUTPUT_PIN,
+        NodeTool adOutputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getOutputPin()), ActivityDiagramServices.CREATE_OUTPUT_PIN,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
-        nodeTool.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getOutputPin().getName())));
+        adOutputPinSharedNodeCreationTool.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getOutputPin().getName())));
         List<EClass> owners = List.of(this.umlPackage.getAcceptEventAction(), //
                 this.umlPackage.getAddStructuralFeatureValueAction(), //
                 this.umlPackage.getClearStructuralFeatureAction(), //
@@ -1260,7 +1260,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getReadSelfAction(), //
                 this.umlPackage.getTestIdentityAction(), //
                 this.umlPackage.getValueSpecificationAction());
-        this.reuseNodeAndCreateTool(adOutputPinDescription, diagramDescription, nodeTool, PIN, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(adOutputPinSharedNodeDescription, diagramDescription, adOutputPinSharedNodeCreationTool, PIN, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -1270,15 +1270,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedReadExtentActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adReadExtentActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadExtentAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adReadExtentActionNodeDescription);
+    private void createReadExtentActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adReadExtentActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadExtentAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adReadExtentActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adReadExtentActionNodeDescription);
-        this.addToolSections(adReadExtentActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adReadExtentActionSharedNodeDescription);
+        this.addToolSections(adReadExtentActionSharedNodeDescription, PIN);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getReadExtentAction());
-        this.reuseNodeAndCreateTool(adReadExtentActionNodeDescription, diagramDescription, nodeTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adReadExtentActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadExtentAction());
+        this.reuseNodeAndCreateTool(adReadExtentActionSharedNodeDescription, diagramDescription, adReadExtentActionSharedNodeCreationTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of());
     }
 
@@ -1289,17 +1289,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedReadIsClassifiedObjectActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adReadIsClassifiedObjectActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadIsClassifiedObjectAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adReadIsClassifiedObjectActionNodeDescription);
+    private void createReadIsClassifiedObjectActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adReadIsClassifiedObjectActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadIsClassifiedObjectAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adReadIsClassifiedObjectActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adReadIsClassifiedObjectActionNodeDescription);
-        this.addToolSections(adReadIsClassifiedObjectActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adReadIsClassifiedObjectActionSharedNodeDescription);
+        this.addToolSections(adReadIsClassifiedObjectActionSharedNodeDescription, PIN);
 
-        NodeTool adReadIsClassifiedObjectActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadIsClassifiedObjectAction());
+        NodeTool adReadIsClassifiedObjectActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadIsClassifiedObjectAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adReadIsClassifiedObjectActionNodeDescription, diagramDescription, adReadIsClassifiedObjectActionCreationTool, CREATE_OBJECT_ACTION, owners,
+        this.reuseNodeAndCreateTool(adReadIsClassifiedObjectActionSharedNodeDescription, diagramDescription, adReadIsClassifiedObjectActionSharedNodeCreationTool, CREATE_OBJECT_ACTION, owners,
                 List.of());
     }
 
@@ -1310,17 +1310,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedReadSelfActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adReadSelfActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadSelfAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adReadSelfActionNodeDescription);
+    private void createReadSelfActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adReadSelfActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadSelfAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adReadSelfActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adReadSelfActionNodeDescription);
-        this.addToolSections(adReadSelfActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adReadSelfActionSharedNodeDescription);
+        this.addToolSections(adReadSelfActionSharedNodeDescription, PIN);
 
-        NodeTool adReadSelfActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadSelfAction());
+        NodeTool adReadSelfActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadSelfAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adReadSelfActionNodeDescription, diagramDescription, adReadSelfActionCreationTool, CREATE_OBJECT_ACTION, owners, List.of());
+        this.reuseNodeAndCreateTool(adReadSelfActionSharedNodeDescription, diagramDescription, adReadSelfActionSharedNodeCreationTool, CREATE_OBJECT_ACTION, owners, List.of());
     }
 
     /**
@@ -1330,17 +1330,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedReadStructuralFeatureActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adReadStructuralFeatureActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadStructuralFeatureAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adReadStructuralFeatureActionNodeDescription);
+    private void createReadStructuralFeatureActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adReadStructuralFeatureActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReadStructuralFeatureAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adReadStructuralFeatureActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adReadStructuralFeatureActionNodeDescription);
-        this.addToolSections(adReadStructuralFeatureActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adReadStructuralFeatureActionSharedNodeDescription);
+        this.addToolSections(adReadStructuralFeatureActionSharedNodeDescription, PIN);
 
-        NodeTool adReadStructuralFeatureActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadStructuralFeatureAction());
+        NodeTool adReadStructuralFeatureActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReadStructuralFeatureAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adReadStructuralFeatureActionNodeDescription, diagramDescription, adReadStructuralFeatureActionCreationTool, STRUCTURAL_FEATURE, owners,
+        this.reuseNodeAndCreateTool(adReadStructuralFeatureActionSharedNodeDescription, diagramDescription, adReadStructuralFeatureActionSharedNodeCreationTool, STRUCTURAL_FEATURE, owners,
                 List.of());
     }
 
@@ -1351,17 +1351,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedReclassifyObjectActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adReclassifyObjectActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReclassifyObjectAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adReclassifyObjectActionNodeDescription);
+    private void createReclassifyObjectActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adReclassifyObjectActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReclassifyObjectAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adReclassifyObjectActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adReclassifyObjectActionNodeDescription);
-        this.addToolSections(adReclassifyObjectActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adReclassifyObjectActionSharedNodeDescription);
+        this.addToolSections(adReclassifyObjectActionSharedNodeDescription, PIN);
 
-        NodeTool adReclassifyObjectActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReclassifyObjectAction());
+        NodeTool adReclassifyObjectActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReclassifyObjectAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adReclassifyObjectActionNodeDescription, diagramDescription, adReclassifyObjectActionCreationTool, CREATE_OBJECT_ACTION, owners,
+        this.reuseNodeAndCreateTool(adReclassifyObjectActionSharedNodeDescription, diagramDescription, adReclassifyObjectActionSharedNodeCreationTool, CREATE_OBJECT_ACTION, owners,
                 List.of());
     }
 
@@ -1372,15 +1372,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedReduceActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adReduceActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReduceAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adReduceActionNodeDescription);
+    private void createReduceActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adReduceActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getReduceAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adReduceActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adReduceActionNodeDescription);
-        this.addToolSections(adReduceActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adReduceActionSharedNodeDescription);
+        this.addToolSections(adReduceActionSharedNodeDescription, PIN);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getReduceAction());
-        this.reuseNodeAndCreateTool(adReduceActionNodeDescription, diagramDescription, nodeTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
+        NodeTool adReduceActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getReduceAction());
+        this.reuseNodeAndCreateTool(adReduceActionSharedNodeDescription, diagramDescription, adReduceActionSharedNodeCreationTool, EXECUTABLE_NODE, List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()),
                 List.of());
     }
 
@@ -1394,7 +1394,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     private NodeDescription createSharedRoundedRectangleActionNodeDescription(EClass domainType) {
         NodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, false);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
-        NodeDescription roundedRectangleNodeDescription = this.newNodeBuilder(domainType, rectangularNodeStyle) //
+        NodeDescription adRoundedRectangleSharedNodeDescription = this.newNodeBuilder(domainType, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
@@ -1402,9 +1402,9 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName())) //
                 .build();
-        roundedRectangleNodeDescription.setDefaultHeightExpression(SIZE_50);
-        roundedRectangleNodeDescription.setDefaultWidthExpression("200");
-        return roundedRectangleNodeDescription;
+        adRoundedRectangleSharedNodeDescription.setDefaultHeightExpression(SIZE_50);
+        adRoundedRectangleSharedNodeDescription.setDefaultWidthExpression("200");
+        return adRoundedRectangleSharedNodeDescription;
     }
 
     /**
@@ -1414,16 +1414,16 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedSendObjectActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adSendObjectActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getSendObjectAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adSendObjectActionNodeDescription);
+    private void createSendObjectActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adSendObjectActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getSendObjectAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adSendObjectActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adSendObjectActionNodeDescription);
-        this.addToolSections(adSendObjectActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adSendObjectActionSharedNodeDescription);
+        this.addToolSections(adSendObjectActionSharedNodeDescription, PIN);
 
-        NodeTool adSendObjectActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getSendObjectAction());
+        NodeTool adSendObjectActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getSendObjectAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adSendObjectActionNodeDescription, diagramDescription, adSendObjectActionCreationTool, INVOCATION_ACTION, owners, List.of());
+        this.reuseNodeAndCreateTool(adSendObjectActionSharedNodeDescription, diagramDescription, adSendObjectActionSharedNodeCreationTool, INVOCATION_ACTION, owners, List.of());
     }
 
     /**
@@ -1433,8 +1433,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedSendSignalActionNodeDescription(DiagramDescription diagramDescription) {
-        EClass domainType = this.umlPackage.getSendSignalAction();
+    private void createSendSignalActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        EClass sendSignalActionEClass = this.umlPackage.getSendSignalAction();
         NodeStyleDescription adSendSignalActionNodeStyleDescription = PapyrusCustomNodesFactory.eINSTANCE.createOuterFlagNodeStyleDescription();
         adSendSignalActionNodeStyleDescription.setColor(this.styleProvider.getNodeColor());
         adSendSignalActionNodeStyleDescription.setBorderColor(this.styleProvider.getBorderNodeColor());
@@ -1442,21 +1442,21 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adSendSignalActionNodeStyleDescription.setLabelColor(this.styleProvider.getNodeLabelColor());
         adSendSignalActionNodeStyleDescription.setShowIcon(true);
 
-        NodeDescription adSendSignalActionNodeDescription = this.newNodeBuilder(domainType, adSendSignalActionNodeStyleDescription) //
-                .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
+        NodeDescription adSendSignalActionSharedNodeDescription = this.newNodeBuilder(sendSignalActionEClass, adSendSignalActionNodeStyleDescription) //
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(sendSignalActionEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
-                .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
-                .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName())).build();
-        adSendSignalActionNodeDescription.setDefaultWidthExpression("170");
-        adSendSignalActionNodeDescription.setDefaultHeightExpression("70");
-        this.adSharedDescription.getChildrenDescriptions().add(adSendSignalActionNodeDescription);
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(sendSignalActionEClass.getName())) //
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(sendSignalActionEClass.getName())).build();
+        adSendSignalActionSharedNodeDescription.setDefaultWidthExpression("170");
+        adSendSignalActionSharedNodeDescription.setDefaultHeightExpression("70");
+        this.adSharedDescription.getChildrenDescriptions().add(adSendSignalActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adSendSignalActionNodeDescription);
-        this.addToolSections(adSendSignalActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adSendSignalActionSharedNodeDescription);
+        this.addToolSections(adSendSignalActionSharedNodeDescription, PIN);
 
-        NodeTool adSendSignalActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getSendSignalAction());
-        this.reuseNodeAndCreateTool(adSendSignalActionNodeDescription, diagramDescription, adSendSignalActionCreationTool, INVOCATION_ACTION, this.umlPackage.getActivity(),
+        NodeTool adSendSignalActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getSendSignalAction());
+        this.reuseNodeAndCreateTool(adSendSignalActionSharedNodeDescription, diagramDescription, adSendSignalActionSharedNodeCreationTool, INVOCATION_ACTION, this.umlPackage.getActivity(),
                 this.umlPackage.getActivityGroup());
     }
 
@@ -1466,12 +1466,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedSequenceNodeDescription(DiagramDescription diagramDescription) {
+    private void createSequenceNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass sequenceNodeEClass = this.umlPackage.getSequenceNode();
-        NodeDescription adSequenceNodeDescription = this.newNodeBuilder(sequenceNodeEClass, rectangularNodeStyle) //
+        NodeDescription adSequenceNodeSharedNodeDescription = this.newNodeBuilder(sequenceNodeEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(sequenceNodeEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
@@ -1479,21 +1479,21 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(sequenceNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(sequenceNodeEClass.getName())) //
                 .build();
-        adSequenceNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adSequenceNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        this.adSharedDescription.getChildrenDescriptions().add(adSequenceNodeDescription);
+        adSequenceNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adSequenceNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        this.adSharedDescription.getChildrenDescriptions().add(adSequenceNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adSequenceNodeDescription);
-        this.addToolSections(adSequenceNodeDescription, PIN, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
+        this.createDefaultToolSectionsInNodeDescription(adSequenceNodeSharedNodeDescription);
+        this.addToolSections(adSequenceNodeSharedNodeDescription, PIN, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE, EXECUTABLE_NODE,
                 ACCEPT_EVENT_ACTION);
-        NodeTool adSequenceNodeCreationTool = this.createStructuredActivityNodeCreationTool(sequenceNodeEClass);
+        NodeTool adSequenceNodeSharedNodeCreationTool = this.createStructuredActivityNodeCreationTool(sequenceNodeEClass);
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adSequenceNodeDescription, diagramDescription, adSequenceNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners, List.of());
+        this.reuseNodeAndCreateTool(adSequenceNodeSharedNodeDescription, diagramDescription, adSequenceNodeSharedNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners, List.of());
 
-        DropNodeTool adSequenceNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adSequenceNodeDescription));
+        DropNodeTool adSequenceNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adSequenceNodeSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
-        this.registerCallback(adSequenceNodeDescription, () -> {
+        this.registerCallback(adSequenceNodeSharedNodeDescription, () -> {
             List<EClass> forbiddenTypes = new ArrayList<>();
             forbiddenTypes.addAll(this.borderNodeTypes);
             forbiddenTypes.addAll(List.of(
@@ -1508,7 +1508,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, forbiddenTypes);
             adSequenceNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adSequenceNodeDescription.getPalette().setDropNodeTool(adSequenceNodeGraphicalDropTool);
+        adSequenceNodeSharedNodeDescription.getPalette().setDropNodeTool(adSequenceNodeGraphicalDropTool);
     }
 
     /**
@@ -1519,15 +1519,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedStartClassifierBehaviorActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adStartClassifierBehaviorActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getStartClassifierBehaviorAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adStartClassifierBehaviorActionNodeDescription);
+    private void createStartClassifierBehaviorActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adStartClassifierBehaviorActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getStartClassifierBehaviorAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adStartClassifierBehaviorActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adStartClassifierBehaviorActionNodeDescription);
-        this.addToolSections(adStartClassifierBehaviorActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adStartClassifierBehaviorActionSharedNodeDescription);
+        this.addToolSections(adStartClassifierBehaviorActionSharedNodeDescription, PIN);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getStartClassifierBehaviorAction());
-        this.reuseNodeAndCreateTool(adStartClassifierBehaviorActionNodeDescription, diagramDescription, nodeTool, EXECUTABLE_NODE,
+        NodeTool adStartClassifierBehaviorActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getStartClassifierBehaviorAction());
+        this.reuseNodeAndCreateTool(adStartClassifierBehaviorActionSharedNodeDescription, diagramDescription, adStartClassifierBehaviorActionSharedNodeCreationTool, EXECUTABLE_NODE,
                 List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()), List.of());
     }
 
@@ -1538,17 +1538,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedStartObjectBehaviorActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adStartObjectBehaviorActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getStartObjectBehaviorAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adStartObjectBehaviorActionNodeDescription);
+    private void createStartObjectBehaviorActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adStartObjectBehaviorActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getStartObjectBehaviorAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adStartObjectBehaviorActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adStartObjectBehaviorActionNodeDescription);
-        this.addToolSections(adStartObjectBehaviorActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adStartObjectBehaviorActionSharedNodeDescription);
+        this.addToolSections(adStartObjectBehaviorActionSharedNodeDescription, PIN);
 
-        NodeTool adStartObjectBehaviorActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getStartObjectBehaviorAction());
+        NodeTool adStartObjectBehaviorActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getStartObjectBehaviorAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adStartObjectBehaviorActionNodeDescription, diagramDescription, adStartObjectBehaviorActionCreationTool, INVOCATION_ACTION, owners,
+        this.reuseNodeAndCreateTool(adStartObjectBehaviorActionSharedNodeDescription, diagramDescription, adStartObjectBehaviorActionSharedNodeCreationTool, INVOCATION_ACTION, owners,
                 List.of());
     }
 
@@ -1575,12 +1575,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedStructuredActivityNodeDescription(DiagramDescription diagramDescription) {
+    private void createStructuredActivityNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass structuredActivityNodeEClass = this.umlPackage.getStructuredActivityNode();
-        NodeDescription adStructuredActivityNodeDescription = this.newNodeBuilder(structuredActivityNodeEClass, rectangularNodeStyle) //
+        NodeDescription adStructuredActivityNodeSharedNodeDescription = this.newNodeBuilder(structuredActivityNodeEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(structuredActivityNodeEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
@@ -1588,27 +1588,27 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(structuredActivityNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(structuredActivityNodeEClass.getName())) //
                 .build();
-        adStructuredActivityNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adStructuredActivityNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        this.adSharedDescription.getChildrenDescriptions().add(adStructuredActivityNodeDescription);
+        adStructuredActivityNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adStructuredActivityNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        this.adSharedDescription.getChildrenDescriptions().add(adStructuredActivityNodeSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adStructuredActivityNodeDescription);
-        this.addToolSections(adStructuredActivityNodeDescription, ACTIVITY_NODE, PIN, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
+        this.createDefaultToolSectionsInNodeDescription(adStructuredActivityNodeSharedNodeDescription);
+        this.addToolSections(adStructuredActivityNodeSharedNodeDescription, ACTIVITY_NODE, PIN, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
                 EXECUTABLE_NODE, ACCEPT_EVENT_ACTION);
 
-        NodeTool adStructuredActivityNodeCreationTool = this.createStructuredActivityNodeCreationTool(structuredActivityNodeEClass);
+        NodeTool adStructuredActivityNodeSharedNodeCreationTool = this.createStructuredActivityNodeCreationTool(structuredActivityNodeEClass);
         List<EClass> owners = List.of(this.umlPackage.getActivity(), //
                 this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adStructuredActivityNodeDescription, diagramDescription, adStructuredActivityNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners,
+        this.reuseNodeAndCreateTool(adStructuredActivityNodeSharedNodeDescription, diagramDescription, adStructuredActivityNodeSharedNodeCreationTool, STRUCTURED_ACTIVITY_NODE, owners,
                 List.of());
 
-        DropNodeTool adStructuredActivityNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adStructuredActivityNodeDescription));
+        DropNodeTool adStructuredActivityNodeGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adStructuredActivityNodeSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivityNode(), this.umlPackage.getComment(), this.umlPackage.getConstraint());
-        this.registerCallback(adStructuredActivityNodeDescription, () -> {
+        this.registerCallback(adStructuredActivityNodeSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adStructuredActivityNodeGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adStructuredActivityNodeDescription.getPalette().setDropNodeTool(adStructuredActivityNodeGraphicalDropTool);
+        adStructuredActivityNodeSharedNodeDescription.getPalette().setDropNodeTool(adStructuredActivityNodeGraphicalDropTool);
     }
 
     /**
@@ -1617,14 +1617,14 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedSubActivityDescription(DiagramDescription diagramDescription) {
+    private void createActivitySharedNodeDescription(DiagramDescription diagramDescription) {
         // We need a custom NodeDescription for sub-activity, otherwise there is no way to differentiate the root
         // Activity from Sub Activities, and the semantic candidate expression doesn't work (self): it produces an
         // infinite loop.
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         EClass activityEClass = this.umlPackage.getActivity();
-        NodeDescription adSubActivityDescription = this.newNodeBuilder(activityEClass, rectangularNodeStyle) //
+        NodeDescription adActivitySharedNodeDescription = this.newNodeBuilder(activityEClass, rectangularNodeStyle) //
                 // Explicitly set the name because IdBuilder can't add a prefix before the domain type name.
                 .name("AD_SubActivity_SHARED") //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
@@ -1633,26 +1633,26 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(activityEClass.getName())) //
                 .build();
-        adSubActivityDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
-        adSubActivityDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
+        adActivitySharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
+        adActivitySharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
 
-        this.adSharedDescription.getChildrenDescriptions().add(adSubActivityDescription);
+        this.adSharedDescription.getChildrenDescriptions().add(adActivitySharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adSubActivityDescription);
-        this.addToolSections(adSubActivityDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
+        this.createDefaultToolSectionsInNodeDescription(adActivitySharedNodeDescription);
+        this.addToolSections(adActivitySharedNodeDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE, STRUCTURAL_FEATURE,
                 EXECUTABLE_NODE, ACCEPT_EVENT_ACTION);
 
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.umlPackage.getClass_NestedClassifier(), activityEClass);
-        this.reuseNodeAndCreateTool(adSubActivityDescription, diagramDescription, nodeTool, ACTIVITY_GROUP, activityEClass);
+        NodeTool adActivitySharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getClass_NestedClassifier(), activityEClass);
+        this.reuseNodeAndCreateTool(adActivitySharedNodeDescription, diagramDescription, adActivitySharedNodeCreationTool, ACTIVITY_GROUP, activityEClass);
 
-        DropNodeTool adActivityGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adSubActivityDescription));
+        DropNodeTool adActivityGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(adActivitySharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityNode(), this.umlPackage.getActivityPartition(), this.umlPackage.getComment(),
                 this.umlPackage.getConstraint(), this.umlPackage.getInterruptibleActivityRegion());
-        this.registerCallback(adSubActivityDescription, () -> {
+        this.registerCallback(adActivitySharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, this.borderNodeTypes);
             adActivityGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        adSubActivityDescription.getPalette().setDropNodeTool(adActivityGraphicalDropTool);
+        adActivitySharedNodeDescription.getPalette().setDropNodeTool(adActivityGraphicalDropTool);
     }
 
     /**
@@ -1662,16 +1662,16 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedTestIdentityActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adTestIdentityActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getTestIdentityAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adTestIdentityActionNodeDescription);
+    private void createTestIdentityActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adTestIdentityActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getTestIdentityAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adTestIdentityActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adTestIdentityActionNodeDescription);
-        this.addToolSections(adTestIdentityActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adTestIdentityActionSharedNodeDescription);
+        this.addToolSections(adTestIdentityActionSharedNodeDescription, PIN);
 
-        NodeTool adTestIdentityActionCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getTestIdentityAction());
+        NodeTool adTestIdentityActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getTestIdentityAction());
         List<EClass> owners = List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup());
-        this.reuseNodeAndCreateTool(adTestIdentityActionNodeDescription, diagramDescription, adTestIdentityActionCreationTool, NODES, owners,
+        this.reuseNodeAndCreateTool(adTestIdentityActionSharedNodeDescription, diagramDescription, adTestIdentityActionSharedNodeCreationTool, NODES, owners,
                 List.of());
     }
 
@@ -1681,29 +1681,29 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription}
      */
-    private void createSharedValuePinNodeDescription(DiagramDescription diagramDescription) {
+    private void createValuePinSharedNodeDescription(DiagramDescription diagramDescription) {
         ImageNodeStyleDescription valuePinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getValuePin()), true);
         valuePinStyle.setPositionDependentRotation(true);
         NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
-        NodeDescription adValuePinDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getValuePin(), valuePinStyle, this.getUmlMetaModelHelper())
+        NodeDescription adValuePinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getValuePin(), valuePinStyle, this.getUmlMetaModelHelper())
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getValuePin(), SHARED_SUFFIX)) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_VALUE_PIN_CANDIDATES)) //
                 .conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
                 .build();
-        adValuePinDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
-        adValuePinDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
-        this.getViewBuilder().addDirectEditTool(adValuePinDescription);
-        this.getViewBuilder().addDefaultDeleteTool(adValuePinDescription);
-        this.adSharedDescription.getBorderNodesDescriptions().add(adValuePinDescription);
+        adValuePinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
+        adValuePinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
+        this.getViewBuilder().addDirectEditTool(adValuePinSharedNodeDescription);
+        this.getViewBuilder().addDefaultDeleteTool(adValuePinSharedNodeDescription);
+        this.adSharedDescription.getBorderNodesDescriptions().add(adValuePinSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adValuePinDescription);
+        this.createDefaultToolSectionsInNodeDescription(adValuePinSharedNodeDescription);
 
-        NodeTool nodeTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getValuePin()), ActivityDiagramServices.CREATE_VALUE_PIN,
+        NodeTool adValuePinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getValuePin()), ActivityDiagramServices.CREATE_VALUE_PIN,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
-        nodeTool.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getValuePin().getName())));
+        adValuePinSharedNodeCreationTool.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getValuePin().getName())));
         List<EClass> owners = List.of(this.umlPackage.getBroadcastSignalAction(), //
                 this.umlPackage.getConditionalNode(), //
                 this.umlPackage.getCreateLinkAction(), //
@@ -1733,7 +1733,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getTestIdentityAction(), //
                 this.umlPackage.getUnmarshallAction()//
         );
-        this.reuseNodeAndCreateTool(adValuePinDescription, diagramDescription, nodeTool, PIN, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(adValuePinSharedNodeDescription, diagramDescription, adValuePinSharedNodeCreationTool, PIN, owners.toArray(EClass[]::new));
     }
 
     /**
@@ -1743,15 +1743,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      * @see #createSharedRoundedRectangleActionNodeDescription(EClass)
      */
-    private void createSharedValueSpecificationActionNodeDescription(DiagramDescription diagramDescription) {
-        NodeDescription adValueSpecificationActionNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getValueSpecificationAction());
-        this.adSharedDescription.getChildrenDescriptions().add(adValueSpecificationActionNodeDescription);
+    private void createValueSpecificationActionSharedNodeDescription(DiagramDescription diagramDescription) {
+        NodeDescription adValueSpecificationActionSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getValueSpecificationAction());
+        this.adSharedDescription.getChildrenDescriptions().add(adValueSpecificationActionSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(adValueSpecificationActionNodeDescription);
-        this.addToolSections(adValueSpecificationActionNodeDescription, PIN);
+        this.createDefaultToolSectionsInNodeDescription(adValueSpecificationActionSharedNodeDescription);
+        this.addToolSections(adValueSpecificationActionSharedNodeDescription, PIN);
 
-        NodeTool nodeTool = this.createActivityNodeCreationTool(this.umlPackage.getValueSpecificationAction());
-        this.reuseNodeAndCreateTool(adValueSpecificationActionNodeDescription, diagramDescription, nodeTool, EXECUTABLE_NODE,
+        NodeTool adValueSpecificationActionSharedNodeCreationTool = this.createActivityNodeCreationTool(this.umlPackage.getValueSpecificationAction());
+        this.reuseNodeAndCreateTool(adValueSpecificationActionSharedNodeDescription, diagramDescription, adValueSpecificationActionSharedNodeCreationTool, EXECUTABLE_NODE,
                 List.of(this.umlPackage.getActivity(), this.umlPackage.getActivityGroup()), List.of());
     }
 
@@ -1761,24 +1761,24 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
-    private void createControlFlowDescription(DiagramDescription diagramDescription) {
+    private void createControlFlowEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(this.umlPackage.getActivityNode()),
                 List.of(this.umlPackage.getFinalNode()));
         Supplier<List<NodeDescription>> targetDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(this.umlPackage.getActivityNode()),
                 List.of(this.umlPackage.getInitialNode()));
 
-        EdgeDescription adControlFlowDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getControlFlow(),
+        EdgeDescription adControlFlowEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getControlFlow(),
                 this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getControlFlow()), sourceDescriptionSupplier, targetDescriptionSupplier);
-        adControlFlowDescription.getStyle().setLineStyle(LineStyle.SOLID);
-        adControlFlowDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        EdgeTool adControlFlowCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(adControlFlowDescription, this.umlPackage.getActivity_Edge());
-        this.registerCallback(adControlFlowDescription, () -> {
-            this.addEdgeToolInEdgesToolSection(sourceDescriptionSupplier.get(), adControlFlowCreationTool);
+        adControlFlowEdgeDescription.getStyle().setLineStyle(LineStyle.SOLID);
+        adControlFlowEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        EdgeTool adControlFlowEdgeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(adControlFlowEdgeDescription, this.umlPackage.getActivity_Edge());
+        this.registerCallback(adControlFlowEdgeDescription, () -> {
+            this.addEdgeToolInEdgesToolSection(sourceDescriptionSupplier.get(), adControlFlowEdgeCreationTool);
         });
 
-        diagramDescription.getEdgeDescriptions().add(adControlFlowDescription);
+        diagramDescription.getEdgeDescriptions().add(adControlFlowEdgeDescription);
 
-        this.getViewBuilder().addDefaultReconnectionTools(adControlFlowDescription);
+        this.getViewBuilder().addDefaultReconnectionTools(adControlFlowEdgeDescription);
     }
 
     /**
@@ -1787,7 +1787,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @param diagramDescription
      *            the Activity {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
-    private void createObjectFlowDescription(DiagramDescription diagramDescription) {
+    private void createObjectFlowEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(
                 this.umlPackage.getActionInputPin(),
                 this.umlPackage.getInputPin(),
@@ -1817,19 +1817,19 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getActivityParameterNode()),
                 List.of());
 
-        EdgeDescription adObjectFlowDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getObjectFlow(),
+        EdgeDescription adObjectFlowEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getObjectFlow(),
                 this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getObjectFlow()), sourceDescriptionSupplier, targetDescriptionSupplier);
-        adObjectFlowDescription.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
-        adObjectFlowDescription.getStyle().setLineStyle(LineStyle.SOLID);
-        adObjectFlowDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
-        EdgeTool adObjectFlowCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(adObjectFlowDescription, this.umlPackage.getActivity_Edge());
-        this.registerCallback(adObjectFlowDescription, () -> {
-            this.addEdgeToolInEdgesToolSection(sourceDescriptionSupplier.get(), adObjectFlowCreationTool);
+        adObjectFlowEdgeDescription.setEndLabelExpression(this.getQueryBuilder().createDomainBaseEdgeTargetLabelExpression());
+        adObjectFlowEdgeDescription.getStyle().setLineStyle(LineStyle.SOLID);
+        adObjectFlowEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);
+        EdgeTool adObjectFlowEdgeCreationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(adObjectFlowEdgeDescription, this.umlPackage.getActivity_Edge());
+        this.registerCallback(adObjectFlowEdgeDescription, () -> {
+            this.addEdgeToolInEdgesToolSection(sourceDescriptionSupplier.get(), adObjectFlowEdgeCreationTool);
         });
 
-        diagramDescription.getEdgeDescriptions().add(adObjectFlowDescription);
+        diagramDescription.getEdgeDescriptions().add(adObjectFlowEdgeDescription);
 
-        this.getViewBuilder().addDefaultReconnectionTools(adObjectFlowDescription);
+        this.getViewBuilder().addDefaultReconnectionTools(adObjectFlowEdgeDescription);
     }
 
     /**

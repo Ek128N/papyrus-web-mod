@@ -139,7 +139,7 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(PACKAGE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(PACKAGE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(PACKAGE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Profile")
@@ -157,7 +157,7 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(PROFILE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainer(PROFILE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(PROFILE_CONTAINER, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Class")
@@ -176,7 +176,7 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(CLASS_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainerCompartment(CLASS_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNodeOnCompartment(CLASS_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in DataType")
@@ -195,7 +195,7 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(DATA_TYPE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainerCompartment(DATA_TYPE_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNodeOnCompartment(DATA_TYPE_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Stereotype")
@@ -214,7 +214,7 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(STEREOTYPE_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainerCompartment(STEREOTYPE_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNodeOnCompartment(STEREOTYPE_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create Node {1} in Enumeration")
@@ -231,6 +231,6 @@ public class PRDSubNodeCreationTest extends NodeCreationTest {
                 this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(ENUMERATION_CONTAINER), expectedContainmentReference);
-        this.createNodeOnContainerCompartment(ENUMERATION_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNodeOnCompartment(ENUMERATION_CONTAINER, compartmentMapping, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

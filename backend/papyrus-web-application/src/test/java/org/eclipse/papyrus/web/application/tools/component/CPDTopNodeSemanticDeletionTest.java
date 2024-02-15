@@ -35,7 +35,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class CPDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
+public class CPDTopNodeSemanticDeletionTest extends NodeDeletionTest {
 
     private static final String COMPONENT1 = "Component1";
 
@@ -47,7 +47,7 @@ public class CPDDiagramNodeSemanticDeletionTest extends NodeDeletionTest {
 
     private static final String PACKAGE1 = "Package1";
 
-    public CPDDiagramNodeSemanticDeletionTest() {
+    public CPDTopNodeSemanticDeletionTest() {
         super(DEFAULT_DOCUMENT, CPDDiagramDescriptionBuilder.CPD_REP_NAME, UML.getModel());
     }
 

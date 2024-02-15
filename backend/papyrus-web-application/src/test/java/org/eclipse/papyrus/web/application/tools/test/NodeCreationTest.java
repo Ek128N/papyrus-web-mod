@@ -65,7 +65,7 @@ public class NodeCreationTest extends AbstractPapyrusWebTest {
      * @param checker
      *            the {@link Checker} to use to validate the operation
      */
-    protected void createNodeOnDiagram(CreationTool nodeCreationTool, Checker checker) {
+    protected void createTopNode(CreationTool nodeCreationTool, Checker checker) {
         assertThat(checker).as(CHECKER_IS_NULL_ERROR).isNotNull();
         this.applyNodeCreationTool(this.representationId, nodeCreationTool);
         // Reload the diagram to ensure it contains the create element
@@ -84,7 +84,7 @@ public class NodeCreationTest extends AbstractPapyrusWebTest {
      * @param checker
      *            the {@link Checker} to use to validate the operation
      */
-    protected void createNodeOnContainer(String parentName, CreationTool nodeCreationTool, Checker checker) {
+    protected void createSubNode(String parentName, CreationTool nodeCreationTool, Checker checker) {
         assertThat(checker).as(CHECKER_IS_NULL_ERROR).isNotNull();
         IDiagramElement diagramElement = this.findGraphicalElementByLabel(parentName);
         assertThat(diagramElement).as(NODE_CONTAINER_IS_NOT_NODE_ERROR).isInstanceOf(Node.class);
@@ -130,7 +130,7 @@ public class NodeCreationTest extends AbstractPapyrusWebTest {
      * @param checker
      *            the {@link Checker} to use to validate the operation
      */
-    protected void createNodeOnContainerCompartment(String parentName, String compartmentMapping, CreationTool nodeCreationTool, Checker checker) {
+    protected void createSubNodeOnCompartment(String parentName, String compartmentMapping, CreationTool nodeCreationTool, Checker checker) {
         assertThat(checker).as(CHECKER_IS_NULL_ERROR).isNotNull();
         Node parentCompartmentNode = this.getSubNode(parentName, compartmentMapping);
         IDiagramElement compartmentElement = this.getSubNode(parentName, compartmentMapping);

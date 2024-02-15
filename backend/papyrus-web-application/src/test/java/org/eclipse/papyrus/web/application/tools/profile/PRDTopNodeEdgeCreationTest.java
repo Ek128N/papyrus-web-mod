@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -22,12 +22,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.tools.checker.CombinedChecker;
-import org.eclipse.papyrus.web.application.tools.checker.DeletionGraphicalChecker;
-import org.eclipse.papyrus.web.application.tools.checker.NodeSemanticDeletionSemanticChecker;
-import org.eclipse.papyrus.web.application.tools.test.EdgeDeletionTest;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationGraphicalChecker;
+import org.eclipse.papyrus.web.application.tools.checker.EdgeCreationSemanticChecker;
+import org.eclipse.papyrus.web.application.tools.profile.utils.PRDMappingTypes;
+import org.eclipse.papyrus.web.application.tools.test.EdgeCreationTest;
 import org.eclipse.papyrus.web.application.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.application.tools.utils.ToolSections;
-import org.eclipse.sirius.components.diagrams.Edge;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,7 +39,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public class PRDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
+public class PRDTopNodeEdgeCreationTest extends EdgeCreationTest {
 
     private static final String CLASS_SOURCE = "ClassSource";
 
@@ -61,7 +61,7 @@ public class PRDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
 
     private static final String STEREOTYPE_TARGET = "StereotypeTarget";
 
-    public PRDDiagramEdgeSemanticDeletionTest() {
+    public PRDTopNodeEdgeCreationTest() {
         super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
@@ -82,11 +82,11 @@ public class PRDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
     public void setUp() {
         super.setUp();
         // No need to create constraint, package, and profile: these elements aren't sources or targets of PRD edges.
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getClass_()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getDataType()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getEnumeration()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getPrimitiveType()));
-        this.createDiagramSourceAndTargetNodes(new CreationTool(ToolSections.NODES, UML.getStereotype()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getClass_()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getDataType()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getEnumeration()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getPrimitiveType()));
+        this.createSourceAndTargetTopNodes(new CreationTool(ToolSections.NODES, UML.getStereotype()));
     }
 
     @Override
@@ -97,39 +97,36 @@ public class PRDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
 
     @ParameterizedTest
     @MethodSource("associationAndGeneralizationParameters")
-    public void testDeleteAssociation(String sourceElementLabel, String targetElementLabel) {
-        this.testDeleteEdge(sourceElementLabel, targetElementLabel, UML.getAssociation());
-
+    public void testCreateAssociation(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getAssociation());
     }
 
     @ParameterizedTest
     @MethodSource("associationAndGeneralizationParameters")
-    public void testDeleteGeneralization(String sourceElementLabel, String targetElementLabel) {
-        this.testDeleteEdge(sourceElementLabel, targetElementLabel, UML.getGeneralization());
-
+    public void testCreateGeneralization(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getGeneralization(), sourceElementLabel, UML.getClassifier_Generalization());
     }
 
     @ParameterizedTest
     @MethodSource("extensionParameters")
-    public void testDeleteExtension(String sourceElementLabel, String targetElementLabel) {
-        this.testDeleteEdge(sourceElementLabel, targetElementLabel, UML.getExtension());
+    public void testCreateExtension(String sourceElementLabel, String targetElementLabel) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, UML.getExtension());
     }
 
-    private void testDeleteEdge(String sourceElementLabel, String targetElementLabel, EClass edgeType) {
-        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, edgeType));
-        Edge edge = this.getDiagram().getEdges().get(0);
-        this.testDeleteEdge(edge, null, UML.getPackage_PackagedElement());
+    private void testCreateEdge(String sourceElementLabel, String targetElementLabel, EClass edgeType) {
+        this.testCreateEdge(sourceElementLabel, targetElementLabel, edgeType, null, UML.getPackage_PackagedElement());
     }
 
-    private void testDeleteEdge(Edge edge, String oldOwnerLabel, EReference oldContainmentReference) {
-        final Supplier<EObject> oldOwnerSupplier;
-        if (oldOwnerLabel == null) {
-            oldOwnerSupplier = this::getRootSemanticElement;
+    private void testCreateEdge(String sourceElementLabel, String targetElementLabel, EClass edgeType, String expectedSemanticOwnerName, EReference expectedContainmentReference) {
+        Supplier<EObject> expectedSemanticOwnerSupplier;
+        if (expectedSemanticOwnerName == null) {
+            expectedSemanticOwnerSupplier = () -> this.getRootSemanticElement();
         } else {
-            oldOwnerSupplier = () -> this.findSemanticElementByName(oldOwnerLabel);
+            expectedSemanticOwnerSupplier = () -> this.findSemanticElementByName(expectedSemanticOwnerName);
         }
-        DeletionGraphicalChecker graphicalChecker = new DeletionGraphicalChecker(this::getDiagram, null);
-        NodeSemanticDeletionSemanticChecker semanticChecker = new NodeSemanticDeletionSemanticChecker(this.getObjectService(), this::getEditingContext, oldOwnerSupplier, oldContainmentReference);
-        this.deleteSemanticEdge(edge, new CombinedChecker(graphicalChecker, semanticChecker));
+        EdgeCreationGraphicalChecker graphicalChecker = new EdgeCreationGraphicalChecker(this::getDiagram, null, PRDMappingTypes.getMappingType(edgeType), this.getCapturedEdges());
+        EdgeCreationSemanticChecker semanticChecker = new EdgeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, edgeType, expectedSemanticOwnerSupplier,
+                expectedContainmentReference);
+        this.createEdge(sourceElementLabel, targetElementLabel, new CreationTool(ToolSections.EDGES, edgeType), new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

@@ -38,7 +38,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class UCDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
+public class UCDEdgeSemanticDeletionTest extends EdgeDeletionTest {
 
     private static final String ACTIVITY_SOURCE = "ActivitySource";
 
@@ -76,7 +76,7 @@ public class UCDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
 
     private static final String USE_CASE_TARGET = "UseCaseTarget";
 
-    public UCDDiagramEdgeSemanticDeletionTest() {
+    public UCDEdgeSemanticDeletionTest() {
         super(DEFAULT_DOCUMENT, UCDDiagramDescriptionBuilder.UCD_REP_NAME, UML.getModel());
     }
 
@@ -104,15 +104,15 @@ public class UCDDiagramEdgeSemanticDeletionTest extends EdgeDeletionTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getActor()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()));
-        this.createDiagramSourceAndTargetNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getActivity()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getActor()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getClass_()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getComponent()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getConstraint()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getInteraction()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getPackage()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.SUBJECT, UML.getStateMachine()));
+        this.createSourceAndTargetTopNodes(new UCDCreationTool(UCDToolSections.NODES, UML.getUseCase()));
     }
 
     @Override

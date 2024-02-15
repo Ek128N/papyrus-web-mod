@@ -426,7 +426,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param owners
      *            the semantic types that can contain a {@link Comment}
      */
-    protected void createCommentDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, String commentNodeDescriptionName,
+    protected void createCommentSubNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName, String commentNodeDescriptionName,
             List<EClass> owners) {
         NodeDescription commentDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withName(commentNodeDescriptionName) //
@@ -457,7 +457,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param toolSectionName
      *            name of the tool section to add the comment tool
      */
-    protected void createDiagramCommentDescription(DiagramDescription diagramDescription, String toolSectionName) {
+    protected void createCommentTopNodeDescription(DiagramDescription diagramDescription, String toolSectionName) {
         new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withColor(this.styleProvider.getNoteColor()) //
                 .withDomainType(this.pack.getComment()) //
@@ -489,7 +489,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param owners
      *            the semantic types that can contain a {@link Constraint}
      */
-    protected void createConstraintDescriptionInNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName,
+    protected void createConstraintSubNodeDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, String toolSectionName,
             String constraintNodeDescriptionName, List<EClass> owners) {
         NodeDescription constraintDescription = new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withName(constraintNodeDescriptionName) //
@@ -520,7 +520,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param toolSectionName
      *            name of the tool section to add the comment tool
      */
-    protected void createDiagramConstraintDescription(DiagramDescription diagramDescription, String toolSectionName) {
+    protected void createConstraintTopNodeDescription(DiagramDescription diagramDescription, String toolSectionName) {
         new NoteStyleDescriptionBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder()) //
                 .withColor(this.styleProvider.getConstraintColor()) //
                 .withDomainType(this.pack.getConstraint()) //
@@ -1063,7 +1063,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @return the created {@link NodeDescription}
      */
     // CHECKSTYLE:OFF
-    protected NodeDescription createNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
+    protected NodeDescription createSubNodeDescriptionInCompartmentDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
             String semanticQuery, EReference semanticRefTool, List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         // CHECKSTYLE:ON
         String nodeDescriptionName = this.getIdBuilder().getDomainNodeName(domainType);

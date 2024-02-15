@@ -80,15 +80,15 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
     protected void fillDescription(DiagramDescription diagramDescription) {
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(CommunicationDiagramServices.CAN_CREATE_DIAGRAM));
 
-        NodeDescription codInteractionDescription = this.createDiagramInteractionDescription(diagramDescription);
-        this.createLifelineDescriptionInNodeDescription(codInteractionDescription);
-        this.createDurationObservationDescriptionInNodeDescription(codInteractionDescription);
-        this.createTimeObservationDescriptionInNodeDescription(codInteractionDescription);
-        this.createMessageDescriptionInNodeDescription(diagramDescription);
+        NodeDescription codInteractionDescription = this.createInteractionTopNodeDescription(diagramDescription);
+        this.createLifelineSubNodeDescription(codInteractionDescription);
+        this.createDurationObservationSubNodeDescription(codInteractionDescription);
+        this.createTimeObservationSubNodeDescription(codInteractionDescription);
+        this.createMessageEdgeDescription(diagramDescription);
 
-        this.createCommentDescriptionInNodeDescription(diagramDescription, codInteractionDescription, NODES, this.getIdBuilder().getDomainNodeName(this.umlPackage.getComment()),
+        this.createCommentSubNodeDescription(diagramDescription, codInteractionDescription, NODES, this.getIdBuilder().getDomainNodeName(this.umlPackage.getComment()),
                 List.of(this.umlPackage.getInteraction()));
-        this.createConstraintDescriptionInNodeDescription(diagramDescription, codInteractionDescription, NODES, this.getIdBuilder().getDomainNodeName(this.umlPackage.getConstraint()),
+        this.createConstraintSubNodeDescription(diagramDescription, codInteractionDescription, NODES, this.getIdBuilder().getDomainNodeName(this.umlPackage.getConstraint()),
                 List.of(this.umlPackage.getInteraction()));
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
@@ -101,26 +101,26 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the Communication {@link DiagramDescription} containing the created {@link NodeDescription}
      * @return the {@link NodeDescription} representing an UML {@link Interaction}.
      */
-    protected NodeDescription createDiagramInteractionDescription(DiagramDescription diagramDescription) {
+    protected NodeDescription createInteractionTopNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
         rectangularNodeStyle.setBorderRadius(INTERACTION_NODE_BORDER_RADIUS);
 
         EClass interactionEClass = this.umlPackage.getInteraction();
-        NodeDescription codInteractionDescription = this.newNodeBuilder(interactionEClass, rectangularNodeStyle)//
+        NodeDescription codInteractionTopNodeDescription = this.newNodeBuilder(interactionEClass, rectangularNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(interactionEClass)) //
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interactionEClass.getName()))//
                 .build();
-        codInteractionDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
-        codInteractionDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
-        diagramDescription.getNodeDescriptions().add(codInteractionDescription);
+        codInteractionTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
+        codInteractionTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
+        diagramDescription.getNodeDescriptions().add(codInteractionTopNodeDescription);
 
         // create Interaction tool sections
-        this.createDefaultToolSectionsInNodeDescription(codInteractionDescription);
+        this.createDefaultToolSectionsInNodeDescription(codInteractionTopNodeDescription);
 
-        return codInteractionDescription;
+        return codInteractionTopNodeDescription;
     }
 
     /**
@@ -129,21 +129,21 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the {@link Lifeline} {@link NodeDescription}
      */
-    private void createLifelineDescriptionInNodeDescription(NodeDescription parentNodeDescription) {
+    private void createLifelineSubNodeDescription(NodeDescription parentNodeDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, false);
         EClass lifelineEClass = this.umlPackage.getLifeline();
-        NodeDescription codLifelineDescription = this.newNodeBuilder(lifelineEClass, rectangularNodeStyle) //
+        NodeDescription codLifelineSubNodeDescription = this.newNodeBuilder(lifelineEClass, rectangularNodeStyle) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getInteraction_Lifeline())).synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(lifelineEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(lifelineEClass.getName())) //
                 .build();
-        parentNodeDescription.getChildrenDescriptions().add(codLifelineDescription);
+        parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescription);
 
         // create Lifeline tool sections
-        this.createDefaultToolSectionsInNodeDescription(codLifelineDescription);
+        this.createDefaultToolSectionsInNodeDescription(codLifelineSubNodeDescription);
 
-        NodeTool codLifelineCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getInteraction_Lifeline(), lifelineEClass);
-        this.addNodeToolInToolSection(List.of(parentNodeDescription), codLifelineCreationTool, NODES);
+        NodeTool codLifelineSubNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getInteraction_Lifeline(), lifelineEClass);
+        this.addNodeToolInToolSection(List.of(parentNodeDescription), codLifelineSubNodeCreationTool, NODES);
     }
 
     /**
@@ -152,27 +152,27 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the {@link DurationObservation} {@link NodeDescription}
      */
-    private void createDurationObservationDescriptionInNodeDescription(NodeDescription parentNodeDescription) {
+    private void createDurationObservationSubNodeDescription(NodeDescription parentNodeDescription) {
         NodeStyleDescription durationObservationNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("DurationObservation.svg".getBytes()).toString(), true);
 
         EClass durationObservationEClass = this.umlPackage.getDurationObservation();
-        NodeDescription codDurationObservationDescription = this.newNodeBuilder(durationObservationEClass, durationObservationNodeStyle)//
+        NodeDescription codDurationObservationSubNodeDescription = this.newNodeBuilder(durationObservationEClass, durationObservationNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(durationObservationEClass)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(CommunicationDiagramServices.GET_DURATION_OBSERVATION_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(durationObservationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(durationObservationEClass.getName())) //
                 .build();
-        codDurationObservationDescription.setDefaultWidthExpression(OBSERVATION_SIZE);
-        codDurationObservationDescription.setDefaultHeightExpression(OBSERVATION_SIZE);
-        parentNodeDescription.getChildrenDescriptions().add(codDurationObservationDescription);
+        codDurationObservationSubNodeDescription.setDefaultWidthExpression(OBSERVATION_SIZE);
+        codDurationObservationSubNodeDescription.setDefaultHeightExpression(OBSERVATION_SIZE);
+        parentNodeDescription.getChildrenDescriptions().add(codDurationObservationSubNodeDescription);
 
         // create durationObservation tool sections
-        this.createDefaultToolSectionsInNodeDescription(codDurationObservationDescription);
+        this.createDefaultToolSectionsInNodeDescription(codDurationObservationSubNodeDescription);
 
-        NodeTool codDurationObservationCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(durationObservationEClass),
+        NodeTool codDurationObservationSubNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(durationObservationEClass),
                 CallQuery.queryServiceOnSelf(CommunicationDiagramServices.GET_PACKAGE_CONTAINER), this.umlPackage.getPackage_PackagedElement(), durationObservationEClass);
-        this.addNodeToolInToolSection(List.of(parentNodeDescription), codDurationObservationCreationTool, NODES);
+        this.addNodeToolInToolSection(List.of(parentNodeDescription), codDurationObservationSubNodeCreationTool, NODES);
     }
 
     /**
@@ -181,28 +181,28 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      * @param parentNodeDescription
      *            the {@link NodeDescription} containing the {@link TimeObservation} {@link NodeDescription}
      */
-    private void createTimeObservationDescriptionInNodeDescription(NodeDescription parentNodeDescription) {
+    private void createTimeObservationSubNodeDescription(NodeDescription parentNodeDescription) {
         NodeStyleDescription timeObservationNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("TimeObservation.svg".getBytes()).toString(), true);
 
         EClass timeObservationEClass = this.umlPackage.getTimeObservation();
-        NodeDescription codTimeObservationDescription = this.newNodeBuilder(timeObservationEClass, timeObservationNodeStyle)//
+        NodeDescription codTimeObservationSubNodeDescription = this.newNodeBuilder(timeObservationEClass, timeObservationNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(timeObservationEClass)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(CommunicationDiagramServices.GET_TIME_OBSERVATION_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(timeObservationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(timeObservationEClass.getName())) //
                 .build();
-        codTimeObservationDescription.setDefaultWidthExpression(OBSERVATION_SIZE);
-        codTimeObservationDescription.setDefaultHeightExpression(OBSERVATION_SIZE);
+        codTimeObservationSubNodeDescription.setDefaultWidthExpression(OBSERVATION_SIZE);
+        codTimeObservationSubNodeDescription.setDefaultHeightExpression(OBSERVATION_SIZE);
 
-        parentNodeDescription.getChildrenDescriptions().add(codTimeObservationDescription);
+        parentNodeDescription.getChildrenDescriptions().add(codTimeObservationSubNodeDescription);
 
         // create timeObservation tool sections
-        this.createDefaultToolSectionsInNodeDescription(codTimeObservationDescription);
+        this.createDefaultToolSectionsInNodeDescription(codTimeObservationSubNodeDescription);
 
-        NodeTool codTimeObservationCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(timeObservationEClass),
+        NodeTool codTimeObservationSubNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(timeObservationEClass),
                 CallQuery.queryServiceOnSelf(CommunicationDiagramServices.GET_PACKAGE_CONTAINER), this.umlPackage.getPackage_PackagedElement(), timeObservationEClass);
-        this.addNodeToolInToolSection(List.of(parentNodeDescription), codTimeObservationCreationTool, NODES);
+        this.addNodeToolInToolSection(List.of(parentNodeDescription), codTimeObservationSubNodeCreationTool, NODES);
     }
 
     /**
@@ -211,29 +211,29 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      * @param diagramDescription
      *            the Communication {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
-    private void createMessageDescriptionInNodeDescription(DiagramDescription diagramDescription) {
+    private void createMessageEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getLifeline());
 
         EClass messageEClass = this.umlPackage.getMessage();
-        EdgeDescription codMessageDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(messageEClass, this.getQueryBuilder().queryAllReachable(messageEClass),
+        EdgeDescription codMessageEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(messageEClass, this.getQueryBuilder().queryAllReachable(messageEClass),
                 sourceAndTargetDescriptionsSupplier, sourceAndTargetDescriptionsSupplier);
-        codMessageDescription.getStyle().setLineStyle(LineStyle.SOLID);
-        codMessageDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
+        codMessageEdgeDescription.getStyle().setLineStyle(LineStyle.SOLID);
+        codMessageEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW);
 
-        EdgeTool codMessageCreationTool = this.getViewBuilder().createDomainBasedEdgeToolWithService("New Message", CommunicationDiagramServices.CREATE_MESSAGE);
+        EdgeTool codMessageEdgeCreationTool = this.getViewBuilder().createDomainBasedEdgeToolWithService("New Message", CommunicationDiagramServices.CREATE_MESSAGE);
 
-        codMessageDescription.eAdapters().add(new CallbackAdapter(() -> {
-            List<NodeDescription> targetNodeDescriptions = codMessageDescription.getTargetNodeDescriptions();
-            codMessageCreationTool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
+        codMessageEdgeDescription.eAdapters().add(new CallbackAdapter(() -> {
+            List<NodeDescription> targetNodeDescriptions = codMessageEdgeDescription.getTargetNodeDescriptions();
+            codMessageEdgeCreationTool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
         }));
 
-        this.registerCallback(codMessageDescription, () -> {
-            this.addEdgeToolInEdgesToolSection(sourceAndTargetDescriptionsSupplier.get(), codMessageCreationTool);
+        this.registerCallback(codMessageEdgeDescription, () -> {
+            this.addEdgeToolInEdgesToolSection(sourceAndTargetDescriptionsSupplier.get(), codMessageEdgeCreationTool);
         });
 
-        diagramDescription.getEdgeDescriptions().add(codMessageDescription);
+        diagramDescription.getEdgeDescriptions().add(codMessageEdgeDescription);
 
-        this.getViewBuilder().addDefaultReconnectionTools(codMessageDescription);
+        this.getViewBuilder().addDefaultReconnectionTools(codMessageEdgeDescription);
     }
 
 }

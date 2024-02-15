@@ -105,7 +105,7 @@ public class UCDSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(PACKAGE_NAME), mappingType, this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(PACKAGE_NAME), containmentReference);
-        this.createNodeOnContainer(PACKAGE_NAME, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(PACKAGE_NAME, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
     @ParameterizedTest(name = "[{index}] Create node {1} in Activity")
@@ -143,7 +143,7 @@ public class UCDSubNodeCreationTest extends NodeCreationTest {
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(containerName), mappingType, this.getCapturedNodes());
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType,
                 () -> this.findSemanticElementByName(containerName), containmentReference);
-        this.createNodeOnContainer(containerName, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createSubNode(containerName, nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 
 }

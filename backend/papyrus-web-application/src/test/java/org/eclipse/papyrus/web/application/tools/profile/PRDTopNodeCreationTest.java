@@ -38,11 +38,11 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
-public class PRDDiagramNodeCreationTest extends NodeCreationTest {
+public class PRDTopNodeCreationTest extends NodeCreationTest {
 
     private static final EReference PACKAGED_ELEMENT = UML.getPackage_PackagedElement();
 
-    public PRDDiagramNodeCreationTest() {
+    public PRDTopNodeCreationTest() {
         super("test.profile.uml", PRDDiagramDescriptionBuilder.PRD_REP_NAME, UML.getProfile());
     }
 
@@ -87,6 +87,6 @@ public class PRDDiagramNodeCreationTest extends NodeCreationTest {
         }
         NodeCreationSemanticChecker semanticChecker = new NodeCreationSemanticChecker(this.getObjectService(), this::getEditingContext, expectedType, this::getRootSemanticElement,
                 expectedContainmentReference);
-        this.createNodeOnDiagram(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
+        this.createTopNode(nodeCreationTool, new CombinedChecker(graphicalChecker, semanticChecker));
     }
 }

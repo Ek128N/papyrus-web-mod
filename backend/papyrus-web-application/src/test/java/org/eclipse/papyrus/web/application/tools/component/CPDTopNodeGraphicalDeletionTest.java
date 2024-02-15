@@ -35,7 +35,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
-public class CPDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
+public class CPDTopNodeGraphicalDeletionTest extends NodeDeletionTest {
 
     private static final String COMPONENT1 = "Component1";
 
@@ -47,7 +47,7 @@ public class CPDDiagramNodeGraphicalDeletionTest extends NodeDeletionTest {
 
     private static final String PACKAGE1 = "Package1";
 
-    public CPDDiagramNodeGraphicalDeletionTest() {
+    public CPDTopNodeGraphicalDeletionTest() {
         super(DEFAULT_DOCUMENT, CPDDiagramDescriptionBuilder.CPD_REP_NAME, UML.getModel());
     }
 

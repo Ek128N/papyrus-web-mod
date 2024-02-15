@@ -99,7 +99,7 @@ public class ReconnectEdgeSourceTest extends AbstractPapyrusWebTest {
      * @param creationTool
      *            the tool to use to create the source and target nodes
      *
-     * @see #createDiagramSourceAndTargetNodes(CreationTool) to create two source and one target elements at the diagram
+     * @see #createSourceAndTargetTopNodes(CreationTool) to create two source and one target elements at the diagram
      *      level
      */
     @Override
