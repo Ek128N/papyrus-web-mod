@@ -20,6 +20,7 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Insta
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.IfQuery;
@@ -51,6 +52,8 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     public static final String IN_PROPERTY = "_InProperty";
 
     public static final String IN_CLASSIFIER = "_InClassifier";
+
+    private static final String AQL_CHECK_TYPED_PROPERTY = "aql:self.oclIsKindOf(uml::Property) and self.type!=null";
 
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
@@ -199,12 +202,23 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.registerNodeAsCommentOwner(this.csdPropertyOnClassifier, diagramDescription);
 
         this.csdPortOnProperty = this.createPortDescriptionOnProperty();
-        NodeTool creationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.pack.getPort()), //
+        NodeTool portCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.pack.getPort()), //
                 queryAttributeOnSelf(this.pack.getTypedElement_Type()), //
                 this.pack.getStructuredClassifier_OwnedAttribute(), //
                 this.pack.getPort());
-        this.csdPropertyOnClassifier.getPalette().getNodeTools().add(creationTool);
-        this.csdPropertyOnClassifier.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.csdPropertyOnClassifier, this.pack.getStructuredClassifier_OwnedAttribute()));
+        portCreationTool
+                .setPreconditionExpression(AQL_CHECK_TYPED_PROPERTY);
+        this.csdPropertyOnClassifier.getPalette().getNodeTools().add(portCreationTool);
+
+        EClass propertyEClass = this.pack.getProperty();
+        String propertyTypeVariable = IfQuery.ifExpression("self.oclIsKindOf(uml::Property) and self.type!=null")
+                .then(queryAttributeOnSelf(this.pack.getTypedElement_Type()))
+                .orElse(Variables.SELF).toQuery();
+        NodeTool propertyInPropertyOnClassifierCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(propertyEClass), propertyTypeVariable,
+                this.pack.getStructuredClassifier_OwnedAttribute(), propertyEClass);
+        propertyInPropertyOnClassifierCreationTool
+                .setPreconditionExpression(AQL_CHECK_TYPED_PROPERTY);
+        this.csdPropertyOnClassifier.getPalette().getNodeTools().add(propertyInPropertyOnClassifierCreationTool);
         this.csdPropertyOnClassifier.getBorderNodesDescriptions().add(this.csdPortOnProperty);
 
         // Create property children
@@ -218,7 +232,12 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.registerNodeAsCommentOwner(this.csdPropertyOnProperty, diagramDescription);
 
         this.csdPropertyOnClassifier.getChildrenDescriptions().add(this.csdPropertyOnProperty);
-        this.csdPropertyOnProperty.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.csdPropertyOnProperty, this.pack.getStructuredClassifier_OwnedAttribute()));
+
+        NodeTool propertyInPropertyOnPropertyCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(propertyEClass), propertyTypeVariable,
+                this.pack.getStructuredClassifier_OwnedAttribute(), propertyEClass);
+        propertyInPropertyOnPropertyCreationTool
+                .setPreconditionExpression(AQL_CHECK_TYPED_PROPERTY);
+        this.csdPropertyOnProperty.getPalette().getNodeTools().add(propertyInPropertyOnPropertyCreationTool);
         this.csdPropertyOnProperty.getReusedBorderNodeDescriptions().add(this.csdPortOnProperty);
         this.csdPropertyOnProperty.getReusedChildNodeDescriptions().add(this.csdPropertyOnProperty);
 
