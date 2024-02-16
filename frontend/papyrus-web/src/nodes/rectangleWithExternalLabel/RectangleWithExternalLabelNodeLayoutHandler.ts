@@ -19,7 +19,7 @@ import {
   INodeLayoutHandler,
   NodeData,
   setBorderNodesPosition,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 
 export class RectangleWithExternalLabelNodeLayoutHandler implements INodeLayoutHandler<NodeData> {

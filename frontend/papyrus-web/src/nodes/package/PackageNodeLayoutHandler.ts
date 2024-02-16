@@ -28,10 +28,10 @@ import {
   setBorderNodesPosition,
   computePreviousSize,
   computePreviousPosition,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 import { PackageNodeData } from './PackageNode.types';
-import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams';
 
 const rectangularNodePadding: number = 8;
 

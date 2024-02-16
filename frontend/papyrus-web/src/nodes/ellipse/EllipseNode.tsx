@@ -19,6 +19,8 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DiagramContext,
+  DiagramContextValue,
   DiagramElementPalette,
   Label,
   NodeContext,
@@ -27,7 +29,7 @@ import {
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
@@ -72,6 +74,7 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
 };
 
 export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeData>) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
@@ -86,7 +89,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
 
   return (
     <>
-      {data.nodeDescription?.userResizable && (
+      {data.nodeDescription?.userResizable && !readOnly ? (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
@@ -95,7 +98,7 @@ export const EllipseNode = memo(({ data, id, selected }: NodeProps<EllipseNodeDa
           shouldResize={() => !data.isBorderNode}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
-      )}
+      ) : null}
       <div
         style={{
           ...ellipseNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),

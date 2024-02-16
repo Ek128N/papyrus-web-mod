@@ -14,13 +14,13 @@
 package org.eclipse.papyrus.web.application.configuration;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.papyrus.web.services.api.IImageOverrideService;
-import org.eclipse.sirius.components.core.api.IDefaultObjectService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.components.core.api.IObjectServiceDelegate;
+import org.eclipse.sirius.components.emf.services.DefaultLabelService;
+import org.eclipse.sirius.components.emf.services.LabelFeatureProviderRegistry;
 import org.eclipse.uml2.uml.Element;
 import org.springframework.stereotype.Service;
 
@@ -30,56 +30,13 @@ import org.springframework.stereotype.Service;
  * @author Arthur Daussy
  */
 @Service
-public class PapyrusObjectService implements IObjectServiceDelegate {
+public class PapyrusObjectService extends DefaultLabelService implements ILabelServiceDelegate {
 
     private List<IImageOverrideService> imageOverriders;
 
-    private IDefaultObjectService defaultObjectService;
-
-    public PapyrusObjectService(List<IImageOverrideService> imageOverriders, IDefaultObjectService defaultObjectService) {
+    public PapyrusObjectService(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry, List<IImageOverrideService> imageOverriders) {
+        super(labelFeatureProviderRegistry, composedAdapterFactory, List.of());
         this.imageOverriders = imageOverriders;
-        this.defaultObjectService = defaultObjectService;
-
-    }
-
-    @Override
-    public String getId(Object object) {
-        return this.defaultObjectService.getId(object);
-    }
-
-    @Override
-    public String getLabel(Object object) {
-        return this.defaultObjectService.getLabel(object);
-    }
-
-    @Override
-    public String getKind(Object object) {
-        return this.defaultObjectService.getKind(object);
-    }
-
-    @Override
-    public String getFullLabel(Object object) {
-        return this.defaultObjectService.getFullLabel(object);
-    }
-
-    @Override
-    public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-        return this.defaultObjectService.getObject(editingContext, objectId);
-    }
-
-    @Override
-    public List<Object> getContents(IEditingContext editingContext, String objectId) {
-        return this.defaultObjectService.getContents(editingContext, objectId);
-    }
-
-    @Override
-    public Optional<String> getLabelField(Object object) {
-        return this.defaultObjectService.getLabelField(object);
-    }
-
-    @Override
-    public boolean isLabelEditable(Object object) {
-        return this.defaultObjectService.isLabelEditable(object);
     }
 
     @Override
@@ -88,19 +45,8 @@ public class PapyrusObjectService implements IObjectServiceDelegate {
     }
 
     @Override
-    public boolean canHandle(IEditingContext editingContext) {
-        // At the time of writing this method is used to get an object from it id and the content of an object from its
-        // id. For the moment we only customize the image of an object which mean that the framework use
-        // canHandle(Object
-        // object) to evaluate the choice of the IObjectServiceDelegate. Be be aware that is you want ot use
-        // getContents(IEditingContext editingContext, String objectId) or getObject(IEditingContext editingContext,
-        // String objectId) you will need to implement this method.
-        return false;
-    }
-
-    @Override
     public List<String> getImagePath(Object object) {
-        List<String> images = this.defaultObjectService.getImagePath(object);
+        List<String> images = super.getImagePath(object);
 
         return images.stream().map(image -> this.imageOverriders.stream().map(imgOverrider -> imgOverrider.getOverrideImage(image)) //
                 .filter(img -> img.isPresent())//

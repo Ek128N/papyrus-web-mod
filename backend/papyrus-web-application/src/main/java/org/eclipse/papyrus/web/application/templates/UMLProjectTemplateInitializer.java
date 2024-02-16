@@ -107,7 +107,6 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                         this.packageDiagramService.semanticDrop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
                     });
                 })//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);
                     return Optional.of(diagram);

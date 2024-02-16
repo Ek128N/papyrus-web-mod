@@ -40,6 +40,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
 
     cy.getByTestId('class diagram test-more').click();
     cy.getByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog-button-ok').click();
 
     cy.getByTestId('class diagram test-more').should('not.exist');
     cy.getByTestId('representation-area').should('be.visible').contains('The representation is not available anymore');

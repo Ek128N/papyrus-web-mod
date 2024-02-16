@@ -17,6 +17,8 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DiagramContext,
+  DiagramContextValue,
   DiagramElementPalette,
   Label,
   NodeContext,
@@ -25,7 +27,7 @@ import {
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
@@ -95,6 +97,7 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
 
 export const RectangleWithExternalLabelNode = memo(
   ({ data, id, selected }: NodeProps<RectangleWithExternalLabelNodeData>) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
     const { newConnectionStyleProvider } = useConnector();
@@ -109,7 +112,7 @@ export const RectangleWithExternalLabelNode = memo(
 
     return (
       <>
-        {data.nodeDescription?.userResizable && (
+        {data.nodeDescription?.userResizable && !readOnly ? (
           <NodeResizer
             handleStyle={{ ...resizeHandleStyle(theme) }}
             lineStyle={{ ...resizeLineStyle(theme) }}
@@ -120,7 +123,7 @@ export const RectangleWithExternalLabelNode = memo(
             // should not have it.
             keepAspectRatio={false}
           />
-        )}
+        ) : null}
         <div
           style={{
             ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),

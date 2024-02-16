@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export interface DeleteProjectModalProps {
-  projectId: string;
-  onDelete: () => void;
-  onClose: () => void;
+  project: Project;
+  onSuccess: () => void;
+  onCancel: () => void;
 }
 
-export interface GQLDeleteProjectMutationData {
-  deleteProject: GQLDeleteProjectPayload;
-}
-
-export interface GQLDeleteProjectPayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLDeleteProjectPayload {
-  message: string;
+export interface Project {
+  id: string;
+  name: string;
 }

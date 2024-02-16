@@ -28,10 +28,10 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 import { CuboidNodeData } from './CuboidNode.types';
-import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams';
 const rectangularNodePadding: number = 8;
 
 // The number of px reserved on the right & top of the cuboid node to draw perspective lines.

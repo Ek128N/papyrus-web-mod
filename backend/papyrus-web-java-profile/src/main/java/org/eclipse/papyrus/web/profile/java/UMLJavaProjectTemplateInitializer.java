@@ -112,7 +112,6 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
         Model model = (Model) r.getContents().get(0);
         return this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), model, "Main")
                 .flatMap(diagram -> this.semanticDropClassAndComment(editingContext, convertedNodes, model, diagram))//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);
                     return Optional.of(diagram);

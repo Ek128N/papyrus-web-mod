@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-.sprotty-hidden {
-  display: block;
-  position: absolute;
-  width: 0px;
-  height: 0px;
+
+import { GQLProjectTemplate } from './useProjectTemplates.types';
+
+export interface ProjectTemplatesModalProps {
+  onClose: () => void;
 }
 
-.sprotty-hidden > svg {
-  width: 100%;
-  height: 100%;
-}
-
-.sprotty-popup {
-  position: absolute;
-}
-
-.label-edit input {
-  font-family: var(--font-family) !important;
+export interface ProjectTemplatesModalState {
+  page: number;
+  limit: number;
+  runningTemplate: GQLProjectTemplate | null;
+  projectTemplates: GQLProjectTemplate[] | null;
+  count: number | null;
 }

@@ -10,27 +10,40 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ApolloProvider } from '@apollo/client';
-import { RepresentationPathContext, ServerContext } from '@eclipse-sirius/sirius-components-core';
-import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import {
+  ConfirmationDialogContextProvider,
+  ExtensionProvider,
+  ExtensionRegistry,
+  RepresentationPathContext,
+  ServerContext,
+  WorkbenchViewContribution,
+  workbenchMainAreaExtensionPoint,
+  workbenchViewContributionExtensionPoint,
+} from '@eclipse-sirius/sirius-components-core';
+import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
+import { DetailsView, RelatedElementsView, RepresentationsView } from '@eclipse-sirius/sirius-components-forms';
+import { ExplorerView } from '@eclipse-sirius/sirius-components-trees';
+import { ValidationView } from '@eclipse-sirius/sirius-components-validation';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Theme, ThemeProvider } from '@material-ui/core/styles';
-import React, { useMemo } from 'react';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import Filter from '@material-ui/icons/Filter';
+import LinkIcon from '@material-ui/icons/Link';
+import MenuIcon from '@material-ui/icons/Menu';
+import WarningIcon from '@material-ui/icons/Warning';
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from '../../src/toast/ToastProvider';
-import { createApolloGraphQLClient } from '../ApolloGraphQLClient';
 import {
   DiagramRepresentationConfiguration,
   defaultNodeTypeRegistry,
 } from '../diagrams/DiagramRepresentationConfiguration';
 import { DiagramRepresentationConfigurationProps } from '../diagrams/DiagramRepresentationConfiguration.types';
+import { ApolloGraphQLProvider } from '../graphql/ApolloGraphQLProvider';
+import { OnboardArea } from '../onboarding/OnboardArea';
 import { RepresentationContextProvider } from '../representations/RepresentationContextProvider';
 import { Router } from '../router/Router';
 import { siriusWebTheme as defaultTheme } from '../theme/siriusWebTheme';
-import { Views, defaultValue } from '../views/Views';
-import { ViewsProps } from '../views/Views.types';
-import { ViewsContext } from '../views/ViewsContext';
-import { ViewsContextValue } from '../views/ViewsContext.types';
 import { SiriusWebApplicationProps } from './SiriusWebApplication.types';
 
 const style = {
@@ -40,23 +53,18 @@ const style = {
   minHeight: '100vh',
 };
 
-export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: SiriusWebApplicationProps) => {
+export const SiriusWebApplication = ({
+  httpOrigin,
+  wsOrigin,
+  extensionRegistry,
+  theme,
+  children,
+}: SiriusWebApplicationProps) => {
   const siriusWebTheme: Theme = theme ? theme : defaultTheme;
 
-  const apolloClient = useMemo(() => createApolloGraphQLClient(httpOrigin, wsOrigin), [httpOrigin, wsOrigin]);
-
-  const value: ViewsContextValue = { ...defaultValue };
   let nodeTypeRegistryValue: NodeTypeContextValue = { ...defaultNodeTypeRegistry };
   React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === Views) {
-      const { applicationIcon, applicationBarMenu } = child.props as ViewsProps;
-      if (applicationIcon) {
-        value.applicationIcon = applicationIcon;
-      }
-      if (applicationBarMenu) {
-        value.applicationBarMenu = applicationBarMenu;
-      }
-    } else if (React.isValidElement(child) && child.type === DiagramRepresentationConfiguration) {
+    if (React.isValidElement(child) && child.type === DiagramRepresentationConfiguration) {
       const { nodeTypeRegistry } = child.props as DiagramRepresentationConfigurationProps;
       if (nodeTypeRegistry) {
         nodeTypeRegistryValue = nodeTypeRegistry;
@@ -69,28 +77,70 @@ export const SiriusWebApplication = ({ httpOrigin, wsOrigin, theme, children }: 
     return `/projects/${editingContextId}/edit/${representationId}`;
   };
 
+  const workbenchViewContributions: WorkbenchViewContribution[] = [
+    {
+      side: 'left',
+      title: 'Explorer',
+      icon: <AccountTreeIcon />,
+      component: ExplorerView,
+    },
+    {
+      side: 'left',
+      title: 'Validation',
+      icon: <WarningIcon />,
+      component: ValidationView,
+    },
+    {
+      side: 'right',
+      title: 'Details',
+      icon: <MenuIcon />,
+      component: DetailsView,
+    },
+    {
+      side: 'right',
+      title: 'Representations',
+      icon: <Filter />,
+      component: RepresentationsView,
+    },
+    {
+      side: 'right',
+      title: 'Related Elements',
+      icon: <LinkIcon />,
+      component: RelatedElementsView,
+    },
+  ];
+
+  const internalExtensionRegistry = new ExtensionRegistry();
+  internalExtensionRegistry.addComponent(workbenchMainAreaExtensionPoint, { Component: OnboardArea });
+  internalExtensionRegistry.putData(workbenchViewContributionExtensionPoint, { data: workbenchViewContributions });
+  if (extensionRegistry) {
+    internalExtensionRegistry.addAll(extensionRegistry);
+  }
+
   return (
-    <ApolloProvider client={apolloClient}>
-      <BrowserRouter>
-        <ThemeProvider theme={siriusWebTheme}>
-          <CssBaseline />
-          <ServerContext.Provider value={{ httpOrigin }}>
-            <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <ToastProvider>
-                <RepresentationContextProvider>
-                  <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                    <ViewsContext.Provider value={value}>
-                      <div style={style}>
-                        <Router />
-                      </div>
-                    </ViewsContext.Provider>
-                  </NodeTypeContext.Provider>
-                </RepresentationContextProvider>
-              </ToastProvider>
-            </RepresentationPathContext.Provider>
-          </ServerContext.Provider>
-        </ThemeProvider>
-      </BrowserRouter>
-    </ApolloProvider>
+    <ExtensionProvider registry={internalExtensionRegistry}>
+      <ApolloGraphQLProvider httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
+        <BrowserRouter>
+          <ThemeProvider theme={siriusWebTheme}>
+            <CssBaseline />
+            <ServerContext.Provider value={{ httpOrigin }}>
+              <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+                <ToastProvider>
+                  <ConfirmationDialogContextProvider>
+                    <RepresentationContextProvider>
+                      <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                        <div style={style}>
+                          <Router />
+                        </div>
+                      </NodeTypeContext.Provider>
+                    </RepresentationContextProvider>
+                  </ConfirmationDialogContextProvider>
+                </ToastProvider>
+              </RepresentationPathContext.Provider>
+            </ServerContext.Provider>
+          </ThemeProvider>
+        </BrowserRouter>
+      </ApolloGraphQLProvider>
+    </ExtensionProvider>
   );
 };

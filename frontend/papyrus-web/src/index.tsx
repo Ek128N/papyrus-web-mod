@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLWidget,
   PropertySectionComponent,
@@ -65,8 +66,9 @@ import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon'
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
 import {
   SiriusWebApplication,
-  Views,
   NodeTypeRegistry,
+  navigationBarIconExtensionPoint,
+  navigationBarMenuExtensionPoint,
   DiagramRepresentationConfiguration,
 } from '@papyrus-web/sirius-web-application';
 import { ContainmentReferencePreview } from './widgets/containmentReference/ContainmentReferencePreview';
@@ -75,7 +77,6 @@ import { LanguageExpressionPreview } from './widgets/languageExpression/Language
 import { Help } from './core/Help';
 
 import './ReactFlow.css';
-import './Sprotty.css';
 import './fonts.css';
 import './portals.css';
 import './reset.css';
@@ -275,10 +276,17 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
   ],
 };
 
+const extensionRegistry = new ExtensionRegistry();
+extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
+  Component: PapyrusIcon,
+});
+extensionRegistry.addComponent(navigationBarMenuExtensionPoint, {
+  Component: Help,
+});
+
 ReactDOM.render(
   <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin}>
-      <Views applicationIcon={<PapyrusIcon />} applicationBarMenu={<Help />} />
+    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} extensionRegistry={extensionRegistry}>
       <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistryValue} />+{' '}
     </SiriusWebApplication>
   </PropertySectionContext.Provider>,

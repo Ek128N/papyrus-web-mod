@@ -86,15 +86,4 @@ public interface IDiagramBuilderService {
      * @return the new state of the diagram if the update terminated successfully, {@link Optional#empty()} otherwise
      */
     Optional<Diagram> refreshDiagram(Diagram diagramInitialState, IEditingContext editingContext);
-
-    /**
-     * Call the auto layout tool on the given diagram.
-     *
-     * @param diagramInitialState
-     *            the diagram initial state
-     * @param editingContext
-     *            the {@link IEditingContext}
-     * @return the new state of the diagram if the update terminated successfully, {@link Optional#empty()} otherwise
-     */
-    Optional<Diagram> layoutDiagram(Diagram diagramInitialState, IEditingContext editingContext);
 }

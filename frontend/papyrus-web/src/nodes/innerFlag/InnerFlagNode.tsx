@@ -17,6 +17,8 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DiagramContext,
+  DiagramContextValue,
   DiagramElementPalette,
   Label,
   NodeContext,
@@ -25,7 +27,7 @@ import {
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer, useReactFlow } from 'reactflow';
@@ -82,6 +84,7 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
 };
 
 export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNodeData>) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { newConnectionStyleProvider } = useConnector();
@@ -112,7 +115,7 @@ export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNo
 
   return (
     <>
-      {data.nodeDescription?.userResizable && (
+      {data.nodeDescription?.userResizable && !readOnly ? (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
@@ -120,7 +123,7 @@ export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNo
           isVisible={selected}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
-      )}
+      ) : null}
       <div
         style={{
           ...innerFlagNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),

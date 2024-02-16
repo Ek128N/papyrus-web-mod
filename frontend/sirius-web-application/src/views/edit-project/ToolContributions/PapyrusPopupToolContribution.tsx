@@ -13,7 +13,7 @@
  *****************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { DiagramPaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { DiagramPaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';

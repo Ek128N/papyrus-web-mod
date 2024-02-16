@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { ProjectRow } from './ProjectRow';
+import { ProjectRowProps } from './ProjectRow.types';
 
-import { ProjectTemplate } from '../../views/projects/ProjectsView.types';
-
-export interface ProjectTemplateCardProps {
-  template: ProjectTemplate;
-  running: boolean;
-  disabled: boolean;
-  onCreateProject: () => void;
-}
+export const projectsTableRowExtensionPoint: ComponentExtensionPoint<ProjectRowProps> = {
+  identifier: 'projectsTable#row',
+  FallbackComponent: ProjectRow,
+};

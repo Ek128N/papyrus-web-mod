@@ -57,14 +57,14 @@ public class ExplorerNavigationServiceCustomImpl implements IExplorerNavigationS
 
         Optional<Object> optionalObject = Optional.empty();
         if (optionalSemanticObject.isPresent()) {
-            // The first parent of a semantic object item is the item for its actual container
-            optionalObject = optionalSemanticObject.filter(EObject.class::isInstance).map(EObject.class::cast)
-                    .map(eObject -> Optional.<Object> ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
-        } else {
             var optionalRepresentation = this.representationService.getRepresentation(UUID.fromString(selectionEntryId));
             if (optionalRepresentation.isPresent()) {
                 // The first parent of a representation item is the item for its targetObject.
                 optionalObject = optionalRepresentation.map(RepresentationDescriptor::getTargetObjectId).flatMap(objectId -> this.objectService.getObject(editingContext, objectId));
+            } else {
+                // The first parent of a semantic object item is the item for its actual container
+                optionalObject = optionalSemanticObject.filter(EObject.class::isInstance).map(EObject.class::cast)
+                        .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
             }
         }
 
@@ -73,7 +73,7 @@ public class ExplorerNavigationServiceCustomImpl implements IExplorerNavigationS
             optionalObject = optionalObject //
                     .filter(EObject.class::isInstance) //
                     .map(EObject.class::cast) //
-                    .map(eObject -> Optional.<Object> ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
+                    .map(eObject -> Optional.<Object>ofNullable(eObject.eContainer()).orElse(eObject.eResource()));
         }
         return ancestorsIds;
     }

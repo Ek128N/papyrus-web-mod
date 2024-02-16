@@ -131,7 +131,6 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         return this.diagramBuilderService
                 .createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), r.getContents().get(0), "Main")
                 .flatMap(diagram -> this.semanticDropMainClassAndComment(editingContext, r, convertedNodes, diagram))//
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext))//
                 .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);
                     return Optional.of(diagram);
@@ -243,7 +242,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
                                                                                                           // elements
                 .flatMap(diagram -> this.diagramBuilderService.updateDiagram(diagram, editingContext,
                         diagramContext -> this.fillStateMachineDiagram(stateMachine, editingContext, diagram, diagramContext)))
-                .flatMap(diagram -> this.diagramBuilderService.layoutDiagram(diagram, editingContext)).flatMap(diagram -> {
+                .flatMap(diagram -> {
                     this.representationPersistenceService.save(editingContext, diagram);
                     return Optional.of(diagram);
                 });

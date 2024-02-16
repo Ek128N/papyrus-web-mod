@@ -11,7 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *****************************************************************************/
-import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 
 export interface CuboidNodeData extends NodeData {}
 

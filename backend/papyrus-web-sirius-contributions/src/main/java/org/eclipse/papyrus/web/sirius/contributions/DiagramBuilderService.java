@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.diagrams.layout.api.ILayoutService;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +40,10 @@ public class DiagramBuilderService implements IDiagramBuilderService {
 
     private final IDiagramCreationService diagramCreationService;
 
-    private ILayoutService layoutService;
-
-    public DiagramBuilderService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService, ILayoutService layoutService) {
+    public DiagramBuilderService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService) {
         super();
         this.representationDescriptionSearchService = representationDescriptionSearchService;
         this.diagramCreationService = diagramCreationService;
-        this.layoutService = layoutService;
     }
 
     @Override
@@ -94,12 +90,6 @@ public class DiagramBuilderService implements IDiagramBuilderService {
     @Override
     public Optional<Diagram> refreshDiagram(Diagram diagram, IEditingContext editingContext) {
         return this.updateDiagram(diagram, editingContext, null);
-    }
-
-    @Override
-    public Optional<Diagram> layoutDiagram(Diagram diagramInitialState, IEditingContext editingContext) {
-        Diagram layoutedDiagram = this.layoutService.layout(editingContext, diagramInitialState);
-        return this.refreshDiagram(layoutedDiagram, editingContext);
     }
 
 }

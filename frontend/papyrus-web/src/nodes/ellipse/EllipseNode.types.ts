@@ -14,7 +14,7 @@
 /**
  * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (packages\sirius-web\frontend\sirius-web\src\nodes\EllipseNode.types.tsx).
  */
-import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 
 export interface EllipseNodeData extends NodeData {}
 

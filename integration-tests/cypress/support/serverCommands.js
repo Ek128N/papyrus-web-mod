@@ -23,7 +23,7 @@ Cypress.Commands.add('deleteProjectByName', (projectName) => {
   const getProjectsQuery = `
   query getProjects($page: Int!) {
     viewer {
-      projects(page: $page) {
+      projects(page: $page, limit:50) {
         edges {
           node {
             id,
@@ -73,7 +73,7 @@ Cypress.Commands.add('deleteAllProjects', () => {
   const getProjectsQuery = `
   query getProjects($page: Int!) {
     viewer {
-      projects(page: $page) {
+      projects(page: $page, limit:50) {
         edges {
           node {
             id

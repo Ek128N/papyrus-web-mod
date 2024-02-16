@@ -73,6 +73,7 @@ describe('Containment reference widget tests', () => {
     // remove the package import node
     cy.getByTestId('PackageImport-more').should('be.visible').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
+    cy.getByTestId('confirmation-dialog-button-ok').click();
     cy.getByTestId('PackageImport').should('not.exist');
     // check that no primitive type could be found now
     cy.getByTestId('Property1').should('be.visible').click();
