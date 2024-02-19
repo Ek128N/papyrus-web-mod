@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -101,8 +101,10 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription, DiagramDescription diagramDescription) {
+        RectangularNodeStyleDescription rectangularNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle(false, false);
+        rectangularNodeStyleDescription.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
 
-        NodeDescription regionNodeDesc = this.newNodeBuilder(this.umlPackage.getRegion(), this.getViewBuilder().createRectangularNodeStyle(false, false))//
+        NodeDescription regionNodeDesc = this.newNodeBuilder(this.umlPackage.getRegion(), rectangularNodeStyleDescription)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getStateMachine_Region()))//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
@@ -112,7 +114,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         stateMachineNodeDescription.getChildrenDescriptions().add(regionNodeDesc);
 
-        this.createStateNodeDescription(regionNodeDesc);
+        this.createStateNodeDescription(regionNodeDesc, diagramDescription);
         this.createFinalStateNodeDescription(regionNodeDesc);
         this.createPseudostateInRegionNodeDescription(regionNodeDesc);
 
@@ -124,14 +126,21 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         return regionNodeDesc;
     }
 
-    private NodeDescription createStateNodeDescription(NodeDescription regionNodeDescription) {
+    private NodeDescription createStateNodeDescription(NodeDescription regionNodeDescription, DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, false);
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
+
+        // Display the header separator only if there is a region in the state
+        RectangularNodeStyleDescription headerStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        headerStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
+
+        ConditionalNodeStyle conditionalHeaderStyle = this.getViewBuilder().createConditionalNodeStyle("aql:self.region->size() > 0", headerStyle);
 
         NodeDescription stateNodeDesc = this.newNodeBuilder(this.umlPackage.getState(), rectangularNodeStyle)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .conditionalStyles(List.of(conditionalHeaderStyle)) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getState().getName()))//
                 .reusedNodeDescriptions(List.of(regionNodeDescription))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getState().getName()))//
@@ -141,6 +150,11 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InState");
         this.createPseudostateBorderNodeDescription(stateNodeDesc, this.umlPackage.getState_ConnectionPoint(), specializedDomainNodeName);
+
+        Supplier<List<NodeDescription>> stateDesc = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(this.umlPackage.getState()), List.of(this.umlPackage.getFinalState()));
+        this.registerCallback(stateNodeDesc, () -> {
+            CreationToolsUtil.addNodeCreationTool(stateDesc, this.getViewBuilder().createCreationTool(this.umlPackage.getState_Region(), this.umlPackage.getRegion()));
+        });
 
         return stateNodeDesc;
     }
