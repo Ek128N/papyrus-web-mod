@@ -14,6 +14,8 @@
 package org.eclipse.papyrus.web.services.aqlservices.utils;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -290,7 +292,9 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
     private boolean createChildViews(EObject semanticElement, Node newParentNode, Node elementNode) {
         Boolean isDragAndDropValid = Boolean.TRUE;
         Node fakeParentNode = this.viewHelper.createFakeNode(semanticElement, newParentNode);
-        for (Node matchingChildNode : elementNode.getChildNodes()) {
+        List<Node> matchingChildNodes = new ArrayList<>(elementNode.getChildNodes());
+        matchingChildNodes.addAll(elementNode.getBorderNodes());
+        for (Node matchingChildNode : matchingChildNodes) {
             EObject semanticNode = this.getSemanticNode(matchingChildNode);
             if (semanticNode instanceof org.eclipse.uml2.uml.Class umlClass && umlClass.isMetaclass()) {
                 isDragAndDropValid = this.createElementImportView((ElementImport) this.getElementImportReferencingMetaclass(umlClass, semanticElement), fakeParentNode);
