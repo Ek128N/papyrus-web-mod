@@ -116,7 +116,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         diagramDescription.getEdgeDescriptions().add(usageDescription);
 
         EdgeTool creationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(usageDescription, this.pack.getPackage_PackagedElement());
-        this.registerCallback(creationTool, () -> {
+        this.registerCallback(usageDescription, () -> {
             CreationToolsUtil.addEdgeCreationTool(classifierCollector, creationTool);
         });
         this.getViewBuilder().addDefaultReconnectionTools(usageDescription);

@@ -13,7 +13,7 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
-import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
  * Builder of Edge conditional style.
- * 
+ *
  * @author Arthur Daussy
  */
 public class EdgeConditionalStyleBuilder {
@@ -43,72 +43,71 @@ public class EdgeConditionalStyleBuilder {
     }
 
     public EdgeConditionalStyleBuilder fromExistingStyle() {
-        EdgeStyle style = element.getStyle();
-        newStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
-        newStyle.setCondition(conditionalExpression);
-        element.getConditionalStyles().add(newStyle);
+        EdgeStyle style = this.element.getStyle();
+        this.newStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
+        this.newStyle.setCondition(this.conditionalExpression);
+        this.element.getConditionalStyles().add(this.newStyle);
 
         // Copy all common attributes
-        for (EAttribute eAttribute : DiagramPackage.eINSTANCE.getEdgeStyle().getEAllAttributes()) {
-            newStyle.eSet(eAttribute, style.eGet(eAttribute));
+        for (EStructuralFeature eStructuralFeature : DiagramPackage.eINSTANCE.getEdgeStyle().getEAllStructuralFeatures()) {
+            this.newStyle.eSet(eStructuralFeature, style.eGet(eStructuralFeature));
         }
         return this;
     }
 
     public EdgeConditionalStyleBuilder setColor(UserColor color) {
-        newStyle.setColor(color);
+        this.newStyle.setColor(color);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setFontSize(int value) {
-        newStyle.setFontSize(value);
+        this.newStyle.setFontSize(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setLineStyle(LineStyle value) {
-        newStyle.setLineStyle(value);
+        this.newStyle.setLineStyle(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setItalic(boolean value) {
-        newStyle.setItalic(value);
+        this.newStyle.setItalic(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setSourceArrowStyle(ArrowStyle value) {
-        newStyle.setSourceArrowStyle(value);
+        this.newStyle.setSourceArrowStyle(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setBold(boolean value) {
-        newStyle.setBold(value);
+        this.newStyle.setBold(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setTargetArrowStyle(ArrowStyle value) {
-        newStyle.setTargetArrowStyle(value);
+        this.newStyle.setTargetArrowStyle(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setUnderline(boolean value) {
-        newStyle.setUnderline(value);
+        this.newStyle.setUnderline(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setStrikeThrough(boolean value) {
-        newStyle.setStrikeThrough(value);
+        this.newStyle.setStrikeThrough(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setEdgeWidth(int value) {
-        newStyle.setEdgeWidth(value);
+        this.newStyle.setEdgeWidth(value);
         return this;
     }
 
     public EdgeConditionalStyleBuilder setShowIcon(boolean value) {
-        newStyle.setShowIcon(value);
+        this.newStyle.setShowIcon(value);
         return this;
     }
-
 
 }
