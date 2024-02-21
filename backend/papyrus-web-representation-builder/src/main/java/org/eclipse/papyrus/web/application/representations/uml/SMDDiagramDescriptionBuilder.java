@@ -161,7 +161,6 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     private void createFinalStateNodeDescription(NodeDescription regionNodeDescription) {
         ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("FinalState_24dp.svg".getBytes()).toString(), false);
-        imageNodeStyle.setBorderSize(0);
 
         NodeDescription finalStateNodeDesc = this.newNodeBuilder(this.umlPackage.getFinalState(), imageNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getRegion_Subvertex()))//

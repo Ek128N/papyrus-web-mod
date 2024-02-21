@@ -154,6 +154,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createDurationObservationSubNodeDescription(NodeDescription parentNodeDescription) {
         NodeStyleDescription durationObservationNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("DurationObservation.svg".getBytes()).toString(), true);
+        durationObservationNodeStyle.setBorderSize(1);
 
         EClass durationObservationEClass = this.umlPackage.getDurationObservation();
         NodeDescription codDurationObservationSubNodeDescription = this.newNodeBuilder(durationObservationEClass, durationObservationNodeStyle)//
@@ -183,6 +184,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createTimeObservationSubNodeDescription(NodeDescription parentNodeDescription) {
         NodeStyleDescription timeObservationNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("TimeObservation.svg".getBytes()).toString(), true);
+        timeObservationNodeStyle.setBorderSize(1);
 
         EClass timeObservationEClass = this.umlPackage.getTimeObservation();
         NodeDescription codTimeObservationSubNodeDescription = this.newNodeBuilder(timeObservationEClass, timeObservationNodeStyle)//

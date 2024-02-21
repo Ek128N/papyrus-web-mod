@@ -411,6 +411,7 @@ public class ViewBuilder {
         this.initStyle(nodeStyle);
         nodeStyle.setShape(imageId);
         nodeStyle.setShowIcon(showIcon);
+        nodeStyle.setBorderSize(0);
         return nodeStyle;
     }
 

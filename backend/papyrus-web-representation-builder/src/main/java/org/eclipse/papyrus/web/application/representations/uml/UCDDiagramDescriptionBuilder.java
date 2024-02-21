@@ -182,8 +182,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createActorTopNodeDescription(DiagramDescription diagramDescription) {
         NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true);
-        actorNodeStyle.setBorderSize(0);
-
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdActorTopNodeDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(actorEClass)) //
@@ -361,8 +359,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createActorSharedNodeDescription(DiagramDescription diagramDescription) {
         NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true);
-        actorNodeStyle.setBorderSize(0);
-
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdActorSharedNodeDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(actorEClass, SHARED_SUFFIX)) //
@@ -539,7 +535,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     private void createExtendEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> useCaseCollector = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getUseCase());
         EClass extendEClass = this.umlPackage.getExtend();
-        EdgeDescription ucdExtendEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(extendEClass, this.getQueryBuilder().queryAllReachableExactType(extendEClass),
+        EdgeDescription ucdExtendEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(extendEClass,
+                this.getQueryBuilder().queryAllReachableExactType(extendEClass),
                 useCaseCollector, useCaseCollector);
         EdgeStyle style = ucdExtendEdgeDescription.getStyle();
         style.setLineStyle(LineStyle.DASH);
