@@ -42,9 +42,8 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     forceWidth?: number
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
-
     const nodeElement = document.getElementById(`${node.id}-noteNode-${nodeIndex}`)?.children[0];
-    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
+    const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 1;
 
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
