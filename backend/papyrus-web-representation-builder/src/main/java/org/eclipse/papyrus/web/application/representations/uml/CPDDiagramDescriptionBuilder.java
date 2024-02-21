@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
@@ -448,7 +447,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(cpdPortSharedNodeDescription);
 
         // create tools
-        NodeTool cpdPortSharedNodeCreationTool = this.getViewBuilder().createCreationTool(IdBuilder.NEW + portEClass.getName(), ComponentDiagramServices.CREATE_PORT,
+        NodeTool cpdPortSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(portEClass), ComponentDiagramServices.CREATE_PORT,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         cpdPortSharedNodeCreationTool
                 .setPreconditionExpression(
@@ -498,7 +497,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(cpdPropertySharedNodeDescription);
 
         // create tools
-        NodeTool cpdPropertySharedNodeCreationTool = this.getViewBuilder().createCreationTool(IdBuilder.NEW + propertyEClass.getName(), ComponentDiagramServices.CREATE_PROPERTY,
+        NodeTool cpdPropertySharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(propertyEClass), ComponentDiagramServices.CREATE_PROPERTY,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         cpdPropertySharedNodeCreationTool
                 .setPreconditionExpression(

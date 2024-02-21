@@ -51,6 +51,8 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
 
     private static final String EXPANSION_REGION_CONTAINER = "ExpansionRegionContainer";
 
+    private static final String OPAQUE_ACTION_CONTAINER = "OpaqueActionContainer";
+
     private static final String STRUCTURED_ACTIVITY_NODE_CONTAINER = "StructuredActivityNodeContainer";
 
     public ADReconnectEdgeTargetTest() {
@@ -106,7 +108,7 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
         this.createSourceAndTargetNodes(rootActivityId, new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getFlowFinalNode()));
         this.createSourceAndTargetNodes(rootActivityId, new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getForkNode()));
         this.createSourceAndTargetNodes(rootActivityId, new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getInitialNode()));
-        this.createNodeWithLabel(rootActivityId, new ADCreationTool(ADToolSections.EXECUTABLE_NODE, UML.getOpaqueAction()), "OpaqueActionContainer");
+        this.createNodeWithLabel(rootActivityId, new ADCreationTool(ADToolSections.EXECUTABLE_NODE, UML.getOpaqueAction()), OPAQUE_ACTION_CONTAINER);
         this.createSourceAndTargetNodes(rootActivityId, new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getJoinNode()));
         this.createSourceAndTargetNodes(rootActivityId, new ADCreationTool(ADToolSections.ACTIVITY_NODE, UML.getMergeNode()));
         this.createSourceAndTargetNodes(rootActivityId, new ADCreationTool(ADToolSections.EXECUTABLE_NODE, UML.getOpaqueAction()));

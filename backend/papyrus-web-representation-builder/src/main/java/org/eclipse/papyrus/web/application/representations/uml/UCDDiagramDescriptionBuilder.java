@@ -297,8 +297,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(ucdUseCaseTopNodeDescription);
 
         // create tools
-        String domainTypeName = this.getIdBuilder().findWordsInMixedCase(useCaseEClass.getName()).stream().collect(joining(IdBuilder.SPACE));
-        NodeTool ucdUseCaseTopNodeCreationTool = this.getViewBuilder().createCreationTool(IdBuilder.NEW + domainTypeName, UseCaseDiagramServices.CREATE_USECASE,
+        NodeTool ucdUseCaseTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(useCaseEClass), UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         this.addDiagramToolInToolSection(diagramDescription, ucdUseCaseTopNodeCreationTool, NODES);
     }
@@ -460,8 +459,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         this.createDefaultToolSectionsInNodeDescription(ucdUseCaseSharedNodeDescription);
 
-        String domainTypeName = this.getIdBuilder().findWordsInMixedCase(useCaseEClass.getName()).stream().collect(joining(IdBuilder.SPACE));
-        NodeTool ucdUseCaseSharedNodeCreationTool = this.getViewBuilder().createCreationTool(IdBuilder.NEW + domainTypeName, UseCaseDiagramServices.CREATE_USECASE,
+        NodeTool ucdUseCaseSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(useCaseEClass), UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
 
         List<EClass> owners = List.of(this.umlPackage.getClass_(), //

@@ -359,11 +359,12 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
      * @return {@code true} if source or target view have been created or if they already exist, {@code false} otherwise
      */
     private Boolean createSourceAndTargetView(EObject semanticElementEdge) {
-        Boolean success = Boolean.TRUE;
+        Boolean success = Boolean.FALSE;
         Optional<EObject> optionalSemanticSource = Optional.ofNullable(new ElementDomainBasedEdgeSourceProvider().getSource(semanticElementEdge));
         Optional<? extends EObject> optionalSemanticTarget = new ElementDomainBasedEdgeTargetsProvider().getTargets(semanticElementEdge).stream().findFirst();
 
         if (optionalSemanticSource.isPresent() && optionalSemanticTarget.isPresent()) {
+            success = Boolean.TRUE;
             EObject semanticSource = optionalSemanticSource.get();
             EObject semanticTarget = optionalSemanticTarget.get();
             Node sourceNode = this.getNodeFromDiagramAndItsChildren(semanticSource);
