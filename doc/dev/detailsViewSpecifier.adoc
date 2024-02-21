@@ -42,7 +42,7 @@ This implementation sorts pages as it was designed in papyrus desktop: starts wi
 
 === Predefined language list of the language expression widget
 
-OpaqueExpressions, OpaqueActions, OpaqueBehaviors and FunctionBehaviors UML elements have a special property `language` that can be edited in the UML tab of the Details panel with a dedicated widget. This widget allows to choose a language among a predefined list. At the moment, this list of language names is hardcoded in the backend code. This is list is located in:
+OpaqueExpressions, OpaqueActions, OpaqueBehaviors and FunctionBehaviors UML elements have a special property `language` that can be edited in the UML tab of the Details panel with a dedicated widget. This widget allows to choose a language among a predefined list. At the moment, this list of language names is hardcoded in the backend code. This list is located in:
 
 ```
 org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionComponent.getPredefinedLanguages()

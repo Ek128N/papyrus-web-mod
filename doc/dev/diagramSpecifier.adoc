@@ -125,7 +125,7 @@ diagramDescription.getPalette().setDropNodeTool(ucdGraphicalDropTool);
 ```
 
 ====== How to create multiple nested views?
-The `IViewHelper` API focuses on the creation of individual graphical elements. It allows to create root element, child elements, but these method do not handle the creation of entire sub-trees of elements. 
+The `IViewHelper` API focuses on the creation of individual graphical elements. It allows to create root element, child elements, but these methods do not handle the creation of entire sub-trees of elements. 
 
 Creating such sub-trees is complex because each view creation needs to access the graphical parent of the view to create. These graphical parents aren't available when creating a sub-tree, because they haven't been created yet. 
 
@@ -182,8 +182,7 @@ To create a new custom node, open the `papyrus-customnodes.ecore` model and crea
 [TIP]
 .Update the icon associated to the custom node in Papyrus Studio
 ====
-You can update the icon associated to your custom node in the corresponding item provider in `papyrus-web-customnodes-edit`. To do so look for the `getImage` method, and change the path of the image. 
-⚠️ Make sure you edit the Javadoc of the method to add `@generated NOT`, otherwise this change will be lost the next time you generate the code.
+You can update the icon associated to your custom node by creating a custom item provider in `papyrus-web-customnodes-edit/src/main/java`. This item provider has to extend the generated one. You then need to update the  `PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl` class to make sure the new item provider is used by the framework.
 ====
 
 Now you need to define the custom node style and its provider in the `papyrus-web-application`. To do so, head to the `org.eclipse.papyrus.web.application.nodes` package, and create two classes for your custom node:
