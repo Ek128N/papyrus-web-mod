@@ -1797,7 +1797,6 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     private void createObjectFlowEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(
                 this.umlPackage.getActionInputPin(),
-                this.umlPackage.getInputPin(),
                 this.umlPackage.getOutputPin(),
                 this.umlPackage.getValuePin(),
                 this.umlPackage.getExpansionNode(),
