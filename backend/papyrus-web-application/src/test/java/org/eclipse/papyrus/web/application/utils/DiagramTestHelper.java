@@ -120,7 +120,7 @@ public class DiagramTestHelper {
     public void init(EObject newOwner, String diagramName) {
         this.diagramOwner = newOwner;
         this.diagramDescription = this.viewRegistry.getViewDiagramDescriptionByName(diagramName).orElseThrow();
-        this.convertedDiagramDescription = this.viewRegistry.getApiDiagramDescriptionByName(diagramName).orElseThrow();
+        this.convertedDiagramDescription = (org.eclipse.sirius.components.diagrams.description.DiagramDescription) this.viewRegistry.getApiDiagramDescriptionByName(diagramName).orElseThrow();
 
         this.nodeIdToDescriptions = new HashMap<>();
         this.edgeIdToDescriptions = new HashMap<>();

@@ -33,8 +33,8 @@ import org.eclipse.papyrus.web.sirius.contributions.ServiceOverride;
 import org.eclipse.papyrus.web.sirius.contributions.UnloadingEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.util.services.ColorPaletteService;
@@ -44,7 +44,6 @@ import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.editingcontext.api.IEditingDomainFactoryService;
-import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +68,7 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
 
     private final IEditingDomainFactoryService editingDomainFactoryService;
 
-    private final List<IRepresentationDescriptionRegistryConfigurer> configurers;
+    private List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
 
     private final List<IEditingContextProcessor> editingContextProcessors;
 
@@ -79,14 +78,15 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
 
     // CHECKSTYLE:OFF
     public EditingContextSearchServiceCustomImpl(IProjectRepository projectRepository, IDocumentRepository documentRepository, IEditingDomainFactoryService editingDomainFactoryService,
-            List<IRepresentationDescriptionRegistryConfigurer> configurers, List<IEditingContextProcessor> editingContextProcessors, List<IRepresentationDescriptionOverrider> descriptionOverriders,
+            List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders, List<IEditingContextProcessor> editingContextProcessors,
+            List<IRepresentationDescriptionOverrider> descriptionOverriders,
             MeterRegistry meterRegistry) {
         // CHECKSTYLE:ON
         this.descriptionOverriders = descriptionOverriders;
         this.projectRepository = Objects.requireNonNull(projectRepository);
         this.documentRepository = Objects.requireNonNull(documentRepository);
         this.editingDomainFactoryService = Objects.requireNonNull(editingDomainFactoryService);
-        this.configurers = Objects.requireNonNull(configurers);
+        this.representationDescriptionProviders = Objects.requireNonNull(representationDescriptionProviders);
         this.editingContextProcessors = Objects.requireNonNull(editingContextProcessors);
 
         this.timer = Timer.builder(TIMER_NAME).register(meterRegistry);
@@ -151,25 +151,28 @@ public class EditingContextSearchServiceCustomImpl implements IEditingContextSea
     }
 
     private void computeRepresentationDescriptions(EditingContext editingContext) {
-        var registry = new RepresentationDescriptionRegistry();
-        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
+        this.representationDescriptionProviders.forEach(representationDescriptionProvider -> {
+            var representationDescriptions = representationDescriptionProvider.getRepresentationDescriptions(editingContext);
 
-        /**
-         * <p>
-         * This part of the code has been created for bug
-         * https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/97. But once
-         * https://github.com/eclipse-sirius/sirius-web/issues/2809 is fixed this is no longer needed
-         * </p>
-         */
-        for (var descriptionOverrider : this.descriptionOverriders) {
-            for (var ovDescription : descriptionOverrider.getOverridedDescriptions()) {
-                registry.getRepresentationDescription(ovDescription.getId()).ifPresentOrElse(__ -> registry.add(ovDescription), () -> {
-                    this.logger.error("There is no exisitng representation with id " + ovDescription.getId());
-                });
-            }
-        }
+            representationDescriptions.forEach(representationDescription -> {
+                editingContext.getRepresentationDescriptions().put(representationDescription.getId(), representationDescription);
+                /**
+                 * <p>
+                 * This part of the code has been created for bug
+                 * https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/97. But once
+                 * https://github.com/eclipse-sirius/sirius-web/issues/2809 is fixed this is no longer needed
+                 * </p>
+                 */
+                for (var descriptionOverrider : this.descriptionOverriders) {
+                    for (var ovDescription : descriptionOverrider.getOverridedDescriptions()) {
+                        if (ovDescription.getId().equals(representationDescription.getId())) {
+                            editingContext.getRepresentationDescriptions().put(ovDescription.getId(), ovDescription);
+                        }
+                    }
+                }
 
-        registry.getRepresentationDescriptions().forEach(representationDescription -> editingContext.getRepresentationDescriptions().put(representationDescription.getId(), representationDescription));
+            });
+        });
     }
 
     /**

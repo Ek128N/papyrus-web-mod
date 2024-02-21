@@ -12,9 +12,9 @@
  *******************************************************************************/
 
 import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { RouterProps } from 'react-router-dom';
+import { RouteProps } from 'react-router-dom';
 
-export const routerExtensionPoint: DataExtensionPoint<Array<RouterProps>> = {
+export const routerExtensionPoint: DataExtensionPoint<Array<RouteProps>> = {
   identifier: 'router#routes',
   fallback: [],
 };

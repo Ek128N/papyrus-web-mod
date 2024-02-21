@@ -27,6 +27,7 @@ import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -123,7 +124,7 @@ public class PapyrusRepresentationDescriptionRegistry {
         return this.diagrams.stream().filter(m -> m.getId().equals(id)).map(Match::getViewDiagramDescription).findFirst();
     }
 
-    public Optional<org.eclipse.sirius.components.diagrams.description.DiagramDescription> getApiDiagramDescriptionById(String id) {
+    public Optional<IRepresentationDescription> getApiDiagramDescriptionById(String id) {
         return this.diagrams.stream().filter(m -> m.getId().equals(id)).map(Match::getApiDiagramDescription).findFirst();
     }
 
@@ -145,7 +146,7 @@ public class PapyrusRepresentationDescriptionRegistry {
         return this.diagrams.stream().filter(m -> Objects.equals(diagramName, m.getViewDiagramDescription().getName())).map(Match::getViewDiagramDescription).findFirst();
     }
 
-    public Optional<org.eclipse.sirius.components.diagrams.description.DiagramDescription> getApiDiagramDescriptionByName(String diagramName) {
+    public Optional<IRepresentationDescription> getApiDiagramDescriptionByName(String diagramName) {
         return this.diagrams.stream().filter(m -> Objects.equals(diagramName, m.getViewDiagramDescription().getName())).map(Match::getApiDiagramDescription).findFirst();
     }
 
@@ -161,7 +162,7 @@ public class PapyrusRepresentationDescriptionRegistry {
         return this.diagrams.stream().map(Match::getViewDiagramDescription).toList();
     }
 
-    public List<org.eclipse.sirius.components.diagrams.description.DiagramDescription> getApiDiagrams() {
+    public List<IRepresentationDescription> getApiDiagrams() {
         return this.diagrams.stream().map(Match::getApiDiagramDescription).toList();
     }
 
@@ -201,7 +202,7 @@ public class PapyrusRepresentationDescriptionRegistry {
             return this.id;
         }
 
-        public org.eclipse.sirius.components.diagrams.description.DiagramDescription getApiDiagramDescription() {
+        public IRepresentationDescription getApiDiagramDescription() {
             return this.apiDiagramDescription;
         }
 

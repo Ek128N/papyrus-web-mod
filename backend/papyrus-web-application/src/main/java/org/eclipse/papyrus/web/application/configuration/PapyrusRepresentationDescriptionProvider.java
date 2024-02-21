@@ -35,8 +35,8 @@ import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -55,9 +55,9 @@ import jakarta.annotation.PostConstruct;
  * @author Arthur Daussy
  */
 @Configuration
-public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
+public class PapyrusRepresentationDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PapyrusRepresentationDescriptionRegistryConfigurer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PapyrusRepresentationDescriptionProvider.class);
 
     private final IViewConverter viewConverter;
 
@@ -65,7 +65,7 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
 
     private PapyrusRepresentationDescriptionRegistry viewRegistry;
 
-    public PapyrusRepresentationDescriptionRegistryConfigurer(EPackage.Registry ePackagesRegistry, IViewConverter viewConverter, PapyrusRepresentationDescriptionRegistry viewRegistry) {
+    public PapyrusRepresentationDescriptionProvider(EPackage.Registry ePackagesRegistry, IViewConverter viewConverter, PapyrusRepresentationDescriptionRegistry viewRegistry) {
         this.viewRegistry = viewRegistry;
         this.viewConverter = Objects.requireNonNull(viewConverter);
         this.ePackagesRegistry = Objects.requireNonNull(ePackagesRegistry);
@@ -94,8 +94,8 @@ public class PapyrusRepresentationDescriptionRegistryConfigurer implements IRepr
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        this.viewRegistry.getApiDiagrams().forEach(registry::add);
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+        return this.viewRegistry.getApiDiagrams();
     }
 
     private View createView(ResourceSet resourceSet, String representatioName) {

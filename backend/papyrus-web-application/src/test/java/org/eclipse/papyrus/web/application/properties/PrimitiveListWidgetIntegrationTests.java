@@ -49,7 +49,7 @@ import reactor.test.StepVerifier;
 
 /**
  * Integration tests for the Primitive List custom widget. Depends on
- * {@link PrimitiveListViewRepresentationDescriptionRegistryConfigurer} to register the "Primitive Widget Test" form
+ * {@link PrimitiveListViewRepresentationDescriptionProvider} to register the "Primitive Widget Test" form
  * description.
  *
  * @author Arthur Daussy

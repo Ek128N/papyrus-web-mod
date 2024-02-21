@@ -57,7 +57,13 @@ public class ExplorerNavigationServiceCustomImpl implements IExplorerNavigationS
 
         Optional<Object> optionalObject = Optional.empty();
         if (optionalSemanticObject.isPresent()) {
-            var optionalRepresentation = this.representationService.getRepresentation(UUID.fromString(selectionEntryId));
+            Optional<RepresentationDescriptor> optionalRepresentation;
+            try {
+                optionalRepresentation = this.representationService.getRepresentation(UUID.fromString(selectionEntryId));
+            } catch (IllegalArgumentException e) {
+                // The provided selectionEntryId is not a valid UUID, we can't find a representation for it
+                optionalRepresentation = Optional.empty();
+            }
             if (optionalRepresentation.isPresent()) {
                 // The first parent of a representation item is the item for its targetObject.
                 optionalObject = optionalRepresentation.map(RepresentationDescriptor::getTargetObjectId).flatMap(objectId -> this.objectService.getObject(editingContext, objectId));

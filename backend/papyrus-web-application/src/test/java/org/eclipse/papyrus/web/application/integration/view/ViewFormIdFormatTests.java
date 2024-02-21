@@ -25,12 +25,12 @@ import org.eclipse.papyrus.web.application.utils.AbstractWebUMLTest;
 import org.eclipse.sirius.components.collaborative.forms.services.PropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.URLParser;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
-import org.eclipse.sirius.web.services.representations.RepresentationDescriptionRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +50,19 @@ public class ViewFormIdFormatTests extends AbstractWebUMLTest {
     private final URLParser urlParser = new URLParser();
 
     @Autowired
-    private List<IRepresentationDescriptionRegistryConfigurer> configurers;
+    private List<IEditingContextRepresentationDescriptionProvider> representationDescriptionProviders;
 
     @Autowired
     private List<IPropertiesDescriptionRegistryConfigurer> propertyConfigurers;
 
     @Test
     public void checkRepresentationFormIdFormat() {
-        var registry = new RepresentationDescriptionRegistry();
-        this.configurers.forEach(configurer -> configurer.addRepresentationDescriptions(registry));
-
-        registry.getRepresentationDescriptions().stream().filter(FormDescription.class::isInstance).map(FormDescription.class::cast).forEach(this::checkIds);
+        this.representationDescriptionProviders.stream()
+                .map(representationDescriptionProvider -> representationDescriptionProvider.getRepresentationDescriptions(new IEditingContext.NoOp()))
+                .flatMap(List::stream)
+                .filter(FormDescription.class::isInstance)
+                .map(FormDescription.class::cast)
+                .forEach(this::checkIds);
     }
 
     @Test

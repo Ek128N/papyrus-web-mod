@@ -13,11 +13,14 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.properties;
 
+import java.util.List;
+
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.papyrus.web.application.utils.FileViewRepresentationLoader;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Arthur Daussy
  */
 @Configuration
-public class PrimitiveListViewRepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
+public class PrimitiveListViewRepresentationDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
     private final IViewConverter viewConverter;
 
@@ -36,15 +39,15 @@ public class PrimitiveListViewRepresentationDescriptionRegistryConfigurer implem
 
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
-    public PrimitiveListViewRepresentationDescriptionRegistryConfigurer(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public PrimitiveListViewRepresentationDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.viewConverter = viewConverter;
         this.ePackagesRegistry = ePackagesRegistry;
         this.inMemoryViewRegistry = inMemoryViewRegistry;
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
-        new FileViewRepresentationLoader("properties/PrimitiveListe.view", this.viewConverter, this.ePackagesRegistry, this.inMemoryViewRegistry).loadRepresentations().forEach(registry::add);
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
+        return new FileViewRepresentationLoader("properties/PrimitiveListe.view", this.viewConverter, this.ePackagesRegistry, this.inMemoryViewRegistry).loadRepresentations();
     }
 
 }
