@@ -40,7 +40,7 @@ Check that the UML model can use a dynamic profile
 ** [ ] the profile application is visible in the tree
 . contextual menu on Package1/Apply profile
 . select the same published profile
-** [ ] an error is diplayed to inform that this profile is already applied
+** [ ] no error is diplayed
 . contextual menu on Class1/Apply stereotype
 . select the available Stereotype
 ** [ ] the stereotype application is visible in the tree
@@ -52,12 +52,12 @@ Check that the UML model can use a dynamic profile
 Check that the dynamic profile can be updated, that is published in a new version
 
 .Recipe
-. create 
+. change the Stereotype name
 . open the publish profile dialog again
 ** [ ] the current version is `1.2.3` 
 . publish and download the profile
-** [ ] the difference with previous download is a new `EPackage`
-
+** [ ] the difference with previous download is a new `EPackage` with the following content
+<details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3AlglM9BEe6clZMqIDuyGw" key="Version" value="1.2.3"/>
 
 == Profile04 - Update a dynamic profile (UML model check)
 

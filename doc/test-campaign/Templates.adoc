@@ -14,8 +14,11 @@ Check that all templates are available from the home page
 *** _+ Java_
 . Click on _Show all templates_
 ** [ ] All previous cards should be available
-** [ ] The _UML_ default template should be available
-
+** [ ] Check that the following project cards are available:
+*** _+ _UML_
+*** _+ _Profile_
+*** _+ _Papyrus Studio_
+*** _+ _Studio_
 
 == PT10 - _{cpp}_ template
 

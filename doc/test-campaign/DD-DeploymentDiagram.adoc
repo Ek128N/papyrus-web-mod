@@ -1,0 +1,94 @@
+= Deployment Diagram Tests
+:toc:
+
+== DD01 Automated Tests
+
+.Purpose
+Run the automated tests and check they all pass.
+
+.Recipe
+* [ ] Run the diagram creation tests
+* [ ] Run Node and Edge creation tests
+* [ ] Run Node and Edge deletion tests
+* [ ] Run the Semantic DnD tests
+* [ ] Run the Graphical DnD tests
+* [ ] Run the source and target reconnect tests
+* [ ] Run the direct edit tests
+
+== DD02 Documentation
+.Purpose
+Check that the documentation for the diagram is available.
+
+.Recipe
+* [ ] Open the documentation and check that the Deployment Diagram section is present
+
+== DD03 Conditional Styles
+.Purpose 
+Check that the conditional styles are applied when they should.
+
+.Recipe
+* Create/open a DD diagram
+* Create an _Artifact_ using the tool in the palette and set its _is abstract_ attribute to true
+** [ ] The label of the _Artifact_ is displayed in italic
+
+== DD04 Comment Link
+.Purpose
+Check that the creation and reconnection of comment links works as expected.
+
+.Recipe
+* Create/open a DD diagram
+* Create two _Artifact_ elements
+* Create a _Comment_ and a link from the _Comment_ to the first _Artifact_
+** [ ] The link is visible
+* Reconnect the target of the link to the second _Artifact_
+** [ ] The link is connected to the second _Artifact_
+* Create a _Constraint_ element
+* Try to reconnect the source of the link to the _Constraint_
+** [ ] The link cannot be reconnected to the _Constraint_
+* Create another _Comment_ element
+* Reconnect the source of the link to the new _Comment_
+** [ ] The link is reconnected to the _Comment_
+
+== DD05 Constraint Link
+.Purpose
+Check that the creation and reconnection of constraint links works as expected.
+
+.Recipe
+* Create/open a DD diagram
+* Create two _Artifact_ elements
+* Create a _Constraint_ and a link from the _Constraint_ to the first _Artifact_
+** [ ] The link is visible
+* Reconnect the target of the link to the second _Artifact_
+** [ ] The link is connected to the second _Artifact_
+* Create a _Comment_ element
+* Try to reconnect the source of the link to the _Comment_
+** [ ] The link cannot be reconnected to the _Comment_
+* Create another _Constraint_ element
+* Reconnect the source of the link to the new _Constraint_
+** [ ] The link is reconnected to the _Constraint_
+
+== DD06 Comment Deletion
+.Purpose
+Check that the deletion of a comment deletes both the comment node and the link connected to it.
+
+.Recipe
+* Create/open a DD diagram
+* Create a _Comment_ using the tool in the palette
+* Create a _Artifact_ using the tool in the palette
+* Create a link between the _Comment_ and the _Artifact_
+* Delete the _Comment_
+** [ ] The _Comment_ and the link are deleted
+
+== DD07 Link Deletion
+.Purpose
+Check that the deletion of comment/constraint links works as expected and doesn't delete any semantic object.
+
+.Recipe
+* Create/open a DD diagram
+* Create a _Comment_ using the tool in the palette
+* Create a _Constraint_ using the tool in the palette
+* Create two _Artifact_ using the tool in the palette
+* Create a link between the _Comment_ and both _Artifact_ (2 links) and between the _Constraint_ and both _Artifact_ (2 links)
+* Delete the links one by one
+** [ ] Only the graphical links are deleted, no semantic element is deleted when a link is deleted
+

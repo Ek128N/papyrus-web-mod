@@ -69,7 +69,7 @@ In the current version _2023.3.0_, the layout of the edge is broken due to https
 . Create a _Package Import_ between *Package1::Package1* and *Model1::Model1*
 ** [ ] A link between those nodes appears with label import
 . Using the _Connector_ tool ceate an _Abstraction_ between *PrimitiveType1* and *Enumeration1*
-** [ ] A link without «abstraction» should be displayed between those nodes.
+** [ ] A link with «abstraction» should be displayed between those nodes.
 . Create a _Dependency_ between *Package1::DataType1* and *Package1::PrimitiveType1*
 ** [ ] A link without label should be displayed between those nodes.
 . Create a _InterfaceRealization_ between *Model1::Class1* and *Model1::Interface1*
@@ -87,21 +87,18 @@ image::imgs/CD10-all-edges.png[]
 . Create a _Shared Association_ between *Interface1* and *Package1::Class1*
 ** [ ] A link with no centered label is displayed
 ** [ ] The _begin label_ of the edge is *+ interface1 1*
-** [ ] The _end label_ of the edge is *+ class1 1*
+** [ ] The _end label_ of the edge is *+ class1 0..1*
 ** [ ] The source decorator is an empty diamond
 ** [ ] The end decorator is an arrow
 . Create a _Composite Association_ between *Interface1* and *Package1::Class1*
 ** [ ] A link with no centered label is displayed
 ** [ ] The _begin label_ of the edge is *+ interface1 1*
-** [ ] The _end label_ of the edge is *+ class1 1*
+** [ ] The _end label_ of the edge is *+ class1 0..1*
 ** [ ] The source decorator is a filled diamond
 ** [ ] The end decorator is an arrow
 . Create a _Usage_ between *Model1* and *Package1*
 ** [ ] A link between those nodes is displayed
 ** [ ] The centered label is equal to "«use»"
-
-
-
 
 == CD20 - Direct edit
 
@@ -122,12 +119,7 @@ A body +
 with +
 multiple lines.
 ** [ ] The text should be displayed inside the comment
-
 . Using the _direct edit tool_ changed the name of the _Association_ to : *Association1*
-. By double clicking the _begin label_ change the _Property_ name to : *inter*
-** [ ] The _begin label_ should be changed to *+ inter 1*
-. By double clicking the end label_ change the _Property_ name to : *class*
-** [ ] The _begin label_ should be change to *+ class 1*
 
 == CD30 - Drag and Drop
 
@@ -148,11 +140,10 @@ Change the semantic _Drag and Drop_ features
 +
 image::imgs/CD30-containmentLink.png[]
 +
-. _Drag and Drop_ *Model10::Interface10* in *Package10*
+. _Drag and Drop_ *Model10::Interface10* in *Model10*
 ** [ ] The interface should be displayed
-. _Drag and Drop_ *Interface10* in *Package10*
+. _Drag and Drop_ *Package10::Interface10* in *Package10*
 ** [ ] The new node should be created
-
 . _Drag and Drop_ all sub elements in the correct compartment (on the background of the compartment or on a sibling both should work)) of *Model10::Interface10*
 ** [ ] All sub elements should be displayed
 

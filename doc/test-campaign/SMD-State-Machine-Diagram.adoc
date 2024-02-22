@@ -93,6 +93,3 @@ Check that the deletion tools work properly
 ** [ ] The corresponding elements neither displayed in the Explorer tree nor in the diagram
 ** Select the StateMachine region and delete it.
 ** [ ] The Region is neither displayed in the Explorer tree nor in the diagram
-
-
-

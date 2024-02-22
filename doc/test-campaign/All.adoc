@@ -1,9 +1,15 @@
 = Recipe campaign
 
-* <<SMD-State-Machine-Diagram.adoc#, State Machine Diagram>>
+* <<AD-ActivityDiagram.adoc#, Activity Diagram>>
 * <<CD-ClassDiagram.adoc#,Class Diagram>>
+* <<COD-CommunicationDiagram.adoc#, Communication Diagram>>
+* <<CPD-ComponentDiagram.adoc#, Component Diagram>>
 * <<CSD-Composite-Structure-Diagram.adoc#,Composite Structure Diagram>>
-* <<PD-Package-Diagram.adoc#,Package Diagram>>
-* <<Profile.adoc#,Profile>>
-* <<Template.adoc#,Template>>
+* <<DD-DeploymentDiagram.adoc#, Deployment Diagram>>
 * <<Documentation.adoc#,Documentation>>
+* <<PD-Package-Diagram.adoc#,Package Diagram>>
+* <<PRD-ProfileDiagram.adoc#, Profile Diagram>>
+* <<Profile.adoc#,Profile>>
+* <<SMD-State-Machine-Diagram.adoc#, State Machine Diagram>>
+* <<Template.adoc#,Template>>
+* <<UCD-UseCaseDiagram.adoc#, Use Case Diagram>>

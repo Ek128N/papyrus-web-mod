@@ -1,0 +1,176 @@
+= Profile Diagram Tests
+:toc:
+
+== PRD01 Automated Tests
+
+.Purpose
+Run the automated tests and check they all pass.
+
+.Recipe
+* [ ] Run the diagram creation tests
+* [ ] Run Node and Edge creation tests
+* [ ] Run Node and Edge deletion tests
+* [ ] Run the Semantic DnD tests
+* [ ] Run the Graphical DnD tests
+* [ ] Run the source and target reconnect tests
+* [ ] Run the direct edit tests
+
+== PRD02 Documentation
+.Purpose
+Check that the documentation for the diagram is available.
+
+.Recipe
+* [ ] Open the documentation and check that the Profile Diagram section is present
+
+== PRD03 Conditional Styles
+.Purpose 
+Check that the conditional styles are applied when they should.
+
+.Recipe
+* Create/open a PRD diagram
+* Create a _Class_ using the palette and set its _is abstract_ attribute to true
+** [ ] The label of the _Class_ is displayed in italic
+* Create a _Property_ in a _Class_ and set its _is static_ attribute to true
+** [ ] The _Property_ label is underlined
+* Create an _Operation_ in a _Class_ and set its _is abstract_ and _is static_ attributes to true
+** [ ] The _Operation_ label is underlined and displayed in italic
+
+== PRD04 Comment Link
+.Purpose
+Check that the creation and reconnection of comment links works as expected.
+
+.Recipe
+* Create/open an PRD diagram
+* Create two _Class_ elements
+* Create a _Comment_ and a link from the _Comment_ to the first _Class_
+** [ ] The link is visible
+* Reconnect the target of the link to the second _Class_
+** [ ] The link is connected to the second _Class_
+* Create a _Constraint_ element
+* Try to reconnect the source of the link to the _Constraint_
+** [ ] The link cannot be reconnected to the _Constraint_
+* Create another _Comment_ element
+* Reconnect the source of the link to the new _Comment_
+** [ ] The link is reconnected to the _Comment_
+
+== PRD05 Constraint Link
+.Purpose
+Check that the creation and reconnection of constraint links works as expected.
+
+.Recipe
+* Create/open an PRD diagram
+* Create two _Class_ elements
+* Create a _Constraint_ and a link from the _Constraint_ to the first _Class_
+** [ ] The link is visible
+* Reconnect the target of the link to the second _Class_
+** [ ] The link is connected to the second _Class_
+* Create a _Comment_ element
+* Try to reconnect the source of the link to the _Comment_
+** [ ] The link cannot be reconnected to the _Comment_
+* Create another _Constraint_ element
+* Reconnect the source of the link to the new _Constraint_
+** [ ] The link is reconnected to the _Constraint_
+
+== PRD06 Comment Deletion
+.Purpose
+Check that the deletion of a comment deletes both the comment node and the link connected to it.
+
+.Recipe
+* Create/open an PRD diagram
+* Create a _Comment_ using the tool in the palette
+* Create a _Class__ using the tool in the palette
+* Create a link between the _Comment_ and the _Class_
+* Delete the _Comment_
+** [ ] The _Comment_ and the link are deleted
+
+== PRD07 Link Deletion
+.Purpose
+Check that the deletion of comment/constraint links works as expected and doesn't delete any semantic object.
+
+.Recipe
+* Create/open an PRD diagram
+* Create a _Comment_ using the tool in the palette
+* Create a _Constraint_ using the tool in the palette
+* Create two _Classes_ using the tool in the palette
+* Create a link between the _Comment_ and both _Classes_ (2 links) and between the _Constraint_ and both _Classes_ (2 links)
+* Delete the links one by one
+** [ ] Only the graphical links are deleted, no semantic element is deleted when a link is deleted
+
+== PRD08 Graphical DnD of a Comment
+.Purpose
+Check that a Comment can be graphically dragged and dropped.
+
+.Recipe
+* Create/open a PRD diagram
+* Create two _Packages_ using the tool in the palette
+* Create a _Comment_ in the first package
+* Graphically drag and drop the _Comment_ between the _Packages_
+** [ ] The _Comment_ is graphically moved and its semantic container is updated
+
+== PRD09 Create Metaclass
+.Purpose
+Check that the "import metaclass" tool works as expected.
+
+.Recipe
+* Create/open a PRD diagram
+* Select the "Import Metaclass" tool in the palette
+** [ ] A dialog is displayed with the list of metaclasses available
+* Select the _Activity_ metaclass and move it in the right panel of the dialog, then click the Apply button
+** [ ] The metaclass is added on the diagram and an _ElementImport_ is created under the semantic root of the diagram, with its _imported element_ set to _Activity_
+** [ ] The metaclass is created where the user clicked to open the palette
+* Create a _Profile_ on the diagram
+* Create another _Activity_ metaclass inside the created _Profile_
+** [ ] The metaclass is added in the _Profile_ and an _ElementImport_ is created under the semantic _Profile_, with its _imported element_ set to _Activity_
+** [ ] The metaclass is created where the user clicked to open the palette
+
+== PRD10 Edge targeting Metaclasses
+.Purpose
+Check that edges targeting Metaclasses can be created.
+
+.Recipe
+* Create/open a PRD diagram
+* Create an _Activity_ metaclass on the diagram
+* Create a _Stereotype_ on the diagram
+* Create an _Extension_ edge from the _Stereotype_ to the metaclass
+** [ ] The edge is created
+* Create a _Generalization_ edge from the _Stereotype_ to the metaclass
+** [ ] The edge is created
+
+== PRD11 Metaclass graphical deletion
+.Purpose
+Check that Metaclasses can be graphically deleted.
+
+.Recipe
+* Create/open a PRD diagram
+* Create an _Activity_ metaclass on the diagram
+* Graphically delete the metaclass
+** [ ] The node is deleted from the diagram. The model explorer still contains an _ElementImport_ with its _imported element_ set to _Activity_
+* Re-create an _Activity_ metaclass on the diagram
+** [ ] The metaclass node is created, but no new _ElementImport_ is created in the model explorer
+* Re-create an _Activity_ metaclass on the diagram
+** [ ] Nothing happens. The node previously visible is still visible, and no new _ElementImport_ has been created
+
+== PRD12 Metaclass semantic deletion
+.Purpose
+Check that Metaclasses can be semantically deleted.
+
+.Recipe
+* Create/open a PRD diagram
+* Create an _Activity_ metaclass on the diagram
+* Open the palette of the created metaclass
+** [ ] The palette doesn't contain the semantic deletion tool
+* Delete the corresponding _ElementImport_ in the model explorer
+** [ ] The metaclass node is deleted from the diagram, the model explorer doesn't contain the _ElementImport_ anymore
+
+== PRD13 Graphical DnD of a Metaclass
+* Create/open a PRD diagram
+* Create an _Activity_ metaclass on the diagram
+* Create a _Profile_ on the diagram
+* Graphically drag & drop the metaclass in the _Profile_
+** [ ] The node is moved in the _Profile_ node and the semantic _ElementImport_ is moved in the semantic _Profile_
+* Graphically drag & drop the metaclass from the _Profile_ to the diagram
+** [ ] The node is moved on the diagram and the semantic _ElementImport_ is moved in the root _Profile_ of the diagram
+* Create an _Activity_ metaclass in the _Profile_
+** [ ] The _Profile_ contains an _Activity_ metaclass node. The diagram also contains an _Activity_ metaclass node.
+* Graphically drag & drop the _Action_ metaclass from the diagram to the _Profile_
+** [ ] An error message is displayed and the node is not moved
