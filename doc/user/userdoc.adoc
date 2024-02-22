@@ -210,6 +210,16 @@ image::graphicalDragAndDrop.png[Labels Overview,400, align="center"]
 ===== Reconnection
 Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element.
 
+===== Semantic Deletion
+A confirmation dialog appears when an element is deleted via the _Delete from model_ tool in the palette or via the Model Explorer. This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.
+
+image::deletion-dialog.png[Semantic Deletion Dialog,300, align="center"]
+
+[NOTE]
+====
+This preference is stored in the browser's local storage. You can reset it by deleting the Papyrus Web data in your browser's cache.
+====
+
 ==== Activity Diagram
 
 Activity diagrams help to focus on workflows. They are therefore particularly suitable for modeling control flows and data flows. They allow to graphically represent the behavior of a method or the course of a use case. 
@@ -310,7 +320,6 @@ image::diagDeployment.png[Deployment Diagram Overview,800, align="center"]
 
 ===== Specific Features on Direct Edit
 - The direct edit tool doesn't perform any modification on _Generalization_ and _Link_ (from _Constraint_ or _Comment_).
->>>>>>> 01fb93d [36] Add documentation for the Deployment diagram
 
 ==== Portal representation
 
