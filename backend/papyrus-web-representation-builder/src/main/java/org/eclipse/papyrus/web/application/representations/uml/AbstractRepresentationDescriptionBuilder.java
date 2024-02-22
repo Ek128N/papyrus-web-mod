@@ -60,6 +60,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -121,6 +122,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * Edges tool section name.
      */
     public static final String EDGES = "Edges";
+
+    /**
+     * AQL expression used to specify gap size at the end of compartment.
+     */
+    private static final String GAP_SIZE = "aql:15";
 
     protected StyleProvider styleProvider;
 
@@ -1015,9 +1021,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      */
     protected NodeDescription createSharedCompartmentsDescription(DiagramDescription diagramDescription, NodeDescription parentNodeDescription, EClass domainType, String compartmentName,
             List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        listLayoutStrategyDescription.setBottomGapExpression(GAP_SIZE);
         NodeDescription sharedCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createRectangularNodeStyle(false, false))//
                 .name(this.getIdBuilder().getSpecializedCompartmentDomainNodeName(domainType, compartmentName, SHARED_SUFFIX)) //
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .labelExpression(this.getQueryBuilder().emptyString())//
