@@ -18,7 +18,7 @@
 
 	<groupId>papyrus-web</groupId>
 	<artifactId>papyrus-web</artifactId>
-	<version>2024.2.0</version>
+	<version>2024.2.1</version>
 
 	<name>Papyrus Web</name>
 	<description>Papyrus Web</description>
