@@ -205,8 +205,14 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             }
             EObject existingElementImportInTarget = this.getElementImportReferencingMetaclass(umlClass, elementImportTargetParent);
             if (existingElementImportInTarget != null) {
+                String targetLabel = null;
+                if (this.targetNode != null) {
+                    targetLabel = this.targetNode.getTargetObjectLabel();
+                } else {
+                    targetLabel = "diagram root";
+                }
                 errorMessage = MessageFormat.format("Cannot drag and drop Metaclass {0} in {1}, a Metaclass with the same identifier already exists.",
-                        this.droppedNode.getTargetObjectLabel(), this.targetNode.getTargetObjectLabel());
+                        this.droppedNode.getTargetObjectLabel(), targetLabel);
                 this.logger.log(errorMessage, ILogLevel.WARNING);
             } else {
                 EObject elementImportSourceParent = null;
