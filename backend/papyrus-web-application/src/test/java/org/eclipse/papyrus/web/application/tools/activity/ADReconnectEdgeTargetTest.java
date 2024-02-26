@@ -41,11 +41,11 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
 
     private static final String ROOT_ACTIVITY = "rootActivity";
 
-    private static final String INPUT_PIN_SOURCE = "InputPin" + SOURCE;
-
     private static final String FORK_NODE_SOURCE = "ForkNode" + SOURCE;
 
     private static final String JOIN_NODE_TARGET = "JoinNode" + OLD_TARGET;
+
+    private static final String OUTPUT_PIN_SOURCE = "OutputPin" + SOURCE;
 
     private static final String OUTPUT_PIN_TARGET = "OutputPin" + OLD_TARGET;
 
@@ -166,7 +166,7 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
         if (UML.getOutputPin().equals(newTargetType)) {
             // Reconnecting an output pin target requires that the object flow is initially connected to a source on the
             // same StructuredActivityNode as the output pin to reconnect to.
-            objectFlowId = this.createEdge(INPUT_PIN_SOURCE, OUTPUT_PIN_TARGET, new ADCreationTool(ADToolSections.EDGES, UML.getObjectFlow()));
+            objectFlowId = this.createEdge(OUTPUT_PIN_SOURCE, OUTPUT_PIN_TARGET, new ADCreationTool(ADToolSections.EDGES, UML.getObjectFlow()));
         } else {
             objectFlowId = this.createEdge(FORK_NODE_SOURCE, JOIN_NODE_TARGET, new ADCreationTool(ADToolSections.EDGES, UML.getObjectFlow()));
         }
