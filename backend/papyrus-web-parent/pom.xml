@@ -34,7 +34,7 @@
 		<sirius.documentation.version>2024.1.0</sirius.documentation.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>
 		<uml2.version>5.5.0-SNAPSHOT</uml2.version>
-		<papyrus-uml-domain-services-version>0.21.0</papyrus-uml-domain-services-version>
+		<papyrus-uml-domain-services-version>0.22.0-SNAPSHOT</papyrus-uml-domain-services-version>
 	</properties>
 
 
@@ -49,7 +49,7 @@
 		</repository>
 		<repository>
 			<id>papyrus-uml-services</id>
-			<url>https://maven.pkg.github.com/PapyrusSirius/papyrus-uml-services</url>
+			<url>https://repo.eclipse.org/content/repositories/papyrus-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -57,7 +57,7 @@
 		</repository>
 		<repository>
 			<id>eclipse-org.eclipse.papyrus-designer</id>
-			<url>https://repo.eclipse.org/content/repositories/papyrus-releases/</url>
+			<url>https://repo.eclipse.org/content/repositories/papyrus-snapshots/</url>
 		</repository>
 		<repository>
 			<id>repo-eclipse-uml2</id>
@@ -362,7 +362,7 @@
 			</dependency>
 
 			<dependency>
-				<groupId>papyrus-uml-domain-services</groupId>
+				<groupId>org.eclipse.papyrus.domainservices</groupId>
 				<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>
 				<version>${papyrus-uml-domain-services-version}</version>
 				<!-- Workaround for https://stackoverflow.com/questions/72625637/maven-build-failed-due-to-jdt-dependencies-no-versions-available-for-org-osgi -->

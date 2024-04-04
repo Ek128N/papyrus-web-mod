@@ -137,7 +137,7 @@
 			<artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>papyrus-uml-domain-services</groupId>
+			<groupId>org.eclipse.papyrus.domainservices</groupId>
 			<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>
 			<exclusions>
 				<exclusion>

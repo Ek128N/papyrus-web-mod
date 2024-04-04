@@ -158,7 +158,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>papyrus-uml-domain-services</groupId>
+			<groupId>org.eclipse.papyrus.domainservices</groupId>
 			<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>
 			<!-- Workaround for https://stackoverflow.com/questions/72625637/maven-build-failed-due-to-jdt-dependencies-no-versions-available-for-org-osgi -->
 			<exclusions>
