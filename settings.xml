@@ -39,18 +39,15 @@
   <servers>
     <server>
       <id>github-sirius-emfjson</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
+      <username>github-registry-token</username>
     </server>
     <server>
       <id>github-sirius-components</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
+      <username>github-registry-token</username>
     </server>
     <server>
       <id>github-papyrus-sirius-uml2</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
+      <username>github-registry-token</username>
     </server>
   </servers>
 </settings>
