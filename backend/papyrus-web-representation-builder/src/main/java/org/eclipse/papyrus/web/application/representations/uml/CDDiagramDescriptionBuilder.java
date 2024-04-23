@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 200
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -97,7 +98,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createGeneralizationDescription(diagramDescription);
         this.createAssociationDescription(diagramDescription);
         this.createUsageDescription(diagramDescription);
-
+        this.createSignalDescription(diagramDescription);
         this.createClassifierContainmentLink(diagramDescription);
         this.createPackageContainmentLink(diagramDescription);
 
@@ -367,6 +368,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .addCreationTools(this.pack.getInterface_NestedClassifier(), this.pack.getEnumeration())//
                 .addCreationTools(this.pack.getInterface_NestedClassifier(), this.pack.getPrimitiveType())//
                 .addCreationTools(this.pack.getInterface_NestedClassifier(), this.pack.getInterface())//
+                .addCreationTools(this.pack.getInterface_NestedClassifier(), this.pack.getSignal())//
                 .buildIn(interfaceDescription);
 
     }
@@ -500,6 +502,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .addCreationTools(this.pack.getClass_NestedClassifier(), this.pack.getEnumeration())//
                 .addCreationTools(this.pack.getClass_NestedClassifier(), this.pack.getPrimitiveType())//
                 .addCreationTools(this.pack.getClass_NestedClassifier(), this.pack.getInterface())//
+                .addCreationTools(this.pack.getClass_NestedClassifier(), this.pack.getSignal())//
                 .buildIn(classDescription);
 
     }
@@ -562,6 +565,41 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         diagramDescription.getEdgeDescriptions().add(cdPackageImport);
         this.getViewBuilder().addDefaultReconnectionTools(cdPackageImport);
 
+    }
+
+    private void createSignalDescription(DiagramDescription diagramDescription) {
+
+        EClass signalEClass = this.pack.getSignal();
+        NodeDescription signalDescription = this.newNodeBuilder(signalEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(signalEClass))//
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(signalEClass.getName()))//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(signalEClass.getName())) //
+                .build();
+        NodeTool creationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), signalEClass);
+        Supplier<List<NodeDescription>> packageOwners = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
+        Supplier<List<NodeDescription>> interfaceOwners = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getInterface());
+        Supplier<List<NodeDescription>> compartmentOwners = () -> this.collectNodesWithDomain(diagramDescription, true, false, this.pack.getClass_()) //
+                .stream() //
+                .filter(desc -> desc.getName().endsWith(NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX)) //
+                .toList();
+        this.registerCallback(signalDescription, () -> {
+            CreationToolsUtil.addNodeCreationTool(packageOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(compartmentOwners, creationTool);
+            CreationToolsUtil.addNodeCreationTool(interfaceOwners, creationTool);
+            diagramDescription.getPalette().getNodeTools().add(creationTool);
+        });
+
+        diagramDescription.getNodeDescriptions().add(signalDescription);
+
+        // Create Attributes Compartment
+        this.newListCompartmentBuilder()//
+                .withChildrenType(this.pack.getProperty())//
+                .withCompartmentNameSuffix(ATTRIBUTES_COMPARTMENT_SUFFIX)//
+                .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(this.pack.getClassifier__GetAllAttributes()))//
+                .addCreationTools(this.pack.getInterface_OwnedAttribute(), this.pack.getProperty())//
+                .buildIn(signalDescription);
     }
 
 }
