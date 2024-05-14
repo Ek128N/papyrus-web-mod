@@ -10,7 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 200
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 200, Issue 203
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -60,6 +60,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     public static final String ATTRIBUTES_COMPARTMENT_SUFFIX = "Attributes";
 
     public static final String LITERAL_COMPARTMENT_SUFFIX = "Literals";
+
+    public static final String RECEPTION_COMPARTMENT_SUFFIX = "Receptions";
 
     public static final String CD_REP_NAME = "Class Diagram";
 
@@ -492,6 +494,14 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .withSemanticCandidateExpression(CallQuery.queryOperationOnSelf(this.pack.getClassifier__GetAllOperations()))//
                 .addCreationTools(this.pack.getClass_OwnedOperation(), this.pack.getOperation())//
                 .buildIn(classDescription);
+
+        // Create Reception Compartment
+        NodeDescription receptionDescription = this.newListCompartmentBuilder().withChildrenType(this.pack.getReception())//
+                .withCompartmentNameSuffix(RECEPTION_COMPARTMENT_SUFFIX)//
+                .withSemanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.pack.getClass_OwnedReception()))//
+                .addCreationTools(this.pack.getClass_OwnedReception(), this.pack.getReception())//
+                .buildIn(classDescription);
+        receptionDescription.setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "true", "true"));
 
         // Create Nested Classifier Compartment
         this.newListCompartmentBuilder().withChildrenType(this.pack.getClassifier())//
