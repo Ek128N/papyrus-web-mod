@@ -30,7 +30,7 @@ export const Footer = () => {
   const classes = useFooterStyles();
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. Powered by </Typography>
+      <Typography variant="caption">&copy; {new Date().getFullYear()} CEA LIST, Obeo. Powered by </Typography>
       <Link
         variant="caption"
         href="https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web"

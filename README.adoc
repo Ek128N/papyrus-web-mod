@@ -148,6 +148,9 @@ npm ci
 npm run build
 ----
 
+NOTE: In case of npm ERR! Lifecycle script `format-lint` failed with error, try to run from the frontend subfolder the following command: 
+`npx prettier --write .` (don't forget the final dot)
+
 . Install the frontend artifacts as static resource to be served by the backend. From the root directory of the repository:
 +
 [source,sh]
