@@ -1,17 +1,17 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets;
 
 import org.eclipse.emf.ecore.EFactory;
@@ -191,6 +191,39 @@ public interface PapyrusWidgetsFactory extends EFactory {
      * @generated
      */
     ContainmentReferenceWidgetDescription createContainmentReferenceWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>Custom Image Widget Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Custom Image Widget Description</em>'.
+     * @generated
+     */
+    CustomImageWidgetDescription createCustomImageWidgetDescription();
+
+    /**
+     * Returns a new object of class '<em>Add Image Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Add Image Operation</em>'.
+     * @generated
+     */
+    AddImageOperation createAddImageOperation();
+
+    /**
+     * Returns a new object of class '<em>Select Image Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Select Image Operation</em>'.
+     * @generated
+     */
+    SelectImageOperation createSelectImageOperation();
+
+    /**
+     * Returns a new object of class '<em>Remove Image Operation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Remove Image Operation</em>'.
+     * @generated
+     */
+    RemoveImageOperation createRemoveImageOperation();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets;
 
@@ -31,6 +32,7 @@ import org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpress
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
@@ -44,6 +46,8 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListDelete
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemActionOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util.PapyrusWidgetsSwitch;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListCandidate;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetComponent;
@@ -120,6 +124,34 @@ public class PapyrusWidgetsConverterSwitch extends PapyrusWidgetsSwitch<Optional
         this.widgetIdProvider = Objects.requireNonNull(widgetIdProvider);
         this.emfKindService = Objects.requireNonNull(emfKindService);
 
+    }
+
+    @Override
+    public Optional<AbstractWidgetDescription> caseCustomImageWidgetDescription(CustomImageWidgetDescription customImageDescription) {
+        String descriptionId = this.getDescriptionId(customImageDescription);
+
+        var builder = org.eclipse.papyrus.web.custom.widgets.customimage.CustomImageDescription.newCustomImageDescription(descriptionId) //
+                .idProvider(new WidgetIdProvider()) //
+                .labelProvider(variableManager -> this.getCustomImageLabel(customImageDescription, variableManager))//
+                .iconURLProvider(variableManager -> List.of()) //
+                .currentUuidProvider(this.getStringValueProvider(customImageDescription.getUuidExpression()))
+                .newUuidHandler(
+                        this.handleOperation(customImageDescription.getSelectImageOperation(), SelectImageOperation::getBody, "Something went wrong while updating the image's uuid."))
+                .removeUuidHandler(
+                        this.handleOperation(customImageDescription.getRemoveImageOperation(), RemoveImageOperation::getBody, "Something went wrong while removing the image's uuid."))
+                .targetObjectIdProvider(this.semanticTargetIdProvider) //
+                .isReadOnlyProvider(this.getReadOnlyValueProvider("true"));
+        // .isReadOnlyProvider(this.getReadOnlyValueProvider(customImageDescription.getIsEnabledExpression()));
+
+        if (customImageDescription.getHelpExpression() != null && !customImageDescription.getHelpExpression().isBlank()) {
+            builder.helpTextProvider(this.getStringValueProvider(customImageDescription.getHelpExpression()));
+        }
+
+        return Optional.of(builder.build());
+    }
+
+    private String getCustomImageLabel(CustomImageWidgetDescription customImageDescription, VariableManager variableManager) {
+        return new StringValueProvider(this.interpreter, customImageDescription.getLabelExpression()).apply(variableManager);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.papyrus.web.custom.widgets.containmentreference.ContainmentReferenceWidgetDescriptor;
+import org.eclipse.papyrus.web.custom.widgets.customimage.CustomImageDescriptor;
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionDescriptor;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidgetDescriptor;
@@ -45,6 +47,8 @@ public class PapyrusWidgetsDescriptionProvider implements IWidgetDescriptionProv
             res = Optional.of(PapyrusWidgetsPackage.Literals.PRIMITIVE_RADIO_WIDGET_DESCRIPTION);
         } else if (Objects.equal(widgetKind, ContainmentReferenceWidgetDescriptor.TYPE)) {
             res = Optional.of(PapyrusWidgetsPackage.Literals.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION);
+        } else if (Objects.equal(widgetKind, CustomImageDescriptor.TYPE)) {
+            res = Optional.of(PapyrusWidgetsPackage.Literals.CUSTOM_IMAGE_WIDGET_DESCRIPTION);
         }
         return res;
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,14 +10,17 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets;
 
 import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.papyrus.web.custom.widgets.customimage.CustomImageDescription;
 import org.eclipse.papyrus.web.custom.widgets.languageexpression.LanguageExpressionDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
@@ -50,6 +53,25 @@ public class PapyrusWidgetsPreviewConverter extends PapyrusWidgetsSwitch<Abstrac
     public PapyrusWidgetsPreviewConverter(VariableManager variableManager, FormDescriptionEditorDescription formDescriptionEditorDescription) {
         this.variableManager = variableManager;
         this.formDescriptionEditorDescription = formDescriptionEditorDescription;
+    }
+
+    @Override
+    public AbstractWidgetDescription caseCustomImageWidgetDescription(CustomImageWidgetDescription customImageDescription) {
+        VariableManager childVariableManager = this.variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, customImageDescription);
+        String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
+        var builder = CustomImageDescription.newCustomImageDescription(UUID.randomUUID().toString()).idProvider(varManager -> id)
+                .labelProvider(varManager -> this.getWidgetLabel(customImageDescription, "Custom Image"))//
+                .iconURLProvider(varManager -> List.of()) //
+                .currentUuidProvider(varManager -> "")
+                .newUuidHandler(varManager -> new Success())
+                .removeUuidHandler(varManager -> new Success())
+                .targetObjectIdProvider(varManager -> "")//
+                .isReadOnlyProvider(varManager -> false);
+
+        builder.helpTextProvider(varManager -> "Help expression");
+
+        return builder.build();
     }
 
     @Override

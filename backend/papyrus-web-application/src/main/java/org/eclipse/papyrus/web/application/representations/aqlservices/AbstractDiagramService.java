@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices;
 
@@ -27,6 +28,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -991,6 +994,33 @@ public abstract class AbstractDiagramService {
      */
     public List<Node> getAllSymbol(DiagramContext diagramContext) {
         return diagramContext.getDiagram().getNodes();
+    }
+    
+    /**   
+     * Create an {@link EAnnotation} and add it to the context.
+     *
+     * @param context
+     *            context to create the annotation on
+     * @return context on which the annotation was added
+     */
+    public EModelElement addAnnotation(EModelElement context) {
+        EAnnotation annotation = EcoreFactory.eINSTANCE.createEAnnotation();
+        context.getEAnnotations().add(annotation);
+        return context;
+    }
+
+    /**
+     * Remove any {@link EAnnotation} from the context.
+     *
+     * @param context
+     *            context to remove the annotations from
+     * @return context on which the annotation was removed
+     */
+    public EModelElement removeAnnotation(EModelElement context) {
+        while (context.getEAnnotations().size() > 0) {
+            context.getEAnnotations().remove(0);
+        }
+        return context;
     }
 
 }

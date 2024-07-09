@@ -1,17 +1,17 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -19,10 +19,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
@@ -39,6 +41,8 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemAc
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
 
@@ -173,6 +177,34 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     private EClass containmentReferenceWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass customImageWidgetDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass addImageOperationEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass selectImageOperationEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass removeImageOperationEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -1077,6 +1109,116 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
      * @generated
      */
     @Override
+    public EClass getCustomImageWidgetDescription() {
+        return this.customImageWidgetDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCustomImageWidgetDescription_AddImageOperation() {
+        return (EReference) this.customImageWidgetDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCustomImageWidgetDescription_SelectImageOperation() {
+        return (EReference) this.customImageWidgetDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCustomImageWidgetDescription_RemoveImageOperation() {
+        return (EReference) this.customImageWidgetDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCustomImageWidgetDescription_UuidExpression() {
+        return (EAttribute) this.customImageWidgetDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getAddImageOperation() {
+        return this.addImageOperationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getAddImageOperation_Body() {
+        return (EReference) this.addImageOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getSelectImageOperation() {
+        return this.selectImageOperationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSelectImageOperation_Body() {
+        return (EReference) this.selectImageOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getRemoveImageOperation() {
+        return this.removeImageOperationEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getRemoveImageOperation_Body() {
+        return (EReference) this.removeImageOperationEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public PapyrusWidgetsFactory getPapyrusWidgetsFactory() {
         return (PapyrusWidgetsFactory) this.getEFactoryInstance();
     }
@@ -1200,6 +1342,21 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.createEReference(this.containmentReferenceWidgetDescriptionEClass, CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CLICK_OPERATION);
         this.createEReference(this.containmentReferenceWidgetDescriptionEClass, CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__STYLE);
         this.createEReference(this.containmentReferenceWidgetDescriptionEClass, CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+
+        this.customImageWidgetDescriptionEClass = this.createEClass(CUSTOM_IMAGE_WIDGET_DESCRIPTION);
+        this.createEReference(this.customImageWidgetDescriptionEClass, CUSTOM_IMAGE_WIDGET_DESCRIPTION__ADD_IMAGE_OPERATION);
+        this.createEReference(this.customImageWidgetDescriptionEClass, CUSTOM_IMAGE_WIDGET_DESCRIPTION__SELECT_IMAGE_OPERATION);
+        this.createEReference(this.customImageWidgetDescriptionEClass, CUSTOM_IMAGE_WIDGET_DESCRIPTION__REMOVE_IMAGE_OPERATION);
+        this.createEAttribute(this.customImageWidgetDescriptionEClass, CUSTOM_IMAGE_WIDGET_DESCRIPTION__UUID_EXPRESSION);
+
+        this.addImageOperationEClass = this.createEClass(ADD_IMAGE_OPERATION);
+        this.createEReference(this.addImageOperationEClass, ADD_IMAGE_OPERATION__BODY);
+
+        this.selectImageOperationEClass = this.createEClass(SELECT_IMAGE_OPERATION);
+        this.createEReference(this.selectImageOperationEClass, SELECT_IMAGE_OPERATION__BODY);
+
+        this.removeImageOperationEClass = this.createEClass(REMOVE_IMAGE_OPERATION);
+        this.createEReference(this.removeImageOperationEClass, REMOVE_IMAGE_OPERATION__BODY);
     }
 
     /**
@@ -1242,6 +1399,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.monoReferenceWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
         this.multiReferenceWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
         this.containmentReferenceWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
+        this.customImageWidgetDescriptionEClass.getESuperTypes().add(theFormPackage.getWidgetDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.languageExpressionWidgetDescriptionEClass, LanguageExpressionWidgetDescription.class, "LanguageExpressionWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE,
@@ -1443,6 +1601,33 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         this.initEReference(this.getContainmentReferenceWidgetDescription_ConditionalStyles(), theReferencePackage.getConditionalReferenceWidgetDescriptionStyle(), null, "conditionalStyles", null, 0,
                 -1,
                 ContainmentReferenceWidgetDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.customImageWidgetDescriptionEClass, CustomImageWidgetDescription.class, "CustomImageWidgetDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getCustomImageWidgetDescription_AddImageOperation(), this.getAddImageOperation(), null, "addImageOperation", null, 1, 1, CustomImageWidgetDescription.class,
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getCustomImageWidgetDescription_SelectImageOperation(), this.getSelectImageOperation(), null, "selectImageOperation", null, 1, 1, CustomImageWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getCustomImageWidgetDescription_RemoveImageOperation(), this.getRemoveImageOperation(), null, "removeImageOperation", null, 1, 1, CustomImageWidgetDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCustomImageWidgetDescription_UuidExpression(), theViewPackage.getInterpretedExpression(), "uuidExpression", null, 0, 1, CustomImageWidgetDescription.class,
+                !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.addImageOperationEClass, AddImageOperation.class, "AddImageOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getAddImageOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, AddImageOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.selectImageOperationEClass, SelectImageOperation.class, "SelectImageOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getSelectImageOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, SelectImageOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.removeImageOperationEClass, RemoveImageOperation.class, "RemoveImageOperation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getRemoveImageOperation_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, RemoveImageOperation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

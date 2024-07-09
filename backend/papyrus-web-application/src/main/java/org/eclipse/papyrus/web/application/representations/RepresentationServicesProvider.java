@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations;
 
@@ -33,6 +34,7 @@ import org.eclipse.papyrus.web.application.representations.aqlservices.composite
 import org.eclipse.papyrus.web.application.representations.aqlservices.deployment.DeploymentDiagramService;
 import org.eclipse.papyrus.web.application.representations.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.application.representations.aqlservices.profile.ProfileDiagramService;
+import org.eclipse.papyrus.web.application.representations.aqlservices.properties.PropertiesAnnotationServices;
 import org.eclipse.papyrus.web.application.representations.aqlservices.properties.PropertiesCrudServicesWrapper;
 import org.eclipse.papyrus.web.application.representations.aqlservices.properties.PropertiesHelpContentServices;
 import org.eclipse.papyrus.web.application.representations.aqlservices.properties.PropertiesImageServicesWrapper;
@@ -133,6 +135,7 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             services.add(ReachableElementsServices.class);
             services.add(PropertiesStereotypeApplicationServices.class);
             services.add(PropertiesReferenceTypeServices.class);
+            services.add(PropertiesAnnotationServices.class);
         }
     }
 }

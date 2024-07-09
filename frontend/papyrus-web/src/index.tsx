@@ -9,56 +9,48 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *******************************************************************************/
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import { NodeTypeContribution, diagramPaletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import {
-  SiriusWebApplication,
+  ApolloClientOptionsConfigurer,
   DiagramRepresentationConfiguration,
   NodeTypeRegistry,
-  navigationBarIconExtensionPoint,
-  ApolloClientOptionsConfigurer,
+  SiriusWebApplication,
   apolloClientOptionsConfigurersExtensionPoint,
   footerExtensionPoint,
+  navigationBarIconExtensionPoint,
   navigationBarMenuIconExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { NodeTypeContribution, diagramPaletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import ReactDOM from 'react-dom';
-import { httpOrigin, wsOrigin } from './core/URL';
+import { Help } from './core/Help';
 import { PapyrusIcon } from './core/PapyrusIcon';
-import { CuboidNodeLayoutHandler } from './nodes/cuboid/CuboidNodeLayoutHandler';
-import { CuboidNodeConverter } from './nodes/cuboid/CuboidNodeConverter';
+import { httpOrigin, wsOrigin } from './core/URL';
 import { CuboidNode } from './nodes/cuboid/CuboidNode';
+import { CuboidNodeConverter } from './nodes/cuboid/CuboidNodeConverter';
+import { CuboidNodeLayoutHandler } from './nodes/cuboid/CuboidNodeLayoutHandler';
 import { EllipseNode } from './nodes/ellipse/EllipseNode';
 import { EllipseNodeConverter } from './nodes/ellipse/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/ellipse/EllipseNodeLayoutHandler';
+import { InnerFlagNode } from './nodes/innerFlag/InnerFlagNode';
+import { InnerFlagNodeConverter } from './nodes/innerFlag/InnerFlagNodeConverter';
+import { InnerFlagNodeLayoutHandler } from './nodes/innerFlag/InnerFlagNodeLayoutHandler';
 import { NoteNode } from './nodes/note/NoteNode';
 import { NoteNodeConverter } from './nodes/note/NoteNodeConverter';
 import { NoteNodeLayoutHandler } from './nodes/note/NoteNodeLayoutHandler';
-import { RectangleWithExternalLabelNode } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNode';
-import { RectangleWithExternalLabelNodeConverter } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverter';
-import { RectangleWithExternalLabelNodeLayoutHandler } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeLayoutHandler';
+import { OuterFlagNode } from './nodes/outerFlag/OuterFlagNode';
+import { OuterFlagNodeConverter } from './nodes/outerFlag/OuterFlagNodeConverter';
+import { OuterFlagNodeLayoutHandler } from './nodes/outerFlag/OuterFlagNodeLayoutHandler';
 import { PackageNode } from './nodes/package/PackageNode';
 import { PackageNodeConverter } from './nodes/package/PackageNodeConverter';
 import { PackageNodeLayoutHandler } from './nodes/package/PackageNodeLayoutHandler';
-import { InnerFlagNodeLayoutHandler } from './nodes/innerFlag/InnerFlagNodeLayoutHandler';
-import { InnerFlagNodeConverter } from './nodes/innerFlag/InnerFlagNodeConverter';
-import { InnerFlagNode } from './nodes/innerFlag/InnerFlagNode';
-import { OuterFlagNodeLayoutHandler } from './nodes/outerFlag/OuterFlagNodeLayoutHandler';
-import { OuterFlagNodeConverter } from './nodes/outerFlag/OuterFlagNodeConverter';
-import { OuterFlagNode } from './nodes/outerFlag/OuterFlagNode';
-import { Help } from './core/Help';
+import { RectangleWithExternalLabelNode } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNode';
+import { RectangleWithExternalLabelNodeConverter } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeConverter';
+import { RectangleWithExternalLabelNodeLayoutHandler } from './nodes/rectangleWithExternalLabel/RectangleWithExternalLabelNodeLayoutHandler';
 
-import './ReactFlow.css';
-import './fonts.css';
-import './portals.css';
-import './reset.css';
-import './variables.css';
-import { nodesStyleDocumentTransform } from './nodes/NodesDocumentTransform';
-import { Footer } from './footer/Footer';
-import { PapyrusPopupToolContribution } from './diagram-tools/PapyrusPopupToolContribution';
-import { customWidgetsDocumentTransform } from './widgets/CustomWidgetsDocumentTransform';
 import {
   GQLWidget,
   PropertySectionComponent,
@@ -70,21 +62,33 @@ import {
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
+import './ReactFlow.css';
+import { PapyrusPopupToolContribution } from './diagram-tools/PapyrusPopupToolContribution';
+import './fonts.css';
+import { Footer } from './footer/Footer';
+import { nodesStyleDocumentTransform } from './nodes/NodesDocumentTransform';
+import './portals.css';
 import { UMLModelTreeItemContextMenuContribution } from './profile/apply-profile/UMLModelTreeItemContextMenuContribution';
 import { UMLElementTreeItemContextMenuContribution } from './profile/apply-stereotype/UMLElementTreeItemContextMenuContribution';
+import './reset.css';
+import './variables.css';
+import { customWidgetsDocumentTransform } from './widgets/CustomWidgetsDocumentTransform';
 
-import ContainmentReferenceSection from './widgets/containmentReference/ContainmentReferenceSection';
-import { ContainmentReferencePreview } from './widgets/containmentReference/ContainmentReferencePreview';
+import { PublishProfileTreeItemContextMenuContribution } from './profile/publish-profile/PublishProfileTreeItemContextMenuContribution';
 import { ContainmentReferenceIcon } from './widgets/containmentReference/ContainmentReferenceIcon';
-import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveListWidgetPreview';
-import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidgetPropertySection';
+import { ContainmentReferencePreview } from './widgets/containmentReference/ContainmentReferencePreview';
+import ContainmentReferenceSection from './widgets/containmentReference/ContainmentReferenceSection';
+import { CustomImageIcon } from './widgets/customImage/CustomImageIcon';
+import { CustomImagePreview } from './widgets/customImage/CustomImagePreview';
+import { CustomImageSection } from './widgets/customImage/CustomImageSection';
 import { LanguageExpressionIcon } from './widgets/languageExpression/LanguageExpressionIcon';
 import { LanguageExpressionPreview } from './widgets/languageExpression/LanguageExpressionPreview';
 import { LanguageExpressionSection } from './widgets/languageExpression/LanguageExpressionSection';
+import { PrimitiveListWidgetPreview } from './widgets/primitiveList/PrimitiveListWidgetPreview';
+import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidgetPropertySection';
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
-import { PublishProfileTreeItemContextMenuContribution } from './profile/publish-profile/PublishProfileTreeItemContextMenuContribution';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -214,6 +218,17 @@ extensionRegistry.putData(widgetContributionExtensionPoint, {
           propertySectionComponent = ReferencePropertySection;
         }
         return propertySectionComponent;
+      },
+    },
+    {
+      name: 'CustomImageWidget',
+      icon: <CustomImageIcon />,
+      previewComponent: CustomImagePreview,
+      component: (widget: GQLWidget): PropertySectionComponent<GQLWidget> | null => {
+        if (widget.__typename === 'CustomImageWidget') {
+          return CustomImageSection;
+        }
+        return null;
       },
     },
   ],
