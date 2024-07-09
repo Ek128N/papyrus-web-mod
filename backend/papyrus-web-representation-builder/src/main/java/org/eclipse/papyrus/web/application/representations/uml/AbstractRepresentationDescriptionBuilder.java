@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 190
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -139,6 +140,14 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * AQL expression used to specify gap size at the end of compartment.
      */
     private static final String GAP_SIZE = "aql:15";
+
+    private static final String ICON_PATH = "/icons/full/obj16/";
+
+    private static final String SHOWTOOL = "ShowTool";
+
+    private static final String HIDETOOL = "HideTool";
+
+    private static final String ICON_SVG_EXTENSION = ".svg";
 
     protected StyleProvider styleProvider;
 
@@ -771,6 +780,42 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
      * {@code owners}.
      * <p>
+     * This method provides a one-line way to reuse mappings and attach creation tools in a diagram. The provided
+     * {@code nodeDescription} is set as a reused element for each {@link NodeDescription} representing the provided
+     * {@code owners}, and the provided {@code nodeTool} is attached to the owning {@link NodeDescription}s. Note that
+     * the provided {@code nodeDescription} is added to either {@link NodeDescription#getReusedChildNodeDescriptions()}
+     * or {@link NodeDescription#getReusedBorderNodeDescriptions()}, depending on whether it is a regular node or a
+     * border node.
+     * </p>
+     * <p>
+     * <b>Note</b>: this method relies on the <i>callback</i> mechanism, meaning the the
+     * {@link NodeDescription#getReusedChildNodeDescriptions()} and the creation tools are updated once all the
+     * descriptions have been created.
+     * </p>
+     *
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription}s
+     * @param toolSectionName
+     *            name of the tool section to add the tool
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     *
+     * @see #reuseAsChild(NodeDescription, DiagramDescription, NodeTool, List, List)
+     */
+    public void reuseNode(NodeDescription nodeDescription, DiagramDescription diagramDescription, List<EClass> owners,
+            List<EClass> forbiddenOwners) {
+        this.registerCallback(nodeDescription, () -> {
+            Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription, owners, forbiddenOwners);
+            this.reusedNodeDescriptionInOwners(nodeDescription, ownerNodeDescriptions.get());
+        });
+    }
+
+    /**
+     * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
+     * {@code owners}.
+     * <p>
      * The provided {@code nodeDescription} is set as a reused element for each {@link NodeDescription} representing the
      * provided {@code owners}. Note that the provided {@code nodeDescription} is added to either
      * {@link NodeDescription#getReusedChildNodeDescriptions()} or
@@ -1215,6 +1260,54 @@ public abstract class AbstractRepresentationDescriptionBuilder {
                     .stream().filter(forbiddenNodeDescriptionPredicate).toList();
             this.addNodeToolInToolSection(ownerToolDescription, nodeTool, NODES);
         });
+    }
+
+    /**
+     * Create a Symbol NodeDescription and add it to the the SharedNodeDescription.
+     *
+     * @param dd
+     * @param shared
+     * @param owners
+     * @param forbiddenOwners
+     * @param compartmentName
+     */
+    public void createSymbolSharedNodeDescription(DiagramDescription dd, NodeDescription shared, List<EClass> owners, List<EClass> forbiddenOwners, String compartmentName) {
+        NodeDescription nd = this.getViewBuilder().createSymbolNodeDescription();
+        nd.setName(this.getIdBuilder().getSpecializedCompartmentDomainNodeName(this.pack.getElement(), compartmentName, SHARED_SUFFIX));
+        shared.getChildrenDescriptions().add(nd);
+        this.reuseNode(nd, dd, owners, forbiddenOwners);
+    }
+
+    /**
+     * Create the 'Hide all symbol' Tool.
+     *
+     * @param diagramDescription
+     * @param toolSectionName
+     */
+    protected void createHideSymbolTool(DiagramDescription diagramDescription, String toolSectionName) {
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName("Hide all symbol");
+        nodeTool.setIconURLsExpression(ICON_PATH + HIDETOOL + ICON_SVG_EXTENSION);
+        ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
+        createElement.setExpression("aql:diagramServices.hide(diagramContext.getAllSymbol(editingContext))");
+        nodeTool.getBody().add(createElement);
+        this.addDiagramToolInToolSection(diagramDescription, nodeTool, toolSectionName);
+    }
+
+    /**
+     * Create the 'Show all symbol' Tool.
+     *
+     * @param diagramDescription
+     * @param toolSectionName
+     */
+    protected void createShowSymbolTool(DiagramDescription diagramDescription, String toolSectionName) {
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName("Show all symbol");
+        nodeTool.setIconURLsExpression(ICON_PATH + SHOWTOOL + ICON_SVG_EXTENSION);
+        ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
+        createElement.setExpression("aql:diagramServices.reveal(diagramContext.getAllSymbol(editingContext))");
+        nodeTool.getBody().add(createElement);
+        this.addDiagramToolInToolSection(diagramDescription, nodeTool, toolSectionName);
     }
 
 }

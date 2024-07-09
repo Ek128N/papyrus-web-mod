@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -22,6 +23,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -66,6 +68,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     public static final String LITERALS_COMPARTMENT_SUFFIX = "Literals";
 
     /**
+     * The suffix used to identify <i>receptions</i> compartments.
+     */
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
+    /**
      * The name of the representation handled by this builder.
      */
     public static final String PRD_REP_NAME = "Profile Diagram";
@@ -74,6 +81,11 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      * The prefix of the representation handled by this builder.
      */
     public static final String PRD_PREFIX = "PRD_";
+
+    /**
+     * The name used to identify the Tool section.
+     */
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     /**
      * Underscore.
@@ -120,6 +132,13 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // create diagram tool sections
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.IS_PROFILE_MODEL));
+
+        // create show/hide tool section
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
 
         // create node descriptions with their tools
         this.createClassTopNodeDescription(diagramDescription);
@@ -177,6 +196,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createAssociationEdgeDescription(diagramDescription);
         this.createExtensionEdgeDescription(diagramDescription);
         this.createGeneralizationEdgeDescription(diagramDescription);
+
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getClass_(),
+                this.umlPackage.getDataType(),
+                this.umlPackage.getEnumeration(),
+                this.umlPackage.getStereotype(),
+                this.umlPackage.getPrimitiveType(),
+                this.umlPackage.getProfile(),
+                this.umlPackage.getPackage());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.prdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 

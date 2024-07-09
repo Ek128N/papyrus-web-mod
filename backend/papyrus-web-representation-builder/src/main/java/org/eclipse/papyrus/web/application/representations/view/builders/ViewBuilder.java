@@ -36,6 +36,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CustomImageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
@@ -74,6 +75,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesFactory;
 import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription;
+import org.eclipse.uml2.uml.UMLPackage;
 
 /**
  * Builder in charge of creating elements to fill a {@link DiagramDescription}.
@@ -749,4 +751,26 @@ public class ViewBuilder {
         return null;
     }
 
+    public NodeDescription createSymbolNodeDescription() {
+        EClass domain = UMLPackage.eINSTANCE.getElement();
+        String semanticCandidateExpression = "aql:self";
+        NodeDescription result = this.createNodeDescription(this.idBuilder.getDomainNodeName(domain), domain,
+                semanticCandidateExpression, this.createCustomImageNodeStyle(),
+                SynchronizationPolicy.SYNCHRONIZED);
+        result.setPreconditionExpression("aql:self.getSymbolValue()<>''");
+        // ?
+        result.setCollapsible(false);
+        return result;
+    }
+
+    public CustomImageNodeStyleDescription createCustomImageNodeStyle() {
+        CustomImageNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createCustomImageNodeStyleDescription();
+        nodeStyle.setShape("aql:self.getSymbolValue()");
+        nodeStyle.setBorderColor(this.styleProvider.getBorderNodeColor());
+        nodeStyle.setBorderRadius(this.styleProvider.getNodeBorderRadius());
+        // ?
+        // this.defaultInitStyle(nodeStyle);
+        // nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
+        return nodeStyle;
+    }
 }

@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 199
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issues 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -39,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -122,6 +124,16 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * The name of the representation handled by this builder.
      */
     public static final String AD_REP_NAME = "Activity Diagram";
+
+    /**
+     * The suffix used to identify <i>receptions</i> compartments.
+     */
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
+    /**
+     * The name used to identify the Tool section.
+     */
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     /**
      * The logger for this class.
@@ -250,10 +262,33 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     protected void fillDescription(DiagramDescription diagramDescription) {
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_DIAGRAM));
 
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+
         this.createActivityTopNodeDescription(diagramDescription);
         this.createObjectFlowEdgeDescription(diagramDescription);
         this.createControlFlowEdgeDescription(diagramDescription);
         this.createSharedNodeDescriptions(diagramDescription);
+
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getAction(),
+                this.umlPackage.getActivity(),
+                this.umlPackage.getActivityGroup(),
+                this.umlPackage.getActivityPartition(),
+                this.umlPackage.getRegion(),
+                this.umlPackage.getClass_(),
+                this.umlPackage.getSignal());
+        List<EClass> forbiddenOwners = List.of(
+                this.umlPackage.getObjectNode(),
+                this.umlPackage.getControlNode(),
+                this.umlPackage.getAcceptEventAction(),
+                this.umlPackage.getSendSignalAction(),
+                this.umlPackage.getActivityParameterNode());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.adSharedDescription, symbolOwners, forbiddenOwners, SYMBOLS_COMPARTMENT_SUFFIX);
+
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 

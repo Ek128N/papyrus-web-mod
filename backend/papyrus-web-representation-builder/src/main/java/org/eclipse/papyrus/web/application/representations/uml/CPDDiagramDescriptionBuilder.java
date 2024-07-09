@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 199
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -76,6 +78,11 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
     public static final String RECEPTIONS_COMPARTMENT_SUFFIX = "Receptions";
 
     /**
+     * The suffix used to identify <i>receptions</i> compartments.
+     */
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
+    /**
      * The name of the representation handled by this builder.
      */
     public static final String CPD_REP_NAME = "Component Diagram";
@@ -89,6 +96,11 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
      * Suffix used for nodeDescriptions defined inside Component Description.
      */
     public static final String IN_COMPONENT = "inComponent";
+
+    /**
+     * The name used to identify the Tool section.
+     */
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     /**
      * AQL expression to set children not draggable from its container.
@@ -123,6 +135,13 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         // create diagram tool sections
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
+
+        // create show/hide tool section
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
 
         // create node descriptions with their tools
         this.createCommentTopNodeDescription(diagramDescription, NODES);
@@ -164,6 +183,14 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createManifestationEdgeDescription(diagramDescription);
         this.createSubstitutionEdgeDescription(diagramDescription);
         this.createUsageEdgeDescription(diagramDescription);
+
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getComponent(),
+                this.umlPackage.getInterface(),
+                this.umlPackage.getProperty(),
+                this.umlPackage.getPackage());
+
+        this.createSymbolSharedNodeDescription(diagramDescription, this.cpdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 

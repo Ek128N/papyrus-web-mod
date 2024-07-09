@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 190
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -29,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -50,6 +52,10 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
     public static final String PAD_PREFIX = "PAD_";
 
     public static final String CONTAINMENT_LINK_EDGE_ID = PAD_PREFIX + "_ContainmentLink_FeatureEdge";
+
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+    
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     /**
      * The <i>shared</i> {@link NodeDescription} for the diagram.
@@ -82,6 +88,12 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createConstraintSubNodeDescription(diagramDescription, this.padSharedDescription, NODES,
                 this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getConstraint(), SHARED_SUFFIX), List.of(this.pack.getPackage()));
 
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+
         this.createPackageMergeDescription(diagramDescription);
         this.createPackageImportDescription(diagramDescription);
         this.createAbstractionDescription(diagramDescription);
@@ -94,8 +106,12 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
             padGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-
         diagramDescription.getPalette().setDropNodeTool(padGraphicalDropTool);
+
+        List<EClass> symbolOwners = List.of(
+                this.pack.getPackage());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.padSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 

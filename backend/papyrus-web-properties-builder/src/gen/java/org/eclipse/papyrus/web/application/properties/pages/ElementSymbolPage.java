@@ -66,6 +66,6 @@ public class ElementSymbolPage {
     }
 
     protected PageDescription createPage() {
-        return this.viewElementFactory.createPageDescription("element_symbols_page", "uml::Element", "aql:'Symbol'", "aql:self", "aql:not(selection->size()>1)");
+        return this.viewElementFactory.createPageDescription("element_symbols_page", "uml::Element", "aql:'Symbol'", "aql:self", "aql:self.shouldDisplaySymbolPage()");
     }
 }

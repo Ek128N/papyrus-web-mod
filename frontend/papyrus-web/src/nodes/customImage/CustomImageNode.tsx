@@ -115,7 +115,7 @@ export const CustomImageNode = memo(({ data, id, selected, dragging }: NodeProps
           ...dropFeedbackStyle,
         }}>
         {state.validImage ? (
-          <img id={id} src={state.url} width="25%" onError={onErrorLoadingImage} />
+          <img id={id} src={state.url} height="100%" onError={onErrorLoadingImage} />
         ) : (
           <Typography data-testid="custom-image-node-no-image" variant="caption">
             No image

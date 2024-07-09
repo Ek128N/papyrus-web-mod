@@ -50,7 +50,6 @@ describe('Custom Image tests', () => {
     // Upload the image
     testNoImage();
     cy.getByTestId('custom-image-widget-add').should('be.visible').click();
-    cy.log('imageFullName: ', imageFullName);
     cy.getByTestId('file').selectFile(imagePath, { force: true });
     cy.getByTestId('file').its('0.files').should('have.length', 1).its('0.name').should('eq', imageFullName);
     cy.getByTestId('upload-image').should('be.visible').click();

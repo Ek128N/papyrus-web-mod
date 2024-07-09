@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 190
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -30,6 +31,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -54,6 +56,10 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     public static final String IN_PROPERTY = "InProperty";
 
     public static final String IN_CLASSIFIER = "InClassifier";
+
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     private static final String AQL_CHECK_TYPED_PROPERTY = "aql:self.oclIsKindOf(uml::Property) and self.type!=null";
 
@@ -85,6 +91,12 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createPortDescriptionOnClassifier(diagramDescription);
         this.createPortDescriptionOnProperty(diagramDescription);
 
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+
         this.createConnectorDescription(diagramDescription);
         this.createUsageDescription(diagramDescription);
         this.createGeneralizationDescription(diagramDescription);
@@ -100,6 +112,11 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         });
 
         diagramDescription.getPalette().setDropNodeTool(csdGraphicalDropTool);
+        List<EClass> symbolOwners = List.of(
+                this.pack.getClassifier(),
+                this.pack.getProperty());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.csdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 

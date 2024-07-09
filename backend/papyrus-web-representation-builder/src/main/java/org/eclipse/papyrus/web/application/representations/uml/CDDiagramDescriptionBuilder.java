@@ -10,7 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 200, Issue 203
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 200, 203, 219
  *  Aurelien Didier (Artal Technologies) - Issue 199, Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -79,9 +80,13 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     public static final String RECEPTION_COMPARTMENT_SUFFIX = "Receptions";
 
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
     public static final String CD_REP_NAME = "Class Diagram";
 
     public static final String CD_PREFIX = "CD_";
+
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     private static final String NEW_CONTAINMENT_LINK_TOOL_LABEL = "New Containment Link";
 
@@ -105,6 +110,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         super(CD_PREFIX, CD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
+    // CHECKSTYLE:OFF
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
@@ -113,6 +119,12 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         this.createModelTopNodeDescription(diagramDescription);
         this.createPackageTopNodeDescription(diagramDescription);
+
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
 
         this.createClassTopNodeDescription(diagramDescription);
         this.createInterfaceTopDescription(diagramDescription);
@@ -182,6 +194,17 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createClassifierContainmentLink(diagramDescription);
         this.createPackageContainmentLink(diagramDescription);
 
+        List<EClass> symbolOwners = List.of(
+                this.pack.getClass_(),
+                this.pack.getInterface(),
+                this.pack.getPrimitiveType(),
+                this.pack.getDataType(),
+                this.pack.getSignal(),
+                this.pack.getEnumeration(),
+                this.pack.getPackage());
+
+        this.createSymbolSharedNodeDescription(diagramDescription, this.cdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
         DropNodeTool cddGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
@@ -193,6 +216,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         });
         diagramDescription.getPalette().setDropNodeTool(cddGraphicalDropTool);
     }
+    // CHECKSTYLE:ON
 
     private void createClassTopNodeDescription(DiagramDescription diagramDescription) {
         EClass classEClass = this.pack.getClass_();

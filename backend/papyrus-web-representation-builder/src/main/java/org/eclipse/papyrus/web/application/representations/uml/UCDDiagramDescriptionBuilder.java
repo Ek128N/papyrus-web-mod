@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 199
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -84,6 +85,16 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
     public static final String UCD_PREFIX = "UCD_";
 
     /**
+     * The suffix used to identify <i>receptions</i> compartments.
+     */
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
+    /**
+     * The name used to identify the Tool section.
+     */
+    public static final String SHOW_HIDE = "SHOW_HIDE";
+
+    /**
      * The suffix of "Classifier as Subject" creation tool
      */
     private static final String AS_SUBJECT = " as Subject";
@@ -113,6 +124,13 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         // create diagram tool sections
         this.createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
+
+        // create show/hide tool section
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
 
         // create node descriptions with their tools
         this.createActivityAsSubjectTopNodeDescription(diagramDescription);
@@ -157,6 +175,14 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createPackageMergeEdgeDescription(diagramDescription);
         this.createRealizationEdgeDescription(diagramDescription);
         this.createUsageEdgeDescription(diagramDescription);
+
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getActivity(),
+                this.umlPackage.getClass_(),
+                this.umlPackage.getInteraction(),
+                this.umlPackage.getStateMachine(),
+                this.umlPackage.getPackage());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.ucdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 

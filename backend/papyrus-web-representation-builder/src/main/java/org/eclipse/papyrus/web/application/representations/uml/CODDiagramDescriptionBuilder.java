@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 219
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -22,6 +23,7 @@ import org.eclipse.papyrus.web.application.representations.view.builders.Callbac
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
@@ -59,14 +61,29 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
     public static final String COD_PREFIX = "COD_";
 
     /**
+     * The suffix used to identify <i>receptions</i> compartments.
+     */
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
+    /**
      * Size of the radius corner of the Interaction Node initialized on the diagram at its creation.
      */
     public static final int INTERACTION_NODE_BORDER_RADIUS = 10;
 
     /**
+     * The name used to identify the Tool section.
+     */
+    public static final String SHOW_HIDE = "SHOW_HIDE";
+
+    /**
      * Factory used to create UML elements.
      */
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
+
+    /**
+     * The <i>shared</i> {@link NodeDescription} for the diagram.
+     */
+    private NodeDescription codSharedDescription;
 
     /**
      * Initializes the builder.
@@ -79,6 +96,12 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
     protected void fillDescription(DiagramDescription diagramDescription) {
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(CommunicationDiagramServices.CAN_CREATE_DIAGRAM));
 
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+
         NodeDescription codInteractionDescription = this.createInteractionTopNodeDescription(diagramDescription);
         this.createLifelineSubNodeDescription(codInteractionDescription);
         this.createDurationObservationSubNodeDescription(codInteractionDescription);
@@ -89,6 +112,12 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 List.of(this.umlPackage.getInteraction()));
         this.createConstraintSubNodeDescription(diagramDescription, codInteractionDescription, NODES, this.getIdBuilder().getDomainNodeName(this.umlPackage.getConstraint()),
                 List.of(this.umlPackage.getInteraction()));
+
+        this.codSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getInteraction(),
+                this.umlPackage.getLifeline());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.codSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
