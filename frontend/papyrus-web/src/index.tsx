@@ -1,7 +1,8 @@
-/*******************************************************************************
- * Copyright (c) 2019, 2024 CEA LIST, Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2019, 2024 CEA LIST, Obeo, Artal Technologies.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
@@ -9,7 +10,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- *     Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *     Titouan BOUETE-GIRAUD (Artal Technologies) - Issues 210, 218
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
@@ -32,6 +33,9 @@ import { httpOrigin, wsOrigin } from './core/URL';
 import { CuboidNode } from './nodes/cuboid/CuboidNode';
 import { CuboidNodeConverter } from './nodes/cuboid/CuboidNodeConverter';
 import { CuboidNodeLayoutHandler } from './nodes/cuboid/CuboidNodeLayoutHandler';
+import { CustomImageNode } from './nodes/customImage/CustomImageNode';
+import { CustomImageNodeConverter } from './nodes/customImage/CustomImageNodeConverter';
+import { CustomImageNodeLayoutHandler } from './nodes/customImage/CustomImageNodeLayoutHandler';
 import { EllipseNode } from './nodes/ellipse/EllipseNode';
 import { EllipseNodeConverter } from './nodes/ellipse/EllipseNodeConverter';
 import { EllipseNodeLayoutHandler } from './nodes/ellipse/EllipseNodeLayoutHandler';
@@ -109,6 +113,7 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     new InnerFlagNodeLayoutHandler(),
     new OuterFlagNodeLayoutHandler(),
     new CuboidNodeLayoutHandler(),
+    new CustomImageNodeLayoutHandler(),
   ],
   nodeConverters: [
     new EllipseNodeConverter(),
@@ -118,6 +123,7 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     new InnerFlagNodeConverter(),
     new OuterFlagNodeConverter(),
     new CuboidNodeConverter(),
+    new CustomImageNodeConverter(),
   ],
   nodeTypeContributions: [
     <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
@@ -127,6 +133,7 @@ const nodeTypeRegistryValue: NodeTypeRegistry = {
     <NodeTypeContribution component={InnerFlagNode} type={'innerFlagNode'} />,
     <NodeTypeContribution component={OuterFlagNode} type={'outerFlagNode'} />,
     <NodeTypeContribution component={CuboidNode} type={'cuboidNode'} />,
+    <NodeTypeContribution component={CustomImageNode} type={'customImageNode'} />,
   ],
 };
 
