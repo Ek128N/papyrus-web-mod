@@ -1,0 +1,270 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Communication Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package, under a Model and under a BehavioredClassifier (but not inside a Profile). +
+__BehavioredClassifier = Actor, Collaboration, UseCase, Class, AssociationClass, Behavior,  Activity, Interaction, OpaqueBehavior, FunctionBehavior, StateMachine, ProtocolStateMachine, Component, Node, Device and ExecutionEnvironment
+
+== Initialization
+Unless Diagram is created under an Interaction, a new Interaction is created and displayed as the root of the Diagram.
+
+image::CommunicationDiagram/CommunicationDiagram.png[title="Representation Communication Diagram"]
+
+== Nodes
+
+=== Comment
+Can be created under an Interaction.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== Constraint
+Can be created under an Interaction.
+
+==== On Creation
+Constraint is created with a ConstraintSpecification which is an OpaqueExpression. +
+By default the OpaqueExpression language is OCL and its default value is "true". +
+The context feature is set to the element that was selected when creating the Constraint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit only the name of the Constraint.
+
+==== Label
+Constraint label shall start by the name of the Constraint in the first line. +
+And it shall display the constrainSpecification (which is an OpaqueExpression) information in a second line. +
+The constraintSpecification informations shall display only the first language information as follow: {{language} body}
+
+image::Shared/Constraint.png[title="Representation Constraint"]
+
+=== DurationObservation
+Can be created under an Interaction.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::CommunicationDiagram/DurationObservation.png[title="Representation DurationObservation"]
+
+=== Lifeline
+Can be created under an Interaction.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::CommunicationDiagram/Lifeline.png[title="Representation Lifeline"]
+
+=== TimeObservation
+
+Can be created under an Interaction.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::CommunicationDiagram/TimeObservation.png[title="Representation TimeObservation"]
+
+== Edges
+
+=== Link (from Comment)
+Can be created under an Interaction. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::CommunicationDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Link (from Constraint)
+Can be created under an Interaction. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an constrainedElement of the Constraint.
+
+==== Can create
+Source shall be a Constraint. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::CommunicationDiagram/Link_Constraint.png[title="Representation Link (from Constraint)"]
+
+=== Message
+Can be created under an Interaction.
+
+==== On Creation
+Create the message and also create a SendEvent and a ReceiveEvent stored under the Interaction.
+
+==== Can create
+Can connect two Lifeline.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::CommunicationDiagram/Message.png[title="Representation Message"]

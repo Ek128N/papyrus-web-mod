@@ -1,0 +1,660 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Use Case Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package and under a Model (but not inside a Profile).
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+=== Activity as subject
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Activity label shall be prefixed with &laquo;activity&raquo; or &laquo;activity, singleExecution&raquo; if is single execution if set to true. +
+All label should be in italic if isAbstract is set to true.
+
+image::UseCaseDiagram/Activity.png[title="Representation Activity"]
+
+=== Actor
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::UseCaseDiagram/Actor.png[title="Representation Actor"]
+
+=== Class as subject
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be in italic if isAbstract is set to true.
+
+image::UseCaseDiagram/Class.png[title="Representation Class"]
+
+=== Comment
+Can be created in a Use Case Diagram, under a Package, an Activity, a Class, a Component, an Interaction and a StateMachine.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Display the body of the Commment.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== Component as subject
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;component&raquo; +
+Label should be in italic if isAbstract is set to true.
+
+image::UseCaseDiagram/Component.png[title="Representation Component"]
+
+=== Constraint
+Can be created in a Use Case Diagram, under a Package, an Activity, a Class, a Component, an Interaction and a StateMachine.
+
+==== On Creation
+Constraint is created with a ConstraintSpecification which is an OpaqueExpression. +
+By default the OpaqueExpression language is OCL and its default value is "true". +
+The context feature is set to the element that was selected when creating the Constraint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit only the name of the Constraint.
+
+==== Label
+Constraint label shall start by the name of the Constraint in the first line. +
+And it shall display the constrainSpecification (which is an OpaqueExpression) information in a second line. +
+The constraintSpecification informations shall display only the first language information as follow: {{language} body}
+
+image::Shared/Constraint.png[title="Representation Constraint"]
+
+=== Interaction as Subject
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;interaction&raquo; +
+Label should be in italic if isAbstract is set to true.
+
+image::UseCaseDiagram/Interaction.png[title="Representation Interaction"]
+
+
+=== Package
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::UseCaseDiagram/Package.png[title="Representation Package"]
+
+=== StateMachine as subject
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;stateMachine&raquo; +
+Label should be in italic if isAbstract is set to true.
+
+image::UseCaseDiagram/StateMachine.png[title="Representation StateMachine"]
+
+=== UseCase
+Can be created in an Use Case Diagram, under Package, a StateMachine, a Component, an Activity and a Class.
+
+==== On Creation
+When the Usecase is created inside an Activity, a Class, a Component, an Interaction, or a StateMachine, its feature subject is set pointing on its owner.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be in italic if isAbstract is set to true.
+
+image::UseCaseDiagram/UseCase.png[title="Representation UseCase"]
+
+== Edges
+
+=== Abstraction
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Abstraction link is stored at the root of the Diagram.
+
+==== Can create
+Source and target can be any kind of element.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;abstraction&raquo;.
+
+image::UseCaseDiagram/Abstraction.png[title="Representation Abstraction"]
+
+=== Association
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Create an Association link stored under the root of the Diagram. +
+The association created contains two properties, one for each end. +
+The default properties for both ends are set to: +
+ - Owner: Association +
+ - Navigable: False +
+ - Aggregation: None +
+ - Multiplicity: 1 +
+The created association is created with an "org.eclipse.papyrus" EAnnotations that has an entry with nature / UML_Nature as key / value.
+
+==== Can create
+Source and target can be any kind of element except a Package (i.e. it can be a subject or an actor).
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Properties are updated accordingly.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Association labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package) +
+Add Operation Name. +
+Suffixed with parameters label inside () and separated by a comma. +
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+image::UseCaseDiagram/Association.png[title="Representation Association"]
+
+=== Dependency
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Dependency link is stored at the root of the Diagram.
+
+==== Can create
+Source and target can be any kind of element.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::UseCaseDiagram/Dependency.png[title="Representation Dependency"]
+
+=== Extend
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+An ExtensionPoint is created under the target semantic element and an Extend link created under the source semantic element.
+
+==== Can create
+Source and target must be two use cases.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Extend link is relocated under the new source semantic element, and extension point is moved under the new target.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;extend&raquo;.
+
+image::UseCaseDiagram/Extend.png[title="Representation Extend"]
+
+=== Generalization
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Generalization link is stored under the source semantic element.
+
+==== Can create
+Source and target can be any kind of element except a Package (i.e. it can be a subject or an actor).
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Relocate link under the new source semantic element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label.
+
+image::UseCaseDiagram/Generalization.png[title="Representation Generalization"]
+
+=== Include
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Include link is stored under the source semantic element.
+
+==== Can create
+Source and target must be two use cases.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Relocate link under the new source semantic element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be  prefixed with &laquo;include&raquo;.
+
+image::UseCaseDiagram/Include.png[title="Representation Include"]
+
+=== Link (from Comment)
+Can be created in an Use Case Diagram, under Package, a StateMachine, a Component, an Activity and a Class. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::UseCaseDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Link (from Constraint)
+Can be created in an Use Case Diagram, under Package, a StateMachine, a Component, an Activity and a Class. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an constrainedElement of the Constraint.
+
+==== Can create
+Source shall be a Constraint. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::UseCaseDiagram/Link_Constraint.png[title="Representation Link (from Constraint)"]
+
+=== PackageImport
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Package Import link is stored under the source semantic element.
+
+==== Can create
+Target must be a Package.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Relocate link under the new source semantic element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be &laquo;import&raquo;.
+
+image::UseCaseDiagram/PackageImport.png[title="Representation PackageImport"]
+
+=== PackageMerge
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Package Merge link is stored under the source semantic element.
+
+==== Can create
+Source and target must be Packages.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be &laquo;merge&raquo;.
+
+image::UseCaseDiagram/PackageMerge.png[title="Representation PackageMerge"]
+
+=== Usage
+Can be created in an Use Case Diagram and under Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Usage link is stored under the source semantic element.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;use&raquo;.
+
+image::UseCaseDiagram/Usage.png[title="Representation Usage"]

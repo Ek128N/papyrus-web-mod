@@ -1,0 +1,513 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Deployment Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package or under a Model (but not inside a profile).
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+=== Artifact
+Can be created in an Deployment Diagram, under a Model, under a Package and under an Artifact.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;artifact&raquo;. +
+Label shall be in italic if isAbstract is set to true.
+
+image::DeploymentDiagram/Artifact.png[title="Representation Artifact"]
+
+=== Comment
+Can be created in a Profile Diagram, under a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== Constraint
+Can be created in a Profile Diagram, under a Model or a Package.
+
+==== On Creation
+Constraint is created with a ConstraintSpecification which is an OpaqueExpression. +
+By default the OpaqueExpression language is OCL and its default value is "true". +
+The context feature is set to the element that was selected when creating the Constraint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit only the name of the Constraint.
+
+==== Label
+Constraint label shall start by the name of the Constraint in the first line. +
+And it shall display the constrainSpecification (which is an OpaqueExpression) information in a second line. +
+The constraintSpecification informations shall display only the first language information as follow: {{language} body}
+
+image::Shared/Constraint.png[title="Representation Constraint"]
+
+=== DeploymentSpecification
+Can be created in an Deployment Diagram, under a Model, under a Package, a Device, an ExecutionEnvironment, a Node and under an Artifact.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;deployment spec&raquo; +
+Label shall be in italic if isAbstract is set to true.
+
+image::DeploymentDiagram/DeploymentSpecification.png[title="Representation DeploymentSpecification"]
+
+=== Device
+Can be created in an Deployment Diagram, under a Model, under a Package, a Device and a Node.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;device&raquo;
+ 
+image::DeploymentDiagram/Device.png[title="Representation Device"]
+
+=== ExecutionEnvironment
+Can be created in an Deployment Diagram, under a Model, under a Package, a Device, an ExecutionEnvironment and a Node.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;executionEnvironment&raquo;
+ 
+image::DeploymentDiagram/ExecutionEnvironment.png[title="Representation ExecutionEnvironment"]
+
+=== Model
+Can be created in an Deployment Diagram, under a Model and under a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::DeploymentDiagram/Model.png[title="Representation Model"]
+
+=== Node
+Can be created in an Deployment Diagram, under a Model, under a Package, a Device and a Node.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::DeploymentDiagram/Node.png[title="Representation Node"]
+
+=== Package
+Can be created in an Deployment Diagram, under a Model and under a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::DeploymentDiagram/Package.png[title="Representation Package"]
+
+
+== Edges
+
+=== CommunicationPath
+Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
+
+==== On Creation
+Create an CommunicationPath link stored under the root of the Diagram. +
+The CommunicationPath created contains two properties, one for each end. +
+Both properties are added as owned ends and member ends of the communication path. +
+The "source" Property is typed by the source element and the "target" Property is typed by the target element. +
+The created CommunicationPath is created with an "org.eclipse.papyrus" EAnnotations that has an entry with nature / UML_Nature as key / value.
+
+==== Can create
+Source and Target shall be Nodes, Devices or ExecutionEnvironments.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Center label should be composed as follow: +
+Label should be prefixed with "/" if isDerived is set to True. +
+Label should be prefixed in italic if isAbstract is set to True.
+
+Ends label should be composed as follow: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package) +
+Add the name of the property.
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+
+image::DeploymentDiagram/CommunicationPath.png[title="Representation CommunicationPath"]
+
+=== Dependency
+Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and Target shall be Artifact, DeploymentSpecification, Device, Execution Environement, Model, Node or Package.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::DeploymentDiagram/Dependency.png[title="Representation Dependency"]
+
+=== Deployment
+Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source shall be an Artifact or a DeploymentSpecification. +
+Target shall be a Node or an ExecutionEnvironment.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;manifest&raquo;.
+
+image::DeploymentDiagram/Deployment.png[title="Representation Deployment"]
+
+=== Generalization
+Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and Target shall be Artifacts, Deployment specifications, Devices or ExecutionEnvironments.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label (and no name).
+
+image::DeploymentDiagram/Generalization.png[title="Representation Generalization"]
+
+=== Link (from Comment)
+Can be created in a Profile Diagram, under a Model or a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::DeploymentDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Link (from Constraint)
+Can be created in a Profile Diagram, under a Model or a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an constrainedElement of the Constraint.
+
+==== Can create
+Source shall be a Constraint. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::DeploymentDiagram/Link_Constraint.png[title="Representation Link (from Constraint)"]
+
+=== Manifestation
+Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and Target shall be Artifact, DeploymentSpecification, Device, Execution Environement, Model, Node or Package.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;manifest&raquo;.
+
+image::DeploymentDiagram/Manifestation.png[title="Representation Manifestation"]

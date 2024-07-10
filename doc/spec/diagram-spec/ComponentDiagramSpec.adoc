@@ -1,0 +1,652 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Component Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package and under a Model (but not inside a Profile).
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+=== Component
+Can be created in a Component Diagram, under a Component, a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;component&raquo; followed by the name of the component.+
+Label should be in italic if isAbstract is set to true.
+ 
+image::ComponentDiagram/Component.png[title="Representation Component"]
+
+=== Interface
+Can be created in a Component Diagram, under a Component, a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;interface&raquo; followed by the name of the interface. + 
+Label should be in italic if isAbstract is set to true.
+
+image::ComponentDiagram/Interface.png[title="Representation Interface"]
+
+=== Model
+Can be created in a Component Diagram, under a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ComponentDiagram/Model.png[title="Representation Model"]
+
+=== Operation
+Can be created under an Interface.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Operation labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add Operation Name. +
+Suffixed with non return (direction kind) parameters labels listed inside () and separated by a comma. +
+If one or more return parameter is defined, add ":" followed by the first return parameter type name.
+
+Parameters label: +
+Start with direction keyword: "in", "inout", "out". +
+Add parameter names and ":" +
+Add Type name or <Undefined> in not defined.
+
+All label shall be underlined if isStatic is set to true. +
+All label shall be in italic if isAbstract is set to true.
+
+image::ComponentDiagram/Operation.png[title="Representation Operation"]
+
+=== Package
+Can be created in a Component Diagram, under a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ComponentDiagram/Package.png[title="Representation Package"]
+
+=== Port
+Can be created (as bordered node) under a Component or under a Property when the Property is typed.
+
+==== On Creation
+When created under a typed Property, the owner of the port is the Type of the property.
+
+==== Can create
+Port can be created on Property only if the type of the Property is defined.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Port labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add "/" if isDerived. +
+Add Property Name and ":" +
+Add "~" if is conjugated +
+Suffixed with type name or <Undefined> if not defined. +
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+image::ComponentDiagram/Port.png[title="Representation Port"]
+
+image::ComponentDiagram/PortOnProperty.png[title="Representation Port on Property"]
+
+=== Property
+Can be created under a Component, an Interface or under a typed Property.
+
+==== On Creation
+When created under a typed Property, the created property will be owned by the type of the Property.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Property labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add "/" if isDerived. +
+Add Property Name and ":" +
+Suffixed with type name or <Undefined> if not defined. +
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+Label should be in underlined if isStatic is set to true.
+
+image::ComponentDiagram/Property.png[title="Representation Property"]
+
+image::ComponentDiagram/PropertyOnProperty.png[title="Representation Property on Property"]
+
+=== Reception
+Can be created under an Interface.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;signal&raquo;. +
+Label should be in italic if isAbstract is set to true. +
+Label should be in underlined if isStatic is set to true.
+
+image::ComponentDiagram/Reception.png[title="Representation Reception"]
+
+== Edges
+
+=== Abstraction
+Can be created in a Component Diagram, under a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and target can be Model, Package, Interface, Property, Port or Component.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Prefixed with &laquo;signal&raquo;. +
+Label should be in italic if isAbstract is set to true. +
+Label should be in underlined if isStatic is set to true.
+
+image::ComponentDiagram/Abstraction.png[title="Representation Abstraction"]
+
+=== Comment
+Can be created under a Component Diagram, under a Model and a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== ComponentRealization
+Can be created under a Component Diagram, under a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source can be a Component or an Interface. +
+Target must be a Component.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;signal&raquo;. +
+Label should be in italic if isAbstract is set to true. +
+Label should be in underlined if isStatic is set to true.
+
+image::ComponentDiagram/ComponentRealization.png[title="Representation ComponentRealization"]
+
+=== Connector
+Can be created under a Component Diagram, under a Model or a Package.
+
+==== On Creation
+Create one connector end for each port under the connector.
+
+==== Can create
+Source and Target must be Ports.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Cannot be deleted.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Display connector name and multiplicity for each ends. +
+All labels are underlined if connector is static.
+
+image::ComponentDiagram/Connector.png[title="Representation Connector"]
+
+=== Constraint
+Can be created under a Component Diagram, under a Model and a Package.
+
+==== On Creation
+Constraint is created with a ConstraintSpecification which is an OpaqueExpression. +
+By default the OpaqueExpression language is OCL and its default value is "true". +
+The context feature is set to the element that was selected when creating the Constraint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit only the name of the Constraint.
+
+==== Label
+Constraint label shall start by the name of the Constraint in the first line. +
+And it shall display the constrainSpecification (which is an OpaqueExpression) information in a second line. +
+The constraintSpecification informations shall display only the first language information as follow: {{language} body}
+
+image::Shared/Constraint.png[title="Representation Constraint"]
+
+=== Dependency
+Can be created in a Component Diagram, under a Model or a Package.
+
+==== On Creation
+Dependency is created under the source semantic element.
+
+==== Can create
+Source can be a Component, an Interface or a Port. +
+Target can be a Component, an Interface or a Port.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::ComponentDiagram/Dependency.png[title="Representation Dependency"]
+
+=== Generalization
+Can be created under an Interface.
+
+==== On Creation
+Generalization is created under the source semantic element.
+
+==== Can create
+Source and Target can be a Component or an Interface.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Direct edit does nothing.
+
+==== Label
+No label (and no name).
+
+image::ComponentDiagram/Generalization.png[title="Representation Generalization"]
+
+=== Link (from Comment)
+Can be created under a Component Diagram, under a Model and a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ComponentDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Link (from Constraint)
+Can be created under a Component Diagram, under a Model and a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an constrainedElement of the Constraint.
+
+==== Can create
+Source shall be a Constraint. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ComponentDiagram/Link_Constraint.png[title="Representation Link (from Constraint)"]
+
+=== Manifestation
+Can be created under an Interface.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and target can be Model, Package, Interface, Property, Port or Component.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;manifest&raquo;.
+
+image::ComponentDiagram/Manifestation.png[title="Representation Manifestation"]
+
+=== Substitution
+Can be created in an Component Diagram, under an Package and a Model.
+
+==== On Creation
+Create an Substitution link under the source semantic element, and set client reference to the source and set supplier to the target.
+
+==== Can create
+Source and targets can be Interface, or Component.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Client and Supplier reference are updated. +
+Substitution link is transfered under the new source semantic element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;substitute&raquo; followed by the name of the sustitution.
+ 
+image::ComponentDiagram/Substitution.png[title="Representation Substitution"]
+
+=== Usage
+Can be created in an Component Diagram, under an Package and a Model.
+
+==== On Creation
+Create an Usage link where client reference is set to the source and supplier is the target.
+
+==== Can create
+Source and target can be Model, Package, Interface, Property, Port or Component.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Client and Supplier reference are updated. +
+Usage link is transfered to the Package or Model if the source is reconnected to it, or to the closest Model or Package containing the element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;use&raquo; followed by the name of the usage.
+ 
+image::ComponentDiagram/Usage.png[title="Representation Usage"]

@@ -1,0 +1,499 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= State Machine Diagram specification
+:toc:
+:toclevels: 3 
+
+== Can create 
+Can be created under a StateMachine.
+
+== Initialization
+Display the StateMachine as the root of the Diagram (labeled with a &laquo;stateMachine&raquo; prefix). 
+
+image::StateMachineDiagram/StateMachineDiagram.png[title="Representation State Machine Diagram"]
+
+== Nodes
+
+=== Choice
+Can be created in a Region.
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to choice.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/Choice.png[title="Representation Choice"]
+
+=== Comment
+Can be created in a State Machine Diagram and under a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== DeepHistory
+Can be created in a Region.
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to deepHistory.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/DeepHistory.png[title="Representation DeepHistory"]
+
+=== EntryPoint
+Can be created in StateMachine or under a State(as bordered node).
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to entryPoint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/EntryPoint.png[title="Representation EntryPoint"]
+
+=== ExitPoint
+Can be created in StateMachine or under a State (as bordered node).
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to exitPoint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/ExitPoint.png[title="Representation ExitPoint"]
+
+=== FinalState
+Can be created in a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/FinalState.png[title="Representation FinalState"]
+
+=== Fork
+Can be created in a Region.
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to fork.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/Fork.png[title="Representation Fork"]
+
+=== Initial
+Can be created in a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/Initial.png[title="Representation Initial"]
+
+=== Join
+Can be created in a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/Join.png[title="Representation Join"]
+
+=== Junction
+Can be created in a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/Junction.png[title="Representation Junction"]
+
+=== Region
+Can be created in StateMachine or under a State.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Shall not be deletable if there is only one Region. Also delete all elements contained in the Region.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label.
+
+image::StateMachineDiagram/1Region.png[title="Representation One Region"]
+
+image::StateMachineDiagram/2Region.png[title="Representation Two Region"]
+
+=== ShallowHistory
+Can be created in a Region.
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to shallowHistory.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/ShallowHistory.png[title="Representation ShallowHistory"]
+
+=== State
+Can be created in a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/State.png[title="Representation State"]
+
+=== Terminate
+Can be created in a Region.
+
+==== On Creation
+Create a PseudoState with it feature kind initialized to terminate.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+image::StateMachineDiagram/Terminate.png[title="Representation Terminate"]
+
+== Edges
+
+=== Link (from Comment)
+Can be created in a State Machine Diagram or under a Region. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::StateMachineDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Transition
+Can be created in a Region.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and Target must be State, a Final State or a PseudoState (Choice, DeepHistory, Fork, Initial, Join, Junction, Shallow History Terminate) or EntryPoint/ExitPoint.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Transition labels shall be composed the following way: +
+Start with triggers labels separated with comma. Trigger label is the event name or "all" if no event is defined. +
+If a guard is defined, add its label between [ ]. Guard label is either a Constraint specification expression if selection is a constraint or and Interaction constraint, or a time expression [1..5] if its a Duration, Interval or TimeConstraint. +
+If an effect is defined, add "/" followed byt the effect label. Effect label starts with its kind (Activity, FunctionBehavior, Interaction, OpageBehavior, ProtocolStateMachine or StateMachine) and followed by the referenced element name.
+
+image::StateMachineDiagram/Transition.png[title="Representation Transition"]

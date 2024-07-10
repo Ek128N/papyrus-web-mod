@@ -1,5 +1,19 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Obeo - Initial API and implementation 
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
 = Papyrus Web Documentation
 Papyrus web v{papyrus-web-version} - {git-commit-id-abbrev}
 
 - xref:user/userdoc.adoc[User documentation]
-- xref:dev/dev-doc-index.adoc[Developper Documentation]
+- xref:dev/dev-doc-index.adoc[Developper documentation]
+- xref:spec/diagrams-spec-index.adoc[Diagram specification]

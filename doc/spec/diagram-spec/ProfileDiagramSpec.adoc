@@ -1,0 +1,511 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Profile Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created only under a Profile.
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+=== Class
+Can be created in a Profile Diagram, a Package or a Profile. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be in italic if isAbstract is set to true.
+ 
+image::ProfileDiagram/Class.png[title="Representation Class"]
+
+=== Comment
+Can be created in a Profile Diagram, under a Profile or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== Constraint
+Can be created in a Profile Diagram, under a Profile or a Package.
+
+==== On Creation
+Constraint is created with a ConstraintSpecification which is an OpaqueExpression. +
+By default the OpaqueExpression language is OCL and its default value is "true". +
+The context feature is set to the element that was selected when creating the Constraint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit only the name of the Constraint.
+
+==== Label
+Constraint label shall start by the name of the Constraint in the first line. +
+And it shall display the constrainSpecification (which is an OpaqueExpression) information in a second line. +
+The constraintSpecification informations shall display only the first language information as follow: {{language} body}
+
+image::Shared/Constraint.png[title="Representation Constraint"]
+
+=== DataType
+Can be created in an Profile Diagram, a Package or a Profile. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;dataType&raquo; +
+Label shall be in italic if isAbstract is set to true.
+ 
+image::ProfileDiagram/DataType.png[title="Representation DataType"]
+
+=== Enumeration
+Can be created in an Profile Diagram, under a Package or a Profile. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;enumeration&raquo; +
+Label shall be in italic if isAbstract is set to true.
+
+image::ProfileDiagram/Enumeration.png[title="Representation Enumeration"]
+
+=== EnumerationLiteral
+Can be created under an Enumeration.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ProfileDiagram/EnumerationLiteral.png[title="Representation EnumerationLiteral"]
+
+=== Import Metaclass
+This element tool allows to import a UML Metaclass inside the Profile. It can be imported on an Profile Diagram and under a Profile.
+
+==== On Creation
+This creation opens a dialog to select the UML Metclasses to import in the model:
+
+* An ElementImport referencing the metaclass will be created for each imported Metaclass +
+* These selected metaclasses will be represented in the Diagram +
+If the user select a Metaclass already imported in the container (Package or Profile), the corresponding ElementImport won't be created a second time, but the Metaclass will be represented if it was previously not represented.
+
+==== Can create
+Can be imported only once, a second import of the same class will do nothing.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Semantic Deletion is forbidden, because the Metaclasses are not created but are imported. So to remove an imported Metaclass from your model, you should destroy the corresponding ElementImport from the Explorer view.
+
+==== On Semantic DnD
+Element not visible in explorer, only used via the import Metaclass tool.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Name of the imported UML element prefixed with &laquo;Metaclass&raquo;.
+ 
+image::ProfileDiagram/ImportMetaclass.png[title="Representation Import Metaclass"]
+
+=== Package
+Can be created in a Profile Diagram, under a Profile and a Package. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ProfileDiagram/Package.png[title="Representation Package"]
+
+=== PrimitiveType
+Can be created in a Profile Diagram and under a Package. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;primitive&raquo;. +
+Label shall be in italic if isAbstract is set to true.
+ 
+image::ProfileDiagram/PrimitiveType.png[title="Representation PrimitiveType"]
+
+=== Property 
+Can be created under a Class, a DataType, a PrimitiveType and a Stereotype.. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Property labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package) +
+Add "/" if isDerived. +
+Add Property Name and ":" +
+Suffixed with type name or <Undefined> if not defined. +
+Add Multiplicity: suffixed with +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+Label shall be underlined if isStatic is set to true.
+
+image::ProfileDiagram/Property.png[title="Representation Property"]
+
+=== Operation
+Can be created under a Class, a DataType and a Stereotype. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Operation labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package) +
+Add Operation Name. +
+Suffixed with parameters label inside () and separated by a comma. +
+Add Multiplicity: suffixed with +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label.
+
+Parameters label: +
+Start with direction : in, inout, out or not displayed if return. +
+Add parameter names and ":" +
+Add Type name or <Undefined> in not defined.
+
+Label shall be underlined if isStatic is set to true. +
+Label shall be in italic if isAbstract is set to true.
+
+image::ProfileDiagram/Operation.png[title="Representation Operation"]
+
+== Edges
+
+=== Association
+Can be created in an Profile Diagram, under a Package and a Model.
+
+==== On Creation
+Create an Association link stored under the root of the Diagram. +
+The association created contains two properties, one for each end. +
+The default properties for both ends are set to: +
+- Owner: Association +
+- Navigable: False + 
+- Aggregation: None +
+- Multiplicity: 1 +
+The created association is created with an "org.eclipse.papyrus" EAnnotations that has an entry with nature / UML_Nature as key / value.
+
+==== Can create
+Source and targets can be Class, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Properties are updated accordingly.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Name of the Abstraction (no name by default). +
+Each ends labels contains: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package) followed by name of the end and multiplicity: +++[0..1], [1], [*], [1..*]+++.
+
+image::ProfileDiagram/Association.png[title="Representation Association"]
+
+=== Link (from Comment)
+Can be created in a Profile Diagram, under a Profile or a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ProfileDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Link (from Constraint)
+Can be created in a Profile Diagram, under a Profile or a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an constrainedElement of the Constraint.
+
+==== Can create
+Source shall be a Constraint. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ProfileDiagram/Link_Constraint.png[title="Representation Link (from Constraint)"]
+
+=== Extension
+Can be created in an Profile Diagram, under an Package or a Profile.
+
+==== On Creation
+Create a Property named base_MetaclassName under the selected Stereotype and a Literal Integer under this property to represent its lower multiplicity.. +
+Create an Extension element under the parent profile (or the root of the Diagram), and an extension end under this extension.
+
+==== Can create
+Source must be a Stereotype and target must be an Imported Metaclass.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Update the Property, Extension and ExtensionEnd to match the new source and target.
+
+==== On Deletion
+Delete the Extension, the ExtensionEnd and also delete the Property created on the Stereotype at creation.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Default Name is E_{StereotypeName}_{MetaclassName}. +
+Nothing Special.
+
+image::ProfileDiagram/Extension.png[title="Representation Extension"]
+
+=== Generalization
+Can be created in an Profile Diagram, under an Package or a Profile.
+
+==== On Creation
+Create an Generalization link stored under the source used for the creation.
+
+==== Can create
+Source and targets can be Class, DataType, PrimitiveType and an Enumeration. +
+Target can also be an imported Metaclass.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label.
+
+image::ProfileDiagram/Generalization.png[title="Representation Generalization"]

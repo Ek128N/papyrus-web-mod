@@ -1,0 +1,1638 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Activity Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package, under a Model and under a BehavioredClassifier (but not inside a Profile).
+__BehavioredClassifier = Actor, Collaboration, UseCase, Class, AssociationClass, Behavior,  Activity, Interaction, OpaqueBehavior, FunctionBehavior, StateMachine, ProtocolStateMachine, Component, Node, Device and ExecutionEnvironment__
+
+== Initialization
+Unless Diagram is created under an Activity, a new Activity is created and displayed as the root of the Diagram.
+
+== Nodes
+
+=== AcceptCallAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+AcceptCallAction should be created with an OutputPin owned by the AcceptCallAction and this output pin is referenced as the return information feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/AcceptCallAction.png[title="Representation AcceptCallAction"]
+
+=== AcceptEventAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/AcceptEventAction.png[title="Representation AcceptEventAction"]
+
+=== Activity
+Can be created under an Activity.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Activity name prefixed with &laquo;activity&raquo; or &laquo;activitity, singleExecution&raquo; if is single execution if set to true. +
+Label should be in italic if isAbstract is set to true.
+
+image::ActivityDiagram/Activity.png[title="Representation Activity"]
+
+=== ActivityFinalNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ActivityFinalNode.png[title="Representation Activity Final Node"]
+
+=== ActivityParameterNode
+Can be created under an activity (as bordered node).
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ActivityParameterNode.png[title="Representation ActivityParameterNode"]
+
+=== ActivityPartition
+Can be created under an Activity or under an ActivityPartition.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+The ActivityPartition label is the name of the represented element if defined, or the name of the ActivityPartition otherwise. 
+ 
+image::ActivityDiagram/ActivityPartition.png[title="Representation ActivityPartition"]
+
+=== AddStructuralFeatureValueAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+AddStructuralFeatureValueAction should be created with four pins:
+
+* An InputPin owned by the AddStructuralFeatureValueAction and referenced as the object feature.
+* An InputPin owned by the AddStructuralFeatureValueAction and referenced as the value feature.
+* An InputPin owned by the AddStructuralFeatureValueAction and referenced as the insertAt feature.
+* An OutputPin owned by the AddStructuralFeatureValueAction and referenced in the result feature
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/AddStructuralFeatureValueAction.png[title="Representation AddStructuralFeatureValueAction"]
+
+=== BroadcastSignalAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/BroadcastSignalAction.png[title="Representation BroadcastSignalAction"]
+
+=== CallBehaviorAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/CallBehaviorAction.png[title="Representation CallBehaviorAction"]
+
+=== CallOperationAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+CallOperationAction (CAO) tool shall create the call operation action, and create an Input Pin referenced as the COA target feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/CallOperationAction.png[title="Representation CallOperationAction"]
+
+=== ClearAssociationAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ClearAssociationAction should be created with an InputPin owned by the ClearAssociationAction and referenced in the object feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ClearAssociationAction.png[title="Representation ClearAssociationAction"]
+
+=== ClearStructuralFeatureValueAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Clear Structural Feature Action should be created with two pins:
+
+* An InputPin owned by the Clear Structural Feature Action and referenced as the object feature.
+* An OutputPin owned by the Clear Structural Feature Action and referenced in the result feature
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ClearStructuralFeatureValueAction.png[title="Representation ClearStructuralFeatureValueAction"]
+
+=== Comment
+Can be created under an Activity, an ActivityPartition, A InterruptibleActivityRegion, an ExpansionRegion,  a ConditionalNode, a LoopNode, a SequenceNode, a StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== ConditionalNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Rename element but doesn't change label.
+
+==== Label
+Label should be &laquo;conditional&raquo;.
+ 
+image::ActivityDiagram/ConditionalNode.png[title="Representation ConditionalNode"]
+
+=== Constraint
+Can be created under an Activity, an ExpansionRegion, a ConditionalNode, a LoopNode, a SequenceNode, a StructuredActivityNode.
+
+==== On Creation
+Constraint is created with a ConstraintSpecification which is an OpaqueExpression. +
+By default the OpaqueExpression language is OCL and its default value is "true". +
+The context feature is set to the element that was selected when creating the Constraint.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit only the name of the Constraint.
+
+==== Label
+Constraint label shall start by the name of the Constraint in the first line. +
+And it shall display the constrainSpecification (which is an OpaqueExpression) information in a second line. +
+The constraintSpecification informations shall display only the first language information as follow: {{language} body}
+
+image::Shared/Constraint.png[title="Representation Constraint"]
+
+=== CreateObjectAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+CreateObjectAction tool shall create the CreateObjectAction, and create an OutputPin owned by the CreateObjectAction and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/CreateObjectAction.png[title="Representation CreateObjectAction"]
+
+=== DecisionNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+When the DecisionNode Input field is set, Papyrus Web should add a new Note linked to the DecisionNode. +
+The Note content is set to "«decisionInput»" followed by the name of the decision input.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/DecisionNode.png[title="Representation DecisionNode"]
+
+image::ActivityDiagram/DecisionNodeWithNote.png[title="Representation DecisionNode with Note"]
+
+=== DestroyObjectAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+DestroyObjectAction tool shall create the DestroyObjectAction, and create an InputPin owned by the DestroyObjectAction and referenced in the target feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/DestroyObjectAction.png[title="Representation DestroyObjectAction"]
+
+=== ExpansionRegion
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label can either be &laquo;iterative&raquo;, &laquo;stream&raquo; or &laquo;parallel&raquo; depending on the corresponding mode kind of the region.
+ 
+image::ActivityDiagram/ExpansionRegion.png[title="Representation ExpansionRegion"]
+
+=== ForkNode
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== On Resize
+Fork Node size is fixed.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ForkNode.png[title="Representation ForkNode"]
+
+=== FlowFinalNode
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/FlowFinalNode.png[title="Representation FlowFinalNode"]
+
+=== ForkNode
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== On resize
+Fork Node size is fixed.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ForkNode.png[title="Representation ForkNode"]
+
+=== InitialNode
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/InitialNode.png[title="Representation InitialNode"]
+
+=== InputExpansionNode
+Can be created under an ExpansionRegion (as bordered node).
+
+==== On Creation
+The ExpansionRegion used to create the InputExpansionNode is set as the "region as input" feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+The view shall be synchronized with the region as input reference, i.e. removing "region as input reference" shall remove the Node from its region (graphically) and selecting a new one shall add the Node to the selected region.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ExpansionNode.png[title="Representation InputExpansionNode"]
+
+=== InterruptibleActivityRegion
+Can be created under an Activity.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label.
+ 
+image::ActivityDiagram/InterruptibleActivityRegion.png[title="Representation InterruptibleActivityRegion"]
+
+=== JoinNode
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== On Resize
+Join Node size is fixed.
+
+==== Label
+If join spec field is set, label should start with {joinSpec = *Value*}, where value can be a value or an expression. +
+Join Node label is then followed by the name of the JoinNode.
+
+image::ActivityDiagram/JoinNode.png[title="Representation JoinNode"]
+
+=== LoopNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Rename element but doesn't change label.
+
+==== Label
+Label should be &laquo;loop node&raquo;.
+ 
+image::ActivityDiagram/LoopNode.png[title="Representation LoopNode"]
+
+=== MergeNode
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/MergeNode.png[title="Representation MergeNode"]
+
+=== OpaqueAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/OpaqueAction.png[title="Representation OpaqueAction"]
+
+=== OutputExpansionNode
+Can be created under an Expansion Region (as bordered node).
+
+==== On Creation
+The Expansion region used to create the Output Expansion Node is set as the "region as output" feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+The view shall be synchronized with the region as output reference, i.e. removing "region as output reference" shall remove the Node from its region (graphically) and selecting a new one shall add the Node to the selected region.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ExpansionNode.png[title="Representation OutputExpansionNode"]
+
+=== ReadExtentAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ReadExtentAction should be created with an InputPin owned by the ReadExtentAction and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ReadExtentAction.png[title="Representation ReadExtentAction"]
+
+=== ReadIsClassifiedObjectAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ReadIsClassifiedObjectAction (RICAO) tool shall create the RICAO, and create 2 pins:
+
+* An InputPin owned by the RICAO and referenced in the object feature.
+* An OutputPin owned by the RICAO and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ReadIsClassifiedObjectAction.png[title="Representation ReadIsClassifiedObjectAction"]
+
+=== ReadSelfAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ReadSelfAction shall ben named "this" once created. +
+ReadSelfAction tool shall create the ReadSelfAction, and create an OutputPin owned by the ReadSelfAction and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ReadSelfAction.png[title="Representation ReadSelfAction"]
+
+=== ReadStructuralFeatureAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ReadStructuralFeatureAction should be created with two pins:
+
+* An InputPin owned by the ReadStructuralFeatureAction and referenced as the object feature.
+* An OutputPin owned by the ReadStructuralFeatureAction and referenced in the result feature
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ReadStructuralFeatureAction.png[title="Representation ReadStructuralFeatureAction"]
+
+=== ReclassifyObjectAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ReclassifyObjectAction shall ben named "this" once created. +
+ReclassifyObjectAction tool shall create the ReclassifyObjectAction, and create an InputPin owned by the ReclassifyObjectAction and referenced in the object feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ReclassifyObjectAction.png[title="Representation ReclassifyObjectAction"]
+
+=== ReduceAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ReduceAction should be created with two pins:
+
+* An InputPin owned by the ReduceAction and referenced in the collection feature.
+* An OuputPin owned by the ReduceAction and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ReduceAction.png[title="Representation ReduceAction"]
+
+=== SequenceNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Rename element but doesn't change label.
+
+==== Label
+Label should be &laquo;sequence&raquo;.
+ 
+image::ActivityDiagram/SequenceNode.png[title="Representation SequenceNode"]
+
+=== SendObjectAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+SendObjectAction tool shall create the call operation action, and create two pins:
+
+* An InputPin owned by the Send Object Action and referenced in the request feature.
+* An OutputPin owned by the Send Object Action and referenced in the target feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/SendObjectAction.png[title="Representation SendObjectAction"]
+
+=== SendSignalAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+SendSignalAction tool shall create the Signal Action, and create an InputPin owned by the SendSignalAction and referenced in the target feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/SendSignalAction.png[title="Representation SendSignalAction"]
+
+=== StartClassifierBehaviorAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+StartClassifierBehaviorAction tool shall create the StartClassifierBehaviorAction, and create an InputPin owned by the StartClassifierBehaviorAction and referenced in the object feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/StartClassifierBehaviorAction.png[title="Representation StartClassifierBehaviorAction"]
+
+=== StartObjectBehaviorAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+StartObjectBehaviorAction tool shall create the StartObjectBehaviorAction, and create an InputPin owned by the StartObjectBehaviorAction and referenced in the object feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/StartObjectBehaviorAction.png[title="Representation StartObjectBehaviorAction"]
+
+=== StructuredActivityNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Rename element but does not change label.
+
+==== Label
+Label should be &laquo;sequence&raquo;.
+ 
+image::ActivityDiagram/StructuredActivityNode.png[title="Representation StructuredActivityNode"]
+
+=== TestIdentityAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+Test Identity Action should be created with three pins:
+
+* An InputPin owned by the TestIdentityAction and referenced in the first feature.
+* An InputPin owned by the TestIdentityAction and referenced in the second feature.
+* An OutputPin owned by the TestIdentityAction and referenced in the result feature
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/TestIdentityAction.png[title="Representation TestIdentityAction"]
+
+=== ValueSpecificationAction
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ValueSpecificationAction tool shall create the ValueSpecificationAction, and create an OutputPin owned by the ValueSpecificationAction and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ActivityDiagram/ValueSpecificationAction.png[title="Representation ValueSpecificationAction"]
+
+== Pins
+
+* Pins should always be displayed (they cannot be hidden) (Synchronised mapping).
+* Pins created during the creation of a node, should be named using the feature (referencing them) name.
+* By default, input pins and output pins shall be created on the right of the node containing them.
+
+===  ActionInputPin, InputPin and ValuePin
+
+==== On creation
+Create the pin and reference it using the appropriate reference (see Can Create list).
+
+==== Can create
+The list below describe the all the kind of nodes that should allow Input Pin creation (and also the name of the reference used to refer to the pin):
+
+* AddStructuralFeatureValueAction as object
+* AddStructuralFeatureValueAction as insertAt
+* AddStructuralFeatureValueAction as value
+* AddVariableValueAction as insertAt
+* AddVariableValueAction as value
+* BroadcastSignalAction as argument
+* CallBehaviorAction as argument
+* CallOperationAction as target
+* CallOperationAction as argument
+* ClearAssociationAction as object
+* ClearStructuralFeatureAction as value
+* ConditionalNode as structuredNodeInput
+* CreateLinkAction as inputValue
+* CreateLinkObject action as inputValue
+* DestroyLinkAction as inputValue
+* DestroyObjectAction as target
+* ExpansionRegion as structuredNodeInput
+* LoopNode as loopVariableInput
+* OpaqueAction as inputValue
+* ReadIsClassifiedObjectAction as object
+* ReadLinkAction as inputValue
+* ReadStructuralFeatureAction as object
+* ReclassifyObjectAction as object
+* ReduceAction as collection
+* SendObjectAction as target
+* SendObjectAction as request
+* SendSignalAction as target
+* SendSignalAction as argument
+* SequenceNode as structuredNodeInput
+* StartClassifierBehaviorAction as object
+* StartObjectBehaviorAction as object
+* StartObjectBehaviorAction as argument
+* StrucuredActivityNode as structuredNodeOutput
+* TestIdentityAction as first
+* TestIdentityAction as second
+* UnmarshallAction as object
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+InputPin deletion should also delete outgoing edges.
+
+==== On Semantic DnD
+Not available, pins shall always be displayed when they exist (sycnhronized).
+
+==== On Direct edit
+Not available on pins.
+
+==== Label
+Nothing special.
+
+==== Graphical Representation
+Input Pin inner arrow should always be displayed coming from outside the node to inside it. +
+Input Pin that have outgoing relation shall be displayed without arrow inside.
+
+image::ActivityDiagram/InputPin.png[title="Representation InputPin"]
+
+=== OutputPin
+
+==== Can create
+The list below describe the all the kind of nodes that should allow Output Pin creation (and also the name of the reference used to refer to the pin):
+
+* AcceptEventAction as result
+* AddStructuralFeatureValueAction as result
+* AcceptEventAction as result
+* CallBehaviorAction as result
+* CallOperationAction as result
+* ClearStructuralFeatureAction as result
+* CreateLinkObjectAction as result
+* CreateObjectAction as result
+* ConditionalNode as structuredNodeOutput
+* ConditionalNode as result
+* ExpansionRegion as structuredNodeOutput
+* LoopNode as bodyOutput
+* LoopNode as decider
+* LoopNode as loopVariable
+* LoopNode as result
+* OpaqueAction as outputValue
+* ReadExtentAction as result
+* ReadIsClassifiedObjectAction as result
+* ReadLinkAction as result
+* ReduceAction as result
+* ReadStructuralFeatureAction as result
+* SequenceNode as structuredNodeOutput
+* StartObjectBehaviorAction as result
+* StrucuredActivityNode as structuredNodeOutput
+* ReadSelfAction as result
+* ValueSpecificationAction as result
+* TestIdentityAction as result
+* UnmarshallAction as result
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+InputPin deletion should also delete outgoing edges.
+
+==== On Semantic DnD
+Not available, pins shall always be displayed when they exist (sycnhronized).
+
+==== On Direct edit
+Not available on pins.
+
+==== Label
+Nothing special.
+
+==== Graphical Representation
+Output Pin inner arrow should always be displayed coming from inside the node to outside it. +
+OuputPin that have incoming relation shall be displayed without arrow inside.
+
+image::ActivityDiagram/OutputPin.png[title="Representation OutputPin"]
+
+== Edges
+
+=== ControlFlow
+Can be created in an Activity Diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* Control Flow shall be created without name.
+* Selected source shall set its outgoing reference to the created Object Flow.
+* Selected target shall set its incoming reference to the created Object Flow.
+
+==== Can create
+Source and Target shall be Nodes or Pins. +
+Source shall not be a Flow Final Node or Activity Final Node. +
+Target shall not be an Initial Node. +
+Pins and Activity Parameter Nodes shall be available as source and target only if their control type is set to True. +
+(__Output Pins can be used as source and target and same for InputPin__)
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Control Flow reconnection should update incoming and outgoing field of old and new source and target. +
+Control Flow reconnection should update inPartition feature of the edge if new source or target are outside partition.
+
+==== On Deletion
+Control Flow deletion should remove deprecated incoming and outgoing field of old and current source and target.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Control Flow label shall be defined the following way: +
+1. Start with the name of the ControlFlow (no name by default). +
+2. if weight is defined, add content of the weight, with the following format: {weight=*content of the weight*} +
+3. If guard is defined, end with the content (not the name) of the guard field between []
+
+image::ActivityDiagram/ControlFlow.png[title="Representation ControlFlow"]
+
+=== Link (from Comment)
+Can be created under an Activity, an ActivityPartition, A InterruptibleActivityRegion, an ExpansionRegion,  a ConditionalNode, a LoopNode, a SequenceNode, a StructuredActivityNode. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ActivityDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Link (from Constraint)
+Can be created under an Activity, an ExpansionRegion, a ConditionalNode, a LoopNode, a SequenceNode, a StructuredActivityNode. +
+Link is a feature based edge (it does not represent a semantic element). +
+
+==== On Creation
+No element is created. Tool add the targeted element as an constrainedElement of the Constraint.
+
+==== Can create
+Source shall be a Constraint. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ActivityDiagram/Link_Constraint.png[title="Representation Link (from Constraint)"]
+
+=== ObjectFlow
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+
+* Object Flow shall be created without name.
+* Selected source shall set its outgoing reference to the created Object Flow.
+* Selected target shall set its incoming reference to the created Object Flow.
+
+==== Can create
+
+Source rules: +
+
+* Opaque Actions shall be the only kind of action that are directly available as source.
+* InputPin, Initial Node and Final Node shall not be available as target.
+* JoinNode and MergeNode shall be available as source only if they don't already have outgoing edge.
+* ForkNode shall be available as source only
+* Merge Node shall be available only if there is no outgoing link and if not already connected to a Control Flow.
+* DecisionNode Node shall be available only if not already connected to a Control Flow.
+* ActivityParameterNode shall be available as source only is they already have incoming edge.
+* OutputExpansionNode shall be available as target.
+
+Target rules: +
+
+* Opaque Actions shall be the only kind of action that are directly available as target.
+* OutputPin shall not be available as target.
+* ActivityParameterNode shall be available as target only is they already have outgoing edge.
+* DecisionNode shall be available as target if they have less than two incoming edge. 
+* ForkNode shall be available as target if they have no incoming edge and no incoming or outgoing control flow.
+* InitialNode shall not be available as target.
+* JoinNode shall be available as target unless they have an outgoing control flow.
+* MergeNode shall be available as target if they have no control flow.
+* InputExpansionNode shall be available as source.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Object Flow shall be update incoming and outgoing field of old and current source and target.
+
+==== On Deletion
+Object Flow shall delete incoming and outgoing field of old and current source and target.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Object Flow label shall be defined the following way: +
+1. Start with the name of the ControlFlow (no name by default). +
+2. if weight is defined, add content of the weight, with the following format: {weight=*content of the weight*} +
+3. If guard is defined, end with the content (not the name) of the guard field between [] 
+
+image::ActivityDiagram/ObjectFlow.png[title="Representation ObjectFlow"]

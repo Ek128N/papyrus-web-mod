@@ -1,0 +1,759 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Class Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package or under a Model (but not inside a profile).
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+=== Class
+Can be created in a Class Diagram, under a Model, a Package, an Interface or a Class. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be in italic if isAbstract is set to true.
+ 
+image::ClassDiagram/Class.png[title="Representation Class"]
+
+=== Comment
+Can be created under a Class Diagram, under a Model or a Package.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== DataType
+Can be created in an Class Diagram, under a Model, a Package, an Interface or a Class. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;dataType&raquo; +
+Label should be in italic if isAbstract is set to true.
+ 
+image::ClassDiagram/DataType.png[title="Representation DataType"]
+
+=== Enumeration
+Can be created in a Class Diagram, under a Model, a Package, an Interface or a Class. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;enumeration&raquo; +
+Label should be in italic if isAbstract is set to true.
+ 
+image::ClassDiagram/Enumeration.png[title="Representation Enumeration"]
+
+=== EnumerationLiteral
+Can be created under an Enumeration.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ClassDiagram/EnumerationLiteral.png[title="Representation EnumerationLiteral"]
+
+=== Interface
+Can be created in a Class Diagram, under a Model, a Package, an Interface or a Class. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;interface&raquo; +
+Label should be in italic if isAbstract is set to true.
+ 
+image::ClassDiagram/Interface.png[title="Representation Interface"]
+
+=== Model
+Can be created in a Class Diagram, under a Model and a Package. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ClassDiagram/Model.png[title="Representation Model"]
+
+=== Package
+Can be created in a Class Diagram, under a Model and a Package. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+image::ClassDiagram/Package.png[title="Representation Package"]
+
+=== PrimitiveType
+Can be created in a Class Diagram, under a Model, a Package, an Interface or a Class. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;primitive&raquo; +
+Label should be in italic if isAbstract is set to true.
+ 
+image::ClassDiagram/PrimitiveType.png[title="Representation PrimitiveType"]
+
+=== Property 
+Can be created under a Class, a DataType, a PrimitiveType, an Interface and a Signal. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Property labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add "/" if isDerived. +
+Add Property Name and ":" +
+Suffixed with type name or <Undefined> if not defined. +
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+All label should be underlined if isStatic is set to true.
+
+image::ClassDiagram/Property.png[title="Representation Property"]
+
+=== Operation
+Can be created under a Class, a DataType, a PrimitiveType and an Interface. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Operation labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add Operation Name. +
+Suffixed with non return (direction kind) parameters labels listed inside () and separated by a comma. +
+If one or more return parameter is defined, add ":" followed by the first return parameter type name.
+
+Parameters label: +
+Start with direction keyword: "in", "inout", "out". +
+Add parameter names and ":" +
+Add Type name or <Undefined> in not defined.
+
+All label shall be underlined if isStatic is set to true. +
+All label shall be in italic if isAbstract is set to true.
+
+image::ClassDiagram/Operation.png[title="Representation Operation"]
+
+image::ClassDiagram/OperationWithInOutReturnParameters.png[title="Representation Operation with an in, an out and a return parameter"]
+
+=== Reception
+Can be created under a Class. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Reception labels shall be composed the following way: +
+Label should be prefixed with &laquo;signal&raquo; +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add Reception Name. +
+Suffixed with non return (direction kind) parameters labels listed inside () and separated by a comma. +
+
+Parameters label: +
+Start with direction : in, inout, out or not displayed if return. +
+Add parameter names and ":" +
+Add Type name or <Undefined> in not defined.
+
+All label shall be underlined if isStatic is set to true. +
+All label shall be in italic if isAbstract is set to true.
+
+image::ClassDiagram/Reception.png[title="Representation Reception"]
+
+image::ClassDiagram/ReceptionWithParameters.png[title="Representation Reception with Parameters"]
+
+=== Signal
+Can be created in a Class Diagram, under a Model or under a Package. 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;signal&raquo; followed by the name of the signal. 
+Label should be in italic if isAbstract is set to true.
+
+image::ClassDiagram/Signal.png[title="Representation Signal"]
+
+== Edges
+
+=== Abstraction
+Can be created in an Class Diagram, under an Package and a Model.
+
+==== On Creation
+Create an Abstraction link stored at the same level thatwhere client reference is set to the source and supplier is the target.
+
+==== Can create
+Source and targets can be Model, Package, Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Client and Supplier reference are updated. +
+Abstraction link is transfered to the Package or Model if the source is reconnected to it, or to the closest Model or Package containing the element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;abstraction&raquo; + name of the abstraction.
+ 
+image::ClassDiagram/Abstraction.png[title="Representation Abstraction"]
+
+=== Association
+Can be created in an Class Diagram, under a Package and a Model.
+
+==== On Creation
+Create an Association link stored under the root of the Diagram. +
+The association created contains two properties, one for each end. +
+The default properties for both ends are set to: +
+- Owner: Association +
+- Navigable: False +
+- Aggregation: None +
+- Multiplicity: 1 +
+The created association is created with an "org.eclipse.papyrus" EAnnotations that has an entry with nature / UML_Nature as key / value.
+
+==== Can create
+Source and targets can be Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Properties are updated accordingly.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Name of the association (no name by default). +
+Each ends labels are defined as follow: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package), followed by the name of the end and its multiplicity +++[0..1], [1], [*], [1..*]+++.
+
+image::ClassDiagram/Association.png[title="Representation Association"]
+
+=== CompositeAssociation
+Can be created in an Class Diagram, under a Package and a Model.
+
+==== On Creation
+Create an Association link stored under the root of the Diagram. +
+The association created contains one properties for the source. +
+The default properties for both ends are set to: +
+- Owner: Association on source and Classifier on target +
+- Navigable: False for source and True for target +
+- Aggregation: None for source and 0..1 for target +
+- Multiplicity: 1 for source and composite for target +
+The created association is created with an "org.eclipse.papyrus" EAnnotations that has an entry with nature / UML_Nature as key / value.
+
+==== Can create
+Source and targets can be Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Properties are updated accordingly.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Name of the association (no name by default). +
+Each ends labels are defined as follow: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package), followed by the name of the end and its multiplicity +++[0..1], [1], [*], [1..*]+++.
+ 
+image::ClassDiagram/CompositeAssociation.png[title="Representation CompositeAssociation"]
+
+=== ContainmentLink
+Can be created in an Class Diagram, under an Package and a Model. +
+ContainmentLink is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. The targeted element is now owned by the source element.
+
+==== Can create
+Source can be a Model or a Package and target can be Model, Package, Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+The source and target of the link can not be reconnected.
+
+==== On Deletion
+It can not be deleted.
+
+==== On Semantic DnD
+No semantic element attached.
+
+==== On Direct Edit
+Not applicable.
+
+==== Label
+No name.
+ 
+image::ClassDiagram/ContainmentLink.png[title="Representation ContainmentLink"]
+
+=== Dependency
+Can be created in an Class Diagram, under an Package and a Model.
+
+==== On Creation
+Create a Dependency link where client reference is set to the source and supplier is the target.
+
+==== Can create
+Source and targets can be Model, Package, Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Client and Supplier reference are updated. +
+Dependency link is transfered to the Package or Model if the source is reconnected to it, or to the closest Model or Package containing the element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special. 
+image::ClassDiagram/Dependency.png[title="Representation Dependency"]
+
+=== Generalization
+Can be created in an Class Diagram, under an Package and a Model.
+
+==== On Creation
+Create an Generalization link stored under the source used for the creation.
+
+==== Can create
+Source and targets can be Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label.
+
+image::ClassDiagram/Generalization.png[title="Representation Generalization"]
+
+=== Link (from Comment)
+Can be created under a Class Diagram, under a Model or a Package. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::ClassDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== PackageImport
+Can be created on a Class Diagram, under a Model and under a Package.
+
+==== On Creation
+Package Import link is created under the source semantic element.
+
+==== Can create
+Source and target can be Models or Packages
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Package Import link is relocated under the new source semantic element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+No edition is done since there is no name to edit.
+
+==== Label
+No name, label is only &laquo;import&raquo;.
+ 
+image::ClassDiagram/PackageImport.png[title="Representation PackageImport"]
+
+=== PackageMerge
+Can be created on a Class Diagram, under a Model and under a Package.
+
+==== On Creation
+Package Merge link is created under the source semantic element.
+
+==== Can create
+Source and target can be Models or Packages
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Package Merge link is relocated under the new source semantic element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+No edition is done since there is no name to edit.
+
+==== Label
+No name, label should be only &laquo;merge&raquo;.
+ 
+image::ClassDiagram/PackageMerge.png[title="Representation PackageMerge"]
+
+=== SharedAssociation
+Can be created in an Class Diagram, under a Package and a Model.
+
+==== On Creation
+Create an Association link stored under the root of the Diagram. +
+The association created contains one properties for the source. +
+The default properties for both ends are set to: +
+- Owner: Association on source and Classifier on target +
+- Navigable: False for source and True for target +
+- Aggregation: None for source and 0..1 for target +
+- Multiplicity: 1 for source and shared for target +
+The created association is created with an "org.eclipse.papyrus" EAnnotations that has an entry with nature / UML_Nature as key / value.
+
+==== Can create
+Source and targets can be Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Properties are updated accordingly.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Name of the association (no name by default). +
+Each ends labels are defined as follow: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package), followed by the name of the end and its multiplicity +++[0..1], [1], [*], [1..*]+++.
+
+image::ClassDiagram/SharedAssociation.png[title="Representation SharedAssociation"]
+
+=== Usage
+Can be created in an Class Diagram, under an Package and a Model.
+
+==== On Creation
+Create an Usage link where client reference is set to the source and supplier is the target.
+
+==== Can create
+Source and targets can be Model, Package, Class, Interface, DataType, PrimitiveType, Enumeration.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Client and Supplier reference are updated. +
+Usage link is transfered to the Package or Model if the source is reconnected to it, or to the closest Model or Package containing the element.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be prefixed with &laquo;use&raquo; followed by the name of the usage.
+ 
+image::ClassDiagram/Usage.png[title="Representation Usage"]

@@ -10,6 +10,7 @@
 
  Contributors:
      Obeo - initial API and implementation
+     Artal Technologies - [201] Add specification description
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -116,6 +117,20 @@
 									<!-- (Optional) Directory to copy to. By default uses the option 
 										`outputDirectory` -->
 									<targetPath>dev/imgs</targetPath>
+									<!-- (Optional) If not set, includes all files but default exceptions 
+										mentioned -->
+									<includes>
+										<include>**/*.png</include>
+										<include>**/*.svg</include>
+									</includes>
+								</resource>
+								<resource>
+									<!-- (Mandatory) Directory to copy from. Paths are relative to maven's 
+										${baseDir} -->
+									<directory>../../doc/spec/diagram-spec/imgs</directory>
+									<!-- (Optional) Directory to copy to. By default uses the option 
+										`outputDirectory` -->
+									<targetPath>spec/diagram-spec/imgs</targetPath>
 									<!-- (Optional) If not set, includes all files but default exceptions 
 										mentioned -->
 									<includes>

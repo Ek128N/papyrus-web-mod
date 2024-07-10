@@ -1,0 +1,279 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+////
+
+= Composite structure Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+Can be created under a Package and under a Model (but not inside a Profile).
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+=== Class
+Can be created in a Composite structure Diagram and under a Class.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label should be in italic if isAbstract is set to true.
+ 
+image::CompositeStructureDiagram/Class.png[title="Representation Class"]
+
+=== Comment
+Can be created under a Composite Structure Diagram and under a Class.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Edit the body of the Comment.
+
+==== Label
+Nothing special.
+
+image::Shared/Comment.png[title="Representation Comment"]
+
+=== Port
+Can be created on a Class or under a typed Property.
+
+==== On Creation
+When created under a typed Property, the owner of the port is the Type of the property.
+
+==== Can create
+Only under a top level Class (not under inner class).
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Port labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add "/" if isDerived. +
+Add Property Name and ":" +
+Add "~" if is conjugated +
+Suffixed with type name or <Undefined> if not defined. +
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+image::CompositeStructureDiagram/Port.png[title="Representation Port"]
+
+image::CompositeStructureDiagram/PortOnProperty.png[title="Representation Port on Property"]
+
+=== Property
+Can be created under a Class or under a typed Property.
+
+==== On Creation
+When created under a typed Property, the created property will be owned by the type of the Property.
+
+==== Can create
+Only under a top level Class (not under inner class).
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Property labels shall be composed the following way: +
+Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
+Add "/" if isDerived. +
+Add Property Name and ":" +
+Suffixed with type name or <Undefined> if not defined. +
+Add the multiplicity : +++[0..1], [1], [*], [1..*]+++ +
+If a default value is defined, add "=" followed by default value label
+
+Label should be in underlined if isStatic is set to true.
+
+image::CompositeStructureDiagram/Property.png[title="Representation Property"]
+
+image::CompositeStructureDiagram/PropertyOnProperty.png[title="Representation Property on Property"]
+
+== Edges
+
+=== Connector
+Can be created on a Composite Structure Diagram or under a Class.
+
+==== On Creation
+Create the connector and two connector ends.
+
+==== Can create
+Only under a top level Class (not under inner class).
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Name at the center and multiplicity at each end.
+
+image::CompositeStructureDiagram/Connector.png[title="Representation Connector"]
+
+=== Generalization
+Can be created on a Composite Structure Diagram or under a Class.
+
+==== On Creation
+Generalization link is stored under the source of the link.
+
+==== Can create
+Source and Target must be Class.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Cannot be reconnected.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+No label
+
+image::CompositeStructureDiagram/Generalization.png[title="Representation Generalization"]
+
+=== Link (from Comment)
+Can be created under a Composite Structure Diagram and under a Class. +
+Link is a feature based edge (it does not represent a semantic element).
+
+==== On Creation
+No element is created. Tool add the targeted element as an annotatedElement of the Comment.
+
+==== Can create
+Source shall be a Comment. +
+Target can be anything.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Not available. Nothing to edit.
+
+==== Label
+No label.
+
+image::CompositeStructureDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+=== Usage
+Can be created on a Composite Structure Diagram or under a Class.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Source and target can be Class, Properties or Port.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Cannot be reconnected.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Label shall be prefixed with &laquo;use&raquo;.
+
+image::CompositeStructureDiagram/Usage.png[title="Representation Usage"]
