@@ -27,14 +27,22 @@ Unless Diagram is created under an Activity, a new Activity is created and displ
 === AcceptCallAction
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
 
+To check the behavior with EEF properties View, use a Sequence Diagram, create a lifeline and a message, select the message and in its Properties, add a signature by creating an AcceptCallAction.
+
+NOTE: Be careful to check code in org.eclipse.papyrus.uml.diagram.activity.edit.utils.updater.intermediateactions.AcceptCallActionPinUpdater
+
 ==== On Creation
 AcceptCallAction should be created with an OutputPin owned by the AcceptCallAction and this output pin is referenced as the return information feature.
-
+ Create an Outpin named "return information" in feature "AcceptCallAction#returnInformation" [1..1]
+ add a packageImport if the rootPackage (or model) has not the "Primitive Types" library imported
+ update Pins, (see issues [86] Handle Operation #98 [Concept] Parameter #103 for similar behavior):
+ Set AcceptCallAction#isUnmarshall to true.
+ Create a Trigger, set it to the AcceptEventAction#trigger feature, set a CallEvent to Trigger#event feature, init an Operation to the CallEvent#operation feature.
 ==== Can create
 Nothing special.
 
 ==== OnSet
-Nothing special.
+ When adding a trigger ("triggers" feature), update Pins.
 
 ==== On Reconnect
 Nothing special.
@@ -63,7 +71,12 @@ Nothing special.
 Nothing special.
 
 ==== OnSet
-Nothing special.
+* When we add OutputPin in AcceptEventAction PS should add them to the result feature. 
+* When the trigger is set 
+    * if the event of the trigger is a TimeEvent then the shape should represent a hourglass. (no specific pin are created)
+    * in other case the shape should represent a flag.
+    * if there is multiple type of trigger event then the shape should represent a flag.
+* When we remove triggers if it stay only one trigger and this trigger has a TimeEvent as event then the shape should represent a hourglass.
 
 ==== On Reconnect
 Nothing special.
@@ -79,14 +92,14 @@ Nothing special.
 
 ==== Label
 Nothing special.
- 
+
 image::ActivityDiagram/AcceptEventAction.png[title="Representation AcceptEventAction"]
 
 === Activity
 Can be created under an Activity.
 
 ==== On Creation
-Nothing special.
+PS should add the Activity on BehavioredClassifier#ownedBehavior when it is add into a BehavioredClassifier.
 
 ==== Can create
 Nothing special.
@@ -111,6 +124,8 @@ Activity name prefixed with &laquo;activity&raquo; or &laquo;activitity, singleE
 Label should be in italic if isAbstract is set to true.
 
 image::ActivityDiagram/Activity.png[title="Representation Activity"]
+
+
 
 === ActivityFinalNode
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
@@ -160,7 +175,7 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+* When a parameter is drop on the activity PS should create an ActivityParameterNode
 
 ==== On Direct Edit
 Nothing special.
@@ -196,7 +211,7 @@ Nothing special.
 
 ==== Label
 The ActivityPartition label is the name of the represented element if defined, or the name of the ActivityPartition otherwise. 
- 
+
 image::ActivityDiagram/ActivityPartition.png[title="Representation ActivityPartition"]
 
 === AddStructuralFeatureValueAction
@@ -223,7 +238,7 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+* When we drop a property on the diagram, PS should propose to create a AddStructuralFeatureValueAction
 
 ==== On Direct Edit
 Nothing special.
@@ -232,6 +247,78 @@ Nothing special.
 Nothing special.
  
 image::ActivityDiagram/AddStructuralFeatureValueAction.png[title="Representation AddStructuralFeatureValueAction"]
+
+
+=== ActivityNode
+An ActivityNode is an abstract class which cannot be represented. See implementations like InitialNode, ActivityFinalNode, DecisionNode, AcceptEventAction, etc. which can be represented in an Activity diagram.
+
+==== On Creation
+See org.eclipse.papyrus.uml.service.types.helper.ActivityNodeHelper.getConfigureCommand(ConfigureRequest):
+Following point also cover the code of org.eclipse.papyrus.uml.service.types.helper.ActivityNodeHelper.getCreateCommand(CreateElementRequest)
+
+ If created in an Activity, add the ActivityNode the containment feature Activity#ownedNode.
+ If created in an ActivityPartition, add the ActivityNode the non-containment feature ActivityPartition#node (or add the ActivityPartition to ActivityNode#inPartition). Retrieve the parent Activity of the ActivityPartition and add the ActivityNode to the containment feature Activity#ownedNode.
+ If created in an InterruptibleActivityRegion, add the ActivityNode the non-containment feature InterruptibleActivityRegion#node (or add the InterruptibleActivityRegion to ActivityNode#inInterruptibleRegion). Retrieve the parent Activity of the InterruptibleActivityRegion and add the ActivityNode to the containment feature Activity#ownedNode.
+
+==== On Move
+See org.eclipse.papyrus.uml.service.types.helper.ActivityNodeHelper.getMoveOutFromPartitionCommand(MoveRequest):
+
+ If we are moving an ActivityNode from an ActivityPartition "AP1" to another ActivityPartition "AP2", remove "AP1" from the feature ActivityNode#inPartition then add "AP2" to the feature ActivityNode#inPartition (note that the containment feature must be in an Activity: Activity#ownedNode, so I guess we should also retrieve the Activity containing the target ActivityPartition and add the ActivityNode to the Activity#ownedNode, this is not specified in the code, but it must be kept in mind).
+ If we are moving an ActivityNode from an ActivityPartition "AP1" to an InterruptibleActivityRegion "IAR2", remove "AP1" from the feature ActivityNode#inPartition then add "IAR2" to the feature ActivityNode#inInterruptibleRegion (note that the containment feature must be in an Activity: Activity#ownedNode, so I guess we should also retrieve the Activity containing the target InterruptibleActivityRegion and add the ActivityNode to the Activity#ownedNode, this is not specified in the code, but it must be kept in mind).
+ If we are moving an ActivityNode from an InterruptibleActivityRegion "IAR1" to another InterruptibleActivityRegion "IAR2", remove "IAR1" from the feature ActivityNode#inInterruptibleRegion then add "IAR2" to the feature ActivityNode#inInterruptibleRegion (note that the containment feature must be in an Activity: Activity#ownedNode, so I guess we should also retrieve the Activity containing the target InterruptibleActivityRegion and add the ActivityNode to the Activity#ownedNode, this is not specified in the code, but it must be kept in mind).
+ If we are moving an ActivityNode from an InterruptibleActivityRegion "IAR1" to an ActivityPartition "AP2", remove "IAR1" from the feature ActivityNode#inInterruptibleRegion then add "AP2" to the feature ActivityNode#inPartition (note that the containment feature must be in an Activity: Activity#ownedNode, so I guess we should also retrieve the Activity containing the target ActivityPartition and add the ActivityNode to the Activity#ownedNode, this is not specified in the code, but it must be kept in mind).
+
+==== Can create
+Always
+
+==== OnSet
+Nothing special
+
+==== On Deletion
+ See org.eclipse.papyrus.uml.service.types.helper.ActivityNodeHelper.getBasicDestroyElementCommand(DestroyElementRequest). When an ActivityNode is removed, remove it from the containment feature Activity#ownedNode. There may be issues with other features keeping a reference to the deleted ActivityNode, so some features may need to be updated : Activity#node, ActivityPartition#node, InterruptibleActivityRegion#node.
+EDIT: this part is handled by the UML service generic delete mechanism
+
+ Incoming and Outgoing ActivityEdges need to be deleted. See org.eclipse.papyrus.uml.service.types.helper.advice.ActivityNodeHelperAdvice.getDestroyActivityEdgeCommand(DestroyDependentsRequest)
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Edit the name
+
+==== Label
+ActivityNode is an abstract class, see implementations for the label displayed.
+
+
+### AddVariableValueAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+#### On Creation
+* PS should create an InputPin owned by the AddVariableValueAction and referenced in the insertAt feature.
+* PS should create an InputPin owned by the AddVariableValueAction and referenced in the value feature.
+
+#### Can create
+Nothing special.
+
+#### OnSet
+Nothing special.
+
+#### On Reconnect
+Nothing special.
+
+#### On Deletion
+Nothing special.
+
+#### On Semantic DnD
+Nothing special.
+
+#### On Direct Edit
+Nothing special.
+
+#### Label
+Nothing special.
+
 
 === BroadcastSignalAction
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
@@ -266,13 +353,14 @@ image::ActivityDiagram/BroadcastSignalAction.png[title="Representation Broadcast
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
 
 ==== On Creation
-Nothing special.
+* In Papyrus-Desktop a pop-up appear on creation, in Papyrus-Sirius we don't want it.
 
 ==== Can create
 Nothing special.
 
 ==== OnSet
-Nothing special.
+* When we add InputPin in CallBehaviorAction PS should add them to the argument feature.
+* When we add OutputPin in CallBehaviorAction PS should add them to the result feature. 
 
 ==== On Reconnect
 Nothing special.
@@ -281,7 +369,7 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+* When we drop a behavior on the diagram, PS should propose to create a CallBehaviorAction
 
 ==== On Direct Edit
 Nothing special.
@@ -501,6 +589,135 @@ Nothing special.
  
 image::ActivityDiagram/CreateObjectAction.png[title="Representation CreateObjectAction"]
 
+
+
+=== CentralBufferNode
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+* PS should add a sort of "comment" on the top of the node when the field selection is not empty
+* PS should remove the "comment" when the field selection become empty back
+
+==== On Move
+* PS shoud move both the node and the "comment" when its existe.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+**Label of the node**
+«centralBuffer»
+*name of the CentralBufferNode*
+*name of the type of the CentralBufferNode*
+
+**Label of the "comment"**
+«selection»
+*Name of the selection*
+
+=== ClearStructuralFeatureAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* PS should create an InputPin owned by the ClearStructuralFeatureAction and referenced in the object feature.
+* PS should create an OutputPin owned by the ClearStructuralFeatureAction and referenced in the result feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+* When we drop a property on the diagram, PS should propose to create a ClearStructuralFeatureAction
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+
+=== CreateLinkAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* PS should create an InputPin owned by the CreateLinkAction and referenced in the inputValue feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+* When we add InputPin in CreateLinkAction PS should add them to the inputValue feature.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+* When we drop an association on the diagram, PS should propose to create a CreateLinkAction. **(precise spec for EndData should be provided)**
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+=== CreateLinkObjectAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* PS should create an OutputPin owned by the CreateLinkObjectAction and referenced in the result feature.
+* PS should create an InputPin owned by the CreateLinkObjectAction and referenced in the inputValue feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+
 === DecisionNode
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
 
@@ -562,11 +779,80 @@ Nothing special.
  
 image::ActivityDiagram/DestroyObjectAction.png[title="Representation DestroyObjectAction"]
 
-=== ExpansionRegion
-Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+=== DestroyLinkAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* PS should create an InputPin owned by the DestroyLinkAction and referenced in the inputValue feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+* When we drop an association on the diagram, PS should propose to create a DestroyLinkAction. **(precise spec for EndData should be provided)**
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+ 
+
+=== DataStoreNode
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
 
 ==== On Creation
 Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+* PS should add a sort of "comment" on the top of the node when the field selection is not empty.
+* PS should remove the "comment" when the field selection become empty back.
+
+==== On Move
+* PS shoud move both the node and the "comment" when its existe.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+**Label of the node**
+«datastore»
+*name of the DataStoreNode*
+*name of the type of the DataStoreNode*
+
+**Label of the "comment"**
+«selection»
+*Name of the selection*
+
+=== ExpansionRegion
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+It's a container which can contains at least ActivityNode.
+==== On Creation
+* The ExpansionRegion should be added to the group field of the Activity.
 
 ==== Can create
 Nothing special.
@@ -652,37 +938,6 @@ Nothing special.
  
 image::ActivityDiagram/FlowFinalNode.png[title="Representation FlowFinalNode"]
 
-=== ForkNode
-Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
-
-==== On Creation
-Nothing special.
-
-==== Can create
-Nothing special.
-
-==== OnSet
-Nothing special.
-
-==== On Reconnect
-Nothing special.
-
-==== On Deletion
-Nothing special.
-
-==== On Semantic DnD
-Nothing special.
-
-==== On Direct Edit
-Nothing special.
-
-==== On resize
-Fork Node size is fixed.
-
-==== Label
-Nothing special.
- 
-image::ActivityDiagram/ForkNode.png[title="Representation ForkNode"]
 
 === InitialNode
 Can be created in an Activity Diagram, under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode and StructuredActivityNode.
@@ -743,7 +998,7 @@ Nothing special.
 image::ActivityDiagram/ExpansionNode.png[title="Representation InputExpansionNode"]
 
 === InterruptibleActivityRegion
-Can be created under an Activity.
+Can be created under an Activity.It's a container which can contains at least ActivityNode.
 
 ==== On Creation
 Nothing special.
@@ -752,13 +1007,16 @@ Nothing special.
 Nothing special.
 
 ==== OnSet
-Nothing special.
+* when the user add nodes inside the InterruptibleActivityRegion nodes are graphically added to the InterruptibleActivityRegion but semantically added to the activity owning the InterruptibleActivityRegion, however tne added node is referenced by the feature InterruptibleActivityRegion#node and the feature ActivityNode#inInterruptibleRegion of the added node is set with the InterruptibleActivityRegion.
+
+==== On Move
+* On move of a node from a InterruptibleActivityRegion, features ActivityNode#inInterruptibleRegion and InterruptibleActivityRegion#node should be update.
 
 ==== On Reconnect
-Nothing special.
+* Edges can got throw the border of this compartment.
 
 ==== On Deletion
-Nothing special.
+* One deletion, PS should note delete nodes inside the InterruptibleActivityRegion at least semantically.
 
 ==== On Semantic DnD
 Nothing special.
@@ -797,6 +1055,8 @@ Nothing special.
 
 ==== On Resize
 Join Node size is fixed.
+* The JoinNode should keep a rectangular form with mostly the same proportion as shown in the following figure.
+* On resize the JoinNode should change orientation or be extend.
 
 ==== Label
 If join spec field is set, label should start with {joinSpec = *Value*}, where value can be a value or an expression. +
@@ -808,13 +1068,16 @@ image::ActivityDiagram/JoinNode.png[title="Representation JoinNode"]
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
 
 ==== On Creation
-Nothing special.
+ Should be add on Activity#structuredNode
+ When the user add nodes inside a StructuredActivityNode is should be added to the StructuredActivityNode#node feature
+ PS should create an OutputPin owned by the LoopNode and referenced in the decider feature. Edit: CEA think we should not initialize the decider feature. The decider feature should references a Pin of a Node in the LoopNode.
 
 ==== Can create
 Nothing special.
 
 ==== OnSet
-Nothing special.
+ When we add InputPin in LoopNode PS should add them to the loopNodeInput [0..-1] feature.
+ When we add OutputPin in LoopNode PS should add them to the result [0..-1] feature.
 
 ==== On Reconnect
 Nothing special.
@@ -1105,17 +1368,80 @@ Nothing special.
  
 image::ActivityDiagram/ReduceAction.png[title="Representation ReduceAction"]
 
-=== SequenceNode
-Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+=== ReadVariableAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
 
 ==== On Creation
-Nothing special.
+* PS should create an OutputPin owned by the ReadVariableAction and referenced in the result feature.
 
 ==== Can create
 Nothing special.
 
 ==== OnSet
 Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+
+=== ReadLinkAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* PS should create an OutputPin owned by the ReadLinkAction and referenced in the result feature.
+* PS should create an InputPin owned by the ReadLinkAction and referenced in the inputValue feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+* When we drop an association on the diagram, PS should propose to create a ReadLinkAction. **(precise spec for EndData should be provided)**
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+
+
+=== SequenceNode
+Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
+
+==== On Creation
+ Should be add on Activity#structuredNode
+ When the user add nodes inside a StructuredActivityNode is should be added to the StructuredActivityNode#node feature. The user can only add ExecutableNode to the SequenceNode#executableNode feature (which redefines StructuredActivityNode#node feature)
+
+==== Can create
+Nothing special.
+
+==== OnSet
+ When we add OutputPin in SequenceNode PS should add them to the structuredNodeOutput feature.
+ When we add InputPin in SequenceNode PS should add them to the structuredNodeInput feature.
 
 ==== On Reconnect
 Nothing special.
@@ -1234,7 +1560,8 @@ StartObjectBehaviorAction tool shall create the StartObjectBehaviorAction, and c
 Nothing special.
 
 ==== OnSet
-Nothing special.
+* When we add InputPin in StartObjectBehaviorAction PS should add them to the argument feature.
+* When we add OutputPin in StartObjectBehaviorAction PS should add them to the result feature.
 
 ==== On Reconnect
 Nothing special.
@@ -1256,14 +1583,19 @@ image::ActivityDiagram/StartObjectBehaviorAction.png[title="Representation Start
 === StructuredActivityNode
 Can be created under an Activity, ActivityPartition, ConditionnalNode, ExpansionRegion, InterruptibleActivityRegion, LoopNode, SequenceNode and StructuredActivityNode.
 
+* When the user add nodes inside a StructuredActivityNode is should be added to the StructuredActivityNode#node feature
+Same Rules than other actions:
+
 ==== On Creation
-Nothing special.
+ Should be add on Activity#structuredNode
+ When the user add nodes inside a StructuredActivityNode is should be added to the StructuredActivityNode#node feature
 
 ==== Can create
 Nothing special.
 
 ==== OnSet
-Nothing special.
+ When we add OutputPin in StructuredActivityNode PS should add them to the structuredNodeOutput feature.
+ When we add InputPin in StructuredActivityNode PS should add them to the structuredNodeInput feature.
 
 ==== On Reconnect
 Nothing special.
@@ -1343,6 +1675,37 @@ Nothing special.
 Nothing special.
  
 image::ActivityDiagram/ValueSpecificationAction.png[title="Representation ValueSpecificationAction"]
+
+
+
+=== UnmarshallAction
+
+Can be created in an Activity diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion , LoopNode, SequenceNode , ConditionnalNode, ExpansionRegion and StructuredActivityNode.
+
+==== On Creation
+* PS should create an InputPin owned by the UnmarshallAction and referenced in the object feature.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+* When we add OutputPin in UnmarshallAction PS should add them to the result feature. 
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+* When we drop a Classifier on the diagram, PS should propose to create a UnmarshallAction.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
 
 == Pins
 
@@ -1477,7 +1840,35 @@ OuputPin that have incoming relation shall be displayed without arrow inside.
 
 image::ActivityDiagram/OutputPin.png[title="Representation OutputPin"]
 
+==== ValuePin
+
+Same as InputPin and ActionInputPin but a new label is added when the value is set.
+
+
 == Edges
+
+=== AnyReceiveEvent  
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+Nothing special.
 
 === ControlFlow
 Can be created in an Activity Diagram, under an Activity, ActivityPartition, InterruptibleActivityRegion, LoopNode, SequenceNode, ConditionnalNode, ExpansionRegion and StructuredActivityNode.
@@ -1508,7 +1899,7 @@ Control Flow deletion should remove deprecated incoming and outgoing field of ol
 Nothing special.
 
 ==== On Direct Edit
-Nothing special.
+* PS should allow the Direct Edit on simple expression for weight and guard as well of the name of the ControlFlow (at least for OpaqueExpression and Literals).
 
 ==== Label
 Control Flow label shall be defined the following way: +
@@ -1517,6 +1908,125 @@ Control Flow label shall be defined the following way: +
 3. If guard is defined, end with the content (not the name) of the guard field between []
 
 image::ActivityDiagram/ControlFlow.png[title="Representation ControlFlow"]
+
+
+=== ExceptionHandler
+
+Can be created in an Activity diagram, under an ExecutableNode.
+
+==== On Creation
+* PS should add the ExceptionHandler under the source
+* PS should set the exceptionInput field with the target ObjectNode
+* PS should set the handlerBody field with the target ObjectNode owner
+* PS should set the protectedNode field with the source
+
+==== Can create
+* PS should allow the creation of ExceptionHandler between an ExecutableNode as source and a ObjectNode as target
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+* PS should change the location of the link when the source is reconnect
+* Ps should update the ExceptionHandler#exceptionInput feature on reconnect
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+=== ExtensionEnd 
+
+==== On Creation
+ Aggregation is initialized with Composite value
+
+==== Can create
+Nothing special.
+
+==== OnSet
+ Type must be a stereotype. See org.eclipse.uml2.uml.internal.impl.ExtensionEndImpl.setType(Type):
+	@Override
+	public void setType(Type newType) {
+		if (newType != null && !(newType instanceof Stereotype)) {
+			throw new IllegalArgumentException(
+				"newType must be an instance of Stereotype"); //$NON-NLS-1$
+		}
+		...
+	}
+ multiplicity should be 1 or 0..1
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+Same as Property #73
+
+ if feature "isStatic" is true, label is underline
+ label should display visibility, is derived, name, type, multiplicity and default value.
+
+
+=== Extension 
+
+==== On Creation
+ The new Extension is added into the PackagedElement feature of the container.
+
+ The Extension contains an ExtensionEnd
+
+ The ExtensionEnd is typed by the source (the stereotype)
+
+ The ExtensionEnd Aggregation feature value is AggregationKind.COMPOSITE_LITERAL
+
+ A new Property is created:
+
+name: ExtensionHelper.BASE + target.getName());
+
+type: the target (the class)
+
+association: The new created Extension
+
+ggregation: AggregationKind.NONE_LITERAL
+
+Lower: 0
+
+newExtension.getMemberEnds().add(property);
+
+source.getOwnedAttributes().add(property);
+
+==== Can Create
+ The source is a Stereotype
+ The target is a Class
+
+==== Container
+ The first source ( the stereotype) parent container of type Package
+
+==== Can Reconnect
+TODO
+
+==== Delete tool
+TODO
+
+==== DnD tools
+TODO
+
+==== Direct edit tool
+TODO
+
+==== Label
+TODO
+
 
 === Link (from Comment)
 Can be created under an Activity, an ActivityPartition, A InterruptibleActivityRegion, an ExpansionRegion,  a ConditionalNode, a LoopNode, a SequenceNode, a StructuredActivityNode. +

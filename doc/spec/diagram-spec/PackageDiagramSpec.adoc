@@ -30,7 +30,7 @@ Can be created under a Package Diagram, under a Model or a Package.
 Nothing special.
 
 ==== Can create
-Nothing special.
+Always
 
 ==== OnSet
 Nothing special.
@@ -42,13 +42,13 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+Display the view
 
 ==== On Direct Edit
 Edit the body of the Comment.
 
 ==== Label
-Nothing special.
+The body
 
 image::Shared/Comment.png[title="Representation Comment"]
 
@@ -97,18 +97,52 @@ Nothing special.
 Nothing special.
 
 ==== On Deletion
-Nothing special.
+Delete all connected "PackageMerge" and "PackageImport"
 
 ==== On Semantic DnD
 Nothing special.
 
 ==== On Direct Edit
-Nothing special.
+Change package Name
 
 ==== Label
 Nothing special.
  
 image::PackageDiagram/Package.png[title="Representation Package"]
+
+
+
+
+=== PackageImport
+
+==== On Creation
+importingPackage := source // also container
+importedPackage := target
+
+==== Can Create
+(source or target) !=null
+When import already exists, some confirmation is required on diagram (but not
+
+==== On Deletion
+No-op
+When deleting target, import must be deleted (Existing and improper code)
+
+==== On Semantic DnD
+When (source or target) ==null, delete
+
+==== On Direct Edit
+N/A: no label
+
+==== On reconnection
+Source
+The container of the PackageImport should change to the new source
+org.eclipse.uml2.uml.PackageImport.setImportingNamespace(Namespace)
+Target
+org.eclipse.uml2.uml.PackageImport.setImportedPackage(Package)
+
+==== Label
+«import» when public visibility (but sometimes it fails)
+«access» otherwise
 
 == Edges
 
@@ -117,9 +151,16 @@ Can be created in a Package Diagram, under Model and under a Package.
 
 ==== On Creation
 Abstraction link is stored under the source semantic element.
+The source element should be added to the clients feature
+The source element should be added to the supplier feature
 
 ==== Can create
-Nothing special.
+Source and target should be a NamedElement.
+
+==== Container
+The container is:
+The source node if it can contains the Abstraction
+The most common Package between the source and the target otherwise
 
 ==== OnSet
 Nothing special.
@@ -128,7 +169,7 @@ Nothing special.
 Abstraction link is relocated under the new source semantic element.
 
 ==== On Deletion
-Nothing special.
+No special deletion behavior for this element.
 
 ==== On Semantic DnD
 Nothing special.
@@ -176,9 +217,12 @@ Can be created in a Package Diagram, under Model and under a Package.
 
 ==== On Creation
 Dependency link is stored under the source semantic element.
+The source element should be added to the clients feature
+The source target element should be added to the supplier feature
+This element should not have a default name.
 
 ==== Can create
-Nothing special.
+Source and target should be a NamedElement.
 
 ==== OnSet
 Nothing special.
@@ -186,11 +230,16 @@ Nothing special.
 ==== On Reconnect
 Dependency link is relocated under the new source semantic element.
 
+==== Container
+The container is:
+The source node if it can contains the Dependency
+The most common Package between the source and the target otherwise
+
 ==== On Deletion
-Nothing special.
+No special deletion behavior for this element.
 
 ==== On Semantic DnD
-Nothing special.
+No DnD tool since all edges are synchronized
 
 ==== On Direct Edit
 Nothing special.
@@ -267,7 +316,7 @@ Can be created in a Package Diagram, under Model and under a Package.
 Merge link is stored under the source semantic element.
 
 ==== Can create
-Nothing special.
+(source or target) !=null
 
 ==== OnSet
 Nothing special.
@@ -288,3 +337,36 @@ Nothing special.
 Label shall be &laquo;merge&raquo; (followed byt the name of the link).
  
 image::PackageDiagram/PackageMerge.png[title="Representation PackageMerge"]
+
+
+=== PackageMergeEdition
+
+==== On Creation
+
+==== Can Create
+(source or target) !=null
+
+==== Container
+The container is:
+The source node if it can contains this element
+The most common Package between the source and the target otherwise
+
+==== On Deletion
+No-op
+
+==== On Semantic DnD
+no-op
+
+==== On Direct Edit
+N/A: no label
+
+==== On reconnection
+Merge link is relocated under the new source semantic element.
+Source
+The container of the PackageMerge should change to the new source
+org.eclipse.uml2.uml.PackageMerge.setMergedPackage(Package)
+Target
+org.eclipse.uml2.uml.PackageMerge.setReceivingPackage(Package)
+
+==== Label
+constant value: "merge" (followed byt the name of the link).

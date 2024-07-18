@@ -30,7 +30,7 @@ Can be created in a Class Diagram, under a Model, a Package, an Interface or a C
 Nothing special.
 
 ==== Can create
-Nothing special.
+Always
 
 ==== OnSet
 Nothing special.
@@ -39,15 +39,21 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+Display the view
 
 ==== On Direct Edit
-Nothing special.
+Edit the name
 
 ==== Label
 Label should be in italic if isAbstract is set to true.
  
 image::ClassDiagram/Class.png[title="Representation Class"]
+
+==== Extra Requirements
+All items in compartment should not use "End Of Line" character to display stereotypes
+All item in compartment should be displayed without keywords
+
+
 
 === Comment
 Can be created under a Class Diagram, under a Model or a Package.
@@ -56,7 +62,7 @@ Can be created under a Class Diagram, under a Model or a Package.
 Nothing special.
 
 ==== Can create
-Nothing special.
+Always
 
 ==== OnSet
 Nothing special.
@@ -68,7 +74,7 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+Display the view
 
 ==== On Direct Edit
 Edit the body of the Comment.
@@ -77,6 +83,83 @@ Edit the body of the Comment.
 Nothing special.
 
 image::Shared/Comment.png[title="Representation Comment"]
+
+
+=== Classifier
+
+==== On Creation
+Nothing special.
+
+==== Can Create
+Nothing special.
+
+==== On Deletion
+ destroy dependencies: Get related generalization
+
+ destroy dependencies: get related associations
+
+==== On Set
+ if we are setting an arraylist for the "ownedAttribute" feature and the object modified is an AttributeOwner, traverse the new property list to set and "If there exists the one that is a non existing Property and its parent is an Association, then the command must be prohibited"
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+
+=== ClassifierTemplateParameter 
+Can be created in a TemplateSignature near a Classifier in a Class Diagram.
+
+==== On Creation
+ See org.eclipse.papyrus.uml.service.types.internal.ui.advice.ClassifierTemplateParameterEditHelperAdvice.getAfterCreateCommand(CreateElementRequest).
+ See org.eclipse.papyrus.uml.service.types.internal.ui.advice.TemplateParameterEditHelperAdvice.getAfterCreateCommand(CreateElementRequest).
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+ Display the label of the parameteredElement and its type. <UNDEFINED> if null
+
+
+
+=== Component
+
+==== On Creation
+Check that a Component cannot be created under another Component using the "nestedClassifier" feature. It should be created under the "packagedElement" feature.
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+Nothing special
+
+==== On Set
+Check that a Component cannot be created under another Component using the "nestedClassifier" feature. It should be created under the "packagedElement" feature.
+
+==== On Semantic DnD
+Display the view and check that the element to move is not moving under the "nestedClassifier" feature.
+
+==== On Direct Edit
+
+==== Label
+ Prefixed with  «component»
+ The label should be displayed in italic if the element is abstract
+
+
+
 
 === DataType
 Can be created in an Class Diagram, under a Model, a Package, an Interface or a Class. 
@@ -136,7 +219,7 @@ image::ClassDiagram/Enumeration.png[title="Representation Enumeration"]
 Can be created under an Enumeration.
 
 ==== On Creation
-Nothing special.
+Set default name
 
 ==== Can create
 Nothing special.
@@ -151,12 +234,43 @@ Nothing special.
 Nothing special.
 
 ==== On Direct Edit
+Change the name
+
+==== Label
+The name
+ 
+image::ClassDiagram/EnumerationLiteral.png[title="Representation EnumerationLiteral"]
+
+
+
+=== ElementImport
+This concept is used in Profile Diagram and Class Diagram.
+
+==== On Creation
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Set the feature ImportedElement with the target PackageableElement.
+(Done in Papyrus-Desktop but not in UML Service configuration)
+
+ For the Class Diagram ElementImport edge see org.eclipse.papyrus.uml.service.types.helper.ElementImportEditHelper.getSetCommand(SetRequest)
+
+==== On Deletion
+ For the Class Diagram: org.eclipse.papyrus.uml.service.types.helper.ElementImportEditHelper.getDestroyReferenceCommand(DestroyReferenceRequest)
+
+==== On Semantic DnD
+ Semantic and Graphical DnD is authorized only on Profile
+
+==== On Direct Edit
 Nothing special.
 
 ==== Label
 Nothing special.
- 
-image::ClassDiagram/EnumerationLiteral.png[title="Representation EnumerationLiteral"]
+
+==== On Reconnect
+ Specific to the Class Diagram see org.eclipse.papyrus.uml.service.types.helper.ElementImportEditHelper.getReorientRelationshipCommand(ReorientRelationshipRequest)
 
 === Interface
 Can be created in a Class Diagram, under a Model, a Package, an Interface or a Class. 
@@ -185,6 +299,44 @@ Label should be in italic if isAbstract is set to true.
  
 image::ClassDiagram/Interface.png[title="Representation Interface"]
 
+
+
+=== InterfaceRealization
+Can be created in a Class diagram between an Interface and a Class.
+
+==== On Creation
+ Source feature: ImplementingClassifier
+ Target feature: Contract
+ The container is the source
+ Do not set a default name
+
+==== Can create
+ The source should be a BehavioredClassifier
+ The source should be an Interface
+
+==== OnSet
+Nothing
+
+==== On Reconnect
+ Similar checks as Can create part. See org.eclipse.papyrus.uml.service.types.command.InterfaceRealizationReorientCommand.
+
+==== On Deletion
+Nothing
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+ Edit and display the name.
+Note: In papyrus legacy there is no direct edit tool but if you edit the name using the Property view then the name is displayed in the diagram.
+
+==== Label
+The name
+
+ #### Style
+![Representation interface-realization](./images/interface-realization.png)
+
+
 === Model
 Can be created in a Class Diagram, under a Model and a Package. 
 
@@ -208,7 +360,6 @@ Nothing special.
 
 ==== Label
 Nothing special.
- 
 image::ClassDiagram/Model.png[title="Representation Model"]
 
 === Package
@@ -268,24 +419,39 @@ image::ClassDiagram/PrimitiveType.png[title="Representation PrimitiveType"]
 Can be created under a Class, a DataType, a PrimitiveType, an Interface and a Signal. 
 
 ==== On Creation
-Nothing special.
+When the user create a Property on a Collaboration:
+
+ the Property must be created (Collaboration#ownedAttribute)
+ the Property must also be referenced by Collaboration#collaborationRole
 
 ==== Can create
 Nothing special.
 
 ==== OnSet
-Nothing special.
+ "While setting property type (excluding Port), remove related ConnectorEnd if they become inconsistent due to the new type, and add possibly required Asssociation refactor command when needed." See org.eclipse.papyrus.uml.service.types.helper.advice.PropertyHelperAdvice.getBeforeSetCommand(SetRequest).
+ When editing a property which is not a Port for the "aggregation feature" and the newValue not a NONE_LITERAL, get the association then add all memberEnds of the asso to the propertiesList, exclude the current property, and for each of them, set NONE_LITERAL to the aggregation feature.
+ If we are setting null to the type of a property, remove its association.
+ Remove invalid ConnectorEnd
 
 ==== On Deletion
-Nothing special.
+ When remove a property, remove related ConnectorEnd and Association when less than 2 ends remains. See org.eclipse.papyrus.uml.service.types.helper.advice.PropertyHelperAdvice.getBeforeDestroyDependentsCommand(DestroyDependentsRequest). Done with org.eclipse.papyrus.uml.domain.services.destroy.ElementDependencyCollector.DestroyDependencyCollectorSwitch.caseProperty(Property)
 
-==== On Semantic DnD
-Nothing special.
+==== Property as Target of DnD
+ when user DnD semantically a Type on Property, the Property is typed with the Type.
+
+
+==== On DnD
+ semantic DnD is authorized into its container or into a Propery typed with its container
+ graphical DnD is authorized on Structured Classifier or typed Property
+ On the Component Diagram it is not allowed to perform a graphical DnD of a property from a Component to an Interface and vice versa
 
 ==== On Direct Edit
-Nothing special.
+ Capacity to edit visibility/name/type/multiplicity/defaultValue
+ special.
 
 ==== Label
+ if feature "isStatic" is true, label is underline
+ label should display visibility, is derived, name, type, multiplicity and default value.
 Property labels shall be composed the following way: +
 Start with +, -, # or ~ according to the visibility (public, private, protected, or package). +
 Add "/" if isDerived. +
@@ -308,7 +474,8 @@ Nothing special.
 Nothing special.
 
 ==== OnSet
-Nothing special.
+ When adding a Parameter whith "ownedParameter" feature, get all AcceptCallAction referencing the operation and update Pins (cf org.eclipse.papyrus.uml.diagram.activity.edit.utils.updater.intermediateactions.AcceptCallActionPinUpdater.updatePins(AcceptCallAction)) (will be done in Add validation rules and Quick Fix when it is possible  papyrus-desktop#114)
+ When the operation parameter is updated, update also the pins consequently*
 
 ==== On Deletion
 Nothing special.
@@ -337,6 +504,36 @@ All label shall be in italic if isAbstract is set to true.
 image::ClassDiagram/Operation.png[title="Representation Operation"]
 
 image::ClassDiagram/OperationWithInOutReturnParameters.png[title="Representation Operation with an in, an out and a return parameter"]
+
+
+
+=== OperationTemplateParameter
+Can be created in a TemplateSignature near a Classifier in a Class Diagram.
+
+==== On Creation
+ See org.eclipse.papyrus.uml.service.types.internal.ui.advice.OperationTemplateParameterEditHelperAdvice.getAfterCreateCommand(CreateElementRequest).
+ See org.eclipse.papyrus.uml.service.types.internal.ui.advice.TemplateParameterEditHelperAdvice.getAfterCreateCommand(CreateElementRequest).
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+ Always <UNDEFINED> but I suppose it should be like [Concept] ClassifierTemplateParameter #179 : Display the label of the parameteredElement and its type
+
+==== Style
+![Representation operation-template-parameter-label](./images/operation-template-parameter-label.png)
 
 === Reception
 Can be created under a Class. 
@@ -405,6 +602,33 @@ Label should be in italic if isAbstract is set to true.
 
 image::ClassDiagram/Signal.png[title="Representation Signal"]
 
+
+
+=== Stereotype
+
+==== On Creation
+Nothing specific, a Stereotype is created in Model and its name is initialized
+
+==== Can Create
+Nothing specific to do, Stereotype can be created in Package and Profile
+
+==== Can Reconnect
+TODO
+
+==== On Deletion
+ Stereotype is removed from model but not its annotation, bug?
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+Nothing specific to do, Edit the name of the profile
+
+==== Label
+ "Stereotype" keyword
+ The label should be displayed in italic if the element is abstract
+
+
 == Edges
 
 === Abstraction
@@ -454,7 +678,7 @@ The created association is created with an "org.eclipse.papyrus" EAnnotations th
 Source and targets can be Class, Interface, DataType, PrimitiveType, Enumeration.
 
 ==== OnSet
-Nothing special.
+Two member ends of an association cannot be set to composite at the same time. Set the other one to none in this case.
 
 ==== On Reconnect
 Properties are updated accordingly.
@@ -466,14 +690,18 @@ Nothing special.
 Nothing special.
 
 ==== On Direct Edit
-Nothing special.
+ Only name is edited for now
 
 ==== Label
+ The label should be displayed in italic if the element is abstract
 Name of the association (no name by default). +
 Each ends labels are defined as follow: +
 Start with +, -, # or ~ according to the visibility (public, private, protected, or package), followed by the name of the end and its multiplicity +++[0..1], [1], [*], [1..*]+++.
 
 image::ClassDiagram/Association.png[title="Representation Association"]
+
+==== Association end edge labels
+ <visibility> <nomProperty> <multiplicity>
 
 === CompositeAssociation
 Can be created in an Class Diagram, under a Package and a Model.
@@ -543,27 +771,42 @@ No name.
  
 image::ClassDiagram/ContainmentLink.png[title="Representation ContainmentLink"]
 
+
+
+
+
+
 === Dependency
 Can be created in an Class Diagram, under an Package and a Model.
 
 ==== On Creation
 Create a Dependency link where client reference is set to the source and supplier is the target.
+The source element should be added to the clients feature
+The source target element should be added to the supplier feature
+This element should not have a default name.
 
 ==== Can create
+Source and target should be a NamedElement.
 Source and targets can be Model, Package, Class, Interface, DataType, PrimitiveType, Enumeration.
 
 ==== OnSet
 Nothing special.
+
+
+==== Container
+The container is:
+The source node if it can contains the Dependency
+The most common Package between the source and the target otherwise
 
 ==== On Reconnect
 Client and Supplier reference are updated. +
 Dependency link is transfered to the Package or Model if the source is reconnected to it, or to the closest Model or Package containing the element.
 
 ==== On Deletion
-Nothing special.
+No special deletion behavior for this element.
 
 ==== On Semantic DnD
-Nothing special.
+No DnD tool since all edges are synchronized
 
 ==== On Direct Edit
 Nothing special.
@@ -595,6 +838,11 @@ Nothing special.
 
 ==== On Direct Edit
 Nothing special.
+
+==== Reorient tool
+ New Source should be a Classifier different from its target
+ New Target should be a Classifier different from its source
+org.eclipse.papyrus.uml.service.types.command.GeneralizationReorientCommand
 
 ==== Label
 No label.
@@ -646,7 +894,11 @@ Nothing special.
 
 ==== On Reconnect
 Package Import link is relocated under the new source semantic element.
-
+Source
+The container of the PackageImport should change to the new source
+org.eclipse.uml2.uml.PackageImport.setImportingNamespace(Namespace)
+Target
+org.eclipse.uml2.uml.PackageImport.setImportedPackage(Package)
 ==== On Deletion
 Nothing special.
 
@@ -655,7 +907,8 @@ Nothing special.
 
 ==== On Direct Edit
 No edition is done since there is no name to edit.
-
+«import» when public visibility (but sometimes it fails)
+«access» otherwise
 ==== Label
 No name, label is only &laquo;import&raquo;.
  
@@ -669,13 +922,23 @@ Package Merge link is created under the source semantic element.
 
 ==== Can create
 Source and target can be Models or Packages
+(source or target) !=null
+
+==== Container
+The container is:
+The source node if it can contains this element
+The most common Package between the source and the target otherwise
 
 ==== OnSet
 Nothing special.
 
 ==== On Reconnect
 Package Merge link is relocated under the new source semantic element.
-
+Source
+The container of the PackageMerge should change to the new source
+org.eclipse.uml2.uml.PackageMerge.setMergedPackage(Package)
+Target
+org.eclipse.uml2.uml.PackageMerge.setReceivingPackage(Package)
 ==== On Deletion
 Nothing special.
 
@@ -731,9 +994,13 @@ image::ClassDiagram/SharedAssociation.png[title="Representation SharedAssociatio
 === Usage
 Can be created in an Class Diagram, under an Package and a Model.
 
+
 ==== On Creation
 Create an Usage link where client reference is set to the source and supplier is the target.
-
+ The source element should be added to the clients feature (like Dependency)
+ The source element should be added to the Suppliers feature (like dependency)
+ Container is the same than for a dependency
+ The web implementation only handle one source and many targets. The first client is the source and all supplier are targets
 ==== Can create
 Source and targets can be Model, Package, Class, Interface, DataType, PrimitiveType, Enumeration.
 
@@ -744,16 +1011,43 @@ Nothing special.
 Client and Supplier reference are updated. +
 Usage link is transfered to the Package or Model if the source is reconnected to it, or to the closest Model or Package containing the element.
 
+==== Can Reconnect
+ New Source or new target should be a NamedElement
+
 ==== On Deletion
-Nothing special.
+No special deletion behavior for this element.
 
 ==== On Semantic DnD
 Nothing special.
 
 ==== On Direct Edit
-Nothing special.
+The direct edit tool should edit the label of a Usage
 
 ==== Label
 Label should be prefixed with &laquo;use&raquo; followed by the name of the usage.
  
 image::ClassDiagram/Usage.png[title="Representation Usage"]
+
+=== Slot 
+related to InstanceSpecification
+
+==== On Creation
+Nothing special.
+
+==== Can Create
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Set
+Nothing special.
+
+==== On Semantic DnD
+Can only be droped on InstanceSpecification(?)
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+ Display the label of the "defining feature", and label of its values, or if nothing if specified.

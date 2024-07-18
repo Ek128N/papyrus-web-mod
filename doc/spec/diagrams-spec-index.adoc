@@ -9,6 +9,7 @@
 
  Contributors:
      Aurelien Didier (Artal Technologies) - Issue 201
+     EESHVARAN Dilan (CEA List) - Issue 207
 ////
 = Papyrus Web specification
 Papyrus web v{papyrus-web-version} - {git-commit-id-abbrev}
@@ -21,5 +22,7 @@ Papyrus web v{papyrus-web-version} - {git-commit-id-abbrev}
 - xref:diagram-spec/DeploymentDiagramSpec.adoc[Deployment diagram specification]
 - xref:diagram-spec/PackageDiagramSpec.adoc[Package diagram specification]
 - xref:diagram-spec/ProfileDiagramSpec.adoc[Profile diagram specification]
+- xref:diagram-spec/SequenceDiagramSpec.adoc[Sequence diagram specification]
 - xref:diagram-spec/StateMachineDiagramSpec.adoc[StateMachine diagram specification]
+- xref:diagram-spec/TimingDiagramSpec.adoc[Timing diagram specification]
 - xref:diagram-spec/UseCaseDiagramSpec.adoc[UseCase diagram specification]

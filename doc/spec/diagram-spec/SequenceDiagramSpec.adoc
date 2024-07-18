@@ -1,0 +1,491 @@
+////
+ Copyright (c) 2024 CEA LIST, Artal Technologies.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Aurelien Didier (Artal Technologies) - Issue 201
+     EESHVARAN Dilan (CEA List) - Issue 207
+////
+
+= Sequence Diagram specification
+:toc:
+:toclevels: 3
+
+== Can create
+
+
+== Initialization
+Nothing special.
+
+== Nodes
+
+
+=== ActionExecutionSpecification   
+
+==== On Creation
+From ExecutionSpecificationHelperAdvice
+
+ ActionExecutionSpecification instance created and added to Interaction.getFragments()
+ ExecutionOccurrenceSpecification start and finish created and added to Interaction.getFragments()
+ Name: actionExecutionSpecification.getName() + "Start/Finish"
+ Update ActionExecutionSpecification.start/end with the created ExecutionOccurrenceSpecifications.
+ executionOccurrenceSpecification.execution = actionExecutionSpecification
+ start/finish.covered = actionExecutionSpecification.covered
+ ActionExecutionSpecification.covered = lifeline
+- [ ] lifeline = parent when creating an ExecutionSpecification directly on a Lifeline
+- [ ] lifeline = parent.getCovered() when creating an ExecutionSpecification on another ExecutionSpecification
+Note
+
+The points above do not deal with ordering: the ActionExecutionSpecification and its ExecutionOccurrenceSpecifications will be added at the end of the Interaction#fragments list.
+
+From Unknown (to discuss):
+
+Semantic reorder after the elements have been created
+Creation inside a CombinedFragment sets the parent of the ActionExecutionSpecification and its ExecutionOccurrenceSpecifications to the InteractionOperand where the click occurred.
+
+==== Can Create
+ Anywhere on a Lifeline (including over another ExecutionSpecification)
+
+==== On Set
+Nothing
+
+==== On Graphical Reorder
+
+==== Can Graphical Reorder
+ On same lifeline
+
+==== On Reconnect
+TODO
+
+==== On Deletion
+ Removes the ActionExecutionSpecification from the interaction
+ Deletes the ExecutionOccurrenceSpecifications for start/finish
+Already handled by the DeleteService
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+Nothing
+
+==== Label
+No label
+
+
+=== BehaviorExecutionSpecification
+
+==== On Creation
+From ExecutionSpecificationHelperAdvice
+
+ BehaviorExecutionSpecification instance created and added to Interaction.getFragments()
+If created "standalone" (using the Create Behavior Execution tool)
+ ExecutionOccurrenceSpecification start and finish created and added to Interaction.getFragments()
+ Name: behaviorExecutionSpecification.getName() + "Start/Finish"
+ Update BehaviorExecutionSpecification.start/end with the created ExecutionOccurrenceSpecifications.
+ executionOccurrenceSpecification.execution = behaviorExecutionSpecification
+ start/finish.covered = behaviorExecutionSpecification.covered
+If created from a message creation between lifelines
+
+ MessageOccurrenceSpecification sendEvent and receiveEvent created and added to Interaction.getFragments()
+ Name: message.getName() + "SendEvent/ReceiveEvent"
+ Update BehaviorExecutionSpecification.start/end with the created ExecutionOccurrenceSpecifications.
+ messageOccurrenceSpecification.execution = behaviorExecutionSpecification
+ start/finish.covered = behaviorExecutionSpecification.covered
+ No ExecutionOccurrenceSpecification created
+From InteractionFragmentEditHelperAdvice
+
+ BehaviorExecutionSpecification.covered = lifeline (retrieved from the request)
+Note
+
+The points above do not deal with ordering: the BehaviorExecutionSpecification and its ExecutionOccurrenceSpecifications will be added at the end of the Interaction#fragments list.
+
+From Unknown (to discuss):
+
+Semantic reorder after the elements have been created
+Creation inside a CombinedFragment sets the parent of the BehaviorExecutionSpecification and its ExecutionOccurrenceSpecifications to the InteractionOperand where the click occurred.
+
+==== Can Create
+ Anywhere on a Lifeline (including over another ExecutionSpecification)
+
+==== On Set
+Nothing
+
+==== On Graphical Reorder
+TODO
+
+Can Graphical Reorder
+ on same lifeline
+On Reconnect
+TODO
+
+==== On Deletion
+ Removes the BehaviorExecutionSpecification from the interaction
+ Deletes the ExecutionOccurrenceSpecifications for start/finish
+Already handled by the DeleteService
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+Nothing
+
+==== Label
+ The content of the behavior feature if exists; nothing otherwise
+
+
+=== CallEvent 
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+ See org.eclipse.papyrus.uml.diagram.activity.edit.advices.CallEventEditHelperAdvice.getAfterSetCommand(SetRequest). When modifying the UMLPackage.eINSTANCE.getCallEvent_Operation() feature, get the synchronize pin preference, find all objects referencing the CallEvent which are instanceof Trigger, if their owner are AcceptCallAction, update pins. Similar as [Concept] Operation #86 [Concept] Parameter #103 [Concept] Signal #51 and the preference mecanism will not be implemented.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+Nothing special. Didn't find any graphical representation.
+
+=== CombinedFragment
+
+==== On Creation
+ TODOAn InteractionOperand is created and added to the list of operands of the Combined Fragment.
+ TODOThe coveredLifelines are added to the covereds list of the interaction operand created.
+(see org.eclipse.papyrus.uml.service.types.helper.advice.InteractionContainerDeletionContext.getBeforeConfigureCommand();)
+
+==== Can Create
+
+==== On Deletion
+ TODO Check if the element to destroy is instanceof InteractionOperand or CombinedFragment or Interaction... see InteractionContainerDeletionContext.deleting(req);
+
+==== On Semantic DnD
+DnD allowed under an Interaction or InteractionOperand...
+
+==== On Graphic DnD
+Sequence diagram : InteractionFragmentEditHelperAdvice is called when a combined fragment is created with a lifeLine behind.
+
+==== On Direct Edit
+Label
+ In a sequence diagram, the value of interactionOperator feature is displayed
+
+==== Style
+
+
+=== ChangeEvent
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+TODO. I didn't find any graphical representation
+
+
+=== InteractionConstraint
+
+An InteractionConstraint can be observed on Papyrus in a Sequence Diagram, under an Interaction (precondition or postcondition of the Interaction), then D&D the InteractionConstraint from the Model Explorer on the Interaction, in the Sequence diagram.
+
+==== On Creation
+ An opaqueExpression is created during creation of Constraint. This OpaqueExpression is named "constraintSpec", its language is "OCL" and its body is "true". This opaqueExpression is then setted as specification on the constraint.
+
+==== Can create
+Always
+
+==== OnSet
+ If minInt or maxInt feature are setted, there are some specific behaviours. We cannot set a minValue greater than maxValue and we cannot set a maxValue lower than minValue. (cf org.eclipse.papyrus.uml.service.types.helper.ConstraintEditHelper)
+--> Will not be implemented in Papyrus UML Services, it concerns the validation system
+(see Add validation rules and Quick Fix when it is possible  papyrus-desktop#114)
+
+==== On Deletion
+Nothing special
+
+==== On Semantic DnD
+
+==== On Direct Edit
+
+==== Label
+ On a sequence diagram: label + \n + { + specification feature value + }
+if there is no specification, print <NULL Constraint>.
+
+
+
+=== Interaction Use
+
+==== On Creation
+Nothing to do
+
+==== Can create
+Always
+
+==== OnSet
+Nothing to do
+
+==== On Deletion
+Nothing to do
+
+==== On Semantic DnD
+Display the view, only in its Interaction parent
+
+==== On Direct Edit
+Nothing to do
+
+==== Label
+On a sequence diagram: "Ref" + the value of refersTo feature
+
+
+=== Lifeline  
+
+==== On Creation
+From LifelineCreateCommand.
+Lifeline instance created: UMLFactory.eINSTANCE.createLifeline() and added to the containing interaction: interaction.getLifelines().add(newElement).
+
+ Lifeline added to the containing Interaction
+ Lifeline added close to the cursor position (even if the cursor is between two other lifelines).
+
+==== Can Create
+ Can be created in an Interaction.
+ Can't be created on top of another lifeline or execution (sequence diagram only)
+ Can't create on combined fragment (sequence diagram only)
+
+==== On Set
+ Updating the visibility property updates the Lifeline icon
+
+==== On Graphical Reorder
+
+==== Can Graphical Reorder
+ Can move a lifeline on the left or on the right of another lifeline.
+ Can move a lifeline exactly on top of another one
+ Can't move a lifeline vertically (the role nodes are always aligned on a single line at the top of the interaction.)
+
+==== On Reconnect
+Nothing
+
+==== On Deletion
+From LifelineEditHelper#getDestroyElementCommand
+
+ Destroying a Lifeline also destroys all the interactionFragments that cover only the lifeline being deleted. It also deletes the MessageOccurrenceSpecification and OccurrenceSpecification covering it.
+This is already implemented in ElementDependencyCollector, and the whole deletion mechanism can be invoked from the DeleteServices#delete method.
+
+ Doesn't delete the CombinedFragments over the lifeline, even if they only cover the lifeline being destroyed.
+
+==== On Semantic DnD
+Nothing
+
+==== Lifeline as Target of DnD
+ Type DnD on Lifeline will create semantically a Property typed with this Type and the Lifeline will represents this new Property
+ Property DnD on Lifeline will set feature "represents" of the Lifeline with the Property
+ Type DnD on Interaction will create semantically a Property typed with this Type then it will create a Lifeline that will represents this new Property. Finally the view of the Lifeline will be created on diagram
+
+==== On Direct Edit
+ Name is updated
+ If the label is different from the name (see Label section) the name is still updated
+
+==== Label
+ Font size: 9
+ No prefix
+From org.eclipse.papyrus.uml.diagram.sequence.util.LifelineLabelHelper.appendName(Lifeline, Collection, StringBuilder)
+
+====
+if the lifeline doesn't have a name and its represents reference is not set Lifeline name if the lifeline's represents reference is not set representsName [selectorValue] : representsTypeName if the lifeline's represents reference is set where representsName is the name of the lifeline's represents instance [selectorValue] is the value of the lifeline's selector reference, iff the selector is a LiteralSpecification. If the selector has another type it isn't displayed (and the accompanying brackets aren't displayed either). representsTypeName is the name of type of the selector's type. If the selector has no type the value isn't displayed (and the accompanying ":" isn't displayed either)
+
+=== Message
+
+
+==== All Messages
+ Message instance is created an added to the enclosing Interaction.getMessage().
+ Sequence: message.messageSort set with the value corresponding to the tool (syncCall, asynchCall, asynchSignal, createMessage, deleteMessage, reply)
+ Communication: message.messageSort set with asynchCall
+==== Regular Messages
+"Regular" messages are messages that aren't lost or found
+
+ MessageOccurrenceSpecification sendEvent and receiveEvent created and added to Interaction.getFragments()
+ Name: message.getName() + 'SendEvent'/'ReceiveEvent'
+ sendEvent/receiveEvent.message = message
+ message.setSendEvent/setReceiveEvent = sendEvent/receiveEvent
+ sendEvent/receiveEvent.setCovered(lifeline) where lifeline is the source lifeline for sendEvent and the target lifeline for receiveEvent
+
+==== Lost Messages
+ MessageOccurrenceSpecification sendEvent created and added to Interaction.getFragments()
+ Name: message.getName() + 'SendEvent'
+ sendEvent/receiveEvent.message = message
+ message.setSendEvent = sendEvent
+ sendEvent.setCovered(lifeline) where lifeline is the source of the message
+
+==== Found Messages
+ MessageOccurrenceSpecification receiveEvent created and added to Interaction.getFragments()
+ Name: message.getName() + 'ReceiveEvent'
+ receiveEvent.message = message
+ message.setReceiveEvent= receuveEvent
+ receiveEvent.setCovered(lifeline) where lifeline is the source of the message
+
+From Unknown (to discuss):
+ Semantic reorder after the elements have been created
+ For synchronous messages: if the message targets a lifeline a BehaviorExecutionSpecification is also created on the target lifeline, as well as a message reply from this BehaviorExecutionSpecification to the original lifeline.
+Pointers:
+
+org.eclipse.papyrus.uml.diagram.sequence.command.CreateExecutionSpecificationWithMessage
+
+==== On Creation
+
+==== Can Create
+ from anywhere on a lifeline
+ from anywhere on an execution
+ to anywhere on a lifeline
+ to anywhere on an execution
+To specify: create/destroy messages.
+
+==== On Set
+ Sequence feature MessageSort: changes the icon next to the message label, the target arrow decorator and (optionally) the line style to match the new MessageSort.
+
+==== On Graphical Reorder
+TODO
+
+==== Can Graphical Reorder
+TODO
+
+==== On Reconnect
+ on communication diagram, Message can only be reconnected on Lifeline
+ TODO on sequence diagram
+
+==== On Deletion
+ Message is deleted as well as the MessageOccurrenceSpecification instances corresponding to its sendEvent and receiveEvent.
+ To discuss: deletion of connected ExecutionSpecifications doesn't seem consistent.
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+ Edit the name of the message
+
+==== Label
+ Communication Nothing particular
+ Sequence The value of signature feature if exists; the provided label + all arguments otherwise.
+Note that the value of the messageSort feature change the style of the edge in the sequence diagram
+
+
+=== State Invariant
+
+==== On Creation
+TODO
+
+==== Can create
+TODO
+
+==== OnSet
+TODO
+
+==== On Deletion
+TODO
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+TODO
+
+==== Label
+ label + \n + { + invariant + }
+
+
+=== SignalEvent  
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+ See org.eclipse.papyrus.uml.diagram.activity.edit.advices.SignalEventEditHelperAdvice.getAfterSetCommand(SetRequest). Get the synchronize pin preference then update Pins referecing the SignalEvent which are instanceof Trigger and their owner is an AcceptEventAction ==> Update pin. Similar as [Concept] Operation #86 [Concept] Parameter #103 [Concept] Signal #51 and the preference mecanism will not be implemented.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+TODO. I didn't find any graphical representation.
+
+=== Signal
+
+==== On Creation
+Nothing special
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+Nothing special
+
+==== On Set
+see org.eclipse.papyrus.uml.diagram.activity.edit.advices.SignalEditHelperAdvice.getAfterSetCommand(SetRequest)
+
+ When modifying "ownedAttribute" feature, check in the preferences if we should "synchronize pin". If true, get all inverse references of the signal, check for each "SignalEvent" type if they are referenced by a Trigger then if the owner of this trigger is an "AcceptEventAction". Finally, the AcceptEventAction's "pins" are updated --> see org.eclipse.papyrus.uml.diagram.activity.edit.utils.updater.intermediateactions.AcceptEventActionPinUpdater
+Should be done in Add validation rules and Quick Fix when it is possible  papyrus-desktop#114
+
+==== On Semantic DnD
+Nothing special
+
+==== On Direct Edit
+
+==== Label
+ Prefix with « Signal »
+ The label should be displayed in italic if the element is abstract
+
+=== Trigger  
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+ See org.eclipse.papyrus.uml.diagram.activity.edit.advices.TriggerEditHelperAdvice.getAfterSetCommand(SetRequest): Synchronize pin by retrieving a preference: update Pins of inverse references of the trigger instanceof AcceptCallAction and AcceptEventAction. SImilar to issues [Concept] Parameter #103 [Concept] Operation #86 [Concept] Signal #51
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+TODO. I didn't find any graphical representation
+
+

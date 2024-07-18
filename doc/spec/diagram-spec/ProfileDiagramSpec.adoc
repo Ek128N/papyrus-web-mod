@@ -9,6 +9,7 @@
 
  Contributors:
      Aurelien Didier (Artal Technologies) - Issue 201
+     EESHVARAN Dilan (CEA List) - Issue 207
 ////
 
 = Profile Diagram specification
@@ -273,6 +274,29 @@ Label shall be prefixed with &laquo;primitive&raquo;. +
 Label shall be in italic if isAbstract is set to true.
  
 image::ProfileDiagram/PrimitiveType.png[title="Representation PrimitiveType"]
+
+=== Profile 
+
+==== On Creation
+Nothing specific to do (create a Profile and initialize name as usually)
+
+==== Can Create
+Nothing specific to do, Profile can be create in Package and Profile
+
+==== Can Reconnect
+TODO
+
+==== On Deletion
+Nothing specific to do
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+Nothing specific to do, Edit the name of the profile
+
+==== Label
+ "Profile" keyword
 
 === Property 
 Can be created under a Class, a DataType, a PrimitiveType and a Stereotype.. 
