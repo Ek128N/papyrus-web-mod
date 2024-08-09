@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,8 @@
  *  Obeo - Initial API and implementation
  ***************************************************************************/
 
-import { GQLMessage, GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLWidget } from '@eclipse-sirius/sirius-components-forms';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface GQLPrimitiveRadio extends GQLWidget {
   candidateList: Array<string> | null;

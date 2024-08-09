@@ -13,6 +13,7 @@
  *****************************************************************************/
 
 const projectName = 'Cypress Project - redefined-reference-types';
+const context = {};
 
 describe('Redefined reference types test', () => {
   /**
@@ -20,26 +21,11 @@ describe('Redefined reference types test', () => {
    */
   beforeEach(() => {
     cy.deleteProjectByName(projectName);
-    cy.createProject(projectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document-icon').click();
-        cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
-        cy.getByTestId('file')
-          .selectFile(
-            {
-              contents: '@model4test',
-              fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
-            },
-            { force: true }
-          )
-          .then(() => {
-            cy.getByTestId('upload-document-submit').click();
-            cy.expandAll('model4test.uml');
-          });
-      });
-    });
+    cy.createTestProject(context, projectName);
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   const checkChildDescriptionContent = (content) => {

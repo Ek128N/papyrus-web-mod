@@ -25,10 +25,8 @@ import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyle
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.Style;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
@@ -114,16 +112,6 @@ public class PapyrusCustomNodesAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseCuboidNodeStyleDescription(CuboidNodeStyleDescription object) {
             return PapyrusCustomNodesAdapterFactory.this.createCuboidNodeStyleDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseStyle(Style object) {
-            return PapyrusCustomNodesAdapterFactory.this.createStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseLabelStyle(LabelStyle object) {
-            return PapyrusCustomNodesAdapterFactory.this.createLabelStyleAdapter();
         }
 
         @Override
@@ -253,32 +241,6 @@ public class PapyrusCustomNodesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createCuboidNodeStyleDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.Style
-     * <em>Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.Style
-     * @generated
-     */
-    public Adapter createStyleAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.LabelStyle
-     * @generated
-     */
-    public Adapter createLabelStyleAdapter() {
         return null;
     }
 

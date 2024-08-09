@@ -27,7 +27,7 @@ To actually run the application:
 [#docker-db, reftext=Docker command]
 [source,sh]
 ----
-docker run -p 5434:5432 --name papyrus-web-postgres \
+docker run -p 5439:5432 --name papyrus-web-postgres \
                             -e POSTGRES_USER=dbuser \
                             -e POSTGRES_PASSWORD=dbpwd \
                             -e POSTGRES_DB=papyrus-web-db \
@@ -42,8 +42,8 @@ If you do not have Docker or want to use an existing PostgreSQL installation, ad
 +
 [source,sh]
 ----
-java -jar papyrus-web-application.jar \
-          --spring.datasource.url=jdbc:postgresql://localhost:5434/papyrus-web-db \
+java -jar papyrus-web-{$version}.jar \
+          --spring.datasource.url=jdbc:postgresql://localhost:5439/papyrus-web-db \
           --spring.datasource.username=dbuser \
           --spring.datasource.password=dbpwd \
           --spring.liquibase.change-log=classpath:db/changelog/papyrus-web.db.changelog.xml
@@ -65,15 +65,17 @@ Note that this will remove all the data you have created while testing the appli
 To build the application yourself you will need the following tools:
 
 * Git, and a GitHub account
-* To build the frontend:
-** Recent versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 16.6 is required along with npm >= 7.20.
-// ** https://rollupjs.org/[rollup] (`npm install -g rollup`)
-// ** https://github.com/whitecolor/yalc[yalc] (`npm install -g yalc`)
-* To build the backend:
-** Java 17
-** Recent version of Maven from https://maven.apache.org/download.cgi[Apache Maven download page]
+* To build the backend components:
+** https://adoptium.net/temurin/releases/[Java 17]
+** https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/[Apache Maven 3.6.3]
+** https://www.docker.com/[Docker] must be installed and running for some of the backend components tests to run.
+* To build the frontend components:
+** LTS versions of https://nodejs.org/[Node and NPM]: in particular, Node >= 18.7.0 is required along with npm >= 8.15.0.
+
 
 WARNING: Note that there are issues with npm under Windows Subsystem for Linux (WSL). If you use WSL and encounter error messages like _"Maximum call stack size exceeded"_ when running NPM, switch to plain Windows where this should work.
+
+For Windows users: Due to the Maximum Path Length Limitation of Windows, you may exceed the limit of 260 characters in your PATH. To remove this limitation, apply the https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=powershell[this procedure] with this command line in PowerShell (`New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force`), then active the longpath option in Git in a command line with administrator rights (`git config --system core.longpaths true`).
 
 [#github-token]
 === GitHub Access Token
@@ -131,7 +133,7 @@ IMPORTANT: The `id` used in your `settings.xml` *must* be the ones mentioned abo
 //npm.pkg.github.com/:_authToken=$GITHUB_ACCESS_TOKEN
 ----
 +
-Again, be sure to replace `$GITHUB_ACCESS_TOKEN` with the value of your acess token.
+Again, be sure to replace `$GITHUB_ACCESS_TOKEN` with the value of your access token.
 
 [#build-steps]
 === Build Papyrus web application
@@ -166,7 +168,7 @@ cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resource
 mvn clean verify
 ----
 +
-The result is a ready-to-run, Spring Boot "fat JAR" in backend/papyrus-web-application/target/papyrus-web-application-<VERSION>.jar. Refer to the instructions in the "Quick Start" section above to launch it.
+The result is a ready-to-run, Spring Boot "fat JAR" in backend/papyrus-web/target/papyrus-web-<VERSION>.jar. Refer to the instructions in the "Quick Start" section above to launch it.
 
 [Dev-env]
 === Development environment
@@ -179,7 +181,7 @@ The set up of the Github token is required for setting up back end and front (se
 
 ==== Backend set up
 
-. Download and install Spring Tools Suite https://github.com/spring-projects/sts4/wiki/Previous-Versions#spring-tools-4153-changelog[4.15.3] for Eclipse (named STS)
+. Download and install Spring Tools Suite https://spring.io/tools for Eclipse (named STS)
 
 . Set up preferences
 +
@@ -298,8 +300,8 @@ https://download.eclipse.org/cbi/updates/tpd/nightly/latest/
 * Select Spring Boot App
 * Click on New icon action to create a Spring boot launch configuration
 * Name this launch configuration (e.g `Papyrus web backend`)
-* Choose `papyrus-web-application` in the project dropdown
-* Search and select `org.eclipse.papyrus.web.application.PapyrusApplication` as the Main type
+* Choose `papyrus-web` in the project dropdown
+* Search and select `org.eclipse.papyrus.web.PapyrusWeb` as the Main type
 * Choose the `dev` profile in the Profile dropdown
 * In the Arguments tab, add the following VM argument:
 +

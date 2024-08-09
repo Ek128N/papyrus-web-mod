@@ -26,6 +26,10 @@ describe('Profile definition page test', () => {
     });
   });
 
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
+  });
+
   it('published profile is properly displayed in Definition page', () => {
     // publish the profile
     cy.getByTestId('Profile-more').should('be.visible').click();

@@ -1,6 +1,0 @@
-FROM eclipse-temurin:17-jre
-COPY target/papyrus-web-application-VERSION.jar ./app.jar
-EXPOSE 8080
-RUN adduser --disabled-password myuser
-USER myuser
-CMD [ "sh", "-c", "java -cp app.jar -Djava.security.egd=file:/dev/./urandom -Dloader.main=org.eclipse.papyrus.web.application.PapyrusApplication org.springframework.boot.loader.PropertiesLauncher" ]

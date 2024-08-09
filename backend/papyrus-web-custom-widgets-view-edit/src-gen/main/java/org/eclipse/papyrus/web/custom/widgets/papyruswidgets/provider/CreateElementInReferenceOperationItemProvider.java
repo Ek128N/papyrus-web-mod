@@ -177,6 +177,9 @@ public class CreateElementInReferenceOperationItemProvider extends ItemProviderA
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CREATE_ELEMENT_IN_REFERENCE_OPERATION__BODY,
                 ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CREATE_ELEMENT_IN_REFERENCE_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

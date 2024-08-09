@@ -16,7 +16,9 @@ package org.eclipse.papyrus.web.services.configuration;
 import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
-import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileCreationService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileDeletionService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
 import org.eclipse.papyrus.web.services.api.profile.IUMLProfileProvider;
 import org.eclipse.papyrus.web.services.uml.profile.UMLProfileMetadataRegistry;
 import org.eclipse.papyrus.web.services.uml.profile.UMLProfileService;
@@ -32,14 +34,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLProfileConfiguration {
     @Bean
-    public UMLProfileService profileDescriptionService(List<IUMLProfileProvider> umlProfileDescriptionProviders, IObjectService objectService, IProfileRepository profileRepository,
-            Registry factoryRegistry) {
+    public UMLProfileService profileDescriptionService(List<IUMLProfileProvider> umlProfileDescriptionProviders, IObjectService objectService, IProfileSeachService profilesearchService,
+            IProfileDeletionService profileDeletionService,
+            IProfileCreationService profileCreationService, Registry factoryRegistry) {
         UMLProfileMetadataRegistry registry = new UMLProfileMetadataRegistry();
         umlProfileDescriptionProviders.stream().flatMap(uMLProfileProvider -> {
             return uMLProfileProvider.getUMLProfiles().stream();
         }).forEach(umlProfile -> {
             registry.add(umlProfile);
         });
-        return new UMLProfileService(registry, objectService, profileRepository, factoryRegistry);
+        return new UMLProfileService(registry, objectService, profilesearchService, profileDeletionService, profileCreationService, factoryRegistry);
     }
 }

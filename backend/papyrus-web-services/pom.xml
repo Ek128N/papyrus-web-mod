@@ -41,7 +41,7 @@
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-persistence</artifactId>
+			<artifactId>papyrus-web-domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -77,10 +77,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
 		</dependency>
 		<dependency>
@@ -93,7 +89,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-persistence</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 		</dependency>
 		<!-- Temporary dependency required for overriding the default model brower representation -->
 		<!-- This interface has been created for bug https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/97. But once https://github.com/eclipse-sirius/sirius-web/issues/2809 is fixed this is no longer needed -->
@@ -101,11 +97,6 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>

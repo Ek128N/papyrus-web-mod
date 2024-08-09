@@ -42,8 +42,10 @@ import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.uml.domain.services.profile.DynamicProfileConverter;
 import org.eclipse.papyrus.uml.domain.services.profile.ProfileDefinition;
 import org.eclipse.papyrus.uml.domain.services.profile.ProfileVersion;
-import org.eclipse.papyrus.web.persistence.entities.ProfileResourceEntity;
-import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileCreationService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileDeletionService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
 import org.eclipse.papyrus.web.services.api.dto.ApplyProfileInput;
 import org.eclipse.papyrus.web.services.api.dto.ApplyProfileSuccessPayload;
 import org.eclipse.papyrus.web.services.api.dto.DeleteProfileSuccessPayload;
@@ -81,21 +83,28 @@ public class UMLProfileService implements IUMLProfileService {
 
     private final IObjectService objectService;
 
-    private final IProfileRepository profileRepository;
+    private final IProfileSeachService profileSearchService;
+
+    private final IProfileDeletionService profileDeletionService;
+
+    private final IProfileCreationService profileCreationService;
 
     private Registry factoryRegistry;
 
-    public UMLProfileService(UMLProfileMetadataRegistry registry, IObjectService objectService, IProfileRepository profileRepository, Registry factoryRegistry) {
+    public UMLProfileService(UMLProfileMetadataRegistry registry, IObjectService objectService, IProfileSeachService profileSearchService, IProfileDeletionService profileDeletionService,
+            IProfileCreationService profileCreationService, Registry factoryRegistry) {
+        this.profileDeletionService = Objects.requireNonNull(profileDeletionService);
+        this.profileCreationService = Objects.requireNonNull(profileCreationService);
         this.umlRegistry = Objects.requireNonNull(registry);
         this.objectService = Objects.requireNonNull(objectService);
-        this.profileRepository = Objects.requireNonNull(profileRepository);
+        this.profileSearchService = Objects.requireNonNull(profileSearchService);
         this.factoryRegistry = factoryRegistry;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UMLProfileMetadata> getAllUMLProfiles() {
-        List<UMLProfileMetadata> dynamicProfiles = StreamSupport.stream(this.profileRepository.findAll().spliterator(), false)
+        List<UMLProfileMetadata> dynamicProfiles = StreamSupport.stream(this.profileSearchService.findAll().spliterator(), false)
                 .flatMap(profileResourceEntity -> this.getDynamicProfileMetadata(profileResourceEntity).stream()).collect(Collectors.toList());
 
         List<UMLProfileMetadata> profiles = new ArrayList<>(dynamicProfiles);
@@ -214,7 +223,7 @@ public class UMLProfileService implements IUMLProfileService {
                     .map(Resource::getURI)//
                     .map(URI::lastSegment)//
                     .map(segment -> UUID.nameUUIDFromBytes(segment.getBytes()))//
-                    .flatMap(this.profileRepository::findById);
+                    .flatMap(this.profileSearchService::findById);
             if (profileResourceEntityOpt.isPresent()) {
                 versionOpt = profileResourceEntityOpt.flatMap(profileResourceEntity -> {
                     Resource resource = this.createResource(profileResourceEntity.getId().toString());
@@ -294,8 +303,8 @@ public class UMLProfileService implements IUMLProfileService {
 
     @Override
     public IPayload deletePublishedDynamicProfileByName(String name) {
-        StreamSupport.stream(this.profileRepository.findAll().spliterator(), false).filter(pr -> this.hasName(pr, name)).forEach(pr -> {
-            this.profileRepository.delete(pr);
+        StreamSupport.stream(this.profileSearchService.findAll().spliterator(), false).filter(pr -> this.hasName(pr, name)).forEach(pr -> {
+            this.profileDeletionService.deleteProfile(pr.getId());
         });
         return new DeleteProfileSuccessPayload(UUID.randomUUID());
     }
@@ -345,7 +354,7 @@ public class UMLProfileService implements IUMLProfileService {
 
     private Boolean publishProfile(Profile profile, IEditingContext editingContext) {
         Boolean publishSucceeded = this.toProfileEntity(profile, editingContext)//
-                .map(this.profileRepository::save)//
+                .map(this.profileCreationService::createProfile)//
                 .isPresent();
         return publishSucceeded;
     }

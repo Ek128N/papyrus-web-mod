@@ -13,16 +13,47 @@
  */
 package org.eclipse.papyrus.web.customnodes.papyruscustomnodes;
 
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Rectangle With External Label Node Style
  * Description</b></em>'. <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ * <li>{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription#getBackground
+ * <em>Background</em>}</li>
+ * </ul>
  *
  * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage#getRectangleWithExternalLabelNodeStyleDescription()
  * @model
  * @generated
  */
 public interface RectangleWithExternalLabelNodeStyleDescription extends NodeStyleDescription {
+
+    /**
+     * Returns the value of the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Background</em>' reference.
+     * @see #setBackground(UserColor)
+     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage#getRectangleWithExternalLabelNodeStyleDescription_Background()
+     * @model
+     * @generated
+     */
+    UserColor getBackground();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription#getBackground
+     * <em>Background</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Background</em>' reference.
+     * @see #getBackground()
+     * @generated
+     */
+    void setBackground(UserColor value);
 } // RectangleWithExternalLabelNodeStyleDescription

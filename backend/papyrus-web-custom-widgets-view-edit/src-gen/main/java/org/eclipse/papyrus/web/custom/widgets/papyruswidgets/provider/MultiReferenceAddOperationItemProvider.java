@@ -177,6 +177,9 @@ public class MultiReferenceAddOperationItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_ADD_OPERATION__BODY,
                 ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_ADD_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

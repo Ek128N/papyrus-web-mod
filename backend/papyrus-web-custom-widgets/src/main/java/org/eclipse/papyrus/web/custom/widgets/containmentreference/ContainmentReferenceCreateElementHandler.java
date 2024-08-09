@@ -29,22 +29,22 @@ import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.custom.widgets.IAQLInterpreterProvider;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
-import org.eclipse.sirius.components.widget.reference.IReferenceWidgetCreateElementHandler;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
+import org.eclipse.sirius.components.view.emf.form.api.IViewFormDescriptionSearchService;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -62,16 +62,17 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
 
     private final IObjectService objectService;
 
-    private final IViewRepresentationDescriptionSearchService viewSearchService;
+    private final IViewFormDescriptionSearchService viewFormSearchService;
 
     private final IAQLInterpreterProvider interpreterProvider;
 
     private final IEditService editService;
 
-    public ContainmentReferenceCreateElementHandler(IEMFKindService emfKindService, IObjectService objectService, IViewRepresentationDescriptionSearchService viewSearchService, IAQLInterpreterProvider interpreterProvider, IEditService editService) {
+    public ContainmentReferenceCreateElementHandler(IEMFKindService emfKindService, IObjectService objectService, IViewFormDescriptionSearchService viewFormSearchService,
+            IAQLInterpreterProvider interpreterProvider, IEditService editService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.objectService = Objects.requireNonNull(objectService);
-        this.viewSearchService = Objects.requireNonNull(viewSearchService);
+        this.viewFormSearchService = Objects.requireNonNull(viewFormSearchService);
         this.interpreterProvider = Objects.requireNonNull(interpreterProvider);
         this.editService = Objects.requireNonNull(editService);
     }
@@ -138,8 +139,8 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
     }
 
     private Optional<Registry> getPackageRegistry(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext) {
-            Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            Registry packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             return Optional.of(packageRegistry);
         } else {
             return Optional.empty();
@@ -153,7 +154,10 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
 
     @Override
     public Optional<Object> createChild(IEditingContext editingContext, Object parent, String childCreationDescriptionId, String descriptionId) {
-        var optionalWidgetDescription = this.viewSearchService.findViewFormElementDescriptionById(editingContext, descriptionId).filter(ContainmentReferenceWidgetDescription.class::isInstance).map(ContainmentReferenceWidgetDescription.class::cast);
+
+        var optionalWidgetDescription = this.viewFormSearchService.findFormElementDescriptionById(editingContext, descriptionId)
+                .filter(ContainmentReferenceWidgetDescription.class::isInstance)
+                .map(ContainmentReferenceWidgetDescription.class::cast);
         if (optionalWidgetDescription.isPresent()) {
             var reference = optionalWidgetDescription.get();
             var optionalView = this.getViewFromWidgetDescription(reference);

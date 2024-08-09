@@ -19,6 +19,7 @@ import {
   INodeLayoutHandler,
   NodeData,
   setBorderNodesPosition,
+  ForcedDimensions,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 
@@ -34,7 +35,7 @@ export class RectangleWithExternalLabelNodeLayoutHandler implements INodeLayoutH
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    _forceWidth?: number
+    _forceWidth?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 

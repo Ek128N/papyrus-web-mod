@@ -28,10 +28,11 @@ import {
   setBorderNodesPosition,
   computePreviousSize,
   computePreviousPosition,
+  ForcedDimensions,
+  getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 import { PackageNodeData } from './PackageNode.types';
-import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams';
 
 const rectangularNodePadding: number = 8;
 
@@ -47,7 +48,7 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceWidth?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-packageNode-${nodeIndex}`)?.children[0];
@@ -76,13 +77,13 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
-    _forceWidth?: number
+    _forceWidth?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const headerHeightFootprint = getHeaderFootprint(labelElement, true, false);
+    const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -111,15 +112,13 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
           child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
+        child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
           child.position = getChildNodePosition(
             visibleNodes,
             child,
-            labelElement,
-            false,
-            false,
+            headerHeightFootprint,
             borderWidth,
             previousSibling
           );
@@ -197,7 +196,7 @@ export class PackageNodeLayoutHandler implements INodeLayoutHandler<PackageNodeD
     node: Node<PackageNodeData, 'packageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _borderWidth: number,
-    _forceWidth?: number
+    _forceWidth?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);

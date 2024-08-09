@@ -16,7 +16,7 @@ import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagra
 export interface RectangleWithExternalLabelNodeData extends NodeData {}
 
 export interface GQLRectangleWithExternalLabelNodeStyle extends GQLNodeStyle {
-  color: string;
+  background: string;
   borderColor: string;
   borderStyle: string;
   borderSize: string;

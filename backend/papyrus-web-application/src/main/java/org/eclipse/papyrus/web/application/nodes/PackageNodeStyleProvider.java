@@ -24,8 +24,9 @@ import org.eclipse.sirius.components.view.emf.diagram.INodeStyleProvider;
 import org.springframework.stereotype.Service;
 
 /**
- * This class provides style information for the package custom node.
- * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyleProvider.java).
+ * This class provides style information for the package custom node.<br>
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a>
+ * (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyleProvider.java).
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -48,7 +49,7 @@ public class PackageNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(PackageNodeStyle.newPackageNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor())
+                    .background(Optional.ofNullable(((PackageNodeStyleDescription) nodeStyle).getBackground())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)
                             .map(FixedColor::getValue)

@@ -38,6 +38,11 @@ describe('Stereotype application page tests', () => {
     cy.activateDetailsTabAndWaitForElement('Stereotype1', 'testInt');
   });
 
+  after(() => {
+    cy.deleteProjectByName(instanceProjectName);
+    cy.deleteProjectByName(profileProjectName);
+  });
+
   it('Check mono string', () => {
     cy.getByTestId('input-testString').clear().type('new string{enter}');
 
@@ -108,7 +113,7 @@ describe('Stereotype application page tests', () => {
 
   it('Check mono enumeration', () => {
     // mono enumeration => testRefToEnumeration
-    cy.getByTestId('testRefToEnumeration').contains('None');
+    cy.getByTestId('testRefToEnumeration').contains('EnumerationLiteral1');
     chooseSelectValue('testRefToEnumeration', 'EnumerationLiteral2');
 
     // Check persisted value

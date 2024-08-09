@@ -13,33 +13,41 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.representations;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.uml.domain.services.profile.StereotypeUtil;
+import org.eclipse.sirius.components.collaborative.trees.api.TreeConfiguration;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
 import org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.widget.reference.browser.ReferenceWidgetDefaultCandidateSearchProvider;
+import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
-import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
+import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.uml2.uml.Element;
 import org.springframework.stereotype.Service;
 
@@ -59,11 +67,12 @@ import org.springframework.stereotype.Service;
 // org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider
 @Service
 public class ReferenceModelBrowerDescriptionOverrider implements IRepresentationDescriptionOverrider {
+
+    public static final String REPRESENTATION_NAME = "Papyrus Reference Model Browser";
+
     public static final String DOCUMENT_KIND = "siriusWeb://document";
 
     public static final String TREE_KIND = "modelBrowser://";
-
-    public static final String REFERENCE_DESCRIPTION_ID = UUID.nameUUIDFromBytes("model_browser_reference_tree_description".getBytes()).toString();
 
     private static final String TARGET_TYPE = "targetType";
 
@@ -77,6 +86,8 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private ModelBrowsersDescriptionProvider modelBrowserDescriptionProvider;
 
+    private IURLParser urlParser = new URLParser();
+
     public ReferenceModelBrowerDescriptionOverrider(IObjectService objectService, IEMFKindService emfKindService, List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders,
             ModelBrowsersDescriptionProvider modelBrowserDescriptionProvider) {
         super();
@@ -89,9 +100,165 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     @Override
     public List<IRepresentationDescription> getOverridedDescriptions() {
-        TreeDescription description = this.modelBrowserDescriptionProvider.getModelBrowserDescription(REFERENCE_DESCRIPTION_ID, variableManager -> this.canCreateModelBrowser(variableManager),
+        TreeDescription description = this.getModelBrowserDescription(ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID, variableManager -> this.canCreateModelBrowser(variableManager),
                 this.browserIsSelectableProvider(), this::getSearchScopeElements);
         return List.of(description);
+    }
+
+    private TreeDescription getModelBrowserDescription(String descriptionId, Predicate<VariableManager> canCreatePredicate, Function<VariableManager, Boolean> isSelectableProvider,
+            Function<VariableManager, List<?>> elementsProvider) {
+
+        return TreeDescription.newTreeDescription(descriptionId)
+                .label(REPRESENTATION_NAME)
+                .idProvider(variableManager -> variableManager.get(TreeConfiguration.TREE_ID, String.class).orElse(null))
+                .treeItemIdProvider(this::getTreeItemId)
+                .kindProvider(this::getKind)
+                .labelProvider(this::getLabel)
+                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .iconURLProvider(this::getImageURL)
+                .editableProvider(this::isEditable)
+                .deletableProvider(this::isDeletable)
+                .selectableProvider(isSelectableProvider)
+                .elementsProvider(elementsProvider)
+                .hasChildrenProvider(variableManager -> this.hasChildren(variableManager, isSelectableProvider))
+                .childrenProvider(variableManager -> this.getChildren(variableManager, isSelectableProvider))
+                // This predicate will NOT be used while creating the model browser, but we don't want to see the
+                // description of the
+                // model browser in the list of representations that can be created. Thus, we will return false all the
+                // time.
+                .canCreatePredicate(canCreatePredicate)
+                .deleteHandler(this::getDeleteHandler)
+                .renameHandler(this::getRenameHandler)
+                .build();
+    }
+
+    private boolean hasChildren(VariableManager variableManager, Function<VariableManager, Boolean> isSelectableProvider) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        boolean hasChildren = false;
+        if (self instanceof Resource resource) {
+            hasChildren = !resource.getContents().isEmpty();
+        } else if (self instanceof EObject eObject) {
+            hasChildren = !eObject.eContents().isEmpty();
+            hasChildren = hasChildren && this.hasCompatibleDescendants(variableManager, eObject, false, isSelectableProvider);
+        }
+        return hasChildren;
+    }
+
+    private boolean hasCompatibleDescendants(VariableManager variableManager, EObject eObject, boolean isDescendant, Function<VariableManager, Boolean> isSelectableProvider) {
+        VariableManager childVariableManager = variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, eObject);
+        return isDescendant && isSelectableProvider.apply(childVariableManager)
+                || eObject.eContents().stream().anyMatch(eContent -> this.hasCompatibleDescendants(childVariableManager, eContent, true, isSelectableProvider));
+    }
+
+    private List<Object> getChildren(VariableManager variableManager, Function<VariableManager, Boolean> isSelectableProvider) {
+        List<Object> result = new ArrayList<>();
+
+        List<String> expandedIds = new ArrayList<>();
+        Object objects = variableManager.getVariables().get(TreeRenderer.EXPANDED);
+        if (objects instanceof List<?> list) {
+            expandedIds = list.stream().filter(String.class::isInstance).map(String.class::cast).toList();
+        }
+
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+
+        if (optionalEditingContext.isPresent()) {
+            String id = this.getTreeItemId(variableManager);
+            if (expandedIds.contains(id)) {
+                Object self = variableManager.getVariables().get(VariableManager.SELF);
+
+                if (self instanceof Resource resource) {
+                    result.addAll(resource.getContents());
+                } else if (self instanceof EObject) {
+                    List<Object> contents = this.objectService.getContents(self);
+                    result.addAll(contents);
+                }
+            }
+        }
+        result.removeIf(object -> {
+            if (object instanceof EObject eObject) {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VariableManager.SELF, eObject);
+                return !isSelectableProvider.apply(childVariableManager) && !this.hasChildren(childVariableManager, isSelectableProvider);
+            } else {
+                return false;
+            }
+        });
+        return result;
+    }
+
+    private IStatus getDeleteHandler(VariableManager variableManager) {
+        return new Failure("");
+    }
+
+    private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
+        return new Failure("");
+    }
+
+    private String getTreeItemId(VariableManager variableManager) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        String id = null;
+        if (self instanceof Resource resource) {
+            id = resource.getURI().path().substring(1);
+        } else if (self instanceof EObject) {
+            id = this.objectService.getId(self);
+        }
+        return id;
+    }
+
+    private List<String> getImageURL(VariableManager variableManager) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
+        if (self instanceof EObject) {
+            imageURL = this.objectService.getImagePath(self);
+        } else if (self instanceof Resource) {
+            imageURL = List.of("/reference-widget-images/Resource.svg");
+        }
+        return imageURL;
+    }
+
+    private boolean isEditable(VariableManager variableManager) {
+        return false;
+
+    }
+
+    private boolean isDeletable(VariableManager variableManager) {
+        return false;
+    }
+
+    private String getKind(VariableManager variableManager) {
+        String kind;
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        if (self instanceof Resource) {
+            kind = DOCUMENT_KIND;
+        } else {
+            kind = this.objectService.getKind(self);
+        }
+        return kind;
+    }
+
+    private String getLabel(VariableManager variableManager) {
+        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        String label = "";
+        if (self instanceof Resource resource) {
+            label = this.getResourceLabel(resource);
+        } else if (self instanceof EObject) {
+            label = this.objectService.getLabel(self);
+            if (label.isBlank()) {
+                var kind = this.objectService.getKind(self);
+                label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
+            }
+        }
+        return label;
+    }
+
+    private String getResourceLabel(Resource resource) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .findFirst()
+                .map(ResourceMetadataAdapter::getName)
+                .orElse(resource.getURI().lastSegment());
     }
 
     private Function<VariableManager, Boolean> browserIsSelectableProvider() {
@@ -183,7 +350,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private Optional<EObject> resolveOwnerEObject(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
@@ -196,7 +363,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private List<? extends Object> getSearchScopeElements(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
@@ -211,7 +378,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private Optional<EClass> resolveTargetType(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, EditingContext.class);
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(TREE_KIND) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = new URLParser().getParameterValues(optionalTreeId.get());

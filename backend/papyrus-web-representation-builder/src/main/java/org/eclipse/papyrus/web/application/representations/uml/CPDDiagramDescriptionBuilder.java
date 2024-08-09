@@ -25,6 +25,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -32,6 +33,8 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -183,13 +186,14 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createComponentTopNodeDescription(DiagramDescription diagramDescription) {
         EClass componentEClass = this.umlPackage.getComponent();
-        NodeDescription cpdComponentTopNodeDescription = this.newNodeBuilder(componentEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription cpdComponentTopNodeDescription = this.newNodeBuilder(componentEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getDomainNodeName(componentEClass)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(componentEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(componentEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(componentEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(cpdComponentTopNodeDescription);
 
@@ -218,12 +222,13 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         EClass interfaceEClass = this.umlPackage.getInterface();
-        NodeDescription cpdInterfaceTopNodeDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription cpdInterfaceTopNodeDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(interfaceEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interfaceEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(interfaceEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(cpdInterfaceTopNodeDescription);
 
@@ -304,11 +309,12 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createComponentSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass componentEClass = this.umlPackage.getComponent();
-        NodeDescription cpdComponentSharedNodeDescription = this.newNodeBuilder(componentEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription cpdComponentSharedNodeDescription = this.newNodeBuilder(componentEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(componentEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getComponent_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(componentEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(componentEClass.getName())) //
                 .build();
@@ -343,11 +349,12 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         EClass interfaceEClass = this.umlPackage.getInterface();
-        NodeDescription cpdInterfaceSharedNodeDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription cpdInterfaceSharedNodeDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(interfaceEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interfaceEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(interfaceEClass.getName())) //
                 .build();
@@ -469,27 +476,34 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         EClass propertyEClass = this.umlPackage.getProperty();
 
         // Style for Property with attribute isStatic=false and aggregation=shared
-        RectangularNodeStyleDescription rectangularDashNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        RectangularNodeStyleDescription rectangularDashNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularDashNodeStyle.setBorderLineStyle(LineStyle.DASH);
         ConditionalNodeStyle dashConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(
                 "aql:self.oclIsKindOf(uml::Property) and (uml::AggregationKind::shared = self.oclAsType(uml::Property).aggregation)", //
                 rectangularDashNodeStyle);
 
+        InsideLabelDescription insideLabelDescription = this.getViewBuilder().createInsideLabelDescription(this.getQueryBuilder().queryRenderLabel(), true, true);
         // Style for Property with attribute isStatic=true and aggregation=shared
-        RectangularNodeStyleDescription rectangularDashAndUnderlineNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        String condition = "aql:self.oclIsKindOf(uml::Property) and (uml::AggregationKind::shared = self.oclAsType(uml::Property).aggregation) and self.isStatic";
+        RectangularNodeStyleDescription rectangularDashAndUnderlineNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularDashAndUnderlineNodeStyle.setBorderLineStyle(LineStyle.DASH);
-        rectangularDashAndUnderlineNodeStyle.setUnderline(true);
+        InsideLabelStyle consitionalStyle = this.getViewBuilder().createDefaultInsideLabelStyle(true, true);
+        consitionalStyle.setUnderline(true);
+        ConditionalInsideLabelStyle conditionalLabelDescription = this.getViewBuilder().createConditionalInsideLabelStyle(condition, consitionalStyle);
+        insideLabelDescription.getConditionalStyles().add(conditionalLabelDescription);
+
         ConditionalNodeStyle dashAndUnderlineConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(
-                "aql:self.oclIsKindOf(uml::Property) and (uml::AggregationKind::shared = self.oclAsType(uml::Property).aggregation) and self.isStatic", //
+                condition, //
                 rectangularDashAndUnderlineNodeStyle);
 
-        NodeDescription cpdPropertySharedNodeDescription = this.newNodeBuilder(propertyEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription cpdPropertySharedNodeDescription = this.newNodeBuilder(propertyEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(propertyEClass, CPDDiagramDescriptionBuilder.SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ComponentDiagramServices.GET_PROPERTY_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(propertyEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(propertyEClass.getName())) //
+                .insideLabelDescription(insideLabelDescription)
                 .conditionalStyles(List.of(dashAndUnderlineConditionalStyle, dashConditionalStyle)) //
                 .build();
         this.cpdSharedDescription.getChildrenDescriptions().add(cpdPropertySharedNodeDescription);
@@ -591,7 +605,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         NodeDescription receptionSubNodeDescription = this.createSubNodeDescriptionInCompartmentDescription(diagramDescription, parentNodeDescription, this.umlPackage.getReception(),
                 RECEPTIONS_COMPARTMENT_SUFFIX, CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getInterface_OwnedReception()), this.umlPackage.getInterface_OwnedReception(), owners,
                 forbiddenOwners, nodeDescription -> nodeDescription != null);
-        receptionSubNodeDescription.setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "true", "true"));
+        receptionSubNodeDescription.getInsideLabel().setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "true", "true"));
 
         // Add Reception Graphical dropped tool on Shared Compartment for Interface
         DropNodeTool cpdReceptionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(parentNodeDescription));

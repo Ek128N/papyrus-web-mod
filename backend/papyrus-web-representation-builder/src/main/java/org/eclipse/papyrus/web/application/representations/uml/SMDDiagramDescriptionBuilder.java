@@ -15,7 +15,6 @@ package org.eclipse.papyrus.web.application.representations.uml;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EReference;
@@ -29,9 +28,12 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -71,13 +73,15 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private NodeDescription createStateMachineNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         NodeDescription smdStateMachineNodeDesc = this.newNodeBuilder(this.umlPackage.getStateMachine(), rectangularNodeStyle)//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getStateMachine().getName()))//
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyle(false, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(smdStateMachineNodeDesc);
 
@@ -90,7 +94,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createPseudostateBorderNodeDescription(smdStateMachineNodeDesc, this.umlPackage.getStateMachine_ConnectionPoint(), specializedDomainNodeName);
 
         NodeDescription regionNodeDescription = this.createRegionNodeDescription(smdStateMachineNodeDesc, diagramDescription);
-
+        listLayoutStrategyDescription.getGrowableNodes().add(regionNodeDescription);
         this.registerNodeAsCommentOwner(regionNodeDescription, diagramDescription);
 
         Supplier<List<NodeDescription>> stateMachineDescs = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getStateMachine());
@@ -101,15 +105,21 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription, DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle(false, false);
-        rectangularNodeStyleDescription.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
+        RectangularNodeStyleDescription rectangularNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle();
+        rectangularNodeStyleDescription.setBackground(this.styleProvider.getTransparentColor());
 
+        // We need here to add a non empty label so the renderer displays a label and the label separator
+        // This is the only way we can have compartment with no border but still display a line between each compartment
+        InsideLabelDescription labelDesc = this.getViewBuilder().createDefaultInsideLabelDescription(false, true);
+        labelDesc.getStyle().setWithHeader(false);
+        labelDesc.setLabelExpression("aql:' '");
         NodeDescription regionNodeDesc = this.newNodeBuilder(this.umlPackage.getRegion(), rectangularNodeStyleDescription)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getStateMachine_Region()))//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getRegion().getName()))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getRegion().getName()))//
+                .insideLabelDescription(labelDesc)
                 .build();
 
         stateMachineNodeDescription.getChildrenDescriptions().add(regionNodeDesc);
@@ -127,14 +137,19 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private NodeDescription createStateNodeDescription(NodeDescription regionNodeDescription, DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, false);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
+        InsideLabelDescription labelDescription = this.getViewBuilder().createDefaultInsideLabelDescription(false, false);
 
         // Display the header separator only if there is a region in the state
-        RectangularNodeStyleDescription headerStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        String condition = "aql:self.region->size() > 0";
+        labelDescription.getConditionalStyles()
+                .add(this.getViewBuilder().createConditionalInsideLabelStyle(condition, this.getViewBuilder().createDefaultInsideLabelStyle(false, true)));
+
+        RectangularNodeStyleDescription headerStyle = this.getViewBuilder().createRectangularNodeStyle();
         headerStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
 
-        ConditionalNodeStyle conditionalHeaderStyle = this.getViewBuilder().createConditionalNodeStyle("aql:self.region->size() > 0", headerStyle);
+        ConditionalNodeStyle conditionalHeaderStyle = this.getViewBuilder().createConditionalNodeStyle(condition, headerStyle);
 
         NodeDescription stateNodeDesc = this.newNodeBuilder(this.umlPackage.getState(), rectangularNodeStyle)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
@@ -144,6 +159,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getState().getName()))//
                 .reusedNodeDescriptions(List.of(regionNodeDescription))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getState().getName()))//
+                .insideLabelDescription(labelDescription)
                 .build();
 
         regionNodeDescription.getChildrenDescriptions().add(stateNodeDesc);
@@ -160,13 +176,14 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private void createFinalStateNodeDescription(NodeDescription regionNodeDescription) {
-        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("FinalState_24dp.svg".getBytes()).toString(), false);
+        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/FinalState_24dp.svg");
 
         NodeDescription finalStateNodeDesc = this.newNodeBuilder(this.umlPackage.getFinalState(), imageNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getFinalState().getName()))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getFinalState().getName()))//
+                .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .build();
         finalStateNodeDesc.setDefaultWidthExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
         finalStateNodeDesc.setDefaultHeightExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
@@ -195,6 +212,8 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createPseudoStateNodeDescription(NodeDescription parentDesc, EReference containmentFeature, List<PseudostateKind> pseudostateKinds, String name) {
         List<ConditionalNodeStyle> conditionalNodeStyles = new ArrayList<>();
         List<NodeTool> creationTools = new ArrayList<>();
+
+        final OutsideLabelDescription labelStyle = this.getViewBuilder().createDefaultOutsideLabelDescription(true);
         for (PseudostateKind pseudostateKind : pseudostateKinds) {
             String condition = "aql:self.kind = uml::PseudostateKind::" + pseudostateKind.getLiteral();
             String literal = pseudostateKind.getLiteral();
@@ -203,12 +222,13 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
             NodeStyleDescription nodeStyle;
             if (pseudostateKind.equals(PseudostateKind.FORK_LITERAL) || pseudostateKind.equals(PseudostateKind.JOIN_LITERAL)) {
-                nodeStyle = this.getViewBuilder().createRectangleWithExternalLabelNodeStyle();
+                nodeStyle = this.getViewBuilder().createRectangularNodeStyle();
             } else {
-                nodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(imageName.getBytes()).toString(), false);
+                nodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/" + imageName);
             }
 
-            ConditionalNodeStyle conditionalNodeStyle = this.getViewBuilder().createConditionalNodeStyle(condition, nodeStyle);
+            ConditionalNodeStyle conditionalNodeStyle = this.getViewBuilder().createConditionalNodeStyle(condition,
+                    nodeStyle);
             conditionalNodeStyles.add(conditionalNodeStyle);
 
             // Node creation tool
@@ -235,6 +255,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getPseudostate().getName()))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getPseudostate().getName()))//
+                .addOutsideLabelDescription(labelStyle) //
                 .conditionalStyles(conditionalNodeStyles)//
                 .build();
 

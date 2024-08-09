@@ -16,11 +16,11 @@ const projectName = 'Cypress Project - stereotypes';
 describe('/projects', () => {
   beforeEach(() => {
     cy.deleteProjectByName(projectName);
-    cy.createProject(projectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`);
-    });
+    cy.createProjectFromTemplateWithName(context, projectName, 'EmptyUMLTemplate');
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   /**
@@ -30,7 +30,7 @@ describe('/projects', () => {
     cy.getByTestId('new-model').click();
     cy.getByTestId('name-input').type('Base UML.uml');
     cy.getByTestId('stereotype').click();
-    cy.get('li').contains('UML.uml').click();
+    cy.get('li').contains('Model UML').click();
     cy.getByTestId('create-document').click();
     cy.getByTestId('explorer://').findByTestId('Base UML.uml').should('be.visible').dblclick();
   });

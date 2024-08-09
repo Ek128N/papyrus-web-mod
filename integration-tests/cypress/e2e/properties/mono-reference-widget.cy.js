@@ -13,6 +13,7 @@
  *****************************************************************************/
 
 const projectName = 'Cypress Project - mono-reference-widget';
+const context = {};
 
 describe('Mono-valued reference widget tests', () => {
   /**
@@ -20,27 +21,13 @@ describe('Mono-valued reference widget tests', () => {
    */
   beforeEach(() => {
     cy.deleteProjectByName(projectName);
-    cy.createProject(projectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document-icon').click();
-        cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
-        cy.getByTestId('file')
-          .selectFile(
-            {
-              contents: '@model4test',
-              fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
-            },
-            { force: true }
-          )
-          .then(() => {
-            cy.getByTestId('upload-document-submit').click();
-            cy.expandAll('model4test.uml');
-            cy.getByTestId('FunctionBehavior').should('be.visible').click();
-          });
-      });
+    cy.createTestProject(context, projectName).then(() => {
+      cy.getByTestId('FunctionBehavior').should('be.visible').click();
     });
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   it('set reference value with dropdown and remove value', () => {
@@ -91,6 +78,7 @@ describe('Mono-valued reference widget tests', () => {
     // create a Reception under Activity node
     cy.get('@dialog').findByTestId('model4test.uml-toggle').should('be.visible').click();
     cy.get('@dialog').findByTestId('model4test-toggle').should('be.visible').click();
+    cy.wait(500);
     cy.get('@dialog').findByTestId('Activity').should('be.visible').click();
     cy.get('@dialog')
       .findByTestId('childCreationDescription')

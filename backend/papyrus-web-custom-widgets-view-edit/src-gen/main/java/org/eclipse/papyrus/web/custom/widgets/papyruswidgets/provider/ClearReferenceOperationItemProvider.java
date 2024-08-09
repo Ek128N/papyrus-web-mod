@@ -177,6 +177,9 @@ public class ClearReferenceOperationItemProvider extends ItemProviderAdapter
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CLEAR_REFERENCE_OPERATION__BODY,
                 ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CLEAR_REFERENCE_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

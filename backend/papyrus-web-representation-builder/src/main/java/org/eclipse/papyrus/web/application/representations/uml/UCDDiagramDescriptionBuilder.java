@@ -19,7 +19,6 @@ import static org.eclipse.papyrus.web.application.representations.view.aql.Varia
 import static org.eclipse.papyrus.web.application.representations.view.aql.Variables.SELECTED_NODE;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
@@ -27,7 +26,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
@@ -36,19 +34,27 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.Actor;
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.Generalization;
+import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
@@ -181,7 +187,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createActorTopNodeDescription(DiagramDescription diagramDescription) {
-        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true);
+        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/Actor.svg");
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdActorTopNodeDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
                 .name(this.getIdBuilder().getDomainNodeName(actorEClass)) //
@@ -189,6 +195,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
+                .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .build();
         ucdActorTopNodeDescription.setDefaultWidthExpression("70");
         ucdActorTopNodeDescription.setDefaultHeightExpression("100");
@@ -283,11 +290,19 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         EllipseNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createEllipseNodeStyle();
 
+        InsideLabelDescription description = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        description.setTextAlign(LabelTextAlign.CENTER);
+        description.setLabelExpression(this.getQueryBuilder().queryRenderLabel());
+        InsideLabelStyle style = this.getViewBuilder().createDefaultInsideLabelStyle(true, false);
+        description.setStyle(style);
+        description.setPosition(InsideLabelPosition.MIDDLE_CENTER);
+
         NodeDescription ucdUseCaseTopNodeDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
+                .insideLabelDescription(description)
                 .build();
         ucdUseCaseTopNodeDescription.setDefaultWidthExpression("204");
         ucdUseCaseTopNodeDescription.setDefaultHeightExpression("104");
@@ -357,7 +372,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createActorSharedNodeDescription(DiagramDescription diagramDescription) {
-        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("Actor.svg".getBytes()).toString(), true);
+        NodeStyleDescription actorNodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/Actor.svg");
         EClass actorEClass = this.umlPackage.getActor();
         NodeDescription ucdActorSharedNodeDescription = this.newNodeBuilder(actorEClass, actorNodeStyle)//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(actorEClass, SHARED_SUFFIX)) //
@@ -365,6 +380,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(actorEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(actorEClass.getName())) //
+                .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .build();
         ucdActorSharedNodeDescription.setDefaultWidthExpression("70");
         ucdActorSharedNodeDescription.setDefaultHeightExpression("100");
@@ -444,12 +460,20 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         EllipseNodeStyleDescription useCaseNodeStyle = this.getViewBuilder().createEllipseNodeStyle();
 
+        InsideLabelDescription description = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        description.setLabelExpression(this.getQueryBuilder().queryRenderLabel());
+        description.setTextAlign(LabelTextAlign.CENTER);
+        InsideLabelStyle style = this.getViewBuilder().createDefaultInsideLabelStyle(true, false);
+        description.setStyle(style);
+        description.setPosition(InsideLabelPosition.MIDDLE_CENTER);
+
         NodeDescription ucdUseCaseSharedNodeDescription = this.newNodeBuilder(useCaseEClass, useCaseNodeStyle)//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(useCaseEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(UseCaseDiagramServices.GET_USECASE_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(useCaseEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(useCaseEClass.getName())) //
+                .insideLabelDescription(description)
                 .build();
 
         ucdUseCaseSharedNodeDescription.setDefaultWidthExpression("204");
@@ -666,12 +690,13 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the type of {@link Classifier} to create
      */
     private void createClassifierAsSubjectTopNodeDescription(DiagramDescription diagramDescription, EClass classifierAsSubject) {
-        NodeDescription ucdClassifierTopNodeDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ucdClassifierTopNodeDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getDomainNodeName(classifierAsSubject)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierAsSubject))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierAsSubject.getName()))//
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyle(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierAsSubject.getName())) //
                 .build();
         diagramDescription.getNodeDescriptions().add(ucdClassifierTopNodeDescription);
@@ -703,12 +728,13 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the type of {@link Classifier} to create
      */
     private void createClassifierAsSubjectSharedNodeDescription(DiagramDescription diagramDescription, EClass classifierAsSubject) {
-        NodeDescription ucdClassifierSharedNodeDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ucdClassifierSharedNodeDescription = this.newNodeBuilder(classifierAsSubject, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(classifierAsSubject, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierAsSubject.getName()))//
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyle(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierAsSubject.getName())) //
                 .build();
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdClassifierSharedNodeDescription);

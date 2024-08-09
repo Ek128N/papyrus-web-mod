@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.2</version>
+		<version>3.3.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>papyrus-web</groupId>
@@ -30,8 +30,8 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.components.version>2024.1.4</sirius.components.version>
-		<sirius.documentation.version>2024.1.0</sirius.documentation.version>
+		<sirius.components.version>2024.7.5</sirius.components.version>
+		<sirius.documentation.version>2024.3.0</sirius.documentation.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>
 		<uml2.version>5.5.0-SNAPSHOT</uml2.version>
 		<papyrus-uml-domain-services-version>0.23.0-SNAPSHOT</papyrus-uml-domain-services-version>
@@ -48,8 +48,9 @@
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-components</url>
 		</repository>
 		<repository>
-			<id>papyrus-uml-services</id>
-			<url>https://repo.eclipse.org/content/repositories/papyrus-snapshots/</url>
+			<id>papyrus</id>
+			<url>
+				https://repo.eclipse.org/content/repositories/papyrus-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -58,10 +59,6 @@
 		<repository>
 			<id>papyrus-uml-services-release</id>
 			<url>https://repo.eclipse.org/content/repositories/papyrus-releases/</url>
-		</repository>
-		<repository>
-			<id>eclipse-org.eclipse.papyrus-designer</id>
-			<url>https://repo.eclipse.org/content/repositories/papyrus-snapshots/</url>
 		</repository>
 		<repository>
 			<id>repo-eclipse-uml2</id>
@@ -83,16 +80,16 @@
 
 	<dependencyManagement>
 		<dependencies>
-				<!-- Sirius Components -->
+			<!-- Sirius Components -->
 
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-starter</artifactId>
+				<artifactId>sirius-components-forms</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-forms</artifactId>
+				<artifactId>sirius-web-tests</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -102,17 +99,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-web-domain</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-components-view-diagram-customnodes</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-components-formdescriptioneditors</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-services-api</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-customwidgets</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -127,7 +124,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-services</artifactId>
+				<artifactId>sirius-components-view-emf-widget-reference</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-components-emf-forms</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-web-starter</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -142,7 +149,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-persistence</artifactId>
+				<artifactId>sirius-web-application</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -162,7 +169,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-collaborative-formdescriptioneditors</artifactId>
+				<artifactId>
+					sirius-components-collaborative-formdescriptioneditors</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -187,11 +195,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-customwidgets-edit</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-components-diagrams-layout</artifactId>
 				<version>${sirius.components.version}</version>
 				<exclusions>
@@ -204,11 +207,6 @@
 						<artifactId>xml-apis-ext</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-spring</artifactId>
-				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
@@ -228,16 +226,6 @@
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-components-domain-edit</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-compatibility-emf</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-domain-design</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -298,11 +286,6 @@
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-components-view-form</artifactId>
-				<version>${sirius.components.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-graphql</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>
 			<dependency>
@@ -468,7 +451,8 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
-					<configLocation>../papyrus-web-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<configLocation>
+						../papyrus-web-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<failsOnError>true</failsOnError>
 					<consoleOutput>true</consoleOutput>

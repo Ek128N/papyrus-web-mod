@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
+import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
 
     @Override
     public boolean canHandle(String templateId) {
-        return List.of(UMLProjectTemplateProvider.UML_WITH_PRIMITIVES_TEMPLATE_ID).contains(templateId);
+        return List.of(UMLProjectTemplateProvider.UML_WITH_PRIMITIVES_TEMPLATE_ID, UMLProjectTemplateProvider.EMPTY_UML_TEMPLATE).contains(templateId);
     }
 
     @Override
@@ -77,6 +77,8 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
         Optional<RepresentationMetadata> result = Optional.empty();
         if (UMLProjectTemplateProvider.UML_WITH_PRIMITIVES_TEMPLATE_ID.equals(templateId)) {
             result = this.initializeUMLWithPrimitivesProjectContents(editingContext);
+        } else if (UMLProjectTemplateProvider.EMPTY_UML_TEMPLATE.equals(templateId)) {
+            result = Optional.empty();
         }
         return result;
     }

@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
-import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.editingcontext.PathmapResourceFactory;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
 import org.eclipse.uml2.types.TypesPackage;

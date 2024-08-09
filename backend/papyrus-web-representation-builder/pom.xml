@@ -53,7 +53,6 @@
 		</dependency>
 
 
-
 		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.eclipse.uml2.plugins</groupId>
@@ -81,13 +80,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-collaborative-diagrams</artifactId>
+			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services</artifactId>
+			<artifactId>sirius-components-collaborative-diagrams</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.papyrus.domainservices</groupId>
 			<artifactId>org.eclipse.papyrus.uml.domain.services</artifactId>

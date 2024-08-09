@@ -15,8 +15,9 @@ package org.eclipse.papyrus.web.application.templates;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -27,16 +28,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLProjectTemplateProvider implements IProjectTemplateProvider {
 
+    public static final String EMPTY_UML_TEMPLATE = "EmptyUMLTemplate";
+
     public static final String UML_WITH_PRIMITIVES_TEMPLATE_ID = "DefaultUMLWithPrimitive";
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var umlWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(UML_WITH_PRIMITIVES_TEMPLATE_ID)
-                .label("UML")
-                .imageURL("/images/UML.svg")
-                .natures(List.of())
-                .build();
-        return List.of(umlWithPrimitivesTemplate);
+        var umlWithPrimitivesTemplate = new ProjectTemplate(UML_WITH_PRIMITIVES_TEMPLATE_ID, "UML", "/images/UML.svg", List.of(new ProjectTemplateNature(PapyrusUMLNatures.UML)));
+        var emptyUmlWithPrimitivesTemplate = new ProjectTemplate(EMPTY_UML_TEMPLATE, "UML Empty", "/images/UML.svg", List.of(new ProjectTemplateNature(PapyrusUMLNatures.UML)));
+        return List.of(umlWithPrimitivesTemplate, emptyUmlWithPrimitivesTemplate);
     }
 
 }

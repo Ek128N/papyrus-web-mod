@@ -17,18 +17,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
 
   beforeEach(() => {
     cy.deleteProjectByName(instanceProjectName);
-    cy.createProject(instanceProjectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then(() => {
-        cy.getByTestId('new-model').click();
-        cy.getByTestId('name-input').type('Base UML.uml');
-        cy.getByTestId('stereotype').click();
-        cy.get('li').contains('UML.uml').click();
-        cy.getByTestId('create-document').click();
-        cy.expandAll('Base UML.uml');
-      });
-    });
+    cy.createProjectFromStereotype(instanceProjectName, 'EmptyUMLTemplate', 'Model UML', 'Base UML.uml');
   });
 
   afterEach(() => {

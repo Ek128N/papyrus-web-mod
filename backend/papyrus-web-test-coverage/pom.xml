@@ -36,6 +36,11 @@
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-representation-builder</artifactId>
 			<version>${project.version}</version>
 		</dependency>

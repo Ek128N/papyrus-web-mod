@@ -28,11 +28,12 @@ Cypress.Commands.add('openReferenceChildCreationDialog', (refName, containerName
     .should('be.visible')
     .click();
   cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('model4test-toggle').click();
-  cy.get('@dialog').findByTestId('tree-root-elements').findByTestId(containerName).should('be.visible').click();
+  cy.wait(500);
   cy.get('@dialog')
     .findByTestId('tree-root-elements')
     .findByTestId(containerName)
-    .parent()
-    .parent()
-    .should('have.attr', 'data-testid', 'selected');
+    .should('be.visible')
+    .as('activity')
+    .click();
+  cy.get('@activity').parent().parent().should('have.attr', 'data-testid', 'selected');
 });

@@ -177,6 +177,9 @@ public class PrimitiveListDeleteOperationItemProvider extends ItemProviderAdapte
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
                 ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.PRIMITIVE_LIST_DELETE_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

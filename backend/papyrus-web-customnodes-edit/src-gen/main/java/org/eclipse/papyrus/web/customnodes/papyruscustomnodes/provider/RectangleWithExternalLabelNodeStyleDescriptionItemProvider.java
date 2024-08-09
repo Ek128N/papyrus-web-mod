@@ -20,15 +20,19 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.provider.CustomNodesEditPlugin;
-import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.provider.StyleItemProvider;
 
 /**
  * This is the item provider adapter for a
@@ -37,7 +41,8 @@ import org.eclipse.sirius.components.view.diagram.provider.StyleItemProvider;
  *
  * @generated
  */
-public class RectangleWithExternalLabelNodeStyleDescriptionItemProvider extends StyleItemProvider {
+public class RectangleWithExternalLabelNodeStyleDescriptionItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -57,115 +62,13 @@ public class RectangleWithExternalLabelNodeStyleDescriptionItemProvider extends 
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addFontSizePropertyDescriptor(object);
-            this.addItalicPropertyDescriptor(object);
-            this.addBoldPropertyDescriptor(object);
-            this.addUnderlinePropertyDescriptor(object);
-            this.addStrikeThroughPropertyDescriptor(object);
             this.addBorderColorPropertyDescriptor(object);
             this.addBorderRadiusPropertyDescriptor(object);
             this.addBorderSizePropertyDescriptor(object);
             this.addBorderLineStylePropertyDescriptor(object);
-            this.addLabelColorPropertyDescriptor(object);
-            this.addShowIconPropertyDescriptor(object);
-            this.addLabelIconPropertyDescriptor(object);
+            this.addBackgroundPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Font Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addFontSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE,
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_italic_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__ITALIC,
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_bold_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__BOLD,
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Underline feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addUnderlinePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__UNDERLINE,
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Strike Through feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addStrikeThroughPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH,
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
     }
 
     /**
@@ -245,58 +148,21 @@ public class RectangleWithExternalLabelNodeStyleDescriptionItemProvider extends 
     }
 
     /**
-     * This adds a property descriptor for the Label Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Background feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addLabelColorPropertyDescriptor(Object object) {
+    protected void addBackgroundPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
                 this.getResourceLocator(),
-                this.getString("_UI_NodeStyleDescription_labelColor_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelColor_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_COLOR,
+                this.getString("_UI_RectangleWithExternalLabelNodeStyleDescription_background_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RectangleWithExternalLabelNodeStyleDescription_background_feature",
+                        "_UI_RectangleWithExternalLabelNodeStyleDescription_type"),
+                PapyrusCustomNodesPackage.Literals.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND,
                 true,
                 false,
-                false,
-                null,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Show Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addShowIconPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_NodeStyleDescription_showIcon_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_showIcon_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__SHOW_ICON,
                 true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
                 null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Label Icon feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addLabelIconPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_NodeStyleDescription_labelIcon_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeStyleDescription_labelIcon_feature", "_UI_NodeStyleDescription_type"),
-                DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__LABEL_ICON,
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
                 null,
                 null));
     }
@@ -329,7 +195,7 @@ public class RectangleWithExternalLabelNodeStyleDescriptionItemProvider extends 
     @Override
     public String getText(Object object) {
         RectangleWithExternalLabelNodeStyleDescription rectangleWithExternalLabelNodeStyleDescription = (RectangleWithExternalLabelNodeStyleDescription) object;
-        return this.getString("_UI_RectangleWithExternalLabelNodeStyleDescription_type") + " " + rectangleWithExternalLabelNodeStyleDescription.getFontSize();
+        return this.getString("_UI_RectangleWithExternalLabelNodeStyleDescription_type") + " " + rectangleWithExternalLabelNodeStyleDescription.getBorderRadius();
     }
 
     /**
@@ -344,18 +210,10 @@ public class RectangleWithExternalLabelNodeStyleDescriptionItemProvider extends 
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(RectangleWithExternalLabelNodeStyleDescription.class)) {
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__FONT_SIZE:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__ITALIC:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BOLD:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__UNDERLINE:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH:
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__LABEL_COLOR:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__SHOW_ICON:
-            case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             default:

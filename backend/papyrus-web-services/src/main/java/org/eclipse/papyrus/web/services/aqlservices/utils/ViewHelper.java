@@ -44,7 +44,9 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -240,12 +242,29 @@ public class ViewHelper implements IViewHelper {
         var targetObjectLabel = this.objectService.getLabel(semanticElement);
         String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), containmentKind, targetObjectId);
 
-        var labelStyle = LabelStyle.newLabelStyle().color("").fontSize(14).iconURL(List.of()).build();
+        var labelStyle = LabelStyle.newLabelStyle()
+                .background("")
+                .color("")
+                .borderColor("")
+                .borderStyle(LineStyle.Solid)
+                .fontSize(14)
+                .iconURL(List.of())
+                .build();
 
-        var insideLabel = InsideLabel.newLabel("").type("").text("").insideLabelLocation(InsideLabelLocation.TOP_CENTER).position(Position.UNDEFINED).size(Size.UNDEFINED).alignment(Position.UNDEFINED)
-                .style(labelStyle).isHeader(false).build();
+        var insideLabel = InsideLabel.newLabel("")
+                .text("")
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .style(labelStyle)
+                .isHeader(false)
+                .textAlign(LabelTextAlign.CENTER)
+                .overflowStrategy(LabelOverflowStrategy.ELLIPSIS)
+                .build();
 
-        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().color("").borderColor("").borderStyle(LineStyle.Solid).build();
+        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                .background("")
+                .borderColor("")
+                .borderStyle(LineStyle.Solid)
+                .build();
 
         return Node.newNode(nodeId)//
                 .type("")//
@@ -262,7 +281,6 @@ public class ViewHelper implements IViewHelper {
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())//
                 .position(Position.UNDEFINED)//
                 .size(Size.UNDEFINED)//
-                .userResizable(true)//
                 .borderNodes(List.of())//
                 .childNodes(List.of())//
                 .customizedProperties(Set.of())//

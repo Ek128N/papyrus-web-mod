@@ -212,7 +212,6 @@ export const PrimitiveListSection = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PrimitiveListPropertySectionProps) => {
   const props: PrimitiveListStyleProps = {
@@ -577,12 +576,7 @@ export const PrimitiveListSection = ({
     <>
       <FormControl error={widget.diagnostics.length > 0} fullWidth>
         <div style={{ display: 'flex' }}>
-          <PropertySectionLabel
-            editingContextId={editingContextId}
-            formId={formId}
-            widget={widget}
-            subscribers={subscribers}
-          />
+          <PropertySectionLabel editingContextId={editingContextId} formId={formId} widget={widget} />
           {widget.canReorder && (
             <IconButton
               style={{ marginLeft: 'auto', marginRight: '16px' }}

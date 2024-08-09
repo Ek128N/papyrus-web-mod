@@ -13,6 +13,7 @@
  *****************************************************************************/
 
 const projectName = 'Cypress Project - search-scope';
+const context = {};
 
 describe('Containment reference widget tests', () => {
   /**
@@ -20,10 +21,9 @@ describe('Containment reference widget tests', () => {
    */
   beforeEach(() => {
     cy.deleteProjectByName(projectName);
-    cy.createProject(projectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
+    cy.createProjectFromTemplateWithName(context, projectName, 'EmptyUMLTemplate').then((res) => {
+      cy.wrap(context.projectId).as('projectId');
+      cy.visit(`/projects/${context.projectId}/edit`).then((res) => {
         cy.getByTestId('upload-document-icon').click();
         cy.fixture('search-scope.uml', { mimeType: 'text/xml' }).as('model');
         cy.getByTestId('file')
@@ -36,10 +36,15 @@ describe('Containment reference widget tests', () => {
           )
           .then(() => {
             cy.getByTestId('upload-document-submit').click();
+            cy.getByTestId('upload-document-close').click();
             cy.expandAll('search-scope.uml');
           });
       });
     });
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   it('search scope service test', () => {

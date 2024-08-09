@@ -21,12 +21,10 @@ import {
   DiagramContextValue,
   DiagramElementPalette,
   Label,
-  NodeContext,
-  NodeContextValue,
-  useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
+  useConnectorNodeStyle,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
@@ -48,7 +46,7 @@ const rectangleWithExternalLabelInnerRectangleStyle = (
     opacity: faded ? '0.4' : '',
     ...style,
     borderColor: getCSSColor(String(style.borderColor), theme),
-    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    background: getCSSColor(String(style.background), theme),
   };
 
   if (selected || hovered) {
@@ -96,13 +94,12 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
 };
 
 export const RectangleWithExternalLabelNode = memo(
-  ({ data, id, selected }: NodeProps<RectangleWithExternalLabelNodeData>) => {
+  ({ data, id, selected, dragging }: NodeProps<RectangleWithExternalLabelNodeData>) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
-    const { newConnectionStyleProvider } = useConnector();
-    const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-    const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+    const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
     const handleOnDrop = (event: React.DragEvent) => {
       onDrop(event, id);
@@ -126,36 +123,32 @@ export const RectangleWithExternalLabelNode = memo(
         ) : null}
         <div
           style={{
-            ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-            ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+            ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+            ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`RectangleWithExternalLabel - ${data?.insideLabel?.text}`}>
-          {data.insideLabel ? (
-            <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} transform="" />
-          ) : null}
+          {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
           {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
           <div
             style={{
-              ...rectangleWithExternalLabelInnerRectangleStyle(
-                theme,
-                data.style,
-                selected,
-                hoveredNode?.id === id,
-                data.faded
-              ),
-              ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+              ...rectangleWithExternalLabelInnerRectangleStyle(theme, data.style, selected, data.isHovered, data.faded),
+              ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
             }}
             onDragOver={onDragOver}
             onDrop={handleOnDrop}
             data-testid={`RectangleWithExternalLabel - ${data?.insideLabel?.text}`}>
             {selected ? (
-              <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+              <DiagramElementPalette
+                diagramElementId={id}
+                targetObjectId={data.targetObjectId}
+                labelId={data.insideLabel ? data.insideLabel.id : null}
+              />
             ) : null}
           </div>
         </div>

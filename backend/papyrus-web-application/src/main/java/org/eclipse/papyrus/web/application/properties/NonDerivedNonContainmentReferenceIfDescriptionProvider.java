@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -27,15 +27,15 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.compatibility.emf.properties.EStructuralFeatureChoiceOfValueProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.EStructuralFeatureLabelProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.NonContainmentReferenceIfDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.PropertiesDefaultDescriptionProvider;
-import org.eclipse.sirius.components.compatibility.emf.properties.api.IPropertiesValidationProvider;
-import org.eclipse.sirius.components.compatibility.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.forms.EMFFormDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.EStructuralFeatureChoiceOfValueProvider;
+import org.eclipse.sirius.components.emf.forms.EStructuralFeatureLabelProvider;
+import org.eclipse.sirius.components.emf.forms.NonContainmentReferenceIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
+import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.IfDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -89,7 +89,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private Function<VariableManager, Boolean> getPredicate() {
         return variableManager -> {
-            var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+            var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
             return optionalEReference.filter(eReference -> !eReference.isContainment() && !eReference.isDerived()).isPresent();
         };
     }
@@ -125,7 +125,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private Function<VariableManager, Boolean> readOnlyProvider() {
         return variableManager -> {
-            return variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class).map(ref -> ref.isDerived() || !ref.isChangeable()).orElse(true);
+            return variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class).map(ref -> ref.isDerived() || !ref.isChangeable()).orElse(true);
         };
     }
 
@@ -146,12 +146,12 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, List<?>> getOptionsProvider() {
-        return new EStructuralFeatureChoiceOfValueProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private EStructuralFeature.Setting resolveSetting(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
             return ((InternalEObject) referenceOwner).eSetting(optionalEReference.get());
@@ -185,12 +185,12 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
     }
 
     private String getTypeName(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
             return this.emfKindService.getKind(optionalEReference.get().getEContainingClass());
@@ -200,7 +200,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private String getReferenceKind(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
             return this.emfKindService.getKind(optionalEReference.get().getEReferenceType());
@@ -210,7 +210,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private boolean isContainment(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
             return optionalEReference.get().isContainment();
@@ -220,7 +220,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private boolean isMany(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
             return optionalEReference.get().isMany();
@@ -237,7 +237,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private IStatus handleClearReference(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
             EReference reference = optionalEReference.get();
@@ -254,7 +254,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
 
     private IStatus handleRemoveValue(VariableManager variableManager) {
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<Object> item = this.getItem(variableManager);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -273,7 +273,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
     private IStatus handleSetReference(VariableManager variableManager) {
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<Object> item = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, Object.class);
 
         if (referenceOwner != null && optionalEReference.isPresent()) {
@@ -292,7 +292,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
     private IStatus handleAddReferenceValues(VariableManager variableManager) {
         IStatus result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(), this.feedbackMessageService.getFeedbackMessages());
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<List<Object>> newValues = variableManager.get(ReferenceWidgetComponent.NEW_VALUE, (Class<List<Object>>) (Class<?>) List.class);
 
         if (newValues.isEmpty()) {
@@ -313,7 +313,7 @@ public class NonDerivedNonContainmentReferenceIfDescriptionProvider {
     private IStatus handleMoveReferenceValue(VariableManager variableManager) {
         IStatus result = this.createErrorStatus("Something went wrong while reordering reference values.");
         EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
-        var optionalEReference = variableManager.get(PropertiesDefaultDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
+        var optionalEReference = variableManager.get(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, EReference.class);
         Optional<Object> item = this.getItem(variableManager);
         Optional<Integer> fromIndex = variableManager.get(ReferenceWidgetComponent.MOVE_FROM_VARIABLE, Integer.class);
         Optional<Integer> toIndex = variableManager.get(ReferenceWidgetComponent.MOVE_TO_VARIABLE, Integer.class);

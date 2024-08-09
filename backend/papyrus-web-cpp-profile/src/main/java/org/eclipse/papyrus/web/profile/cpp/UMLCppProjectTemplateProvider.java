@@ -15,8 +15,9 @@ package org.eclipse.papyrus.web.profile.cpp;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -33,17 +34,10 @@ public class UMLCppProjectTemplateProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var cppTemplate = ProjectTemplate.newProjectTemplate(UML_CPP_TEMPLATE_ID)
-                .label("C++")
-                .imageURL("/images/CppTemplate.png")
-                .natures(List.of())
-                .build();
-        var cppSMProjectTeamplte = ProjectTemplate.newProjectTemplate(UML_CPP_SM_TEMPLATE_ID)
-                .label("C++ SM")
-                .imageURL("/images/CppSMTemplate.png")
-                .natures(List.of())
-                .build();
-        return List.of(cppTemplate, cppSMProjectTeamplte);
+        ProjectTemplateNature umlNature = new ProjectTemplateNature("papyrusweb://nature?kind=uml");
+        var cppTemplate = new ProjectTemplate(UML_CPP_TEMPLATE_ID, "C++", "/images/CppTemplate.png", List.of(umlNature));
+        var cppSMProjectTemplate = new ProjectTemplate(UML_CPP_SM_TEMPLATE_ID, "C++ SM", "/images/CppSMTemplate.png", List.of(umlNature));
+        return List.of(cppTemplate, cppSMProjectTemplate);
     }
 
 }

@@ -20,11 +20,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.papyrus.web.services.api.dto.ApplyProfileInput;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.graphql.messages.IGraphQLMessageService;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -49,14 +48,11 @@ public class MutationApplyProfileDataFetcher implements IDataFetcherWithFieldCoo
 
     private final ObjectMapper objectMapper;
 
-    private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
+    private IEditingContextDispatcher editingContextDispatcher;
 
-    private final IGraphQLMessageService messageService;
-
-    public MutationApplyProfileDataFetcher(ObjectMapper objectMapper, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IGraphQLMessageService messageService) {
+    public MutationApplyProfileDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
+        this.editingContextDispatcher = editingContextDispatcher;
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
-        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -64,8 +60,8 @@ public class MutationApplyProfileDataFetcher implements IDataFetcherWithFieldCoo
         Object argument = environment.getArgument("input");
         var input = this.objectMapper.convertValue(argument, ApplyProfileInput.class);
 
-        return this.editingContextEventProcessorRegistry.dispatchEvent(input.editingContextId(), input)
-                .defaultIfEmpty(new ErrorPayload(input.id(), this.messageService.unexpectedError()))
+        return this.editingContextDispatcher.dispatchMutation(input.editingContextId(), input)
+                .defaultIfEmpty(new ErrorPayload(input.id(), "Unexpected error"))
                 .toFuture();
     }
 

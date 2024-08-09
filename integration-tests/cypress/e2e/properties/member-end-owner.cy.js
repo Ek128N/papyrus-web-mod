@@ -13,6 +13,7 @@
  *****************************************************************************/
 
 const projectName = 'Cypress Project - member-end-owner';
+const context = {};
 
 describe('Member end owner test', () => {
   /**
@@ -20,26 +21,11 @@ describe('Member end owner test', () => {
    */
   beforeEach(() => {
     cy.deleteProjectByName(projectName);
-    cy.createProject(projectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document-icon').click();
-        cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
-        cy.getByTestId('file')
-          .selectFile(
-            {
-              contents: '@model4test',
-              fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
-            },
-            { force: true }
-          )
-          .then(() => {
-            cy.getByTestId('upload-document-submit').click();
-            cy.expandAll('model4test.uml');
-          });
-      });
-    });
+    cy.createTestProject(context, projectName);
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   it('member end owner test', () => {

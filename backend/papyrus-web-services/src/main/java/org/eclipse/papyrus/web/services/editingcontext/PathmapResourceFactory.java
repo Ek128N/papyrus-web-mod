@@ -19,7 +19,7 @@ import java.util.UUID;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
-import org.eclipse.papyrus.web.persistence.repositories.IProfileRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.services.pathmap.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.services.uml.profile.UMLProfileService;
 import org.slf4j.Logger;

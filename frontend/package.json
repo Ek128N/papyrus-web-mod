@@ -15,8 +15,7 @@
     "npm": "8.15.0"
   },
   "workspaces": [
-    "papyrus-web",
-    "sirius-web-application"
+    "papyrus-web"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -25,6 +24,6 @@
     "format-lint": "prettier --list-different \"*/src/**/*.{js,ts,tsx,css}\""
   },
   "devDependencies": {
-    "turbo": "1.4.2"
+    "turbo": "1.13.3"
   }
 }

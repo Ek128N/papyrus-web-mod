@@ -15,29 +15,57 @@ package org.eclipse.papyrus.web.services.representations;
 
 import static org.eclipse.papyrus.uml.domain.services.EMFUtils.allContainedObjectOfType;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
+import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Registry that keeps track of all {@link DiagramDescription}s used in Papyrus application.
+ * Registry that keeps track of all {@link IRepresentationDescription}s used in Papyrus application.
  *
  * @author Arthur Daussy
  */
 public class PapyrusRepresentationDescriptionRegistry {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PapyrusRepresentationDescriptionRegistry.class);
 
     private IDiagramIdProvider idProvider;
 
@@ -51,11 +79,120 @@ public class PapyrusRepresentationDescriptionRegistry {
 
     private Map<String, IDiagramElementDescription> apiDiagramElementDescriptionById = new HashMap<>();
 
-    public PapyrusRepresentationDescriptionRegistry(IDiagramIdProvider idProvider) {
+    private Map<FormDescription, org.eclipse.sirius.components.forms.description.FormDescription> formsConvertion = new HashMap<>();
+
+    private ResourceSetImpl viewResourceSet;
+
+    private Registry ePackagesRegistry;
+
+    private IViewConverter viewConverter;
+
+    public PapyrusRepresentationDescriptionRegistry(IDiagramIdProvider idProvider, EPackage.Registry ePackagesRegistry, IViewConverter viewConverter) {
         this.idProvider = idProvider;
+        this.ePackagesRegistry = ePackagesRegistry;
+        this.viewConverter = viewConverter;
+        this.viewResourceSet = new ResourceSetImpl();
+        this.viewResourceSet.eAdapters().add(new ECrossReferenceAdapter());
     }
 
-    public void add(DiagramDescription description, org.eclipse.sirius.components.diagrams.description.DiagramDescription converted) {
+    /**
+     * Register a new diagram in this registry.
+     *
+     * <p>
+     * This method should be called during initialization phase. For example during a @PostConstruct in a service class.
+     * </p>
+     *
+     * @param diagramBuilder
+     *            a diagram builder.
+     */
+    public void registerDiagram(AbstractRepresentationDescriptionBuilder diagramBuilder) {
+        List<EPackage> staticEPackages = this.ePackagesRegistry.values().stream()
+                .filter(EPackage.class::isInstance)
+                .map(EPackage.class::cast)
+                .collect(Collectors.toList());
+
+        View view = this.createView(diagramBuilder.getRepresentationName());
+
+        DiagramDescription diagramDescription = diagramBuilder.createDiagramDescription(view);
+
+        Resource eResource = view.eResource();
+
+        this.generateStaticIds(diagramDescription, eResource);
+
+        List<IRepresentationDescription> representationDescriptions = this.viewConverter.convert(Collections.singletonList(view), staticEPackages);
+
+        // Workaround https://github.com/eclipse-sirius/sirius-components/issues/1345
+        for (var description : representationDescriptions) {
+            if (description instanceof org.eclipse.sirius.components.diagrams.description.DiagramDescription) {
+                this.add(diagramDescription, (org.eclipse.sirius.components.diagrams.description.DiagramDescription) description);
+                LOGGER.info(MessageFormat.format("Contributing representation {0} with id {1}", description.getLabel(), description.getId()));
+            }
+        }
+
+        view.eAdapters().add(new UnmodifableModel());
+
+    }
+
+    /**
+     * Register a new form in this registry.
+     *
+     * <p>
+     * This method should be called during initialization phase. For example during a @PostConstruct in a service class.
+     * </p>
+     *
+     * @param viewFormDescription
+     *            the view form
+     * @param formDescription
+     *            the converted form
+     */
+    // This can be improved by relocated the conversion from View to API inside this class
+    public void registerForm(FormDescription viewFormDescription, org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
+        this.formsConvertion.put(viewFormDescription, formDescription);
+        viewFormDescription.eAdapters().add(new UnmodifableModel());
+    }
+
+    private View createView(String representatioName) {
+        // Required to have a unique URIs - workaround https://github.com/eclipse-sirius/sirius-components/issues/1345
+        View view = ViewFactory.eINSTANCE.createView();
+        JSONResourceFactory jsonResourceFactory = new JSONResourceFactory();
+        var uri = jsonResourceFactory.createResourceURI(UUID.nameUUIDFromBytes(representatioName.getBytes()).toString());
+
+        JsonResource impl = jsonResourceFactory.createResource(uri);
+
+        impl.getContents().add(view);
+        this.viewResourceSet.getResources().add(impl);
+
+        return view;
+    }
+
+    private void generateStaticIds(RepresentationDescription diagramDescription, Resource eResource) {
+        TreeIterator<EObject> contentIterator = eResource.getAllContents();
+        Set<String> uniqueDescriptionIds = new HashSet<>();
+        while (contentIterator.hasNext()) {
+            EObject next = contentIterator.next();
+            final String id;
+            if (next instanceof DiagramElementDescription desc) {
+                id = this.getUniqueIdentifier(diagramDescription, uniqueDescriptionIds, desc);
+            } else {
+                id = EcoreUtil.getURI(next).toString();
+            }
+            ((JsonResource) eResource).setID(next, UUID.nameUUIDFromBytes(id.getBytes()).toString());
+        }
+    }
+
+    private String getUniqueIdentifier(RepresentationDescription diagramDescription, Set<String> uniqueDescriptionIds, DiagramElementDescription desc) {
+        String name = desc.getName();
+
+        if (name == null || name.isBlank()) {
+            throw new IllegalStateException("Description with no name are forbidden " + desc);
+        } else if (uniqueDescriptionIds.contains(name)) {
+            throw new IllegalStateException("Duplicated description name " + name + " in representation " + diagramDescription.getName());
+        } else {
+            return name;
+        }
+    }
+
+    private void add(DiagramDescription description, org.eclipse.sirius.components.diagrams.description.DiagramDescription converted) {
         String viewId = this.idProvider.getId(description);
         String apiId = converted.getId();
 
@@ -166,6 +303,14 @@ public class PapyrusRepresentationDescriptionRegistry {
         return this.diagrams.stream().map(Match::getApiDiagramDescription).toList();
     }
 
+    public Collection<FormDescription> getForms() {
+        return this.formsConvertion.keySet();
+    }
+
+    public Collection<org.eclipse.sirius.components.forms.description.FormDescription> getConvertedForms() {
+        return this.formsConvertion.values();
+    }
+
     /**
      * Represents a match between an API description and a View Description
      *
@@ -214,4 +359,20 @@ public class PapyrusRepresentationDescriptionRegistry {
             return this.convertedEdges;
         }
     }
+
+    /**
+     * Notifier that checks the view models are not modified after registration
+     *
+     * @author Arthur Daussy
+     */
+    private static final class UnmodifableModel extends EContentAdapter {
+
+        @Override
+        public void notifyChanged(Notification notification) {
+            if (!notification.isTouch()) {
+                LOGGER.error("This papyrus view model should not be modified after registration. Notifier " + notification.getNotifier());
+            }
+        }
+    }
+
 }

@@ -23,6 +23,10 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     });
   });
 
+  afterEach(() => {
+    cy.deleteProjectByName('C++ SM');
+  });
+
   /**
    * Test validating the deletion of a representation
    */

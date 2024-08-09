@@ -28,7 +28,12 @@ import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -36,7 +41,7 @@ import org.springframework.data.util.Pair;
 
 /**
  * Builder in charge of building a compartment composed of list items.
- * 
+ *
  * @author Arthur Daussy
  */
 public class ListCompartmentBuilder {
@@ -57,6 +62,8 @@ public class ListCompartmentBuilder {
 
     private IDomainHelper metamodelHelper;
 
+    private String bottomGapExpression;
+
     public ListCompartmentBuilder(IdBuilder idBuilder, ViewBuilder viewBuider, QueryHelper queryBuilder, IDomainHelper metamodelHelper) {
         super();
         this.idBuilder = idBuilder;
@@ -67,6 +74,11 @@ public class ListCompartmentBuilder {
 
     public ListCompartmentBuilder withCompartmentNameSuffix(String aCompartmentNameSuffix) {
         this.compartmentNameSuffix = aCompartmentNameSuffix;
+        return this;
+    }
+
+    public ListCompartmentBuilder withbottomGapExpression(String aBottomGapExpression) {
+        this.bottomGapExpression = aBottomGapExpression;
         return this;
     }
 
@@ -81,19 +93,19 @@ public class ListCompartmentBuilder {
     }
 
     public ListCompartmentBuilder addCreationTools(EReference containmentRef, EClass newType) {
-        creationTools.add(Pair.of(containmentRef, newType));
+        this.creationTools.add(Pair.of(containmentRef, newType));
         return this;
     }
 
     public NodeDescription buildIn(NodeDescription parent) {
-        Objects.requireNonNull(queryBuilder);
-        Objects.requireNonNull(idBuilder);
-        Objects.requireNonNull(semanticCandidateExpression);
-        Objects.requireNonNull(childrenType);
-        Objects.requireNonNull(compartmentNameSuffix);
-        NodeDescription attributesCompartement = addCompartementNode(parent, compartmentNameSuffix);
-        attributesCompartement.getPalette().getNodeTools().addAll(creationTools.stream().map(pair -> createCreationTool(pair.getFirst(), pair.getSecond())).toList());
-        NodeDescription attributeDescription = createLabelIconInsideCompartmentDescription(parent);
+        Objects.requireNonNull(this.queryBuilder);
+        Objects.requireNonNull(this.idBuilder);
+        Objects.requireNonNull(this.semanticCandidateExpression);
+        Objects.requireNonNull(this.childrenType);
+        Objects.requireNonNull(this.compartmentNameSuffix);
+        NodeDescription attributesCompartement = this.addCompartementNode(parent, this.compartmentNameSuffix);
+        attributesCompartement.getPalette().getNodeTools().addAll(this.creationTools.stream().map(pair -> this.createCreationTool(pair.getFirst(), pair.getSecond())).toList());
+        NodeDescription attributeDescription = this.createLabelIconInsideCompartmentDescription(parent);
         attributesCompartement.getChildrenDescriptions().add(attributeDescription);
         return attributeDescription;
     }
@@ -101,7 +113,7 @@ public class ListCompartmentBuilder {
     /**
      * Creates a compartment node. A compartment node is basically a node which target the same element as its parent
      * but is used to store a list of children.
-     * 
+     *
      * @param parent
      *            the parent description
      * @param compartmentSpecialization
@@ -109,23 +121,27 @@ public class ListCompartmentBuilder {
      * @return a new {@link NodeDescription}
      */
     private NodeDescription addCompartementNode(NodeDescription parent, String compartmentSpecialization) {
-        NodeDescription description = new NodeDescriptionBuilder(idBuilder, queryBuilder, metamodelHelper.toEClass(parent.getDomainType()), viewBuider.createRectangularNodeStyle(false, false),
-                metamodelHelper)//
-                        .name(idBuilder.getCompartmentDomainNodeName(metamodelHelper.toEClass(parent.getDomainType()), compartmentSpecialization))
-                        .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
-                        .semanticCandidateExpression(queryBuilder.querySelf())//
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+
+        if (this.bottomGapExpression != null) {
+            listLayoutStrategyDescription.setBottomGapExpression(this.bottomGapExpression);
+        }
+        NodeDescription description = new NodeDescriptionBuilder(this.idBuilder, this.queryBuilder, this.metamodelHelper.toEClass(parent.getDomainType()),
+                this.viewBuider.createRectangularNodeStyle(),
+                this.metamodelHelper)//
+                        .name(this.idBuilder.getCompartmentDomainNodeName(this.metamodelHelper.toEClass(parent.getDomainType()), compartmentSpecialization))
+                        .layoutStrategyDescription(listLayoutStrategyDescription)//
+                        .semanticCandidateExpression(this.queryBuilder.querySelf())//
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
-                        .labelExpression(queryBuilder.emptyString())//
                         .collapsible(true)//
                         .build();
-
         parent.getChildrenDescriptions().add(description);
         return description;
     }
 
     /**
      * Creates an icon and label description to be used inside a compartment node.
-     * 
+     *
      * @param elementType
      *            the semantic type of the element
      * @param containmentReference
@@ -135,23 +151,34 @@ public class ListCompartmentBuilder {
      * @return a new NodeDescription
      */
     protected NodeDescription createLabelIconInsideCompartmentDescription(NodeDescription parent) {
-        NodeDescription description = new NodeDescriptionBuilder(idBuilder, queryBuilder, childrenType, viewBuider.createIconAndlabelStyle(true), metamodelHelper)//
-                .name(idBuilder.getListItemDomainNodeName(childrenType, metamodelHelper.toEClass(parent.getDomainType()))) //
-                .semanticCandidateExpression(semanticCandidateExpression)//
-                .labelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "false", "true")) //
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .labelEditTool(createDirectEditTool())//
-                .deleteTool(viewBuider.createNodeDeleteTool(childrenType.getName()))//
-                .build();
+
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "false", "true"));
+        insideLabelDescription.setTextAlign(LabelTextAlign.LEFT);
+        insideLabelDescription.setPosition(InsideLabelPosition.MIDDLE_LEFT);
+        InsideLabelStyle style = this.viewBuider.createDefaultInsideLabelStyleIcon();
+        insideLabelDescription.setStyle(style);
+
+        NodeDescription description = new NodeDescriptionBuilder(this.idBuilder, this.queryBuilder, this.childrenType, DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription(),
+                this.metamodelHelper)//
+                        .name(this.idBuilder.getListItemDomainNodeName(this.childrenType, this.metamodelHelper.toEClass(parent.getDomainType()))) //
+                        .semanticCandidateExpression(this.semanticCandidateExpression)//
+                        .insideLabelDescription(insideLabelDescription) //
+                        .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                        .labelEditTool(this.createDirectEditTool())//
+                        .deleteTool(this.viewBuider.createNodeDeleteTool(this.childrenType.getName()))//
+                        .build();
 
         // Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164
-        NodeDescription fakeNode = new NodeDescriptionBuilder(idBuilder, queryBuilder, childrenType, viewBuider.createIconAndlabelStyle(true), metamodelHelper)//
-                .name(idBuilder.getFakeChildNodeId(description)) //
-                .semanticCandidateExpression("aql:Sequence{}")
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .build();
-        registerCallback(fakeNode, () -> {
-            creationTools.forEach(p -> CreationToolsUtil.addNodeCreationTool(() -> List.of(parent), createSiblingCreationTool(p.getFirst(), p.getSecond())));
+        // May Disappear with the addition of the bottom gap expression in the compartment
+        NodeDescription fakeNode = new NodeDescriptionBuilder(this.idBuilder, this.queryBuilder, this.childrenType, DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription(),
+                this.metamodelHelper)//
+                        .name(this.idBuilder.getFakeChildNodeId(description)) //
+                        .semanticCandidateExpression("aql:Sequence{}")
+                        .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                        .build();
+        this.registerCallback(fakeNode, () -> {
+            this.creationTools.forEach(p -> CreationToolsUtil.addNodeCreationTool(() -> List.of(parent), this.createSiblingCreationTool(p.getFirst(), p.getSecond())));
         });
         description.getChildrenDescriptions().add(fakeNode);
 
@@ -161,17 +188,17 @@ public class ListCompartmentBuilder {
     private LabelEditTool createDirectEditTool() {
         LabelEditTool directEditTool = DiagramFactory.eINSTANCE.createLabelEditTool();
         directEditTool.setInitialDirectEditLabelExpression(CallQuery.queryServiceOnSelf(Services.GET_DIRECT_EDIT_INPUT_VALUE_SERVICE));
-        directEditTool.getBody().add(viewBuider.createChangeContextOperation(CallQuery.queryServiceOnSelf(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
+        directEditTool.getBody().add(this.viewBuider.createChangeContextOperation(CallQuery.queryServiceOnSelf(Services.CONSUME_DIRECT_EDIT_VALUE_SERVICE, Variables.ARG0)));
         return directEditTool;
     }
 
     private NodeTool createCreationTool(EReference containementRef, EClass newType) {
-        return viewBuider.createCreationTool(idBuilder.getCreationToolId(newType), containementRef, newType);
+        return this.viewBuider.createCreationTool(this.idBuilder.getCreationToolId(newType), containementRef, newType);
     }
 
     /**
      * Creates a node tool that creates a sibling node to the targeted name node.
-     * 
+     *
      * @param containementRef
      *            the containment reference to be used on the semantic parent of the targeted node
      * @param newType
@@ -179,7 +206,7 @@ public class ListCompartmentBuilder {
      * @return a new NodeTool
      */
     private NodeTool createSiblingCreationTool(EReference containementRef, EClass newType) {
-        return viewBuider.createSiblingCreationTool(idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType);
+        return this.viewBuider.createSiblingCreationTool(this.idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType);
     }
 
     private void registerCallback(EObject owner, Runnable r) {

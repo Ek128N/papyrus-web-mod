@@ -287,12 +287,13 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private void createEnumerationDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.pack.getEnumeration();
-        NodeDescription enumerationLiterals = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription enumerationLiterals = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         NodeTool creationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), enumerationEClass);
         Supplier<List<NodeDescription>> packageOwners = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
@@ -321,11 +322,12 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createInterfaceDescription(DiagramDescription diagramDescription) {
 
         EClass interfaceEClass = this.pack.getInterface();
-        NodeDescription interfaceDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription interfaceDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(interfaceEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interfaceEClass.getName()))//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(interfaceEClass.getName())) //
                 .build();
         NodeTool creationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), interfaceEClass);
@@ -378,11 +380,12 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createPrimitiveTypeDescription(DiagramDescription diagramDescription) {
 
         EClass primitiveTypeEClass = this.pack.getPrimitiveType();
-        NodeDescription primitiveTypeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription primitiveTypeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(primitiveTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(primitiveTypeEClass.getName()))//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
                 .build();
         NodeTool creationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), primitiveTypeEClass);
@@ -418,10 +421,11 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createDataTypeDescription(DiagramDescription diagramDescription) {
 
         EClass dataTypeEClass = this.pack.getDataType();
-        NodeDescription classDescription = this.newNodeBuilder(dataTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription classDescription = this.newNodeBuilder(dataTypeEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(dataTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(dataTypeEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(dataTypeEClass.getName())) //
                 .build();
@@ -459,10 +463,11 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createClassDescription(DiagramDescription diagramDescription) {
-        NodeDescription classDescription = this.newNodeBuilder(this.pack.getClass_(), this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription classDescription = this.newNodeBuilder(this.pack.getClass_(), this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getClass_()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.pack.getClass_().getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.pack.getClass_().getName())) //
                 .build();
@@ -501,7 +506,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .withSemanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.pack.getClass_OwnedReception()))//
                 .addCreationTools(this.pack.getClass_OwnedReception(), this.pack.getReception())//
                 .buildIn(classDescription);
-        receptionDescription.setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "true", "true"));
+        receptionDescription.getInsideLabel().setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "true", "true"));
 
         // Create Nested Classifier Compartment
         this.newListCompartmentBuilder().withChildrenType(this.pack.getClassifier())//
@@ -580,11 +585,12 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createSignalDescription(DiagramDescription diagramDescription) {
 
         EClass signalEClass = this.pack.getSignal();
-        NodeDescription signalDescription = this.newNodeBuilder(signalEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription signalDescription = this.newNodeBuilder(signalEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(signalEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(signalEClass.getName()))//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(signalEClass.getName())) //
                 .build();
         NodeTool creationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), signalEClass);

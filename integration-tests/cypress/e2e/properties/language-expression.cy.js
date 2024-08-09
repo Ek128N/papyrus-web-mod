@@ -13,6 +13,7 @@
  *****************************************************************************/
 
 const projectName = 'Cypress Project - language-expression';
+const context = {};
 
 describe('Language expression tests', () => {
   /**
@@ -20,26 +21,11 @@ describe('Language expression tests', () => {
    */
   beforeEach(() => {
     cy.deleteProjectByName(projectName);
-    cy.createProject(projectName).then((res) => {
-      const projectId = res.body.data.createProject.project.id;
-      cy.wrap(projectId).as('projectId');
-      cy.visit(`/projects/${projectId}/edit`).then((res) => {
-        cy.getByTestId('upload-document-icon').click();
-        cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
-        cy.getByTestId('file')
-          .selectFile(
-            {
-              contents: '@model4test',
-              fileName: 'model4test.uml', // workaround for selectFile issue https://github.com/cypress-io/cypress/issues/21936
-            },
-            { force: true }
-          )
-          .then(() => {
-            cy.getByTestId('upload-document-submit').click();
-            cy.expandAll('model4test.uml');
-          });
-      });
-    });
+    cy.createTestProject(context, projectName);
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   const toggleLanguage = (language) => {
@@ -52,10 +38,10 @@ describe('Language expression tests', () => {
     // add predefined: JAVA
     cy.getByTestId('le-add-language-dialog-know-languages')
       .should('be.visible')
-      .should('have.css', 'border', '2px solid rgba(0, 0, 0, 0.125)');
+      .should('have.css', 'border-color', 'rgba(0, 0, 0, 0.125)');
     cy.getByTestId('le-add-language-dialog-ok').should('have.class', 'Mui-disabled');
-    cy.getByTestId('le-add-language-dialog-language-JAVA').click();
-    cy.getByTestId('le-add-language-dialog-know-languages').should('have.css', 'border', '2px solid rgb(190, 26, 120)');
+    cy.getByTestId('le-add-language-dialog-language-JAVA').should('be.visible').click();
+    cy.getByTestId('le-add-language-dialog-know-languages').should('have.css', 'border-color', 'rgb(190, 26, 120)');
     cy.getByTestId('le-add-language-dialog-ok').should('not.have.class', 'Mui-disabled').click();
     cy.getByTestId('le-language-JAVA').should('be.visible');
     cy.getByTestId('le-language-JAVA-body').should('not.be.visible');

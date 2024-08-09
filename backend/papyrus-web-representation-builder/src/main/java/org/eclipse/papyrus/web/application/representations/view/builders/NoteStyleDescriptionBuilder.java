@@ -31,6 +31,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -40,6 +41,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -330,9 +333,12 @@ public class NoteStyleDescriptionBuilder {
         noteStyleDescription.setDefaultWidthExpression(DEFAULT_NOTE_WIDTH);
         noteStyleDescription.setDefaultHeightExpression(DEFAULT_NOTE_HEIGHT);
 
-        NodeStyleDescription style = noteStyleDescription.getStyle();
-        style.setShowIcon(true);
-        style.setColor(this.color);
+        noteStyleDescription.getInsideLabel().getStyle().setShowIconExpression("aql:true");
+        noteStyleDescription.getInsideLabel().setPosition(InsideLabelPosition.MIDDLE_LEFT);
+        noteStyleDescription.getInsideLabel().setTextAlign(LabelTextAlign.LEFT);
+
+        NoteNodeStyleDescription style = (NoteNodeStyleDescription) noteStyleDescription.getStyle();
+        style.setBackground(this.color);
 
         NodeToolSection nodesToolSection = this.viewBuilder.createNodeToolSection(AbstractRepresentationDescriptionBuilder.NODES);
         this.edgesToolSection = this.viewBuilder.createNodeToolSection(AbstractRepresentationDescriptionBuilder.EDGES);

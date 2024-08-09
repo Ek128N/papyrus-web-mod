@@ -47,6 +47,8 @@ import org.eclipse.papyrus.web.application.representations.view.builders.NodeDes
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeSemanticCandidateExpressionTransformer;
 import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.ViewBuilder;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
@@ -59,6 +61,10 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -161,7 +167,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     protected ListCompartmentBuilder newListCompartmentBuilder() {
-        return new ListCompartmentBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder(), this.getUmlMetaModelHelper());
+        return new ListCompartmentBuilder(this.getIdBuilder(), this.getViewBuilder(), this.getQueryBuilder(), this.getUmlMetaModelHelper())
+                .withbottomGapExpression("aql:" + this.styleProvider.getCompartimentBottomGap());
     }
 
     protected IDomainHelper getUmlMetaModelHelper() {
@@ -191,6 +198,10 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         view.getDescriptions().add(diagramDescription);
 
         return diagramDescription;
+    }
+
+    public String getRepresentationName() {
+        return this.representationName;
     }
 
     private boolean mayHaveLabelConditionalLabelStyle(DiagramElementDescription description) {
@@ -378,9 +389,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         commentDescription.setDefaultWidthExpression("200");
         commentDescription.setDefaultHeightExpression("100");
 
-        NodeStyleDescription style = commentDescription.getStyle();
-        style.setShowIcon(false);
-        style.setColor(this.styleProvider.getNoteColor());
+        NoteNodeStyleDescription style = (NoteNodeStyleDescription) commentDescription.getStyle();
+        commentDescription.getInsideLabel().getStyle().setShowIconExpression("aql:false");
+        style.setBackground(this.styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);
         diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment()));
 
@@ -762,7 +773,8 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         diagramDescription.getNodeDescriptions().add(padModel);
         diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getModel()));
 
-        padModel.getStyle().setColor(this.styleProvider.getModelColor());
+        padModel.getStyle().setBorderColor(this.styleProvider.getBorderNodeColor());
+        ((PackageNodeStyleDescription) padModel.getStyle()).setBackground(this.styleProvider.getModelColor());
         this.collectAndReusedChildNodes(padModel, this.pack.getPackageableElement(), diagramDescription, PACKAGE_CHILDREN_FILTER);
 
         this.registerNodeAsCommentOwner(padModel, diagramDescription);
@@ -808,12 +820,15 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @return the created {@link NodeDescription}
      */
     protected NodeDescription createSharedDescription(DiagramDescription diagramDescription) {
-        NodeDescription sharedNodeDescription = this.newNodeBuilder(UMLPackage.eINSTANCE.getElement(), this.getViewBuilder().createRectangularNodeStyle(false, false)) //
+        NodeDescription sharedNodeDescription = this.newNodeBuilder(UMLPackage.eINSTANCE.getElement(), this.getViewBuilder().createRectangularNodeStyle()) //
                 .name(SHARED_DESCRIPTIONS) //
                 .semanticCandidateExpression("aql:Sequence{}").synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(false, false))
                 .build();
         diagramDescription.getNodeDescriptions().add(sharedNodeDescription);
+        // We do not want any to on that virtual container
+        sharedNodeDescription.getPalette().getToolSections().clear();
         return sharedNodeDescription;
     }
 
@@ -1023,12 +1038,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
             List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setBottomGapExpression(GAP_SIZE);
-        NodeDescription sharedCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createRectangularNodeStyle(false, false))//
+        NodeDescription sharedCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedCompartmentDomainNodeName(domainType, compartmentName, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
-                .labelExpression(this.getQueryBuilder().emptyString())//
                 .collapsible(true)//
                 .build();
 
@@ -1075,13 +1089,22 @@ public abstract class AbstractRepresentationDescriptionBuilder {
             String semanticQuery, EReference semanticRefTool, List<EClass> owners, List<EClass> forbiddenOwners, Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         // CHECKSTYLE:ON
         String nodeDescriptionName = this.getIdBuilder().getDomainNodeName(domainType);
-        NodeDescription createNodeDescriptionInCompartmentDescription = this.newNodeBuilder(domainType, this.getViewBuilder().createIconAndlabelStyle(true))//
+
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setLabelExpression(CallQuery.queryServiceOnSelf(Services.RENDER_LABEL_ONE_LINE, "false", "true"));
+        insideLabelDescription.setTextAlign(LabelTextAlign.LEFT);
+        insideLabelDescription.setPosition(InsideLabelPosition.MIDDLE_LEFT);
+        InsideLabelStyle style = this.getViewBuilder().createDefaultInsideLabelStyleIcon();
+        insideLabelDescription.setStyle(style);
+
+        NodeDescription createNodeDescriptionInCompartmentDescription = this.newNodeBuilder(domainType, DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription())//
                 .name(nodeDescriptionName) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(semanticQuery)//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
+                .insideLabelDescription(insideLabelDescription)
                 .build();
         parentNodeDescription.getChildrenDescriptions().add(createNodeDescriptionInCompartmentDescription);
 

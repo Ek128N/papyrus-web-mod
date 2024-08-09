@@ -15,7 +15,6 @@
  * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (packages\sirius-web\frontend\sirius-web\src\nodes\EllipseNodeConverter.tsx).
  */
 import {
-  AlignmentMap,
   BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
@@ -29,9 +28,10 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
-  convertLabelStyle,
+  convertInsideLabel,
   convertLineStyle,
   convertOutsideLabels,
+  isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
@@ -73,7 +73,7 @@ const toEllipseNode = (
     descriptionId,
     style: {
       display: 'flex',
-      backgroundColor: style.color,
+      background: style.background,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
@@ -91,33 +91,17 @@ const toEllipseNode = (
     labelEditable,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-    };
-
-    const alignement = AlignmentMap[insideLabel.insideLabelLocation];
-    if (alignement.isPrimaryVerticalAlignment) {
-      data.style = { ...data.style, alignItems: 'stretch' };
-      data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-    }
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<EllipseNodeData> = {
     id,

@@ -140,13 +140,14 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private void createClassifierAndChildrenDescription(DiagramDescription diagramDescription) {
-        this.csdClassifier = this.newNodeBuilder(this.pack.getClassifier(), this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        this.csdClassifier = this.newNodeBuilder(this.pack.getClassifier(), this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getDomainNodeName(this.pack.getClassifier())) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(this.pack.getClassifier()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.pack.getClassifier().getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.pack.getClassifier().getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(this.csdClassifier);
         diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), this.pack.getClass_()));
@@ -168,13 +169,14 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private void createNestedClassifierDescription(NodeDescription parent, DiagramDescription diagramDescription) {
-        NodeDescription csdNestedClass = this.newNodeBuilder(this.pack.getClassifier(), this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription csdNestedClass = this.newNodeBuilder(this.pack.getClassifier(), this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(this.pack.getClassifier(), IN_CLASSIFIER)) //
                 .semanticCandidateExpression(queryAttributeOnSelf(this.pack.getClass_NestedClassifier()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.pack.getClassifier().getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.pack.getClassifier().getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
 
         parent.getChildrenDescriptions().add(csdNestedClass);

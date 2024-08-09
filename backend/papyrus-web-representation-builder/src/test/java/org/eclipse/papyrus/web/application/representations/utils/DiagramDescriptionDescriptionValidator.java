@@ -89,7 +89,7 @@ public class DiagramDescriptionDescriptionValidator {
 
     /**
      * Check that all Node and domain based edge have a direct edit tool associated.
-     * 
+     *
      * @param description
      *            a description
      * @return a list of error status
@@ -141,9 +141,9 @@ public class DiagramDescriptionDescriptionValidator {
         EMFUtils.allContainedObjectOfType(description, DiagramElementDescription.class).forEach(d -> {
             String name = d.getName();
             if (name == null || name.isBlank()) {
-                result.add(Status.error("Missing name on" + d));
+                result.add(Status.error("Missing name on " + d));
             } else if (names.contains(name)) {
-                result.add(Status.error("Duplicated name" + d.getName()));
+                result.add(Status.error("Duplicated name " + d.getName()));
             } else {
                 names.add(name);
             }
@@ -165,7 +165,7 @@ public class DiagramDescriptionDescriptionValidator {
      * <li>The nodes inside the {@code SHARED_DESCRIPTIONS} are reused at least 2 times</li>
      * </ul>
      * </p>
-     * 
+     *
      * @param description
      *            the {@link DiagramDescription} to validate
      * @return the list of error {@link Status}
@@ -209,7 +209,7 @@ public class DiagramDescriptionDescriptionValidator {
      * This method checks that the palette doesn't contain node tools, edge tools, label edit tools, delete tools, as
      * well as tool sections.
      * </p>
-     * 
+     *
      * @param nodeDescription
      *            the {@link NodeDescription} to check
      * @return the list of error {@link Status}
@@ -246,7 +246,7 @@ public class DiagramDescriptionDescriptionValidator {
     /**
      * Validates that reused {@link NodeDescription} in the provided {@code description} are defined in a
      * {@code SHARED_DESCRIPTIONS}.
-     * 
+     *
      * @param description
      *            the {@link DiagramDescription} to validate
      * @return the list of error {@link Status}
@@ -274,7 +274,7 @@ public class DiagramDescriptionDescriptionValidator {
 
     /**
      * Returns the {@link NodeDescription}s reusing the provided {@code reusedNodeDescription}.
-     * 
+     *
      * @param description
      *            the {@link DiagramDescription} to inspect to find the reusing {@link NodeDescription}s
      * @param reusedNodeDescription

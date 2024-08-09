@@ -16,7 +16,7 @@ import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagra
 export interface PackageNodeData extends NodeData {}
 
 export interface GQLPackageNodeStyle extends GQLNodeStyle {
-  color: string;
+  background: string;
   borderColor: string;
   borderStyle: string;
   borderSize: string;

@@ -22,10 +22,11 @@ import {
   findNodeIndex,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
+  ForcedDimensions,
+  getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 import { NoteNodeData } from './NoteNode.types';
-import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams';
 
 export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -39,7 +40,7 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
     _newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceWidth?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-noteNode-${nodeIndex}`)?.children[0];
@@ -48,12 +49,13 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
     const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 8 + 20;
-    const labelHeight = getHeaderFootprint(labelElement, true, false);
+    const labelHeight = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
 
     const nodeMinComputeWidth = labelWidth;
     const nodeMinComputeHeight = labelHeight + borderWidth * 2;
 
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the forceWidth to be here.
+    const nodeWith = forceWidth?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the
+    // forceWidth to be here.
     const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);

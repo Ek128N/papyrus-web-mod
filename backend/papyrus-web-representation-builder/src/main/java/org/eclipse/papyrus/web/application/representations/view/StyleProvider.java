@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -42,7 +42,7 @@ public class StyleProvider {
 
     private UserColor edgeColor;
 
-    private UserColor nodeColor;
+    private UserColor backgroundColor;
 
     private UserColor borderNodeColor;
 
@@ -56,18 +56,23 @@ public class StyleProvider {
 
     private final UserColor modelColor;
 
+    private final UserColor transparentColor;
+
     private ColorPalette colorPalette;
+
+    private int compartimentBottomGap = 20;
 
     public StyleProvider(View view, String colorPrefix) {
         this.colorPalette = ViewFactory.eINSTANCE.createColorPalette();
         view.getColorPalettes().add(this.colorPalette);
         this.colorPalette.setName(colorPrefix + "ColorPalette");
-        this.nodeColor = this.createFixedColor(colorPrefix + "Default Node Background", "#fefefe");
+        this.backgroundColor = this.createFixedColor(colorPrefix + "Default Node Background", "#fefefe");
         this.borderNodeColor = this.createFixedColor(colorPrefix + "Default Node", "#0b006b");
         this.nodeLabelColor = this.createFixedColor(colorPrefix + "Default Label", "#0b006b");
         this.noteColor = this.createFixedColor(colorPrefix + "Comment", "#fffff0");
         this.constraintColor = this.createFixedColor(colorPrefix + "Constraint", "#c8ffe6");
         this.modelColor = this.createFixedColor(colorPrefix + "Model", "#f1f8fe");
+        this.transparentColor = this.createFixedColor(colorPrefix + "Transparent", "transparent");
         this.edgeColor = this.borderNodeColor;
     }
 
@@ -98,6 +103,15 @@ public class StyleProvider {
     public StyleProvider setEdgeStyle(LineStyle aEdgeStyle) {
         this.edgeStyle = aEdgeStyle;
         return this;
+    }
+
+    public StyleProvider setCompartimentBottomGap(int bottomGap) {
+        this.compartimentBottomGap = bottomGap;
+        return this;
+    }
+
+    public int getCompartimentBottomGap() {
+        return this.compartimentBottomGap;
     }
 
     public ArrowStyle getSourceArrowStyle() {
@@ -154,12 +168,12 @@ public class StyleProvider {
         return this;
     }
 
-    public UserColor getNodeColor() {
-        return this.nodeColor;
+    public UserColor getBackgroundColor() {
+        return this.backgroundColor;
     }
 
-    public StyleProvider setNodeColor(UserColor aNodeColor) {
-        this.nodeColor = aNodeColor;
+    public StyleProvider setBackgroundColor(UserColor aNodeColor) {
+        this.backgroundColor = aNodeColor;
         return this;
     }
 
@@ -188,6 +202,10 @@ public class StyleProvider {
     public StyleProvider setNodeLabelColor(UserColor aNodeLabelColor) {
         this.nodeLabelColor = aNodeLabelColor;
         return this;
+    }
+
+    public UserColor getTransparentColor() {
+        return this.transparentColor;
     }
 
 }

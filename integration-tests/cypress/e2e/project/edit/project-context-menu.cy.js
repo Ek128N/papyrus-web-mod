@@ -22,6 +22,10 @@ describe('/projects/:projectId/edit - Project Context Menu', () => {
     });
   });
 
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
+  });
+
   it('shows the project context menu and hides it by clicking outside', () => {
     cy.getByTestId('more').click({ force: true });
     cy.getByTestId('navbar-contextmenu').should('be.visible');

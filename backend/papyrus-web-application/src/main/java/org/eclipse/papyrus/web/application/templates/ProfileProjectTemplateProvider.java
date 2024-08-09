@@ -15,8 +15,9 @@ package org.eclipse.papyrus.web.application.templates;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -34,11 +35,8 @@ public class ProfileProjectTemplateProvider implements IProjectTemplateProvider 
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var profileWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID)
-                .label("Profile")
-                .imageURL("/images/Profile.svg")
-                .natures(List.of())
-                .build();
+        var profileWithPrimitivesTemplate = new ProjectTemplate(PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID, "Profile", "/images/Profile.svg",
+                List.of(new ProjectTemplateNature(PapyrusUMLNatures.UML)));
         return List.of(profileWithPrimitivesTemplate);
     }
 

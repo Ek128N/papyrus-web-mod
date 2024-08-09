@@ -107,6 +107,11 @@
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-domain</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 
 		<!-- External Dependencies -->
@@ -130,27 +135,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-customwidgets</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-customwidgets-edit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-spring</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -182,22 +171,10 @@
 			<artifactId>sirius-components-domain-edit</artifactId>
 		</dependency>
 
-		<!-- START - Temporary dependency used to unplug default property view 
-			logic to avoid latency. Once a proper implementation is available remove 
-			this -->
-		<!-- https://github.com/PapyrusSirius/papyrus-web/issues/58 -->
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-compatibility-emf</artifactId>
-		</dependency>
 		<!-- https://github.com/PapyrusSirius/papyrus-web/issues/58 -->
 		<!-- END - Temporary dependency used to unplug default property view logic 
 			to avoid latency. Once a proper implementation is available remove this -->
 
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-domain-design</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
@@ -220,6 +197,10 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms-tests</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-emf-forms</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.eef</groupId>
@@ -274,29 +255,60 @@
 		</dependency>
 	</dependencies>
 
-	<build>
+<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<configLocation>../papyrus-web-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<failsOnError>true</failsOnError>
+					<consoleOutput>true</consoleOutput>
+				</configuration>
 				<executions>
 					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
 						<goals>
-							<goal>build-info</goal>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
-		
-	   <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <excludes>
-          	<exclude>**/org.eclipse.papyrus.web.application.tools.usecase/UCD*Test.java,**/org.eclipse.papyrus.web.application.tools.profile/PRD*Test.java,**/org.eclipse.papyrus.web.application.tools.communication/COD*Test.java,**/org.eclipse.papyrus.web.application.tools.activity/AD*Test.java,**/org.eclipse.papyrus.web.application.tools.component/CPD*Test.java,**/org.eclipse.papyrus.web.application.tools.deployment/DD*Test.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-</project>
+	
+	</project>

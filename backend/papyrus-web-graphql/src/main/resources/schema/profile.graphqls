@@ -12,11 +12,7 @@
 # *  Obeo - Initial API and implementation
 # *****************************************************************************
 
-extend interface Viewer {
-  profileMetadatas: [UMLProfileMetadata!]!
-}
-
-extend type User {
+extend type Viewer {
   profileMetadatas: [UMLProfileMetadata!]!
 }
 

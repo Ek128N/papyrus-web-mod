@@ -149,13 +149,14 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createArtifactTopNodeDescription(DiagramDescription diagramDescription) {
         EClass artifactEClass = this.umlPackage.getArtifact();
-        NodeDescription ddArtifactTopNodeDescription = this.newNodeBuilder(artifactEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ddArtifactTopNodeDescription = this.newNodeBuilder(artifactEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getDomainNodeName(artifactEClass)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(artifactEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(artifactEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(artifactEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(ddArtifactTopNodeDescription);
 
@@ -183,13 +184,14 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDeploymentSpecificationTopNodeDescription(DiagramDescription diagramDescription) {
         EClass deploymentSpecificationEClass = this.umlPackage.getDeploymentSpecification();
-        NodeDescription ddDeploymentSpecificationTopNodeDescription = this.newNodeBuilder(deploymentSpecificationEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription ddDeploymentSpecificationTopNodeDescription = this.newNodeBuilder(deploymentSpecificationEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getDomainNodeName(deploymentSpecificationEClass)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(deploymentSpecificationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(deploymentSpecificationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(deploymentSpecificationEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
         diagramDescription.getNodeDescriptions().add(ddDeploymentSpecificationTopNodeDescription);
 
@@ -332,6 +334,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(type.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(type.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyleIcon()) //
                 .build();
         ddClassifierTopNodeDescription.setDefaultWidthExpression(SIZE_100);
         ddClassifierTopNodeDescription.setDefaultHeightExpression(SIZE_100);
@@ -357,12 +360,13 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createArtifactSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass artifactEClass = this.umlPackage.getArtifact();
-        NodeDescription ddArtifactSharedNodeDescription = this.newNodeBuilder(artifactEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription ddArtifactSharedNodeDescription = this.newNodeBuilder(artifactEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(artifactEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_ARTIFACT_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(artifactEClass.getName()))//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(artifactEClass.getName())) //
                 .build();
         this.ddSharedDescription.getChildrenDescriptions().add(ddArtifactSharedNodeDescription);
@@ -400,10 +404,11 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDeploymentSpecificationSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass deploymentSepecificationEClass = this.umlPackage.getDeploymentSpecification();
-        NodeDescription ddDeploymentSpecificationSharedNodeDescription = this.newNodeBuilder(deploymentSepecificationEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription ddDeploymentSpecificationSharedNodeDescription = this.newNodeBuilder(deploymentSepecificationEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(deploymentSepecificationEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_DEPLOYMENT_SPECIFICATION_NODE_CANDIDATES))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(deploymentSepecificationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(deploymentSepecificationEClass.getName())) //
@@ -443,6 +448,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(deviceEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(deviceEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyleIcon()) //
                 .build();
         ddDeviceSharedNodeDescription.setDefaultWidthExpression(SIZE_100);
         ddDeviceSharedNodeDescription.setDefaultHeightExpression(SIZE_100);
@@ -487,6 +493,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(executionEnvironmentEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(executionEnvironmentEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyleIcon()) //
                 .build();
         ddExecutionEnvironmentSharedNodeDescription.setDefaultWidthExpression(SIZE_200);
         ddExecutionEnvironmentSharedNodeDescription.setDefaultHeightExpression(SIZE_100);
@@ -531,6 +538,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(nodeEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(nodeEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyleIcon()) //
                 .build();
         ddNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_100);
         ddNodeSharedNodeDescription.setDefaultHeightExpression(SIZE_100);

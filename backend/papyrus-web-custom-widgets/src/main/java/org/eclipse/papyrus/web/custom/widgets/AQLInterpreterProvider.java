@@ -19,10 +19,10 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -50,8 +50,8 @@ public class AQLInterpreterProvider implements IAQLInterpreterProvider {
     }
 
     private List<EPackage> getAccessibleEPackages(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext) {
-            Registry packageRegistry = ((EditingContext) editingContext).getDomain().getResourceSet().getPackageRegistry();
+        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+            Registry packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
             return packageRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).toList();
         } else {
             return List.of();

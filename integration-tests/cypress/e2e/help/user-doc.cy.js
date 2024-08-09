@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 describe('User doc test', () => {
-  beforeEach(() => {
-    cy.visit('/projects');
-  });
-
   it('Check that the documentation is accessible from the ? button', () => {
+    cy.visit('/projects');
     cy.getByTestId('help-link').invoke('removeAttr', 'target').click();
     cy.get('h1').should('have.text', 'Papyrus Web Documentation');
   });

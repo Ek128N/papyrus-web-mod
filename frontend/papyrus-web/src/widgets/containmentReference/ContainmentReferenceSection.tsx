@@ -194,7 +194,6 @@ const ContainmentReferenceSection = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLContainmentReferenceWidget>) => {
   const styleProps: GQLReferenceWidgetStyle = {
@@ -331,8 +330,8 @@ const ContainmentReferenceSection = ({
   };
 
   const handleReferenceItemSimpleClick = (item: GQLContainmentReferenceItem) => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
+    const { id, kind } = item;
+    setSelection({ entries: [{ id, kind }] });
     if (item.hasClickAction) {
       const variables: GQLClickContainmentReferenceItemMutationVariables = {
         input: {
@@ -348,8 +347,8 @@ const ContainmentReferenceSection = ({
     }
   };
   const handleReferenceItemDoubleClick = (item: GQLContainmentReferenceItem) => {
-    const { id, label, kind } = item;
-    setSelection({ entries: [{ id, label, kind }] });
+    const { id, kind } = item;
+    setSelection({ entries: [{ id, kind }] });
     if (item.hasClickAction) {
       const variables: GQLClickContainmentReferenceItemMutationVariables = {
         input: {
@@ -448,7 +447,6 @@ const ContainmentReferenceSection = ({
             editingContextId={editingContextId}
             formId={formId}
             widget={widget}
-            subscribers={subscribers}
             data-testid={widget.label}
           />
           <div className={classes.toolbar} data-testid="containment-reference-toolbar">

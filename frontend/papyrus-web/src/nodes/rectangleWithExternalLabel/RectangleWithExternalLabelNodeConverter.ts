@@ -25,9 +25,10 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
-  convertLabelStyle,
   convertLineStyle,
   convertOutsideLabels,
+  isListLayoutStrategy,
+  convertInsideLabel,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import {
@@ -73,7 +74,7 @@ const toRectangleWithExternalLabelNode = (
     descriptionId,
     style: {
       display: 'flex',
-      backgroundColor: style.color,
+      background: style.background,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
@@ -91,30 +92,17 @@ const toRectangleWithExternalLabelNode = (
     labelEditable,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-    };
-
-    data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
-    data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'center' };
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<RectangleWithExternalLabelNodeData> = {
     id,

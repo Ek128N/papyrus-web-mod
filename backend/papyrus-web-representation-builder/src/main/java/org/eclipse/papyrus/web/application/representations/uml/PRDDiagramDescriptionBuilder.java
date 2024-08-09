@@ -221,12 +221,13 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass enumerationEClass = this.umlPackage.getEnumeration();
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
-        NodeDescription prdEnumerationTopNodeDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription prdEnumerationTopNodeDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyle(true, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(prdEnumerationTopNodeDescription);
 
@@ -244,11 +245,12 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createMetaclassTopNodeDescription(DiagramDescription diagramDescription) {
         EClass metaclassEClass = this.umlPackage.getClass_();
-        NodeDescription prdMetaclassTopNodeDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription prdMetaclassTopNodeDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(PRD_METACLASS) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
         diagramDescription.getNodeDescriptions().add(prdMetaclassTopNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(prdMetaclassTopNodeDescription);
@@ -298,12 +300,13 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createPrimitiveTypeTopNodeDescription(DiagramDescription diagramDescription) {
         EClass primitiveTypeEClass = this.umlPackage.getPrimitiveType();
-        NodeDescription prdPrimitiveTypeTopNodeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, false)) //
+        NodeDescription prdPrimitiveTypeTopNodeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle()) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(primitiveTypeEClass)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(primitiveTypeEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
         diagramDescription.getNodeDescriptions().add(prdPrimitiveTypeTopNodeDescription);
 
@@ -407,13 +410,14 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass enumerationEClass = this.umlPackage.getEnumeration();
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
-        NodeDescription prdEnumerationSharedNodeDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription prdEnumerationSharedNodeDescription = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(enumerationEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(enumerationEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdEnumerationSharedNodeDescription);
 
@@ -435,11 +439,12 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createMetaclassSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass metaclassEClass = this.umlPackage.getClass_();
-        NodeDescription prdMetaclassSharedNodeDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle(true, false))//
+        NodeDescription prdMetaclassSharedNodeDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(PRD_SHARED_METACLASS) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
 
         this.prdSharedDescription.getChildrenDescriptions().add(prdMetaclassSharedNodeDescription);
@@ -518,13 +523,14 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createPrimitiveTypeSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass primitiveTypeEClass = this.umlPackage.getPrimitiveType();
-        NodeDescription prdPrimitiveTypeSharedNodeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle(true, false)) //
+        NodeDescription prdPrimitiveTypeSharedNodeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle()) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(primitiveTypeEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement())) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(primitiveTypeEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(primitiveTypeEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdPrimitiveTypeSharedNodeDescription);
 
@@ -663,12 +669,13 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createClassifierTopNodeDescription(DiagramDescription diagramDescription, EClass classifierEClass) {
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
-        NodeDescription prdClassifierTopNodeDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription prdClassifierTopNodeDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(classifierEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         diagramDescription.getNodeDescriptions().add(prdClassifierTopNodeDescription);
 
@@ -695,12 +702,13 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createClassifierSharedNodeDescription(DiagramDescription diagramDescription, EClass classifierEClass) {
         ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
-        NodeDescription prdClassifierSharedNodeDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle(true, true))//
+        NodeDescription prdClassifierSharedNodeDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(classifierEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(classifierEClass.getName()))//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(classifierEClass.getName())) //
                 .build();
         this.prdSharedDescription.getChildrenDescriptions().add(prdClassifierSharedNodeDescription);
@@ -795,7 +803,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS)).toList();
 
         EClass associationEClass = this.umlPackage.getAssociation();
-        EdgeDescription prdAssociationEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(associationEClass, this.getQueryBuilder().queryAllReachableExactType(associationEClass),
+        EdgeDescription prdAssociationEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(associationEClass,
+                this.getQueryBuilder().queryAllReachableExactType(associationEClass),
                 sourceAndTargetDescriptionSupplier, sourceAndTargetDescriptionSupplier);
         prdAssociationEdgeDescription.getStyle().setLineStyle(LineStyle.SOLID);
         prdAssociationEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.NONE);
@@ -827,7 +836,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         Supplier<List<NodeDescription>> targetDescriptionSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getClass_());
 
         EClass extensionEClass = this.umlPackage.getExtension();
-        EdgeDescription prdExtensionEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(extensionEClass, this.getQueryBuilder().queryAllReachableExactType(extensionEClass),
+        EdgeDescription prdExtensionEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(extensionEClass,
+                this.getQueryBuilder().queryAllReachableExactType(extensionEClass),
                 sourceDescriptionSupplier, targetDescriptionSupplier);
         prdExtensionEdgeDescription.getStyle().setLineStyle(LineStyle.SOLID);
         prdExtensionEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW);

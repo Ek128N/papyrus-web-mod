@@ -654,6 +654,48 @@ public class ActivityDiagramService extends AbstractDiagramService {
         return Optional.ofNullable(decisionNode).map(DecisionNode::getDecisionInput).map(this::computeDecisionInputLabel).orElse(UMLCharacters.EMPTY);
     }
 
+    /**
+     * Gets the label of an {@link AcceptEventAction}. Depending of the trigger type, the label must be placed inside or
+     * outside the shape.
+     *
+     * @param acceptEventAction
+     *            self
+     * @param isInside
+     *            <code>true</code> if computation for the inside label, false otherwise
+     * @return a label.
+     */
+    public String getAcceptEventActionLabel(AcceptEventAction acceptEventAction, boolean isInside) {
+        final String label;
+        boolean eventTriggeredAcceptEventAction = this.isEventTriggeredAcceptEventAction(acceptEventAction);
+        if (isInside) {
+            if (eventTriggeredAcceptEventAction) {
+                label = "";
+            } else {
+                label = this.renderLabel(acceptEventAction);
+            }
+        } else {
+            if (eventTriggeredAcceptEventAction) {
+                label = this.renderLabel(acceptEventAction);
+            } else {
+                label = "";
+            }
+        }
+
+        return label;
+    }
+
+    /**
+     * Checks if the given {@link AcceptEventAction} is triggered by a TimeEvent.
+     *
+     * @param action
+     *            self
+     * @return a boolean
+     */
+    public boolean isEventTriggeredAcceptEventAction(AcceptEventAction action) {
+        EList<Trigger> triggers = action.getTriggers();
+        return !triggers.isEmpty() && triggers.get(0).getEvent() instanceof TimeEvent;
+    }
+
     private String computeDecisionInputLabel(Behavior behavior) {
         return UMLCharacters.ST_LEFT + DECISION_INPUT + UMLCharacters.ST_RIGHT + UMLCharacters.SPACE + behavior.getName();
     }

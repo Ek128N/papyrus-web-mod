@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2024 CEA LIST, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,10 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
       const repToOpen = res.body.data.createProjectFromTemplate.representationToOpen.id;
       cy.visit(`/projects/${projectId}/edit/${repToOpen}`);
     });
+  });
+
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
   });
 
   /**

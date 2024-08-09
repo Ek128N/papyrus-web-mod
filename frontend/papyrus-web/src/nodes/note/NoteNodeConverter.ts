@@ -25,9 +25,10 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
-  convertLabelStyle,
   convertLineStyle,
   convertOutsideLabels,
+  isListLayoutStrategy,
+  convertInsideLabel,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { GQLNoteNodeStyle, NoteNodeData } from './NoteNode.types';
@@ -56,6 +57,8 @@ const toNoteNode = (
     labelEditable,
   } = gqlNode;
 
+  console.log('GLNode', gqlNode);
+
   const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
     (nodeLayoutData) => nodeLayoutData.id === id
@@ -70,7 +73,7 @@ const toNoteNode = (
     descriptionId,
     style: {
       display: 'flex',
-      backgroundColor: style.color,
+      background: style.background,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
@@ -88,34 +91,19 @@ const toNoteNode = (
     labelEditable,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-    };
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
-    data.style = {
-      ...data.style,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    };
-    data.insideLabel.style = { ...data.insideLabel.style, justifyContent: 'top' };
-  }
+  console.log('Converter', data.insideLabel);
 
   const node: Node<NoteNodeData> = {
     id,

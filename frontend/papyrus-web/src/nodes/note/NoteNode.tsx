@@ -21,12 +21,10 @@ import {
   DiagramContextValue,
   DiagramElementPalette,
   Label,
-  NodeContext,
-  NodeContextValue,
-  useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
+  useConnectorNodeStyle,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
@@ -74,7 +72,7 @@ const noteNodeStyle = (
 const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean): React.CSSProperties => {
   const svgPathStyle: React.CSSProperties = {
     stroke: getCSSColor(String(style.borderColor), theme),
-    fill: getCSSColor(String(style.backgroundColor), theme),
+    fill: getCSSColor(String(style.background), theme),
     fillOpacity: faded ? '0.4' : '1',
     strokeOpacity: faded ? '0.4' : '1',
     strokeWidth: style.borderWidth,
@@ -83,13 +81,12 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
   return svgPathStyle;
 };
 
-export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) => {
+export const NoteNode = memo(({ data, id, selected, dragging }: NodeProps<NoteNodeData>) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
   const { getNodes } = useReactFlow<NoteNodeData>();
   const node = getNodes().find((node) => node.id === id);
 
@@ -105,13 +102,14 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
       paddingTop: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
       paddingRight: parseInt(data.style.borderWidth?.toString() ?? '1') / 2 + 20 + 'px',
       paddingBottom: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
+      //justifyContent: 'left',
     },
   };
 
   useRefreshConnectionHandles(id, data.connectionHandles);
 
   const borderOffset = data.style.borderWidth ? parseInt(data.style.borderWidth.toString()) / 2 : 0;
-
+  //console.log(data.insideLabel);
   return (
     <>
       {data.nodeDescription?.userResizable && !readOnly ? (
@@ -125,39 +123,49 @@ export const NoteNode = memo(({ data, id, selected }: NodeProps<NoteNodeData>) =
       ) : null}
       <div
         style={{
-          ...noteNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+          ...noteNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+          ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`Note - ${data?.insideLabel?.text}`}>
-        <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
-          {data.insideLabel ? (
-            <Label diagramElementId={id} label={updatedLabel} faded={data.faded} transform="" />
-          ) : null}
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            zIndex: '-1',
+          }}>
+          <svg viewBox={`0 0 ${node.width} ${node.height}`}>
+            <path
+              style={svgPathStyle(theme, data.style, data.faded)}
+              d={`M ${borderOffset},${borderOffset} H ${node.width - 15} L ${node.width - borderOffset} 15 V ${
+                node.height - borderOffset
+              } H ${borderOffset} Z`}
+            />
+            <path
+              style={{
+                ...svgPathStyle(theme, data.style, data.faded),
+                fillOpacity: 0,
+              }}
+              d={`M ${node.width - 15},${borderOffset} V 15 H ${node.width - borderOffset}`}
+            />
+          </svg>
         </div>
+        {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
         {selected ? (
-          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+          <DiagramElementPalette
+            diagramElementId={id}
+            targetObjectId={data.targetObjectId}
+            labelId={data.insideLabel ? data.insideLabel.id : null}
+          />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
-        <svg viewBox={`0 0 ${node.width} ${node.height}`}>
-          <path
-            style={svgPathStyle(theme, data.style, data.faded)}
-            d={`M ${borderOffset},${borderOffset} H ${node.width - 15} L ${node.width - borderOffset} 15 V ${
-              node.height - borderOffset
-            } H ${borderOffset} Z`}
-          />
-          <path
-            style={{
-              ...svgPathStyle(theme, data.style, data.faded),
-              fillOpacity: 0,
-            }}
-            d={`M ${node.width - 15},${borderOffset} V 15 H ${node.width - borderOffset}`}
-          />
-        </svg>
       </div>
     </>
   );

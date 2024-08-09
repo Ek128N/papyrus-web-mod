@@ -31,6 +31,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.papyrus.web.application.representations.view.builders.NodeDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.view.builders.NoteStyleDescriptionBuilder;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
@@ -41,11 +42,16 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.uml2.uml.AcceptCallAction;
@@ -87,6 +93,7 @@ import org.eclipse.uml2.uml.ReclassifyObjectAction;
 import org.eclipse.uml2.uml.ReduceAction;
 import org.eclipse.uml2.uml.SendObjectAction;
 import org.eclipse.uml2.uml.SendSignalAction;
+import org.eclipse.uml2.uml.SequenceNode;
 import org.eclipse.uml2.uml.StartClassifierBehaviorAction;
 import org.eclipse.uml2.uml.StartObjectBehaviorAction;
 import org.eclipse.uml2.uml.StructuredActivityNode;
@@ -204,7 +211,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     /**
      * The image to use for connected pins.
      */
-    private static final String CONNECTED_PIN_IMAGE = "ConnectedPin.svg";
+    private static final String CONNECTED_PIN_IMAGE = "view/images/ConnectedPin.svg";
 
     /**
      * The {@link UMLPackage} used to access the UML metamodel.
@@ -327,7 +334,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @see #createSharedSubActivityDescription(NodeDescription, DiagramDescription)
      */
     private NodeDescription createActivityTopNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
 
         EClass activityEClass = this.umlPackage.getActivity();
@@ -337,6 +344,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf()) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         adActivityTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
         adActivityTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
@@ -393,19 +401,27 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      */
     private void createAcceptEventActionSharedNodeDescription(DiagramDescription diagramDescription) {
         // create hourglass conditional style
-        String imageFile = "AcceptTimeEventAction.svg";
-        ImageNodeStyleDescription adHourglassNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(imageFile.getBytes()).toString(), true);
-        ConditionalNodeStyle hourglassConditionalStyle = this.getViewBuilder().createConditionalNodeStyle("aql:self.trigger->size()=1 and self.trigger->first().event.oclIsTypeOf(uml::TimeEvent)", //
+        ImageNodeStyleDescription adHourglassNodeStyleDescription = this.getViewBuilder().createImageNodeStyle("view/images/AcceptTimeEventAction.svg");
+        String timeTriggeredCondition = "aql:self.isEventTriggeredAcceptEventAction()";
+        ConditionalNodeStyle hourglassConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(timeTriggeredCondition, //
                 adHourglassNodeStyleDescription);
 
         // create AcceptEventAction node description
         EClass acceptEventActionEClass = this.umlPackage.getAcceptEventAction();
         NodeStyleDescription adFlagNodeStyleDescription = PapyrusCustomNodesFactory.eINSTANCE.createInnerFlagNodeStyleDescription();
-        adFlagNodeStyleDescription.setColor(this.styleProvider.getNodeColor());
         adFlagNodeStyleDescription.setBorderColor(this.styleProvider.getBorderNodeColor());
         adFlagNodeStyleDescription.setBorderRadius(this.styleProvider.getNodeBorderRadius());
-        adFlagNodeStyleDescription.setLabelColor(this.styleProvider.getNodeLabelColor());
-        adFlagNodeStyleDescription.setShowIcon(true);
+
+        InsideLabelDescription insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        insideLabelDescription.setTextAlign(LabelTextAlign.CENTER);
+        insideLabelDescription.setLabelExpression("aql:self.getAcceptEventActionLabel(true)");
+        InsideLabelStyle style = this.getViewBuilder().createDefaultInsideLabelStyle(false, false);
+        style.setShowIconExpression("aql:not self.isEventTriggeredAcceptEventAction()");
+        insideLabelDescription.setStyle(style);
+
+        OutsideLabelDescription outsiteLabelDescription = this.getViewBuilder().createOutsideLabelDescription("aql:self.getAcceptEventActionLabel(false)", false);
+        outsiteLabelDescription.setPosition(OutsideLabelPosition.BOTTOM_CENTER);
+        outsiteLabelDescription.getStyle().setShowIconExpression(timeTriggeredCondition);
 
         NodeDescription adAcceptEventActionSharedNodeDescription = this.newNodeBuilder(acceptEventActionEClass, adFlagNodeStyleDescription) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(acceptEventActionEClass, SHARED_SUFFIX)) //
@@ -414,6 +430,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(acceptEventActionEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(acceptEventActionEClass.getName())) //
                 .conditionalStyles(List.of(hourglassConditionalStyle)) //
+                .insideLabelDescription(insideLabelDescription)
+                .addOutsideLabelDescription(outsiteLabelDescription)
                 .build();
         adAcceptEventActionSharedNodeDescription.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.COMPUTE_ACCEPT_EVENT_ACTION_WIDTH));
         adAcceptEventActionSharedNodeDescription.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.COMPUTE_ACCEPT_EVENT_ACTION_HEIGHT));
@@ -435,15 +453,16 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createActionInputPinSharedNodeDescription(DiagramDescription diagramDescription) {
-        ImageNodeStyleDescription actionInputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getActionInputPin()), true);
+        ImageNodeStyleDescription actionInputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getActionInputPin()));
         actionInputPinStyle.setPositionDependentRotation(true);
-        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
+        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(CONNECTED_PIN_IMAGE);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
         NodeDescription adActionInputPinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getActionInputPin(), actionInputPinStyle,
                 this.getUmlMetaModelHelper()).name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getActionInputPin(), SHARED_SUFFIX)) //
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                         .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTION_INPUT_PIN_CANDIDATES)).conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
+                        .addOutsideLabelDescription(this.getViewBuilder().createOutsideLabelDescription(this.getQueryBuilder().queryRenderLabel(), true))
                         .build();
         adActionInputPinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
         adActionInputPinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
@@ -525,7 +544,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createActivityParameterNodeSharedNodeDescription(DiagramDescription diagramDescription) {
-        NodeStyleDescription adActivityParameterNodeNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle(true, false);
+        NodeStyleDescription adActivityParameterNodeNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle();
         EClass activityParameterNodeEClass = this.umlPackage.getActivityParameterNode();
 
         NodeDescription adActivityParameterNodeSharedNodeDescription = this.newNodeBuilder(activityParameterNodeEClass, adActivityParameterNodeNodeStyleDescription)
@@ -534,6 +553,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(activityParameterNodeEClass.getName()))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityParameterNodeEClass.getName()))
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
 
         adActivityParameterNodeSharedNodeDescription.setDefaultWidthExpression("80");
@@ -555,9 +575,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createActivityPartitionSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
 
         EClass activityPartitionEClass = this.umlPackage.getActivityPartition();
+        InsideLabelStyle labelStyle = this.getViewBuilder().createDefaultInsideLabelStyleIcon();
+        labelStyle.setWithHeader(true);
+        labelStyle.setDisplayHeaderSeparator(true);
         NodeDescription adActivityPartitionSharedNodeDescription = this.newNodeBuilder(activityPartitionEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(activityPartitionEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
@@ -565,6 +588,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(activityPartitionEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityPartitionEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), labelStyle)
                 .build();
         adActivityPartitionSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adActivityPartitionSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
@@ -712,7 +736,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createConditionalNodeSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass conditionalNodeEClass = this.umlPackage.getConditionalNode();
@@ -723,6 +747,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(conditionalNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(conditionalNodeEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(false, true))
                 .build();
         adConditionalNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adConditionalNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
@@ -779,13 +804,14 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createSharedCustomImageActivityNodeDescription(EClass domainType, EReference containmentReference, DiagramDescription diagramDescription) {
-        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(domainType), true);
+        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(domainType));
 
         NodeDescription adCustomImageActivityNodeSharedNodeDescription = this.newNodeBuilder(domainType, imageNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
+                .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName())).build();
         adCustomImageActivityNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_30);
         adCustomImageActivityNodeSharedNodeDescription.setDefaultHeightExpression(SIZE_30);
@@ -813,12 +839,14 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     private void createDecisionNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         this.createSharedCustomImageActivityNodeDescription(this.umlPackage.getDecisionNode(), this.umlPackage.getActivity_OwnedNode(), diagramDescription);
 
-        NodeStyleDescription nodeStyleDescription = this.getViewBuilder().createNoteNodeStyle();
-        nodeStyleDescription.setShowIcon(false);
-        nodeStyleDescription.setColor(this.styleProvider.getNoteColor());
+        NoteNodeStyleDescription nodeStyleDescription = this.getViewBuilder().createNoteNodeStyle();
+        nodeStyleDescription.setBackground(this.styleProvider.getNoteColor());
+
+        InsideLabelStyle labelStyle = this.getViewBuilder().createDefaultInsideLabelStyle(false, false);
+
         NodeDescription adDecisionNodeNoteSharedNodeDescription = this.newNodeBuilder(this.umlPackage.getDecisionNode(), nodeStyleDescription) //
                 .name(this.getIdBuilder().getDomainNodeName(this.umlPackage.getDecisionNode()) + "_Note_" + SHARED_SUFFIX) //
-                .labelExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_DECISION_INPUT_NOTE_LABEL))
+                .insideLabelDescription(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_DECISION_INPUT_NOTE_LABEL), labelStyle)
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                 .build();
@@ -878,7 +906,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createExpansionRegionSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass expansionRegionEClass = this.umlPackage.getExpansionRegion();
@@ -888,6 +916,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(expansionRegionEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(false, true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(expansionRegionEClass.getName())) //
                 .build();
         adExpansionRegionSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
@@ -940,6 +969,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(forkNodeEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyleIcon())
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(forkNodeEClass.getName())).build();
         adForkNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_50);
         adForkNodeSharedNodeDescription.setDefaultHeightExpression("150");
@@ -978,13 +1008,15 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createInputOutputExpansionNodeNodeDescription(NodeDescription parentDescription, DiagramDescription diagramDescription) {
-        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getExpansionNode()), true);
+        ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getExpansionNode()));
         EClass expansionNodeEClass = this.umlPackage.getExpansionNode();
+
         NodeDescription adInputExpansionNodeSharedNodeDescription = this.newNodeBuilder(expansionNodeEClass, imageNodeStyle)
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_EXPANSION_NODE_CANDIDATES))
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(expansionNodeEClass.getName()))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(expansionNodeEClass.getName()))
+                .addOutsideLabelDescription(this.getViewBuilder().createOutsideLabelDescription(this.getQueryBuilder().queryRenderLabel(), true))
                 .build();
 
         adInputExpansionNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_30);
@@ -1008,9 +1040,9 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createInputPinSharedNodeDescription(DiagramDescription diagramDescription) {
-        ImageNodeStyleDescription inputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getInputPin()), true);
+        ImageNodeStyleDescription inputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getInputPin()));
         inputPinStyle.setPositionDependentRotation(true);
-        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
+        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(CONNECTED_PIN_IMAGE);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
         NodeDescription adInputPinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getInputPin(), inputPinStyle,
@@ -1018,6 +1050,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                         .name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getInputPin(), SHARED_SUFFIX)) //
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                         .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_INPUT_PIN_CANDIDATES)).conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
+                        .addOutsideLabelDescription(this.getViewBuilder().createOutsideLabelDescription(this.getQueryBuilder().queryRenderLabel(), true))
                         .build();
         adInputPinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
         adInputPinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
@@ -1071,7 +1104,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createInterruptibleActivityRegionSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, false);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass interruptibleActivityRegionEClass = this.umlPackage.getInterruptibleActivityRegion();
@@ -1085,7 +1118,6 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .build();
         adInterruptibleActivityRegionSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adInterruptibleActivityRegionSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
-        adInterruptibleActivityRegionSharedNodeDescription.setLabelExpression("");
         this.adSharedDescription.getChildrenDescriptions().add(adInterruptibleActivityRegionSharedNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adInterruptibleActivityRegionSharedNodeDescription);
@@ -1121,6 +1153,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(joinNodeEClass.getName())) //
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyleIcon()) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(joinNodeEClass.getName())).build();
         adJoinNodeSharedNodeDescription.setDefaultWidthExpression(SIZE_50);
         adJoinNodeSharedNodeDescription.setDefaultHeightExpression("150");
@@ -1140,7 +1173,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createLoopNodeSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass loopNodeEClass = this.umlPackage.getLoopNode();
@@ -1151,6 +1184,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(loopNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(loopNodeEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(false, true))
                 .build();
         adLoopNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adLoopNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
@@ -1213,9 +1247,9 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createOutputPinSharedNodeDescription(DiagramDescription diagramDescription) {
-        ImageNodeStyleDescription outputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getOutputPin()), true);
+        ImageNodeStyleDescription outputPinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getOutputPin()));
         outputPinStyle.setPositionDependentRotation(true);
-        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
+        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(CONNECTED_PIN_IMAGE);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
         NodeDescription adOutputPinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getOutputPin(), outputPinStyle,
@@ -1224,6 +1258,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                         .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_OUTPUT_PIN_CANDIDATES)) //
                         .conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
+                        .addOutsideLabelDescription(this.getViewBuilder().createOutsideLabelDescription(this.getQueryBuilder().queryRenderLabel(), true))
                         .build();
         adOutputPinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
         adOutputPinSharedNodeDescription.setDefaultHeightExpression(BORDER_NODE_SIZE);
@@ -1395,7 +1430,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @return the created {@link NodeDescription}
      */
     private NodeDescription createSharedRoundedRectangleActionNodeDescription(EClass domainType) {
-        NodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, false);
+        NodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         NodeDescription adRoundedRectangleSharedNodeDescription = this.newNodeBuilder(domainType, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(domainType, SHARED_SUFFIX)) //
@@ -1404,6 +1439,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(domainType.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
         adRoundedRectangleSharedNodeDescription.setDefaultHeightExpression(SIZE_50);
         adRoundedRectangleSharedNodeDescription.setDefaultWidthExpression("200");
@@ -1439,18 +1475,17 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     private void createSendSignalActionSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass sendSignalActionEClass = this.umlPackage.getSendSignalAction();
         NodeStyleDescription adSendSignalActionNodeStyleDescription = PapyrusCustomNodesFactory.eINSTANCE.createOuterFlagNodeStyleDescription();
-        adSendSignalActionNodeStyleDescription.setColor(this.styleProvider.getNodeColor());
         adSendSignalActionNodeStyleDescription.setBorderColor(this.styleProvider.getBorderNodeColor());
         adSendSignalActionNodeStyleDescription.setBorderRadius(this.styleProvider.getNodeBorderRadius());
-        adSendSignalActionNodeStyleDescription.setLabelColor(this.styleProvider.getNodeLabelColor());
-        adSendSignalActionNodeStyleDescription.setShowIcon(true);
 
         NodeDescription adSendSignalActionSharedNodeDescription = this.newNodeBuilder(sendSignalActionEClass, adSendSignalActionNodeStyleDescription) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(sendSignalActionEClass, SHARED_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(sendSignalActionEClass.getName())) //
-                .labelEditTool(this.getViewBuilder().createDirectEditTool(sendSignalActionEClass.getName())).build();
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(sendSignalActionEClass.getName()))
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
+                .build();
         adSendSignalActionSharedNodeDescription.setDefaultWidthExpression("170");
         adSendSignalActionSharedNodeDescription.setDefaultHeightExpression("70");
         this.adSharedDescription.getChildrenDescriptions().add(adSendSignalActionSharedNodeDescription);
@@ -1470,7 +1505,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createSequenceNodeSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass sequenceNodeEClass = this.umlPackage.getSequenceNode();
@@ -1481,6 +1516,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(sequenceNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(sequenceNodeEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(false, true))
                 .build();
         adSequenceNodeSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adSequenceNodeSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
@@ -1580,7 +1616,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createStructuredActivityNodeSharedNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(false, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         rectangularNodeStyle.setBorderLineStyle(LineStyle.DASH);
         EClass structuredActivityNodeEClass = this.umlPackage.getStructuredActivityNode();
@@ -1589,6 +1625,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_ACTIVITY_NODE_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(false, true))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(structuredActivityNodeEClass.getName())) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(structuredActivityNodeEClass.getName())) //
                 .build();
@@ -1626,7 +1663,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         // We need a custom NodeDescription for sub-activity, otherwise there is no way to differentiate the root
         // Activity from Sub Activities, and the semantic candidate expression doesn't work (self): it produces an
         // infinite loop.
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(BORDER_RADIUS_SIZE);
         EClass activityEClass = this.umlPackage.getActivity();
         NodeDescription adActivitySharedNodeDescription = this.newNodeBuilder(activityEClass, rectangularNodeStyle) //
@@ -1635,6 +1672,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //
                 .semanticCandidateExpression("aql:self.oclAsType(uml::Activity).nestedClassifier")//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(activityEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(activityEClass.getName())) //
                 .build();
@@ -1687,9 +1725,9 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      *            the Activity {@link DiagramDescription}
      */
     private void createValuePinSharedNodeDescription(DiagramDescription diagramDescription) {
-        ImageNodeStyleDescription valuePinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getValuePin()), true);
+        ImageNodeStyleDescription valuePinStyle = this.getViewBuilder().createImageNodeStyle(this.getImageForDomainType(this.umlPackage.getValuePin()));
         valuePinStyle.setPositionDependentRotation(true);
-        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes(CONNECTED_PIN_IMAGE.getBytes()).toString(), true);
+        NodeStyleDescription incomingOutgoingNodeStyleDescription = this.getViewBuilder().createImageNodeStyle(CONNECTED_PIN_IMAGE);
         ConditionalNodeStyle incomingOutgoingConditionalStyle = this.getViewBuilder().createConditionalNodeStyle(PIN_CONDITIONAL_STYLE_CONDITION, incomingOutgoingNodeStyleDescription);
 
         NodeDescription adValuePinSharedNodeDescription = new NodeDescriptionBuilder(this.getIdBuilder(), this.getQueryBuilder(), this.umlPackage.getValuePin(), valuePinStyle,
@@ -1697,6 +1735,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                         .name(this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getValuePin(), SHARED_SUFFIX)) //
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED) //
                         .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.GET_VALUE_PIN_CANDIDATES)) //
+                        .addOutsideLabelDescription(this.getViewBuilder().createOutsideLabelDescription(this.getQueryBuilder().queryRenderLabel(), true))
                         .conditionalStyles(List.of(incomingOutgoingConditionalStyle)) //
                         .build();
         adValuePinSharedNodeDescription.setDefaultWidthExpression(BORDER_NODE_SIZE);
@@ -1868,7 +1907,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         };
         String result = null;
         if (imageName != null) {
-            result = UUID.nameUUIDFromBytes(imageName.getBytes()).toString();
+            result = "view/images/" + imageName;
         } else {
             LOGGER.warn("Cannot find the image for domain type {0}", domainType.getName());
         }

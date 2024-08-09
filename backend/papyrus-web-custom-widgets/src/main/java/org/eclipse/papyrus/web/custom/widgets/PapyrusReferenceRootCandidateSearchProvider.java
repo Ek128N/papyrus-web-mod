@@ -22,22 +22,23 @@ import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IViewFormDescriptionSearchService;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
-import org.eclipse.sirius.components.widget.reference.IReferenceWidgetRootCandidateSearchProvider;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of {@link IReferenceWidgetRootCandidateSearchProvider} for {@link MonoReferenceWidgetDescription} and {@link MultiReferenceWidgetDescription}.
+ * Implementation of {@link IReferenceWidgetRootCandidateSearchProvider} for {@link MonoReferenceWidgetDescription} and
+ * {@link MultiReferenceWidgetDescription}.
  *
  * @author Jerome Gout
  */
@@ -49,13 +50,13 @@ public class PapyrusReferenceRootCandidateSearchProvider implements IReferenceWi
 
     private static final String MONO_REF_DESCRIPTION = PapyrusWidgetsPackage.eINSTANCE.getMonoReferenceWidgetDescription().getName();
 
-    private final IViewRepresentationDescriptionSearchService viewSearchService;
+    private final IViewFormDescriptionSearchService formViewSearchService;
 
     private final AQLInterpreterProvider interpreterProvider;
 
-    public PapyrusReferenceRootCandidateSearchProvider(IViewRepresentationDescriptionSearchService viewSearchService, AQLInterpreterProvider interpreterProvider) {
+    public PapyrusReferenceRootCandidateSearchProvider(IViewFormDescriptionSearchService formViewSearchService, AQLInterpreterProvider interpreterProvider) {
         super();
-        this.viewSearchService = Objects.requireNonNull(viewSearchService);
+        this.formViewSearchService = Objects.requireNonNull(formViewSearchService);
         this.interpreterProvider = Objects.requireNonNull(interpreterProvider);
     }
 
@@ -73,15 +74,18 @@ public class PapyrusReferenceRootCandidateSearchProvider implements IReferenceWi
 
     @Override
     public List<? extends Object> getRootElementsForReference(Object targetElement, String descriptionId, IEditingContext editingContext) {
-        Optional<FormElementDescription> widgetDescription = this.viewSearchService.findViewFormElementDescriptionById(editingContext, descriptionId);
+        Optional<FormElementDescription> widgetDescription = this.formViewSearchService.findFormElementDescriptionById(editingContext, descriptionId);
         if (widgetDescription.isPresent()) {
             final String searchExpression;
-            if (widgetDescription.get() instanceof MonoReferenceWidgetDescription mono) {
+            FormElementDescription description = widgetDescription.get();
+            if (description instanceof MonoReferenceWidgetDescription mono) {
                 searchExpression = mono.getCandidatesSearchScopeExpression();
+            } else if (description instanceof MultiReferenceWidgetDescription multiRefDescription) {
+                searchExpression = multiRefDescription.getCandidatesSearchScopeExpression();
             } else {
-                searchExpression = ((MultiReferenceWidgetDescription) widgetDescription.get()).getCandidatesSearchScopeExpression();
+                searchExpression = "";
             }
-            var view = EMFUtils.getAncestor(View.class,  widgetDescription.get());
+            var view = EMFUtils.getAncestor(View.class, widgetDescription.get());
             if (view != null && !searchExpression.isBlank()) {
                 AQLInterpreter interpreter = this.interpreterProvider.createInterpreter(view, editingContext);
                 var variableManager = new VariableManager();

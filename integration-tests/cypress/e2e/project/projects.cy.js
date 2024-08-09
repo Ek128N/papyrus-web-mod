@@ -19,6 +19,10 @@ describe('/projects', () => {
     cy.visit('/projects');
   });
 
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
+  });
+
   it('contains a link to the new project page', () => {
     cy.getByTestId('create').should('be.visible');
   });

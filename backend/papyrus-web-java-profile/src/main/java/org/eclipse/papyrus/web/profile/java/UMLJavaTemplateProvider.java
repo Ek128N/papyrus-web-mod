@@ -15,8 +15,9 @@ package org.eclipse.papyrus.web.profile.java;
 
 import java.util.List;
 
-import org.eclipse.sirius.web.services.api.projects.IProjectTemplateProvider;
-import org.eclipse.sirius.web.services.api.projects.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -31,11 +32,7 @@ public class UMLJavaTemplateProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var umlWithPrimitivesTemplate = ProjectTemplate.newProjectTemplate(UML_JAVA_TEMPLATE_ID)
-                .label("Java")
-                .imageURL("/images/JavaTemplate.png")
-                .natures(List.of())
-                .build();
+        var umlWithPrimitivesTemplate = new ProjectTemplate(UML_JAVA_TEMPLATE_ID, "Java", "/images/JavaTemplate.png", List.of(new ProjectTemplateNature("papyrusweb://nature?kind=uml")));
         return List.of(umlWithPrimitivesTemplate);
     }
 

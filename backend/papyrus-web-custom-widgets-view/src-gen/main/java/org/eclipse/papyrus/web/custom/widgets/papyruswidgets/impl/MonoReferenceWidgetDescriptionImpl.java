@@ -31,8 +31,6 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetO
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.sirius.components.view.form.impl.WidgetDescriptionImpl;
-import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mono Reference Widget Description</b></em>'.
@@ -238,7 +236,7 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @generated
      * @ordered
      */
-    protected ReferenceWidgetDescriptionStyle style;
+    protected org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle style;
 
     /**
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
@@ -248,7 +246,7 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @generated
      * @ordered
      */
-    protected EList<ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
+    protected EList<org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -615,7 +613,7 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @generated
      */
     @Override
-    public ReferenceWidgetDescriptionStyle getStyle() {
+    public org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle getStyle() {
         return this.style;
     }
 
@@ -624,8 +622,8 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
      *
      * @generated
      */
-    public NotificationChain basicSetStyle(ReferenceWidgetDescriptionStyle newStyle, NotificationChain msgs) {
-        ReferenceWidgetDescriptionStyle oldStyle = this.style;
+    public NotificationChain basicSetStyle(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle newStyle, NotificationChain msgs) {
+        org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle oldStyle = this.style;
         this.style = newStyle;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE, oldStyle, newStyle);
@@ -643,7 +641,7 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @generated
      */
     @Override
-    public void setStyle(ReferenceWidgetDescriptionStyle newStyle) {
+    public void setStyle(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
             if (this.style != null)
@@ -663,9 +661,10 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
      * @generated
      */
     @Override
-    public EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles() {
+    public EList<org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles() {
         if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this,
+            this.conditionalStyles = new EObjectContainmentEList<org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle>(
+                    org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle.class, this,
                     PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
         }
         return this.conditionalStyles;
@@ -773,11 +772,11 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 this.setClearOperation((ClearReferenceOperation) newValue);
                 return;
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
+                this.setStyle((org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle) newValue);
                 return;
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
-                this.getConditionalStyles().addAll((Collection<? extends ConditionalReferenceWidgetDescriptionStyle>) newValue);
+                this.getConditionalStyles().addAll((Collection<? extends org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle>) newValue);
                 return;
             default:
                 super.eSet(featureID, newValue);
@@ -824,7 +823,7 @@ public class MonoReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl im
                 this.setClearOperation((ClearReferenceOperation) null);
                 return;
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                this.setStyle((ReferenceWidgetDescriptionStyle) null);
+                this.setStyle((org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle) null);
                 return;
             case PapyrusWidgetsPackage.MONO_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();

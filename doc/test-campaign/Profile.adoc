@@ -34,7 +34,7 @@ Check that the profiles can be imported published and downloaded
 Check that the UML model can use a dynamic profile
 
 .Recipe
-. create an _UML sample self contained.uml_ document in a new project
+. create an _UML_ project using the template
 . contextual menu on Package1/Apply profile
 . select the published profile
 ** [ ] the profile application is visible in the tree

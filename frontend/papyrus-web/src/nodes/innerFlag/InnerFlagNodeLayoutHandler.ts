@@ -25,10 +25,11 @@ import {
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   setBorderNodesPosition,
+  ForcedDimensions,
+  getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 import { InnerFlagNodeData } from './InnerFlagNode.types';
-import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams';
 
 export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {
@@ -42,7 +43,7 @@ export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> 
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceWidth?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
@@ -52,6 +53,9 @@ export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> 
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
 
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    // 16px for left and right padding, 20px for the left gap corresponding to the inner flag shape.
+    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 16 + 20;
+    const labelHeight = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -67,37 +71,19 @@ export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> 
       } else if (previousNode) {
         child.position = previousNode.position;
       } else {
-        child.position = child.position = getChildNodePosition(
-          visibleNodes,
-          child,
-          labelElement,
-          false,
-          false,
-          borderWidth
-        );
+        child.position = child.position = getChildNodePosition(visibleNodes, child, labelHeight, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
-          child.position = getChildNodePosition(
-            visibleNodes,
-            child,
-            labelElement,
-            false,
-            false,
-            borderWidth,
-            previousSibling
-          );
+          child.position = getChildNodePosition(visibleNodes, child, labelHeight, borderWidth, previousSibling);
         }
       }
     });
 
-    // 16px for left and right padding, 20px for the left gap corresponding to the inner flag shape.
-    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 16 + 20;
-    const labelHeight = getHeaderFootprint(labelElement, true, false);
-
     const nodeMinComputeWidth = labelWidth;
     const nodeMinComputeHeight = labelHeight + borderWidth * 2;
 
-    const nodeWith = forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the forceWidth to be here.
+    const nodeWith = forceWidth?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node); // WARN: not sure yet for the
+    // forceWidth to be here.
     const nodeHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);

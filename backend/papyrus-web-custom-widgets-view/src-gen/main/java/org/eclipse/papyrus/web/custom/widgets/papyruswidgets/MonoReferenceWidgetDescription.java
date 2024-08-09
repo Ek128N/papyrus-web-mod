@@ -16,8 +16,7 @@ package org.eclipse.papyrus.web.custom.widgets.papyruswidgets;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
-import org.eclipse.sirius.components.widgets.reference.ConditionalReferenceWidgetDescriptionStyle;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Mono Reference Widget Description</b></em>'.
@@ -307,7 +306,7 @@ public interface MonoReferenceWidgetDescription extends WidgetDescription {
      * @model containment="true"
      * @generated
      */
-    ReferenceWidgetDescriptionStyle getStyle();
+    org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle getStyle();
 
     /**
      * Sets the value of the
@@ -319,7 +318,7 @@ public interface MonoReferenceWidgetDescription extends WidgetDescription {
      * @see #getStyle()
      * @generated
      */
-    void setStyle(ReferenceWidgetDescriptionStyle value);
+    void setStyle(org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle value);
 
     /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
@@ -331,6 +330,6 @@ public interface MonoReferenceWidgetDescription extends WidgetDescription {
      * @model containment="true"
      * @generated
      */
-    EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles();
+    EList<org.eclipse.sirius.components.view.widget.reference.ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles();
 
 } // MonoReferenceWidgetDescription

@@ -13,6 +13,71 @@
  *****************************************************************************/
 import { v4 as uuid } from 'uuid';
 const url = Cypress.env('baseAPIUrl') + '/api/graphql';
+/**
+ * Rename a project with a new name
+ *
+ * @param projectId id of the project to rename
+ * @param newProjectName the new name of the project
+ */
+Cypress.Commands.add('renameProject', (projectId, newProjectName) => {
+  const query = `
+  mutation renameProject($input: RenameProjectInput!) {
+    renameProject(input: $input) {
+      __typename
+    }
+  }
+  `;
+  const variables = {
+    input: {
+      id: crypto.randomUUID(),
+      projectId: projectId,
+      newName: newProjectName,
+    },
+  };
+
+  const body = {
+    query,
+    variables,
+  };
+  return cy.request({
+    method: 'POST',
+    url,
+    body,
+  });
+});
+
+/**
+ * Creates a project from a template and create a document from a stereotype.
+ */
+Cypress.Commands.add('createProjectFromStereotype', (projectName, templateName, stereotypeName, resourceName) => {
+  cy.createProjectFromTemplate(templateName).then((res) => {
+    const projectId = res.body.data.createProjectFromTemplate.project.id;
+
+    cy.renameProject(projectId, projectName).then((res) => {
+      cy.wrap(projectId).as('projectId');
+      cy.visit(`/projects/${projectId}/edit`).then(() => {
+        cy.getByTestId('new-model').click();
+        cy.getByTestId('name-input').type(resourceName);
+        cy.getByTestId('stereotype').click();
+        cy.get('li').contains(stereotypeName).click();
+        cy.getByTestId('create-document').click();
+        cy.expandAll(resourceName);
+      });
+    });
+  });
+});
+
+/*
+ * Create a project from a template.
+ */
+Cypress.Commands.add('createProjectFromTemplateWithName', (context, projectName, templateName) => {
+  cy.createProjectFromTemplate(templateName).then((res) => {
+    context.projectId = res.body.data.createProjectFromTemplate.project.id;
+    cy.renameProject(context.projectId, projectName).then((res) => {
+      return cy.visit(`/projects/${context.projectId}/edit`);
+    });
+  });
+});
 
 /**
  * Create a new project and upload the model4test.uml. Then it may select a element and select a tab.
@@ -24,12 +89,12 @@ const url = Cypress.env('baseAPIUrl') + '/api/graphql';
  * @param tabToSelect an optional tab to select
  */
 Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect, tabToSelect) => {
-  cy.createProject(projectName).then((res) => {
-    context.projectId = res.body.data.createProject.project.id;
+  context.projectId = cy.createProjectFromTemplateWithName(context, projectName, 'EmptyUMLTemplate').then((res) => {
     cy.visit(`/projects/${context.projectId}/edit`).then((res) => {
       cy.getByTestId('upload-document-icon').click();
       cy.fixture('model4test.uml', { mimeType: 'text/xml' }).as('model4test');
-      cy.getByTestId('file')
+      return cy
+        .getByTestId('file')
         .selectFile(
           {
             contents: '@model4test',
@@ -38,7 +103,8 @@ Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect
           { force: true }
         )
         .then(() => {
-          cy.getByTestId('upload-document-submit').click();
+          cy.getByTestId('upload-document-submit').should('be.visible').should('not.be.disabled').click();
+          cy.getByTestId('upload-document-close').should('be.visible').should('not.be.disabled').click();
           cy.expandAll('model4test.uml');
 
           if (elementToSelect) {
@@ -63,8 +129,8 @@ Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect
  */
 Cypress.Commands.add('createTestProfileProject', (context, projectName, profileName, publishProfile = true) => {
   // first load and publish the profile
-  cy.createProject(projectName).then((res) => {
-    context.profileProjectId = res.body.data.createProject.project.id;
+  cy.createProjectFromTemplateWithName(context, projectName, 'EmptyUMLTemplate').then((res) => {
+    context.profileProjectId = context.projectId;
     cy.visit(`/projects/${context.profileProjectId}/edit`).then((res) => {
       cy.getByTestId('upload-document-icon').click();
       cy.fixture('DynamicProfileTypeTests.profile.uml', { mimeType: 'text/xml' }).as('DynamicProfileTypeTests');
@@ -77,7 +143,8 @@ Cypress.Commands.add('createTestProfileProject', (context, projectName, profileN
           { force: true }
         )
         .then(() => {
-          cy.getByTestId('upload-document-submit').click();
+          cy.getByTestId('upload-document-submit').should('be.visible').should('not.be.disabled').click();
+          cy.getByTestId('upload-document-close').should('be.visible').should('not.be.disabled').click();
 
           cy.getByTestId('DynamicProfileTypeTests.profile.uml-more').should('exist').click();
           cy.getByTestId('rename-tree-item').should('be.visible').click();

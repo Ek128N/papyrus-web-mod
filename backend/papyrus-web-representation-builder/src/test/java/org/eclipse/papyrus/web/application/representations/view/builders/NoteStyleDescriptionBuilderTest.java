@@ -30,6 +30,7 @@ import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.StyleProvider;
 import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
+import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
@@ -55,7 +56,7 @@ import org.junit.jupiter.api.Test;
  * </p>
  * This class tests the existence of tools associated to descriptions, but it doesn't check that the tools are properly
  * defined. These tests can be defined as standalone tests and don't need to be reproduced here.
- * 
+ *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
 public class NoteStyleDescriptionBuilderTest {
@@ -107,10 +108,11 @@ public class NoteStyleDescriptionBuilderTest {
         this.triggerCallbacks(this.diagramDescription);
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription nodeDescription = this.diagramDescription.getNodeDescriptions().get(0);
-        assertEquals(this.styleProvider.getNoteColor(), nodeDescription.getStyle().getColor());
+        NoteNodeStyleDescription style = (NoteNodeStyleDescription) nodeDescription.getStyle();
+        assertEquals(this.styleProvider.getNoteColor(), style.getBackground());
         assertEquals("200", nodeDescription.getDefaultWidthExpression());
         assertEquals("100", nodeDescription.getDefaultHeightExpression());
-        assertTrue(nodeDescription.getStyle().isShowIcon());
+        assertEquals("aql:true", nodeDescription.getInsideLabel().getStyle().getShowIconExpression());
 
         // The builder does not create creation tools
         assertTrue(this.diagramDescription.getPalette().getNodeTools().isEmpty());
@@ -125,8 +127,9 @@ public class NoteStyleDescriptionBuilderTest {
         // Reconnect tool for source and target reconnection
         assertEquals(2, edgeDescription.getPalette().getEdgeReconnectionTools().size());
 
-        assertEquals(2, nodeDescription.getPalette().getToolSections().size());
-        assertEquals(1, nodeDescription.getPalette().getToolSections().get(0).getEdgeTools().size() + nodeDescription.getPalette().getToolSections().get(1).getEdgeTools().size());
+        assertEquals(3, nodeDescription.getPalette().getToolSections().size());
+        assertEquals(1, nodeDescription.getPalette().getToolSections().get(1).getEdgeTools().size() +
+                nodeDescription.getPalette().getToolSections().get(2).getEdgeTools().size());
         NodeToolSection edgeToolSection = this.getEdgeToolSection(nodeDescription);
         assertNotNull(edgeToolSection);
         EdgeTool edgeTool = edgeToolSection.getEdgeTools().get(0);
@@ -169,10 +172,11 @@ public class NoteStyleDescriptionBuilderTest {
 
         assertEquals(1, this.diagramDescription.getNodeDescriptions().size());
         NodeDescription childNodeDescription = diagChildNodeDescription.getChildrenDescriptions().get(0);
-        assertEquals(this.styleProvider.getNoteColor(), childNodeDescription.getStyle().getColor());
+        NoteNodeStyleDescription style = (NoteNodeStyleDescription) childNodeDescription.getStyle();
+        assertEquals(this.styleProvider.getNoteColor(), style.getBackground());
         assertEquals("200", childNodeDescription.getDefaultWidthExpression());
         assertEquals("100", childNodeDescription.getDefaultHeightExpression());
-        assertTrue(childNodeDescription.getStyle().isShowIcon());
+        assertEquals("aql:true", childNodeDescription.getInsideLabel().getStyle().getShowIconExpression());
 
         assertTrue(diagChildNodeDescription.getPalette().getNodeTools().isEmpty());
 
@@ -186,8 +190,9 @@ public class NoteStyleDescriptionBuilderTest {
         // Reconnect tool for source and target reconnection
         assertEquals(2, edgeDescription.getPalette().getEdgeReconnectionTools().size());
 
-        assertEquals(2, childNodeDescription.getPalette().getToolSections().size());
-        assertEquals(1, childNodeDescription.getPalette().getToolSections().get(0).getEdgeTools().size() + childNodeDescription.getPalette().getToolSections().get(1).getEdgeTools().size());
+        assertEquals(3, childNodeDescription.getPalette().getToolSections().size());
+        assertEquals(1, childNodeDescription.getPalette().getToolSections().get(2).getEdgeTools().size() +
+                childNodeDescription.getPalette().getToolSections().get(1).getEdgeTools().size());
         NodeToolSection edgeToolSection = this.getEdgeToolSection(childNodeDescription);
         assertNotNull(edgeToolSection);
         EdgeTool edgeTool = edgeToolSection.getEdgeTools().get(0);

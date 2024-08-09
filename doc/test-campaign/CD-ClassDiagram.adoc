@@ -13,7 +13,10 @@ Check all node creations in the _Class Diagram_
 
 .Recipe
 
-. Create a new project: _CD01_ from _UML template.
+. Create a new project: from _UML Empty_ template.
+. Rename this project _CD01_
+. From the _Explorer_ view use the + icon to create a new model.
+. In the model creation dialog, choose _Model UML_ as the Model type and call this model _UML_.
 . From the _Explorer_ view use the contextual menu from *Model* to create a new _Class Diagram_.
 ** [ ] A new empty _Class Diagram_ is created and opened
 . Using the _palette_ creates the following root elements:

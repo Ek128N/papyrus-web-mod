@@ -17,7 +17,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>papyrus-web</groupId>
-	<artifactId>papyrus-web</artifactId>
+	<artifactId>papyrus-web-container</artifactId>
 	<version>2024.2.1</version>
 
 	<name>Papyrus Web</name>
@@ -33,18 +33,21 @@
 	<modules>
 		<module>papyrus-web-parent</module>
 		<module>papyrus-web-frontend</module>
-		<module>papyrus-web-persistence</module>
+		<module>papyrus-web-domain</module>
 		<module>papyrus-web-services-api</module>
 		<module>papyrus-web-services</module>
 		<module>papyrus-web-graphql</module>
 		<module>papyrus-web-sirius-contributions</module>
 		<module>papyrus-web-application</module>
+		<module>papyrus-web</module>
 		<module>papyrus-web-representation-builder</module>
 		<module>papyrus-web-properties-builder</module>
 		<module>papyrus-web-graphics</module>
 		<module>papyrus-web-tests</module>
 		<module>papyrus-web-customnodes</module>
 		<module>papyrus-web-customnodes-edit</module>
+		<module>papyrus-web-infra</module>
+		
 
 		<!--Profiles -->
 

@@ -17,18 +17,19 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
-import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 
 /**
  * Builder of label conditional style.
- * 
+ *
  * @author Arthur Daussy
  */
 public class LabelConditionalStyleBuilder {
@@ -46,38 +47,45 @@ public class LabelConditionalStyleBuilder {
     }
 
     public LabelConditionalStyleBuilder fromExistingStyle() {
-        if (element instanceof NodeDescription) {
-            NodeDescription nodeDescription = (NodeDescription) element;
-            NodeStyleDescription style = nodeDescription.getStyle();
-            ConditionalNodeStyle conditionalStyle = DiagramFactory.eINSTANCE.createConditionalNodeStyle();
-            conditionalStyle.setCondition(conditionalExpression);
-            nodeDescription.getConditionalStyles().add(conditionalStyle);
-            NodeStyleDescription copiedStyle = EcoreUtil.copy(style);
-            labelStyle = copiedStyle;
-            conditionalStyle.setStyle(copiedStyle);
-        } else if (element instanceof EdgeDescription) {
-            EdgeDescription edgeDescription = (EdgeDescription) element;
+        if (this.element instanceof NodeDescription) {
+            NodeDescription nodeDescription = (NodeDescription) this.element;
+            InsideLabelDescription insideLabel = nodeDescription.getInsideLabel();
+            if (insideLabel != null) {
+                InsideLabelStyle style = insideLabel.getStyle();
+                ConditionalInsideLabelStyle conditionalStyle = DiagramFactory.eINSTANCE.createConditionalInsideLabelStyle();
+                conditionalStyle.setCondition(this.conditionalExpression);
+                nodeDescription.getInsideLabel().getConditionalStyles().add(conditionalStyle);
+                InsideLabelStyle copiedStyle = EcoreUtil.copy(style);
+                this.labelStyle = copiedStyle;
+                conditionalStyle.setStyle(copiedStyle);
+            }
+        } else if (this.element instanceof EdgeDescription) {
+            EdgeDescription edgeDescription = (EdgeDescription) this.element;
             EdgeStyle style = edgeDescription.getStyle();
             ConditionalEdgeStyle conditionalStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
-            conditionalStyle.setCondition(conditionalExpression);
+            conditionalStyle.setCondition(this.conditionalExpression);
             edgeDescription.getConditionalStyles().add(conditionalStyle);
-            labelStyle = conditionalStyle;
+            this.labelStyle = conditionalStyle;
 
             // Copy all common attributes
             for (EAttribute eAttribute : DiagramPackage.eINSTANCE.getEdgeStyle().getEAllAttributes()) {
-                labelStyle.eSet(eAttribute, style.eGet(eAttribute));
+                this.labelStyle.eSet(eAttribute, style.eGet(eAttribute));
             }
         }
         return this;
     }
 
     public LabelConditionalStyleBuilder setItalic(boolean italic) {
-        labelStyle.setItalic(italic);
+        if (this.labelStyle != null) {
+            this.labelStyle.setItalic(italic);
+        }
         return this;
     }
 
     public LabelConditionalStyleBuilder setUnderline(boolean underline) {
-        labelStyle.setUnderline(underline);
+        if (this.labelStyle != null) {
+            this.labelStyle.setUnderline(underline);
+        }
         return this;
     }
 

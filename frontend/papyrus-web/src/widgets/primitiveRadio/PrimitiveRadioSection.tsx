@@ -54,7 +54,6 @@ export const PrimitiveRadioSection = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLPrimitiveRadio>) => {
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -101,7 +100,6 @@ export const PrimitiveRadioSection = ({
         editingContextId={editingContextId}
         formId={formId}
         widget={widget}
-        subscribers={subscribers}
         data-testid={widget.label}
       />
       <FormControl component="fieldset" style={{ marginLeft: '16px' }}>
@@ -112,7 +110,7 @@ export const PrimitiveRadioSection = ({
           value={widget.candidateValue}
           onChange={handleChange}
           data-testid="primitive-radio-candidates">
-          {widget.candidateList.map((candidate) => (
+          {widget.candidateList?.map((candidate) => (
             <FormControlLabel
               color="primary"
               key={candidate}

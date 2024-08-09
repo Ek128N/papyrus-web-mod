@@ -13,7 +13,6 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,11 +24,15 @@ import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
@@ -64,7 +67,9 @@ public final class NodeDescriptionBuilder {
 
     private String name;
 
-    private String labelExpression;
+    private InsideLabelDescription insideLabelDescription;
+
+    private List<OutsideLabelDescription> outsideLabelDescriptions = new ArrayList<>();
 
     private String domainType;
 
@@ -128,39 +133,54 @@ public final class NodeDescriptionBuilder {
         return this;
     }
 
-    public NodeDescriptionBuilder labelExpression(String labelExpresion) {
-        this.labelExpression = labelExpresion;
+    public NodeDescriptionBuilder insideLabelDescription(InsideLabelDescription labelDescription) {
+        this.insideLabelDescription = labelDescription;
+        return this;
+    }
+
+    public NodeDescriptionBuilder insideLabelDescription(String expression, InsideLabelStyle insideLabelStyle) {
+        this.insideLabelDescription = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        this.insideLabelDescription.setTextAlign(LabelTextAlign.CENTER);
+        this.insideLabelDescription.setLabelExpression(expression);
+        this.insideLabelDescription.setStyle(insideLabelStyle);
+        return this;
+    }
+
+    public NodeDescriptionBuilder addOutsideLabelDescription(OutsideLabelDescription labelDescription) {
+        this.outsideLabelDescriptions.add(labelDescription);
         return this;
     }
 
     public NodeDescription build() {
         NodeDescription node = DiagramFactory.eINSTANCE.createNodeDescription();
-        if (name != null) {
-            node.setName(name);
+        if (this.name != null) {
+            node.setName(this.name);
         } else {
-            node.setName(idBuilder.getDomainNodeName(domainEntity));
+            node.setName(this.idBuilder.getDomainNodeName(this.domainEntity));
         }
-        if (labelExpression == null) {
-            node.setLabelExpression(queryHelper.queryRenderLabel());
-        } else {
-            node.setLabelExpression(labelExpression);
+        if (this.insideLabelDescription != null) {
+            node.setInsideLabel(this.insideLabelDescription);
+        }
 
+        for (OutsideLabelDescription outsideLabelDescription : this.outsideLabelDescriptions) {
+            node.getOutsideLabels().add(outsideLabelDescription);
         }
-        node.setSemanticCandidatesExpression(semanticCandidateExpression);
-        if (domainType == null) {
-            node.setDomainType(metamodelHelper.getDomain(domainEntity));
+
+        node.setSemanticCandidatesExpression(this.semanticCandidateExpression);
+        if (this.domainType == null) {
+            node.setDomainType(this.metamodelHelper.getDomain(this.domainEntity));
         } else {
-            node.setDomainType(domainType);
+            node.setDomainType(this.domainType);
         }
-        node.setSynchronizationPolicy(synchronizationPolicy);
-        node.setStyle(style);
-        node.setChildrenLayoutStrategy(layoutStrategyDescription);
-        node.getConditionalStyles().addAll(conditionalNodeStyles);
-        node.getReusedChildNodeDescriptions().addAll(reusedNodeDescriptions);
-        nodePalette.setDeleteTool(deleteTool);
-        nodePalette.setLabelEditTool(labelEditTool);
-        node.setPalette(nodePalette);
-        node.setCollapsible(collapsible);
+        node.setSynchronizationPolicy(this.synchronizationPolicy);
+        node.setStyle(this.style);
+        node.setChildrenLayoutStrategy(this.layoutStrategyDescription);
+        node.getConditionalStyles().addAll(this.conditionalNodeStyles);
+        node.getReusedChildNodeDescriptions().addAll(this.reusedNodeDescriptions);
+        this.nodePalette.setDeleteTool(this.deleteTool);
+        this.nodePalette.setLabelEditTool(this.labelEditTool);
+        node.setPalette(this.nodePalette);
+        node.setCollapsible(this.collapsible);
 
         return node;
     }

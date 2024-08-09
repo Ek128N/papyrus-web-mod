@@ -41,7 +41,6 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidget
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.form.FormPackage;
-import org.eclipse.sirius.components.widgets.reference.ReferencePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -225,7 +224,7 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
 
         // Initialize simple dependencies
         FormPackage.eINSTANCE.eClass();
-        ReferencePackage.eINSTANCE.eClass();
+        org.eclipse.sirius.components.view.widget.reference.ReferencePackage.eINSTANCE.eClass();
         ViewPackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
@@ -1229,7 +1228,8 @@ public class PapyrusWidgetsPackageImpl extends EPackageImpl implements PapyrusWi
         // Obtain other dependent packages
         FormPackage theFormPackage = (FormPackage) EPackage.Registry.INSTANCE.getEPackage(FormPackage.eNS_URI);
         ViewPackage theViewPackage = (ViewPackage) EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
-        ReferencePackage theReferencePackage = (ReferencePackage) EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
+        org.eclipse.sirius.components.view.widget.reference.ReferencePackage theReferencePackage = (org.eclipse.sirius.components.view.widget.reference.ReferencePackage) EPackage.Registry.INSTANCE
+                .getEPackage(org.eclipse.sirius.components.view.widget.reference.ReferencePackage.eNS_URI);
 
         // Create type parameters
 

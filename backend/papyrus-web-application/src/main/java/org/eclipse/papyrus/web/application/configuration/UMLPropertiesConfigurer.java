@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.papyrus.web.application.properties.AdvancedPropertiesDescriptionProvider;
 import org.eclipse.papyrus.web.services.properties.UMLDocumentationService;
+import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -33,13 +34,14 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.FormDescription;
-import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Configuration in charge of contributing the UML details view.
@@ -65,22 +67,20 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
 
     private final ApplicationContext applicationContext;
 
-    private final IInMemoryViewRegistry viewRegistry;
+    private PapyrusRepresentationDescriptionRegistry papyrusRegistry;
 
     public UMLPropertiesConfigurer(ViewFormDescriptionConverter converter, EPackage.Registry globalEPackageRegistry, AdvancedPropertiesDescriptionProvider defaultPropertyViewProvider,
-            UMLDocumentationService docService, ApplicationContext applicationContext, List<IJavaServiceProvider> javaServiceProviders, IInMemoryViewRegistry viewRegistry) {
+            UMLDocumentationService docService, ApplicationContext applicationContext, List<IJavaServiceProvider> javaServiceProviders, PapyrusRepresentationDescriptionRegistry papyrusRegistry) {
+        this.papyrusRegistry = Objects.requireNonNull(papyrusRegistry);
         this.defaultPropertyViewProvider = Objects.requireNonNull(defaultPropertyViewProvider);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
         this.converter = Objects.requireNonNull(converter);
         this.javaServiceProviders = javaServiceProviders;
         this.applicationContext = applicationContext;
-        this.viewRegistry = Objects.requireNonNull(viewRegistry);
     }
 
-    @Override
-    public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
-        // Build the actual FormDescription
-
+    @PostConstruct
+    public void registryUMLProperties() {
         // The FormDescription must be part of View inside a proper EMF Resource to be correctly handled
         URI uri = URI.createURI(IEMFEditingContext.RESOURCE_SCHEME + ":///" + NAME_UUID_FROM_BYTES);
         Resource resource = new JSONResourceFactory().createResource(uri);
@@ -94,12 +94,19 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
         view.getDescriptions().stream()//
                 .filter(d -> d instanceof FormDescription)//
                 .map(d -> (FormDescription) d)//
-                .forEach(d -> this.register(d, interpreter, registry));
+                .forEach(d -> this.register(d, interpreter));
+    }
+
+    @Override
+    public void addPropertiesDescriptions(IPropertiesDescriptionRegistry registry) {
+        // Register form descriptions
+        this.papyrusRegistry.getConvertedForms().stream()
+                .flatMap(fd -> fd.getPageDescriptions().stream())
+                .forEach(registry::add);
 
         // Register the "Advance Property View"
         this.defaultPropertyViewProvider.getFormDescription().getPageDescriptions().forEach(registry::add);
 
-        this.viewRegistry.register(view);
     }
 
     private AQLInterpreter createInterpreter(View view, List<EPackage> visibleEPackages) {
@@ -124,11 +131,11 @@ public class UMLPropertiesConfigurer implements IPropertiesDescriptionRegistryCo
         return this.globalEPackageRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).toList();
     }
 
-    private void register(FormDescription viewFormDescription, AQLInterpreter interpreter, IPropertiesDescriptionRegistry registry) {
+    private void register(FormDescription viewFormDescription, AQLInterpreter interpreter) {
 
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
-            formDescription.getPageDescriptions().forEach(registry::add);
+            this.papyrusRegistry.registerForm(viewFormDescription, formDescription);
         }
     }
 

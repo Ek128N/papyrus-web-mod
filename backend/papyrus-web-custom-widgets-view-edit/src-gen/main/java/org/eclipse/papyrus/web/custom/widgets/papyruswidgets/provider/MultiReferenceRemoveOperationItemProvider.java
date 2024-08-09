@@ -177,6 +177,9 @@ public class MultiReferenceRemoveOperationItemProvider extends ItemProviderAdapt
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REMOVE_OPERATION__BODY,
                 ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REMOVE_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

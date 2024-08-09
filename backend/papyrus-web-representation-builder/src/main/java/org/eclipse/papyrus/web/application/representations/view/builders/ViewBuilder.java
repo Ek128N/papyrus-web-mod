@@ -34,7 +34,6 @@ import org.eclipse.papyrus.web.application.representations.view.aql.QueryHelper;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.aql.Variables;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesFactory;
@@ -42,7 +41,9 @@ import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExter
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.ViewFactory;
+import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
@@ -53,17 +54,23 @@ import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesFactory;
+import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription;
 
 /**
  * Builder in charge of creating elements to fill a {@link DiagramDescription}.
@@ -161,14 +168,19 @@ public class ViewBuilder {
         return targetReconnectionTool;
     }
 
+    protected NodeDescriptionBuilder newNodeBuilder(EClass semanticDomain, NodeStyleDescription style) {
+        return new NodeDescriptionBuilder(this.idBuilder, this.queryBuilder, semanticDomain, style, this.metamodelHelper);
+    }
+
     private NodeDescription createNodeDescription(String id, EClass domainType, String semanticCandidateExpression, NodeStyleDescription style, SynchronizationPolicy synchronizationPolicy) {
-        NodeDescription node = this.createNode(id);
-        node.setSemanticCandidatesExpression(semanticCandidateExpression);
-        node.setDomainType(this.metamodelHelper.getDomain(domainType));
-        node.setSynchronizationPolicy(synchronizationPolicy);
-        node.setStyle(style);
-        node.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        return node;
+
+        return this.newNodeBuilder(domainType, style)
+                .name(id)
+                .semanticCandidateExpression(semanticCandidateExpression)
+                .synchronizationPolicy(synchronizationPolicy)
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())
+                .insideLabelDescription(this.queryBuilder.queryRenderLabel(), this.createDefaultInsideLabelStyleIcon())
+                .build();
     }
 
     private EdgeDescription createSynchonizedDomainBaseEdgeDescription(String id, EClass domainType, String semanticCandidateExpression, Supplier<List<NodeDescription>> sources,
@@ -178,7 +190,7 @@ public class ViewBuilder {
         edgeDescription.setIsDomainBasedEdge(true);
         edgeDescription.setDomainType(this.metamodelHelper.getDomain(domainType));
         edgeDescription.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
-        edgeDescription.setLabelExpression(this.queryBuilder.queryRenderLabel());
+        edgeDescription.setCenterLabelExpression(this.queryBuilder.queryRenderLabel());
         edgeDescription.setSemanticCandidatesExpression(semanticCandidateExpression);
         edgeDescription.setPalette(DiagramFactory.eINSTANCE.createEdgePalette());
 
@@ -203,6 +215,7 @@ public class ViewBuilder {
         edgeStyle.setSourceArrowStyle(this.styleProvider.getSourceArrowStyle());
         edgeStyle.setTargetArrowStyle(this.styleProvider.getTargetArrowStyle());
         edgeStyle.setEdgeWidth(this.styleProvider.getEdgeWidth());
+        edgeStyle.setBorderSize(0);
         return edgeStyle;
     }
 
@@ -360,59 +373,96 @@ public class ViewBuilder {
         return conditionalNodeStyle;
     }
 
-    public RectangularNodeStyleDescription createRectangularNodeStyle(boolean showIcon, boolean showHeader) {
+    public ConditionalInsideLabelStyle createConditionalInsideLabelStyle(String condition, InsideLabelStyle nodeStyle) {
+        ConditionalInsideLabelStyle conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalInsideLabelStyle();
+        conditionalNodeStyle.setCondition(condition);
+        conditionalNodeStyle.setStyle(nodeStyle);
+        return conditionalNodeStyle;
+    }
+
+    public ConditionalOutsideLabelStyle createConditionalOutsideLabelStyle(String condition, OutsideLabelStyle nodeStyle) {
+        ConditionalOutsideLabelStyle conditionalNodeStyle = DiagramFactory.eINSTANCE.createConditionalOutsideLabelStyle();
+        conditionalNodeStyle.setCondition(condition);
+        conditionalNodeStyle.setStyle(nodeStyle);
+        return conditionalNodeStyle;
+    }
+
+    public RectangularNodeStyleDescription createRectangularNodeStyle() {
         RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(showIcon);
-        nodeStyle.setWithHeader(showHeader);
-        if (showHeader) {
-            nodeStyle.setDisplayHeaderSeparator(true);
-        }
         return nodeStyle;
     }
 
+    private void initStyle(RectangularNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
+        nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
+    }
+
     public EllipseNodeStyleDescription createEllipseNodeStyle() {
-        EllipseNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription();
+        EllipseNodeStyleDescription nodeStyle = CustomnodesFactory.eINSTANCE.createEllipseNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(true);
         return nodeStyle;
+    }
+
+    private void initStyle(EllipseNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
+        nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
     }
 
     public PackageNodeStyleDescription createPackageNodeStyle() {
         PackageNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(true);
         return nodeStyle;
     }
 
-    public NodeStyleDescription createNoteNodeStyle() {
+    private void initStyle(PackageNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
+        nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
+    }
+
+    public NoteNodeStyleDescription createNoteNodeStyle() {
         NoteNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createNoteNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(true);
         return nodeStyle;
+    }
+
+    private void initStyle(NoteNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
+        nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
     }
 
     public RectangleWithExternalLabelNodeStyleDescription createRectangleWithExternalLabelNodeStyle() {
         RectangleWithExternalLabelNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createRectangleWithExternalLabelNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(true);
         return nodeStyle;
+    }
+
+    private void initStyle(RectangleWithExternalLabelNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
+        nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
     }
 
     public CuboidNodeStyleDescription createCuboidNodeStyle() {
         CuboidNodeStyleDescription nodeStyle = PapyrusCustomNodesFactory.eINSTANCE.createCuboidNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(true);
         return nodeStyle;
     }
 
-    public ImageNodeStyleDescription createImageNodeStyle(String imageId, boolean showIcon) {
+    private void initStyle(CuboidNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
+        nodeStyle.setBackground(this.styleProvider.getBackgroundColor());
+    }
+
+    public ImageNodeStyleDescription createImageNodeStyle(String imagePath) {
         ImageNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createImageNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShape(imageId);
-        nodeStyle.setShowIcon(showIcon);
+        nodeStyle.setShape(imagePath);
         nodeStyle.setBorderSize(0);
         return nodeStyle;
+    }
+
+    private void initStyle(ImageNodeStyleDescription nodeStyle) {
+        this.defaultInitStyle(nodeStyle);
     }
 
     public EdgeDescription createFeatureEdgeDescription(String id, String labelExpression, String targetNodeExpression, Supplier<List<NodeDescription>> sourcesProvider,
@@ -420,7 +470,7 @@ public class ViewBuilder {
 
         EdgeDescription edgeDescription = DiagramFactory.eINSTANCE.createEdgeDescription();
         edgeDescription.setName(id);
-        edgeDescription.setLabelExpression(labelExpression);
+        edgeDescription.setCenterLabelExpression(labelExpression);
         edgeDescription.setTargetNodesExpression(targetNodeExpression);
         edgeDescription.setStyle(this.createDefaultEdgeStyle());
         edgeDescription.setPalette(DiagramFactory.eINSTANCE.createEdgePalette());
@@ -433,26 +483,15 @@ public class ViewBuilder {
         return edgeDescription;
     }
 
-    private void initStyle(NodeStyleDescription nodeStyle) {
-        nodeStyle.setColor(this.styleProvider.getNodeColor());
+    private void defaultInitStyle(NodeStyleDescription nodeStyle) {
         nodeStyle.setBorderColor(this.styleProvider.getBorderNodeColor());
         nodeStyle.setBorderRadius(this.styleProvider.getNodeBorderRadius());
-        nodeStyle.setLabelColor(this.styleProvider.getNodeLabelColor());
     }
 
     private RectangularNodeStyleDescription createDefaultRectangularNodeStyle() {
         RectangularNodeStyleDescription nodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         this.initStyle(nodeStyle);
-        nodeStyle.setShowIcon(false);
         return nodeStyle;
-    }
-
-    private NodeDescription createNode(String name) {
-        NodeDescription node = DiagramFactory.eINSTANCE.createNodeDescription();
-        node.setName(name);
-        node.setLabelExpression(this.queryBuilder.queryRenderLabel());
-        node.setPalette(DiagramFactory.eINSTANCE.createNodePalette());
-        return node;
     }
 
     /**
@@ -534,7 +573,9 @@ public class ViewBuilder {
 
     public NodeDescription createSpecializedUnsynchonizedNodeDescription(EClass domain, String semanticCandidateExpression, String specialization) {
         NodeDescription result = this.createNodeDescription(this.idBuilder.getSpecializedDomainNodeName(domain, specialization), domain, semanticCandidateExpression,
-                this.createRectangularNodeStyle(true, true), SynchronizationPolicy.UNSYNCHRONIZED);
+                this.createRectangularNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
+        result.getInsideLabel().getStyle().setWithHeader(true);
+        result.getInsideLabel().getStyle().setDisplayHeaderSeparator(true);
         this.addDefaultDeleteTool(result);
         this.addDirectEditTool(result);
         return result;
@@ -561,6 +602,7 @@ public class ViewBuilder {
 
     public NodeDescription createSpecializedPortUnsynchonizedNodeDescription(String suffixId, EClass domain, String semanticCandidateExpression) {
         NodeDescription result = this.createUnsynchonizedPortDescription(this.idBuilder.getSpecializedDomainNodeName(domain, suffixId), domain, semanticCandidateExpression);
+        result.getInsideLabel().getStyle().setShowIconExpression("aql:false");
         this.addDefaultDeleteTool(result);
         this.addDirectEditTool(result);
         return result;
@@ -587,13 +629,35 @@ public class ViewBuilder {
         edge.getPalette().getEdgeReconnectionTools().add(this.createDomainBaseEdgeTargetReconnectionTool(edge, this.idBuilder.getTargetReconnectionToolId(edge)));
     }
 
-    public NodeStyleDescription createIconAndlabelStyle(boolean showIcon) {
-        IconLabelNodeStyleDescription style = DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription();
+    public InsideLabelStyle createDefaultInsideLabelStyleIcon() {
+        return this.createDefaultInsideLabelStyle(true, false);
+    }
 
-        style.setColor(this.styleProvider.getNodeColor());
+    public InsideLabelStyle createDefaultInsideLabelStyle(boolean showIcon, boolean isHeader) {
+        InsideLabelStyle style = DiagramFactory.eINSTANCE.createInsideLabelStyle();
+
         style.setLabelColor(this.styleProvider.getNodeLabelColor());
-        style.setShowIcon(showIcon);
+        style.setShowIconExpression("aql:" + showIcon);
+        style.setBorderSize(0);
+        style.setWithHeader(isHeader);
+        style.setDisplayHeaderSeparator(isHeader);
         return style;
+    }
+
+    public OutsideLabelStyle createDefaultOutsideLabelStyle(boolean showIcon) {
+        OutsideLabelStyle style = DiagramFactory.eINSTANCE.createOutsideLabelStyle();
+
+        style.setLabelColor(this.styleProvider.getNodeLabelColor());
+        style.setShowIconExpression("aql:" + showIcon);
+        style.setBorderSize(0);
+        return style;
+    }
+
+    public OutsideLabelDescription createOutsideLabelDescription(String expression, boolean showIcon) {
+        OutsideLabelDescription outsideLabelDescription = DiagramFactory.eINSTANCE.createOutsideLabelDescription();
+        outsideLabelDescription.setLabelExpression(expression);
+        outsideLabelDescription.setStyle(this.createDefaultOutsideLabelStyle(showIcon));
+        return outsideLabelDescription;
     }
 
     public EdgeTool createDomainBasedEdgeToolWithService(String specializationName, String serviceName) {
@@ -612,5 +676,22 @@ public class ViewBuilder {
 
         tool.getBody().add(changeContext);
         return tool;
+    }
+
+    public InsideLabelDescription createInsideLabelDescription(String expression, boolean showIcon, boolean isHeader) {
+        InsideLabelDescription description = DiagramFactory.eINSTANCE.createInsideLabelDescription();
+        description.setLabelExpression(expression);
+        description.setTextAlign(LabelTextAlign.CENTER);
+        InsideLabelStyle style = this.createDefaultInsideLabelStyle(showIcon, isHeader);
+        description.setStyle(style);
+        return description;
+    }
+
+    public InsideLabelDescription createDefaultInsideLabelDescription(boolean showIcon, boolean isHeader) {
+        return this.createInsideLabelDescription(this.queryBuilder.queryRenderLabel(), showIcon, isHeader);
+    }
+
+    public OutsideLabelDescription createDefaultOutsideLabelDescription(boolean showIcon) {
+        return this.createOutsideLabelDescription(this.queryBuilder.queryRenderLabel(), showIcon);
     }
 }

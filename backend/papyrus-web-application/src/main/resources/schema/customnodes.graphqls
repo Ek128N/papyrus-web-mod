@@ -12,22 +12,13 @@
 # *  Obeo - Initial API and implementation
 # *****************************************************************************
 
-extend union INodeStyle = EllipseNodeStyle
-
-type EllipseNodeStyle {
-  borderColor: String!
-  borderSize: Int!
-  borderStyle: LineStyle!
-  color: String!
-}
-
 extend union INodeStyle = PackageNodeStyle
 
 type PackageNodeStyle {
   borderColor: String!
   borderSize: Int!
   borderStyle: LineStyle!
-  color: String!
+  background: String!
 }
 
 extend union INodeStyle = RectangleWithExternalLabelNodeStyle
@@ -36,7 +27,7 @@ type RectangleWithExternalLabelNodeStyle {
   borderColor: String!
   borderSize: Int!
   borderStyle: LineStyle!
-  color: String!
+  background: String!
 }
 
 extend union INodeStyle = ImageWithTopLabelNodeStyle
@@ -51,7 +42,7 @@ type ImageWithTopLabelNodeStyle {
 extend union INodeStyle = NoteNodeStyle
 
 type NoteNodeStyle {
-  color: String!
+  background: String!
   borderColor: String!
   borderSize: Int!
   borderStyle: LineStyle!
@@ -60,7 +51,7 @@ type NoteNodeStyle {
 extend union INodeStyle = InnerFlagNodeStyle
 
 type InnerFlagNodeStyle {
-	color: String!
+  background: String!
 	borderColor: String!
 	borderSize: Int!
 	borderStyle: LineStyle!
@@ -69,7 +60,7 @@ type InnerFlagNodeStyle {
 extend union INodeStyle = OuterFlagNodeStyle
 
 type OuterFlagNodeStyle {
-	color: String!
+  background: String!
 	borderColor: String!
 	borderSize: Int!
 	borderStyle: LineStyle!
@@ -78,7 +69,7 @@ type OuterFlagNodeStyle {
 extend union INodeStyle = CuboidNodeStyle
 
 type CuboidNodeStyle {
-	color: String!
+  background: String!
 	borderColor: String!
 	borderSize: Int!
 	borderStyle: LineStyle!

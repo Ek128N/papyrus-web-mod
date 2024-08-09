@@ -30,7 +30,6 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenc
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsFactory;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
 import org.eclipse.sirius.components.view.form.provider.WidgetDescriptionItemProvider;
-import org.eclipse.sirius.components.widgets.reference.ReferenceFactory;
 
 /**
  * This is the item provider adapter for a
@@ -286,13 +285,13 @@ public class ContainmentReferenceWidgetDescriptionItemProvider extends WidgetDes
                 PapyrusWidgetsFactory.eINSTANCE.createClickReferenceValueOperation()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__STYLE,
-                ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
+                org.eclipse.sirius.components.view.widget.reference.ReferenceFactory.eINSTANCE.createReferenceWidgetDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__STYLE,
-                ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
+                org.eclipse.sirius.components.view.widget.reference.ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES,
-                ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
+                org.eclipse.sirius.components.view.widget.reference.ReferenceFactory.eINSTANCE.createConditionalReferenceWidgetDescriptionStyle()));
     }
 
     /**

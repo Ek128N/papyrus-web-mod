@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
-    copyrightText="Copyright (c) 2023, 2024 CEA LIST, Obeo&#xA;&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License 2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;   Obeo - Initial API and implementation"
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2023, 2024 CEA LIST, Obeo&#xA;&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License 2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;   Obeo - Initial API and implementation"
     modelDirectory="/papyrus-web-customnodes/src-gen/main/java" creationIcons="false"
     editDirectory="/papyrus-web-customnodes-edit/src-gen/main/java" editorDirectory=""
     modelPluginID="papyrus-web-customnodes" modelName="PapyrusCustomNodes" editPluginClass="org.eclipse.papyrus.web.customnodes.provider.CustomNodesEditPlugin"
@@ -12,12 +12,26 @@
   <foreignModel>papyrus-customnodes.ecore</foreignModel>
   <genPackages prefix="PapyrusCustomNodes" basePackage="org.eclipse.papyrus.web.customnodes"
       disposableProviderFactory="true" childCreationExtenders="true" ecorePackage="papyrus-customnodes.ecore#/">
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//EllipseNodeStyleDescription"/>
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//PackageNodeStyleDescription"/>
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//RectangleWithExternalLabelNodeStyleDescription"/>
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//NoteNodeStyleDescription"/>
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//InnerFlagNodeStyleDescription"/>
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//OuterFlagNodeStyleDescription"/>
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//CuboidNodeStyleDescription"/>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//EllipseNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//EllipseNodeStyleDescription/background"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//PackageNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//PackageNodeStyleDescription/background"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//RectangleWithExternalLabelNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//RectangleWithExternalLabelNodeStyleDescription/background"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//NoteNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//NoteNodeStyleDescription/background"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//InnerFlagNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//InnerFlagNodeStyleDescription/background"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//OuterFlagNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//OuterFlagNodeStyleDescription/background"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-customnodes.ecore#//CuboidNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//CuboidNodeStyleDescription/background"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

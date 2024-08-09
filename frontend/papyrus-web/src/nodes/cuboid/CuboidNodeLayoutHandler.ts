@@ -28,10 +28,11 @@ import {
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
+  ForcedDimensions,
+  getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from 'reactflow';
 import { CuboidNodeData } from './CuboidNode.types';
-import { getHeaderFootprint } from '@eclipse-sirius/sirius-components-diagrams';
 const rectangularNodePadding: number = 8;
 
 // The number of px reserved on the right & top of the cuboid node to draw perspective lines.
@@ -51,7 +52,7 @@ export class CuboidNodeLayoutHandler implements INodeLayoutHandler<CuboidNodeDat
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceWidth?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-cuboidNode-${nodeIndex}`)?.children[0];
@@ -80,14 +81,14 @@ export class CuboidNodeLayoutHandler implements INodeLayoutHandler<CuboidNodeDat
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
-    _forceWidth?: number
+    _forceWidth?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
     const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + 2 * borderWidth + labelPadding;
-    const headerHeightFootprint = getHeaderFootprint(labelElement, true, false);
+    const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
@@ -137,15 +138,13 @@ export class CuboidNodeLayoutHandler implements INodeLayoutHandler<CuboidNodeDat
           child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
+        child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
           child.position = getChildNodePosition(
             visibleNodes,
             child,
-            labelElement,
-            false,
-            false,
+            headerHeightFootprint,
             borderWidth,
             previousSibling
           );
@@ -235,7 +234,7 @@ export class CuboidNodeLayoutHandler implements INodeLayoutHandler<CuboidNodeDat
     node: Node<CuboidNodeData, 'cuboidNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
-    _forceWidth?: number
+    _forceWidth?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);

@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
@@ -166,8 +167,28 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     @Override
+    public EReference getEllipseNodeStyleDescription_Background() {
+        return (EReference) this.ellipseNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getPackageNodeStyleDescription() {
         return this.packageNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getPackageNodeStyleDescription_Background() {
+        return (EReference) this.packageNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -186,8 +207,28 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     @Override
+    public EReference getRectangleWithExternalLabelNodeStyleDescription_Background() {
+        return (EReference) this.rectangleWithExternalLabelNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getNoteNodeStyleDescription() {
         return this.noteNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNoteNodeStyleDescription_Background() {
+        return (EReference) this.noteNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -206,6 +247,16 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     @Override
+    public EReference getInnerFlagNodeStyleDescription_Background() {
+        return (EReference) this.innerFlagNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getOuterFlagNodeStyleDescription() {
         return this.outerFlagNodeStyleDescriptionEClass;
     }
@@ -216,8 +267,28 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
      * @generated
      */
     @Override
+    public EReference getOuterFlagNodeStyleDescription_Background() {
+        return (EReference) this.outerFlagNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getCuboidNodeStyleDescription() {
         return this.cuboidNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getCuboidNodeStyleDescription_Background() {
+        return (EReference) this.cuboidNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -250,18 +321,25 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
 
         // Create classes and their features
         this.ellipseNodeStyleDescriptionEClass = this.createEClass(ELLIPSE_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.packageNodeStyleDescriptionEClass = this.createEClass(PACKAGE_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.packageNodeStyleDescriptionEClass, PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.rectangleWithExternalLabelNodeStyleDescriptionEClass = this.createEClass(RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.rectangleWithExternalLabelNodeStyleDescriptionEClass, RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.noteNodeStyleDescriptionEClass = this.createEClass(NOTE_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.noteNodeStyleDescriptionEClass, NOTE_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.innerFlagNodeStyleDescriptionEClass = this.createEClass(INNER_FLAG_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.innerFlagNodeStyleDescriptionEClass, INNER_FLAG_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.outerFlagNodeStyleDescriptionEClass = this.createEClass(OUTER_FLAG_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.outerFlagNodeStyleDescriptionEClass, OUTER_FLAG_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
         this.cuboidNodeStyleDescriptionEClass = this.createEClass(CUBOID_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.cuboidNodeStyleDescriptionEClass, CUBOID_NODE_STYLE_DESCRIPTION__BACKGROUND);
     }
 
     /**
@@ -289,6 +367,7 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
 
         // Obtain other dependent packages
         DiagramPackage theDiagramPackage = (DiagramPackage) EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
+        ViewPackage theViewPackage = (ViewPackage) EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
 
         // Create type parameters
 
@@ -305,19 +384,39 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getEllipseNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EllipseNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.packageNodeStyleDescriptionEClass, PackageNodeStyleDescription.class, "PackageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getPackageNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, PackageNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.rectangleWithExternalLabelNodeStyleDescriptionEClass, RectangleWithExternalLabelNodeStyleDescription.class, "RectangleWithExternalLabelNodeStyleDescription", !IS_ABSTRACT,
                 !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getRectangleWithExternalLabelNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1,
+                RectangleWithExternalLabelNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
 
         this.initEClass(this.noteNodeStyleDescriptionEClass, NoteNodeStyleDescription.class, "NoteNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getNoteNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, NoteNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.innerFlagNodeStyleDescriptionEClass, InnerFlagNodeStyleDescription.class, "InnerFlagNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getInnerFlagNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, InnerFlagNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.outerFlagNodeStyleDescriptionEClass, OuterFlagNodeStyleDescription.class, "OuterFlagNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getOuterFlagNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, OuterFlagNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.cuboidNodeStyleDescriptionEClass, CuboidNodeStyleDescription.class, "CuboidNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getCuboidNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, CuboidNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

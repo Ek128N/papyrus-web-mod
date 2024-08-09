@@ -199,7 +199,6 @@ export const LanguageExpressionSection = ({
   editingContextId,
   formId,
   widget,
-  subscribers,
   readOnly,
 }: PropertySectionComponentProps<GQLLanguageExpression>) => {
   const { addErrorMessage, addMessages } = useMultiToast();
@@ -411,7 +410,6 @@ export const LanguageExpressionSection = ({
           editingContextId={editingContextId}
           formId={formId}
           widget={widget}
-          subscribers={subscribers}
           data-testid={widget.label}
         />
         <IconButton

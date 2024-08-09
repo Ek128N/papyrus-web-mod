@@ -24,8 +24,9 @@ import org.eclipse.sirius.components.view.emf.diagram.INodeStyleProvider;
 import org.springframework.stereotype.Service;
 
 /**
- * This class provides style information for the rectangle with external label custom node.
- * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a> (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyleProvider.java).
+ * This class provides style information for the rectangle with external label custom node. <br>
+ * Code duplicated from <a href="https://github.com/eclipse-sirius/sirius-web">Sirius Web</a>
+ * (sirius-web-sample-application\src\main\java\org\eclipse\sirius\web\sample\nodes\EllipseNodeStyleProvider.java).
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -48,7 +49,7 @@ public class RectangleWithExternalLabelNodeStyleProvider implements INodeStylePr
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(RectangleWithExternalLabelNodeStyle.newRectangleWithExternalLabelNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor())
+                    .background(Optional.ofNullable(((RectangleWithExternalLabelNodeStyleDescription) nodeStyle).getBackground())
                             .filter(FixedColor.class::isInstance)
                             .map(FixedColor.class::cast)
                             .map(FixedColor::getValue)

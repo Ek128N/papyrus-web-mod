@@ -19,6 +19,10 @@ describe('/new/project', () => {
     cy.visit('/new/project');
   });
 
+  afterEach(() => {
+    cy.deleteProjectByName(projectName);
+  });
+
   it('contains a proper project creation form', () => {
     cy.getByTestId('name').should('have.attr', 'type', 'text');
     cy.getByTestId('name').should('have.attr', 'name', 'name');

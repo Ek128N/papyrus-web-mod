@@ -30,11 +30,11 @@ import org.eclipse.sirius.components.forms.description.AbstractWidgetDescription
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.form.ListStyleProvider;
+import org.eclipse.sirius.components.view.emf.widget.reference.ReferenceWidgetStyleProvider;
 import org.eclipse.sirius.components.view.form.ListDescriptionStyle;
+import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyle;
-import org.eclipse.sirius.components.widget.reference.ReferenceWidgetStyleProvider;
-import org.eclipse.sirius.components.widgets.reference.ReferenceWidgetDescriptionStyle;
 
 /**
  * Converter used to create the widget previews.

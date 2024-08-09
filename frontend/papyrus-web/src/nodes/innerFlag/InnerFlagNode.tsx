@@ -21,12 +21,10 @@ import {
   DiagramContextValue,
   DiagramElementPalette,
   Label,
-  NodeContext,
-  NodeContextValue,
-  useConnector,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
+  useConnectorNodeStyle,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
@@ -74,7 +72,7 @@ const innerFlagNodeStyle = (
 const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean): React.CSSProperties => {
   const svgPathStyle: React.CSSProperties = {
     stroke: getCSSColor(String(style.borderColor), theme),
-    fill: getCSSColor(String(style.backgroundColor), theme),
+    fill: getCSSColor(String(style.background), theme),
     fillOpacity: faded ? '0.4' : '1',
     strokeOpacity: faded ? '0.4' : '1',
     strokeWidth: style.borderWidth,
@@ -83,13 +81,12 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
   return svgPathStyle;
 };
 
-export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNodeData>) => {
+export const InnerFlagNode = memo(({ data, id, selected, dragging }: NodeProps<InnerFlagNodeData>) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
   const { getNodes } = useReactFlow<InnerFlagNodeData>();
   const node = getNodes().find((node) => node.id === id);
 
@@ -126,23 +123,25 @@ export const InnerFlagNode = memo(({ data, id, selected }: NodeProps<InnerFlagNo
       ) : null}
       <div
         style={{
-          ...innerFlagNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-          ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+          ...innerFlagNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+          ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`InnerFlag - ${data?.insideLabel?.text}`}>
         <div style={{ position: 'absolute', inset: '0px' }}>
-          {data.insideLabel ? (
-            <Label diagramElementId={id} label={updatedLabel} faded={data.faded} transform="" />
-          ) : null}
+          {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
         </div>
         {selected ? (
-          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+          <DiagramElementPalette
+            diagramElementId={id}
+            targetObjectId={data.targetObjectId}
+            labelId={data.insideLabel ? data.insideLabel.id : null}
+          />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <svg viewBox={`0 0 ${node.width} ${node.height}`}>
           <path

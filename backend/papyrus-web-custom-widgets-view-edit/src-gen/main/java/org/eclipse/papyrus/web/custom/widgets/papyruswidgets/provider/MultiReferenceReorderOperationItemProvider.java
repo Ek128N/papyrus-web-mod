@@ -177,6 +177,9 @@ public class MultiReferenceReorderOperationItemProvider extends ItemProviderAdap
 
         newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
                 ViewFactory.eINSTANCE.createIf()));
+
+        newChildDescriptors.add(this.createChildParameter(PapyrusWidgetsPackage.Literals.MULTI_REFERENCE_REORDER_OPERATION__BODY,
+                ViewFactory.eINSTANCE.createFor()));
     }
 
     /**

@@ -24,10 +24,8 @@ import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyle
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PapyrusCustomNodesPackage;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.RectangleWithExternalLabelNodeStyleDescription;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.Style;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
@@ -86,10 +84,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(ellipseNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(ellipseNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(ellipseNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(ellipseNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -100,10 +94,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 T result = this.casePackageNodeStyleDescription(packageNodeStyleDescription);
                 if (result == null)
                     result = this.caseNodeStyleDescription(packageNodeStyleDescription);
-                if (result == null)
-                    result = this.caseStyle(packageNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(packageNodeStyleDescription);
                 if (result == null)
                     result = this.caseBorderStyle(packageNodeStyleDescription);
                 if (result == null)
@@ -116,10 +106,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(rectangleWithExternalLabelNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(rectangleWithExternalLabelNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(rectangleWithExternalLabelNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(rectangleWithExternalLabelNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -130,10 +116,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 T result = this.caseNoteNodeStyleDescription(noteNodeStyleDescription);
                 if (result == null)
                     result = this.caseNodeStyleDescription(noteNodeStyleDescription);
-                if (result == null)
-                    result = this.caseStyle(noteNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(noteNodeStyleDescription);
                 if (result == null)
                     result = this.caseBorderStyle(noteNodeStyleDescription);
                 if (result == null)
@@ -146,10 +128,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(innerFlagNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(innerFlagNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(innerFlagNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(innerFlagNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -161,10 +139,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(outerFlagNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(outerFlagNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(outerFlagNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(outerFlagNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -175,10 +149,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
                 T result = this.caseCuboidNodeStyleDescription(cuboidNodeStyleDescription);
                 if (result == null)
                     result = this.caseNodeStyleDescription(cuboidNodeStyleDescription);
-                if (result == null)
-                    result = this.caseStyle(cuboidNodeStyleDescription);
-                if (result == null)
-                    result = this.caseLabelStyle(cuboidNodeStyleDescription);
                 if (result == null)
                     result = this.caseBorderStyle(cuboidNodeStyleDescription);
                 if (result == null)
@@ -293,34 +263,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseCuboidNodeStyleDescription(CuboidNodeStyleDescription object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Style</em>'. <!-- begin-user-doc --> This
-     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseStyle(Style object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Label Style</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseLabelStyle(LabelStyle object) {
         return null;
     }
 

@@ -14,7 +14,6 @@
 package org.eclipse.papyrus.web.application.representations.uml;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
@@ -102,7 +101,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      * @return the {@link NodeDescription} representing an UML {@link Interaction}.
      */
     protected NodeDescription createInteractionTopNodeDescription(DiagramDescription diagramDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, true);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(INTERACTION_NODE_BORDER_RADIUS);
 
         EClass interactionEClass = this.umlPackage.getInteraction();
@@ -112,6 +111,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interactionEClass.getName()))//
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         codInteractionTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
         codInteractionTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
@@ -130,12 +130,13 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link NodeDescription} containing the {@link Lifeline} {@link NodeDescription}
      */
     private void createLifelineSubNodeDescription(NodeDescription parentNodeDescription) {
-        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle(true, false);
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         EClass lifelineEClass = this.umlPackage.getLifeline();
         NodeDescription codLifelineSubNodeDescription = this.newNodeBuilder(lifelineEClass, rectangularNodeStyle) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getInteraction_Lifeline())).synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(lifelineEClass.getName())) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(lifelineEClass.getName())) //
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
         parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescription);
 
@@ -153,7 +154,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link NodeDescription} containing the {@link DurationObservation} {@link NodeDescription}
      */
     private void createDurationObservationSubNodeDescription(NodeDescription parentNodeDescription) {
-        NodeStyleDescription durationObservationNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("DurationObservation.svg".getBytes()).toString(), true);
+        NodeStyleDescription durationObservationNodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/DurationObservation.svg");
         durationObservationNodeStyle.setBorderSize(1);
 
         EClass durationObservationEClass = this.umlPackage.getDurationObservation();
@@ -163,6 +164,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(durationObservationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(durationObservationEClass.getName())) //
+                .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .build();
         codDurationObservationSubNodeDescription.setDefaultWidthExpression(OBSERVATION_SIZE);
         codDurationObservationSubNodeDescription.setDefaultHeightExpression(OBSERVATION_SIZE);
@@ -183,7 +185,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the {@link NodeDescription} containing the {@link TimeObservation} {@link NodeDescription}
      */
     private void createTimeObservationSubNodeDescription(NodeDescription parentNodeDescription) {
-        NodeStyleDescription timeObservationNodeStyle = this.getViewBuilder().createImageNodeStyle(UUID.nameUUIDFromBytes("TimeObservation.svg".getBytes()).toString(), true);
+        NodeStyleDescription timeObservationNodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/TimeObservation.svg");
         timeObservationNodeStyle.setBorderSize(1);
 
         EClass timeObservationEClass = this.umlPackage.getTimeObservation();
@@ -193,6 +195,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(timeObservationEClass.getName()))//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(timeObservationEClass.getName())) //
+                .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .build();
         codTimeObservationSubNodeDescription.setDefaultWidthExpression(OBSERVATION_SIZE);
         codTimeObservationSubNodeDescription.setDefaultHeightExpression(OBSERVATION_SIZE);
