@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -373,7 +374,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         this.createDefaultToolSectionsInNodeDescription(ddArtifactSharedNodeDescription);
 
-        NodeTool ddArtifactSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(artifactEClass), DeploymentDiagramServices.CREATE_ARTIFACT,
+        NodeTool ddArtifactSharedNodeCreationTool = this.getViewBuilder().createCreationTool(artifactEClass.getName(), this.getIdBuilder().getCreationToolId(artifactEClass),
+                DeploymentDiagramServices.CREATE_ARTIFACT,
                 List.of(this.getQueryBuilder().aqlString(artifactEClass.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         List<EClass> owners = List.of(this.umlPackage.getArtifact(), //
                 this.umlPackage.getNode(), //
@@ -418,7 +420,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createDefaultToolSectionsInNodeDescription(ddDeploymentSpecificationSharedNodeDescription);
 
         // create tools
-        NodeTool ddDeploymentSpecificationSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(deploymentSepecificationEClass),
+        NodeTool ddDeploymentSpecificationSharedNodeCreationTool = this.getViewBuilder().createCreationTool(deploymentSepecificationEClass.getName(),
+                this.getIdBuilder().getCreationToolId(deploymentSepecificationEClass),
                 DeploymentDiagramServices.CREATE_ARTIFACT,
                 List.of(this.getQueryBuilder().aqlString(deploymentSepecificationEClass.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         List<EClass> owners = List.of(this.umlPackage.getArtifact(), //
@@ -457,7 +460,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createDefaultToolSectionsInNodeDescription(ddDeviceSharedNodeDescription);
 
         // create tools
-        NodeTool ddDeviceSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(deviceEClass), DeploymentDiagramServices.CREATE_NODE,
+        NodeTool ddDeviceSharedNodeCreationTool = this.getViewBuilder().createCreationTool(deviceEClass.getName(), this.getIdBuilder().getCreationToolId(deviceEClass),
+                DeploymentDiagramServices.CREATE_NODE,
                 List.of(this.getQueryBuilder().aqlString(deviceEClass.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         List<EClass> owners = List.of(this.umlPackage.getNode(), //
                 this.umlPackage.getPackage());
@@ -502,7 +506,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createDefaultToolSectionsInNodeDescription(ddExecutionEnvironmentSharedNodeDescription);
 
         // create tools
-        NodeTool ddExecutionEnvironmentSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(executionEnvironmentEClass),
+        NodeTool ddExecutionEnvironmentSharedNodeCreationTool = this.getViewBuilder().createCreationTool(executionEnvironmentEClass.getName(),
+                this.getIdBuilder().getCreationToolId(executionEnvironmentEClass),
                 DeploymentDiagramServices.CREATE_NODE,
                 List.of(this.getQueryBuilder().aqlString(executionEnvironmentEClass.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         List<EClass> owners = List.of(this.umlPackage.getNode(), //
@@ -547,7 +552,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createDefaultToolSectionsInNodeDescription(ddNodeSharedNodeDescription);
 
         // create tools
-        NodeTool ddNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(nodeEClass), DeploymentDiagramServices.CREATE_NODE,
+        NodeTool ddNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool(nodeEClass.getName(), this.getIdBuilder().getCreationToolId(nodeEClass), DeploymentDiagramServices.CREATE_NODE,
                 List.of(this.getQueryBuilder().aqlString(nodeEClass.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         List<EClass> owners = List.of(this.umlPackage.getNode(), //
                 this.umlPackage.getPackage());

@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -454,7 +455,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(cpdPortSharedNodeDescription);
 
         // create tools
-        NodeTool cpdPortSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(portEClass), ComponentDiagramServices.CREATE_PORT,
+        NodeTool cpdPortSharedNodeCreationTool = this.getViewBuilder().createCreationTool(portEClass.getName(), this.getIdBuilder().getCreationToolId(portEClass), ComponentDiagramServices.CREATE_PORT,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         cpdPortSharedNodeCreationTool
                 .setPreconditionExpression(
@@ -511,7 +512,8 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(cpdPropertySharedNodeDescription);
 
         // create tools
-        NodeTool cpdPropertySharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(propertyEClass), ComponentDiagramServices.CREATE_PROPERTY,
+        NodeTool cpdPropertySharedNodeCreationTool = this.getViewBuilder().createCreationTool(propertyEClass.getName(), this.getIdBuilder().getCreationToolId(propertyEClass),
+                ComponentDiagramServices.CREATE_PROPERTY,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         cpdPropertySharedNodeCreationTool
                 .setPreconditionExpression(

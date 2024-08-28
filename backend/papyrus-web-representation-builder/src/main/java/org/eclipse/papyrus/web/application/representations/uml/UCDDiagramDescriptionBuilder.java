@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -312,7 +313,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createDefaultToolSectionsInNodeDescription(ucdUseCaseTopNodeDescription);
 
         // create tools
-        NodeTool ucdUseCaseTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(useCaseEClass), UseCaseDiagramServices.CREATE_USECASE,
+        NodeTool ucdUseCaseTopNodeCreationTool = this.getViewBuilder().createCreationTool(useCaseEClass.getName(), this.getIdBuilder().getCreationToolId(useCaseEClass),
+                UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         this.addDiagramToolInToolSection(diagramDescription, ucdUseCaseTopNodeCreationTool, NODES);
     }
@@ -483,7 +485,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         this.createDefaultToolSectionsInNodeDescription(ucdUseCaseSharedNodeDescription);
 
-        NodeTool ucdUseCaseSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(useCaseEClass), UseCaseDiagramServices.CREATE_USECASE,
+        NodeTool ucdUseCaseSharedNodeCreationTool = this.getViewBuilder().createCreationTool(useCaseEClass.getName(), this.getIdBuilder().getCreationToolId(useCaseEClass),
+                UseCaseDiagramServices.CREATE_USECASE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
 
         List<EClass> owners = List.of(this.umlPackage.getClass_(), //

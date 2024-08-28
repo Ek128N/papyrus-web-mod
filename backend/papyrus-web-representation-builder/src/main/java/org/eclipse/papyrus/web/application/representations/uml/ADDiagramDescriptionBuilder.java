@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -472,7 +473,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         this.createDefaultToolSectionsInNodeDescription(adActionInputPinSharedNodeDescription);
 
-        NodeTool adActionInputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getActionInputPin()),
+        NodeTool adActionInputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getActionInputPin().getName(),
+                this.getIdBuilder().getCreationToolId(this.umlPackage.getActionInputPin()),
                 ActivityDiagramServices.CREATE_ACTION_INPUT_PIN, List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         adActionInputPinSharedNodeCreationTool.setPreconditionExpression(
                 CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getActionInputPin().getName())));
@@ -532,7 +534,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @see #createCreationTool(String, String, List)
      */
     private NodeTool createActivityNodeCreationTool(EClass newType) {
-        return this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(newType), ActivityDiagramServices.CREATE_ACTIVITY_NODE,
+        return this.getViewBuilder().createCreationTool(newType.getName(), this.getIdBuilder().getCreationToolId(newType), ActivityDiagramServices.CREATE_ACTIVITY_NODE,
                 List.of(this.getQueryBuilder().aqlString(newType.getName()), this.getQueryBuilder().aqlString(this.umlPackage.getActivity_OwnedNode().getName()), SELECTED_NODE, DIAGRAM_CONTEXT,
                         CONVERTED_NODES));
     }
@@ -1025,10 +1027,12 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         this.createDefaultToolSectionsInNodeDescription(adInputExpansionNodeSharedNodeDescription);
 
-        NodeTool adInputExpansionNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool("New Input " + this.umlPackage.getExpansionNode().getName(),
+        NodeTool adInputExpansionNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getExpansionNode().getName(),
+                "New Input " + this.umlPackage.getExpansionNode().getName(),
                 ActivityDiagramServices.CREATE_EXPANSION_NODE, List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES, String.valueOf(true)));
         this.reuseNodeAndCreateTool(adInputExpansionNodeSharedNodeDescription, diagramDescription, adInputExpansionNodeSharedNodeCreationTool, EXPANSION_REGION, this.umlPackage.getExpansionRegion());
-        NodeTool outputExpansionNodeTool = this.getViewBuilder().createCreationTool("New Output " + this.umlPackage.getExpansionNode().getName(), ActivityDiagramServices.CREATE_EXPANSION_NODE,
+        NodeTool outputExpansionNodeTool = this.getViewBuilder().createCreationTool(this.umlPackage.getExpansionNode().getName(), "New Output " + this.umlPackage.getExpansionNode().getName(),
+                ActivityDiagramServices.CREATE_EXPANSION_NODE,
                 List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES, String.valueOf(false)));
         this.reuseNodeAndCreateTool(adInputExpansionNodeSharedNodeDescription, diagramDescription, outputExpansionNodeTool, EXPANSION_REGION, this.umlPackage.getExpansionRegion());
     }
@@ -1060,7 +1064,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         this.createDefaultToolSectionsInNodeDescription(adInputPinSharedNodeDescription);
 
-        NodeTool adInputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getInputPin()),
+        NodeTool adInputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getInputPin().getName(),
+                this.getIdBuilder().getCreationToolId(this.umlPackage.getInputPin()),
                 ActivityDiagramServices.CREATE_INPUT_PIN, List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         adInputPinSharedNodeCreationTool
                 .setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getInputPin().getName())));
@@ -1268,7 +1273,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         this.createDefaultToolSectionsInNodeDescription(adOutputPinSharedNodeDescription);
 
-        NodeTool adOutputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getOutputPin()),
+        NodeTool adOutputPinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getOutputPin().getName(),
+                this.getIdBuilder().getCreationToolId(this.umlPackage.getOutputPin()),
                 ActivityDiagramServices.CREATE_OUTPUT_PIN, List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         adOutputPinSharedNodeCreationTool
                 .setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getOutputPin().getName())));
@@ -1604,7 +1610,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      * @see #createCreationTool(String, String, List)
      */
     private NodeTool createStructuredActivityNodeCreationTool(EClass newType) {
-        return this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(newType), ActivityDiagramServices.CREATE_ACTIVITY_NODE,
+        return this.getViewBuilder().createCreationTool(newType.getName(), this.getIdBuilder().getCreationToolId(newType), ActivityDiagramServices.CREATE_ACTIVITY_NODE,
                 List.of(this.getQueryBuilder().aqlString(newType.getName()), this.getQueryBuilder().aqlString(this.umlPackage.getActivity_StructuredNode().getName()), SELECTED_NODE, DIAGRAM_CONTEXT,
                         CONVERTED_NODES));
     }
@@ -1746,8 +1752,10 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         this.createDefaultToolSectionsInNodeDescription(adValuePinSharedNodeDescription);
 
-        NodeTool adValuePinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.getIdBuilder().getCreationToolId(this.umlPackage.getValuePin()),
+        NodeTool adValuePinSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getValuePin().getName(),
+                this.getIdBuilder().getCreationToolId(this.umlPackage.getValuePin()),
                 ActivityDiagramServices.CREATE_VALUE_PIN, List.of(SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
+
         adValuePinSharedNodeCreationTool
                 .setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_INTO_PARENT, this.getQueryBuilder().aqlString(this.umlPackage.getValuePin().getName())));
         List<EClass> owners = List.of(this.umlPackage.getBroadcastSignalAction(), //

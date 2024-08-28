@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -52,7 +53,13 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     public static final int STATEMACHINE_NODE_BORDER_RADIUS = 10;
 
+    private static final String PSEUDO_STATE = "Pseudostate_";
+
     private static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30";
+
+    private static final String ICON_PATH = "/icons-override/full/obj16/";
+
+    private static final String ICON_SVG_EXTENSION = ".svg";
 
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
@@ -234,6 +241,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             // Node creation tool
             NodeTool creationTool = DiagramFactory.eINSTANCE.createNodeTool();
             creationTool.setName("New " + literalName);
+            creationTool.setIconURLsExpression(ICON_PATH + PSEUDO_STATE + literal + ICON_SVG_EXTENSION);
 
             // Create instance and init
             ChangeContext createElement = this.getViewBuilder().createChangeContextOperation(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.CREATE_PSEUDO_STATE, //

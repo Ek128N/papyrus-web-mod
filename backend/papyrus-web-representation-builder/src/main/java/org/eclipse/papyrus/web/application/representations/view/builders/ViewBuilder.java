@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
@@ -26,6 +27,7 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.papyrus.uml.domain.services.UMLHelper;
 import org.eclipse.papyrus.web.application.representations.view.IDomainHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.application.representations.view.StyleProvider;
@@ -82,6 +84,10 @@ public class ViewBuilder {
     /**
      * Direct Edit tool name prefix.
      */
+    private static final String ICON_PATH = "/icons-override/full/obj16/";
+
+    private static final String ICON_SVG_EXTENSION = ".svg";
+
     private static final String DIRET_EDIT = "DirectEdit ";
 
     private QueryHelper queryBuilder;
@@ -222,6 +228,8 @@ public class ViewBuilder {
     private EdgeTool createDomainBasedEdgeTool(String id, EdgeDescription description, EReference containmentReference) {
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(id);
+        String typeName = UMLHelper.toEClass(description.getDomainType()).getName();
+        tool.setIconURLsExpression(getIconPathFromString(this.capitalize(typeName)));
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression(this.queryBuilder.queryCreateDomainBaseEdge(description, containmentReference));
         // Configure the tool's target element descriptions once the representation has been fully created. This ensures
@@ -237,6 +245,7 @@ public class ViewBuilder {
     public EdgeTool createFeatureBasedEdgeTool(String id, String serviceExpression, List<? extends DiagramElementDescription> targets) {
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(id);
+        tool.setIconURLsExpression(getIconPathFromString(this.getReferenceNameFromToolId(id)));
         tool.getTargetElementDescriptions().addAll(targets);
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
         changeContext.setExpression(serviceExpression);
@@ -256,10 +265,12 @@ public class ViewBuilder {
     /**
      * Create a creation tool to create a unsynchronized {@link NodeDescription}.
      *
-     * @param nodeToCreate
-     *            the description of the mapping
+     * @param name
+     *            the name of the tool
      * @param containementRef
      *            the containment reference used to contained the new element
+     * @param newType
+     *            the type of the element to create
      * @return a new {@link NodeTool}
      */
     public NodeTool createCreationTool(String name, EReference containementRef, EClass newType) {
@@ -273,6 +284,7 @@ public class ViewBuilder {
     private NodeTool createCreationTool(String name, String selfValue, EReference containementRef, String newType) {
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(name);
+        nodeTool.setIconURLsExpression(getIconURLFromToolName(newType));
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(this.queryBuilder.createNodeQuery(newType, selfValue, containementRef));
         nodeTool.getBody().add(createElement);
@@ -288,6 +300,8 @@ public class ViewBuilder {
      * the default creation mechanism.
      * </p>
      *
+     * @param domain
+     *            the kind of element to create
      * @param toolName
      *            the name of the tool to create
      * @param serviceName
@@ -296,9 +310,10 @@ public class ViewBuilder {
      *            the parameters provided to the service
      * @return the created {@link NodeTool}
      */
-    public NodeTool createCreationTool(String toolName, String serviceName, List<String> serviceParameters) {
+    public NodeTool createCreationTool(String domain, String toolName, String serviceName, List<String> serviceParameters) {
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(toolName);
+        nodeTool.setIconURLsExpression(getIconURLFromToolName(domain));
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(CallQuery.queryServiceOnSelf(serviceName, serviceParameters.toArray(String[]::new)));
         nodeTool.getBody().add(createElement);
@@ -323,6 +338,7 @@ public class ViewBuilder {
     public NodeTool createInCompartmentCreationTool(String toolName, String compartmentName, EReference containementRef, String newType) {
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(toolName);
+        nodeTool.setIconURLsExpression(getIconURLFromToolName(newType));
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(this.queryBuilder.createInCompartmentNodeQuery(newType, compartmentName, containementRef));
         nodeTool.getBody().add(createElement);
@@ -333,6 +349,7 @@ public class ViewBuilder {
     public NodeTool createSiblingCreationTool(String name, String selfValue, EReference containementRef, EClass newType) {
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(name);
+        nodeTool.setIconURLsExpression(getIconPathFromString(newType.getName()));
 
         // Create instance and init
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
@@ -694,4 +711,40 @@ public class ViewBuilder {
     public OutsideLabelDescription createDefaultOutsideLabelDescription(boolean showIcon) {
         return this.createOutsideLabelDescription(this.queryBuilder.queryRenderLabel(), showIcon);
     }
+
+    private String capitalize(String input) {
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
+
+    private String getReferenceNameFromToolId(String input) {
+        return this.capitalize(input.replaceFirst("New ", "").replaceAll(" ", ""));
+    }
+
+    /**
+     * Compute the path of the icon.
+     *
+     * @param name
+     *            the name of element kind
+     * @return the path of the icon to use for the tool
+     */
+    public static String getIconPathFromString(String name) {
+        return ICON_PATH + name + ICON_SVG_EXTENSION;
+    }
+
+    /**
+     * Compute the path of the icon.
+     *
+     * @param name
+     *            the name of the tool
+     * @return the path of the icon to use for the tool
+     */
+    public static String getIconURLFromToolName(String toolName) {
+        EClass eClass = UMLHelper.toEClass(toolName);
+        if (eClass != null) {
+            String typeName = eClass.getName();
+            return getIconPathFromString(typeName);
+        }
+        return null;
+    }
+
 }

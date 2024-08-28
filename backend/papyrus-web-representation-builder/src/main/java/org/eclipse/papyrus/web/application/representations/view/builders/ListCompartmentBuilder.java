@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *******************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
 
@@ -206,7 +207,9 @@ public class ListCompartmentBuilder {
      * @return a new NodeTool
      */
     private NodeTool createSiblingCreationTool(EReference containementRef, EClass newType) {
-        return this.viewBuider.createSiblingCreationTool(this.idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType);
+        NodeTool tool = this.viewBuider.createSiblingCreationTool(this.idBuilder.getSiblingCreationToolId(newType), Variables.SELF, containementRef, newType);
+        tool.setIconURLsExpression(ViewBuilder.getIconURLFromToolName(newType.getName()));
+        return tool;
     }
 
     private void registerCallback(EObject owner, Runnable r) {

@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 200, Issue 203
+ *  Aurelien Didier (Artal Technologies) - Issue 199
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -32,6 +33,7 @@ import org.eclipse.papyrus.web.application.representations.view.CreationToolsUti
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
 import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 import org.eclipse.papyrus.web.application.representations.view.builders.CallbackAdapter;
+import org.eclipse.papyrus.web.application.representations.view.builders.ViewBuilder;
 import org.eclipse.sirius.components.view.ChangeContext;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
@@ -136,8 +138,10 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         cdAssociation.getStyle().setSourceArrowStyle(ArrowStyle.NONE);
 
         EdgeTool associationTool = this.getViewBuilder().createDefaultDomainBasedEdgeTool(cdAssociation, this.pack.getPackage_PackagedElement());
-        EdgeTool compositeAssociationTool = this.createSpecializedAssociationDomainBasedEdgeTool("New Composite Association", ClassDiagramServices.CREATION_COMPOSITE_ASSOCIATION, cdAssociation);
-        EdgeTool sharedAssociationTool = this.createSpecializedAssociationDomainBasedEdgeTool("New Shared Association", ClassDiagramServices.CREATION_SHARED_ASSOCIATION, cdAssociation);
+        EdgeTool compositeAssociationTool = this.createSpecializedAssociationDomainBasedEdgeTool("New Composite Association", "Association_composite",
+                ClassDiagramServices.CREATION_COMPOSITE_ASSOCIATION, cdAssociation);
+        EdgeTool sharedAssociationTool = this.createSpecializedAssociationDomainBasedEdgeTool("New Shared Association", "Association_shared", ClassDiagramServices.CREATION_SHARED_ASSOCIATION,
+                cdAssociation);
         this.registerCallback(cdAssociation, () -> {
             CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, associationTool);
             CreationToolsUtil.addEdgeCreationTool(sourceAndTargetDescriptionsSupplier, compositeAssociationTool);
@@ -158,9 +162,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.getViewBuilder().addDefaultReconnectionTools(cdAssociation);
     }
 
-    private EdgeTool createSpecializedAssociationDomainBasedEdgeTool(String specializationName, String serviceName, EdgeDescription cdAssociation) {
-        EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
-        tool.setName(specializationName);
+    private EdgeTool createSpecializedAssociationDomainBasedEdgeTool(String specializationName, String iconName, String serviceName, EdgeDescription cdAssociation) {
         ChangeContext changeContext = ViewFactory.eINSTANCE.createChangeContext();
 
         String query = new CallQuery(SEMANTIC_EDGE_SOURCE)//
@@ -170,7 +172,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                         EDGE_TARGET, //
                         EDITING_CONTEXT, //
                         DIAGRAM_CONTEXT);
-        changeContext.setExpression(query);
+        EdgeTool tool = this.getViewBuilder().createFeatureBasedEdgeTool(specializationName, query, List.of());
+        tool.setIconURLsExpression(ViewBuilder.getIconPathFromString(iconName));
         cdAssociation.eAdapters().add(new CallbackAdapter(() -> {
             List<NodeDescription> targetNodeDescriptions = cdAssociation.getTargetNodeDescriptions();
             tool.getTargetElementDescriptions().addAll(targetNodeDescriptions);
@@ -201,7 +204,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(NEW_CONTAINMENT_LINK_TOOL_LABEL); //
-
+        tool.setIconURLsExpression(ViewBuilder.getIconPathFromString("ContainmentLink"));
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getPackage_PackagedElement().getName()));
 
         ChangeContext changeContext = this.getViewBuilder().createChangeContextOperation(toolQuery);
@@ -236,6 +239,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         // Create containment Link tool
         EdgeTool tool = DiagramFactory.eINSTANCE.createEdgeTool();
         tool.setName(NEW_CONTAINMENT_LINK_TOOL_LABEL); //
+        tool.setIconURLsExpression(ViewBuilder.getIconPathFromString("ContainmentLink"));
 
         String toolQuery = new CallQuery(SEMANTIC_EDGE_TARGET).callService(Services.MOVE_IN, SEMANTIC_EDGE_SOURCE, this.getQueryBuilder().aqlString(this.pack.getClass_NestedClassifier().getName()));
 
