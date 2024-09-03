@@ -13,14 +13,14 @@ Check all creation in the _State Machine Diagram_.
 
 
 .Recipe
-. Creation a new Project: _SMD01_
-. Create a UML _Model_ (using _Create new Model_ helper)
+. Creation a new Project: _SMD01_ (using _UML Empty_)
+. Create a UML _Model_ (using _Model UML_ stereotype)
 . Create a _StateMachine_ in _Model_
 . Create a _State Machine Diagram_ on _StateMachine_
 ** [ ] A stateMachine node is displayed in the diagram
 . Select the stateMachine node and create a _Region_ with the palette
 ** [ ] A new Region is  a displayed in the stateMachine node
-. Select the region and all kind of elements with the palette
+. Select the region and create all kind of elements with the palette
 ** [ ] Each elements is displayed in the region
 +
 image::imgs/SMD01-creation-nodes.png[]

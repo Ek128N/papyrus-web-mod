@@ -114,19 +114,15 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription, DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyleDescription.setBackground(this.styleProvider.getTransparentColor());
-
+        
         // We need here to add a non empty label so the renderer displays a label and the label separator
         // This is the only way we can have compartment with no border but still display a line between each compartment
-        InsideLabelDescription labelDesc = this.getViewBuilder().createDefaultInsideLabelDescription(false, true);
-        labelDesc.getStyle().setWithHeader(false);
-        labelDesc.setLabelExpression("aql:' '");
         NodeDescription regionNodeDesc = this.newNodeBuilder(this.umlPackage.getRegion(), rectangularNodeStyleDescription)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getStateMachine_Region()))//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getRegion().getName()))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getRegion().getName()))//
-                .insideLabelDescription(labelDesc)
                 .build();
 
         stateMachineNodeDescription.getChildrenDescriptions().add(regionNodeDesc);
