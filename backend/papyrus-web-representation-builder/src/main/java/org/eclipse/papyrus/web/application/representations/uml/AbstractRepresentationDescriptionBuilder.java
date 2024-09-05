@@ -390,7 +390,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         commentDescription.setDefaultHeightExpression("100");
 
         NoteNodeStyleDescription style = (NoteNodeStyleDescription) commentDescription.getStyle();
-        commentDescription.getInsideLabel().getStyle().setShowIconExpression("aql:false");
+        commentDescription.getInsideLabel().getStyle().setShowIconExpression("aql:true");
+        commentDescription.getInsideLabel().setPosition(InsideLabelPosition.TOP_LEFT);
+        commentDescription.getInsideLabel().setTextAlign(LabelTextAlign.LEFT);
         style.setBackground(this.styleProvider.getNoteColor());
         diagramDescription.getNodeDescriptions().add(commentDescription);
         diagramDescription.getPalette().getNodeTools().add(this.getViewBuilder().createCreationTool(this.pack.getElement_OwnedComment(), this.pack.getComment()));

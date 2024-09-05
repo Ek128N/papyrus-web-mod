@@ -334,7 +334,7 @@ public class NoteStyleDescriptionBuilder {
         noteStyleDescription.setDefaultHeightExpression(DEFAULT_NOTE_HEIGHT);
 
         noteStyleDescription.getInsideLabel().getStyle().setShowIconExpression("aql:true");
-        noteStyleDescription.getInsideLabel().setPosition(InsideLabelPosition.MIDDLE_LEFT);
+        noteStyleDescription.getInsideLabel().setPosition(InsideLabelPosition.TOP_LEFT);
         noteStyleDescription.getInsideLabel().setTextAlign(LabelTextAlign.LEFT);
 
         NoteNodeStyleDescription style = (NoteNodeStyleDescription) noteStyleDescription.getStyle();
