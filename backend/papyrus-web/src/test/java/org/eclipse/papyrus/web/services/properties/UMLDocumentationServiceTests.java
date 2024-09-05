@@ -15,6 +15,7 @@ package org.eclipse.papyrus.web.services.properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.eclipse.papyrus.web.application.properties.UMLDocumentationService;
 import org.eclipse.papyrus.web.utils.AbstractWebUMLTest;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.Test;

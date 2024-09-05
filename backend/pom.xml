@@ -34,9 +34,6 @@
 		<module>papyrus-web-parent</module>
 		<module>papyrus-web-frontend</module>
 		<module>papyrus-web-domain</module>
-		<module>papyrus-web-services-api</module>
-		<module>papyrus-web-services</module>
-		<module>papyrus-web-graphql</module>
 		<module>papyrus-web-sirius-contributions</module>
 		<module>papyrus-web-application</module>
 		<module>papyrus-web</module>

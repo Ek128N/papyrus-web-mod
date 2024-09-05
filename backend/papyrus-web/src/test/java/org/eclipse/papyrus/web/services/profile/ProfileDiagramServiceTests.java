@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.papyrus.uml.domain.services.EMFUtils;
+import org.eclipse.papyrus.web.application.representations.aqlservices.profile.ProfileDiagramService;
 import org.eclipse.papyrus.web.services.AbstractDiagramTest;
-import org.eclipse.papyrus.web.services.aqlservices.profile.ProfileDiagramService;
 import org.eclipse.papyrus.web.tests.utils.MockLogger;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Class;

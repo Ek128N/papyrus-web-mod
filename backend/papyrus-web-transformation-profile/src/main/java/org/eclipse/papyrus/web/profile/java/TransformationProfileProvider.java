@@ -15,8 +15,8 @@ package org.eclipse.papyrus.web.profile.java;
 
 import java.util.List;
 
-import org.eclipse.papyrus.web.services.api.profile.IUMLProfileProvider;
-import org.eclipse.papyrus.web.services.api.uml.profile.UMLProfileMetadata;
+import org.eclipse.papyrus.web.application.profile.dto.UMLProfileMetadata;
+import org.eclipse.papyrus.web.application.profile.services.api.IUMLProfileProvider;
 import org.springframework.stereotype.Service;
 
 /**

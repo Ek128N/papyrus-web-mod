@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger.ILogLevel;
-import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
-import org.eclipse.papyrus.web.services.aqlservices.ServiceLogger;
-import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.representations.aqlservices.AbstractDiagramService;
+import org.eclipse.papyrus.web.application.representations.aqlservices.ServiceLogger;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.core.api.IEditingContext;

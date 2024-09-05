@@ -40,7 +40,7 @@
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-services</artifactId>
+			<artifactId>papyrus-web-application</artifactId>
 			<version>2024.2.1</version>
 		</dependency>
 		<dependency>

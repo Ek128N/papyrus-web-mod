@@ -13,8 +13,8 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.services;
 
-import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
-import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.representations.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;

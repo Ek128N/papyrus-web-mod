@@ -20,10 +20,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.papyrus.web.application.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericDiagramService;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
-import org.eclipse.papyrus.web.services.aqlservices.utils.GenericDiagramService;
-import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
-import org.eclipse.papyrus.web.services.template.TemplateInitializer;
+import org.eclipse.papyrus.web.application.templates.projects.TemplateInitializer;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;

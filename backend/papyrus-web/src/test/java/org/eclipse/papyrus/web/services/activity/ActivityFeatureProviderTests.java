@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.papyrus.web.services.aqlservices.activity.ActivityFeatureProvider;
+import org.eclipse.papyrus.web.application.representations.aqlservices.activity.ActivityFeatureProvider;
 import org.eclipse.papyrus.web.utils.AbstractWebUMLTest;
 import org.eclipse.uml2.uml.AcceptCallAction;
 import org.eclipse.uml2.uml.AcceptEventAction;

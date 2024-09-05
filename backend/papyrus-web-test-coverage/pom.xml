@@ -46,11 +46,6 @@
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-services</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-properties-builder</artifactId>
 			<version>${project.version}</version>
 		</dependency>

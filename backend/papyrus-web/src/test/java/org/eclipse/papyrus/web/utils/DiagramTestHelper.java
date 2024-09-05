@@ -30,7 +30,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.papyrus.web.services.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.representations.PapyrusRepresentationDescriptionRegistry;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramDescriptionVisitor;
 import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;

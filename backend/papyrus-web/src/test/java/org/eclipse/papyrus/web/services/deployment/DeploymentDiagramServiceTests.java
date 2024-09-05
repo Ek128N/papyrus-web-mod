@@ -22,12 +22,12 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.papyrus.web.application.representations.aqlservices.deployment.DeploymentDiagramService;
 import org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.DDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.services.AbstractDiagramTest;
-import org.eclipse.papyrus.web.services.aqlservices.deployment.DeploymentDiagramService;
 import org.eclipse.papyrus.web.tests.utils.MockLogger;
 import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.CommunicationPath;

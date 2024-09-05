@@ -15,8 +15,8 @@ package org.eclipse.papyrus.web.profile.java;
 
 import java.util.List;
 
-import org.eclipse.papyrus.web.services.api.pathmap.IPathMapProvider;
-import org.eclipse.papyrus.web.services.api.pathmap.PathMapMetadata;
+import org.eclipse.papyrus.web.application.pathmap.services.api.IPathMapProvider;
+import org.eclipse.papyrus.web.application.pathmap.services.api.PathMapMetadata;
 import org.springframework.stereotype.Service;
 
 /**

@@ -22,13 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.papyrus.web.application.representations.aqlservices.AbstractDiagramService;
+import org.eclipse.papyrus.web.application.representations.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UMLMetamodelHelper;
 import org.eclipse.papyrus.web.application.representations.view.IdBuilder;
 import org.eclipse.papyrus.web.services.AbstractDiagramTest;
-import org.eclipse.papyrus.web.services.aqlservices.AbstractDiagramService;
-import org.eclipse.papyrus.web.services.aqlservices.pakage.PackageDiagramService;
 import org.eclipse.papyrus.web.tests.utils.MockLogger;
 import org.eclipse.papyrus.web.utils.ElementMatcher;
 import org.eclipse.sirius.components.diagrams.Edge;

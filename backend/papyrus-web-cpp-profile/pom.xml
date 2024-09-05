@@ -30,7 +30,7 @@
 		<!-- Internal dependencies -->
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-services</artifactId>
+			<artifactId>papyrus-web-application</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

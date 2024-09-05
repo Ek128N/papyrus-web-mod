@@ -16,7 +16,7 @@ package org.eclipse.papyrus.web.application.configuration;
 import java.util.List;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.papyrus.web.services.api.IImageOverrideService;
+import org.eclipse.papyrus.web.graphics.services.api.IImageOverrideService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.DefaultLabelService;

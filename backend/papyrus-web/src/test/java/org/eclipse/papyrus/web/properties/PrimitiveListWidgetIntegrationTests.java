@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.eclipse.papyrus.web.application.stereotypes.UMLStereotypeProvider;
-import org.eclipse.papyrus.web.application.templates.PapyrusUMLNatures;
+import org.eclipse.papyrus.web.application.templates.documents.UMLStereotypeProvider;
+import org.eclipse.papyrus.web.application.templates.projects.PapyrusUMLNatures;
 import org.eclipse.papyrus.web.custom.widgets.primitivelist.PrimitiveListWidget;
 import org.eclipse.papyrus.web.utils.AbstractWebUMLTest;
 import org.eclipse.papyrus.web.utils.mutations.PapyrusCreateDocumentMutationRunner;

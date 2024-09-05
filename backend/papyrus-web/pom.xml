@@ -32,22 +32,12 @@
 		<!-- Internal dependencies -->
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-graphql</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-representation-builder</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-properties-builder</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-services</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -97,11 +87,6 @@
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-graphics</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-customnodes</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -115,6 +100,11 @@
 			<artifactId>papyrus-web-tests</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>papyrus-web</groupId>
+			<artifactId>papyrus-web-graphics</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 

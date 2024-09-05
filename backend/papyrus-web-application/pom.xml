@@ -30,12 +30,6 @@
 
 
 		<!-- Internal dependencies -->
-
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-graphql</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-representation-builder</artifactId>
@@ -48,32 +42,12 @@
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-services</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-frontend</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-cpp-profile</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-java-profile</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-transformation-profile</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-codegen-profile</artifactId>
+			<artifactId>papyrus-web-graphics</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -84,11 +58,6 @@
 		<dependency>
 			<groupId>papyrus-web</groupId>
 			<artifactId>papyrus-web-sirius-contributions</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>papyrus-web</groupId>
-			<artifactId>papyrus-web-graphics</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -112,8 +81,7 @@
 			<artifactId>papyrus-web-domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-
+		
 		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

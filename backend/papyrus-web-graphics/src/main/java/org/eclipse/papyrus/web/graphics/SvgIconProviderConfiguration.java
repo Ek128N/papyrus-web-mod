@@ -18,7 +18,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.papyrus.web.services.api.IImageOverrideService;
+import org.eclipse.papyrus.web.graphics.services.SvgIconOverrideService;
+import org.eclipse.papyrus.web.graphics.services.api.IImageOverrideService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
