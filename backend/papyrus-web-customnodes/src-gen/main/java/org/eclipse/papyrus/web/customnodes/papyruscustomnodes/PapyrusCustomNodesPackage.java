@@ -64,76 +64,6 @@ public interface PapyrusCustomNodesPackage extends EPackage {
 
     /**
      * The meta object id for the
-     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.EllipseNodeStyleDescriptionImpl <em>Ellipse
-     * Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.EllipseNodeStyleDescriptionImpl
-     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getEllipseNodeStyleDescription()
-     * @generated
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION = 0;
-
-    /**
-     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_COLOR;
-
-    /**
-     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
-
-    /**
-     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_SIZE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
-
-    /**
-     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
-
-    /**
-     * The number of structural features of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
-
-    /**
-     * The number of operations of the '<em>Ellipse Node Style Description</em>' class. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int ELLIPSE_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
-
-    /**
-     * The meta object id for the
      * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PackageNodeStyleDescriptionImpl <em>Package
      * Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -141,7 +71,7 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getPackageNodeStyleDescription()
      * @generated
      */
-    int PACKAGE_NODE_STYLE_DESCRIPTION = 1;
+    int PACKAGE_NODE_STYLE_DESCRIPTION = 0;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -212,7 +142,7 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getRectangleWithExternalLabelNodeStyleDescription()
      * @generated
      */
-    int RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION = 2;
+    int RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION = 1;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -282,7 +212,7 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getNoteNodeStyleDescription()
      * @generated
      */
-    int NOTE_NODE_STYLE_DESCRIPTION = 3;
+    int NOTE_NODE_STYLE_DESCRIPTION = 2;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -352,7 +282,7 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getInnerFlagNodeStyleDescription()
      * @generated
      */
-    int INNER_FLAG_NODE_STYLE_DESCRIPTION = 4;
+    int INNER_FLAG_NODE_STYLE_DESCRIPTION = 3;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -422,7 +352,7 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getOuterFlagNodeStyleDescription()
      * @generated
      */
-    int OUTER_FLAG_NODE_STYLE_DESCRIPTION = 5;
+    int OUTER_FLAG_NODE_STYLE_DESCRIPTION = 4;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -492,7 +422,7 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getCuboidNodeStyleDescription()
      * @generated
      */
-    int CUBOID_NODE_STYLE_DESCRIPTION = 6;
+    int CUBOID_NODE_STYLE_DESCRIPTION = 5;
 
     /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -552,29 +482,6 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @ordered
      */
     int CUBOID_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
-
-    /**
-     * Returns the meta object for class
-     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription <em>Ellipse Node Style
-     * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for class '<em>Ellipse Node Style Description</em>'.
-     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription
-     * @generated
-     */
-    EClass getEllipseNodeStyleDescription();
-
-    /**
-     * Returns the meta object for the reference
-     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription#getBackground
-     * <em>Background</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the reference '<em>Background</em>'.
-     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription#getBackground()
-     * @see #getEllipseNodeStyleDescription()
-     * @generated
-     */
-    EReference getEllipseNodeStyleDescription_Background();
 
     /**
      * Returns the meta object for class
@@ -736,25 +643,6 @@ public interface PapyrusCustomNodesPackage extends EPackage {
      * @generated
      */
     interface Literals {
-        /**
-         * The meta object literal for the
-         * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.EllipseNodeStyleDescriptionImpl
-         * <em>Ellipse Node Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.EllipseNodeStyleDescriptionImpl
-         * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesPackageImpl#getEllipseNodeStyleDescription()
-         * @generated
-         */
-        EClass ELLIPSE_NODE_STYLE_DESCRIPTION = eINSTANCE.getEllipseNodeStyleDescription();
-
-        /**
-         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
-         *
-         * @generated
-         */
-        EReference ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getEllipseNodeStyleDescription_Background();
-
         /**
          * The meta object literal for the
          * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PackageNodeStyleDescriptionImpl

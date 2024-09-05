@@ -92,31 +92,6 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected EllipseNodeStyleDescriptionItemProvider ellipseNodeStyleDescriptionItemProvider;
-
-    /**
-     * This creates an adapter for a
-     * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createEllipseNodeStyleDescriptionAdapter() {
-        if (this.ellipseNodeStyleDescriptionItemProvider == null) {
-            this.ellipseNodeStyleDescriptionItemProvider = new EllipseNodeStyleDescriptionItemProvider(this);
-        }
-
-        return this.ellipseNodeStyleDescriptionItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all
      * {@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.PackageNodeStyleDescription} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -365,8 +340,6 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
      */
     @Override
     public void dispose() {
-        if (this.ellipseNodeStyleDescriptionItemProvider != null)
-            this.ellipseNodeStyleDescriptionItemProvider.dispose();
         if (this.packageNodeStyleDescriptionItemProvider != null)
             this.packageNodeStyleDescriptionItemProvider.dispose();
         if (this.rectangleWithExternalLabelNodeStyleDescriptionItemProvider != null)
@@ -427,9 +400,6 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
             @Override
             public Object caseNodeDescription(NodeDescription object) {
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
-                        PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription()));
-
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
                         PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription()));
 
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
@@ -457,9 +427,6 @@ public class PapyrusCustomNodesItemProviderAdapterFactory extends PapyrusCustomN
              */
             @Override
             public Object caseConditionalNodeStyle(ConditionalNodeStyle object) {
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
-                        PapyrusCustomNodesFactory.eINSTANCE.createEllipseNodeStyleDescription()));
-
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                         PapyrusCustomNodesFactory.eINSTANCE.createPackageNodeStyleDescription()));
 

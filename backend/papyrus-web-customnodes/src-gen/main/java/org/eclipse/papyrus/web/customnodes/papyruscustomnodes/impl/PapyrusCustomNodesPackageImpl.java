@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
@@ -35,13 +34,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
  * @generated
  */
 public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements PapyrusCustomNodesPackage {
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    private EClass ellipseNodeStyleDescriptionEClass = null;
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -149,26 +141,6 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(PapyrusCustomNodesPackage.eNS_URI, thePapyrusCustomNodesPackage);
         return thePapyrusCustomNodesPackage;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EClass getEllipseNodeStyleDescription() {
-        return this.ellipseNodeStyleDescriptionEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EReference getEllipseNodeStyleDescription_Background() {
-        return (EReference) this.ellipseNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -320,9 +292,6 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.isCreated = true;
 
         // Create classes and their features
-        this.ellipseNodeStyleDescriptionEClass = this.createEClass(ELLIPSE_NODE_STYLE_DESCRIPTION);
-        this.createEReference(this.ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND);
-
         this.packageNodeStyleDescriptionEClass = this.createEClass(PACKAGE_NODE_STYLE_DESCRIPTION);
         this.createEReference(this.packageNodeStyleDescriptionEClass, PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
@@ -374,7 +343,6 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         // Set bounds for type parameters
 
         // Add supertypes to classes
-        this.ellipseNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.packageNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.rectangleWithExternalLabelNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.noteNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
@@ -383,11 +351,6 @@ public class PapyrusCustomNodesPackageImpl extends EPackageImpl implements Papyr
         this.cuboidNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
 
         // Initialize classes, features, and operations; add parameters
-        this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getEllipseNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EllipseNodeStyleDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
         this.initEClass(this.packageNodeStyleDescriptionEClass, PackageNodeStyleDescription.class, "PackageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getPackageNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, PackageNodeStyleDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE,

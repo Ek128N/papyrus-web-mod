@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
@@ -78,17 +77,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
-            case PapyrusCustomNodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION: {
-                EllipseNodeStyleDescription ellipseNodeStyleDescription = (EllipseNodeStyleDescription) theEObject;
-                T result = this.caseEllipseNodeStyleDescription(ellipseNodeStyleDescription);
-                if (result == null)
-                    result = this.caseNodeStyleDescription(ellipseNodeStyleDescription);
-                if (result == null)
-                    result = this.caseBorderStyle(ellipseNodeStyleDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
             case PapyrusCustomNodesPackage.PACKAGE_NODE_STYLE_DESCRIPTION: {
                 PackageNodeStyleDescription packageNodeStyleDescription = (PackageNodeStyleDescription) theEObject;
                 T result = this.casePackageNodeStyleDescription(packageNodeStyleDescription);
@@ -158,21 +146,6 @@ public class PapyrusCustomNodesSwitch<T> extends Switch<T> {
             default:
                 return this.defaultCase(theEObject);
         }
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Ellipse Node Style Description</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
-     * end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Ellipse Node Style Description</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseEllipseNodeStyleDescription(EllipseNodeStyleDescription object) {
-        return null;
     }
 
     /**

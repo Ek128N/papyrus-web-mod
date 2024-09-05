@@ -32,15 +32,6 @@ public class PapyrusCustomNodesItemProviderAdapterFactoryCustomImpl extends Papy
     }
 
     @Override
-    public Adapter createEllipseNodeStyleDescriptionAdapter() {
-        if (this.ellipseNodeStyleDescriptionItemProvider == null) {
-            this.ellipseNodeStyleDescriptionItemProvider = new EllipseNodeStyleDescriptionItemProviderCustomImpl(this);
-        }
-
-        return this.ellipseNodeStyleDescriptionItemProvider;
-    }
-
-    @Override
     public Adapter createNoteNodeStyleDescriptionAdapter() {
         if (this.noteNodeStyleDescriptionItemProvider == null) {
             this.noteNodeStyleDescriptionItemProvider = new NoteNodeStyleDescriptionItemProviderCustomImpl(this);

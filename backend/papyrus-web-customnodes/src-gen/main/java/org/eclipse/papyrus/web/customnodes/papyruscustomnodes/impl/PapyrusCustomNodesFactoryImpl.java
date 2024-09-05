@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
@@ -68,8 +67,6 @@ public class PapyrusCustomNodesFactoryImpl extends EFactoryImpl implements Papyr
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case PapyrusCustomNodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION:
-                return this.createEllipseNodeStyleDescription();
             case PapyrusCustomNodesPackage.PACKAGE_NODE_STYLE_DESCRIPTION:
                 return this.createPackageNodeStyleDescription();
             case PapyrusCustomNodesPackage.RECTANGLE_WITH_EXTERNAL_LABEL_NODE_STYLE_DESCRIPTION:
@@ -85,17 +82,6 @@ public class PapyrusCustomNodesFactoryImpl extends EFactoryImpl implements Papyr
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EllipseNodeStyleDescription createEllipseNodeStyleDescription() {
-        EllipseNodeStyleDescriptionImpl ellipseNodeStyleDescription = new EllipseNodeStyleDescriptionImpl();
-        return ellipseNodeStyleDescription;
     }
 
     /**

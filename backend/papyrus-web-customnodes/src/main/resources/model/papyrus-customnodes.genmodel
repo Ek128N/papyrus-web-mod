@@ -12,9 +12,6 @@
   <foreignModel>papyrus-customnodes.ecore</foreignModel>
   <genPackages prefix="PapyrusCustomNodes" basePackage="org.eclipse.papyrus.web.customnodes"
       disposableProviderFactory="true" childCreationExtenders="true" ecorePackage="papyrus-customnodes.ecore#/">
-    <genClasses ecoreClass="papyrus-customnodes.ecore#//EllipseNodeStyleDescription">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//EllipseNodeStyleDescription/background"/>
-    </genClasses>
     <genClasses ecoreClass="papyrus-customnodes.ecore#//PackageNodeStyleDescription">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference papyrus-customnodes.ecore#//PackageNodeStyleDescription/background"/>
     </genClasses>

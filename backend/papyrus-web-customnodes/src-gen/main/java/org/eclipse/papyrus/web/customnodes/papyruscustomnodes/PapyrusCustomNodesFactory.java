@@ -31,15 +31,6 @@ public interface PapyrusCustomNodesFactory extends EFactory {
     PapyrusCustomNodesFactory eINSTANCE = org.eclipse.papyrus.web.customnodes.papyruscustomnodes.impl.PapyrusCustomNodesFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>Ellipse Node Style Description</em>'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return a new object of class '<em>Ellipse Node Style Description</em>'.
-     * @generated
-     */
-    EllipseNodeStyleDescription createEllipseNodeStyleDescription();
-
-    /**
      * Returns a new object of class '<em>Package Node Style Description</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *

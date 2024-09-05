@@ -18,7 +18,6 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.CuboidNodeStyleDescription;
-import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.InnerFlagNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.NoteNodeStyleDescription;
 import org.eclipse.papyrus.web.customnodes.papyruscustomnodes.OuterFlagNodeStyleDescription;
@@ -80,11 +79,6 @@ public class PapyrusCustomNodesAdapterFactory extends AdapterFactoryImpl {
      */
     protected PapyrusCustomNodesSwitch<Adapter> modelSwitch = new PapyrusCustomNodesSwitch<>() {
         @Override
-        public Adapter caseEllipseNodeStyleDescription(EllipseNodeStyleDescription object) {
-            return PapyrusCustomNodesAdapterFactory.this.createEllipseNodeStyleDescriptionAdapter();
-        }
-
-        @Override
         public Adapter casePackageNodeStyleDescription(PackageNodeStyleDescription object) {
             return PapyrusCustomNodesAdapterFactory.this.createPackageNodeStyleDescriptionAdapter();
         }
@@ -141,20 +135,6 @@ public class PapyrusCustomNodesAdapterFactory extends AdapterFactoryImpl {
     @Override
     public Adapter createAdapter(Notifier target) {
         return this.modelSwitch.doSwitch((EObject) target);
-    }
-
-    /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription <em>Ellipse Node Style
-     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.papyrus.web.customnodes.papyruscustomnodes.EllipseNodeStyleDescription
-     * @generated
-     */
-    public Adapter createEllipseNodeStyleDescriptionAdapter() {
-        return null;
     }
 
     /**
