@@ -13,6 +13,9 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
+import java.util.Objects;
+
+import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -28,9 +31,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExtendedMetadataDisablerEditingContextConfigurer implements IEditingContextProcessor {
 
+    private final IUMLProjectCheckerService umlChecker;
+
+    public ExtendedMetadataDisablerEditingContextConfigurer(IUMLProjectCheckerService umlChecker) {
+        super();
+        this.umlChecker = Objects.requireNonNull(umlChecker);
+    }
+
     @Override
     public void preProcess(IEditingContext editingContext) {
-        if (editingContext instanceof IEMFEditingContext swEditingContext) {
+        if (editingContext instanceof IEMFEditingContext swEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             // Workaround regarding the regression on EMFJSon 2.3.6 that now uses the option
             // JsonResource.OPTION_EXTENDED_META_DATA for metamodel migration
             // See commit

@@ -13,6 +13,8 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations;
 
+import java.util.Objects;
+
 import org.eclipse.papyrus.web.application.representations.uml.ADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CODDiagramDescriptionBuilder;
@@ -23,6 +25,7 @@ import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescrip
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.SMDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.UCDDiagramDescriptionBuilder;
+import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.view.View;
@@ -45,9 +48,12 @@ public class PapyrusRepresentationInstaller implements IEditingContextProcessor 
 
     private final PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
-    public PapyrusRepresentationInstaller(PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry) {
+    private final IUMLProjectCheckerService umlChecker;
+
+    public PapyrusRepresentationInstaller(PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, IUMLProjectCheckerService umlChecker) {
         super();
-        this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
+        this.papyrusRepresentationRegistry = Objects.requireNonNull(papyrusRepresentationRegistry);
+        this.umlChecker = Objects.requireNonNull(umlChecker);
     }
 
     @PostConstruct
@@ -67,7 +73,7 @@ public class PapyrusRepresentationInstaller implements IEditingContextProcessor 
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+        if (editingContext instanceof EditingContext siriusWebEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             // Add all view models in the editing context
             this.papyrusRepresentationRegistry.getViewDiagrams().stream()
                     .map(e -> (View) e.eContainer())
@@ -86,7 +92,7 @@ public class PapyrusRepresentationInstaller implements IEditingContextProcessor 
 
     @Override
     public void postProcess(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+        if (editingContext instanceof EditingContext siriusWebEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             // Add all representation in the editing context
             this.papyrusRepresentationRegistry.getApiDiagrams().stream()
                     .forEach(diag -> siriusWebEditingContext.getRepresentationDescriptions().put(diag.getId(), diag));

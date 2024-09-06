@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.papyrus.web.application.templates.projects.PapyrusUMLNatures;
 import org.eclipse.papyrus.web.tests.utils.UMLTestHelper;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -79,7 +80,7 @@ public class AbstractWebUMLTest {
 
     @BeforeEach
     public void before() {
-        Success<Project> project = (Success<Project>) this.projectCreationService.createProject(UUID.randomUUID().toString(), List.of());
+        Success<Project> project = (Success<Project>) this.projectCreationService.createProject(UUID.randomUUID().toString(), List.of(PapyrusUMLNatures.UML));
         this.editingContext = this.editingContextSearchService.findById(project.data().getId().toString()).get();
         this.editingDomain = ((IEMFEditingContext) this.editingContext).getDomain();
 

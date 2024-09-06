@@ -14,13 +14,13 @@
 package org.eclipse.papyrus.web.application.configuration;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.papyrus.web.application.representations.IRepresentationDescriptionOverrider;
+import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,19 +29,21 @@ import org.springframework.stereotype.Service;
  * @author Arthur Daussy
  */
 @Service
-@Order(Ordered.LOWEST_PRECEDENCE)
 public class PapyrusDescriptionOverriderEditingContextConfigurer implements IEditingContextProcessor {
 
     private final List<IRepresentationDescriptionOverrider> descriptionOverriders;
 
-    public PapyrusDescriptionOverriderEditingContextConfigurer(List<IRepresentationDescriptionOverrider> descriptionOverriders) {
+    private final IUMLProjectCheckerService umlChecker;
+
+    public PapyrusDescriptionOverriderEditingContextConfigurer(List<IRepresentationDescriptionOverrider> descriptionOverriders, IUMLProjectCheckerService umlChecker) {
         super();
-        this.descriptionOverriders = descriptionOverriders;
+        this.descriptionOverriders = Objects.requireNonNull(descriptionOverriders);
+        this.umlChecker = Objects.requireNonNull(umlChecker);
     }
 
     @Override
     public void postProcess(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext swEditingContext) {
+        if (editingContext instanceof EditingContext swEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             /**
              * <p>
              * This part of the code has been created for bug

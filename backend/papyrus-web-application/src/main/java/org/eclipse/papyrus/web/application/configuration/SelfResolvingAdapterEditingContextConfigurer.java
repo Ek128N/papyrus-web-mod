@@ -13,6 +13,8 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.configuration;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -20,6 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -33,11 +36,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SelfResolvingAdapterEditingContextConfigurer implements IEditingContextProcessor {
+    
+    private final IUMLProjectCheckerService umlChecker;
+
+    public SelfResolvingAdapterEditingContextConfigurer(IUMLProjectCheckerService umlChecker) {
+        super();
+        this.umlChecker = Objects.requireNonNull(umlChecker);
+    }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         // SelfPreResolvingProxyAdapter
-        if (editingContext instanceof IEMFEditingContext emfEditingContext) {
+        if (editingContext instanceof IEMFEditingContext emfEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             // Workaround for bug: https://github.com/eclipse-sirius/sirius-web/issues/1863
             EList<Adapter> eAdapters = emfEditingContext.getDomain().getResourceSet().eAdapters();
             if (eAdapters.stream().noneMatch(a -> a instanceof SelfPreResolvingProxyAdapter)) {

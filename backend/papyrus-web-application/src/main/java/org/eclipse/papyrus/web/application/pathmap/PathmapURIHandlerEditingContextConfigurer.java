@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
+import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
@@ -34,15 +35,18 @@ public class PathmapURIHandlerEditingContextConfigurer implements IEditingContex
 
     private final IProfileRepository profileRepository;
 
-    public PathmapURIHandlerEditingContextConfigurer(IStaticPathmapResourceRegistry pathMapRegistry, IProfileRepository profileRepository) {
+    private final IUMLProjectCheckerService umlChecker;
+
+    public PathmapURIHandlerEditingContextConfigurer(IStaticPathmapResourceRegistry pathMapRegistry, IProfileRepository profileRepository, IUMLProjectCheckerService umlChecker) {
         super();
+        this.umlChecker = Objects.requireNonNull(umlChecker);
         this.pathMapRegistry = Objects.requireNonNull(pathMapRegistry);
         this.profileRepository = Objects.requireNonNull(profileRepository);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        if (editingContext instanceof EditingContext swEditingContext) {
+        if (editingContext instanceof EditingContext swEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             ResourceSet resourceSet = swEditingContext.getDomain().getResourceSet();
             // Plug special URIHandler that handle pathmap:// uris
             resourceSet.getURIConverter().getURIHandlers().add(0, new PathmapURIHandler(this.pathMapRegistry, this.profileRepository));
