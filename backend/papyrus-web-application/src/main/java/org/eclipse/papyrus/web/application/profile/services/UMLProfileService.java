@@ -60,6 +60,10 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.services.Failure;
+import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
 import org.slf4j.Logger;
@@ -329,8 +333,8 @@ public class UMLProfileService implements IUMLProfileService {
         if (this.isRootProfile(profile)) {
             Boolean isProfileUpdated = this.updateProfileWithEPackage(profile, publishProfileInput);
             if (isProfileUpdated) {
-                Boolean profilePublish = this.publishProfile(profile, editingContext);
-                if (profilePublish) {
+                IResult<ProfileResourceEntity> publicationResult = this.publishProfile(profile, editingContext, publishProfileInput);
+                if (publicationResult instanceof Success) {
                     payload = new PublishProfileSuccessPayload(publishProfileInput.id());
                 } else {
                     payload = this.buildErrorPublishProfilePayload(publishProfileInput.id(), ". Failed to save the profile.");
@@ -353,13 +357,6 @@ public class UMLProfileService implements IUMLProfileService {
         return profile.eContainer() == null;
     }
 
-    private Boolean publishProfile(Profile profile, IEditingContext editingContext) {
-        Boolean publishSucceeded = this.toProfileEntity(profile, editingContext)//
-                .map(this.profileCreationService::createProfile)//
-                .isPresent();
-        return publishSucceeded;
-    }
-
     private Boolean updateProfileWithEPackage(Profile profile, PublishProfileInput publishProfileInput) {
         ProfileDefinition profileDefinition = new ProfileDefinition(new ProfileVersion(publishProfileInput.version()), publishProfileInput.comment(), publishProfileInput.copyright(),
                 publishProfileInput.date(), publishProfileInput.author());
@@ -369,8 +366,7 @@ public class UMLProfileService implements IUMLProfileService {
         return false;
     }
 
-    private Optional<ProfileResourceEntity> toProfileEntity(Profile profile, IEditingContext editingContext) {
-        Optional<ProfileResourceEntity> profileEntityOpt = Optional.empty();
+    private IResult<ProfileResourceEntity> publishProfile(Profile profile, IEditingContext editingContext, ICause cause) {
         Resource resourceJson = profile.eResource();
         String resourceId = profile.eResource().getURI().lastSegment();
 
@@ -384,17 +380,13 @@ public class UMLProfileService implements IUMLProfileService {
             if (optionalBytes.isPresent()) {
                 byte[] bytes = optionalBytes.get();
                 String content = new String(bytes);
-
-                ProfileResourceEntity profileEntity = new ProfileResourceEntity();
-                profileEntity.setId(UUID.nameUUIDFromBytes(resourceId.getBytes()));
-                profileEntity.setContent(content);
-                profileEntityOpt = Optional.of(profileEntity);
+                return this.profileCreationService.createProfile(cause, UUID.nameUUIDFromBytes(resourceId.getBytes()), content);
             }
         } catch (IOException exception) {
             LOGGER.warn(exception.getMessage(), exception);
         }
 
-        return profileEntityOpt;
+        return new Failure<>("Unable to publish profile");
     }
 
 }

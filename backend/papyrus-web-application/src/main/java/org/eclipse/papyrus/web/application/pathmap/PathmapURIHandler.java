@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.application.profile.services.UMLProfileService;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -43,12 +43,12 @@ public class PathmapURIHandler extends URIHandlerImpl {
 
     private final IStaticPathmapResourceRegistry registry;
 
-    private final IProfileRepository profileRepository;
+    private final IProfileSeachService profileSearchService;
 
-    public PathmapURIHandler(IStaticPathmapResourceRegistry registry, IProfileRepository profileRepository) {
+    public PathmapURIHandler(IStaticPathmapResourceRegistry registry, IProfileSeachService profileSearchService) {
         super();
         this.registry = Objects.requireNonNull(registry);
-        this.profileRepository = Objects.requireNonNull(profileRepository);
+        this.profileSearchService = Objects.requireNonNull(profileSearchService);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PathmapURIHandler extends URIHandlerImpl {
             inputStream = classPathResource.getInputStream();
         } else {
             try {
-                ProfileResourceEntity profileResourceEntity = this.profileRepository.findById(UUID.fromString(uri.lastSegment())).get();
+                ProfileResourceEntity profileResourceEntity = this.profileSearchService.findById(UUID.fromString(uri.lastSegment())).get();
                 inputStream = new ByteArrayInputStream(profileResourceEntity.getContent().getBytes());
             } catch (NoSuchElementException exception) {
                 throw new Resource.IOWrappedException(exception);
@@ -108,7 +108,7 @@ public class PathmapURIHandler extends URIHandlerImpl {
             // Consequently it is necessary to catch the case where it is not a valid UUID.
             String lastSegment = uri.lastSegment();
             if (UUID_REGEX.matcher(lastSegment).matches()) {
-                exists = this.profileRepository.existsById(UUID.fromString(uri.lastSegment()));
+                exists = this.profileSearchService.existsById(UUID.fromString(uri.lastSegment()));
             } else {
                 exists = false;
             }

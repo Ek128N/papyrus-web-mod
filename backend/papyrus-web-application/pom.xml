@@ -81,7 +81,7 @@
 			<artifactId>papyrus-web-domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<!-- External Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -171,6 +171,10 @@
 			<artifactId>sirius-components-emf-forms</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-domain</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.eef</groupId>
 			<artifactId>org.eclipse.eef.core</artifactId>
 		</dependency>
@@ -221,9 +225,10 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
-<build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -278,5 +283,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	</project>
+
+</project>

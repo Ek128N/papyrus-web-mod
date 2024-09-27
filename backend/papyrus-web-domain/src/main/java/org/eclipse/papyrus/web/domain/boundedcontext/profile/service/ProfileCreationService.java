@@ -13,9 +13,12 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.domain.boundedcontext.profile.service;
 
+import java.util.UUID;
+
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileCreationService;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.stereotype.Service;
@@ -36,8 +39,12 @@ public class ProfileCreationService implements IProfileCreationService {
     }
 
     @Override
-    public IResult<ProfileResourceEntity> createProfile(ProfileResourceEntity profile) {
-        profile.setNew(this.profileRepository.findById(profile.getId()).isEmpty());
+    public IResult<ProfileResourceEntity> createProfile(ICause cause, UUID profileId, String content) {
+        ProfileResourceEntity profile = ProfileResourceEntity.newProfile()
+                .content(content)
+                .isNew(this.profileRepository.findById(profileId).isEmpty())
+                .id(profileId)
+                .build(cause);
 
         this.profileRepository.save(profile);
 

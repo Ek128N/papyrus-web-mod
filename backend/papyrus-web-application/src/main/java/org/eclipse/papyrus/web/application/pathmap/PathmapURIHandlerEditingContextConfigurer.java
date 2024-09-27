@@ -18,7 +18,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -33,15 +33,15 @@ import org.springframework.stereotype.Service;
 public class PathmapURIHandlerEditingContextConfigurer implements IEditingContextProcessor {
     private final IStaticPathmapResourceRegistry pathMapRegistry;
 
-    private final IProfileRepository profileRepository;
+    private final IProfileSeachService profileSearchService;
 
     private final IUMLProjectCheckerService umlChecker;
 
-    public PathmapURIHandlerEditingContextConfigurer(IStaticPathmapResourceRegistry pathMapRegistry, IProfileRepository profileRepository, IUMLProjectCheckerService umlChecker) {
+    public PathmapURIHandlerEditingContextConfigurer(IStaticPathmapResourceRegistry pathMapRegistry, IProfileSeachService profileSearchService, IUMLProjectCheckerService umlChecker) {
         super();
         this.umlChecker = Objects.requireNonNull(umlChecker);
         this.pathMapRegistry = Objects.requireNonNull(pathMapRegistry);
-        this.profileRepository = Objects.requireNonNull(profileRepository);
+        this.profileSearchService = Objects.requireNonNull(profileSearchService);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PathmapURIHandlerEditingContextConfigurer implements IEditingContex
         if (editingContext instanceof EditingContext swEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
             ResourceSet resourceSet = swEditingContext.getDomain().getResourceSet();
             // Plug special URIHandler that handle pathmap:// uris
-            resourceSet.getURIConverter().getURIHandlers().add(0, new PathmapURIHandler(this.pathMapRegistry, this.profileRepository));
+            resourceSet.getURIConverter().getURIHandlers().add(0, new PathmapURIHandler(this.pathMapRegistry, this.profileSearchService));
         }
 
     }

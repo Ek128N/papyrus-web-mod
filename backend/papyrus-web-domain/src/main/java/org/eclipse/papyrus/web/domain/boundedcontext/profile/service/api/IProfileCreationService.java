@@ -13,7 +13,10 @@
  *******************************************************************************/
 package org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api;
 
+import java.util.UUID;
+
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.services.IResult;
 
 /**
@@ -29,9 +32,13 @@ public interface IProfileCreationService {
      * <b> Be aware to set the flag {@link ProfileResourceEntity#isNew()} to <code>true</code> to create a new profile
      * or to <code>false</code> to update an existing one</b>
      *
-     * @param profile
-     *            a profile
+     * @param cause
+     *            cause of the creation
+     * @param profileId
+     *            id to use for this profile
+     * @param content
+     *            the profile content
      * @return the result
      */
-    IResult<ProfileResourceEntity> createProfile(ProfileResourceEntity profile);
+    IResult<ProfileResourceEntity> createProfile(ICause cause, UUID profileId, String content);
 }

@@ -16,6 +16,8 @@ package org.eclipse.papyrus.web.domain.boundedcontext.profile;
 import java.text.MessageFormat;
 import java.util.UUID;
 
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.events.ProfilePublishedEvent;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -68,5 +70,48 @@ public class ProfileResourceEntity extends AbstractValidatingAggregateRoot<Profi
     @Override
     public boolean isNew() {
         return this.isNew;
+    }
+
+    public static Builder newProfile() {
+        return new Builder();
+    }
+
+    /**
+     * Builder of ProfileResourceEntity.
+     */
+    @SuppressWarnings("checkstyle:HiddenField")
+    public static final class Builder {
+
+        private String content;
+
+        private UUID id;
+
+        private boolean isNew;
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder isNew(boolean isNew) {
+            this.isNew = isNew;
+            return this;
+        }
+
+        public ProfileResourceEntity build(ICause cause) {
+            var profile = new ProfileResourceEntity();
+            profile.content = this.content;
+            profile.id = this.id;
+            profile.isNew = this.isNew;
+
+            profile.registerEvent(new ProfilePublishedEvent(UUID.randomUUID(), cause, profile, this.isNew));
+
+            return profile;
+        }
     }
 }
