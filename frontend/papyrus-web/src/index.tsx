@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2024 CEA LIST, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import {
   footerExtensionPoint,
   navigationBarMenuIconExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { NodeTypeContribution, diagramPaletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import ReactDOM from 'react-dom';

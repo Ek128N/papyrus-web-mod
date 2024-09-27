@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Profile;
 import org.slf4j.Logger;
@@ -87,18 +88,18 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
         if (ProfileProjectTemplateProvider.PROFILE_WITH_PRIMITIVES_AND_UML_TEMPLATE_ID.equals(templateId)) {
-            result = this.initializeProfileWithPrimitivesAndUmlProjectContents(editingContext);
+            result = this.initializeProfileWithPrimitivesAndUmlProjectContents(editingContext, cause);
         }
         return result;
     }
 
-    private Optional<RepresentationMetadata> initializeProfileWithPrimitivesAndUmlProjectContents(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeProfileWithPrimitivesAndUmlProjectContents(IEditingContext editingContext, ICause cause) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, PROFILE_MODEL_TITLE, "DefaultProfileWithPrimitiveAndUml.uml");
-            return resource.flatMap(r -> this.createProfileDiagram(editingContext, r))//
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, PROFILE_MODEL_TITLE, "DefaultProfileWithPrimitiveAndUml.uml", cause);
+            return resource.flatMap(r -> this.createProfileDiagram(editingContext, r, cause))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
@@ -106,13 +107,13 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
         return Optional.empty();
     }
 
-    private Optional<? extends Diagram> createProfileDiagram(IEditingContext editingContext, Resource r) {
+    private Optional<? extends Diagram> createProfileDiagram(IEditingContext editingContext, Resource r, ICause cause) {
         Profile profile = (Profile) r.getContents().get(0);
 
         return this.diagramBuilderService
                 .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram")
                 .flatMap(diagram -> {
-                    this.representationPersistenceService.save(editingContext, diagram);
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
                     return Optional.of(diagram);
                 });
 

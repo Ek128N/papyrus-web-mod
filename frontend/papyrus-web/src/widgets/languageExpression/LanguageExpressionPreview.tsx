@@ -12,24 +12,24 @@
  *  Obeo - Initial API and implementation
  ***************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import ArrowForwardIosSharpIcon from '@material-ui/icons/ArrowForwardIosSharp';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useRef, useState } from 'react';
 import { GQLLanguageExpression } from './LanguageExpressionFragment.types';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 
-const Accordion = withStyles((theme) => ({
+const Accordion = withStyles(MuiAccordion, (theme) => ({
   root: {
     border: `1px solid ${theme.palette.divider}`,
     boxShadow: 'none',
@@ -44,9 +44,9 @@ const Accordion = withStyles((theme) => ({
     },
   },
   expanded: {},
-}))(MuiAccordion);
+}));
 
-const AccordionSummary = withStyles((theme) => ({
+const AccordionSummary = withStyles(MuiAccordionSummary, (theme) => ({
   root: {
     backgroundColor: 'rgba(0, 0, 0, .03)',
     borderBottom: '1px solid rgba(0, 0, 0, .125)',
@@ -71,16 +71,16 @@ const AccordionSummary = withStyles((theme) => ({
     },
   },
   expanded: {},
-}))(MuiAccordionSummary);
+}));
 
-const AccordionDetails = withStyles((theme) => ({
+const AccordionDetails = withStyles(MuiAccordionDetails, (theme) => ({
   root: {
     padding: theme.spacing(1),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
   },
-}))(MuiAccordionDetails);
+}));
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   style: {
     color: theme.palette.secondary.main,
   },
@@ -97,7 +97,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
 type PropertySectionComponentProps = WidgetProps<GQLLanguageExpression>;
 
 export const LanguageExpressionPreview = ({ widget }: PropertySectionComponentProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<boolean>(false);
 

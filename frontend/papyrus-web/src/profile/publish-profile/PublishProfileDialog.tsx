@@ -13,19 +13,19 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import Snackbar from '@mui/material/Snackbar';
+import { makeStyles } from 'tss-react/mui';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import {
   ErrorPayload,
@@ -62,7 +62,7 @@ const getProfileLastVersion = gql`
   }
 `;
 
-const usePublishProfileDialogStyles = makeStyles((theme) => ({
+const usePublishProfileDialogStyles = makeStyles()((theme) => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
@@ -90,7 +90,7 @@ const usePublishProfileDialogStyles = makeStyles((theme) => ({
 }));
 
 export const PublishProfileDialog = ({ editingContextId, item, onClose }: PublishProfileDialogProps) => {
-  const classes = usePublishProfileDialogStyles();
+  const { classes } = usePublishProfileDialogStyles();
 
   const [state, setState] = useState<PublishProfileDialogState>({
     customVersion: '0.0.0',

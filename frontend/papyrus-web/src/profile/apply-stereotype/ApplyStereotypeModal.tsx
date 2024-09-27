@@ -12,19 +12,20 @@
  *******************************************************************************/
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
 import { useMachine } from '@xstate/react';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import { makeStyles } from 'tss-react/mui';
+import CloseIcon from '@mui/icons-material/Close';
+import { StateMachine } from 'xstate';
 import { useEffect } from 'react';
 import {
   ApplyStereotypeModalProps,
@@ -44,6 +45,7 @@ import {
   SchemaValue,
   ShowToastEvent,
   applyStereotypeModalMachine,
+  ApplyStereotypeModalStateSchema,
 } from './ApplyStereotypeModalMachine';
 
 const applyStereotypeMutation = gql`
@@ -73,7 +75,7 @@ const getStereotypesQuery = gql`
   }
 `;
 
-const useApplyStereotypeModalStyles = makeStyles((theme) => ({
+const useApplyStereotypeModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -92,10 +94,11 @@ export const ApplyStereotypeModal = ({
   onAppliedStereotype,
   onClose,
 }: ApplyStereotypeModalProps) => {
-  const classes = useApplyStereotypeModalStyles();
-  const [{ value, context }, dispatch] = useMachine<ApplyStereotypeModalContext, ApplyStereotypeModalEvent>(
-    applyStereotypeModalMachine
-  );
+  const { classes } = useApplyStereotypeModalStyles();
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<ApplyStereotypeModalContext, ApplyStereotypeModalStateSchema, ApplyStereotypeModalEvent>>(
+      applyStereotypeModalMachine
+    );
   const { applyStereotypeModal, toast } = value as SchemaValue;
   const { selectedStereotypeId, stereotypes, message } = context;
 

@@ -31,6 +31,7 @@ import org.eclipse.papyrus.web.tools.test.SemanticDropTest;
 import org.eclipse.papyrus.web.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.tools.utils.ToolSections;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.uml2.uml.ActivityGroup;
 import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -60,9 +61,9 @@ public class ADSemanticDropTest extends SemanticDropTest {
 
     private static final EReference ACTIVITY_PARTITION = UML.getActivity_Partition();
 
-    private static final EReference ACTIVITY_GROUP = UML.getActivity_Group();
+    private static final EReference ACTIVITY_GROUP = UML.getActivity_OwnedGroup();
 
-    private static final EReference ACTIVITY_NODE = UML.getActivity_Node();
+    private static final EReference ACTIVITY_NODE = UML.getActivity_OwnedNode();
 
     private static final EReference ACTIVITY_PARTITION_SUB_PARTITION = UML.getActivityPartition_Subpartition();
 
@@ -561,7 +562,7 @@ public class ADSemanticDropTest extends SemanticDropTest {
             } else if (activityGroup instanceof InterruptibleActivityRegion interruptibleActivityRegion) {
                 interruptibleActivityRegion.getNodes().add(activityNode);
             }
-            this.persistenceService.persist(editingContext);
+            this.persistenceService.persist(new ICause.NoOp(), editingContext);
             this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
             this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
 
@@ -594,7 +595,7 @@ public class ADSemanticDropTest extends SemanticDropTest {
                 // to be drag & droppable
                 expansionNode.setRegionAsInput(expansionRegion);
             }
-            this.persistenceService.persist(editingContext);
+            this.persistenceService.persist(new ICause.NoOp(), editingContext);
             if (createdObject instanceof ExpansionNode && parentElement instanceof ExpansionRegion) {
                 this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
                 this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);

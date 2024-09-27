@@ -6,6 +6,10 @@ export default defineConfig(({ mode }) => ({
   build: {
     minify: mode !== 'development',
   },
+  // https://github.com/vitejs/vite/issues/12423#issuecomment-2080351394
+  optimizeDeps: {
+    include: ['@mui/material/Tooltip'],
+},
   test: {
     environment: 'jsdom',
     coverage: {

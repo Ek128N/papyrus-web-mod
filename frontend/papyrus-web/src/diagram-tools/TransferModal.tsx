@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,21 +11,21 @@
  *     Obeo - initial API and implementation
  *     CEA LIST - Copied from TranserModal.tsx at b975254b422a849f96b6fd56d7e9316d52b750e0. Adapted to show a FilterableSortableList on the left and right.
  *******************************************************************************/
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import React, { useState } from 'react';
 import { FilterableSortableList } from './FilterableSortableList';
 import { ItemWithIcon, TransferModalProps, TransferModalState } from './TransferModal.types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   dialogContent: {
     overflowX: 'hidden',
   },
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const TransferModal = ({ items, onClose }: TransferModalProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [state, setState] = useState<TransferModalState>({
     right: [],
     rightSelection: [],

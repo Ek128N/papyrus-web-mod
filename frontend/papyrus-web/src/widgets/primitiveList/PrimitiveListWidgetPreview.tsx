@@ -15,42 +15,44 @@
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { getTextDecorationLineValue, GQLList, ListStyleProps } from '@eclipse-sirius/sirius-components-forms';
-import { TextField } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
-import ImageIcon from '@material-ui/icons/Image';
+import { TextField } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { makeStyles } from 'tss-react/mui';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
+import ImageIcon from '@mui/icons-material/Image';
 import { useEffect, useRef, useState } from 'react';
 
-const useStyles = makeStyles<Theme, ListStyleProps>((theme) => ({
-  style: {
-    color: ({ color }) => (color ? color : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  icon: {
-    width: '16px',
-    height: '16px',
-    marginRight: theme.spacing(2),
-  },
-  selected: {
-    color: theme.palette.selected,
-  },
-  propertySectionLabel: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-}));
+const useStyles = makeStyles<ListStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    style: {
+      color: color ? color : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    icon: {
+      width: '16px',
+      height: '16px',
+      marginRight: theme.spacing(2),
+    },
+    selected: {
+      color: theme.palette.selected,
+    },
+    propertySectionLabel: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+  })
+);
 
 type PrimitiveListWidgetProps = WidgetProps<GQLList>;
 
@@ -63,7 +65,7 @@ export const PrimitiveListWidgetPreview = ({ widget }: PrimitiveListWidgetProps)
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyles(props);
+  const { classes } = useStyles(props);
 
   const [selected, setSelected] = useState<Boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -132,7 +134,7 @@ export const PrimitiveListWidgetPreview = ({ widget }: PrimitiveListWidgetProps)
             </TableCell>
           </TableRow>
           <TableRow key="Add">
-            <TableCell className={classes.cell}>
+            <TableCell>
               <TextField
                 id={'new-item-text-field' + widget.id}
                 label="New item"

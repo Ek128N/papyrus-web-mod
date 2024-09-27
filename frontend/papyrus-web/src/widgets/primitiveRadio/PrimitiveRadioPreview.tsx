@@ -14,14 +14,14 @@
 
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import { WidgetProps } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
-import { FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import HelpOutlineOutlined from '@material-ui/icons/HelpOutlineOutlined';
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
+import HelpOutlineOutlined from '@mui/icons-material/HelpOutlineOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { GQLPrimitiveRadio } from './PrimitiveRadioFragment.type';
 
-const useStyles = makeStyles<Theme>((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   style: {
     color: theme.palette.secondary.main,
   },
@@ -38,7 +38,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
 type PropertySectionComponentProps = WidgetProps<GQLPrimitiveRadio>;
 
 export const PrimitiveRadioPreview = ({ widget }: PropertySectionComponentProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [selected, setSelected] = useState<boolean>(false);
 
   const { selection } = useSelection();

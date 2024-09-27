@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -60,7 +61,7 @@ public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplat
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
         final Optional<RepresentationMetadata> repsentationMetadata;
         if (PapyrusStudioProjectTemplatesProvider.PAPYRUS_STUDIO_TEMPLATE_ID.equals(templateId)) {
             repsentationMetadata = this.initializePapyrusStudioProject(editingContext);

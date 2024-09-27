@@ -19,11 +19,15 @@ describe('Profile definition page test', () => {
     cy.deleteProjectByName(projectName);
     // create a new project with profile UML template
     const templateId = 'DefaultProfileWithPrimitiveAndUml';
-    cy.createProjectFromTemplate(templateId).then((res) => {
-      const projectId = res.body.data.createProjectFromTemplate.project.id;
-      const repToOpen = res.body.data.createProjectFromTemplate.representationToOpen.id;
-      cy.visit(`/projects/${projectId}/edit/${repToOpen}`);
-    });
+    cy.createProjectFromTemplate(templateId)
+      .then((res) => {
+        const projectId = res.body.data.createProjectFromTemplate.project.id;
+        const repToOpen = res.body.data.createProjectFromTemplate.representationToOpen.id;
+        cy.visit(`/projects/${projectId}/edit/${repToOpen}`);
+      })
+      .then(() => {
+        cy.expandAll('Profile.profile.uml');
+      });
   });
 
   afterEach(() => {

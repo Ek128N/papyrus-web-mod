@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Class;
@@ -104,20 +105,20 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
         if (UMLCppProjectTemplateProvider.UML_CPP_TEMPLATE_ID.equals(templateId)) {
-            result = this.initializeCppProjectContents(editingContext);
+            result = this.initializeCppProjectContents(editingContext, cause);
         } else if (UMLCppProjectTemplateProvider.UML_CPP_SM_TEMPLATE_ID.equals(templateId)) {
-            result = this.initializeCppSMProjectContents(editingContext);
+            result = this.initializeCppSMProjectContents(editingContext, cause);
         }
         return result;
     }
 
-    private Optional<RepresentationMetadata> initializeCppProjectContents(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeCppProjectContents(IEditingContext editingContext, ICause cause) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, CPP_TEMPLATE_FILE, CPP_TEMPLATE_FILE);
-            return resource.flatMap(r -> this.createMainCppClassDiagram(editingContext, r))//
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, CPP_TEMPLATE_FILE, CPP_TEMPLATE_FILE, cause);
+            return resource.flatMap(r -> this.createMainCppClassDiagram(editingContext, r, cause))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
@@ -125,14 +126,14 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         return Optional.empty();
     }
 
-    private Optional<Diagram> createMainCppClassDiagram(IEditingContext editingContext, Resource r) {
+    private Optional<Diagram> createMainCppClassDiagram(IEditingContext editingContext, Resource r, ICause cause) {
         Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
         return this.diagramBuilderService
                 .createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), r.getContents().get(0), "Main")
                 .flatMap(diagram -> this.semanticDropMainClassAndComment(editingContext, r, convertedNodes, diagram))//
                 .flatMap(diagram -> {
-                    this.representationPersistenceService.save(editingContext, diagram);
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
                     return Optional.of(diagram);
                 });
 
@@ -171,14 +172,14 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         return "CD_Class_Operations_CompartmentNode".equals(diagramNav.getDescription(v).get().getName());
     }
 
-    private Optional<RepresentationMetadata> initializeCppSMProjectContents(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeCppSMProjectContents(IEditingContext editingContext, ICause cause) {
         List<Diagram> diagrams = new ArrayList<>();
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, CPP_SM_TEMPLATE_FILE, CPP_SM_TEMPLATE_FILE);
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, CPP_SM_TEMPLATE_FILE, CPP_SM_TEMPLATE_FILE, cause);
 
             resource.ifPresent(r -> {
-                this.createMainCppSMClassDiagram(editingContext, r).ifPresent(diagrams::add);
-                EMFUtils.allContainedObjectOfType(r, StateMachine.class).forEach(stateMachine -> this.createStateMachineDiagram(stateMachine, editingContext).ifPresent(diagrams::add));
+                this.createMainCppSMClassDiagram(editingContext, r, cause).ifPresent(diagrams::add);
+                EMFUtils.allContainedObjectOfType(r, StateMachine.class).forEach(stateMachine -> this.createStateMachineDiagram(stateMachine, editingContext, cause).ifPresent(diagrams::add));
 
             });
         } catch (IOException e) {
@@ -191,7 +192,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         }
     }
 
-    private Optional<Diagram> createMainCppSMClassDiagram(IEditingContext editingContext, Resource r) {
+    private Optional<Diagram> createMainCppSMClassDiagram(IEditingContext editingContext, Resource r, ICause cause) {
 
         Optional<Diagram> optDiagram = this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()),
                 r.getContents().get(0), "SimpleSM_");
@@ -203,7 +204,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         return optDiagram.flatMap(diagram -> this.dropModelAndComment(editingContext, convertedNodes, model, diagram))
                 .flatMap(diagram -> this.dropMainClassAndComment(editingContext, convertedNodes, model, diagram))//
                 .flatMap(diagram -> {
-                    this.representationPersistenceService.save(editingContext, diagram);
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
                     return Optional.of(diagram);
                 });
 
@@ -233,7 +234,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
         });
     }
 
-    private Optional<Diagram> createStateMachineDiagram(StateMachine stateMachine, IEditingContext editingContext) {
+    private Optional<Diagram> createStateMachineDiagram(StateMachine stateMachine, IEditingContext editingContext, ICause cause) {
         Optional<Diagram> diag = this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> SMDDiagramDescriptionBuilder.SMD_REP_NAME.equals(diagramDescription.getLabel()),
                 stateMachine, "SM Diagram");
 
@@ -243,7 +244,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
                 .flatMap(diagram -> this.diagramBuilderService.updateDiagram(diagram, editingContext,
                         diagramContext -> this.fillStateMachineDiagram(stateMachine, editingContext, diagram, diagramContext)))
                 .flatMap(diagram -> {
-                    this.representationPersistenceService.save(editingContext, diagram);
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
                     return Optional.of(diagram);
                 });
     }

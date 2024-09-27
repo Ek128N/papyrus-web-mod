@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenc
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
@@ -72,20 +73,20 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
         if (UMLProjectTemplateProvider.UML_WITH_PRIMITIVES_TEMPLATE_ID.equals(templateId)) {
-            result = this.initializeUMLWithPrimitivesProjectContents(editingContext);
+            result = this.initializeUMLWithPrimitivesProjectContents(editingContext, cause);
         } else if (UMLProjectTemplateProvider.EMPTY_UML_TEMPLATE.equals(templateId)) {
             result = Optional.empty();
         }
         return result;
     }
 
-    private Optional<RepresentationMetadata> initializeUMLWithPrimitivesProjectContents(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeUMLWithPrimitivesProjectContents(IEditingContext editingContext, ICause cause) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml");
-            return resource.flatMap(r -> this.createPackageDiagram(editingContext, r))//
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml", cause);
+            return resource.flatMap(r -> this.createPackageDiagram(editingContext, r, cause))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
@@ -93,7 +94,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
         return Optional.empty();
     }
 
-    private Optional<? extends Diagram> createPackageDiagram(IEditingContext editingContext, Resource r) {
+    private Optional<? extends Diagram> createPackageDiagram(IEditingContext editingContext, Resource r, ICause cause) {
         Model model = (Model) r.getContents().get(0);
         Package primitiveTypePackage = model.getImportedPackages().get(0);
 
@@ -109,7 +110,7 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                     });
                 })//
                 .flatMap(diagram -> {
-                    this.representationPersistenceService.save(editingContext, diagram);
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
                     return Optional.of(diagram);
                 });
 

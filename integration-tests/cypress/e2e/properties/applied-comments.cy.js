@@ -31,7 +31,13 @@ describe('Applied Comments tests', () => {
     // set that Comment is annotating Class
     cy.getByTestId('Comment').should('be.visible').click();
     cy.getByTestId('Annotated element').find('.MuiAutocomplete-endAdornment').find('button').click();
-    cy.get('.MuiAutocomplete-popper').find('ul').find('li').contains('Class').should('be.visible').click();
+    cy.get('.MuiAutocomplete-popper')
+      .find('ul')
+      .find('li')
+      .contains('Class')
+      .scrollIntoView()
+      .should('be.visible')
+      .click();
     // check that class as the correct comment in appliedComment list
     cy.getByTestId('Class').should('be.visible').click();
     // wait the class is properly loaded
@@ -95,7 +101,7 @@ describe('Applied Comments tests', () => {
     cy.wait(500);
     cy.get('@dialog')
       .findByTestId('childCreationDescription')
-      .children('[role="button"]')
+      .children('[role="combobox"]')
       .contains('Comment (in ownedComment)')
       .click();
     cy.wait(500);

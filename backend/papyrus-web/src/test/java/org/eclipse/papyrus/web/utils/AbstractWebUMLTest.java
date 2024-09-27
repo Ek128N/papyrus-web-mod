@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
@@ -80,7 +81,7 @@ public class AbstractWebUMLTest {
 
     @BeforeEach
     public void before() {
-        Success<Project> project = (Success<Project>) this.projectCreationService.createProject(UUID.randomUUID().toString(), List.of(PapyrusUMLNatures.UML));
+        Success<Project> project = (Success<Project>) this.projectCreationService.createProject(new ICause.NoOp(), UUID.randomUUID().toString(), List.of(PapyrusUMLNatures.UML));
         this.editingContext = this.editingContextSearchService.findById(project.data().getId().toString()).get();
         this.editingDomain = ((IEMFEditingContext) this.editingContext).getDomain();
 

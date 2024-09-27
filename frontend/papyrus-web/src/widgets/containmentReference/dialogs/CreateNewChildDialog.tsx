@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -13,17 +13,18 @@
  ***************************************************************************/
 
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { Dialog, DialogContent, DialogContentText, DialogTitle, makeStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import { useContext, useState } from 'react';
 import { CreateNewChildDialogProps } from './CreateNewChildDialog.types';
+import { makeStyles } from 'tss-react/mui';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   dialogContent: {
     overflowX: 'hidden',
   },
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateNewChildDialog = ({ childTypes, onClose }: CreateNewChildDialogProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [selectedChildTypeId, setSelectedChildTypeId] = useState<string>(childTypes[0].id);
 

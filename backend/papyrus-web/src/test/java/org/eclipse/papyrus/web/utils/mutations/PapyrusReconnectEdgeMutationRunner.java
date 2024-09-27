@@ -20,7 +20,6 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ReconnectEdgeMutationRunner;
 import org.springframework.stereotype.Service;
@@ -86,7 +85,7 @@ public class PapyrusReconnectEdgeMutationRunner {
 
     public void reconnectEdge(String editingContext, String representationId, String edgeId, String newEdgeEndId, ReconnectEdgeKind reconnectEdgeKind) {
         ReconnectEdgeInput reconnectEdgeInput = new ReconnectEdgeInput(UUID.randomUUID(), editingContext.toString(), representationId.toString(), edgeId.toString(), newEdgeEndId.toString(),
-                reconnectEdgeKind, Position.at(0, 0));
+                reconnectEdgeKind);
         String jsonResult = this.runner.run(reconnectEdgeInput);
 
         String responseTypeName = JsonPath.read(jsonResult, "$.data.reconnectEdge.__typename");

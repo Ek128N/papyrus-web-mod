@@ -61,6 +61,7 @@ import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
@@ -947,7 +948,7 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
         EObject createdObject = (EObject) ((List<?>) updatedParentElement.eGet(containmentReference)).get(numberOfChildren);
         if (createdObject instanceof NamedElement namedElement) {
             namedElement.setName(name);
-            this.persistenceService.persist(editingContext);
+            this.persistenceService.persist(new ICause.NoOp(), editingContext);
         }
         return createdObject;
     }

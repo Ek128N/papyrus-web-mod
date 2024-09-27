@@ -32,6 +32,7 @@ describe('Stereotype application page tests', () => {
   });
 
   beforeEach(() => {
+    cy.visit('/projects');
     cy.visit(`/projects/${context.projectId}/edit`);
     cy.expandAll('model4test.uml');
     cy.getByTestId('Class').click();
@@ -39,6 +40,7 @@ describe('Stereotype application page tests', () => {
   });
 
   after(() => {
+    cy.visit('/projects');
     cy.deleteProjectByName(instanceProjectName);
     cy.deleteProjectByName(profileProjectName);
   });
@@ -231,7 +233,12 @@ describe('Stereotype application page tests', () => {
     cy.getByTestId('transfer-modal').should('be.visible').as('dialog');
     checkReferenceTransferModalRightContent(['UseCase1']);
     cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('model4test-toggle').should('be.visible').click();
-    cy.get('@dialog').findByTestId('tree-root-elements').findByTestId('UseCase2').should('be.visible').click();
+    cy.get('@dialog')
+      .findByTestId('tree-root-elements')
+      .findByTestId('UseCase2')
+      .scrollIntoView()
+      .should('be.visible')
+      .click();
     cy.get('@dialog')
       .findByTestId('tree-root-elements')
       .findByTestId('UseCase2')

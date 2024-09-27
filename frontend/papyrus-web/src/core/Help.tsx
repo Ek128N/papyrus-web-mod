@@ -10,13 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import { emphasize, makeStyles } from '@material-ui/core/styles';
-import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import { emphasize } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
+import HelpIcon from '@mui/icons-material/Help';
 import { httpOrigin } from '../core/URL';
 
-const useHelpStyle = makeStyles((theme) => ({
+const useHelpStyle = makeStyles()((theme) => ({
   onDarkBackground: {
     '&:hover': {
       backgroundColor: emphasize(theme.palette.secondary.main, 0.08),
@@ -25,7 +26,7 @@ const useHelpStyle = makeStyles((theme) => ({
 }));
 
 export const Help = () => {
-  const classes = useHelpStyle();
+  const { classes } = useHelpStyle();
   return (
     <Link
       href={`${httpOrigin}/doc/index.html`}

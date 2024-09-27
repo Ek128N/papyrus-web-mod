@@ -26,11 +26,11 @@ import {
   GQLReferenceWidgetStyle,
   GQLSuccessPayload,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import { Typography } from '@material-ui/core';
-import Chip from '@material-ui/core/Chip';
-import IconButton from '@material-ui/core/IconButton';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
+import { Typography } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
 import {
   ContainmentReferenceDialogKind,
@@ -54,26 +54,28 @@ import CreateNewChildDialog from './dialogs/CreateNewChildDialog';
 import { ChildCreationDescription } from './dialogs/CreateNewChildDialog.types';
 import ReorderItemsDialog from '../dialogs/ReorderItemsDialog';
 
-const useStyles = makeStyles<Theme, GQLReferenceWidgetStyle>((theme) => ({
-  labelItemStyle: {
-    color: ({ color }) => (color ? getCSSColor(color, theme) : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-  },
-  chip: {
-    margin: '3px',
-  },
-  toolbar: {
-    marginLeft: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  empty: {
-    color: '#B3BFC5',
-  },
-}));
+const useStyles = makeStyles<GQLReferenceWidgetStyle>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    labelItemStyle: {
+      color: color ? getCSSColor(color, theme) : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+    },
+    chip: {
+      margin: '3px',
+    },
+    toolbar: {
+      marginLeft: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    empty: {
+      color: '#B3BFC5',
+    },
+  })
+);
 
 export const clickContainmentReferenceItemMutation = gql`
   mutation clickContainmentReferenceItem($input: ClickContainmentReferenceItemInput!) {
@@ -204,7 +206,7 @@ const ContainmentReferenceSection = ({
     underline: widget.style?.underline ?? null,
     strikeThrough: widget.style?.strikeThrough ?? null,
   };
-  const classes = useStyles(styleProps);
+  const { classes } = useStyles(styleProps);
 
   const [openDialog, setOpenDialog] = useState<ContainmentReferenceDialogKind | null>(null);
   const [childTypes, setChildTypes] = useState<ChildCreationDescription[]>([]);

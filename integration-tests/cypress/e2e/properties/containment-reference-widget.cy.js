@@ -97,9 +97,9 @@ describe('Containment reference widget tests', () => {
     // create a Central Buffer node under Activity node
     cy.getByTestId('Activity-more').should('be.visible').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('new-object').click();
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
-    cy.get('li[data-value="Node | Central Buffer Node"]').should('exist').click();
+    cy.get('span:contains("Node | Central Buffer Node")').should('exist').click();
     cy.getByTestId('create-object').click();
     // check central buffer node is there
     cy.checkChildren('Activity', ['CentralBufferNode']);

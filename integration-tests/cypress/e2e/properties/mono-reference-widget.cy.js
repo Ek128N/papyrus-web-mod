@@ -60,7 +60,7 @@ describe('Mono-valued reference widget tests', () => {
       .find('ul')
       .find('ul')
       .children()
-      .should('have.length', 2)
+      .should('have.length', 3)
       .findByTestId('Operation2')
       .click();
     // close the dialog
@@ -82,7 +82,7 @@ describe('Mono-valued reference widget tests', () => {
     cy.get('@dialog').findByTestId('Activity').should('be.visible').click();
     cy.get('@dialog')
       .findByTestId('childCreationDescription')
-      .children('[role="button"]')
+      .children('[role="combobox"]')
       .contains('Operation (in ownedOperation)')
       .click();
     cy.get('[data-value="ownedReception::Reception"]').should('be.visible').click();

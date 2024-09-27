@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import {
   useRefreshConnectionHandles,
   useConnectorNodeStyle,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Theme, useTheme } from '@material-ui/core/styles';
+import { Theme, useTheme } from '@mui/material/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
 import { EllipseNodeData } from './EllipseNode.types';

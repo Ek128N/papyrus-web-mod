@@ -30,7 +30,6 @@ import org.eclipse.papyrus.web.utils.mutations.PapyrusCreateProjectMutationRunne
 import org.eclipse.papyrus.web.utils.mutations.PapyrusCreateRepresentationMutationRunner;
 import org.eclipse.papyrus.web.utils.mutations.PapyrusCreateRootObjectCreateMutationRunner;
 import org.eclipse.sirius.components.collaborative.editingcontext.EditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.forms.api.FormConfiguration;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -107,10 +106,9 @@ public class PrimitiveListWidgetIntegrationTests extends AbstractWebUMLTest {
     @Test
     @DisplayName("Can instanciate a View-based FormDescription which uses the Primitive List custom widget")
     public void simpleFormWithPrimitiveList() {
-        var configuration = new FormConfiguration(this.representationId.toString());
         var input = new FormEventInput(UUID.randomUUID(), this.projectId, this.representationId);
 
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId, configuration, input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId, this.representationId.toString(), input);
         Predicate<IPayload> isFormWithPrimitiveListRefreshedEventPayload = payload -> {
             if (payload instanceof FormRefreshedEventPayload formRefreshedEventPayload) {
                 return this.checkEvent(formRefreshedEventPayload);

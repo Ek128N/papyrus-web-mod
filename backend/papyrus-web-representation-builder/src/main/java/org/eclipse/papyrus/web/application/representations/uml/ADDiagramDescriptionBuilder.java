@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -582,7 +583,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         EClass activityPartitionEClass = this.umlPackage.getActivityPartition();
         InsideLabelStyle labelStyle = this.getViewBuilder().createDefaultInsideLabelStyleIcon();
         labelStyle.setWithHeader(true);
-        labelStyle.setDisplayHeaderSeparator(true);
+        labelStyle.setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS);
         NodeDescription adActivityPartitionSharedNodeDescription = this.newNodeBuilder(activityPartitionEClass, rectangularNodeStyle) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(activityPartitionEClass, SHARED_SUFFIX)) //
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription()) //

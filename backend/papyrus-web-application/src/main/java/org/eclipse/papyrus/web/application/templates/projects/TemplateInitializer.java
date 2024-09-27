@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
@@ -65,11 +66,13 @@ public class TemplateInitializer {
      *            the name of the resource
      * @param filePath
      *            the path of the file in the jar
+     * @param cause
+     *            the cause
      * @return a optional resource.
      * @throws IOException
      *             if something goes wrong while reading the file
      */
-    public Optional<Resource> initializeResourceFromClasspathFile(IEditingContext editingContext, String newResourceName, String filePath) throws IOException {
+    public Optional<Resource> initializeResourceFromClasspathFile(IEditingContext editingContext, String newResourceName, String filePath, ICause cause) throws IOException {
         Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
@@ -95,7 +98,7 @@ public class TemplateInitializer {
             });
             try (var inputStream = new ByteArrayInputStream(jsonContents.getBytes())) {
                 resource.load(inputStream, null);
-                this.semanticDataUpdateService.updateDocuments(AggregateReference.to(editingContextUUID), Collections.singleton(document), resourceSet.getPackageRegistry().keySet());
+                this.semanticDataUpdateService.updateDocuments(cause, AggregateReference.to(editingContextUUID), Collections.singleton(document), resourceSet.getPackageRegistry().keySet());
                 return Optional.of(resource);
             }
 

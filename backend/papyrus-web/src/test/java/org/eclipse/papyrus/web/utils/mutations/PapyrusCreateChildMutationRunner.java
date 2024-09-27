@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -74,11 +73,9 @@ public class PapyrusCreateChildMutationRunner {
      *            the type of the element to create
      */
     public void createChild(String projectId, String parentElementId, EReference containmentReference, EClass childType) {
-        // Build the childCreationDescriptionId with the following pattern: referenceName | type. This pattern is
+        // Build the childCreationDescriptionId with the following pattern: referenceName - type. This pattern is
         // required by the backend.
-        String referenceName = this.findWordsInMixedCase(containmentReference.getName()).stream().map(n -> n.substring(0, 1).toUpperCase() + n.substring(1)).collect(Collectors.joining(" "));
-        String childTypeName = this.findWordsInMixedCase(childType.getName()).stream().map(n -> n.substring(0, 1).toUpperCase() + n.substring(1)).collect(Collectors.joining(" "));
-        String childCreationDescriptionId = referenceName + " | " + childTypeName;
+        String childCreationDescriptionId = containmentReference.getName() + "-" + childType.getName();
         CreateChildInput createChildInput = new CreateChildInput(UUID.randomUUID(), projectId, parentElementId, childCreationDescriptionId);
 
         String jsonResult = this.runner.run(createChildInput);

@@ -12,19 +12,20 @@
  *  Obeo - Initial API and implementation
  ***************************************************************************/
 
-import { Dialog, DialogContent, DialogContentText, DialogTitle, makeStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DragHandleIcon from '@material-ui/icons/DragHandle';
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { useState } from 'react';
 import { ReorderItemsDialogProps, ReorderItemsDialogState } from './ReorderItemsDialog.types';
 import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
   dialogContent: {
     overflowX: 'hidden',
   },
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ReorderItemsDialog = ({ items, onClose, moveElement }: ReorderItemsDialogProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [state, setState] = useState<ReorderItemsDialogState>({
     draggingItemId: undefined,
     draggingStartIndex: -1,

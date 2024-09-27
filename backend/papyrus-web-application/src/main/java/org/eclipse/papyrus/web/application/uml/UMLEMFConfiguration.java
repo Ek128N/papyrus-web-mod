@@ -42,8 +42,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UMLEMFConfiguration {
 
-    private static final String PROTOCOL_PATHMAP = "pathmap";
-
     @Bean
     public AdapterFactory umlAdapterFactory() {
         return new UMLItemProviderAdapterFactory();
@@ -89,7 +87,7 @@ public class UMLEMFConfiguration {
 
         // Add pathmap scheme factory
         Resource.Factory pathmapFactory = new PathmapResourceFactory(pathmapResourceRegistry, globalFactoryRegistryInstance, profileRepository);
-        factoryRegistry.getProtocolToFactoryMap().put(PROTOCOL_PATHMAP, pathmapFactory);
+        factoryRegistry.getProtocolToFactoryMap().put(IStaticPathmapResourceRegistry.PROTOCOL_PATHMAP, pathmapFactory);
 
         // Add factory associated to uml extension
         factoryRegistry.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, new UMLResourceFactoryImpl());

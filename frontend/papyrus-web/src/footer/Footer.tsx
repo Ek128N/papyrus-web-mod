@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Link from '@mui/material/Link';
+import { makeStyles } from 'tss-react/mui';
+import Typography from '@mui/material/Typography';
 
-const useFooterStyles = makeStyles((theme) => ({
+const useFooterStyles = makeStyles()((theme) => ({
   footer: {
     display: 'flex',
     justifyContent: 'center',
@@ -27,10 +27,10 @@ const useFooterStyles = makeStyles((theme) => ({
 }));
 
 export const Footer = () => {
-  const classes = useFooterStyles();
+  const { classes } = useFooterStyles();
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">&copy; {new Date().getFullYear()} CEA LIST, Obeo. Powered by </Typography>
+      <Typography variant="caption">&copy; {new Date().getFullYear()} CEA LIST, Obeo. Powered by&nbsp;</Typography>
       <Link
         variant="caption"
         href="https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web"

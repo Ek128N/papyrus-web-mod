@@ -49,9 +49,7 @@ import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
@@ -279,11 +277,8 @@ public class ViewHelper implements IViewHelper {
                 .insideLabel(insideLabel)//
                 .style(nodeStyle)//
                 .childrenLayoutStrategy(new FreeFormLayoutStrategy())//
-                .position(Position.UNDEFINED)//
-                .size(Size.UNDEFINED)//
                 .borderNodes(List.of())//
                 .childNodes(List.of())//
-                .customizedProperties(Set.of())//
                 .build();
     }
 

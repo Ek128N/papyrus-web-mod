@@ -11,20 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import { makeStyles } from 'tss-react/mui';
+import CloseIcon from '@mui/icons-material/Close';
 import { useMachine } from '@xstate/react';
 import { useEffect } from 'react';
+import { StateMachine } from 'xstate';
 import {
   ApplyProfileModalProps,
   GQLApplyProfileMutationData,
@@ -44,6 +45,7 @@ import {
   SchemaValue,
   ShowToastEvent,
   applyProfileModalMachine,
+  ApplyProfileModalStateSchema,
 } from './ApplyProfileModalMachine';
 
 const applyProfileMutation = gql`
@@ -71,7 +73,7 @@ const getUMLProfileMetadatasQuery = gql`
   }
 `;
 
-const useApplyProfileModalStyles = makeStyles((theme) => ({
+const useApplyProfileModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -85,10 +87,11 @@ const isErrorPayload = (payload: GQLApplyProfilePayload): payload is GQLErrorPay
   payload.__typename === 'ErrorPayload';
 
 export const ApplyProfileModal = ({ editingContextId, item, onAppliedProfile, onClose }: ApplyProfileModalProps) => {
-  const classes = useApplyProfileModalStyles();
-  const [{ value, context }, dispatch] = useMachine<ApplyProfileModalContext, ApplyProfileModalEvent>(
-    applyProfileModalMachine
-  );
+  const { classes } = useApplyProfileModalStyles();
+  const [{ value, context }, dispatch] =
+    useMachine<StateMachine<ApplyProfileModalContext, ApplyProfileModalStateSchema, ApplyProfileModalEvent>>(
+      applyProfileModalMachine
+    );
   const { applyProfileModal, toast } = value as SchemaValue;
   const { selectedProfileId, profiles, message } = context;
 

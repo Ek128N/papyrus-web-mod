@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2022, 2024 CEA LIST, Obeo.
  *
- * All rights reserved. This program and the accompanying materials
+ * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -26,9 +26,6 @@ import org.springframework.core.io.ClassPathResource;
  * @author lfasani
  */
 public class StaticPathmapResourceRegistry implements IStaticPathmapResourceRegistry {
-    private static final String PROTOCOL_PATHMAP = "pathmap";
-
-    private static final String PREFIX = PROTOCOL_PATHMAP + "://";
 
     private final Map<URI, ClassPathResource> resourceUriToClassPath = new LinkedHashMap<>();
 

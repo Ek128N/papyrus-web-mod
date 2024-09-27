@@ -100,7 +100,7 @@ describe('Multi-valued reference widget tests', () => {
     cy.get('@dialog').findByTestId('Activity').should('be.visible').click();
     cy.get('@dialog')
       .findByTestId('childCreationDescription')
-      .children('[role="button"]')
+      .children('[role="combobox"]')
       .contains('UseCase (in nestedClassifier)')
       .click();
     cy.get('[data-value="ownedUseCase::UseCase"]').should('be.visible').click();

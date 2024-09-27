@@ -106,7 +106,7 @@ Cypress.Commands.add('createTestProject', (context, projectName, elementToSelect
           cy.getByTestId('upload-document-submit').should('be.visible').should('not.be.disabled').click();
           cy.getByTestId('upload-document-close').should('be.visible').should('not.be.disabled').click();
           cy.expandAll('model4test.uml');
-
+		  
           if (elementToSelect) {
             cy.getByTestId(elementToSelect).should('exist').click();
             if (tabToSelect) {
@@ -153,6 +153,7 @@ Cypress.Commands.add('createTestProfileProject', (context, projectName, profileN
             .should('exist')
             .clear()
             .type(profileName + '.profile.uml');
+
 
           cy.expandAll('DynamicProfileTypeTests.profile.uml');
 

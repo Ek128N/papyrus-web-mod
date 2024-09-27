@@ -14,20 +14,20 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { IconOverlay, ServerContext, ServerContextValue, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { GQLListItem, PropertySectionLabel, getTextDecorationLineValue } from '@eclipse-sirius/sirius-components-forms';
-import { Input, InputAdornment } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TextField from '@material-ui/core/TextField';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import BubbleChartIcon from '@material-ui/icons/BubbleChart';
+import { Input, InputAdornment } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TextField from '@mui/material/TextField';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 import { MouseEvent, useContext, useEffect, useState } from 'react';
 import {
   GQLActionPrimitiveListItemMutationData,
@@ -53,7 +53,7 @@ import {
   PrimitiveListStyleProps,
 } from './PrimitiveListWidgetPropertySection.types';
 
-import { Autocomplete } from '@material-ui/lab';
+import Autocomplete from '@mui/material/Autocomplete';
 import ReorderIcon from '../containmentReference/ReorderIcon';
 import ReorderItemsDialog from '../dialogs/ReorderItemsDialog';
 
@@ -160,35 +160,37 @@ const isFormDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLFormDescription => representationDescription.__typename === 'FormDescription';
 
-const usePrimitiveListPropertySectionStyles = makeStyles<Theme, PrimitiveListStyleProps>((theme) => ({
-  cell: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  canBeSelectedItem: {
-    '&:hover': {
-      textDecoration: 'underline',
-      cursor: 'pointer',
+const usePrimitiveListPropertySectionStyles = makeStyles<PrimitiveListStyleProps>()(
+  (theme, { color, fontSize, italic, bold, underline, strikeThrough }) => ({
+    cell: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
     },
-  },
-  style: {
-    color: ({ color }) => (color ? color : null),
-    fontSize: ({ fontSize }) => (fontSize ? fontSize : null),
-    fontStyle: ({ italic }) => (italic ? 'italic' : null),
-    fontWeight: ({ bold }) => (bold ? 'bold' : null),
-    textDecorationLine: ({ underline, strikeThrough }) => getTextDecorationLineValue(underline, strikeThrough),
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    flexGrow: 1,
-  },
-  autocomplete: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-}));
+    canBeSelectedItem: {
+      '&:hover': {
+        textDecoration: 'underline',
+        cursor: 'pointer',
+      },
+    },
+    style: {
+      color: color ? color : null,
+      fontSize: fontSize ? fontSize : null,
+      fontStyle: italic ? 'italic' : null,
+      fontWeight: bold ? 'bold' : null,
+      textDecorationLine: getTextDecorationLineValue(underline, strikeThrough),
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      flexGrow: 1,
+    },
+    autocomplete: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+  })
+);
 
 const NONE_WIDGET_ITEM_ID = 'none';
 
@@ -225,7 +227,7 @@ export const PrimitiveListSection = ({
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
   const [newValue, setNewValue] = useState<GQLPrimitiveListCandidate | null>(null);
   const [openReorderDialog, setOpenReorderDialog] = useState<boolean>(false);
-  const classes = usePrimitiveListPropertySectionStyles(props);
+  const { classes } = usePrimitiveListPropertySectionStyles(props);
   const [autocompleteState, setAutocompleteState] = useState<PrimitiveListAutocompleteState>({
     open: false,
     candidates: null,
@@ -510,7 +512,7 @@ export const PrimitiveListSection = ({
         loading={loading}
         options={autocompleteState.candidates || []}
         getOptionLabel={(option: GQLPrimitiveListCandidate) => option.label}
-        getOptionSelected={(option: GQLPrimitiveListCandidate, value: GQLPrimitiveListCandidate) =>
+        isOptionEqualToValue={(option: GQLPrimitiveListCandidate, value: GQLPrimitiveListCandidate) =>
           option.value === value.value
         }
         clearOnEscape

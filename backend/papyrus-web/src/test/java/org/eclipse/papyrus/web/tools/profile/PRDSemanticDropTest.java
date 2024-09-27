@@ -35,6 +35,7 @@ import org.eclipse.papyrus.web.tools.test.SemanticDropTest;
 import org.eclipse.papyrus.web.tools.utils.CreationTool;
 import org.eclipse.papyrus.web.tools.utils.ToolSections;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.ElementImport;
@@ -179,7 +180,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         elementToDrop = (ElementImport) optObject.get();
         Class testMetaclass = this.getTestMetaclass(editingContext);
         elementToDrop.setImportedElement(testMetaclass);
-        this.persistenceService.persist(editingContext);
+        this.persistenceService.persist(new ICause.NoOp(), editingContext);
 
         // Dispose the editing context event processor to force a reload of the persisted editing context.
         // This implies to re-create the event subscription runner, which has been deleted when disposing the editing
@@ -246,7 +247,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         elementToDrop = (ElementImport) optObject.get();
         Class testMetaclass = this.getTestMetaclass(editingContext);
         elementToDrop.setImportedElement(testMetaclass);
-        this.persistenceService.persist(editingContext);
+        this.persistenceService.persist(new ICause.NoOp(), editingContext);
 
         // Dispose the editing context event processor to force a reload of the persisted editing context.
         // This implies to re-create the event subscription runner, which has been deleted when disposing the editing

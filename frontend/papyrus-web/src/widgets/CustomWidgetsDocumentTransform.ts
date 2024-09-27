@@ -12,26 +12,20 @@
  *******************************************************************************/
 
 import { DocumentTransform } from '@apollo/client';
-import { DocumentNode, FieldNode, InlineFragmentNode, Kind, SelectionNode, visit, FragmentSpreadNode } from 'graphql';
+import { DocumentNode, FragmentDefinitionNode, InlineFragmentNode, Kind, SelectionNode, visit } from 'graphql';
 
 const shouldTransform = (document: DocumentNode) => {
-  return (
-    document.definitions[0] &&
-    document.definitions[0].kind === Kind.OPERATION_DEFINITION &&
-    (document.definitions[0].name?.value === 'detailsEvent' || document.definitions[0].name?.value === 'formEvent')
+  return document.definitions.some(
+    (definition) =>
+      definition.kind === Kind.OPERATION_DEFINITION &&
+      (definition.name?.value === 'detailsEvent' ||
+        definition.name?.value === 'formEvent' ||
+        definition.name?.value === 'formDescriptionEditorEvent')
   );
 };
 
-const isWidgetFragment = (field: FieldNode) => {
-  if (field.name.value === 'widgets' || field.name.value === 'children') {
-    const fragmentSpreads = field.selectionSet.selections
-      .filter((selection) => selection.kind === Kind.FRAGMENT_SPREAD)
-      .map((fragmentSpread: FragmentSpreadNode) => fragmentSpread.name.value);
-    if (fragmentSpreads.includes('widgetFields')) {
-      return true;
-    }
-  }
-  return false;
+const isWidgetFragmentDefinition = (node: FragmentDefinitionNode) => {
+  return node.name.value === 'widgetFields';
 };
 
 const fieldBuilder = (label: string): SelectionNode => {
@@ -70,11 +64,10 @@ const styleField: SelectionNode = structuredFieldBuilder('style', [
 export const customWidgetsDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     return visit(document, {
-      Field(field) {
-        if (!isWidgetFragment(field)) {
+      FragmentDefinition(node) {
+        if (!isWidgetFragmentDefinition(node)) {
           return undefined;
         }
-        const selections = field.selectionSet?.selections ?? [];
 
         const referenceWidgetInlineFragment: InlineFragmentNode = {
           kind: Kind.INLINE_FRAGMENT,
@@ -217,11 +210,11 @@ export const customWidgetsDocumentTransform = new DocumentTransform((document) =
         };
 
         return {
-          ...field,
+          ...node,
           selectionSet: {
-            ...field.selectionSet,
+            ...node.selectionSet,
             selections: [
-              ...selections,
+              ...node.selectionSet.selections,
               containmentReferenceWidgetInlineFragment,
               primitiveListInlineFragment,
               languageExpressionInlineFragment,

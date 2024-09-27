@@ -23,6 +23,10 @@ import org.springframework.core.io.ClassPathResource;
  */
 public interface IStaticPathmapResourceRegistry {
 
+    String PROTOCOL_PATHMAP = "pathmap";
+
+    String PREFIX = PROTOCOL_PATHMAP + "://";
+
     /**
      * Returns a {@link ClassPathResource} that allows to retrieve the resource of the given {@link URI}.
      */

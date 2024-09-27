@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *     CEA LIST - Copied from FilterableSortableList.tsx at 10f4e6386bb9eeb3839071e9cdd4d1ceb8efcb39. Adapted to contain metaclasses.
  *******************************************************************************/
-import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { splitText } from '@eclipse-sirius/sirius-components-trees';
-import { ListItemIcon } from '@material-ui/core';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { ServerContext, ServerContextValue, splitText } from '@eclipse-sirius/sirius-components-core';
+import { ListItemIcon } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { useContext, useState } from 'react';
 import {
   FilterableSortableListProps,
@@ -27,7 +27,7 @@ import {
 } from './FilterableSortableList.types';
 import { ModelBrowserFilterBar } from './ModelBrowserFilterBar';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   selectable: {
     cursor: 'pointer',
     '&:hover': {
@@ -54,14 +54,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'auto',
   },
 }));
-const useLabelStyles = makeStyles((theme: Theme) => ({
+const useLabelStyles = makeStyles()((theme: Theme) => ({
   highlight: {
     backgroundColor: theme.palette.navigation.leftBackground,
   },
 }));
 
 const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => {
-  const classes = useLabelStyles();
+  const { classes } = useLabelStyles();
   let itemLabel: JSX.Element;
   const splitLabelWithTextToHighlight: string[] = splitText(label, textToHighlight);
   if (
@@ -99,7 +99,7 @@ export const FilterableSortableList = ({
   selectedItems,
   onFocusFilter,
 }: FilterableSortableListProps) => {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [state, setState] = useState<FilterableSortableListState>({
     filterBarText: '',
     hoveringItemId: undefined,

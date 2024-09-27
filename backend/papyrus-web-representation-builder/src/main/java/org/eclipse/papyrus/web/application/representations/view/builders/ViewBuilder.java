@@ -56,6 +56,7 @@ import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -503,6 +504,7 @@ public class ViewBuilder {
     private void defaultInitStyle(NodeStyleDescription nodeStyle) {
         nodeStyle.setBorderColor(this.styleProvider.getBorderNodeColor());
         nodeStyle.setBorderRadius(this.styleProvider.getNodeBorderRadius());
+        nodeStyle.setBorderSize(1);
     }
 
     private RectangularNodeStyleDescription createDefaultRectangularNodeStyle() {
@@ -592,7 +594,7 @@ public class ViewBuilder {
         NodeDescription result = this.createNodeDescription(this.idBuilder.getSpecializedDomainNodeName(domain, specialization), domain, semanticCandidateExpression,
                 this.createRectangularNodeStyle(), SynchronizationPolicy.UNSYNCHRONIZED);
         result.getInsideLabel().getStyle().setWithHeader(true);
-        result.getInsideLabel().getStyle().setDisplayHeaderSeparator(true);
+        result.getInsideLabel().getStyle().setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS);
         this.addDefaultDeleteTool(result);
         this.addDirectEditTool(result);
         return result;
@@ -657,7 +659,7 @@ public class ViewBuilder {
         style.setShowIconExpression("aql:" + showIcon);
         style.setBorderSize(0);
         style.setWithHeader(isHeader);
-        style.setDisplayHeaderSeparator(isHeader);
+        style.setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS);
         return style;
     }
 

@@ -14,28 +14,29 @@
 
 import { PropertySectionComponentProps, PropertySectionLabel } from '@eclipse-sirius/sirius-components-forms';
 
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import ArrowForwardIosSharpIcon from '@material-ui/icons/ArrowForwardIosSharp';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import DeleteIcon from '@material-ui/icons/Delete';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import AddIcon from '@mui/icons-material/Add';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
@@ -59,7 +60,7 @@ import {
   GQLSuccessPayload,
 } from './LanguageExpressionFragment.types';
 
-const Accordion = withStyles((theme) => ({
+const Accordion = withStyles(MuiAccordion, (theme) => ({
   root: {
     border: `1px solid ${theme.palette.divider}`,
     boxShadow: 'none',
@@ -74,9 +75,9 @@ const Accordion = withStyles((theme) => ({
     },
   },
   expanded: {},
-}))(MuiAccordion);
+}));
 
-const AccordionSummary = withStyles((theme) => ({
+const AccordionSummary = withStyles(MuiAccordionSummary, (theme) => ({
   root: {
     backgroundColor: 'rgba(0, 0, 0, .03)',
     borderBottom: '1px solid rgba(0, 0, 0, .125)',
@@ -101,16 +102,16 @@ const AccordionSummary = withStyles((theme) => ({
     },
   },
   expanded: {},
-}))(MuiAccordionSummary);
+}));
 
-const AccordionDetails = withStyles((theme) => ({
+const AccordionDetails = withStyles(MuiAccordionDetails, (theme) => ({
   root: {
     padding: theme.spacing(1),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
   },
-}))(MuiAccordionDetails);
+}));
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles()(() => ({
   paper: {
     minWidth: '450px',
   },
@@ -202,7 +203,7 @@ export const LanguageExpressionSection = ({
   readOnly,
 }: PropertySectionComponentProps<GQLLanguageExpression>) => {
   const { addErrorMessage, addMessages } = useMultiToast();
-  const classes = useStyles();
+  const { classes } = useStyles();
   const theme = useTheme();
   const [expanded, setExpanded] = useState<string | false>(false);
   const [addLanguageDialogOpen, setAddLanguageDialogOpen] = useState(false);

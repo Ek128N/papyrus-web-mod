@@ -24,6 +24,7 @@ import org.eclipse.papyrus.web.tools.checker.Checker;
 import org.eclipse.papyrus.web.tools.checker.EdgeTargetGraphicalChecker;
 import org.eclipse.papyrus.web.tools.test.ReconnectEdgeTargetTest;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.uml2.uml.ObjectNode;
 import org.junit.jupiter.api.AfterEach;
@@ -141,7 +142,7 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
             ObjectNode objectNode = (ObjectNode) this.getObjectService().getObject(editingContext, semanticTargetId).get();
             objectNode.setIsControlType(true);
         }
-        this.persistenceService.persist(editingContext);
+        this.persistenceService.persist(new ICause.NoOp(), editingContext);
         this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
         this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
     }

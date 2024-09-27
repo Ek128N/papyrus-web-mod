@@ -108,7 +108,7 @@ describe('Stereotype application page tests', () => {
       cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-author').find('input').type('Jerome');
       cy.getByTestId('publish-profile-publish').should('not.have.class', 'Mui-disabled').should('be.visible').click();
 
-      cy.get('a[title="Back to the homepage"]').should('be.visible').click();
+      cy.get('img[alt="Back to the homepage"]').should('be.visible').click();
       // We need to wait 7 sec to be sure that the ResourceSet of the first project is unloaded
       cy.wait(7000);
     });

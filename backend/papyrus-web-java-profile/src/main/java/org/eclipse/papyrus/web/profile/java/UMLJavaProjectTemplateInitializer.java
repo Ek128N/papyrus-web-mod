@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Class;
@@ -87,18 +88,18 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
         if (UMLJavaTemplateProvider.UML_JAVA_TEMPLATE_ID.equals(templateId)) {
-            result = this.initializeUMLJavaProjectContents(editingContext);
+            result = this.initializeUMLJavaProjectContents(editingContext, cause);
         }
         return result;
     }
 
-    private Optional<RepresentationMetadata> initializeUMLJavaProjectContents(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeUMLJavaProjectContents(IEditingContext editingContext, ICause cause) {
         try {
-            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "JavaTemplate.uml");
-            return resource.flatMap(r -> this.createMainClassDiagram(editingContext, r))//
+            Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "JavaTemplate.uml", cause);
+            return resource.flatMap(r -> this.createMainClassDiagram(editingContext, r, cause))//
                     .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
@@ -106,14 +107,14 @@ public class UMLJavaProjectTemplateInitializer implements IProjectTemplateInitia
         return Optional.empty();
     }
 
-    private Optional<Diagram> createMainClassDiagram(IEditingContext editingContext, Resource r) {
+    private Optional<Diagram> createMainClassDiagram(IEditingContext editingContext, Resource r, ICause cause) {
         Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> convertedNodes = this.papyrusRepresentationRegistry
                 .getConvertedNode(CDDiagramDescriptionBuilder.CD_REP_NAME);
         Model model = (Model) r.getContents().get(0);
         return this.diagramBuilderService.createDiagram(editingContext, diagramDescription -> CDDiagramDescriptionBuilder.CD_REP_NAME.equals(diagramDescription.getLabel()), model, "Main")
                 .flatMap(diagram -> this.semanticDropClassAndComment(editingContext, convertedNodes, model, diagram))//
                 .flatMap(diagram -> {
-                    this.representationPersistenceService.save(editingContext, diagram);
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
                     return Optional.of(diagram);
                 });
     }

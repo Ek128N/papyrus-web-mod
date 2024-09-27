@@ -53,7 +53,4 @@ export type GQLGetProjectQueryVariables = {
   includeRepresentation: boolean;
 };
 
-export interface EditProjectViewParams {
-  projectId: string;
-  representationId: string;
-}
+export type EditProjectViewParams = 'projectId' | 'representationId';
