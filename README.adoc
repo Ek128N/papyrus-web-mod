@@ -340,7 +340,7 @@ The header of each file should contain the following copyright block:
 /*****************************************************************************
  * Copyright (c) $Years $Authors. // <1> <2>
  *
- * All rights reserved. This program and the accompanying materials
+ * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
@@ -359,9 +359,9 @@ For instance a file contributed by Obeo funded by CEA LIST project should contai
 [source,java]
 ----
 /*****************************************************************************
- * Copyright (c) 2023 CEA LIST, Obeo
+ * Copyright (c) 2023 CEA LIST
  *
- * All rights reserved. This program and the accompanying materials
+ * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
