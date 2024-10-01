@@ -67,7 +67,7 @@ jobs:
 
       - name: Login to Amazon Elastic Container Registry
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build the Docker image
         env:
@@ -75,7 +75,6 @@ jobs:
           REPOSITORY: papyrus-web
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
-          sed -e "s|VERSION|${{ env.app_version_latest }}|" backend/papyrus-web/Dockerfile.template > backend/papyrus-web/Dockerfile
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest -t papyrusweb backend/papyrus-web
 
       - name: Run end to end tests against the application
