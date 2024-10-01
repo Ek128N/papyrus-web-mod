@@ -60,7 +60,7 @@ describe('Mono-valued reference widget tests', () => {
       .find('ul')
       .find('ul')
       .children()
-      .should('have.length', 3)
+      .should('have.length', 2)
       .findByTestId('Operation2')
       .click();
     // close the dialog

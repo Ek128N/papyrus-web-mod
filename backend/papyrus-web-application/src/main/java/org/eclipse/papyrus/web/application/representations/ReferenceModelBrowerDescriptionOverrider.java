@@ -68,6 +68,7 @@ import org.springframework.stereotype.Service;
  */
 // Most of this call has been copied from
 // org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider
+// With the difference that we did not remove the use isSelectable filter to compute the list of children
 @Service
 public class ReferenceModelBrowerDescriptionOverrider implements IRepresentationDescriptionOverrider {
 
@@ -127,8 +128,8 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(isSelectableProvider)
                 .elementsProvider(elementsProvider)
-                .hasChildrenProvider(variableManager -> this.hasChildren(variableManager))
-                .childrenProvider(variableManager -> this.getChildren(variableManager))
+                .hasChildrenProvider(variableManager -> this.hasChildren(variableManager, isSelectableProvider))
+                .childrenProvider(variableManager -> this.getChildren(variableManager, isSelectableProvider))
                 .canCreatePredicate(canCreatePredicate)
                 .deleteHandler(this::getDeleteHandler)
                 .renameHandler(this::getRenameHandler)
@@ -167,6 +168,13 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
         return result;
     }
 
+    private boolean hasCompatibleDescendants(VariableManager variableManager, EObject eObject, boolean isDescendant, Function<VariableManager, Boolean> isSelectableProvider) {
+        VariableManager childVariableManager = variableManager.createChild();
+        childVariableManager.put(VariableManager.SELF, eObject);
+        return isDescendant && isSelectableProvider.apply(childVariableManager)
+                || eObject.eContents().stream().anyMatch(eContent -> this.hasCompatibleDescendants(childVariableManager, eContent, true, isSelectableProvider));
+    }
+
     private Object getParentObject(VariableManager variableManager) {
         Object result = null;
         Object self = variableManager.getVariables().get(VariableManager.SELF);
@@ -180,18 +188,18 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
         return result;
     }
 
-    private boolean hasChildren(VariableManager variableManager) {
+    private boolean hasChildren(VariableManager variableManager, Function<VariableManager, Boolean> isSelectableProvider) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         boolean hasChildren = false;
         if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
         } else if (self instanceof EObject eObject) {
-            hasChildren = !eObject.eContents().isEmpty();
+            hasChildren = !eObject.eContents().isEmpty() && this.hasCompatibleDescendants(variableManager, eObject, false, isSelectableProvider);
         }
         return hasChildren;
     }
 
-    private List<Object> getChildren(VariableManager variableManager) {
+    private List<Object> getChildren(VariableManager variableManager, Function<VariableManager, Boolean> isSelectableProvider) {
         List<Object> result = new ArrayList<>();
 
         List<String> expandedIds = new ArrayList<>();
@@ -215,6 +223,15 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
                 }
             }
         }
+        result.removeIf(object -> {
+            if (object instanceof EObject eObject) {
+                VariableManager childVariableManager = variableManager.createChild();
+                childVariableManager.put(VariableManager.SELF, eObject);
+                return !isSelectableProvider.apply(childVariableManager) && !this.hasChildren(childVariableManager, isSelectableProvider);
+            } else {
+                return false;
+            }
+        });
         return result;
     }
 
