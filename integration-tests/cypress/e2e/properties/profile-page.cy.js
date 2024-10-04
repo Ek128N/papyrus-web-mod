@@ -92,7 +92,7 @@ describe('Stereotype application page tests', () => {
       // Apply one stereotype
       cy.addItemInPrimitiveListStrictMode('Applied stereotypes', `Stereotype2 (from ${profileName})`);
 
-      // Apply stereotype 2 on class
+      // Apply stereotype 1 on class
       cy.getByTestId('Class').first().should('exist').click();
       cy.getByTestId('view-Details').findByTestId('Name').should('be.visible');
       cy.activateDetailsTabAndWaitForElement('Profile', 'primitive-list-autocomplete-textfield-Applied stereotypes');
@@ -116,7 +116,7 @@ describe('Stereotype application page tests', () => {
     // Go back to the project
     cy.visit(`/projects/${context.projectId}/edit`).then((res) => {
       cy.expandAll('model4test.uml');
-      cy.getByTestId('model4test').click();
+      cy.getByTestId('«Stereotype2» model4test').click();
 
       // Check there is a refresh button
       cy.activateDetailsTabAndWaitForElement(
@@ -135,7 +135,7 @@ describe('Stereotype application page tests', () => {
         .should('exist');
 
       // Check that the properties are still working
-      cy.getByTestId('Class').first().should('exist').click();
+      cy.getByTestId('«Stereotype1» Class').first().should('exist').click();
       cy.getByTestId('view-Details').findByTestId('Name').should('be.visible');
       // Check the dialog content to reference a stereotype application
       cy.activateDetailsTabAndWaitForElement('Stereotype1', 'testMultiReftoStereotype2-more').click();

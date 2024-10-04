@@ -36,6 +36,7 @@ describe('Profile definition page test', () => {
 
   it('published profile is properly displayed in Definition page', () => {
     // publish the profile
+
     cy.getByTestId('Profile-more').should('be.visible').click();
     cy.get('.MuiPopover-root').findByTestId('publish-profile').should('be.visible').click();
     cy.getByTestId('publish-profile-dialog').findByTestId('publish-profile-author').find('input').type('John Doe');

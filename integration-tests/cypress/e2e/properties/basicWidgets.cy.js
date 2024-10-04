@@ -87,7 +87,7 @@ describe('Basic widgets tests', () => {
     // open select
     cy.get('@select').click();
     // Verify the content of the Select menu
-    cy.get('.MuiPopover-root')
+    cy.get('.MuiPopover-root[id=menu-]')
       .should('be.visible')
       .find('ul>li')
       .should(($li) => {

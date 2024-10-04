@@ -99,6 +99,21 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-components-view-builder</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-components-collaborative-trees</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
+				<artifactId>sirius-components-trees</artifactId>
+				<version>${sirius.components.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.sirius</groupId>
 				<artifactId>sirius-web-domain</artifactId>
 				<version>${sirius.components.version}</version>
 			</dependency>

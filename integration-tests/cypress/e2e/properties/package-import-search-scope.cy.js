@@ -30,7 +30,7 @@ describe('PackageImport.importedPackage search scope test', () => {
 
   it('PackageImport with standard packages + new non root package', () => {
     // check initial content
-    cy.getByTestId('PackageImport').should('be.visible').click();
+    cy.getByTestId('<Package Import> PrimitiveTypes').should('be.visible').click();
     cy.getByTestId('Imported package').should('be.visible').find('.MuiChip-root').should('have.length', 1);
     cy.getByTestId('reference-value-PrimitiveTypes').should('be.visible');
     // change to UML package

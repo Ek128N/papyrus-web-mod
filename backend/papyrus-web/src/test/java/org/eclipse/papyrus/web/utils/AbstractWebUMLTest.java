@@ -36,26 +36,16 @@ import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.services.Success;
-import org.eclipse.sirius.web.infrastructure.persistence.JDBCConfiguration;
-import org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
  * Abstract test class for testing web UML features.
  *
  * @author Arthur Daussy
  */
-@SpringJUnitConfig(classes = { IntegrationTestConfiguration.class, SiriusWebStarterConfiguration.class, JDBCConfiguration.class })
-public class AbstractWebUMLTest {
-
-    // Emulate a POSTGRESQL database.
-    public static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;
+public class AbstractWebUMLTest extends AbstractIntegrationTest {
 
     protected static final UMLPackage UML = UMLPackage.eINSTANCE;
 
@@ -74,11 +64,6 @@ public class AbstractWebUMLTest {
 
     private IEditingContext editingContext;
 
-    static {
-        POSTGRESQL_CONTAINER = new PostgreSQLContainer<>("postgres:latest").withReuse(true);
-        POSTGRESQL_CONTAINER.start();
-    }
-
     @BeforeEach
     public void before() {
         Success<Project> project = (Success<Project>) this.projectCreationService.createProject(new ICause.NoOp(), UUID.randomUUID().toString(), List.of(PapyrusUMLNatures.UML));
@@ -87,14 +72,6 @@ public class AbstractWebUMLTest {
 
         this.registerClasspathURIHandler();
 
-    }
-
-    // Plug emulated database in application
-    @DynamicPropertySource
-    public static void registerProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRESQL_CONTAINER::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRESQL_CONTAINER::getUsername);
-        registry.add("spring.datasource.password", POSTGRESQL_CONTAINER::getPassword);
     }
 
     protected IObjectService getObjectService() {

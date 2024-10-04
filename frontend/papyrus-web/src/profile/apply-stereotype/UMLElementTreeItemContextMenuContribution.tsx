@@ -42,7 +42,10 @@ export const UMLElementTreeItemContextMenuContribution = forwardRef(
         />
       );
     }
-    if (treeId.startsWith('explorer://') && item.kind.includes('siriusComponents://semantic?domain=uml')) {
+
+    const isApplyStereotypeMenuVisible =
+      treeId.startsWith('explorer://') && item.editable && item.kind.includes('siriusComponents://semantic?domain=uml');
+    if (isApplyStereotypeMenuVisible) {
       return (
         <Fragment key="umlelement-tree-item-context-menu-contribution">
           <MenuItem

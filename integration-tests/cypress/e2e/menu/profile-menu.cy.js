@@ -32,7 +32,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.applyProfileByMenu('Model', 'Java');
 
     cy.expandAll('Model');
-    cy.getByTestId('ProfileApplication').should('be.visible').click();
+    cy.getByTestId('<Profile Application> PapyrusJava').should('be.visible').click();
 
     // wait until details panel is populated (previous click finished)
     cy.getByTestId('view-Details').findByTestId('Is strict').should('be.visible');
@@ -52,7 +52,7 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
       .should('have.prop', 'type', 'button')
       .click();
     // Verify stereotype applied
-    cy.getByTestId('Model').click();
+    cy.getByTestId('«ExternLibrary» Model').click();
     cy.activateDetailsTabAndWaitForElement('Profile', 'primitive-list-table-Applied stereotypes')
       .findByTestId('primitive-list-item-content-ExternLibrary (from PapyrusJava)')
       .should('be.visible');
