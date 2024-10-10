@@ -3,5 +3,6 @@
 - xref:dev-process.adoc[Development process details]
 - xref:diagramSpecifier.adoc[Diagram Specifier]
 - xref:detailsViewSpecifier.adoc[Details View Specifier]
+- xref:explorerSpecifier.adoc[Explorer Specifier]
 - xref:testConfiguration.adoc[Test configuration]
 - xref:howTo.adoc[How to...]
