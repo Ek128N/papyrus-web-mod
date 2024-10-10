@@ -7,9 +7,11 @@ ifndef::imagesdir[:imagesdir: imgs]
 :toc:
 
 === Architecture Overview
+
 Implementing a complete diagram representation (e.g. the _Class Diagram_) involves a large amount of work. It is necessary to create the View DSL describing the representation (the nodes, edge, etc of the diagram), but also the services required by your representation, the tests, and hook your implementation into the Papyrus Web framework to make it usable by client users. In the following we describe how this code is structured.
 
 ==== The View DSL
+
 While Sirius Web provides a studio to graphically create View DSLs, Papyrus Web relies on a _builder_ approach to programmatically create them. This programmatic approach is motivated by the frequent evolutions of Sirius Web that are easier to capture when backed up by a robust type system instead of a graphical editor.
 
 The code to create the View DSL of a given diagram is stored in a single class in the package `org.eclipse.papyrus.web.application.representations.uml` of the module `papyrus-web-representation-builder`. For example, the class `UCDDiagramDescriptionBuilder` contains the code to create the View DSL of the _Use Case_ diagram.
@@ -21,6 +23,7 @@ The `fillDescription` method is the entry point of the builder. It is called by 
 The builder is hooked into the Papyrus Web framework via the `PapyrusRepresentationDescriptionRegistryConfigurer` class in the `papyrus-web-application` module, which maps the name of the representation with the builder.
 
 ==== The services
+
 Services are located in the module `papyrus-web-services`. Each diagram has its own package, which contains all the classes related to its services. As an example, the package `org.eclipse.papyrus.web.services.aqlservices.useCase` contains the code for the services of the _Use Case_ diagram.
 
 Services are used in descriptions that require complex processing, usually in their semantic candidate expression. For example, a service may be required to compute all the candidate elements of a particular description.
@@ -34,6 +37,7 @@ NodeDescription ucdDiagramUseCaseDescription = this.newNodeBuilder(useCaseEClass
 The name of the service (i.e. the name of the method from the `UseCaseDiagramService` class) is provided as a string. Each diagram has a class that gathers the name of its services. This class is stored in the `papyrus-web-representation-builder` module, next to the builder for the View DSL.
 
 ==== Tests
+
 There are two kinds of test for each diagram:
 
 - Service tests: these are unit tests ran against the services of your diagram. They are stored in `papyrus-web-application/src/tests/java`, in a dedicated package prefixed with `org.eclipse.papyrus.web.application.services.`
@@ -52,7 +56,8 @@ Diagrams need to contain tool to allow the user to interact with them. A diagram
 
 In the following we detail how to create these tools in your diagram description.
 
-===== Creation tools
+==== Creation tools
+
 The `ViewBuilder` class provides an utility method `createCreationTool` to create a Node creation tool. This method can either call the default creation process, or call a specific service if needed (e.g. if the creation is complex and requires some additional processing).
 
 The produced `NodeTool` can be added to the diagram palette (for nodes represented on the diagram background) via the `AbstractRepresentationDescriptionBuilder.addDiagramToolInToolSection` method, or inside containing node descriptions via the `AbstractRepresentationDescriptionBuidler.reuseNodeAndCreateTool` method. Note that in both cases it is necessary to provide the name of the tool section where the tool will be added.
@@ -62,7 +67,8 @@ The `ViewBuilder` class also provides an utility method `createDefaultDomainBase
 [WARNING]
 Creation tools need to be added to a _Tool Section_. You can use the `AbstractRepresentationDescriptionBuilder.createDefaultToolSectionInDiagramDescription` method to create default tool sections (_Nodes_ to store node creation tools and _Edges_ to store edge creation tools). This method is typically called in the `fillDescription` method of the diagram builder.
 
-===== Semantic Deletion tools
+==== Semantic Deletion tools
+
 Node semantic deletion tools are typically provided via the `NodeDescriptionBuilder` used to create the node representation. The `ViewBuilder.createNodeDeleteTool` returns the default deletion tool for a given node.
 ```java
 // In the View DSL builder
@@ -79,6 +85,7 @@ Edge semantic deletion tools are pre-configured in the `ViewBuilder.createDefaul
 A description without a semantic deletion tool won't have the _delete_ tool in its palette. This may be used to forbid deletion of specific nodes on a diagram (e.g. metaclasses in the _Profile_ diagram).
 
 ===== Direct edit tools
+
 Direct edit tools are typically provided via the `NodeDescriptionBuilder` used to create the node representation. The `ViewBuilder.createDirectEditTool` returns the default direct edit tool for a given node.
 ```java
 // In the View DSL builder
@@ -93,6 +100,7 @@ Note that some methods in `ViewBuilder` create fully-fledged `NodeDescription` o
 Edge direct edit tools are pre-configured in the `ViewBuilder.createDefaultSynchonizedDomainBaseEdgeDescription` method, which is usually used to create domain-based edges. 
 
 ===== Edge source/target reconnection tools
+
 Edge reconnection tools can be configured via the `ViewBuilder.addDefaultReconnectionTools`, which sets the default source/target reconnection tools for a given edge. 
 
 If a non-default tool is required, this can be done by editing the edge palette and adding a custom reconnection tool, which can be created with `ViewBuilder.createDomainBaseEdgeSourceReconnectionTool` and `ViewBuilder.createDomainBaseEdgeTargetReconnectionTool`:
@@ -101,6 +109,7 @@ SourceEdgeEndReconnectionTool tool = edge.getPalette().getEdgeReconnectionTools(
 ```
 
 ===== Semantic drag & drop tools
+
 The semantic drag & drop tool is configured at the diagram level. This is typically done in the `fillDescription method`:
 ```java
 diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
@@ -109,6 +118,7 @@ diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericS
 This will automatically bind the semantic drag & drop tool to the `SemanticDropBehaviorProvider` associated to the diagram, and located in the `papyrus-web-services` module.
 
 ===== Graphical drag & drop tools
+
 Graphical drag & drop tools have to be configured for each container nodes as well as the diagram. The configuration of the tool is similar in both cases: the graphical drag & drop tool is created via the `ViewBuilder`, then the _accepted types_ (i.e. the types that can be dropped on the container) are set on the tool. Finally the tool is added to the node's (or diagram's) palette.
 ```java
 // Create the drop tool
@@ -125,6 +135,7 @@ diagramDescription.getPalette().setDropNodeTool(ucdGraphicalDropTool);
 ```
 
 ====== How to create multiple nested views?
+
 The `IViewHelper` API focuses on the creation of individual graphical elements. It allows to create root element, child elements, but these methods do not handle the creation of entire sub-trees of elements. 
 
 Creating such sub-trees is complex because each view creation needs to access the graphical parent of the view to create. These graphical parents aren't available when creating a sub-tree, because they haven't been created yet. 
@@ -225,39 +236,64 @@ Custom nodes are located in the `sirius-web-application/src/nodes` directory in 
 - `MyCustomNodeLayoutHandler.ts`: the layout of your node. This file defines high-level layout such as how child elements are handled.
 
 [TIP]
-The `sirius-web-application/src/nodes` directory contains various examples of custom nodes used in Papyrus Web.
+The `papyrus-web/src/nodes` directory contains various examples of custom nodes used in Papyrus Web.
 
-In addition to the files defining the custom node themselves, you need to edit the file `sirius-web-application/src/views/edit-project/EditProjectView` and update the `nodeTypeRegistryValue` variable to make your custom node usable:
+In addition to the files defining the custom node themselves, you need to edit the file `papyrus-web/src/index.tsx` and update the `nodeTypeRegistryValue` variable to make your custom node usable:
 ```typescript
-const nodeTypeRegistryValue: NodeTypeContextValue = {
-      graphQLNodeStyleFragments: [
-        // Other Node Styles already registered
-        {
-          type: 'MyCustomNodeStyle',
-          fields: `borderColor borderSize borderStyle color`,
-        },
-      ],
-      nodeLayoutHandlers: [
-        // Other Node Layout Handlers
-        new MyCustomNodeLayoutHandler(),
-      ],
-      nodeConverterHandlers: [
-        // Other Node Converter Handlers
-        new MyCustomNodeConverterHandler(),
-      ],
-      nodeTypeContributions: [
-        // Other NodeTypeContributions
-        <NodeTypeContribution component={NoteNode} type={'myCustomNode'} />,
-      ],
-    };
+const nodeTypeRegistryValue: NodeTypeRegistry = {
+  nodeLayoutHandlers: [
+    ...
+    new EllipseNodeLayoutHandler(),
+    ...
+  ],
+  nodeConverters: [
+    ...
+    new EllipseNodeConverter(),
+    ...
+  ],
+  nodeTypeContributions: [
+    ...
+    <NodeTypeContribution component={EllipseNode} type={'ellipseNode'} />,
+    ...
+  ],
+};
 ```
 
-The `fields` attribute configures the information passed by the backend that can be retrieved in your custom node implementation. In our example we provide typical attributes that are shared by most of the nodes: `borderColor`, `borderSize`, `borderStyle`, and `color`.
+Then register a GraphQL _documentTransform_ to augment the GraphQL queries with you custom fields.
+
+
+```typescript
+const nodeApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(nodesStyleDocumentTransform)
+    : nodesStyleDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+```
+
+An example of transformation can be found in _papyrus-web/src/nodes/NodesDocumentTransform.ts_.
+
+Do not forget to register your configurer into the _apolloClientOptionsConfigurersExtensionPoint_ 
+
+```typescript
+import  apolloClientOptionsConfigurersExtensionPoint from '@eclipse-sirius/sirius-web-application';
+
+extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
+  identifier: `papyrusweb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [nodeApolloClientOptionsConfigurer],
+});
+```
 
 [TIP]
 Additional information on how to create custom nodes is available in the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-node.adoc[Sirius Web documentation].
 
 ==== Custom tool
+
 Custom tools are used to add capabilities to a diagram that aren't supported by the default tools. These custom tools can perform complex semantic and graphical operations, open dialogs to ease the creation of elements, etc.
 
 Since these tools are diagram-specific, they require some work on the backend and the frontend of Papyrus Web. In the following we show how to create such custom tool, using the _Import Metaclass_ popup from the Profile diagram as an example.
@@ -481,31 +517,21 @@ export const PapyrusPopupToolContribution = ({ diagramElementId }: DiagramPalett
 
 The details of the component are ommitted for the sake of simplicity. Note that the component can perform complex operations such as opening a dialog to retrieve the parameters required to send the mutation to the backend. The GraphQL types manipulates by the component are defined in a dedicated file (`PapyrusPopupToolContribution.types.ts` in our example).
 
-Finally, we need to edit the `EditProjectViews.tsx` file to add our new tool contribution. This is done in the `diagramPaletteToolContributions` variables:
+Finally, we need to register this contribution into an extension point
 ```typescript
-const diagramPaletteToolContributions: DiagramPaletteToolContextValue = [
-      <DiagramPaletteToolContribution
-        canHandle={(_diagramId, diagramElementId) => {
-          if (!isProfileDiagram) {
-            return false;
-          }
-          if (_diagramId === diagramElementId) {
-            return true;
-          } else {
-            const nodes = useNodes<NodeData>();
-            const targetedNode = nodes.find((node) => node.id === diagramElementId);
-            return targetedNode?.data.targetObjectKind === 'siriusComponents://semantic?domain=uml&entity=Profile';
-          }
-        }}
-        component={PapyrusPopupToolContribution}
-      />,
-    ];
+import { NodeTypeContribution, diagramPaletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
+
+
+extensionRegistry.addComponent(diagramPaletteToolExtensionPoint, {
+  identifier: 'papyrus-diagram-tools',
+  Component: PapyrusPopupToolContribution,
+});
 ```
 
 The `canHandle` function allows to configure where/when the custom tool should be displayed. In our example we want to allow metaclass import only on profile elements and on the background of the diagram. The component parameter is set with the react component we created above.
 
 [TIP]
-Additional information on how to contribute custom tools to a diagram is available on the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-tool.adoc[Sirius Web documentation].
+Additional information on how to contribute custom tools to a diagram is available on the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/extend-the-frontend.adoc#how-to-use-the-tool-extension-point[Sirius Web documentation].
  
 ===== GraphQL queries
 GraphQL queries are sent by the frontend to access data from the backend. As an example, a GraphQL query (`getMetaclassMetadatas`) is used by the `PapyrusPopupToolContribution` to retrieve all the metaclasses available in the editing context.
