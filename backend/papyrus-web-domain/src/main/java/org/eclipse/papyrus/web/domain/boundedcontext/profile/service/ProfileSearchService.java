@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.repositories.IProfileRepository;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSearchService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
  * @author Arthur Daussy
  */
 @Service
-public class ProfileSearchService implements IProfileSeachService {
+public class ProfileSearchService implements IProfileSearchService {
 
     private final IProfileRepository profileRepository;
 

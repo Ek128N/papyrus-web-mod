@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.application.profile.services.UMLProfileService;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSearchService;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -43,9 +43,9 @@ public class PathmapURIHandler extends URIHandlerImpl {
 
     private final IStaticPathmapResourceRegistry registry;
 
-    private final IProfileSeachService profileSearchService;
+    private final IProfileSearchService profileSearchService;
 
-    public PathmapURIHandler(IStaticPathmapResourceRegistry registry, IProfileSeachService profileSearchService) {
+    public PathmapURIHandler(IStaticPathmapResourceRegistry registry, IProfileSearchService profileSearchService) {
         super();
         this.registry = Objects.requireNonNull(registry);
         this.profileSearchService = Objects.requireNonNull(profileSearchService);

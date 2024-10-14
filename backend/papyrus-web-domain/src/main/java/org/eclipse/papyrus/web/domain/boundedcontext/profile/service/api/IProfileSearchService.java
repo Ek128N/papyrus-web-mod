@@ -26,7 +26,7 @@ import org.springframework.data.domain.Pageable;
  *
  * @author Arthur Daussy
  */
-public interface IProfileSeachService {
+public interface IProfileSearchService {
 
     /**
      * Checks if the profile identified by the given id exists.
