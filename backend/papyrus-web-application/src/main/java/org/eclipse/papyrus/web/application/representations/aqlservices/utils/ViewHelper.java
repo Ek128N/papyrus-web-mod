@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices.utils;
 
@@ -25,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -142,11 +144,66 @@ public class ViewHelper implements IViewHelper {
                     result = this.createView(self, selectedNode, childrenType);
                 }
             } else {
-                LOGGER.warn("No view description with name {0}", mappingName);
+                if (mappingName != null) {
+                    LOGGER.warn("No view description with name {}", mappingName);
+                } else {
+                    LOGGER.warn("No valid description found");
+                }
                 result = false;
             }
         }
         return result;
+    }
+
+    @Override
+    public boolean createChildView(EObject self, List<Node> possibleParent, String mappingName) {
+        boolean result = false;
+        // First parent is not possible
+        PARENT: for (Node parent : possibleParent) {
+            org.eclipse.sirius.components.view.diagram.NodeDescription targetNodeDescription = this.getViewNodeDescription(parent.getDescriptionId()).orElse(null);
+            if (targetNodeDescription != null) {
+                org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = null;
+                if (mappingName == null) {
+                    // No children found when NestedClassifier
+                    List<org.eclipse.sirius.components.view.diagram.NodeDescription> childrenTypes = this.getAllChildrenNodeDescriptionsOfType(targetNodeDescription, self.eClass());
+                    for (org.eclipse.sirius.components.view.diagram.NodeDescription children : childrenTypes) {
+                        result = this.tryCreatingView(self, parent, children);
+                        if (result) {
+                            break PARENT;
+                        }
+                    }
+                } else {
+                    childrenType = this.getChildrenNodeDescriptionsWithName(targetNodeDescription, mappingName);
+                }
+                result = this.tryCreatingView(self, parent, childrenType);
+                if (result) {
+                    break;
+                }
+            } else {
+                LOGGER.warn("No view description with name {}", mappingName);
+            }
+        }
+        return result;
+
+    }
+
+    /**
+     * @param self
+     * @param result
+     * @param parent
+     * @param children
+     * @return
+     */
+    private boolean tryCreatingView(EObject self, Node parent, org.eclipse.sirius.components.view.diagram.NodeDescription children) {
+        if (children != null) {
+            if (!IdBuilder.isFakeChildNode(
+                    children)) { /*
+                                  * Workaround for https://github.com/PapyrusSirius/papyrus-web/issues/164
+                                  */
+                return this.createView(self, parent, children);
+            }
+        }
+        return false;
     }
 
     @Override
@@ -212,74 +269,82 @@ public class ViewHelper implements IViewHelper {
     }
 
     @Override
-    public Node createFakeNode(EObject semanticElement, Node selectedNode) {
+    public List<Node> createFakeNodes(EObject semanticElement, Node selectedNode) {
+        List<Node> fakeNodes = new ArrayList<>();
         String targetObjectId = this.objectService.getId(semanticElement);
         String parentElementId = null;
-        org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = null;
+        List<org.eclipse.sirius.components.view.diagram.NodeDescription> childrenTypes = new ArrayList<>();
         if (selectedNode == null) {
             // case diagram
             parentElementId = this.diagramContext.getDiagram().getId();
-            childrenType = this.getChildrenNodeDescriptionsOfType(null, semanticElement.eClass());
+            childrenTypes = this.getAllChildrenNodeDescriptionsOfType(null, semanticElement.eClass());
         } else {
             parentElementId = selectedNode.getId();
             org.eclipse.sirius.components.view.diagram.NodeDescription targetNodeDescription = this.getViewNodeDescription(selectedNode.getDescriptionId()).orElse(null);
-            childrenType = this.getChildrenNodeDescriptionsOfType(targetNodeDescription, semanticElement.eClass());
+            childrenTypes = this.getAllChildrenNodeDescriptionsOfType(targetNodeDescription, semanticElement.eClass());
         }
+        if (childrenTypes != null) {
+            for (org.eclipse.sirius.components.view.diagram.NodeDescription childrenType : childrenTypes) {
+                var isBorderedNode = childrenType.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
+                final NodeContainmentKind containmentKind;
+                if (isBorderedNode) {
+                    containmentKind = NodeContainmentKind.BORDER_NODE;
+                } else {
+                    containmentKind = NodeContainmentKind.CHILD_NODE;
+                }
 
-        var isBorderedNode = childrenType.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_BorderNodesDescriptions();
-        final NodeContainmentKind containmentKind;
-        if (isBorderedNode) {
-            containmentKind = NodeContainmentKind.BORDER_NODE;
-        } else {
-            containmentKind = NodeContainmentKind.CHILD_NODE;
+                org.eclipse.sirius.components.diagrams.description.NodeDescription nodeDescription = this.capturedNodeDescriptions.get(childrenType);
+
+                var targetObjectKind = this.objectService.getKind(semanticElement);
+                var targetObjectLabel = this.objectService.getLabel(semanticElement);
+                String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), containmentKind, targetObjectId);
+
+                var labelStyle = LabelStyle.newLabelStyle()
+                        .background("")
+                        .color("")
+                        .borderColor("")
+                        .borderStyle(LineStyle.Solid)
+                        .fontSize(14)
+                        .iconURL(List.of())
+                        .build();
+
+                var insideLabel = InsideLabel.newLabel("")
+                        .text("")
+                        .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                        .style(labelStyle)
+                        .isHeader(false)
+                        .textAlign(LabelTextAlign.CENTER)
+                        .overflowStrategy(LabelOverflowStrategy.ELLIPSIS)
+                        .build();
+
+                var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
+                        .background("")
+                        .borderColor("")
+                        .borderStyle(LineStyle.Solid)
+                        .build();
+
+                Node node = Node.newNode(nodeId)//
+                        .type("")//
+                        .targetObjectId(targetObjectId)//
+                        .targetObjectKind(targetObjectKind)//
+                        .targetObjectLabel(targetObjectLabel)//
+                        .descriptionId(nodeDescription.getId())//
+                        .borderNode(containmentKind == NodeContainmentKind.BORDER_NODE)//
+                        .modifiers(Set.of())//
+                        .state(ViewModifier.Normal)//
+                        .collapsingState(CollapsingState.EXPANDED)//
+                        .insideLabel(insideLabel)//
+                        .style(nodeStyle)//
+                        .childrenLayoutStrategy(new FreeFormLayoutStrategy())//
+                        .borderNodes(List.of())//
+                        .childNodes(List.of())//
+                        .build();
+
+                fakeNodes.add(node);
+            }
         }
+        return fakeNodes;
 
-        org.eclipse.sirius.components.diagrams.description.NodeDescription nodeDescription = this.capturedNodeDescriptions.get(childrenType);
-
-        var targetObjectKind = this.objectService.getKind(semanticElement);
-        var targetObjectLabel = this.objectService.getLabel(semanticElement);
-        String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), containmentKind, targetObjectId);
-
-        var labelStyle = LabelStyle.newLabelStyle()
-                .background("")
-                .color("")
-                .borderColor("")
-                .borderStyle(LineStyle.Solid)
-                .fontSize(14)
-                .iconURL(List.of())
-                .build();
-
-        var insideLabel = InsideLabel.newLabel("")
-                .text("")
-                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
-                .style(labelStyle)
-                .isHeader(false)
-                .textAlign(LabelTextAlign.CENTER)
-                .overflowStrategy(LabelOverflowStrategy.ELLIPSIS)
-                .build();
-
-        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle()
-                .background("")
-                .borderColor("")
-                .borderStyle(LineStyle.Solid)
-                .build();
-
-        return Node.newNode(nodeId)//
-                .type("")//
-                .targetObjectId(targetObjectId)//
-                .targetObjectKind(targetObjectKind)//
-                .targetObjectLabel(targetObjectLabel)//
-                .descriptionId(nodeDescription.getId())//
-                .borderNode(containmentKind == NodeContainmentKind.BORDER_NODE)//
-                .modifiers(Set.of())//
-                .state(ViewModifier.Normal)//
-                .collapsingState(CollapsingState.EXPANDED)//
-                .insideLabel(insideLabel)//
-                .style(nodeStyle)//
-                .childrenLayoutStrategy(new FreeFormLayoutStrategy())//
-                .borderNodes(List.of())//
-                .childNodes(List.of())//
-                .build();
     }
 
     private boolean matchExistingNode(Node inspectedParent, Node inspectedNode, String searchedSemanticElementID, String searchNodeDescription, Node selectedParent) {
@@ -299,9 +364,7 @@ public class ViewHelper implements IViewHelper {
         for (Node c : diagram.getNodes()) {
             this.getAllNode(null, c, visitedNode, nodes, filter);
         }
-
         return nodes;
-
     }
 
     private void getAllNode(Node parent, Node node, Set<Node> visitedNode, List<Node> collector, BiPredicate<Node, Node> filter) {
@@ -328,7 +391,6 @@ public class ViewHelper implements IViewHelper {
             descriptions.addAll(parent.getBorderNodesDescriptions());
             descriptions.addAll(parent.getReusedBorderNodeDescriptions());
             descriptions.addAll(parent.getReusedChildNodeDescriptions());
-
         }
 
         List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()//
@@ -339,7 +401,7 @@ public class ViewHelper implements IViewHelper {
                 .sorted(Comparator.comparingInt(n -> -1 * this.computeDistanceToElement(UMLHelper.toEClass(n.getDomainType())))).collect(toList());
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidate = candidates.stream().filter(c -> UMLHelper.toEClass(c.getDomainType()) == eClass).findFirst();
         if (candidates.isEmpty()) {
-            LOGGER.error(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName));
+            LOGGER.info(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName));
             return null;
         } else {
             org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = null;
@@ -357,6 +419,36 @@ public class ViewHelper implements IViewHelper {
         }
     }
 
+    private List<org.eclipse.sirius.components.view.diagram.NodeDescription> getAllChildrenNodeDescriptionsOfType(org.eclipse.sirius.components.view.diagram.NodeDescription parent, EClass eClass) {
+
+        final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
+        final String parentName;
+        if (parent == null) {
+            parentName = this.diagramDescription.getName();
+            descriptions.addAll(this.diagramDescription.getNodeDescriptions());
+        } else {
+            parentName = parent.getName();
+            descriptions.addAll(parent.getChildrenDescriptions());
+            descriptions.addAll(parent.getBorderNodesDescriptions());
+            descriptions.addAll(parent.getReusedBorderNodeDescriptions());
+            descriptions.addAll(parent.getReusedChildNodeDescriptions());
+        }
+
+        List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()//
+                .distinct()//
+                .filter(c -> this.isCompliant(UMLHelper.toEClass(c.getDomainType()), eClass))//
+                .filter(c -> !AbstractRepresentationDescriptionBuilder.SHARED_DESCRIPTIONS.equals(c.getName())) //
+                // We want to keep the more specialized description type first
+                .sorted(Comparator.comparingInt(n -> -1 * this.computeDistanceToElement(UMLHelper.toEClass(n.getDomainType())))).collect(toList());
+        List<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidates = candidates.stream().filter(c -> UMLHelper.toEClass(c.getDomainType()) == eClass)
+                .collect(Collectors.toList());
+        if (perfectCandidates.isEmpty()) {
+            LOGGER.info(MessageFormat.format("No candidate for children of type {0} on {1}", eClass.getName(), parentName));
+            return candidates;
+        }
+        return perfectCandidates;
+    }
+
     private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsWithName(org.eclipse.sirius.components.view.diagram.NodeDescription parent, String mappingName) {
         final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
         final String parentName;
@@ -369,14 +461,13 @@ public class ViewHelper implements IViewHelper {
             descriptions.addAll(parent.getBorderNodesDescriptions());
             descriptions.addAll(parent.getReusedBorderNodeDescriptions());
             descriptions.addAll(parent.getReusedChildNodeDescriptions());
-
         }
 
         List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()//
                 .distinct()//
                 .filter(c -> c.getName().equals(mappingName)).toList();
         if (candidates.isEmpty()) {
-            LOGGER.error(MessageFormat.format("No candidate for children with mapping name {0} on {1}", mappingName, parentName));
+            LOGGER.info(MessageFormat.format("No candidate for children with mapping name {0} on {1}", mappingName, parentName));
             return null;
         } else {
             org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = candidates.get(0);
@@ -401,7 +492,6 @@ public class ViewHelper implements IViewHelper {
                 for (EClass superType : sourceEClass.getESuperTypes()) {
                     distance = Math.min(distance, this.computeDistanceToElement(superType, current + 1));
                 }
-
             }
             return distance;
 

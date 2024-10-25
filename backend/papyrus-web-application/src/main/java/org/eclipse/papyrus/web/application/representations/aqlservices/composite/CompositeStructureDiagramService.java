@@ -1,15 +1,17 @@
-/*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
+/*****************************************************************************
+ * Copyright (c) 2019, 2024 CEA LIST, Obeo, Artal Technologies.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
+ *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices.composite;
 
 import java.util.Map;
@@ -27,6 +29,7 @@ import org.eclipse.papyrus.uml.domain.services.edges.diagrams.CompositeStructure
 import org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.web.application.representations.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.application.representations.IWebInternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.application.representations.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.application.representations.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.application.representations.aqlservices.utils.ViewHelper;
@@ -41,6 +44,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.uml2.uml.Connector;
 import org.eclipse.uml2.uml.ConnectorEnd;
 import org.eclipse.uml2.uml.Port;
@@ -62,6 +66,16 @@ public class CompositeStructureDiagramService extends AbstractDiagramService {
             IEditableChecker editableChecker, IViewDiagramDescriptionService viewDiagramService, ILogger logger) {
         super(objectService, diagramNavigationService, diagramOperationsService, editableChecker, viewDiagramService, logger);
         this.logger = logger;
+    }
+
+    @Override
+    protected IWebInternalSourceToRepresentationDropBehaviorProvider buildGraphicalDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
+        IWebInternalSourceToRepresentationDropBehaviorProvider dropProvider = new CompositeStructureGraphicalDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+                this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
+        return dropProvider;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2023 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view;
 
@@ -38,11 +39,11 @@ public class IdBuilder {
 
     public static final String COMPARTMENT_NODE_SUFFIX = "_CompartmentNode";
 
+    public static final String SHARED_SUFFIX = "_SHARED";
+
     private static final String GRAPHICAL_DROP_TOOL = "GraphicalDropTool_";
 
     private static final String FAKE_CHILD_LABEL_NODE = "_FakeChildLabelNode";
-
-    private static final String LABEL_NODE_PREFIX = "LabelNode";
 
     private static final String UNDERSCORE = "_";
 
@@ -78,7 +79,7 @@ public class IdBuilder {
     /**
      * Id to be used for fake child nodes only used to contains tools. See
      * https://github.com/PapyrusSirius/papyrus-web/issues/164
-     * 
+     *
      * @param parentNode
      *            the parent node
      * @return an id
@@ -121,7 +122,7 @@ public class IdBuilder {
     }
 
     public String getCompartmentDomainNodeName(EClass domain, String compartmentName) {
-        return this.diagramPrefix + domain.getName() + UNDERSCORE + compartmentName + COMPARTMENT_NODE_SUFFIX;
+        return this.diagramPrefix + domain.getName() + UNDERSCORE + compartmentName + UNDERSCORE + COMPARTMENT_NODE_SUFFIX;
     }
 
     public String getSpecializedCompartmentDomainNodeName(EClass domain, String compartmentName, String specialization) {
@@ -129,7 +130,7 @@ public class IdBuilder {
     }
 
     public String getListItemDomainNodeName(EClass domain, EClass parentContainer) {
-        return this.diagramPrefix + domain.getName() + "In" + parentContainer.getName() + UNDERSCORE + LABEL_NODE_PREFIX;
+        return this.diagramPrefix + domain.getName() + SHARED_SUFFIX;
     }
 
     public String getNodeGraphicalDropToolName(NodeDescription nodeToCreate) {

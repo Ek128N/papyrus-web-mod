@@ -74,7 +74,21 @@ Check all edge creations in the diagram.
 image::imgs/CSD10-Final-step.png[]
 
 
-== CSD20 - DnD
+== CSD20 - Drag and Drop (inside Diagram)
+
+.Purpose
+Check all the drag and drop in the _Composite Structure Diagram_.
+
+.Recipe
+Create a new Class Class_DND and a Property inside it Prop_DND. Set Prop_DND type to _Class 1_.
+
+Drag and Drop _Property 1_ inside the Class_DND before putting it back in the original Class.
+Drag and Drop _Class 1_ inside the Class_DND before putting it back in the original Class.
+Drag and Drop _Property 1_ inside the new Prop_DND before putting it back in the original Class.
+
+Remove Class_DND and Prop_DND from model.
+
+== CSD30 - Drag and Drop (from Model Explorer)
 
 .Requirements
 . Start from CSD10 (or its semantic model)
@@ -112,7 +126,7 @@ Check that a diagram can be created only using Drag and Drop tools
 ** [ ] A new child node _Property 2.1_ should be added to _Class 1::Property 1_
 ** [ ] A _use_ edge should appear between  _Class 1::Property 1::Property 2.1_ and  _Class 1::Property 1::Port 1_
 
-== CSD30 - Delete
+== CSD40 - Delete
 
 [NOTE]
 ====

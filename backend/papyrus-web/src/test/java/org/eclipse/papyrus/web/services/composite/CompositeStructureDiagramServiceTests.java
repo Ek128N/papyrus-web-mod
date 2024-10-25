@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,9 +10,12 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.composite;
 
+import static org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX;
+import static org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.UNDERSCORE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -52,21 +55,21 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
 
     private static final IdBuilder ID_BUILDER = new IdBuilder(CSDDiagramDescriptionBuilder.CSD_PREFIX, new UMLMetamodelHelper());
 
-    private static final String CSD_COMMENT = ID_BUILDER.getDomainNodeName(UML.getComment());
+    private static final String CSD_COMMENT_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getComment(), SHARED_SUFFIX);
 
-    private static final String CSD_CLASSIFIER_IN_CLASSIFER = ID_BUILDER.getSpecializedDomainNodeName(UML.getClassifier(), CSDDiagramDescriptionBuilder.IN_CLASSIFIER);
+    private static final String CSD_CLASSIFIER_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getClass_(), SHARED_SUFFIX);
 
     private static final String CSD_CLASSIFIER = ID_BUILDER.getDomainNodeName(UML.getClassifier());
 
     private static final String CSD_CONNECTOR = ID_BUILDER.getDomainBaseEdgeId(UML.getConnector());
 
-    private static final String CSD_PROPERTY_ON_PROPERTY = ID_BUILDER.getSpecializedDomainNodeName(UML.getProperty(), CSDDiagramDescriptionBuilder.IN_PROPERTY);
+    private static final String CSD_PROPERTY_ON_PROPERTY = ID_BUILDER.getSpecializedDomainNodeName(UML.getProperty(), CSDDiagramDescriptionBuilder.IN_PROPERTY + UNDERSCORE + SHARED_SUFFIX);
 
-    private static final String CSD_PROPERTY_ON_CLASSIFIER = ID_BUILDER.getSpecializedDomainNodeName(UML.getProperty(), CSDDiagramDescriptionBuilder.IN_CLASSIFIER);
+    private static final String CSD_PROPERTY_ON_CLASSIFIER = ID_BUILDER.getSpecializedDomainNodeName(UML.getProperty(), CSDDiagramDescriptionBuilder.IN_CLASSIFIER + UNDERSCORE + SHARED_SUFFIX);
 
-    private static final String CSD_PORT_ON_PROPERTY = ID_BUILDER.getSpecializedDomainNodeName(UML.getPort(), CSDDiagramDescriptionBuilder.IN_PROPERTY);
+    private static final String CSD_PORT_ON_PROPERTY = ID_BUILDER.getSpecializedDomainNodeName(UML.getPort(), CSDDiagramDescriptionBuilder.IN_PROPERTY + UNDERSCORE + SHARED_SUFFIX);
 
-    private static final String CSD_PORT_ON_CLASSIFIER = ID_BUILDER.getSpecializedDomainNodeName(UML.getPort(), CSDDiagramDescriptionBuilder.IN_CLASSIFIER);
+    private static final String CSD_PORT_ON_CLASSIFIER = ID_BUILDER.getSpecializedDomainNodeName(UML.getPort(), CSDDiagramDescriptionBuilder.IN_CLASSIFIER + UNDERSCORE + SHARED_SUFFIX);
 
     @Override
     protected AbstractDiagramService buildService() {
@@ -130,7 +133,7 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
         this.getServiceTester().assertChildCreation(propertyNode, propertyType, UML.getProperty(), UML.getStructuredClassifier_OwnedAttribute(), CSD_PROPERTY_ON_PROPERTY, propertyType);
 
         // Comment
-        this.getServiceTester().assertChildCreation(propertyNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT, property);
+        this.getServiceTester().assertChildCreation(propertyNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT_SHARED, property);
 
     }
 
@@ -172,13 +175,13 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
         this.getServiceTester().assertChildCreation(parentNode, UML.getPort(), UML.getStructuredClassifier_OwnedAttribute(), CSD_PORT_ON_CLASSIFIER, parent);
 
         // Comment in Package
-        this.getServiceTester().assertChildCreation(parentNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT, parent);
+        this.getServiceTester().assertChildCreation(parentNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT_SHARED, parent);
 
         // Class in Class
-        Node nestedClassNode = this.getServiceTester().assertChildCreation(parentNode, UML.getClass_(), UML.getClass_NestedClassifier(), CSD_CLASSIFIER_IN_CLASSIFER, parent);
+        Node nestedClassNode = this.getServiceTester().assertChildCreation(parentNode, UML.getClass_(), UML.getClass_NestedClassifier(), CSD_CLASSIFIER_SHARED, parent);
 
         // Test Class in Class recursion
-        this.getServiceTester().assertChildCreation(nestedClassNode, UML.getClass_(), UML.getClass_NestedClassifier(), CSD_CLASSIFIER_IN_CLASSIFER,
+        this.getServiceTester().assertChildCreation(nestedClassNode, UML.getClass_(), UML.getClass_NestedClassifier(), CSD_CLASSIFIER_SHARED,
                 (EObject) this.getObjectService().getObject(this.getEditingContext(), nestedClassNode.getTargetObjectId()).get());
     }
 
@@ -417,8 +420,8 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
 
         Node rootClassNode = this.getDiagramHelper().createNodeInDiagram(CSD_CLASSIFIER, rootClass);
 
-        Node type1Node = this.getDiagramHelper().createNodeInParent(CSD_CLASSIFIER_IN_CLASSIFER, type1, rootClassNode);
-        Node type2Node = this.getDiagramHelper().createNodeInParent(CSD_CLASSIFIER_IN_CLASSIFER, type2, rootClassNode);
+        Node type1Node = this.getDiagramHelper().createNodeInParent(CSD_CLASSIFIER_SHARED, type1, rootClassNode);
+        Node type2Node = this.getDiagramHelper().createNodeInParent(CSD_CLASSIFIER_SHARED, type2, rootClassNode);
 
         Node portSourceNode = this.getDiagramHelper().createNodeInParent(CSD_PORT_ON_CLASSIFIER, portSource, type1Node);
         Node portTargetNode = this.getDiagramHelper().createNodeInParent(CSD_PORT_ON_CLASSIFIER, portTarget, type2Node);
@@ -494,24 +497,24 @@ public class CompositeStructureDiagramServiceTests extends AbstractDiagramTest {
         // In Class
         this.getDiagramHelper().init(clazz, CSDDiagramDescriptionBuilder.CSD_REP_NAME);
         Node classNode = this.getDiagramHelper().createNodeInDiagram(CSD_CLASSIFIER, clazz);
-        this.getServiceTester().assertChildCreation(classNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT);
+        this.getServiceTester().assertChildCreation(classNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT_SHARED);
 
         // In Property
         Property property = this.createIn(Property.class, clazz);
         Node propertyNode = this.getDiagramHelper().createNodeInParent(CSD_PROPERTY_ON_CLASSIFIER, property, classNode);
-        this.getServiceTester().assertChildCreation(propertyNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT);
+        this.getServiceTester().assertChildCreation(propertyNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT_SHARED);
 
         // In nested class
         Class nestedClazz = this.createIn(Class.class, clazz);
-        Node nestedClassNode = this.getDiagramHelper().createNodeInParent(CSD_CLASSIFIER_IN_CLASSIFER, nestedClazz, classNode);
-        this.getServiceTester().assertChildCreation(nestedClassNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT);
+        Node nestedClassNode = this.getDiagramHelper().createNodeInParent(CSD_CLASSIFIER_SHARED, nestedClazz, classNode);
+        this.getServiceTester().assertChildCreation(nestedClassNode, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT_SHARED);
 
         // Propery of Property
         Class type = this.createIn(Class.class, pack);
         property.setType(type);
         Property property2 = this.createIn(Property.class, type);
         Node propertyOnProperty = this.getDiagramHelper().createNodeInParent(CSD_PROPERTY_ON_PROPERTY, property2, propertyNode);
-        this.getServiceTester().assertChildCreation(propertyOnProperty, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT);
+        this.getServiceTester().assertChildCreation(propertyOnProperty, UML.getComment(), UML.getElement_OwnedComment(), CSD_COMMENT_SHARED);
 
     }
 

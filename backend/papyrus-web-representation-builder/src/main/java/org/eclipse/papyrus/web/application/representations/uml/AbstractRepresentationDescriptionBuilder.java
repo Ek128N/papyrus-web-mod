@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -128,6 +129,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * Edges tool section name.
      */
     public static final String EDGES = "Edges";
+
+    /**
+     * Underscore.
+     */
+    public static final String UNDERSCORE = "_";
 
     /**
      * AQL expression used to specify gap size at the end of compartment.
@@ -1151,7 +1157,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param forbiddenNodeDescriptionPredicate
      *            predicate on the {@link NodeDescription} to exclude
      */
-    private void reuseTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, List<EClass> owners, List<EClass> forbiddenOwners,
+    protected void reuseTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, List<EClass> owners, List<EClass> forbiddenOwners,
             Predicate<NodeDescription> forbiddenNodeDescriptionPredicate) {
         // Add tool on the parent of Compartment
         this.registerCallback(nodeDescription, () -> {

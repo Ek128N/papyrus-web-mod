@@ -1,4 +1,4 @@
-= State MAchine Diagram tests
+= State Machine Diagram tests
 :toc:
 
 [WARN]
@@ -6,7 +6,7 @@
 Do all those tests sequentially
 ====
 
-== SMD01 - State Machine objects creation
+== SMD10 - State Machine objects creation
 
 .Purpose
 Check all creation in the _State Machine Diagram_.
@@ -37,7 +37,7 @@ image::imgs/SMD01-creation-regions.png[]
 
 image::imgs/SMD01-creation-bordernodes.png[]
 
-== SMD02 - Edge Creation and reconnection
+== SMD20 - Edge Creation and reconnection
 
 .Requirements
 . Starts from SMD01
@@ -55,11 +55,21 @@ Checks all edge creations in the diagram.
 . Reconnect target of a transition to _Fork1_
 ** [ ] Reconnection succeeds and edge display is updated
 
+== SMD30 - Drag and Drop (inside Diagram)
 
-== SMD03 - DnD
+.Purpose
+Check all the drag and drop in the _State Machine Diagram_.
+
+.Recipe
+Create a new State State_DND in the first region and create a Region in this State.
+Drag and Drop all the element of the State Machine into the State_DND (into its region). 
+Drag and Drop all the element from State_DND back into the StateMachine.
+Delete State_DND from the model.
+
+== SMD40 - Drag and Drop (from Model Explorer)
 
 .Requirements
-. Start from SMD02 (or its semantic model)
+. Start from SMD30 (same state as SMD20) (or its semantic model)
 
 .Purpose
 Check that a elements can be created on the diagram only using Drag and Drop tools
@@ -73,7 +83,7 @@ Check that a elements can be created on the diagram only using Drag and Drop too
 ** [ ] Both edges are displayed
 
 
-== SMD04 - Delete
+== SMD50 - Delete
 
 [NOTE]
 ====

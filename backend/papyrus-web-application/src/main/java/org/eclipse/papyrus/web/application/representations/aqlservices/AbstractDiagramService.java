@@ -90,6 +90,7 @@ import org.eclipse.papyrus.web.sirius.contributions.DiagramNavigator;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramNavigationService;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramOperationsService;
 import org.eclipse.papyrus.web.sirius.contributions.IViewDiagramDescriptionService;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeletionPolicy;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -978,6 +979,18 @@ public abstract class AbstractDiagramService {
      */
     public boolean isNotProfileModel(EObject context) {
         return !this.isContainedInProfileResource(context);
+    }
+
+    /**
+     * Check if the nodes is a Symbol or not.
+     *
+     * @param context
+     *            context used to create diagram on
+     *
+     * @return <code>true</code> if the resource is a profile model, <code>false</code> otherwise.
+     */
+    public List<Node> getAllSymbol(DiagramContext diagramContext) {
+        return diagramContext.getDiagram().getNodes();
     }
 
 }

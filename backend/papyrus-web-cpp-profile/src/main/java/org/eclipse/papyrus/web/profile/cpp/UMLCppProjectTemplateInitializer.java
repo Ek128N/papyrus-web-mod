@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.profile.cpp;
 
@@ -169,7 +170,7 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
     }
 
     private boolean filter(DiagramNavigator diagramNav, Node v) {
-        return "CD_Class_Operations_CompartmentNode".equals(diagramNav.getDescription(v).get().getName());
+        return "CD_Class_Operations_SHARED_CompartmentNode".equals(diagramNav.getDescription(v).get().getName());
     }
 
     private Optional<RepresentationMetadata> initializeCppSMProjectContents(IEditingContext editingContext, ICause cause) {

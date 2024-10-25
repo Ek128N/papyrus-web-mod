@@ -31,7 +31,10 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 
 /**
- * Provides the behavior on a semantic drop event in the "Composite Structure Diagram".
+ * Provides the behavior on a semantic drop event in the "Composite Structure" Diagram.
+ *
+ * This class is copied and adapted from
+ * {@link org.eclipse.papyrus.web.application.representations.aqlservices.profile.ProfileSemanticDropBehaviorProvider}.
  *
  * @author Arthur Daussy
  */

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices.utils;
 
@@ -245,7 +246,8 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
             dropStatus = this.graphicalDragAndDrop(object);
         } else {
             // default case when no dropChecker neither dropProvider are defined
-            // ex. : org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericWebInternalDropBehaviorProvider
+            // ex. :
+            // org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericWebInternalDropBehaviorProvider
             dropStatus = this.defaultGraphicalDragAndDrop(object);
         }
         isDragAndDropValid = this.createDragAndDropView(dropStatus, object);
@@ -297,17 +299,23 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
      */
     private boolean createChildViews(EObject semanticElement, Node newParentNode, Node elementNode) {
         Boolean isDragAndDropValid = Boolean.TRUE;
-        Node fakeParentNode = this.viewHelper.createFakeNode(semanticElement, newParentNode);
-        List<Node> matchingChildNodes = new ArrayList<>(elementNode.getChildNodes());
-        matchingChildNodes.addAll(elementNode.getBorderNodes());
-        for (Node matchingChildNode : matchingChildNodes) {
-            EObject semanticNode = this.getSemanticNode(matchingChildNode);
-            if (semanticNode instanceof org.eclipse.uml2.uml.Class umlClass && umlClass.isMetaclass()) {
-                isDragAndDropValid = this.createElementImportView((ElementImport) this.getElementImportReferencingMetaclass(umlClass, semanticElement), fakeParentNode);
-            } else {
-                isDragAndDropValid = isDragAndDropValid && this.viewHelper.createChildView(semanticNode, fakeParentNode, null);
+        List<Node> fakeParentNodes = this.viewHelper.createFakeNodes(semanticElement, newParentNode);
+        if (fakeParentNodes.size() > 0) {
+            Node fakeParentNode = fakeParentNodes.get(0);
+
+            List<Node> matchingChildNodes = new ArrayList<>(elementNode.getChildNodes());
+            matchingChildNodes.addAll(elementNode.getBorderNodes());
+
+            // Here we have 2 matching child nodes
+            for (Node matchingChildNode : matchingChildNodes) {
+                EObject semanticNode = this.getSemanticNode(matchingChildNode);
+                if (semanticNode instanceof org.eclipse.uml2.uml.Class umlClass && umlClass.isMetaclass()) {
+                    isDragAndDropValid = this.createElementImportView((ElementImport) this.getElementImportReferencingMetaclass(umlClass, semanticElement), fakeParentNode);
+                } else {
+                    isDragAndDropValid = isDragAndDropValid && this.viewHelper.createChildView(semanticNode, fakeParentNodes, null);
+                }
+                isDragAndDropValid = isDragAndDropValid && this.createChildViews(this.getSemanticNode(matchingChildNode), fakeParentNode, matchingChildNode);
             }
-            isDragAndDropValid = isDragAndDropValid && this.createChildViews(this.getSemanticNode(matchingChildNode), fakeParentNode, matchingChildNode);
         }
         return isDragAndDropValid;
     }
@@ -362,7 +370,7 @@ public final class GraphicalDropSwitch extends AbstractDropSwitch {
         } else {
             status = Status.createFailingStatus(canDragAndDrop.getMessage());
         }
-        if (status.getState() == State.FAILED) {
+        if (status != null && status.getState() == State.FAILED) {
             LOGGER.warn(status.getMessage());
             this.logger.log(status.getMessage(), ILogLevel.WARNING);
         }

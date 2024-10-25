@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,9 +10,11 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.statemachine;
 
+import static org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -61,19 +63,21 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
 
     private static final String SMD_COMMENT = ID_BUILDER.getDomainNodeName(UML.getComment());
 
+    private static final String SMD_COMMENT_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getComment(), SHARED_SUFFIX);
+
     private static final String SMD_STATEMACHINE_NODE_NAME = ID_BUILDER.getDomainNodeName(UML.getStateMachine());
 
-    private static final String SMD_REGION_NODE_NAME = ID_BUILDER.getDomainNodeName(UML.getRegion());
+    private static final String SMD_REGION_NODE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getRegion(), SHARED_SUFFIX);
 
-    private static final String SMD_STATE_NODE_NAME = ID_BUILDER.getDomainNodeName(UML.getState());
+    private static final String SMD_STATE_NODE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getState(), SHARED_SUFFIX);
 
-    private static final String SMD_FINALSTATE_NODE_NAME = ID_BUILDER.getDomainNodeName(UML.getFinalState());
+    private static final String SMD_FINALSTATE_NODE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getFinalState(), SHARED_SUFFIX);
 
-    private static final String SMD_PSEUDOSTATE_IN_REGION_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "InRegion");
+    private static final String SMD_PSEUDOSTATE_IN_REGION_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), SHARED_SUFFIX);
 
-    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_MACHINE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "BorderNode_InStateMachine");
+    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_MACHINE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "StateMachine_BorderedNode_SHARED");
 
-    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "BorderNode_InState");
+    private static final String SMD_PSEUDOSTATE_BORDERNODE_IN_STATE_NAME = ID_BUILDER.getSpecializedDomainNodeName(UML.getPseudostate(), "State_BorderedNode_SHARED");
 
     private static final String SMD_TRANSITION_EDGE_NAME = ID_BUILDER.getDomainBaseEdgeId(UML.getTransition());
 
@@ -150,13 +154,13 @@ public class StateMachineDiagramTests extends AbstractDiagramTest {
         this.getServiceTester().assertRootCreation(UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT);
 
         Node regionInStateMachine = this.getRegionInSMNode();
-        this.getServiceTester().assertChildCreation(regionInStateMachine, UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT, this.regionInSM);
+        this.getServiceTester().assertChildCreation(regionInStateMachine, UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT_SHARED, this.regionInSM);
 
         // Drop the state + synchronized region
         this.getServiceTester().assertSemanticDrop(this.state1, regionInStateMachine, SMD_STATE_NODE_NAME);
 
         Node regionInStateNode = this.getRegionInStateNode();
-        this.getServiceTester().assertChildCreation(regionInStateNode, UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT, this.regionInState1);
+        this.getServiceTester().assertChildCreation(regionInStateNode, UML.getComment(), UML.getElement_OwnedComment(), SMD_COMMENT_SHARED, this.regionInState1);
     }
 
     @Test
