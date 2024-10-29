@@ -204,6 +204,12 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+	<dependency>
+		<groupId>papyrus-web</groupId>
+		<artifactId>papyrus-web-workspace</artifactId>
+		<version>${project.version}</version>
+	</dependency>
 
 	</dependencies>
 

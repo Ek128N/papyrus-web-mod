@@ -20,6 +20,7 @@ import {
   apolloClientOptionsConfigurersExtensionPoint,
   footerExtensionPoint,
   navigationBarMenuIconExtensionPoint,
+  navigationBarRightContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
@@ -49,6 +50,7 @@ import { OuterFlagNodeLayoutHandler } from './nodes/outerFlag/OuterFlagNodeLayou
 import { OuterFlagNodeConverter } from './nodes/outerFlag/OuterFlagNodeConverter';
 import { OuterFlagNode } from './nodes/outerFlag/OuterFlagNode';
 import { Help } from './core/Help';
+import { PapyrusWorkspace } from './workspace/PapyrusWorkspace';
 
 import './ReactFlow.css';
 import './fonts.css';
@@ -85,6 +87,8 @@ import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon'
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
 import { PublishProfileTreeItemContextMenuContribution } from './profile/publish-profile/PublishProfileTreeItemContextMenuContribution';
+import { ShareProjectTreeItemContextMenuContribution } from './workspace/share-project/ShareProjectTreeItemContextMenuContribution';
+import { RevokeProjectTreeItemContextMenuContribution } from './workspace/revoke-project/RevokeProjectTreeItemContextMenuContribution';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -244,11 +248,25 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: 'papyrus-custom-tree-menu-publish-profile',
   Component: PublishProfileTreeItemContextMenuContribution,
 });
+extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: 'papyrus-custom-tree-menu-share-project',
+  Component: ShareProjectTreeItemContextMenuContribution,
+});
+extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: 'papyrus-custom-tree-menu-revoke-project',
+  Component: RevokeProjectTreeItemContextMenuContribution,
+});
 
 // Help component contribution
 extensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
   identifier: 'papyrus-help',
   Component: () => <Help />,
+});
+
+// Workspace component contribution to navigationBarRightContributionExtensionPoint
+extensionRegistry.addComponent(navigationBarRightContributionExtensionPoint, {
+  identifier: 'papyrus-workspace',
+  Component: () => <PapyrusWorkspace />,
 });
 
 // Footer contribution
