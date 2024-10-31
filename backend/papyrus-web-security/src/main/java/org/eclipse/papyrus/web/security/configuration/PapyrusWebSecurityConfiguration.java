@@ -33,8 +33,10 @@ public class PapyrusWebSecurityConfiguration {
     @Bean
     SecurityFilterChain web(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
-            .anyRequest().authenticated()) // .anyRequest().anonymous()) for skip authentication
+            .requestMatchers("/images/**", "/css/**").permitAll()
+            .anyRequest().authenticated()) // .anyRequest().anonymous()) debug for skip authentication
             .formLogin(form -> form
+                    .loginPage("/login")
                     .successHandler(customSuccessHandler())
                     .failureHandler(customFailureHandler())
                     .permitAll());
