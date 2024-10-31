@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices.statemachine;
 
@@ -20,6 +21,7 @@ import org.eclipse.papyrus.uml.domain.services.IEditableChecker;
 import org.eclipse.papyrus.uml.domain.services.labels.ElementDefaultNameProvider;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.web.application.representations.IWebExternalSourceToRepresentationDropBehaviorProvider;
+import org.eclipse.papyrus.web.application.representations.IWebInternalSourceToRepresentationDropBehaviorProvider;
 import org.eclipse.papyrus.web.application.representations.aqlservices.AbstractDiagramService;
 import org.eclipse.papyrus.web.application.representations.aqlservices.utils.IViewHelper;
 import org.eclipse.papyrus.web.application.representations.aqlservices.utils.ViewHelper;
@@ -31,7 +33,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
-import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -64,10 +66,22 @@ public class StateMachineDiagramService extends AbstractDiagramService {
 
     @Override
     protected IWebExternalSourceToRepresentationDropBehaviorProvider buildSemanticDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
-            Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
         IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
-        return new StateMachineSemanticDiagramDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+        IWebExternalSourceToRepresentationDropBehaviorProvider dropProvider = new StateMachineSemanticDiagramDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+                this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
                 new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
+        return dropProvider;
+    }
+
+    @Override
+    protected IWebInternalSourceToRepresentationDropBehaviorProvider buildGraphicalDropBehaviorProvider(EObject semanticDroppedElement, IEditingContext editionContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions) {
+        IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, capturedNodeDescriptions);
+        IWebInternalSourceToRepresentationDropBehaviorProvider dropProvider = new StateMachineGraphicalDropBehaviorProvider(editionContext, createViewHelper, this.getObjectService(),
+                this.getECrossReferenceAdapter(semanticDroppedElement), this.getEditableChecker(),
+                new DiagramNavigator(this.getDiagramNavigationService(), diagramContext.getDiagram(), capturedNodeDescriptions), this.logger);
+        return dropProvider;
     }
 
     /**
@@ -77,7 +91,7 @@ public class StateMachineDiagramService extends AbstractDiagramService {
      * @return an instance of Pseudostate.
      */
     public Pseudostate createPseudoState(EObject parent, String type, String referenceName, Node targetView, IDiagramContext diagramContext,
-            Map<NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions, String pseudoStateKind) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, org.eclipse.sirius.components.diagrams.description.NodeDescription> capturedNodeDescriptions, String pseudoStateKind) {
         EObject result = super.create(parent, type, referenceName, targetView, diagramContext, capturedNodeDescriptions);
         if (result instanceof Pseudostate pseudostate) {
             pseudostate.setKind(PseudostateKind.get(pseudoStateKind));

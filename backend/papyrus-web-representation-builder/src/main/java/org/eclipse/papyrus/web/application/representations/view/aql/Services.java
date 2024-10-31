@@ -74,6 +74,8 @@ public class Services {
 
     public static final String REMOVE_VALUE_FROM = "removeValueFrom";
 
+    public static final String GET_SYMBOL = "getAllSymbol";
+
     /**
      * The name of the service that check is the root model is not a Profile model.
      */

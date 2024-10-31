@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,8 +10,11 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices.utils;
+
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -47,6 +50,20 @@ public interface IViewHelper {
      * @return {@code true} if a creation request has been made, {@code false} otherwise
      */
     boolean createChildView(EObject self, org.eclipse.sirius.components.diagrams.Node selectedNode, String mappingName);
+
+    /**
+     * Creates a child {@code mappingName} view representing {@code self} in the provided {@code selectedNode}.
+     *
+     * @param self
+     *            the semantic element to represent
+     * @param possibleParent
+     *            a list of possible parent
+     * @param mappingName
+     *            the name of the mapping to use to create the view
+     * @return {@code true} if a creation request has been made, {@code false} otherwise
+     */
+
+    boolean createChildView(EObject self, List<Node> possibleParent, String mappingName);
 
     /**
      * Creates a view on root of the diagram.
@@ -97,7 +114,7 @@ public interface IViewHelper {
      *            the selected node (future parent)
      * @return the fake node represented the future created node
      */
-    Node createFakeNode(EObject semanticElement, Node selectedNode);
+    List<Node> createFakeNodes(EObject semanticElement, Node selectedNode);
 
     /**
      * Deletes the view of given {@link Node}.
@@ -126,6 +143,11 @@ public interface IViewHelper {
         }
 
         @Override
+        public boolean createChildView(EObject semanticElement, List<Node> selectedNode, String mappingName) {
+            return false;
+        }
+
+        @Override
         public boolean createRootView(EObject self) {
             return false;
         }
@@ -146,7 +168,7 @@ public interface IViewHelper {
         }
 
         @Override
-        public Node createFakeNode(EObject semanticElement, Node optionalParentNode) {
+        public List<Node> createFakeNodes(EObject semanticElement, Node optionalParentNode) {
             return null;
         }
 

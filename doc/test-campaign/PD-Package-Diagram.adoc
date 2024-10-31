@@ -47,18 +47,16 @@ image::imgs/PD01-creations.png[]
 .Purpose
 Check diagram elements deletion in the _Package Diagram_.
 
-
 .Recipe
 . Select _Model_ child of the root _Package_ and using the palette delete this element from the diagram only
 . Redo the previous step with all elements present in the diagram
 ** [ ] No elements are present in the diagram
 ** [ ] Check that elements are still present in the tree of the _Explorer_ view
 
-== PD20 - Drag and Drop
+== PD20 - Drag and Drop (from Model Explorer)
 
 .Purpose
 Check elements drag and drop in the _Package Diagram_.
-
 
 .Recipe
 . From the tree of the _Explorer_ view, select each element and drag it back into the diagram
@@ -67,7 +65,20 @@ Check elements drag and drop in the _Package Diagram_.
 . From the _Explorer_ view, select and drag the inner _Package_ of the root _Package_ to the diagram (outside any container)
 ** [ ] Check that the dropped _Package_ has a _containment_ link from the parent _Package_ (rounded cross head)
 
-== PD30 - Global Deletion
+== PD30 - Drag and Drop (inside Diagram)
+
+.Purpose
+Check all the drag and drop inside the _Package Diagram_.
+
+.Recipe
+Create a new Package Pack_1 and a sub Model Model_01.
+Drag and Drop all the existing element (Package, Model, Constraint and Comment) inside Pack_1 or Model_01 alternatively.
+
+=== From Diagram to Package and back
+Take all the dropped element in the previous step and put them back in the the diagram (outside Pack_1 and Pack_01).
+Delete Pack_1 (and Model_01) from Model.
+
+== PD40 - Global Deletion
 
 .Purpose
 Check elements global deletion in the _Package Diagram_.
@@ -79,7 +90,7 @@ Check elements global deletion in the _Package Diagram_.
 . Select the _Comment_ element contained inside the root _Package_ element, use the _Delete_ action from the contextual menu to remove this _Comment_ element
 ** [ ] Check that removed elements are no longer present in both diagram and _Explorer_ views
 
-== PD40 - Link Reconnect
+== PD50 - Link Reconnect
 
 .Purpose
 Check link reconnection in the _Package Diagram_.
@@ -93,7 +104,7 @@ Check link reconnection in the _Package Diagram_.
 . Select the _import_ link, grab the handle from the _Package_ and reconnect it to the first _Model_ element
 ** [ ] Check that _Model_ elements are now connected with the merge link
 
-== PD50 - Direct edit
+== PD60 - Direct edit
 
 .Purpose
 Check direct edit in the _Package Diagram_.

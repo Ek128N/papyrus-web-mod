@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,9 +10,11 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Aurelien Didier (Artal Technologies) - Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.services.clazz;
 
+import static org.eclipse.papyrus.web.application.representations.uml.AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -86,6 +88,8 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
     private static final String CD_COMMENT = ID_BUILDER.getDomainNodeName(UML.getComment());
 
+    private static final String CD_COMMENT_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getComment(), SHARED_SUFFIX);
+
     private static final String CD_PACKAGE = ID_BUILDER.getDomainNodeName(UML.getPackage());
 
     private static final String CD_MODEL = ID_BUILDER.getDomainNodeName(UML.getModel());
@@ -100,19 +104,19 @@ public class ClassDiagramTests extends AbstractDiagramTest {
 
     private static final String CD_DATA_TYPE = ID_BUILDER.getDomainNodeName(UML.getDataType());
 
-    private static final String CD_PACKAGE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getPackage(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_PACKAGE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getPackage(), SHARED_SUFFIX);
 
-    private static final String CD_MODEL_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getModel(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_MODEL_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getModel(), SHARED_SUFFIX);
 
-    private static final String CD_CLASS_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getClass_(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_CLASS_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getClass_(), SHARED_SUFFIX);
 
-    private static final String CD_INTERFACE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getInterface(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_INTERFACE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getInterface(), SHARED_SUFFIX);
 
-    private static final String CD_PRIMITIVE_TYPE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getPrimitiveType(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_PRIMITIVE_TYPE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getPrimitiveType(), SHARED_SUFFIX);
 
-    private static final String CD_DATA_TYPE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getDataType(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_DATA_TYPE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getDataType(), SHARED_SUFFIX);
 
-    private static final String CD_ENUMERATION_TYPE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getEnumeration(), CDDiagramDescriptionBuilder.PACKAGE_CHILD);
+    private static final String CD_ENUMERATION_TYPE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getEnumeration(), SHARED_SUFFIX);
 
     private static final String CD_ASSOCIATION = ID_BUILDER.getDomainBaseEdgeId(UML.getAssociation());
 
@@ -123,19 +127,19 @@ public class ClassDiagramTests extends AbstractDiagramTest {
     }
 
     private static String getAttributeCompartmentId(EClass owner) {
-        return ID_BUILDER.getCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.ATTRIBUTES_COMPARTMENT_SUFFIX);
+        return ID_BUILDER.getSpecializedCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.ATTRIBUTES_COMPARTMENT_SUFFIX, SHARED_SUFFIX);
     }
 
     private static String getLiteralCompartmentId(EClass owner) {
-        return ID_BUILDER.getCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.LITERAL_COMPARTMENT_SUFFIX);
+        return ID_BUILDER.getSpecializedCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.LITERAL_COMPARTMENT_SUFFIX, SHARED_SUFFIX);
     }
 
     private static String getOperationCompartmentId(EClass owner) {
-        return ID_BUILDER.getCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.OPERATIONS_COMPARTMENT_SUFFIX);
+        return ID_BUILDER.getSpecializedCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.OPERATIONS_COMPARTMENT_SUFFIX, SHARED_SUFFIX);
     }
 
     private static String getNestedClassifierCompartmentId(EClass owner) {
-        return ID_BUILDER.getCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX);
+        return ID_BUILDER.getSpecializedCompartmentDomainNodeName(owner, CDDiagramDescriptionBuilder.NESTED_CLASSIFIERS_COMPARTMENT_SUFFIX, SHARED_SUFFIX);
     }
 
     @Test
@@ -549,7 +553,7 @@ public class ClassDiagramTests extends AbstractDiagramTest {
         }
 
         // Comment
-        this.getServiceTester().assertChildCreationAndDrop(parentNode, Comment.class, UML.getElement_OwnedComment(), CD_COMMENT);
+        this.getServiceTester().assertChildCreationAndDrop(parentNode, Comment.class, UML.getElement_OwnedComment(), CD_COMMENT_SHARED);
 
         // Class in Package
         this.getServiceTester().assertChildCreationAndDrop(parentNode, Class.class, UML.getPackage_PackagedElement(), CD_CLASS_CHILD);

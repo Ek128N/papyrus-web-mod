@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,7 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Aurelien Didier (Artal Technologies) - Issue 199
+ *  Aurelien Didier (Artal Technologies) - Issue 199, Issue 190
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.papyrus.web.application.representations.view.CreationToolsUtil;
 import org.eclipse.papyrus.web.application.representations.view.aql.CallQuery;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
@@ -53,7 +55,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     public static final int STATEMACHINE_NODE_BORDER_RADIUS = 10;
 
-    private static final String PSEUDO_STATE = "Pseudostate_";
+    private static final String PSEUDO_STATE = "Pseudostate";
 
     private static final String ROUND_ICON_NODE_DEFAULT_DIAMETER = "30";
 
@@ -63,6 +65,11 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
+    /**
+     * The <i>shared</i> {@link NodeDescription} for the diagram.
+     */
+    private NodeDescription smSharedDescription;
+
     public SMDDiagramDescriptionBuilder() {
         super(SMD_PREFIX, SMD_REP_NAME, UMLPackage.eINSTANCE.getStateMachine());
     }
@@ -70,13 +77,40 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
-        this.createStateMachineNodeDescription(diagramDescription);
-        this.createTransitionEdgeDescription(diagramDescription);
+        this.createDefaultToolSectionInDiagramDescription(diagramDescription);
 
-        this.createCommentDescription(diagramDescription);
+        this.smSharedDescription = this.createSharedDescription(diagramDescription);
+
+        NodeDescription stateMachineNodeDescription = this.createStateMachineNodeDescription(diagramDescription);
+        this.createTransitionEdgeDescription(diagramDescription);
+        this.createCommentTopNodeDescription(diagramDescription, NODES);
+
+        this.createRegionSharedNodeDescription(diagramDescription);
+        NodeDescription stateNodeDescription = this.createStateSharedNodeDescription(diagramDescription);
+        this.createFinalStateSharedNodeDescription(diagramDescription);
+        this.createPseudostateSharedNodeDescription(diagramDescription);
+        this.createPseudostateBorderSharedNodeDescription(stateMachineNodeDescription, diagramDescription, this.umlPackage.getStateMachine_ConnectionPoint(), this.umlPackage.getStateMachine(),
+                "StateMachine");
+        this.createPseudostateBorderSharedNodeDescription(stateNodeDescription, diagramDescription, this.umlPackage.getState_ConnectionPoint(), this.umlPackage.getState(), "State");
+
+        this.createCommentSubNodeDescription(diagramDescription, this.smSharedDescription, NODES,
+                this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX),
+                List.of(this.umlPackage.getRegion(), this.umlPackage.getStateMachine()));
 
         // There is a unique DropTool for the DiagramDescription
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
+
+        DropNodeTool smdGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
+        List<EClass> children = List.of(this.umlPackage.getRegion(), this.umlPackage.getState(), this.umlPackage.getPseudostate(), this.umlPackage.getState(), this.umlPackage.getFinalState(),
+                this.umlPackage.getComment());
+        this.registerCallback(diagramDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            // Filter Entry and Exit points
+            droppedNodeDescriptions.stream().filter(tool -> tool.getName().endsWith("_BorderedNode_SHARED"));
+            smdGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+        diagramDescription.getPalette().setDropNodeTool(smdGraphicalDropTool);
+
     }
 
     private NodeDescription createStateMachineNodeDescription(DiagramDescription diagramDescription) {
@@ -97,24 +131,19 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         // The only way is to define a delete tool that does nothing
         smdStateMachineNodeDesc.getPalette().setDeleteTool(DiagramFactory.eINSTANCE.createDeleteTool());
 
-        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InStateMachine");
-        this.createPseudostateBorderNodeDescription(smdStateMachineNodeDesc, this.umlPackage.getStateMachine_ConnectionPoint(), specializedDomainNodeName);
-
-        NodeDescription regionNodeDescription = this.createRegionNodeDescription(smdStateMachineNodeDesc, diagramDescription);
-        listLayoutStrategyDescription.getGrowableNodes().add(regionNodeDescription);
-        this.registerNodeAsCommentOwner(regionNodeDescription, diagramDescription);
-
-        Supplier<List<NodeDescription>> stateMachineDescs = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getStateMachine());
+        DropNodeTool smGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(smdStateMachineNodeDesc));
+        List<EClass> children = List.of(this.umlPackage.getRegion(), this.umlPackage.getPseudostate());
         this.registerCallback(smdStateMachineNodeDesc, () -> {
-            CreationToolsUtil.addNodeCreationTool(stateMachineDescs, this.getViewBuilder().createCreationTool(UMLPackage.eINSTANCE.getStateMachine_Region(), UMLPackage.eINSTANCE.getRegion()));
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            smGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         return smdStateMachineNodeDesc;
     }
 
-    private NodeDescription createRegionNodeDescription(NodeDescription stateMachineNodeDescription, DiagramDescription diagramDescription) {
+    private NodeDescription createRegionSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyleDescription = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyleDescription.setBackground(this.styleProvider.getTransparentColor());
-        
+
         // We need here to add a non empty label so the renderer displays a label and the label separator
         // This is the only way we can have compartment with no border but still display a line between each compartment
         NodeDescription regionNodeDesc = this.newNodeBuilder(this.umlPackage.getRegion(), rectangularNodeStyleDescription)//
@@ -125,21 +154,30 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getRegion().getName()))//
                 .build();
 
-        stateMachineNodeDescription.getChildrenDescriptions().add(regionNodeDesc);
+        regionNodeDesc.setName(regionNodeDesc.getName() + UNDERSCORE + SHARED_SUFFIX);
 
-        this.createStateNodeDescription(regionNodeDesc, diagramDescription);
-        this.createFinalStateNodeDescription(regionNodeDesc);
-        this.createPseudostateInRegionNodeDescription(regionNodeDesc);
+        this.smSharedDescription.getChildrenDescriptions().add(regionNodeDesc);
+        this.createDefaultToolSectionsInNodeDescription(regionNodeDesc);
 
-        Supplier<List<NodeDescription>> regionDescs = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getRegion());
+        NodeTool regionStateSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getState_Region(), this.umlPackage.getRegion());
+        this.reuseNodeAndCreateTool(regionNodeDesc, diagramDescription, regionStateSharedNodeCreationTool, NODES, List.of(this.umlPackage.getState()), List.of(this.umlPackage.getFinalState()));
+
+        NodeTool regionStateMachineSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getStateMachine_Region(), this.umlPackage.getRegion());
+        this.reuseNodeAndCreateTool(regionNodeDesc, diagramDescription, regionStateMachineSharedNodeCreationTool, NODES, List.of(this.umlPackage.getStateMachine()).toArray(EClass[]::new));
+
+        //
+        DropNodeTool smRegionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(regionNodeDesc));
+        List<EClass> children = List.of(this.umlPackage.getState(), this.umlPackage.getPseudostate(), this.umlPackage.getComment());
         this.registerCallback(regionNodeDesc, () -> {
-            CreationToolsUtil.addNodeCreationTool(regionDescs, this.getViewBuilder().createCreationTool(this.umlPackage.getRegion_Subvertex(), this.umlPackage.getState()));
-            CreationToolsUtil.addNodeCreationTool(regionDescs, this.getViewBuilder().createCreationTool(this.umlPackage.getRegion_Subvertex(), this.umlPackage.getFinalState()));
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            smRegionGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
+        regionNodeDesc.getPalette().setDropNodeTool(smRegionGraphicalDropTool);
+
         return regionNodeDesc;
     }
 
-    private NodeDescription createStateNodeDescription(NodeDescription regionNodeDescription, DiagramDescription diagramDescription) {
+    private NodeDescription createStateSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
         InsideLabelDescription labelDescription = this.getViewBuilder().createDefaultInsideLabelDescription(false, false);
@@ -160,25 +198,32 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .conditionalStyles(List.of(conditionalHeaderStyle)) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getState().getName()))//
-                .reusedNodeDescriptions(List.of(regionNodeDescription))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getState().getName()))//
                 .insideLabelDescription(labelDescription)
                 .build();
 
-        regionNodeDescription.getChildrenDescriptions().add(stateNodeDesc);
+        stateNodeDesc.setName(stateNodeDesc.getName() + UNDERSCORE + SHARED_SUFFIX);
 
-        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "BorderNode_InState");
-        this.createPseudostateBorderNodeDescription(stateNodeDesc, this.umlPackage.getState_ConnectionPoint(), specializedDomainNodeName);
+        this.smSharedDescription.getChildrenDescriptions().add(stateNodeDesc);
+        this.createDefaultToolSectionsInNodeDescription(stateNodeDesc);
 
-        Supplier<List<NodeDescription>> stateDesc = () -> this.collectNodesWithDomainAndFilter(diagramDescription, List.of(this.umlPackage.getState()), List.of(this.umlPackage.getFinalState()));
-        this.registerCallback(stateNodeDesc, () -> {
-            CreationToolsUtil.addNodeCreationTool(stateDesc, this.getViewBuilder().createCreationTool(this.umlPackage.getState_Region(), this.umlPackage.getRegion()));
+        NodeTool stateSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getRegion_Subvertex(), this.umlPackage.getState());
+        List<EClass> owners = List.of(this.umlPackage.getRegion());
+        this.reuseNodeAndCreateTool(stateNodeDesc, diagramDescription, stateSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
+
+        // Add dropped tool on Shared Package container
+        DropNodeTool stateGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(stateNodeDesc));
+        List<EClass> children = List.of(this.umlPackage.getRegion());
+        this.registerCallback(stateGraphicalDropTool, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            stateGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
+        stateNodeDesc.getPalette().setDropNodeTool(stateGraphicalDropTool);
 
         return stateNodeDesc;
     }
 
-    private void createFinalStateNodeDescription(NodeDescription regionNodeDescription) {
+    private void createFinalStateSharedNodeDescription(DiagramDescription diagramDescription) {
         ImageNodeStyleDescription imageNodeStyle = this.getViewBuilder().createImageNodeStyle("view/images/FinalState_24dp.svg");
 
         NodeDescription finalStateNodeDesc = this.newNodeBuilder(this.umlPackage.getFinalState(), imageNodeStyle)//
@@ -188,35 +233,63 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getFinalState().getName()))//
                 .addOutsideLabelDescription(this.getViewBuilder().createDefaultOutsideLabelDescription(true))
                 .build();
+
+        finalStateNodeDesc.setName(finalStateNodeDesc.getName() + UNDERSCORE + SHARED_SUFFIX);
+
         finalStateNodeDesc.setDefaultWidthExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
         finalStateNodeDesc.setDefaultHeightExpression(ROUND_ICON_NODE_DEFAULT_DIAMETER);
 
-        regionNodeDescription.getChildrenDescriptions().add(finalStateNodeDesc);
+        this.smSharedDescription.getChildrenDescriptions().add(finalStateNodeDesc);
+
+        NodeTool finalStateSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getRegion_Subvertex(), this.umlPackage.getFinalState());
+        List<EClass> owners = List.of(this.umlPackage.getRegion());
+        this.reuseNodeAndCreateTool(finalStateNodeDesc, diagramDescription, finalStateSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
+
     }
 
-    private void createPseudostateInRegionNodeDescription(NodeDescription regionNodeDescription) {
+    private void createPseudostateSharedNodeDescription(DiagramDescription diagramDescription) {
         List<PseudostateKind> pseudostateKinds = new ArrayList<>(List.of(PseudostateKind.values()));
         pseudostateKinds.removeAll(List.of(PseudostateKind.ENTRY_POINT_LITERAL, PseudostateKind.EXIT_POINT_LITERAL));
 
-        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), "InRegion");
-        NodeDescription pseudostateNodeDesc = this.createPseudoStateNodeDescription(regionNodeDescription, this.umlPackage.getRegion_Subvertex(), pseudostateKinds, specializedDomainNodeName);
+        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), SHARED_SUFFIX);
+        NodeDescription pseudostateNodeDesc = this.createPseudostateNodeDescription(diagramDescription, this.umlPackage.getRegion_Subvertex(), this.umlPackage.getRegion(), pseudostateKinds,
+                specializedDomainNodeName);
 
-        regionNodeDescription.getChildrenDescriptions().add(pseudostateNodeDesc);
+        //
+        this.smSharedDescription.getChildrenDescriptions().add(pseudostateNodeDesc);
+
+        NodeTool pseudoStateNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getRegion_Subvertex(), this.umlPackage.getPseudostate());
+        List<EClass> owners = List.of(this.umlPackage.getRegion());
+        this.reuseNodeAndCreateTool(pseudostateNodeDesc, diagramDescription, pseudoStateNodeCreationTool, NODES, owners.toArray(EClass[]::new));
+
     }
 
-    private void createPseudostateBorderNodeDescription(NodeDescription parentNodeDescription, EReference containmentFeature, String name) {
+    private void createPseudostateBorderSharedNodeDescription(NodeDescription parentNode, DiagramDescription diagramDescription, EReference containmentFeature, EClass owner, String name) {
         List<PseudostateKind> pseudostateKinds = List.of(PseudostateKind.ENTRY_POINT_LITERAL, PseudostateKind.EXIT_POINT_LITERAL);
+        String suffix = name + "_BorderedNode_SHARED";
+        String specializedDomainNodeName = this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getPseudostate(), suffix);
+        NodeDescription pseudostateBorderNodeDesc = this.createPseudostateNodeDescription(diagramDescription, containmentFeature, owner, pseudostateKinds, specializedDomainNodeName);
 
-        NodeDescription pseudostateBorderNodeDesc = this.createPseudoStateNodeDescription(parentNodeDescription, containmentFeature, pseudostateKinds, name);
+        parentNode.getBorderNodesDescriptions().add(pseudostateBorderNodeDesc);
 
-        parentNodeDescription.getBorderNodesDescriptions().add(pseudostateBorderNodeDesc);
     }
 
-    private NodeDescription createPseudoStateNodeDescription(NodeDescription parentDesc, EReference containmentFeature, List<PseudostateKind> pseudostateKinds, String name) {
+    private NodeDescription createPseudostateNodeDescription(DiagramDescription diagramDescription, EReference containmentFeature, EClass ownerClass,
+            List<PseudostateKind> pseudostateKinds, String name) {
         List<ConditionalNodeStyle> conditionalNodeStyles = new ArrayList<>();
         List<NodeTool> creationTools = new ArrayList<>();
 
         final OutsideLabelDescription labelStyle = this.getViewBuilder().createDefaultOutsideLabelDescription(true);
+
+        NodeDescription pseudostateNodeDesc = this.newNodeBuilder(this.umlPackage.getPseudostate(), null)//
+                .name(name)//
+                .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(containmentFeature))//
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
+                .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getPseudostate().getName()))//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getPseudostate().getName()))//
+                .addOutsideLabelDescription(labelStyle) //
+                .build();
+
         for (PseudostateKind pseudostateKind : pseudostateKinds) {
             String condition = "aql:self.kind = uml::PseudostateKind::" + pseudostateKind.getLiteral();
             String literal = pseudostateKind.getLiteral();
@@ -251,27 +324,20 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             creationTool.getBody().add(createElement);
 
             creationTools.add(creationTool);
+
+            List<EClass> owners = List.of(ownerClass);
+            this.reuseTool(pseudostateNodeDesc, diagramDescription, creationTool, owners, List.of(),
+                    nodeDescription -> nodeDescription != null);
+
         }
 
-        NodeDescription pseudostateBorderNodeDesc = this.newNodeBuilder(this.umlPackage.getPseudostate(), null)//
-                .name(name)//
-                .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(containmentFeature))//
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getPseudostate().getName()))//
-                .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getPseudostate().getName()))//
-                .addOutsideLabelDescription(labelStyle) //
-                .conditionalStyles(conditionalNodeStyles)//
-                .build();
+        pseudostateNodeDesc.getConditionalStyles().addAll(conditionalNodeStyles);
 
-        pseudostateBorderNodeDesc.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_WITDTH));
-        pseudostateBorderNodeDesc.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_HEIGHT));
-        pseudostateBorderNodeDesc.setKeepAspectRatio(true);
+        pseudostateNodeDesc.setDefaultWidthExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_WITDTH));
+        pseudostateNodeDesc.setDefaultHeightExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.COMPUTE_PSEUDO_STATE_HEIGHT));
+        pseudostateNodeDesc.setKeepAspectRatio(true);
 
-        this.registerCallback(pseudostateBorderNodeDesc, () -> {
-            parentDesc.getPalette().getNodeTools().addAll(creationTools);
-        });
-
-        return pseudostateBorderNodeDesc;
+        return pseudostateNodeDesc;
     }
 
     private void createTransitionEdgeDescription(DiagramDescription diagramDescription) {

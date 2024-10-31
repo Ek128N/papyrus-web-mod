@@ -124,7 +124,26 @@ multiple lines.
 ** [ ] The text should be displayed inside the comment
 . Using the _direct edit tool_ changed the name of the _Association_ to : *Association1*
 
-== CD30 - Drag and Drop
+== CD30 - Drag and Drop (inside Diagram)
+
+.Purpose
+Check all the drag and drop in the _Class Diagram_.
+
+.Recipe
+Create a new Package Pack_1 and a sub model Model_01.
+Drag and Drop all the element of the diagram inside Pack_1 or Model_01 alternatively.
+
+=== From Diagram to Package
+Take all the dropped element in the previous step and put them back in the the diagram (outside Pack_1 and Model_01).
+Delete Pack_1 (and Model_01) from Model.
+
+=== Inside Nodes
+* Take a Property from a Class -> Drag and drop it in an Interface, in a DataType, a PrimitiveType, a Signal and in the original Class (make sure to use the first compartment of each node on drop, which the one containing properties).
+* Take an Operation from a Class -> Drag and drop it in an Interface, in a DataType, a PrimitiveType and in the original Class (make sure to use the second compartment of each node on drop, which the one containing operations).
+* Test Reception: Create another Class, drag and drop the Reception from the first Class to the second one, and d&d back to the first one. Delete the second Class.
+* Test Enumeration literal: Create another Enumeration, drag and drop the enumeration literal from the first Enumeration to the second one, and d&d back to the first one. Delete the second Enumeration.
+
+== CD40 - Drag and Drop (from Model Explorer)
 
 .Requirement
 . Start from the state of _CD20_
@@ -150,7 +169,7 @@ image::imgs/CD30-containmentLink.png[]
 . _Drag and Drop_ all sub elements in the correct compartment (on the background of the compartment or on a sibling both should work)) of *Model10::Interface10*
 ** [ ] All sub elements should be displayed
 
-== CD40 - Deletetion
+== CD50 - Deletetion
 
 .Requiments
 . Start from the state of _CD300_

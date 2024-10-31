@@ -60,13 +60,15 @@ public class PackageDiagramTests extends AbstractDiagramTest {
 
     private static final String PAD_COMMENT = ID_BUILDER.getDomainNodeName(UML.getComment());
 
+    private static final String PAD_COMMENT_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getComment(), AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX);
+
     private static final String PAD_PACKAGE = ID_BUILDER.getDomainNodeName(UML.getPackage());
 
-    private static final String PAD_PACKAGE_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getPackage(), AbstractRepresentationDescriptionBuilder.PACKAGE_CHILD);
+    private static final String PAD_PACKAGE_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getPackage(), AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX);
 
     private static final String PAD_MODEL = ID_BUILDER.getDomainNodeName(UML.getModel());
 
-    private static final String PAD_MODEL_CHILD = ID_BUILDER.getSpecializedDomainNodeName(UML.getModel(), AbstractRepresentationDescriptionBuilder.PACKAGE_CHILD);
+    private static final String PAD_MODEL_SHARED = ID_BUILDER.getSpecializedDomainNodeName(UML.getModel(), AbstractRepresentationDescriptionBuilder.SHARED_SUFFIX);
 
     @Test
     public void checkRootPackageCreation() {
@@ -110,7 +112,7 @@ public class PackageDiagramTests extends AbstractDiagramTest {
 
         Node parentNode = this.getServiceTester().assertSemanticDrop(parentPackage, null, PAD_PACKAGE);
 
-        Node childNode = this.getServiceTester().assertSemanticDrop(subPack, parentNode, PAD_PACKAGE_CHILD);
+        Node childNode = this.getServiceTester().assertSemanticDrop(subPack, parentNode, PAD_PACKAGE_SHARED);
         Node siblingNode = this.getServiceTester().assertSemanticDrop(subPack, null, PAD_PACKAGE);
 
         this.getDiagramHelper().assertGetUniqueFeatureBasedEdge(CONTAINMENT_LINK_EDGE_ID, parentNode, siblingNode);
@@ -429,12 +431,12 @@ public class PackageDiagramTests extends AbstractDiagramTest {
 
         // In Package
         Node packageNode = this.getDiagramHelper().createNodeInDiagram(PAD_PACKAGE, pack1);
-        this.getServiceTester().assertChildCreation(packageNode, UML.getComment(), UML.getElement_OwnedComment(), PAD_COMMENT);
+        this.getServiceTester().assertChildCreation(packageNode, UML.getComment(), UML.getElement_OwnedComment(), PAD_COMMENT_SHARED);
 
         // In Model
         Model model1 = this.createIn(Model.class, pack);
         Node modelNodeNode = this.getDiagramHelper().createNodeInDiagram(PAD_MODEL, model1);
-        this.getServiceTester().assertChildCreation(modelNodeNode, UML.getComment(), UML.getElement_OwnedComment(), PAD_COMMENT);
+        this.getServiceTester().assertChildCreation(modelNodeNode, UML.getComment(), UML.getElement_OwnedComment(), PAD_COMMENT_SHARED);
 
     }
 
@@ -486,19 +488,19 @@ public class PackageDiagramTests extends AbstractDiagramTest {
 
     private void checkPackageChildren(Node parentNode, boolean recurse) {
         // Model In Model
-        Node droppedModelNode = this.getServiceTester().assertChildCreationAndDrop(parentNode, Model.class, UML.getPackage_PackagedElement(), PAD_MODEL_CHILD);
+        Node droppedModelNode = this.getServiceTester().assertChildCreationAndDrop(parentNode, Model.class, UML.getPackage_PackagedElement(), PAD_MODEL_SHARED);
         if (recurse) {
             this.checkPackageChildren(droppedModelNode, false);
         }
 
         // Package in Model
-        Node droppedPackageNode = this.getServiceTester().assertChildCreationAndDrop(parentNode, Package.class, UML.getPackage_PackagedElement(), PAD_PACKAGE_CHILD);
+        Node droppedPackageNode = this.getServiceTester().assertChildCreationAndDrop(parentNode, Package.class, UML.getPackage_PackagedElement(), PAD_PACKAGE_SHARED);
         if (recurse) {
             this.checkPackageChildren(droppedPackageNode, false);
         }
 
         // Comment in Model
-        this.getServiceTester().assertChildCreationAndDrop(parentNode, Comment.class, UML.getElement_OwnedComment(), PAD_COMMENT);
+        this.getServiceTester().assertChildCreationAndDrop(parentNode, Comment.class, UML.getElement_OwnedComment(), PAD_COMMENT_SHARED);
     }
 
     @Test
