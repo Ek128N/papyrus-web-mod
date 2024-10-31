@@ -63,7 +63,7 @@ public class WorkspaceDeleteService implements IProjectDeletionService {
             result = new Success<>(null);
             
             List<Workspace> wre = workspaceRepository.findAllByProjectId(projectId);
-            Set<UUID> wsId = wre.stream().map(workspace -> workspace.getProjectId()).collect(Collectors.toSet());
+            Set<UUID> wsId = wre.stream().map(workspace -> workspace.getId()).collect(Collectors.toSet());
             workspaceRepository.deleteAllById(wsId);
         } else {
             result = new Failure<>(this.messageService.notFound());
