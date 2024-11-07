@@ -718,6 +718,56 @@ public abstract class AbstractRepresentationDescriptionBuilder {
     }
 
     /**
+     * This method add the node description as a growable node of its {@code resizableParents} list.
+     *
+     * It reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
+     * {@code owners}, reuse mapping and creation tools using:
+     *
+     *
+     * @see #reuseNodeAndCreateTool(NodeDescription, DiagramDescription, NodeTool, String, List, List)
+     *
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param diagramDescription
+     *            the Activity {@link DiagramDescription}s
+     * @param toolSectionName
+     *            name of the tool section to add the tool
+     * @param owners
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     * @param resizableParents
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     */
+    public void reuseNodeAndCreateTool(NodeDescription nodeDescription, DiagramDescription diagramDescription, NodeTool nodeTool, String toolSectionName, List<EClass> owners,
+            List<EClass> forbiddenOwners, List<EClass> resizableParents) {
+        this.reuseNodeAndCreateTool(nodeDescription, diagramDescription, nodeTool, toolSectionName, owners,
+                forbiddenOwners);
+        this.registerCallback(nodeDescription, () -> {
+            Supplier<List<NodeDescription>> growableNodeDescriptions = () -> this.collectNodesWithDomainAndFilter(diagramDescription, resizableParents, forbiddenOwners);
+            this.addGrowableNodesDescriptionInOwners(nodeDescription, growableNodeDescriptions.get());
+        });
+    }
+
+    /**
+     * This method add the node description as a growable node of its {@code resizableParents} list.
+     *
+     * @param nodeDescription
+     *            the {@link NodeDescription} to reuse
+     * @param resizableParents
+     *            the type of the {@link NodeDescription} to setup to reuse the provided {@code nodeDescription}
+     */
+    private void addGrowableNodesDescriptionInOwners(NodeDescription nodeDescription, List<NodeDescription> resizableParents) {
+        for (NodeDescription owner : resizableParents) {
+            if (owner != nodeDescription.eContainer()) {
+                if (nodeDescription.eContainingFeature() == DiagramPackage.eINSTANCE.getNodeDescription_ChildrenDescriptions()) {
+                    if (owner.getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription listLayoutDescription) {
+                        listLayoutDescription.getGrowableNodes().add(nodeDescription);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Reuses the provided {@code nodeDescription} as a child of the {@link NodeDescription} representing
      * {@code owners}.
      * <p>

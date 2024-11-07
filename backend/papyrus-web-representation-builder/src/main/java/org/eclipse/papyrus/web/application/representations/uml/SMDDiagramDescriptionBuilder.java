@@ -160,12 +160,13 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createDefaultToolSectionsInNodeDescription(regionNodeDesc);
 
         NodeTool regionStateSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getState_Region(), this.umlPackage.getRegion());
-        this.reuseNodeAndCreateTool(regionNodeDesc, diagramDescription, regionStateSharedNodeCreationTool, NODES, List.of(this.umlPackage.getState()), List.of(this.umlPackage.getFinalState()));
+        // This reuse shall also add the regionNodeDescription as a growable node in its parent.
+        this.reuseNodeAndCreateTool(regionNodeDesc, diagramDescription, regionStateSharedNodeCreationTool, NODES, List.of(this.umlPackage.getState()), List.of(this.umlPackage.getFinalState()),
+                List.of(this.umlPackage.getState(), this.umlPackage.getStateMachine()));
 
         NodeTool regionStateMachineSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getStateMachine_Region(), this.umlPackage.getRegion());
         this.reuseNodeAndCreateTool(regionNodeDesc, diagramDescription, regionStateMachineSharedNodeCreationTool, NODES, List.of(this.umlPackage.getStateMachine()).toArray(EClass[]::new));
 
-        //
         DropNodeTool smRegionGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(regionNodeDesc));
         List<EClass> children = List.of(this.umlPackage.getState(), this.umlPackage.getPseudostate(), this.umlPackage.getComment());
         this.registerCallback(regionNodeDesc, () -> {
@@ -310,7 +311,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             // Node creation tool
             NodeTool creationTool = DiagramFactory.eINSTANCE.createNodeTool();
             creationTool.setName("New " + literalName);
-            creationTool.setIconURLsExpression(ICON_PATH + PSEUDO_STATE + literal + ICON_SVG_EXTENSION);
+            creationTool.setIconURLsExpression(ICON_PATH + PSEUDO_STATE + UNDERSCORE + literal + ICON_SVG_EXTENSION);
 
             // Create instance and init
             ChangeContext createElement = this.getViewBuilder().createChangeContextOperation(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.CREATE_PSEUDO_STATE, //
