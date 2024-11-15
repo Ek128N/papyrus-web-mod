@@ -46,6 +46,8 @@ public class Workspace implements Persistable<UUID> {
     @Column("project_id")
     private UUID projectId;
     
+    @Column("is_owner")
+    private boolean owner;
 
     @Override
     public UUID getId() {
@@ -65,6 +67,10 @@ public class Workspace implements Persistable<UUID> {
         return projectId;
     }
     
+    public boolean isOwner() {
+        return owner;
+    }
+    
     public static Builder newWorkspace() {
         return new Builder();
     }
@@ -78,6 +84,7 @@ public class Workspace implements Persistable<UUID> {
     public static final class Builder {
         private UUID userId;
         private UUID projectId;
+        private boolean owner;
         
         private Builder() {
         }
@@ -86,8 +93,14 @@ public class Workspace implements Persistable<UUID> {
             this.userId = Objects.requireNonNull(userId);
             return this;
         }
+        
         public Builder projectId(UUID projectId) {
             this.projectId = Objects.requireNonNull(projectId);
+            return this;
+        }
+        
+        public Builder owner(boolean isOwner) {
+            this.owner = Objects.requireNonNull(isOwner);
             return this;
         }
         
@@ -97,6 +110,7 @@ public class Workspace implements Persistable<UUID> {
             workspace.id = UUID.randomUUID();
             workspace.userId = Objects.requireNonNull(this.userId);
             workspace.projectId = Objects.requireNonNull(this.projectId);
+            workspace.owner = Objects.requireNonNull(this.owner);
             
             return workspace;
         }

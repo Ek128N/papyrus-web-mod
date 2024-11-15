@@ -67,8 +67,11 @@ public class ProjectShareService implements IProjectShareService {
             Project project = optionalProject.get();
             AuthenticatedUser authenticatedUser = optionalAuthentificatedUser.get();
            
-            Workspace workspace = Workspace.newWorkspace().userId(authenticatedUser.getId()).projectId(project.getId()).build();
-            workspace = workspaceRepository.save(workspace);
+            if (workspaceRepository.findAllByProjectIdAndUserId(projectId, authenticatedUser.getId()).isEmpty()) {
+                Workspace workspace = Workspace.newWorkspace().userId(authenticatedUser.getId())
+                        .projectId(project.getId()).owner(false).build();
+                workspace = workspaceRepository.save(workspace);
+            }
             
             result = new Success<>(null);
         }

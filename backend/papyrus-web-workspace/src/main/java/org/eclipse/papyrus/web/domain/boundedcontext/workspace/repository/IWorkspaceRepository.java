@@ -33,4 +33,5 @@ public interface IWorkspaceRepository
     List<Workspace> findAllByUserId(UUID id);
     List<Workspace> findAllByProjectId(UUID id);
     List<Workspace> findAllByProjectIdAndUserId(UUID projectId, UUID userId);
+    List<Workspace> findAllByProjectIdAndUserIdAndOwner(UUID projectId, UUID userId, boolean isOwner);
 }

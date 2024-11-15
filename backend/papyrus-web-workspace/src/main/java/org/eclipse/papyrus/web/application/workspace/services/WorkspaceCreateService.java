@@ -81,7 +81,7 @@ public class WorkspaceCreateService implements IProjectCreationService {
             if (authentication != null && authentication.getPrincipal() instanceof CustomAuthenticatedUserDetails) {
                 CustomAuthenticatedUserDetails userDetails = (CustomAuthenticatedUserDetails) authentication.getPrincipal();
                 Optional<AuthenticatedUser> authentificatedUser = authenticatedUserRepository.findByName(userDetails.getUsername());
-                Workspace workspace = Workspace.newWorkspace().userId(authentificatedUser.get().getId()).projectId(project.getId()).build();
+                Workspace workspace = Workspace.newWorkspace().userId(authentificatedUser.get().getId()).projectId(project.getId()).owner(true).build();
                 workspaceRepository.save(workspace);
             }
         }

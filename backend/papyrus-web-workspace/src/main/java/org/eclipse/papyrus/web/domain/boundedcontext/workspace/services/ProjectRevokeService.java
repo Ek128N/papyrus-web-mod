@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.papyrus.web.domain.boundedcontext.authenticateduser.entities.AuthenticatedUser;
 import org.eclipse.papyrus.web.domain.boundedcontext.authenticateduser.repositories.IAuthenticatedUserRepository;
+import org.eclipse.papyrus.web.domain.boundedcontext.authenticateduser.services.api.CustomAuthenticatedUserDetails;
 import org.eclipse.papyrus.web.domain.boundedcontext.workspace.entities.Workspace;
 import org.eclipse.papyrus.web.domain.boundedcontext.workspace.repository.IWorkspaceRepository;
 import org.eclipse.papyrus.web.domain.boundedcontext.workspace.services.api.IProjectRevokeService;
@@ -31,6 +32,8 @@ import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,6 +61,16 @@ public class ProjectRevokeService implements IProjectRevokeService {
     @Override
     public IResult<Void> revokeProject(ICause cause, UUID projectId, String userName) {
         IResult<Void> result = null;
+        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomAuthenticatedUserDetails) {
+            CustomAuthenticatedUserDetails userDetails = (CustomAuthenticatedUserDetails) authentication.getPrincipal();
+            Optional<AuthenticatedUser> authentificatedUser = authenticatedUserRepository
+                    .findByName(userDetails.getUsername());
+            if (authentificatedUser.isPresent() && authentificatedUser.get().getName().equalsIgnoreCase(userName)) {
+                return new Failure<>("Cannot revoke access on self");
+            }
+        }
 
         Optional<Project> optionalProject = this.projectRepository.findById(projectId);
         Optional<AuthenticatedUser> optionalAuthentificatedUser = authenticatedUserRepository.findByName(userName);
@@ -68,8 +81,8 @@ public class ProjectRevokeService implements IProjectRevokeService {
             Project project = optionalProject.get();
             AuthenticatedUser authenticatedUser = optionalAuthentificatedUser.get();
            
-            List<Workspace> workspaces = workspaceRepository.findAllByProjectIdAndUserId(
-                    project.getId(), authenticatedUser.getId());
+            List<Workspace> workspaces = workspaceRepository.findAllByProjectIdAndUserIdAndOwner(
+                    project.getId(), authenticatedUser.getId(), false);
             workspaces.forEach(w -> workspaceRepository.delete(w));
             
             result = new Success<>(null);
