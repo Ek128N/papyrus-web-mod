@@ -25,7 +25,7 @@ import {
   ForcedDimensions,
   getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 import { NoteNodeData } from './NoteNode.types';
 
 export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {

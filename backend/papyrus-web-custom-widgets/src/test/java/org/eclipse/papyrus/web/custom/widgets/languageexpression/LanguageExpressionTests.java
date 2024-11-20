@@ -71,8 +71,6 @@ public class LanguageExpressionTests {
 
     private static final String TARGET_OBJECT_ID = "targetObjectId";
 
-    private static final String FORM_LABEL = "form label";
-
     private static final String JAVA_LANGUAGE_BODY = "java body";
 
     private static final String JAVA_LANGUAGE = "JAVA";
@@ -112,7 +110,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -167,7 +164,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -222,7 +218,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -277,7 +272,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -333,7 +327,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -390,7 +383,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -447,7 +439,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -504,7 +495,6 @@ public class LanguageExpressionTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 

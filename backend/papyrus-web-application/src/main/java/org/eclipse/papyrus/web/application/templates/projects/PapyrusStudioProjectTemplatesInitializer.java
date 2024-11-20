@@ -49,7 +49,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 @Configuration
 public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplateInitializer {
 
-    private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
+    private final PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
     public PapyrusStudioProjectTemplatesInitializer(
             PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry) {
@@ -63,13 +63,13 @@ public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplat
 
     @Override
     public Optional<RepresentationMetadata> handle(ICause cause, String templateId, IEditingContext editingContext) {
-        final Optional<RepresentationMetadata> repsentationMetadata;
+        final Optional<RepresentationMetadata> representationMetadata;
         if (PapyrusStudioProjectTemplatesProvider.PAPYRUS_STUDIO_TEMPLATE_ID.equals(templateId)) {
-            repsentationMetadata = this.initializePapyrusStudioProject(editingContext);
+            representationMetadata = this.initializePapyrusStudioProject(editingContext);
         } else {
-            repsentationMetadata = Optional.empty();
+            representationMetadata = Optional.empty();
         }
-        return repsentationMetadata;
+        return representationMetadata;
     }
 
     private Optional<RepresentationMetadata> initializePapyrusStudioProject(IEditingContext editingContext) {

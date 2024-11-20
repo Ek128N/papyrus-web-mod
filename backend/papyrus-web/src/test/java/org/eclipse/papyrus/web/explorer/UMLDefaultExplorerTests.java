@@ -131,7 +131,6 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
 
         var initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getLabel()).isEqualTo("UML Default Explorer");
             assertThat(tree.getChildren()).hasSize(7);
             this.hasLabelWithDefaultStyle(tree.getChildren().get(0).getLabel(), "Ecore.metamodel.uml");
             this.hasLabelWithDefaultStyle(tree.getChildren().get(1).getLabel(), "Ecore.profile.uml");
@@ -185,7 +184,6 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
 
         var initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getLabel()).isEqualTo("UML Default Explorer");
             assertThat(tree.getChildren()).hasSize(1);
             TreeItem modelResourceTreeItem = tree.getChildren().get(0);
             // Check also there is no stereotype application
@@ -264,5 +262,4 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
                 .map(TreeRefreshedEventPayload::tree)
                 .ifPresentOrElse(treeConsumer, () -> fail("Missing tree"));
     }
-
 }

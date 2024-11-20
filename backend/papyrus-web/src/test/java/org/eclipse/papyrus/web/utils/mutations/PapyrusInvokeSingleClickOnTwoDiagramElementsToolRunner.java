@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
@@ -51,7 +52,7 @@ public class PapyrusInvokeSingleClickOnTwoDiagramElementsToolRunner {
     /**
      * Invokes the {@code toolId} tool on {@code diagramSourceElementId} and {@code diagramTargetElementId} elements.
      * <p>
-     * This method invokes the given tool on two elements, see {@link #invokeTool(UUID, UUID, UUID, UUID)} to invoke a
+     * This method invokes the given tool on two elements, see {@link #invokeTool(String, String, String, String, String)} ()} to invoke a
      * tool on a single element.
      * </p>
      * <p>
@@ -72,7 +73,7 @@ public class PapyrusInvokeSingleClickOnTwoDiagramElementsToolRunner {
     public void invokeTool(String projectId, String representationId, String diagramSourceElementId, String diagramTargetElementId, String toolId) {
         // Source and target positions aren't relevant when invoking the tool manually, so we set them to 0
         InvokeSingleClickOnTwoDiagramElementsToolInput invokeSingleClickOnTwoDiagramElementsToolInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(UUID.randomUUID(), projectId,
-                representationId, diagramSourceElementId, diagramTargetElementId, 0, 0, 0, 0, toolId);
+                representationId, diagramSourceElementId, diagramTargetElementId, 0, 0, 0, 0, toolId, List.of());
 
         String jsonResult = this.runner.run(invokeSingleClickOnTwoDiagramElementsToolInput);
 

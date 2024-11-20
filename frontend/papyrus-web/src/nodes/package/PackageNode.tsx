@@ -28,7 +28,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer } from 'reactflow';
+import { Node, NodeProps, NodeResizer } from '@xyflow/react';
 import { PackageNodeData } from './PackageNode.types';
 
 const packageNodeStyle = (
@@ -125,7 +125,7 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const PackageNode = memo(({ data, id, selected, dragging }: NodeProps<PackageNodeData>) => {
+export const PackageNode = memo(({ data, id, selected, dragging }: NodeProps<Node<PackageNodeData>>) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();

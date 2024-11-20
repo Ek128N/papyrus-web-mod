@@ -136,7 +136,6 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .treeItemLabelProvider(this::getLabel)
                 .parentObjectProvider(this::getParentObject)
-                .contextMenuEntries(Collections.emptyList())
                 .build();
     }
 

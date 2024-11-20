@@ -17,26 +17,24 @@
  *
  */
 Cypress.Commands.add('drag', (dragSelector, dropSelector, options = undefined) => {
+  let draggable = dragSelector;
+  let target = dropSelector;
+
   if (options?.inside) {
-    cy.get(`${options.inside} ${dragSelector}`).as('dragElt');
-    cy.get(`${options.inside} ${dropSelector}`).as('dropElt');
-  } else {
-    cy.get(dragSelector).as('dragElt');
-    cy.get(dropSelector).as('dropElt');
+    draggable = `${options.inside} ${dragSelector}`;
+    target = `${options.inside} ${dropSelector}`;
   }
-  cy.get('@dragElt').should('exist').should('be.visible');
-  cy.get('@dropElt').should('exist').should('be.visible');
+
+  cy.get(draggable).should('exist').should('be.visible');
+  cy.get(target).should('exist').should('be.visible');
 
   const dataTransfer = new DataTransfer();
-  cy.get('@dragElt').trigger('dragstart', {
-    dataTransfer,
-  });
 
-  cy.get('@dropElt').trigger('drop', {
-    dataTransfer,
-  });
+  cy.get(draggable).trigger('dragstart', { dataTransfer });
+  cy.get(target).trigger('drop', { dataTransfer });
+  cy.get(draggable).trigger('dragend');
 
-  return cy.get('@dragElt');
+  return cy.get(draggable);
 });
 
 Cypress.Commands.add('dragByTestId', (dragId, dropId, options = undefined) => {
