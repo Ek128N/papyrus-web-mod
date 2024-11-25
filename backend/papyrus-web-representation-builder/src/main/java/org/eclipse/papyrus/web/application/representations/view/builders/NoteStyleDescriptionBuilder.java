@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -270,6 +271,7 @@ public class NoteStyleDescriptionBuilder {
      */
     public NodeDescription buildIn(DiagramDescription diagramDescription) {
         NodeDescription noteStyleDescription = this.createNoteStyleDescription(diagramDescription);
+        noteStyleDescription.getInsideLabel().setOverflowStrategy(LabelOverflowStrategy.WRAP);
         diagramDescription.getNodeDescriptions().add(noteStyleDescription);
         this.createAnnotatedEdge(diagramDescription, noteStyleDescription);
         return noteStyleDescription;

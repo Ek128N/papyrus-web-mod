@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,8 +10,11 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 224
  *****************************************************************************/
 import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+
+export type HeaderPosition = 'TOP' | 'BOTTOM';
 
 export interface NoteNodeData extends NodeData {}
 
@@ -20,4 +23,20 @@ export interface GQLNoteNodeStyle extends GQLNodeStyle {
   borderColor: string;
   borderStyle: string;
   borderSize: string;
+}
+
+export interface Label {
+  id: string;
+  text: string;
+  iconURL: string[];
+  style: React.CSSProperties;
+  contentStyle: React.CSSProperties;
+  displayHeaderSeparator: boolean;
+  headerSeparatorStyle: React.CSSProperties;
+  headerPosition: HeaderPosition | undefined;
+}
+
+export interface NoteLabelProps {
+  label: Label;
+  faded: boolean;
 }
