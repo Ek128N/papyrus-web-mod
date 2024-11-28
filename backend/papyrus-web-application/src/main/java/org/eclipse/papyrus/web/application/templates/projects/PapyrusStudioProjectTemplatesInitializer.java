@@ -49,6 +49,8 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 @Configuration
 public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplateInitializer {
 
+    private static final String STUDIO_PREFIX = " Studio";
+
     private final PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
     public PapyrusStudioProjectTemplatesInitializer(
@@ -78,7 +80,7 @@ public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplat
                 .map(AggregateReference::<Project, UUID>to)
                 .flatMap(project -> this.getResourceSet(editingContext).flatMap(resourceSet -> {
 
-                    String formName = UMLPropertiesConfigurer.UML_DETAIL_VIEW_NAME + " Studio";
+                    String formName = UMLPropertiesConfigurer.UML_DETAIL_VIEW_NAME + STUDIO_PREFIX;
                     View view = new UMLDetailViewFromBuilder(formName).build();
 
                     this.addToResouce(resourceSet, view, formName);
@@ -86,14 +88,15 @@ public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplat
                     for (org.eclipse.sirius.components.view.diagram.DiagramDescription diagram : this.papyrusRepresentationRegistry.getViewDiagrams()) {
                         View copiedView = (View) EcoreUtil.copy(diagram.eContainer());
                         RepresentationDescription copiedDiagram = copiedView.getDescriptions().get(0);
-                        String name = copiedDiagram.getName() + " Studio";
+                        String name = copiedDiagram.getName() + STUDIO_PREFIX;
                         copiedDiagram.setName(name);
 
                         this.addToResouce(resourceSet, copiedView, name);
 
                     }
 
-                    resourceSet.getResources().add(new UMLDefaultTreeDescriptionBuilder().createView().eResource());
+                    View treeDescription = new UMLDefaultTreeDescriptionBuilder().createView();
+                    this.addToResouce(resourceSet, treeDescription, treeDescription.getDescriptions().get(0).getName() + STUDIO_PREFIX);
 
                     return Optional.empty();
                 }));
