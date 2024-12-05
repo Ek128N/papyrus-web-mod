@@ -45,6 +45,7 @@ export const UMLModelTreeItemContextMenuContribution = forwardRef(
 
     if (
       treeId.startsWith('explorer://') &&
+      item.editable &&
       (item.kind === 'siriusComponents://semantic?domain=uml&entity=Model' ||
         item.kind === 'siriusComponents://semantic?domain=uml&entity=Package' ||
         item.kind === 'siriusComponents://semantic?domain=uml&entity=Profile')

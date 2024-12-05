@@ -119,7 +119,6 @@ public class ClickContainmentReferenceItemHandlerTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -195,7 +194,6 @@ public class ClickContainmentReferenceItemHandlerTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
         // @formatter:on

@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>papyrus-web</groupId>
 		<artifactId>papyrus-web-parent</artifactId>
-		<version>2024.2.1</version>
+		<version>2024.10.0</version>
 		<relativePath>../papyrus-web-parent</relativePath>
 	</parent>
 	<artifactId>papyrus-web</artifactId>
@@ -211,6 +211,11 @@
 		<version>${project.version}</version>
 	</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-trees-tests</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

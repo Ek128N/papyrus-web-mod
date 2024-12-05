@@ -21,7 +21,7 @@ import {
   setBorderNodesPosition,
   ForcedDimensions,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 
 export class RectangleWithExternalLabelNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   canHandle(node: Node<NodeData, DiagramNodeType>) {

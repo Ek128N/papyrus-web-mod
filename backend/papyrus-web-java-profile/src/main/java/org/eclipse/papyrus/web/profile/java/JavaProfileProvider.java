@@ -27,9 +27,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class JavaProfileProvider implements IUMLProfileProvider {
 
+    /**
+     * URI for the java profile.
+     */
+    public static final String JAVA_PROFILE_URI = "pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw";
+
     @Override
     public List<UMLProfileMetadata> getUMLProfiles() {
-        return List.of(new UMLProfileMetadata("Java", "pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw", ""));
+        return List.of(new UMLProfileMetadata("Java", JAVA_PROFILE_URI, ""));
     }
 
 }

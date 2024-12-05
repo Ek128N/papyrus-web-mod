@@ -23,11 +23,15 @@ import org.eclipse.papyrus.web.application.representations.PapyrusRepresentation
 import org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericDiagramService;
 import org.eclipse.papyrus.web.application.representations.uml.PADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
@@ -46,25 +50,32 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
 
     private final Logger logger = LoggerFactory.getLogger(UMLProjectTemplateInitializer.class);
 
-    private TemplateInitializer initializerHelper;
+    private final TemplateInitializer initializerHelper;
 
-    private IDiagramBuilderService diagramBuilderService;
+    private final IDiagramBuilderService diagramBuilderService;
 
-    private GenericDiagramService packageDiagramService;
+    private final GenericDiagramService packageDiagramService;
 
-    private PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
+    private final PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry;
 
-    private IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceService representationPersistenceService;
 
-    public UMLProjectTemplateInitializer(TemplateInitializer initializerHelper, //
-            IDiagramBuilderService diagramBuilderService, //
-            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry, //
-            GenericDiagramService packageDiagramService, IRepresentationPersistenceService representationPersistenceService) {
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
+    public UMLProjectTemplateInitializer(TemplateInitializer initializerHelper,
+            IDiagramBuilderService diagramBuilderService,
+            PapyrusRepresentationDescriptionRegistry papyrusRepresentationRegistry,
+            GenericDiagramService packageDiagramService,
+            PapyrusProjectTemplateInitializerParameters papyrusProjectTemplateInitializerParameters) {
         this.initializerHelper = initializerHelper;
         this.diagramBuilderService = diagramBuilderService;
         this.papyrusRepresentationRegistry = papyrusRepresentationRegistry;
         this.packageDiagramService = packageDiagramService;
-        this.representationPersistenceService = representationPersistenceService;
+        this.representationPersistenceService = papyrusProjectTemplateInitializerParameters.representationPersistenceService();
+        this.representationDescriptionSearchService = papyrusProjectTemplateInitializerParameters.representationDescriptionSearchService();
+        this.representationMetadataPersistenceService = papyrusProjectTemplateInitializerParameters.representationMetadataPersistenceService();
     }
 
     @Override
@@ -86,8 +97,17 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
     private Optional<RepresentationMetadata> initializeUMLWithPrimitivesProjectContents(IEditingContext editingContext, ICause cause) {
         try {
             Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml", cause);
-            return resource.flatMap(r -> this.createPackageDiagram(editingContext, r, cause))//
-                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+            var optionalDiagram = resource.flatMap(r -> this.createPackageDiagram(editingContext, r, cause));
+            if (optionalDiagram.isPresent()) {
+                var diagram = optionalDiagram.get();
+                Object semanticTarget = resource.map(r -> r.getContents().get(0)).orElse(null);
+                var optionalRepresentationMetadata = this.createRepresentationMetadata(editingContext, diagram, semanticTarget);
+                optionalRepresentationMetadata.ifPresent(rm -> {
+                    this.representationMetadataPersistenceService.save(cause, editingContext, rm, diagram.getTargetObjectId());
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
+                });
+                return optionalRepresentationMetadata;
+            }
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
         }
@@ -108,12 +128,23 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
                         this.packageDiagramService.semanticDrop(model, null, editingContext, diagramContext, convertedNodes);
                         this.packageDiagramService.semanticDrop(primitiveTypePackage, null, editingContext, diagramContext, convertedNodes);
                     });
-                })//
-                .flatMap(diagram -> {
-                    this.representationPersistenceService.save(cause, editingContext, diagram);
-                    return Optional.of(diagram);
                 });
-
     }
 
+    private Optional<RepresentationMetadata> createRepresentationMetadata(IEditingContext editingContext, Diagram diagram, Object semanticTarget) {
+        return this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .map(diagramDescription -> {
+                    var variableManager = new VariableManager();
+                    variableManager.put(VariableManager.SELF, semanticTarget);
+                    variableManager.put(DiagramDescription.LABEL, diagramDescription.getLabel());
+                    String label = diagramDescription.getLabelProvider().apply(variableManager);
+                    return RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                            .kind(diagram.getKind())
+                            .label(label)
+                            .descriptionId(diagram.getDescriptionId())
+                            .build();
+                });
+    }
 }

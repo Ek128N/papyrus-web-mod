@@ -69,8 +69,6 @@ public class DeletePrimitiveListItemHandlerTests {
 
     private static final String TARGET_OBJECT_ID = "targetObjectId";
 
-    private static final String FORM_LABEL = "form label";
-
     @Test
     public void testDeletePrimitiveListItemHandler() {
         String itemId = "Item Id";
@@ -116,7 +114,6 @@ public class DeletePrimitiveListItemHandlerTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 
@@ -189,7 +186,6 @@ public class DeletePrimitiveListItemHandlerTests {
         Form form = Form.newForm(FORM_ID.toString())
                 .targetObjectId(TARGET_OBJECT_ID)
                 .descriptionId(UUID.randomUUID().toString())
-                .label(FORM_LABEL)
                 .pages(Collections.singletonList(page))
                 .build();
 

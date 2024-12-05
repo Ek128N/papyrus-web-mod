@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Factory;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.application.profile.services.UMLProfileService;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -35,13 +35,13 @@ public class PathmapResourceFactory implements Factory {
 
     private final IStaticPathmapResourceRegistry pathmapResourceRegistry;
 
-    private final IProfileSeachService profileSearchService;
+    private final IProfileSearchService profileSearchService;
 
     private final Logger logger = LoggerFactory.getLogger(PathmapResourceFactory.class);
 
     private Registry factoryRegistryDelegate;
 
-    public PathmapResourceFactory(IStaticPathmapResourceRegistry pathmapResourceRegistry, Registry delegate, IProfileSeachService profileSearchService) {
+    public PathmapResourceFactory(IStaticPathmapResourceRegistry pathmapResourceRegistry, Registry delegate, IProfileSearchService profileSearchService) {
         this.pathmapResourceRegistry = pathmapResourceRegistry;
         this.factoryRegistryDelegate = delegate;
         this.profileSearchService = profileSearchService;

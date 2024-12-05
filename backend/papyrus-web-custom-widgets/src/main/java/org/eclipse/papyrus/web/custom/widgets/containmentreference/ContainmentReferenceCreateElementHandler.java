@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.OperationInterpreter;
+import org.eclipse.sirius.components.view.emf.OperationInterpreterViewSwitch;
 import org.eclipse.sirius.components.view.emf.form.IFormIdProvider;
 import org.eclipse.sirius.components.view.emf.form.api.IViewFormDescriptionSearchService;
 import org.springframework.core.Ordered;
@@ -167,7 +168,8 @@ public class ContainmentReferenceCreateElementHandler implements IReferenceWidge
                 VariableManager childVariableManager = variableManager.createChild();
                 AQLInterpreter interpreter = this.interpreterProvider.createInterpreter(optionalView.get(), editingContext);
                 OperationInterpreter operationInterpreter = new OperationInterpreter(interpreter, this.editService);
-                Optional<VariableManager> optionalVariableManager = operationInterpreter.executeOperations(createOperation.getBody(), childVariableManager);
+                OperationInterpreterViewSwitch operationInterpreterViewSwitch = new OperationInterpreterViewSwitch(variableManager, interpreter, this.editService, operationInterpreter);
+                Optional<VariableManager> optionalVariableManager = operationInterpreterViewSwitch.doSwitch(createOperation.getBody().get(0));
                 if (optionalVariableManager.isPresent()) {
                     Optional<Object> res = optionalVariableManager.get().get(VariableManager.SELF, Object.class);
                     return res;

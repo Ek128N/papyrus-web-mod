@@ -79,3 +79,8 @@ public boolean showDecisionNodeNote(DecisionNode decisionNode, DiagramContext di
     return showDecisionNodeNote;
 }
 -----
+
+==== How to contribute a menu in explorer that require UI
+
+[TIP]
+Additional information on how to contribute custom menus in the _Explorer_ view in the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/extend-the-frontend.adoc#how-to-use-the-tree-item-context-menu-extension-point[Sirius Web documentation].

@@ -101,6 +101,10 @@ describe('Containment reference widget tests', () => {
     cy.getByTestId('childCreationDescription').click();
     cy.get('span:contains("Node | Central Buffer Node")').should('exist').click();
     cy.getByTestId('create-object').click();
+    // Wait for the detail view of the CentralBufferNode to be displayed
+    cy.getByTestId('Is control type').should('be.visible');
+    // Set a name
+    cy.getByTestId('input-Name').click().type('CentralBufferNode{downArrow}{enter}');
     // check central buffer node is there
     cy.checkChildren('Activity', ['CentralBufferNode']);
     //check that reference has no value set at the moment

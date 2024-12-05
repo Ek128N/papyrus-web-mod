@@ -19,7 +19,7 @@
 	<parent>
 		<groupId>papyrus-web</groupId>
 		<artifactId>papyrus-web-parent</artifactId>
-		<version>2024.2.1</version>
+		<version>2024.10.0</version>
 		<relativePath>../papyrus-web-parent</relativePath>
 	</parent>
 	<artifactId>papyrus-web-frontend</artifactId>
@@ -84,7 +84,6 @@
 								<icons>font</icons>
 								<source-highlighter>coderay</source-highlighter>
 								<imagesdir>./imgs</imagesdir>
-								<sirius-documentation-version>${sirius.documentation.version}</sirius-documentation-version>
 								<papyrus-web-version>${project.version}</papyrus-web-version>
 								<git-commit-id-abbrev>${git.commit.id.abbrev}</git-commit-id-abbrev>
 							</attributes>

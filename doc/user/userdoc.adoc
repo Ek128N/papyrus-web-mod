@@ -10,20 +10,27 @@ The home page is the starting point of a modeling project. It is where user can 
 
 Creating a new project in the platform can be done in the following ways:
 
-* Create a blank project
+* Create a blank UML project (template UML empty)
 * Create a project from existing templates
 * Upload a previously exported project
-
-For more details on project creation topic, see https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#create-project[`Create a Project`] section of the documentation.
 
 As far as existing projects are concerned, the following actions are available:
 
 * Open an existing project +
 To open an existing project, the user has to locate the project in the Project list and click on its name.
 * Delete a project +
-See the https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_delete_a_project[`Delete a Project`] section of the documentation
+You can delete a Project from the Projects Browser:
+
+. In the Project list, go over the Project to get the Delete button,
+. Click on the Delete button.
+
 * Rename a project +
-See the https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_rename_a_project[`Rename a Project`] section of the documentation
+You can update the Project name from the Projects Browser:
+
+. In the Project list, go over the Project to get the Rename button,
+. Click on the Rename button,
+. Update the name in the editable field,
+. Click on Rename.
 
 Once the project (new or existing) is chosen, the workbench page is presented.
 
@@ -41,7 +48,25 @@ The Explorer panel displays all elements contained by the _Project_. Root nodes 
 
 WARNING: Note that the name of the resource should always end with `.uml`.
 
-==== _Explorer Tree_
+==== _Explorer toolbar_
+
+The _Explorer toolbar_ contains global _Project_ actions:
+
+* _Add model_ +
+  Create a new model
+* _Upload model_ +
+  Add a previously downloaded UML _Model_ into the _Project_. Accepted UML _Model_ files should have the `.uml` extension
+* _Filters_ +
+  The list of filters that can applied to the explorer content (they depend on the current explorer)
+* _Explorers_ +
+  The list of explorers available to present the given project depending of its nature.
+  As far as UML projects are concerned, a dedicated explorer has been introduced.
+  If no specific explorers are defined for the current project, the explorer selector icon is hidden and the default explorer is used.
+* Synchronization with _Representation_ editor +
+  When Synchronization with _Representation_ is *enabled*, selecting a graphical element in the diagram will *_Reveal_* and *_Select_* the semantic element corresponding in the _Explorer_ tree. +
+  When Synchronization with _Representation_ is *disabled*, selecting a graphical element in the diagram will *_Select_* the semantic element corresponding in the _Explorer_ tree only if it has already been revealed.
+
+==== _Explorer Tree (general)_
 
 To create a _New Representation Diagram_, use the contextual menu on any semantic element and choose the action _New Representation_, choose the type of diagram in the dialog.
 
@@ -94,17 +119,50 @@ As we can see in the table above, the _State Machine Diagram_ can only be create
 
 Deletion of semantic elements (and representation diagrams) is possible through the contextual menu of tree nodes.
 
-==== _Explorer toolbar_
+==== UML explorer
 
-The _Explorer toolbar_ contains global _Project_ actions:
+As far as UML projects are concerned, there is a dedicated explorer to present project content with few specific features that improve the user experience.
 
-* _Add model_ +
-  Create a new model
-* _Upload model_ +
-  Add a previously downloaded UML _Model_ into the _Project_. Accepted UML _Model_ files should have the `.uml` extension
-* Synchronization with _Representation_ editor +
-  When Synchronization with _Representation_ is *enabled*, selecting a graphical element in the diagram will *_Reveal_* and *_Select_* the semantic element corresponding in the _Explorer_ tree. +
-  When Synchronization with _Representation_ is *disabled*, selecting a graphical element in the diagram will *_Select_* the semantic element corresponding in the _Explorer_ tree only if it has already been revealed.
+image::uml-explorer.png[Labels Overview,400, align="center"]
+
+===== Elements to Hide
+
+The following elements should not be displayed:
+
+* Stereotype application
+* EAnnotation
+
+===== Label Customization
+
+Stereotypes applied to UML elements must be displayed using quotes (« »).
+
+===== Label Style Customization
+
+====== Read only
+
+Read-only elements should be displayed in gray. +
+The  read-only elements are:
+
+* Standard libraries
+* Profiles (static and dynamic)
+* `PackageImport` elements
+* `ElementImport` elements
+
+====== Abstract
+
+All elements with a property named "abstract" of type boolean, containing the value true, must be displayed in italics.
+
+====== Static
+
+All elements with a property named "static" of type boolean, containing the value true, must be underlined.
+
+====== Stereotype
+
+The name of stereotypes applied to an element should be displayed in green.
+
+===== Tree Structure Modification
+
+`PackageImport` and `ElementImport` elements must add, in addition to existing children, the imported element to allow its containment tree to be expanded.
 
 ==== Publish profile
 
@@ -133,14 +191,10 @@ To apply a stereotype:
 
 The properties of this stereotype are now displayed in there own tab in the _Detail_ panel.
 
-
-
-
-
-
 === Validation panel
 
-The _Validation_ panel shares the left area of the workbench page with the _Explorer_. See the https://docs.obeostudio.com/{sirius-documentation-version}/help_center.html#_validation_view[documentation section] for more details.
+The _Validation_ panel shares the left area of the workbench page with the _Explorer_.
+The validation view shows diagnostics of the whole project. Diagnostics are sorted by kind (for example ERROR, WARNING or INFO) and can be either hidden or displayed thanks to an accordeon widget.
 
 [[diagram-panel]]
 === Diagram panel

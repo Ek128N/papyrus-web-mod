@@ -28,7 +28,7 @@ import {
   ForcedDimensions,
   getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 import { InnerFlagNodeData } from './InnerFlagNode.types';
 
 export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> {

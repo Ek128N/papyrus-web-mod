@@ -20,11 +20,15 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.papyrus.web.application.representations.uml.PRDDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.sirius.contributions.IDiagramBuilderService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.uml2.uml.Profile;
 import org.slf4j.Logger;
@@ -52,18 +56,21 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
     /**
      * Helper to create Project templates.
      */
-    private TemplateInitializer initializerHelper;
+    private final TemplateInitializer initializerHelper;
 
     /**
      * Service used to create diagram programmatically.
      */
-    private IDiagramBuilderService diagramBuilderService;
+    private final IDiagramBuilderService diagramBuilderService;
 
     /**
      * Service used to save new representations.
      */
-    private IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceService representationPersistenceService;
 
+    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
     /**
      * Constructor.
      *
@@ -71,15 +78,17 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
      *            Helper to create Project templates
      * @param diagramBuilderService
      *            Service used to create diagram programmatically
-     * @param representationPersistenceService
-     *            Service used to save new representations
+     * @param papyrusProjectTemplateInitializerParameters
+     *            Services used
      */
     public ProfileProjectTemplateInitializer(TemplateInitializer initializerHelper, //
             IDiagramBuilderService diagramBuilderService, //
-            IRepresentationPersistenceService representationPersistenceService) {
+            PapyrusProjectTemplateInitializerParameters papyrusProjectTemplateInitializerParameters) {
         this.initializerHelper = initializerHelper;
         this.diagramBuilderService = diagramBuilderService;
-        this.representationPersistenceService = representationPersistenceService;
+        this.representationPersistenceService = papyrusProjectTemplateInitializerParameters.representationPersistenceService();
+        this.representationDescriptionSearchService = papyrusProjectTemplateInitializerParameters.representationDescriptionSearchService();
+        this.representationMetadataPersistenceService = papyrusProjectTemplateInitializerParameters.representationMetadataPersistenceService();
     }
 
     @Override
@@ -99,8 +108,17 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
     private Optional<RepresentationMetadata> initializeProfileWithPrimitivesAndUmlProjectContents(IEditingContext editingContext, ICause cause) {
         try {
             Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, PROFILE_MODEL_TITLE, "DefaultProfileWithPrimitiveAndUml.uml", cause);
-            return resource.flatMap(r -> this.createProfileDiagram(editingContext, r, cause))//
-                    .map(diagram -> new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+            var optionalDiagram = resource.flatMap(r -> this.createProfileDiagram(editingContext, r, cause));
+            if (optionalDiagram.isPresent()) {
+                var diagram = optionalDiagram.get();
+                Object semanticTarget = resource.map(r -> r.getContents().get(0)).orElse(null);
+                var optionalRepresentationMetadata = this.createRepresentationMetadata(editingContext, diagram, semanticTarget);
+                optionalRepresentationMetadata.ifPresent(rm -> {
+                    this.representationMetadataPersistenceService.save(cause, editingContext, rm, diagram.getTargetObjectId());
+                    this.representationPersistenceService.save(cause, editingContext, diagram);
+                });
+                return optionalRepresentationMetadata;
+            }
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
         }
@@ -111,12 +129,24 @@ public class ProfileProjectTemplateInitializer implements IProjectTemplateInitia
         Profile profile = (Profile) r.getContents().get(0);
 
         return this.diagramBuilderService
-                .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram")
-                .flatMap(diagram -> {
-                    this.representationPersistenceService.save(cause, editingContext, diagram);
-                    return Optional.of(diagram);
-                });
-
+                .createDiagram(editingContext, diagramDescription -> PRDDiagramDescriptionBuilder.PRD_REP_NAME.equals(diagramDescription.getLabel()), profile, "Root Profile Diagram");
     }
 
+
+    private Optional<RepresentationMetadata> createRepresentationMetadata(IEditingContext editingContext, Diagram diagram, Object semanticTarget) {
+        return this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .map(diagramDescription -> {
+                    var variableManager = new VariableManager();
+                    variableManager.put(VariableManager.SELF, semanticTarget);
+                    variableManager.put(DiagramDescription.LABEL, diagramDescription.getLabel());
+                    String label = diagramDescription.getLabelProvider().apply(variableManager);
+                    return RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                            .kind(diagram.getKind())
+                            .label(label)
+                            .descriptionId(diagram.getDescriptionId())
+                            .build();
+                });
+    }
 }

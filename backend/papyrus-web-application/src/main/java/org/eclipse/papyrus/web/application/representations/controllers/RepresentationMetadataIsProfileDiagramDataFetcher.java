@@ -55,7 +55,7 @@ public class RepresentationMetadataIsProfileDiagramDataFetcher implements IDataF
     @Override
     public CompletableFuture<Boolean> get(DataFetchingEnvironment environment) throws Exception {
         RepresentationMetadata representationMetadata = environment.getSource();
-        IsProfileDiagramInput input = new IsProfileDiagramInput(UUID.randomUUID(), representationMetadata.getId());
+        IsProfileDiagramInput input = new IsProfileDiagramInput(UUID.randomUUID(), representationMetadata.id().toString());
 
         Map<String, Object> localContext = environment.getLocalContext();
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);

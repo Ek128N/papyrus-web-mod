@@ -31,7 +31,7 @@ import {
   ForcedDimensions,
   getHeaderHeightFootprint,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 import { CuboidNodeData } from './CuboidNode.types';
 const rectangularNodePadding: number = 8;
 

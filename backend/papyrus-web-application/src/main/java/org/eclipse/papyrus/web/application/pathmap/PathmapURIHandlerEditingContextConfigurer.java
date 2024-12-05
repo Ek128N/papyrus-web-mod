@@ -18,7 +18,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
 import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -33,11 +33,11 @@ import org.springframework.stereotype.Service;
 public class PathmapURIHandlerEditingContextConfigurer implements IEditingContextProcessor {
     private final IStaticPathmapResourceRegistry pathMapRegistry;
 
-    private final IProfileSeachService profileSearchService;
+    private final IProfileSearchService profileSearchService;
 
     private final IUMLProjectCheckerService umlChecker;
 
-    public PathmapURIHandlerEditingContextConfigurer(IStaticPathmapResourceRegistry pathMapRegistry, IProfileSeachService profileSearchService, IUMLProjectCheckerService umlChecker) {
+    public PathmapURIHandlerEditingContextConfigurer(IStaticPathmapResourceRegistry pathMapRegistry, IProfileSearchService profileSearchService, IUMLProjectCheckerService umlChecker) {
         super();
         this.umlChecker = Objects.requireNonNull(umlChecker);
         this.pathMapRegistry = Objects.requireNonNull(pathMapRegistry);

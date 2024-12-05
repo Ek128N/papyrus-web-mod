@@ -31,10 +31,11 @@ export const PublishProfileTreeItemContextMenuContribution = forwardRef(
     if (modal === 'PublishProfile') {
       modalElement = <PublishProfileDialog editingContextId={editingContextId} item={item} onClose={onClose} />;
     }
-    if (
+    const isProfileMenuVisible =
       treeId.startsWith('explorer://') &&
-      item.kind.includes('siriusComponents://semantic?domain=uml&entity=Profile')
-    ) {
+      item.editable &&
+      item.kind.includes('siriusComponents://semantic?domain=uml&entity=Profile');
+    if (isProfileMenuVisible) {
       return (
         <Fragment key="umlelement-tree-item-context-menu-contribution">
           <MenuItem

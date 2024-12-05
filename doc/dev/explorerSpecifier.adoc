@@ -1,0 +1,178 @@
+ifndef::imagesdir[:imagesdir: imgs]
+:toclevels: 4
+
+== Explorer Specifier
+:toc:
+
+The goal of this page is to present how to specify a new explorer tree upon a meta model such UML.
+
+
+=== View Tree DSL
+
+As for other parts such as diagram, Papyrus web relies on a builder approach to programmatically create view description of the tree description that is used inside the explorer panel.
+
+==== Tree description
+
+First, we need to defined the tree description itself such as is done in `org.eclipse.papyrus.web.application.explorer.builder.UMLDefaultTreeDescriptionBuilder.createView()`.
+
+Basically a tree description is composed of the following entries:
+
+* a name which appear in the Explorer selector menu to designate the explorer itself.
+
+* `titleExpression` which is used to name the tree element view.
+
+* `editableExpression` is used to evaluate if a given tree item (in `self` variable) can be renamed.
+
+* `deletableExpression` is used to evaluate if a given tree item  (in `self` variable) can be deleted.
+
+* `selectableExpression` is used to evaluate if a given tree item  (in `self` variable) can be selected.
+
+* `elementsExpression` is used to return the root of the tree.
+Usually for explorer specification, the expression uses the editing context to initiate the tree hierarchy. 
+In other tree representations the `self` variable is set with the semantic element targeted by the representation.
+
+* `childrenExpression` is used to retrieve children of a given tree item (in `self` variable).
+
+* `hasChildrenExpression` is used to know if a given tree item (in `self` variable) has children or not.
+
+* `parentExpression` is used to retrieve the parent object associated to a given tree item (in `self` variable).
+
+* `iconURLExpression` is used to compute the list of icon URLs (for overlay) of a given tree item (in `self` variable).
+
+* `kindExpression` is used to compute a kind of a given tree item (in `self` variable).
+
+* `treeItemIdExpression` is used to compute the id of a given tree item (in `self` variable).
+
+* `treeItemObjectExpression` is used to retrieve the object associated to a given id (in `id` variable).
+
+* the list of all label descriptions used in this tree (see <<_label_description>>).
+
+* the list of context menu entries that can be used in this tree (see <<_context_menu_entry>>).
+
+You can find the tree description definition for the UML default explorer in the following class:
+
+`org.eclipse.papyrus.web.application.explorer.builder.UMLDefaultTreeDescriptionBuilder`
+
+The expressions use the following class of services:
+
+`org.eclipse.papyrus.web.application.explorer.builder.aqlservices.UMLDefaultTreeServices`
+
+==== Label description
+
+As far as label style is concerned there are two separate contributions to do.
+First, at a view level the specifier need to define the text style palette which gathers all text styles that the tree can use.
+Then, the specifier has to define specifically how the tree item label is split and what text style each part uses.
+
+===== Text style description
+
+These styles are global and should be set at the view level.
+They are independent of the label, they just specify what text style are used.
+One text style description has the following features:
+
+* a name to identify each text style description.
+
+* `foregroundColorExpression` is used to compute the foreground color of the text.
+
+* `backgroundColorExpression` is used to compute the background color of the text.
+
+* `isBoldExpression` is used to evaluate if the text should be bold or not.
+
+* `isItalicExpression` is used to evaluate if the text should be italic or not.
+
+* `isUnderlineExpression` is used to evaluate if the text should be underlined or not.
+
+All these expressions can use the `self` variable to access to the current tree item element.
+
+All text style description are grouped in a text style palette.
+
+===== Tree item label description 
+
+As far as the tree item label description is concerned, it has the following features:
+
+* a name to identify each tree item label description.
+
+* `preconditionExpression` is used to compute the condition where this label description can be applied or not.
+
+* `children` a list of label fragment description.
+
+The tree item label fragment description has the following features:
+
+* `labelExpression` is used to compute the actual text part associated to this fragment.
+
+* the text style to use for this fragment (from the text style palette).
+
+Examples of both text style palette definition and labels descriptions could be found in the UML default explorer definition in class:
+
+`org.eclipse.papyrus.web.application.explorer.builder.UMLDefaultTreeDescriptionBuilder`
+
+==== Context menu entry
+
+The explorer framework offers a way to define tree item context menu entries.
+These actions can be specified through the tree description `contextMenuEntries` feature.
+There are two kinds of context menu entries:
+
+* single click action
+* fetch action
+
+Nevertheless, these menu entries should be instance of an abstract class `TreeItemContextMenuEntry` which gathers all common information used to render the context menu itself for instance.
+These features are: 
+
+* a name to identify each context menu entry
+
+* `preconditionExpression` used to evaluate if a given tree item (accessible through the `self` variable) should have this entry or not.
+
+* `labelExpression` is used to compute the UI visible label in the context menu.
+
+* `iconURLExpression` is used to compute the list of images that form the icon of the entry in the menu.
+
+===== Single click context menu entry
+
+Single click context menu entry are used to perform an operation in the back end.
+Therefore, this context menu entry has a feature `body` that holds the operation to perform.
+
+When comes the body execution, the following variables are available:
+
+* `editingContext` that contains the editing context
+* `selectedTreeItem` that contains the tree item on which the entry is associated to
+* `id` the id of the current tree item
+* `tree` the tree object itself
+* `self` teh semantic object associated to the current tree item
+
+
+===== Fetch context menu entry
+
+The other kind of context menu entry is the fetch context menu entry.
+These actions are performed in the front end side and consist to reach an given URL.
+This URL is obtained through the feature `urlExpression` which is used to compute the URL to fetch.
+There is also the possibility to specify how the fetch is performed, i.e whether the URL has to be open in another tab of the browser or whether it should be downloaded as a file.
+This is specified by the `kind` feature of the fetch menu context entry.
+
+When comes the evaluation of `urlExpression`, the following variables are available:
+
+* `editingContext` that contains the editing context
+* `selectedTreeItem` that contains the tree item on which the entry is associated to
+* `id` the id of the current tree item
+* `tree` the tree object itself
+* `self` teh semantic object associated to the current tree item
+
+==== Contributing the view
+
+Once the view is fully defined (with its text style palette and its tree description) we need to add it to the views managed by the editing context using the following interface:
+
+`org.eclipse.sirius.components.core.api.IEditingContextProcessor`
+
+See the implementation made for the UML default explorer in `org.eclipse.papyrus.web.application.explorer.UMLDefaultTreeExplorerInstaller`
+
+=== Contributing a new explorer
+
+Once the view has been specified and installed in the editing context. Specifier has to declare that this tree description view can be used as an model explorer.
+This is done by creating an implementation of the following interface:
+
+`org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeDescriptionProvider`
+
+The goal of this service is to provide the list of new tree descriptions that can be used inside the explorer panel of the application.
+Usually, since tree descriptions have been previously registered, this service has just to retrieve the right tree descriptions among all descriptions registered in the editing context.
+
+One can see such a provider for the default UML explorer in class:
+
+`org.eclipse.papyrus.web.application.explorer.UMLDefaultTreeExplorerProvider`

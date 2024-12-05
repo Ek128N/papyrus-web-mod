@@ -35,7 +35,7 @@ describe('Stereotype application page tests', () => {
     cy.visit('/projects');
     cy.visit(`/projects/${context.projectId}/edit`);
     cy.expandAll('model4test.uml');
-    cy.getByTestId('Class').click();
+    cy.getByTestId('«Stereotype1» Class').click();
     cy.activateDetailsTabAndWaitForElement('Stereotype1', 'testInt');
   });
 
@@ -319,8 +319,8 @@ describe('Stereotype application page tests', () => {
   };
 
   const refreshView = () => {
-    cy.getByTestId('Activity').click();
-    cy.getByTestId('Class').click();
+    cy.getByTestId('«Stereotype2» Activity').click();
+    cy.getByTestId('«Stereotype1» Class').click();
     cy.activateDetailsTab('Stereotype1');
   };
 

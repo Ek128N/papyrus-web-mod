@@ -110,10 +110,13 @@ describe('Applied Comments tests', () => {
     // check that empty comment has been created
     cy.getByTestId('Applied comments').should('be.visible').find('.MuiChip-root').should('have.length', 1);
     cy.getByTestId('Applied comments').findByTestId('reference-value-').click();
-    // check that Activity has a new child
-    cy.checkChildren('Activity', ['Comment']);
+
     // click on new Comment
     cy.getByTestId('reference-value-').click();
+    // Set a body to the comment
+    cy.getByTestId('input-Body').type('Comment{downArrow}{enter}');
+    // check that Activity has a new child
+    cy.checkChildren('Activity', ['Comment']);
     // check that comment is annotating Class
     cy.getByTestId('view-Details').as('uml');
     cy.get('@uml').findByTestId('Annotated element').find('.MuiChip-root').should('have.length', 1);

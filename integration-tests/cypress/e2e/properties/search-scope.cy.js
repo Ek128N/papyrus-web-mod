@@ -76,10 +76,10 @@ describe('Containment reference widget tests', () => {
     cy.getByTestId('reference-value-Class2').find('svg').click();
 
     // remove the package import node
-    cy.getByTestId('PackageImport-more').should('be.visible').click();
+    cy.getByTestId('<Package Import> PrimitiveTypes-more').should('be.visible').click();
     cy.getByTestId('treeitem-contextmenu').findByTestId('delete').click();
     cy.getByTestId('confirmation-dialog-button-ok').click();
-    cy.getByTestId('PackageImport').should('not.exist');
+    cy.getByTestId('<Package Import> PrimitiveTypes').should('not.exist');
     // check that no primitive type could be found now
     cy.getByTestId('Property1').should('be.visible').click();
     // open dropdown of Type

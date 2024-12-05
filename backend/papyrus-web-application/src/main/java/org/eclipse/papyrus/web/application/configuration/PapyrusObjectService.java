@@ -14,6 +14,7 @@
 package org.eclipse.papyrus.web.application.configuration;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.papyrus.web.graphics.services.api.IImageOverrideService;
@@ -35,7 +36,7 @@ public class PapyrusObjectService extends DefaultLabelService implements ILabelS
     private List<IImageOverrideService> imageOverriders;
 
     public PapyrusObjectService(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry, List<IImageOverrideService> imageOverriders) {
-        super(labelFeatureProviderRegistry, composedAdapterFactory, List.of());
+        super(List.of(), labelFeatureProviderRegistry, composedAdapterFactory, List.of());
         this.imageOverriders = imageOverriders;
     }
 
@@ -49,10 +50,10 @@ public class PapyrusObjectService extends DefaultLabelService implements ILabelS
         List<String> images = super.getImagePath(object);
 
         return images.stream().map(image -> this.imageOverriders.stream().map(imgOverrider -> imgOverrider.getOverrideImage(image)) //
-                .filter(img -> img.isPresent())//
-                .map(img -> img.get())//
-                .findFirst() //
-                .orElse(image) //
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst()
+                .orElse(image)
         ).toList();
     }
 

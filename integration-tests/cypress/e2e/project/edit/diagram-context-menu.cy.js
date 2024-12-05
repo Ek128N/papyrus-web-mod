@@ -32,7 +32,10 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
    */
   it('can delete a representation', () => {
     cy.expandAll('SimpleSM.uml');
-    cy.getByTestId('CppSMTemplate-more').should('be.visible').click();
+    cy.getByTestId('«ExecuteTrafoChain, GeneratorHint» CppSMTemplate-more')
+      .scrollIntoView()
+      .should('be.visible')
+      .click();
 
     cy.getByTestId('new-representation').click();
 

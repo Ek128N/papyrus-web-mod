@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.resource.Resource.Factory.Registry;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryRegistryImpl;
 import org.eclipse.papyrus.web.application.pathmap.PathmapResourceFactory;
 import org.eclipse.papyrus.web.application.pathmap.services.api.IStaticPathmapResourceRegistry;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSearchService;
 import org.eclipse.uml2.types.TypesPackage;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory;
@@ -73,7 +73,7 @@ public class UMLEMFConfiguration {
     }
 
     @Bean
-    public Resource.Factory.Registry factoryRegistry(IStaticPathmapResourceRegistry pathmapResourceRegistry, IProfileSeachService profileSeachService) {
+    public Resource.Factory.Registry factoryRegistry(IStaticPathmapResourceRegistry pathmapResourceRegistry, IProfileSearchService profileSearchService) {
         Registry globalFactoryRegistryInstance = Resource.Factory.Registry.INSTANCE;
 
         // initialize the registry from the global
@@ -86,7 +86,7 @@ public class UMLEMFConfiguration {
         globalFactoryRegistryInstance.getContentTypeToFactoryMap().forEach((key, value) -> contentTypeToFactoryMap.put(key, value));
 
         // Add pathmap scheme factory
-        Resource.Factory pathmapFactory = new PathmapResourceFactory(pathmapResourceRegistry, globalFactoryRegistryInstance, profileSeachService);
+        Resource.Factory pathmapFactory = new PathmapResourceFactory(pathmapResourceRegistry, globalFactoryRegistryInstance, profileSearchService);
         factoryRegistry.getProtocolToFactoryMap().put(IStaticPathmapResourceRegistry.PROTOCOL_PATHMAP, pathmapFactory);
 
         // Add factory associated to uml extension

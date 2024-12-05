@@ -54,7 +54,7 @@ import org.eclipse.papyrus.web.application.profile.services.api.IUMLProfileServi
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.ProfileResourceEntity;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileCreationService;
 import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileDeletionService;
-import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSeachService;
+import org.eclipse.papyrus.web.domain.boundedcontext.profile.service.api.IProfileSearchService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -88,7 +88,7 @@ public class UMLProfileService implements IUMLProfileService {
 
     private final IObjectService objectService;
 
-    private final IProfileSeachService profileSearchService;
+    private final IProfileSearchService profileSearchService;
 
     private final IProfileDeletionService profileDeletionService;
 
@@ -96,7 +96,7 @@ public class UMLProfileService implements IUMLProfileService {
 
     private Registry factoryRegistry;
 
-    public UMLProfileService(UMLProfileMetadataRegistry registry, IObjectService objectService, IProfileSeachService profileSearchService, IProfileDeletionService profileDeletionService,
+    public UMLProfileService(UMLProfileMetadataRegistry registry, IObjectService objectService, IProfileSearchService profileSearchService, IProfileDeletionService profileDeletionService,
             IProfileCreationService profileCreationService, Registry factoryRegistry) {
         this.profileDeletionService = Objects.requireNonNull(profileDeletionService);
         this.profileCreationService = Objects.requireNonNull(profileCreationService);

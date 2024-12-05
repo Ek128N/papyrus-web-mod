@@ -57,3 +57,7 @@ Here its definition:
   }
 -----
 
+=== Implement new custom widget
+
+[TIP]
+Additional information on how to contribute a new widget custom menus in the _Explorer_ view in the https://github.com/eclipse-sirius/sirius-web/blob/master/doc/how-to/contribute-custom-widget.adoc[Sirius Web documentation].
