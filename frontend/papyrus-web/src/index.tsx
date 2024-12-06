@@ -23,7 +23,13 @@ import {
 } from '@eclipse-sirius/sirius-web-application';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
-import { NodeTypeContribution, diagramPaletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
+import {
+  DiagramPaletteToolContributionProps,
+  diagramPaletteToolExtensionPoint,
+  EdgeData,
+  NodeData,
+  NodeTypeContribution,
+} from '@eclipse-sirius/sirius-components-diagrams';
 import ReactDOM from 'react-dom';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { PapyrusIcon } from './core/PapyrusIcon';
@@ -85,6 +91,7 @@ import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon'
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
 import { PublishProfileTreeItemContextMenuContribution } from './profile/publish-profile/PublishProfileTreeItemContextMenuContribution';
+import { Edge, Node } from '@xyflow/react';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -226,9 +233,15 @@ extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
 });
 
 // Palette tools contribution
-extensionRegistry.addComponent(diagramPaletteToolExtensionPoint, {
+const diagramPaletteToolContributions: DiagramPaletteToolContributionProps[] = [
+  {
+    canHandle: (_: Node<NodeData> | Edge<EdgeData>) => true,
+    component: PapyrusPopupToolContribution,
+  },
+];
+extensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPaletteToolExtensionPoint, {
   identifier: 'papyrus-diagram-tools',
-  Component: PapyrusPopupToolContribution,
+  data: diagramPaletteToolContributions,
 });
 
 // Tree Item context menu contributions

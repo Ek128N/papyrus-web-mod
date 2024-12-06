@@ -91,7 +91,7 @@ public class UMLDefaultTreeDescriptionBuilder {
                 .editableExpression("aql:self.canBeRenamed()")
                 .elementsExpression("aql:editingContext.getRootElements(activeFilterIds)")
                 .hasChildrenExpression("aql:self.hasChildren(editingContext," + TreeRenderer.ANCESTOR_IDS + "," + TreeRenderer.INDEX + ")")
-                .iconURLExpression("aql:self.getIconURLs()")
+                .treeItemIconExpression("aql:self.getIconURLs()")
                 .kindExpression("aql:self.getItemKind()")
                 .parentExpression("aql:self.getParentItem(id,editingContext)")
                 .preconditionExpression("aql:false")
@@ -100,7 +100,6 @@ public class UMLDefaultTreeDescriptionBuilder {
                 .treeItemIdExpression("aql:self.getItemId()")
                 .treeItemObjectExpression("aql:id.toObject(editingContext)")
                 .treeItemLabelDescriptions(this.createElementLabelDescription(), this.createImportedElementLabelDescription(), this.createDefaultStyle())
-
                 .build();
     }
 

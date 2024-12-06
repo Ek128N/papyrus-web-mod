@@ -99,6 +99,7 @@ INSERT INTO representation_metadata (
     target_object_id,
     description_id,
     "label",
+    documentation,
     kind,
     created_on,
     last_modified_on)
@@ -106,6 +107,7 @@ VALUES (
     'dc0083d6-233a-4523-b06a-6c62c9baf3a4',
     'c87b6af4-7f3b-4802-9497-94bc5219d5f6',
     '8f568fdc-f688-4ecf-8e5f-9a1ed1a5fc6d',
+    '',
     'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=fe67a192-1679-3290-92ff-cf77016f6aa2&sourceElementId=a8c63f96-b6a9-387d-942f-4b0a54f8bfed',
     'Root Package Diagram',
     'siriusComponents://representation?type=Diagram',

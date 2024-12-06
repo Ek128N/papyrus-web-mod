@@ -318,10 +318,12 @@ public class UMLCppProjectTemplateInitializer implements IProjectTemplateInitial
                     variableManager.put(VariableManager.SELF, semanticTarget);
                     variableManager.put(DiagramDescription.LABEL, diagramDescription.getLabel());
                     String label = diagramDescription.getLabelProvider().apply(variableManager);
+                    List<String> iconURLs = diagramDescription.getIconURLsProvider().apply(variableManager);
                     return RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                             .kind(diagram.getKind())
                             .label(label)
                             .descriptionId(diagram.getDescriptionId())
+                            .iconURLs(iconURLs)
                             .build();
                 });
     }

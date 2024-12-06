@@ -108,6 +108,7 @@ public class AdvancedPropertiesDescriptionProvider {
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> this.canCreatePage(variableManager))
                 .pageDescriptions(pageDescriptions)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 

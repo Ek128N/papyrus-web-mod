@@ -36,7 +36,7 @@ public class PapyrusObjectService extends DefaultLabelService implements ILabelS
     private List<IImageOverrideService> imageOverriders;
 
     public PapyrusObjectService(ComposedAdapterFactory composedAdapterFactory, LabelFeatureProviderRegistry labelFeatureProviderRegistry, List<IImageOverrideService> imageOverriders) {
-        super(List.of(), labelFeatureProviderRegistry, composedAdapterFactory, List.of());
+        super(labelFeatureProviderRegistry, composedAdapterFactory);
         this.imageOverriders = imageOverriders;
     }
 

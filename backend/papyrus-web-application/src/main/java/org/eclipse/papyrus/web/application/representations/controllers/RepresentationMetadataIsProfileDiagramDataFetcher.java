@@ -23,9 +23,9 @@ import org.eclipse.papyrus.web.application.representations.dto.IsProfileDiagramI
 import org.eclipse.papyrus.web.application.representations.dto.IsProfileDiagramSuccessPayload;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
+import org.eclipse.sirius.web.application.representation.dto.RepresentationMetadataDTO;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -54,8 +54,8 @@ public class RepresentationMetadataIsProfileDiagramDataFetcher implements IDataF
 
     @Override
     public CompletableFuture<Boolean> get(DataFetchingEnvironment environment) throws Exception {
-        RepresentationMetadata representationMetadata = environment.getSource();
-        IsProfileDiagramInput input = new IsProfileDiagramInput(UUID.randomUUID(), representationMetadata.id().toString());
+        RepresentationMetadataDTO representationMetadataDTO = environment.getSource();
+        IsProfileDiagramInput input = new IsProfileDiagramInput(UUID.randomUUID(), representationMetadataDTO.id().toString());
 
         Map<String, Object> localContext = environment.getLocalContext();
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);

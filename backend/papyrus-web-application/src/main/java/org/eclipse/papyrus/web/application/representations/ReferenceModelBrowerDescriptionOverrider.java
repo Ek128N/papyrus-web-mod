@@ -123,7 +123,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
                 .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
                         .map(IEditingContext::getId)
                         .orElse(null))
-                .iconURLProvider(this::getImageURL)
+                .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
                 .deletableProvider(this::isDeletable)
                 .selectableProvider(isSelectableProvider)
@@ -136,6 +136,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
                 .treeItemObjectProvider(this::getTreeItemObject)
                 .treeItemLabelProvider(this::getLabel)
                 .parentObjectProvider(this::getParentObject)
+                .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
 
