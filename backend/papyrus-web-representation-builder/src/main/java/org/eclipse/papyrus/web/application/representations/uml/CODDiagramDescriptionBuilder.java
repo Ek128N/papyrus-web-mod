@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST, Obeo.
+ * Copyright (c) 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,7 +10,8 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 219, 227
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 219, 227
+ *  Aurelien Didier (Artal Technologies) - Issue 229
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -136,22 +137,24 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
         rectangularNodeStyle.setBorderRadius(INTERACTION_NODE_BORDER_RADIUS);
 
         EClass interactionEClass = this.umlPackage.getInteraction();
-        NodeDescription codInteractionTopNodeDescription = this.newNodeBuilder(interactionEClass, rectangularNodeStyle)//
-                .name(this.getIdBuilder().getDomainNodeName(interactionEClass)) //
+        NodeDescription codInteractionHolderTopNodeDescription = this.newNodeBuilder(interactionEClass, rectangularNodeStyle)//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interactionEClass.getName()))//
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
-        codInteractionTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
-        codInteractionTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
-        diagramDescription.getNodeDescriptions().add(codInteractionTopNodeDescription);
+        NodeDescription codInteractionContentTopNodeDescription = this.createContentNodeDescription(interactionEClass, false);
+        this.addContent(interactionEClass, false, codInteractionHolderTopNodeDescription, codInteractionContentTopNodeDescription);
+        codInteractionHolderTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
+        codInteractionHolderTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
+        this.copyDimension(codInteractionHolderTopNodeDescription, codInteractionContentTopNodeDescription);
+        diagramDescription.getNodeDescriptions().add(codInteractionHolderTopNodeDescription);
 
         // create Interaction tool sections
-        this.createDefaultToolSectionsInNodeDescription(codInteractionTopNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(codInteractionContentTopNodeDescription);
 
-        return codInteractionTopNodeDescription;
+        return codInteractionContentTopNodeDescription;
     }
 
     /**
@@ -162,20 +165,27 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private void createLifelineSubNodeDescription(NodeDescription parentNodeDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
+
         EClass lifelineEClass = this.umlPackage.getLifeline();
-        NodeDescription codLifelineSubNodeDescription = this.newNodeBuilder(lifelineEClass, rectangularNodeStyle) //
+
+        NodeDescription codLifelineSubNodeDescriptionHolder = this.newNodeBuilder(lifelineEClass, rectangularNodeStyle) //
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getInteraction_Lifeline())).synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(lifelineEClass.getName())) //
+                .name(this.getIdBuilder().getSpecializedDomainNodeName(lifelineEClass, HOLDER_SUFFIX))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(lifelineEClass.getName())) //
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
-        parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescription);
 
+        NodeDescription codLifelineSubNodeDescriptionContent = this.createContentNodeDescription(lifelineEClass, false);
+        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionContent, codLifelineSubNodeDescriptionHolder);
+        this.copyDimension(codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent);
+        parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescriptionHolder);
         // create Lifeline tool sections
-        this.createDefaultToolSectionsInNodeDescription(codLifelineSubNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(codLifelineSubNodeDescriptionContent);
 
         NodeTool codLifelineSubNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getInteraction_Lifeline(), lifelineEClass);
         this.addNodeToolInToolSection(List.of(parentNodeDescription), codLifelineSubNodeCreationTool, NODES);
+
     }
 
     /**
@@ -248,7 +258,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      *            the Communication {@link DiagramDescription} containing the created {@link EdgeDescription}
      */
     private void createMessageEdgeDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getLifeline());
+        Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.umlPackage.getLifeline());
 
         EClass messageEClass = this.umlPackage.getMessage();
         EdgeDescription codMessageEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(messageEClass, this.getQueryBuilder().queryAllReachable(messageEClass),

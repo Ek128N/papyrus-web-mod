@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technolgies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,7 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Aurelien Didier (Artal Technologies) - Issue 199
+ *  Aurelien Didier (Artal Technologies) - Issue 199, 229
  *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 227
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.builders;
@@ -281,6 +281,19 @@ public class ViewBuilder {
         return this.createCreationTool(name, Variables.SELF, containementRef, newType);
     }
 
+    /**
+     * Create a creation tool to create a unsynchronized {@link NodeDescription}.
+     *
+     * @param name
+     *            the name of the tool
+     * @param selfValue
+     *            the self expression
+     * @param containementRef
+     *            the containment reference used to contained the new element
+     * @param newType
+     *            the type of the element to create
+     * @return a new {@link NodeTool}
+     */
     public NodeTool createCreationTool(String name, String selfValue, EReference containementRef, EClass newType) {
         return this.createCreationTool(name, selfValue, containementRef, this.metamodelHelper.getDomain(newType));
     }
@@ -291,6 +304,51 @@ public class ViewBuilder {
         nodeTool.setIconURLsExpression(getIconURLFromToolName(newType));
         ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
         createElement.setExpression(this.queryBuilder.createNodeQuery(newType, selfValue, containementRef));
+        nodeTool.getBody().add(createElement);
+
+        return nodeTool;
+    }
+
+    /**
+     * Creates a creation {@link NodeTool} that delegates to the provided {@code serviceName}.
+     * <p>
+     * This method is used to create creation tools that rely on diagram-specific creation services. See
+     * {@link ViewBuilder#createCreationTool(EReference, EClass)} to create a creation {@link NodeTool} that relies on
+     * the default creation mechanism.
+     * </p>
+     *
+     * @param containementRef
+     *            the containment reference used to contained the new element
+     * @param newType
+     *            the type of the element to create
+     * @return the created {@link NodeTool}
+     */
+    public NodeTool createCreationToolInHolder(EReference containementRef, EClass newType) {
+        return this.createCreationToolInHolder(this.idBuilder.getCreationToolId(newType), Variables.SELF, containementRef, this.metamodelHelper.getDomain(newType));
+    }
+
+    /**
+     * Creates a creation {@link NodeTool} that delegates to the provided {@code serviceName}.
+     * <p>
+     * This method is used to create creation tools that rely on diagram-specific creation services. See
+     * {@link ViewBuilder#createCreationTool(EReference, EClass)} to create a creation {@link NodeTool} that relies on
+     * the default creation mechanism.
+     * </p>
+     *
+     * @param name
+     *            the name of the tool to create
+     * @param serviceName
+     *            the name of the service to call
+     * @param serviceParameters
+     *            the parameters provided to the service
+     * @return the created {@link NodeTool}
+     */
+    public NodeTool createCreationToolInHolder(String name, String selfValue, EReference containementRef, String newType) {
+        NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
+        nodeTool.setName(name);
+        nodeTool.setIconURLsExpression(getIconURLFromToolName(newType));
+        ChangeContext createElement = ViewFactory.eINSTANCE.createChangeContext();
+        createElement.setExpression(this.queryBuilder.createNodeInHolderQuery(newType, selfValue, containementRef));
         nodeTool.getBody().add(createElement);
 
         return nodeTool;
