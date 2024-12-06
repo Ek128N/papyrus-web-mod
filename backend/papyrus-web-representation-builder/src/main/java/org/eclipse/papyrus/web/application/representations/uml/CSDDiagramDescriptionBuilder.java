@@ -10,8 +10,8 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Aurelien Didier (Artal Technologies) - Issue 190
- *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 219, 227
+ *  Aurelien Didier (Artal Technologies) - Issue 190, 229
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 219, 227
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -109,7 +109,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         DropNodeTool csdGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
         List<EClass> children = List.of(this.pack.getClass_(), this.pack.getComment());
         this.registerCallback(diagramDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             csdGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
 
@@ -145,7 +145,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(csdClassifierSharedNodeDescription));
         List<EClass> children = List.of(classEClass, this.pack.getProperty(), this.pack.getComment());
         this.registerCallback(csdClassifierSharedNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cdModelGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         csdClassifierSharedNodeDescription.getPalette().setDropNodeTool(cdModelGraphicalDropTool);
@@ -184,7 +184,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private void createGeneralizationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> namedElementCollector = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
+        Supplier<List<NodeDescription>> namedElementCollector = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getClassifier());
         EdgeDescription connectorDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getGeneralization(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getGeneralization()), namedElementCollector, namedElementCollector);
         EdgeStyle style = connectorDescription.getStyle();
@@ -199,7 +199,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     private void createConnectorDescription(DiagramDescription diagramDescription) {
 
-        Supplier<List<NodeDescription>> sourceAndTargets = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPort(), this.pack.getProperty());
+        Supplier<List<NodeDescription>> sourceAndTargets = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getPort(), this.pack.getProperty());
 
         EdgeDescription connectorDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getConnector(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getConnector()), sourceAndTargets, sourceAndTargets);
@@ -221,7 +221,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private void createUsageDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> classifierCollector = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
+        Supplier<List<NodeDescription>> classifierCollector = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getNamedElement());
         EdgeDescription connectorDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getUsage(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getUsage()), classifierCollector, classifierCollector);
         EdgeStyle style = connectorDescription.getStyle();
@@ -258,7 +258,7 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(classTopNodeDescription));
         List<EClass> children = List.of(classEClass, this.pack.getComment(), this.pack.getProperty());
         this.registerCallback(classTopNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cdModelGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         classTopNodeDescription.getPalette().setDropNodeTool(cdModelGraphicalDropTool);
