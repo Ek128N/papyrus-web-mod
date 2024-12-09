@@ -113,6 +113,10 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-table</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.papyrus.domainservices</groupId>

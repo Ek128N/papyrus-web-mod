@@ -25,6 +25,7 @@ import org.eclipse.papyrus.web.application.explorer.builder.UMLDefaultTreeDescri
 import org.eclipse.papyrus.web.application.properties.UMLDetailViewFromBuilder;
 import org.eclipse.papyrus.web.application.properties.UMLPropertiesConfigurer;
 import org.eclipse.papyrus.web.application.representations.PapyrusRepresentationDescriptionRegistry;
+import org.eclipse.papyrus.web.application.tables.comment.UMLCommentTableRepresentationDescriptionBuilder;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -97,6 +98,9 @@ public class PapyrusStudioProjectTemplatesInitializer implements IProjectTemplat
 
                     View treeDescription = new UMLDefaultTreeDescriptionBuilder().createView();
                     this.addToResouce(resourceSet, treeDescription, treeDescription.getDescriptions().get(0).getName() + STUDIO_PREFIX);
+
+                    View commentTable = new UMLCommentTableRepresentationDescriptionBuilder().createView();
+                    this.addToResouce(resourceSet, commentTable, commentTable.getDescriptions().get(0).getName() + STUDIO_PREFIX);
 
                     return Optional.empty();
                 }));

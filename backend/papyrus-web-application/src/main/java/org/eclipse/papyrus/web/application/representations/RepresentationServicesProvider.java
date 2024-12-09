@@ -41,6 +41,7 @@ import org.eclipse.papyrus.web.application.representations.aqlservices.propertie
 import org.eclipse.papyrus.web.application.representations.aqlservices.properties.PropertiesReferenceTypeServices;
 import org.eclipse.papyrus.web.application.representations.aqlservices.scope.ReachableElementsServices;
 import org.eclipse.papyrus.web.application.representations.aqlservices.statemachine.StateMachineDiagramService;
+import org.eclipse.papyrus.web.application.representations.aqlservices.tables.TableService;
 import org.eclipse.papyrus.web.application.representations.aqlservices.useCase.UseCaseDiagramService;
 import org.eclipse.papyrus.web.application.representations.uml.ADDiagramDescriptionBuilder;
 import org.eclipse.papyrus.web.application.representations.uml.CDDiagramDescriptionBuilder;
@@ -56,6 +57,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.sirius.components.view.table.TableDescription;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -79,6 +81,8 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             this.registerDiagramServices(representationDescription, services);
         } else if (representationDescription instanceof org.eclipse.sirius.components.view.form.FormDescription formDesc) {
             this.registerFormServices(formDesc, services);
+        } else if (representationDescription instanceof TableDescription) {
+            this.registerTableServices(representationDescription, services);
         }
         return services;
     }
@@ -134,5 +138,11 @@ public class RepresentationServicesProvider implements IJavaServiceProvider {
             services.add(PropertiesStereotypeApplicationServices.class);
             services.add(PropertiesReferenceTypeServices.class);
         }
+    }
+
+    private void registerTableServices(RepresentationDescription representationDescription, List<Class<?>> services) {
+        services.add(ReachableElementsServices.class);
+        services.add(PropertiesStereotypeApplicationServices.class);
+        services.add(TableService.class);
     }
 }

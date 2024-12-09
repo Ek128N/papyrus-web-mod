@@ -29,6 +29,7 @@
     "@eclipse-sirius/sirius-components-validation": "2024.11.6",
     "@eclipse-sirius/sirius-components-widget-reference": "2024.11.6",
     "@eclipse-sirius/sirius-web-application": "2024.11.6",
+    "@eclipse-sirius/sirius-web-table": "2024.11.6",
     "@mui/icons-material": "5.15.19",
     "@mui/material": "5.15.19",
     "@types/react": "18.3.3",
