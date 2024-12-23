@@ -47,9 +47,36 @@ public class TableService {
      * @param element an UML element
      * @return a String that is the label of the given element
      */
-    public String getElementLabel(Element element) {
-        return this.objectService.getLabel(element);
+    public String getElementLabel(EObject element) {
+        String label = this.objectService.getLabel(element);
+        // Fallback for elements which are not NamedElement and not properly handled by the Edit framework
+        if (label == null || label.isBlank()) {
+            label = "<" + this.splitCamelCase(element.eClass().getName() + ">");
+        }
+        return label;
     }
+
+    /**
+     * 'MyClassName' => 'My Class Name'
+     */
+    private String splitCamelCase(String input) {
+        if (input == null || input.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(input.charAt(0));
+
+        for (int i = 1; i < input.length(); i++) {
+            if (Character.isUpperCase(input.charAt(i))) {
+                result.append(' ');
+            }
+            result.append(input.charAt(i));
+        }
+        return result.toString();
+    }
+
+
 
     /** Returns a String that contains all annotated elements label of a given {@link Comment} separated by a given separators.
      * @param comment an UML Comment
