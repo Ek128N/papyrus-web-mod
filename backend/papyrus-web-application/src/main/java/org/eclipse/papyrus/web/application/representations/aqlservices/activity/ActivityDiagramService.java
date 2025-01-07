@@ -339,7 +339,7 @@ public class ActivityDiagramService extends AbstractDiagramService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> capturedNodeDescriptions, boolean isInput) {
         // Copied from Papyrus Desktop, see
         // org.eclipse.papyrus.sirius.uml.diagram.activity.services.ActivityDiagramServices
-        EObject createdElement = this.create(parentExpansionRegion, "uml::ExpansionNode", UMLPackage.eINSTANCE.getStructuredActivityNode_Node().getName(), targetView, diagramContext,
+        EObject createdElement = this.createInHolder(parentExpansionRegion, "uml::ExpansionNode", UMLPackage.eINSTANCE.getStructuredActivityNode_Node().getName(), targetView, diagramContext,
                 capturedNodeDescriptions);
         if (createdElement instanceof ExpansionNode) {
             EStructuralFeature expansionNodeFeature;
