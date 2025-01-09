@@ -20,6 +20,7 @@ import {
   apolloClientOptionsConfigurersExtensionPoint,
   footerExtensionPoint,
   navigationBarMenuIconExtensionPoint,
+  navigationBarRightContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
@@ -85,6 +86,7 @@ import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon'
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
 import { PublishProfileTreeItemContextMenuContribution } from './profile/publish-profile/PublishProfileTreeItemContextMenuContribution';
+import { CodeGenerationPopupMessage } from './diagram-tools/CodeGenerationPopupMessage';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -249,6 +251,16 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 extensionRegistry.addComponent(navigationBarMenuIconExtensionPoint, {
   identifier: 'papyrus-help',
   Component: () => <Help />,
+});
+
+/**
+ * Popup message contribution.
+ * the page reloads when the generate code button is clicked, which closes the opened popup components.
+ * adding this component as a navigation bar extension point, keeps this component open.
+ */
+extensionRegistry.addComponent(navigationBarRightContributionExtensionPoint, {
+  identifier: `code-generation-popup-message`,
+  Component: CodeGenerationPopupMessage,
 });
 
 // Footer contribution
