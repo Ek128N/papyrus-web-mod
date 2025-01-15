@@ -84,3 +84,9 @@ coverage/
 odweb-maven-repository
 .attach_pid*
 .factorypath
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr

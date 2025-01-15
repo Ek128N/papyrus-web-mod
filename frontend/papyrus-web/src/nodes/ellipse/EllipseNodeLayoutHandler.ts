@@ -38,7 +38,8 @@ import {
   setBorderNodesPosition,
   getBorderNodeExtent,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Dimensions, HandleElement, Node, Position, XYPosition } from 'reactflow';
+import { Dimensions, Node, Position, XYPosition } from '@xyflow/react';
+import { NodeHandle } from '@xyflow/system';
 
 const borderNodeOffset = 5;
 
@@ -173,7 +174,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
   calculateCustomNodeEdgeHandlePosition(
     node: Node<NodeData>,
     handlePosition: Position,
-    handle: HandleElement
+    handle: NodeHandle
   ): XYPosition {
     let offsetX = handle.width / 2;
     let offsetY = handle.height / 2;

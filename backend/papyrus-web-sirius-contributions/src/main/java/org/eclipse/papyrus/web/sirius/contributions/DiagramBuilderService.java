@@ -51,7 +51,7 @@ public class DiagramBuilderService implements IDiagramBuilderService {
         var optionalDiagramDescription = this.findDiagramDescription(editingContext, diagramDescriptionMatcher);
         if (optionalDiagramDescription.isPresent()) {
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            return Optional.of(this.diagramCreationService.create(diagramName, semanticTarget, diagramDescription, editingContext));
+            return Optional.of(this.diagramCreationService.create(semanticTarget, diagramDescription, editingContext));
         } else {
             return Optional.empty();
         }
@@ -79,11 +79,11 @@ public class DiagramBuilderService implements IDiagramBuilderService {
                 .map(d -> Pair.of(d, result));
     }
 
-    private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, Predicate<DiagramDescription> diagamDescriptionMatcher) {
+    private Optional<DiagramDescription> findDiagramDescription(IEditingContext editingContext, Predicate<DiagramDescription> diagramDescriptionMatcher) {
         return this.representationDescriptionSearchService.findAll(editingContext).values().stream()
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast)
-                .filter(diagamDescriptionMatcher)
+                .filter(diagramDescriptionMatcher)
                 .findFirst();
     }
 

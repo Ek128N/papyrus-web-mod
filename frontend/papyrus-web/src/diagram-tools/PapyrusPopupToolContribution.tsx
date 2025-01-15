@@ -33,7 +33,7 @@ import {
   GQLGetMetaclassesQueryVariables,
 } from './PapyrusPopupToolContribution.types';
 import { TransferModal } from './TransferModal';
-import { useNodes } from 'reactflow';
+import { Node, useNodes } from '@xyflow/react';
 
 type Modal = 'dialog';
 
@@ -185,7 +185,7 @@ export const PapyrusPopupToolContribution = ({
     );
   }
 
-  const nodes = useNodes<NodeData>();
+  const nodes = useNodes<Node<NodeData>>();
 
   const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
 

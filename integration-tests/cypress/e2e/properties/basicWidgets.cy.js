@@ -118,14 +118,8 @@ describe('Basic widgets tests', () => {
    */
   it('Test LiteralBoolean concept', () => {
     const retrieveValuesElement = () => {
-      cy.get(':nth-child(1) > .MuiFormControl-root > .MuiFormControlLabel-root')
-        .should('be.visible')
-        .find('input')
-        .as('true');
-      cy.get(':nth-child(2) > .MuiFormControl-root > .MuiFormControlLabel-root')
-        .should('be.visible')
-        .find('input')
-        .as('false');
+      cy.getByTestId('flexbox-Value').children().eq(1).children().eq(0).find('input').as('true');
+      cy.getByTestId('flexbox-Value').children().eq(1).children().eq(1).find('input').as('false');
     };
 
     // Select LiteralBoolean in Explorer

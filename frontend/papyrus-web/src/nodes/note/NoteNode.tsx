@@ -28,7 +28,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer, useReactFlow } from 'reactflow';
+import { Node, NodeProps, NodeResizer, useReactFlow } from '@xyflow/react';
 import { NoteNodeData } from './NoteNode.types';
 
 const resizeLineStyle = (theme: Theme): React.CSSProperties => {
@@ -81,13 +81,13 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
   return svgPathStyle;
 };
 
-export const NoteNode = memo(({ data, id, selected, dragging }: NodeProps<NoteNodeData>) => {
+export const NoteNode = memo(({ data, id, selected, dragging }: NodeProps<Node<NoteNodeData>>) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
   const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-  const { getNodes } = useReactFlow<NoteNodeData>();
+  const { getNodes } = useReactFlow<Node<NoteNodeData>>();
   const node = getNodes().find((node) => node.id === id);
 
   const handleOnDrop = (event: React.DragEvent) => {

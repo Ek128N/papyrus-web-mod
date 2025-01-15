@@ -30,7 +30,7 @@ import {
   isListLayoutStrategy,
   convertInsideLabel,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node, XYPosition } from 'reactflow';
+import { Node, XYPosition } from '@xyflow/react';
 import { GQLCuboidNodeStyle, CuboidNodeData } from './CuboidNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
@@ -110,7 +110,7 @@ const toCuboidNode = (
   };
 
   if (gqlParentNode) {
-    node.parentNode = gqlParentNode.id;
+    node.parentId = gqlParentNode.id;
   }
 
   const nodeLayoutData = gqlDiagram.layoutData.nodeLayoutData.filter((data) => data.id === id)[0];

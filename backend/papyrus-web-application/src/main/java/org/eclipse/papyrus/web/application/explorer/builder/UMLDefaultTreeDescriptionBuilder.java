@@ -84,13 +84,13 @@ public class UMLDefaultTreeDescriptionBuilder {
 
     private TreeDescription build() {
 
-        TreeDescription description = new TreeDescriptionBuilder()
+        return new TreeDescriptionBuilder()
                 .name(UML_EXPLORER)
                 .childrenExpression("aql:self.getChildrenItems(editingContext,expanded, " + TreeRenderer.ANCESTOR_IDS + "," + TreeRenderer.INDEX + ")")
                 .deletableExpression("aql:self.canBeDeleted()")
                 .editableExpression("aql:self.canBeRenamed()")
                 .elementsExpression("aql:editingContext.getRootElements(activeFilterIds)")
-                .hasChildrenExpression("aql:self.hasChildren(" + TreeRenderer.ANCESTOR_IDS + "," + TreeRenderer.INDEX + ")")
+                .hasChildrenExpression("aql:self.hasChildren(editingContext," + TreeRenderer.ANCESTOR_IDS + "," + TreeRenderer.INDEX + ")")
                 .iconURLExpression("aql:self.getIconURLs()")
                 .kindExpression("aql:self.getItemKind()")
                 .parentExpression("aql:self.getParentItem(id,editingContext)")
@@ -102,8 +102,6 @@ public class UMLDefaultTreeDescriptionBuilder {
                 .treeItemLabelDescriptions(this.createElementLabelDescription(), this.createImportedElementLabelDescription(), this.createDefaultStyle())
 
                 .build();
-
-        return description;
     }
 
     private TextStyleDescription createStereotypeApplicationLabelStyle() {
