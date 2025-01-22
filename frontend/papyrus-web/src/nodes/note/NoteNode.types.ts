@@ -37,6 +37,7 @@ export interface Label {
 }
 
 export interface NoteLabelProps {
+  diagramElementId: string;
   label: Label;
   faded: boolean;
 }

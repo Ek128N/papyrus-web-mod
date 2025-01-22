@@ -156,7 +156,7 @@ export const NoteNode = memo(({ data, id, selected, dragging }: NodeProps<Node<N
             />
           </svg>
         </div>
-        {data.insideLabel ? <NoteLabel label={updatedLabel} faded={data.faded} /> : null}
+        {data.insideLabel ? <NoteLabel diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
         {selected ? (
           <DiagramElementPalette
             diagramElementId={id}

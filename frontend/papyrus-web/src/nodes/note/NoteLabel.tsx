@@ -17,9 +17,12 @@
 
 import { getCSSColor, IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import { Theme, useTheme } from '@mui/material/styles';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
+import { DiagramContext } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import { Label, NoteLabelProps } from './NoteNode.types';
-
+import { useDiagramDirectEdit } from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramDirectEditInput } from '@eclipse-sirius/sirius-components-diagrams';
 const isDisplayTopHeaderSeparator = (label: Label): boolean => {
   if ('displayHeaderSeparator' in label) {
     return label.displayHeaderSeparator && label.headerPosition === 'BOTTOM';
@@ -78,18 +81,31 @@ const labelOverflowStyle = (): React.CSSProperties => {
   return style;
 };
 
-export const NoteLabel = memo(({ label, faded }: NoteLabelProps) => {
+export const NoteLabel = memo(({ diagramElementId, label, faded }: NoteLabelProps) => {
   const theme: Theme = useTheme();
+  const { currentlyEditedLabelId, editingKey, resetDirectEdit } = useDiagramDirectEdit();
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-  const content: JSX.Element = (
-    <div
-      data-id={`${label.id}-content`}
-      data-testid={`NoteLabel content - ${label.text}`}
-      style={labelContentStyle(theme, label)}>
-      <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={{ marginRight: theme.spacing(1) }} />
-      <div style={labelOverflowStyle()}>{label.text}</div>
-    </div>
-  );
+  const handleClose = () => {
+    resetDirectEdit();
+    const diagramElement = document.querySelector(`[data-id="${diagramElementId}"]`);
+    if (diagramElement instanceof HTMLElement) {
+      diagramElement.focus();
+    }
+  };
+
+  const content: JSX.Element =
+    label.id === currentlyEditedLabelId && !readOnly ? (
+      <DiagramDirectEditInput editingKey={editingKey} onClose={handleClose} labelId={label.id} />
+    ) : (
+      <div
+        data-id={`${label.id}-content`}
+        data-testid={`NoteLabel content - ${label.text}`}
+        style={labelContentStyle(theme, label)}>
+        <IconOverlay iconURL={label.iconURL} alt={label.text} customIconStyle={{ marginRight: theme.spacing(1) }} />
+        <div style={labelOverflowStyle()}>{label.text}</div>
+      </div>
+    );
   return (
     <>
       {isDisplayTopHeaderSeparator(label) && (
