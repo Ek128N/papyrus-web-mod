@@ -7,6 +7,8 @@
 	<include file="classpath:db/db.changelog-master.xml" relativeToChangelogFile="false" />
 	<changeSet author="papyrus" id="papyrus-schema">
 		<sqlFile path="db/changelog/papyrus-web-schema.sql" />
+		<sqlFile path="db/changelog/papyrus-web-user-schema.sql" />
+		<sqlFile path="db/changelog/papyrus-web-workspace-schema.sql" />
 	</changeSet>
 
 </databaseChangeLog>

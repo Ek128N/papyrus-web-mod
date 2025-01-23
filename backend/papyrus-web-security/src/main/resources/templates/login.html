@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" th:href="@{/css/login.css}">
+	<link rel="icon" th:href="@{/images/papyrus.ico}" type="image/x-icon">
+</head>
+<body>
+	<header>
+		<h3>Access to Papyrus-Web workspace</h3>
+	</header>
+
+	<div class="container" style="margin-top: 50px;">
+		<div class="row">
+			<div class="col s12 m6 form-container">
+				<h3 class="message-title">Login or create a new workspace
+				<h3>
+				<div th:if="${param.error}">
+					<p class="error-message">Invalid name or password</p>
+				</div>
+				<form th:action="@{/login}" method="post">
+					<div class="input-field">
+						<input type="text" id="username" name="username" required>
+						<label for="username">User name</label>
+					</div>
+					<div class="input-field">
+						<input type="password" id="password" name="password" required>
+						<label for="password">Password</label>
+					</div>
+					<button type="submit" class="btn center-button">Login</button>
+				</form>
+			</div>
+			<div class="col s12 m6 image-container">
+				<img th:src="@{/images/papyrus-icon.png}" class="login-image">
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<p>&copy; 2024 <a href="https://list.cea.fr">CEA List.</a>&nbsp;Powered by <a href="https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web">Papyrus-Web</a></p>
+	</footer>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var elems = document.querySelectorAll('input');
+			var instances = M.updateTextFields();
+		});
+	</script>
+
+
+</body>
+</html>

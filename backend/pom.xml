@@ -61,6 +61,10 @@
 
 		<!--Test -->
 		<module>papyrus-web-test-coverage</module>
+		
+		<!-- Workspaces -->
+		<module>papyrus-web-security</module>
+		<module>papyrus-web-workspace</module>
 
 	</modules>
 

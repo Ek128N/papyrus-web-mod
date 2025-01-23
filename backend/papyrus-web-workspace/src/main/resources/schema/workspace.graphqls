@@ -1,0 +1,45 @@
+type ProjectSharedEventPayload {
+  id: ID!
+  projectId: ID!
+  userName: String!
+}
+
+extend type Mutation {
+  shareProject(input: ShareProjectInput!): ShareProjectPayload!
+}
+
+input ShareProjectInput {
+  id: ID!
+  projectId: ID!
+  userName: String!
+}
+
+union ShareProjectPayload = ErrorPayload | ShareProjectSuccessPayload
+
+type ShareProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
+
+type ProjectRevokedEventPayload {
+  id: ID!
+  projectId: ID!
+  userName: String!
+}
+
+extend type Mutation {
+  revokeProject(input: RevokeProjectInput!): RevokeProjectPayload!
+}
+
+input RevokeProjectInput {
+  id: ID!
+  projectId: ID!
+  userName: String!
+}
+
+union RevokeProjectPayload = ErrorPayload | RevokeProjectSuccessPayload
+
+type RevokeProjectSuccessPayload {
+  id: ID!
+  project: Project!
+}
