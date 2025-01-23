@@ -1,17 +1,17 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,10 +19,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
@@ -39,6 +41,8 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemAc
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -116,6 +120,14 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
                 return this.createMultiReferenceReorderOperation();
             case PapyrusWidgetsPackage.CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION:
                 return this.createContainmentReferenceWidgetDescription();
+            case PapyrusWidgetsPackage.CUSTOM_IMAGE_WIDGET_DESCRIPTION:
+                return this.createCustomImageWidgetDescription();
+            case PapyrusWidgetsPackage.ADD_IMAGE_OPERATION:
+                return this.createAddImageOperation();
+            case PapyrusWidgetsPackage.SELECT_IMAGE_OPERATION:
+                return this.createSelectImageOperation();
+            case PapyrusWidgetsPackage.REMOVE_IMAGE_OPERATION:
+                return this.createRemoveImageOperation();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -317,6 +329,50 @@ public class PapyrusWidgetsFactoryImpl extends EFactoryImpl implements PapyrusWi
     public ContainmentReferenceWidgetDescription createContainmentReferenceWidgetDescription() {
         ContainmentReferenceWidgetDescriptionImpl containmentReferenceWidgetDescription = new ContainmentReferenceWidgetDescriptionImpl();
         return containmentReferenceWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public CustomImageWidgetDescription createCustomImageWidgetDescription() {
+        CustomImageWidgetDescriptionImpl customImageWidgetDescription = new CustomImageWidgetDescriptionImpl();
+        return customImageWidgetDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public AddImageOperation createAddImageOperation() {
+        AddImageOperationImpl addImageOperation = new AddImageOperationImpl();
+        return addImageOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SelectImageOperation createSelectImageOperation() {
+        SelectImageOperationImpl selectImageOperation = new SelectImageOperationImpl();
+        return selectImageOperation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public RemoveImageOperation createRemoveImageOperation() {
+        RemoveImageOperationImpl removeImageOperation = new RemoveImageOperationImpl();
+        return removeImageOperation;
     }
 
     /**

@@ -25,10 +25,10 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
+  convertInsideLabel,
   convertLineStyle,
   convertOutsideLabels,
   isListLayoutStrategy,
-  convertInsideLabel,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLPackageNodeStyle, PackageNodeData } from './PackageNode.types';
@@ -139,7 +139,7 @@ const toPackageNode = (
 
 export class PackageNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
-    return gqlNode.style.__typename === 'PackageNodeStyle';
+    return gqlNode.style.__typename === 'PackageNodeStyle' && gqlNode.childrenLayoutStrategy?.kind !== 'List';
   }
 
   handle(

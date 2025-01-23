@@ -93,7 +93,7 @@
         eType="#//ClearReferenceOperation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="reorderOperation" eType="#//MultiReferenceReorderOperation"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass ../../../../../sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ReferenceWidgetDescriptionStyle"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="ecore:EClass platform:/resource/sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ReferenceWidgetDescriptionStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="ecore:EClass platform:/resource/sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ConditionalReferenceWidgetDescriptionStyle"
@@ -150,6 +150,27 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="ecore:EClass platform:/resource/sirius-components-widget-reference-view/src/main/resources/model/reference.ecore#//ConditionalReferenceWidgetDescriptionStyle"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CustomImageWidgetDescription" eSuperTypes="platform:/resource/sirius-components-view-form/src/main/resources/model/form.ecore#//WidgetDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="addImageOperation" lowerBound="1"
+        eType="#//AddImageOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selectImageOperation" lowerBound="1"
+        eType="#//SelectImageOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="removeImageOperation" lowerBound="1"
+        eType="#//RemoveImageOperation" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uuidExpression" eType="ecore:EDataType platform:/resource/sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AddImageOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass platform:/resource/sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SelectImageOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass platform:/resource/sirius-components-view/src/main/resources/model/view.ecore#//Operation"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RemoveImageOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="ecore:EClass platform:/resource/sirius-components-view/src/main/resources/model/view.ecore#//Operation"
         containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

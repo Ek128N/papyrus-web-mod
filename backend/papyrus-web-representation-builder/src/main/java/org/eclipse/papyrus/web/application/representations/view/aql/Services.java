@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.view.aql;
 
@@ -70,15 +71,21 @@ public class Services {
 
     public static final String CREATE_SERVICE = "create";
 
+    public static final String CREATE_IN_HOLDER_SERVICE = "createInHolder";
+
     public static final String IS_NOT_VISUAL_DESCENDANT = "isNotVisualDescendant";
 
     public static final String REMOVE_VALUE_FROM = "removeValueFrom";
 
     public static final String GET_SYMBOL = "getAllSymbol";
 
+    public static final String GET_ALL_NON_SYMBOL = "getAllNonSymbol";
+
     /**
      * The name of the service that check is the root model is not a Profile model.
      */
     public static final String IS_NOT_PROFILE_MODEL = "isNotProfileModel";
+
+    public static final String CREATE_ANNOTATION = "createAnnotation";
 
 }

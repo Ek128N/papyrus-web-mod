@@ -113,5 +113,20 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//ContainmentReferenceWidgetDescription/conditionalStyles"/>
     </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//CustomImageWidgetDescription">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//CustomImageWidgetDescription/addImageOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//CustomImageWidgetDescription/selectImageOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//CustomImageWidgetDescription/removeImageOperation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute papyrus-widgets.ecore#//CustomImageWidgetDescription/uuidExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//AddImageOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//AddImageOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//SelectImageOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//SelectImageOperation/body"/>
+    </genClasses>
+    <genClasses ecoreClass="papyrus-widgets.ecore#//RemoveImageOperation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference papyrus-widgets.ecore#//RemoveImageOperation/body"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

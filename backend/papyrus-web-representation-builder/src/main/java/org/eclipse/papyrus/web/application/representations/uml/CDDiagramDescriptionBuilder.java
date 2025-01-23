@@ -10,8 +10,8 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Titouan BOUËTE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issue 200, Issue 203
- *  Aurelien Didier (Artal Technologies) - Issue 199, Issue 190
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 200, 203, 219, 227
+ *  Aurelien Didier (Artal Technologies) - Issue 199, 190, 229
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -79,9 +80,13 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     public static final String RECEPTION_COMPARTMENT_SUFFIX = "Receptions";
 
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
     public static final String CD_REP_NAME = "Class Diagram";
 
     public static final String CD_PREFIX = "CD_";
+
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     private static final String NEW_CONTAINMENT_LINK_TOOL_LABEL = "New Containment Link";
 
@@ -105,6 +110,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         super(CD_PREFIX, CD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
+    // CHECKSTYLE:OFF
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
@@ -113,6 +119,14 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         this.createModelTopNodeDescription(diagramDescription);
         this.createPackageTopNodeDescription(diagramDescription);
+
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+        this.createHideAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
+        this.createShowAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
 
         this.createClassTopNodeDescription(diagramDescription);
         this.createInterfaceTopDescription(diagramDescription);
@@ -182,22 +196,34 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createClassifierContainmentLink(diagramDescription);
         this.createPackageContainmentLink(diagramDescription);
 
+        List<EClass> symbolOwners = List.of(
+                this.pack.getClass_(),
+                this.pack.getInterface(),
+                this.pack.getPrimitiveType(),
+                this.pack.getDataType(),
+                this.pack.getSignal(),
+                this.pack.getEnumeration(),
+                this.pack.getPackage());
+
+        this.createSymbolSharedNodeDescription(diagramDescription, this.cdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
         DropNodeTool cddGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
         List<EClass> children = List.of(this.pack.getModel(), this.pack.getPackage(), this.pack.getComment(), this.pack.getConstraint(), this.pack.getClass_(), this.pack.getInterface(),
                 this.pack.getDataType(), this.pack.getEnumeration(), this.pack.getSignal());
         this.registerCallback(diagramDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cddGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         diagramDescription.getPalette().setDropNodeTool(cddGraphicalDropTool);
     }
+    // CHECKSTYLE:ON
 
     private void createClassTopNodeDescription(DiagramDescription diagramDescription) {
         EClass classEClass = this.pack.getClass_();
         NodeDescription classTopNodeDescription = this.newNodeBuilder(classEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(classEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
@@ -217,7 +243,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EClass dataTypeEClass = this.pack.getDataType();
         NodeDescription dataTypeTopNodeDescription = this.newNodeBuilder(dataTypeEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(dataTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
@@ -236,7 +262,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     private void createEnumerationTopNodeDescription(DiagramDescription diagramDescription) {
         EClass enumerationEClass = this.pack.getEnumeration();
         NodeDescription enumerationLiterals = this.newNodeBuilder(enumerationEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(enumerationEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(enumerationEClass.getName()))//
@@ -255,7 +281,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EClass interfaceEClass = this.pack.getInterface();
         NodeDescription interfaceDescription = this.newNodeBuilder(interfaceEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(interfaceEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(interfaceEClass.getName()))//
@@ -280,24 +306,35 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createModelTopNodeDescription(DiagramDescription diagramDescription) {
         EClass modelEClass = this.pack.getModel();
-        NodeDescription cdModelTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass, this.getQueryBuilder().queryAllReachableExactType(modelEClass));
-        diagramDescription.getNodeDescriptions().add(cdModelTopNodeDescription);
+        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
+        NodeDescription cdModelHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
+                this.getQueryBuilder().queryAllReachableExactType(modelEClass));
+        cdModelHolderTopNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
+        cdModelHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
-        this.createDefaultToolSectionsInNodeDescription(cdModelTopNodeDescription);
+        NodeDescription cdModelContentTopNodeDescription = this.createContentNodeDescription(modelEClass, false);
+        this.addContent(modelEClass, false, cdModelHolderTopNodeDescription, cdModelContentTopNodeDescription);
+        this.copyDimension(cdModelHolderTopNodeDescription, cdModelContentTopNodeDescription);
+
+        diagramDescription.getNodeDescriptions().add(cdModelHolderTopNodeDescription);
+        cdModelHolderTopNodeDescription.getChildrenDescriptions().add(cdModelContentTopNodeDescription);
+
+        // create tool
+        this.createDefaultToolSectionsInNodeDescription(cdModelHolderTopNodeDescription);
 
         NodeTool cdProfileTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), modelEClass);
         this.addDiagramToolInToolSection(diagramDescription, cdProfileTopNodeCreationTool, NODES);
 
-        // Add dropped tool on Model container
-        DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdModelTopNodeDescription));
+        // Add dropped tool on Profile container
+        DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdModelHolderTopNodeDescription));
         List<EClass> children = List.of(this.pack.getClass_(), this.pack.getSignal(), this.pack.getDataType(), this.pack.getPrimitiveType(), this.pack.getEnumeration(), this.pack.getComment(),
                 this.pack.getConstraint(),
                 this.pack.getInterface(), this.pack.getModel(), this.pack.getPackage());
-        this.registerCallback(cdModelTopNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+        this.registerCallback(cdModelContentTopNodeDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cdModelGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        cdModelTopNodeDescription.getPalette().setDropNodeTool(cdModelGraphicalDropTool);
+        cdModelContentTopNodeDescription.getPalette().setDropNodeTool(cdModelGraphicalDropTool);
     }
 
     /**
@@ -308,14 +345,22 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createPackageTopNodeDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.pack.getPackage();
-        NodeDescription cdPackageTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
-                this.getQueryBuilder().queryAllReachableExactType(this.pack.getPackage()));
-        diagramDescription.getNodeDescriptions().add(cdPackageTopNodeDescription);
+        NodeDescription cdPackageHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
+                this.getQueryBuilder().queryAllReachableExactType(packageEClass));
+        cdPackageHolderTopNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, HOLDER_SUFFIX));
+        cdPackageHolderTopNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
-        cdPackageTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+        cdPackageHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+
+        NodeDescription cdPackageContentTopNodeDescription = this.createContentNodeDescription(packageEClass, false);
+        this.addContent(packageEClass, false, cdPackageHolderTopNodeDescription, cdPackageContentTopNodeDescription);
+        this.copyDimension(cdPackageHolderTopNodeDescription, cdPackageContentTopNodeDescription);
+
+        diagramDescription.getNodeDescriptions().add(cdPackageHolderTopNodeDescription);
+        cdPackageHolderTopNodeDescription.getChildrenDescriptions().add(cdPackageContentTopNodeDescription);
 
         // create Package tool sections
-        this.createDefaultToolSectionsInNodeDescription(cdPackageTopNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(cdPackageHolderTopNodeDescription);
 
         NodeTool cdPackageTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, cdPackageTopNodeCreationTool, NODES);
@@ -323,22 +368,22 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         // No direct children for Package: the NodeDescriptions it can contain are all defined as shared descriptions.
 
         // Add dropped tool on Package container
-        DropNodeTool cdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdPackageTopNodeDescription));
+        DropNodeTool cdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdPackageHolderTopNodeDescription));
         List<EClass> children = List.of(this.pack.getClass_(), this.pack.getSignal(), this.pack.getDataType(), this.pack.getPrimitiveType(), this.pack.getEnumeration(), this.pack.getComment(),
                 this.pack.getConstraint(),
                 this.pack.getInterface(), this.pack.getModel(), this.pack.getPackage());
-        this.registerCallback(cdPackageTopNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+        this.registerCallback(cdPackageContentTopNodeDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cdPackageGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        cdPackageTopNodeDescription.getPalette().setDropNodeTool(cdPackageGraphicalDropTool);
+        cdPackageContentTopNodeDescription.getPalette().setDropNodeTool(cdPackageGraphicalDropTool);
     }
 
     private void createPrimitiveTypeTopNodeDescription(DiagramDescription diagramDescription) {
 
         EClass primitiveTypeEClass = this.pack.getPrimitiveType();
         NodeDescription primitiveTypeDescription = this.newNodeBuilder(primitiveTypeEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(primitiveTypeEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(primitiveTypeEClass.getName()))//
@@ -358,7 +403,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         EClass signalEClass = this.pack.getSignal();
         NodeDescription signalDescription = this.newNodeBuilder(signalEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachable(signalEClass))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(signalEClass.getName()))//
@@ -544,7 +589,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      * @return the created {@link NodeDescription}
      */
     private NodeDescription createClassifierSharedNodeDescription(DiagramDescription diagramDescription, EClass classifierEClass) {
-        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        ListLayoutStrategyDescription listLayoutStrategyDescription = this.createListLayoutStrategy();
         listLayoutStrategyDescription.setAreChildNodesDraggableExpression(CHILD_NOT_DRAGGABLE_EXPRESSION);
         NodeDescription cdClassifierSharedNodeDescription = this.newNodeBuilder(classifierEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(classifierEClass, SHARED_SUFFIX)) //
@@ -591,28 +636,33 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createModelSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass modelEClass = this.pack.getModel();
-        NodeDescription cdModelSharedNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
+        NodeDescription cdModelHolderSharedNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
                 CallQuery.queryAttributeOnSelf(this.pack.getPackage_PackagedElement()));
-        cdModelSharedNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(modelEClass, SHARED_SUFFIX));
-        cdModelSharedNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+        cdModelHolderSharedNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+        cdModelHolderSharedNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
-        this.cdSharedDescription.getChildrenDescriptions().add(cdModelSharedNodeDescription);
+        NodeDescription cdModelContentSharedNodeDescription = this.createContentNodeDescription(modelEClass, true);
+        this.addContent(modelEClass, true, cdModelHolderSharedNodeDescription, cdModelContentSharedNodeDescription);
+        this.copyDimension(cdModelHolderSharedNodeDescription, cdModelContentSharedNodeDescription);
+        this.cdSharedDescription.getChildrenDescriptions().add(cdModelHolderSharedNodeDescription);
+        cdModelHolderSharedNodeDescription.getChildrenDescriptions().add(cdModelContentSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(cdModelSharedNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(cdModelContentSharedNodeDescription);
 
         NodeTool cdModelSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), modelEClass);
         List<EClass> owners = List.of(this.pack.getPackage(), this.pack.getModel());
-        this.reuseNodeAndCreateTool(cdModelSharedNodeDescription, diagramDescription, cdModelSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
+        this.reuseNodeAndCreateTool(cdModelHolderSharedNodeDescription, diagramDescription,
+                cdModelSharedNodeCreationTool, NODES, owners, List.of());
 
         // Add dropped tool on Shared Package container
-        DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdModelSharedNodeDescription));
+        DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdModelContentSharedNodeDescription));
         List<EClass> children = List.of(this.pack.getClass_(), this.pack.getInterface(), this.pack.getDataType(), this.pack.getEnumeration(), this.pack.getPrimitiveType(), this.pack.getComment(),
                 this.pack.getConstraint(), this.pack.getDataType(), this.pack.getPackage(), this.pack.getModel(), this.pack.getSignal());
-        this.registerCallback(cdModelSharedNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+        this.registerCallback(cdModelContentSharedNodeDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cdModelGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        cdModelSharedNodeDescription.getPalette().setDropNodeTool(cdModelGraphicalDropTool);
+        cdModelContentSharedNodeDescription.getPalette().setDropNodeTool(cdModelGraphicalDropTool);
     }
 
     /**
@@ -657,28 +707,37 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createPackageSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.pack.getPackage();
-        NodeDescription cdPackageSharedNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
+        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
+        NodeDescription cdPackageHolderSharedNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
                 CallQuery.queryAttributeOnSelf(this.pack.getPackage_PackagedElement()));
-        cdPackageSharedNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, SHARED_SUFFIX));
-        cdPackageSharedNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+        cdPackageHolderSharedNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX));
+        cdPackageHolderSharedNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
+        cdPackageHolderSharedNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
-        this.cdSharedDescription.getChildrenDescriptions().add(cdPackageSharedNodeDescription);
+        NodeDescription cdPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
+        this.copyDimension(cdPackageHolderSharedNodeDescription, cdPackageContentSharedNodeDescription);
+        this.cdSharedDescription.getChildrenDescriptions().add(cdPackageHolderSharedNodeDescription);
+        cdPackageHolderSharedNodeDescription.getChildrenDescriptions().add(cdPackageContentSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(cdPackageSharedNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(cdPackageContentSharedNodeDescription);
 
         NodeTool cdPackageSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), packageEClass);
-        List<EClass> owners = List.of(this.pack.getPackage());
-        this.reuseNodeAndCreateTool(cdPackageSharedNodeDescription, diagramDescription, cdPackageSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
+        List<EClass> owners = List.of(this.pack.getPackage(), this.pack.getModel());
+        this.reuseNodeAndCreateTool(cdPackageHolderSharedNodeDescription, diagramDescription,
+                cdPackageSharedNodeCreationTool, NODES, owners, List.of());
+
+        llsd.getGrowableNodes().add(cdPackageContentSharedNodeDescription);
+        cdPackageHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
 
         // Add dropped tool on Shared Package container
-        DropNodeTool cdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdPackageSharedNodeDescription));
+        DropNodeTool cdPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdPackageContentSharedNodeDescription));
         List<EClass> children = List.of(this.pack.getClass_(), this.pack.getInterface(), this.pack.getDataType(), this.pack.getEnumeration(), this.pack.getPrimitiveType(), this.pack.getComment(),
                 this.pack.getConstraint(), this.pack.getDataType(), this.pack.getPackage(), this.pack.getModel(), this.pack.getSignal());
-        this.registerCallback(cdPackageSharedNodeDescription, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+        this.registerCallback(cdPackageContentSharedNodeDescription, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cdPackageGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
-        cdPackageSharedNodeDescription.getPalette().setDropNodeTool(cdPackageGraphicalDropTool);
+        cdPackageContentSharedNodeDescription.getPalette().setDropNodeTool(cdPackageGraphicalDropTool);
     }
 
     /**
@@ -739,7 +798,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription createNodeDescriptionInCompartmentDescription = this.newNodeBuilder(domainType, DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription())//
                 .name(nodeDescriptionName) //
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(semanticQuery)//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(domainType.getName()))//
@@ -768,7 +827,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
             this.reusedNodeDescriptionInOwners(createNodeDescriptionInCompartmentDescription, ownerCompartmentNodeDescriptions);
         });
 
-        // TODO: See if we need to reenable this with custo
+        // TO_DO: See if we need to reenable this with custo
         // Tool used to create node Node Description in Compartment from the parent of this compartment
         // NodeTool cdSharedNodeDescriptionInCompartmentCreationTool =
         // this.getViewBuilder().createInCompartmentCreationTool(this.getIdBuilder().getCreationToolId(domainType),
@@ -782,7 +841,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createAbstractionDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> namedElementDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
+        Supplier<List<NodeDescription>> namedElementDescriptions = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getNamedElement());
         EdgeDescription cdAbstraction = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getAbstraction(),
                 this.getQueryBuilder().queryAllReachableExactType(this.pack.getAbstraction()), namedElementDescriptions, namedElementDescriptions);
         cdAbstraction.getStyle().setLineStyle(LineStyle.DASH);
@@ -797,7 +856,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createAssociationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
+        Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getClassifier());
 
         EClass association = this.pack.getAssociation();
         EdgeDescription cdAssociation = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(association, this.getQueryBuilder().queryAllReachableExactType(association),
@@ -833,8 +892,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private void createClassifierContainmentLink(DiagramDescription diagramDescription) {
 
-        Supplier<List<NodeDescription>> sourceProvider = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClass_());
-        Supplier<List<NodeDescription>> targetProvider = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
+        Supplier<List<NodeDescription>> sourceProvider = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getClass_());
+        Supplier<List<NodeDescription>> targetProvider = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getClassifier());
 
         EdgeDescription containmentLinkEdge = this.getViewBuilder().createFeatureEdgeDescription(//
                 CLASSIFIER_CONTAINMENT_LINK_EDGE_ID, //
@@ -868,7 +927,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createDependencyDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> namedElementDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
+        Supplier<List<NodeDescription>> namedElementDescriptions = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getNamedElement());
         EdgeDescription cdDependency = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getDependency(),
                 this.getQueryBuilder().queryAllReachableExactType(this.pack.getDependency()), namedElementDescriptions, namedElementDescriptions);
         cdDependency.getStyle().setLineStyle(LineStyle.DASH);
@@ -883,7 +942,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createGeneralizationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getClassifier());
+        Supplier<List<NodeDescription>> sourceAndTargetDescriptionsSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getClassifier());
 
         EClass generalization = this.pack.getGeneralization();
         EdgeDescription cdGeneralization = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(generalization, this.getQueryBuilder().queryAllReachableExactType(generalization),
@@ -901,8 +960,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createInterfaceRealizationDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> sourceDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getBehavioredClassifier());
-        Supplier<List<NodeDescription>> targetDescriptionsSupplier = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getInterface());
+        Supplier<List<NodeDescription>> sourceDescriptionsSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getBehavioredClassifier());
+        Supplier<List<NodeDescription>> targetDescriptionsSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getInterface());
 
         EdgeDescription cdInterfaceRealization = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getInterfaceRealization(),
                 this.getQueryBuilder().queryAllReachableExactType(this.pack.getInterfaceRealization()), sourceDescriptionsSupplier, targetDescriptionsSupplier);
@@ -919,8 +978,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
     private void createPackageContainmentLink(DiagramDescription diagramDescription) {
 
-        Supplier<List<NodeDescription>> sourceProvider = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
-        Supplier<List<NodeDescription>> targetProvider = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackageableElement());
+        Supplier<List<NodeDescription>> sourceProvider = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getPackage());
+        Supplier<List<NodeDescription>> targetProvider = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getPackageableElement());
 
         EdgeDescription containmentLinkEdge = this.getViewBuilder().createFeatureEdgeDescription(//
                 PACKAGE_CONTAINMENT_LINK_EDGE_ID, //
@@ -954,7 +1013,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createPackageImportDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
+        Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getPackage());
         EdgeDescription cdPackageImport = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getPackageImport(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getPackageImport()), packageDescriptions, packageDescriptions);
         cdPackageImport.getStyle().setLineStyle(LineStyle.DASH);
@@ -970,7 +1029,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createPackageMergeDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getPackage());
+        Supplier<List<NodeDescription>> packageDescriptions = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getPackage());
         EdgeDescription cdPackageMerge = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getPackageMerge(),
                 this.getQueryBuilder().queryAllReachable(this.pack.getPackageMerge()), packageDescriptions, packageDescriptions);
         cdPackageMerge.getStyle().setLineStyle(LineStyle.DASH);
@@ -1004,7 +1063,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
     }
 
     private void createUsageDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> classifierCollector = () -> this.collectNodesWithDomain(diagramDescription, this.pack.getNamedElement());
+        Supplier<List<NodeDescription>> classifierCollector = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.pack.getNamedElement());
         EdgeDescription usageDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.pack.getUsage(), this.getQueryBuilder().queryAllReachable(this.pack.getUsage()),
                 classifierCollector, classifierCollector);
         EdgeStyle style = usageDescription.getStyle();

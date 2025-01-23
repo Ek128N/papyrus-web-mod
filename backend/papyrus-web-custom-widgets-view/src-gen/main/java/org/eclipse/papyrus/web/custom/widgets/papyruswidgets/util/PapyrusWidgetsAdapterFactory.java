@@ -1,27 +1,29 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
@@ -37,6 +39,8 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemAc
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
@@ -179,6 +183,26 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseContainmentReferenceWidgetDescription(ContainmentReferenceWidgetDescription object) {
             return PapyrusWidgetsAdapterFactory.this.createContainmentReferenceWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseCustomImageWidgetDescription(CustomImageWidgetDescription object) {
+            return PapyrusWidgetsAdapterFactory.this.createCustomImageWidgetDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseAddImageOperation(AddImageOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createAddImageOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseSelectImageOperation(SelectImageOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createSelectImageOperationAdapter();
+        }
+
+        @Override
+        public Adapter caseRemoveImageOperation(RemoveImageOperation object) {
+            return PapyrusWidgetsAdapterFactory.this.createRemoveImageOperationAdapter();
         }
 
         @Override
@@ -473,6 +497,63 @@ public class PapyrusWidgetsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createContainmentReferenceWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription <em>Custom Image
+     * Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription
+     * @generated
+     */
+    public Adapter createCustomImageWidgetDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation <em>Add Image Operation</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation
+     * @generated
+     */
+    public Adapter createAddImageOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation <em>Select Image
+     * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation
+     * @generated
+     */
+    public Adapter createSelectImageOperationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation <em>Remove Image
+     * Operation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation
+     * @generated
+     */
+    public Adapter createRemoveImageOperationAdapter() {
         return null;
     }
 

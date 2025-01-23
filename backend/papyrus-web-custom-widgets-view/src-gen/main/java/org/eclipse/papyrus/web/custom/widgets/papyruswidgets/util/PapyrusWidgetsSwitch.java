@@ -1,26 +1,28 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClearReferenceOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ClickReferenceValueOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.ContainmentReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CreateElementInReferenceOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceSetOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceUnsetOperation;
@@ -36,6 +38,8 @@ import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListItemAc
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListReorderOperation;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveListWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PrimitiveRadioWidgetDescription;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation;
+import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 
@@ -236,6 +240,38 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
                     result = this.caseWidgetDescription(containmentReferenceWidgetDescription);
                 if (result == null)
                     result = this.caseFormElementDescription(containmentReferenceWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.CUSTOM_IMAGE_WIDGET_DESCRIPTION: {
+                CustomImageWidgetDescription customImageWidgetDescription = (CustomImageWidgetDescription) theEObject;
+                T result = this.caseCustomImageWidgetDescription(customImageWidgetDescription);
+                if (result == null)
+                    result = this.caseWidgetDescription(customImageWidgetDescription);
+                if (result == null)
+                    result = this.caseFormElementDescription(customImageWidgetDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.ADD_IMAGE_OPERATION: {
+                AddImageOperation addImageOperation = (AddImageOperation) theEObject;
+                T result = this.caseAddImageOperation(addImageOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.SELECT_IMAGE_OPERATION: {
+                SelectImageOperation selectImageOperation = (SelectImageOperation) theEObject;
+                T result = this.caseSelectImageOperation(selectImageOperation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapyrusWidgetsPackage.REMOVE_IMAGE_OPERATION: {
+                RemoveImageOperation removeImageOperation = (RemoveImageOperation) theEObject;
+                T result = this.caseRemoveImageOperation(removeImageOperation);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -514,6 +550,66 @@ public class PapyrusWidgetsSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseContainmentReferenceWidgetDescription(ContainmentReferenceWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Custom Image Widget Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Custom Image Widget Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCustomImageWidgetDescription(CustomImageWidgetDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Add Image Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Add Image Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseAddImageOperation(AddImageOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Select Image Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Select Image Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSelectImageOperation(SelectImageOperation object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Remove Image Operation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Remove Image Operation</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseRemoveImageOperation(RemoveImageOperation object) {
         return null;
     }
 

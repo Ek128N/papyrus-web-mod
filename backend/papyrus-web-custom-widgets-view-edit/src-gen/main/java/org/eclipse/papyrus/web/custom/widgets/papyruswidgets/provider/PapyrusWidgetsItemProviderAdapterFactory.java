@@ -1,17 +1,17 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets.provider;
 
 import java.util.ArrayList;
@@ -544,6 +544,103 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected CustomImageWidgetDescriptionItemProvider customImageWidgetDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createCustomImageWidgetDescriptionAdapter() {
+        if (this.customImageWidgetDescriptionItemProvider == null) {
+            this.customImageWidgetDescriptionItemProvider = new CustomImageWidgetDescriptionItemProvider(this);
+        }
+
+        return this.customImageWidgetDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected AddImageOperationItemProvider addImageOperationItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createAddImageOperationAdapter() {
+        if (this.addImageOperationItemProvider == null) {
+            this.addImageOperationItemProvider = new AddImageOperationItemProvider(this);
+        }
+
+        return this.addImageOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SelectImageOperationItemProvider selectImageOperationItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSelectImageOperationAdapter() {
+        if (this.selectImageOperationItemProvider == null) {
+            this.selectImageOperationItemProvider = new SelectImageOperationItemProvider(this);
+        }
+
+        return this.selectImageOperationItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected RemoveImageOperationItemProvider removeImageOperationItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createRemoveImageOperationAdapter() {
+        if (this.removeImageOperationItemProvider == null) {
+            this.removeImageOperationItemProvider = new RemoveImageOperationItemProvider(this);
+        }
+
+        return this.removeImageOperationItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -679,6 +776,14 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
             this.multiReferenceReorderOperationItemProvider.dispose();
         if (this.containmentReferenceWidgetDescriptionItemProvider != null)
             this.containmentReferenceWidgetDescriptionItemProvider.dispose();
+        if (this.customImageWidgetDescriptionItemProvider != null)
+            this.customImageWidgetDescriptionItemProvider.dispose();
+        if (this.addImageOperationItemProvider != null)
+            this.addImageOperationItemProvider.dispose();
+        if (this.selectImageOperationItemProvider != null)
+            this.selectImageOperationItemProvider.dispose();
+        if (this.removeImageOperationItemProvider != null)
+            this.removeImageOperationItemProvider.dispose();
     }
 
     /**
@@ -744,6 +849,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                 this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.GROUP_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createCustomImageWidgetDescription()));
+
                 return null;
             }
 
@@ -771,6 +879,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
 
                 this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createCustomImageWidgetDescription()));
 
                 return null;
             }
@@ -800,6 +911,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
                 this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
 
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_FOR__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createCustomImageWidgetDescription()));
+
                 return null;
             }
 
@@ -827,6 +941,9 @@ public class PapyrusWidgetsItemProviderAdapterFactory extends PapyrusWidgetsAdap
 
                 this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
                         PapyrusWidgetsFactory.eINSTANCE.createContainmentReferenceWidgetDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FORM_ELEMENT_IF__CHILDREN,
+                        PapyrusWidgetsFactory.eINSTANCE.createCustomImageWidgetDescription()));
 
                 return null;
             }

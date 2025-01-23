@@ -10,7 +10,8 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
- *  Aurelien Didier (Artal Technologies) - Issue 199, Issue 190
+ *  Aurelien Didier (Artal Technologies) - Issue 199, 229
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - titouan.bouete-giraud@artal.fr - Issues 219, 227
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -27,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -53,7 +55,11 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     public static final String SMD_PREFIX = "SMD_";
 
+    public static final String SYMBOLS_COMPARTMENT_SUFFIX = "Symbols";
+
     public static final int STATEMACHINE_NODE_BORDER_RADIUS = 10;
+
+    public static final String SHOW_HIDE = "SHOW_HIDE";
 
     private static final String PSEUDO_STATE = "Pseudostate";
 
@@ -97,6 +103,20 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX),
                 List.of(this.umlPackage.getRegion(), this.umlPackage.getStateMachine()));
 
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+        this.createHideAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
+        this.createShowAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
+
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getRegion(),
+                this.umlPackage.getState(),
+                this.umlPackage.getStateMachine());
+        this.createSymbolSharedNodeDescription(diagramDescription, this.smSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         // There is a unique DropTool for the DiagramDescription
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
@@ -116,7 +136,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createStateMachineNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
-        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+        ListLayoutStrategyDescription listLayoutStrategyDescription = this.createListLayoutStrategy();
         NodeDescription smdStateMachineNodeDesc = this.newNodeBuilder(this.umlPackage.getStateMachine(), rectangularNodeStyle)//
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
@@ -134,7 +154,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         DropNodeTool smGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(smdStateMachineNodeDesc));
         List<EClass> children = List.of(this.umlPackage.getRegion(), this.umlPackage.getPseudostate());
         this.registerCallback(smdStateMachineNodeDesc, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             smGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         return smdStateMachineNodeDesc;
@@ -194,7 +214,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         ConditionalNodeStyle conditionalHeaderStyle = this.getViewBuilder().createConditionalNodeStyle(condition, headerStyle);
 
         NodeDescription stateNodeDesc = this.newNodeBuilder(this.umlPackage.getState(), rectangularNodeStyle)//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .conditionalStyles(List.of(conditionalHeaderStyle)) //
@@ -216,7 +236,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         DropNodeTool stateGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(stateNodeDesc));
         List<EClass> children = List.of(this.umlPackage.getRegion());
         this.registerCallback(stateGraphicalDropTool, () -> {
-            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             stateGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         stateNodeDesc.getPalette().setDropNodeTool(stateGraphicalDropTool);
@@ -342,7 +362,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     }
 
     private void createTransitionEdgeDescription(DiagramDescription diagramDescription) {
-        Supplier<List<NodeDescription>> vertexNodeDescriptions = () -> this.collectNodesWithDomain(diagramDescription, this.umlPackage.getVertex());
+        Supplier<List<NodeDescription>> vertexNodeDescriptions = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.umlPackage.getVertex());
         EdgeDescription transitionEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(this.umlPackage.getTransition(),
                 this.getQueryBuilder().queryAllReachableExactType(this.umlPackage.getTransition()), vertexNodeDescriptions, vertexNodeDescriptions);
         transitionEdgeDescription.getStyle().setTargetArrowStyle(ArrowStyle.INPUT_ARROW);

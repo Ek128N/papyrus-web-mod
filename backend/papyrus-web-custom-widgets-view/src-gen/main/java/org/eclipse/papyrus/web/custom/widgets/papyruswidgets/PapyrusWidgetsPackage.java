@@ -1,17 +1,17 @@
-/**
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+/*****************************************************************************
+ * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under
- * the terms of the Eclipse Public License 2.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - Initial API and implementation
- */
+ *  Obeo - Initial API and implementation
+ *  Titouan BOUETE-GIRAUD (Artal Technologies) - Issue 210
+ *****************************************************************************/
 package org.eclipse.papyrus.web.custom.widgets.papyruswidgets;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -1318,6 +1318,209 @@ public interface PapyrusWidgetsPackage extends EPackage {
     int CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.CustomImageWidgetDescriptionImpl <em>Custom
+     * Image Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.CustomImageWidgetDescriptionImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getCustomImageWidgetDescription()
+     * @generated
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION = 18;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__NAME = FormPackage.WIDGET_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__LABEL_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Help Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__HELP_EXPRESSION = FormPackage.WIDGET_DESCRIPTION__HELP_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Add Image Operation</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__ADD_IMAGE_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Select Image Operation</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__SELECT_IMAGE_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Remove Image Operation</b></em>' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__REMOVE_IMAGE_OPERATION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Uuid Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION__UUID_EXPRESSION = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The number of structural features of the '<em>Custom Image Widget Description</em>' class. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION_FEATURE_COUNT = FormPackage.WIDGET_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The number of operations of the '<em>Custom Image Widget Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_IMAGE_WIDGET_DESCRIPTION_OPERATION_COUNT = FormPackage.WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.AddImageOperationImpl <em>Add Image
+     * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.AddImageOperationImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getAddImageOperation()
+     * @generated
+     */
+    int ADD_IMAGE_OPERATION = 19;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ADD_IMAGE_OPERATION__BODY = 0;
+
+    /**
+     * The number of structural features of the '<em>Add Image Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ADD_IMAGE_OPERATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Add Image Operation</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ADD_IMAGE_OPERATION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.SelectImageOperationImpl <em>Select Image
+     * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.SelectImageOperationImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getSelectImageOperation()
+     * @generated
+     */
+    int SELECT_IMAGE_OPERATION = 20;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_IMAGE_OPERATION__BODY = 0;
+
+    /**
+     * The number of structural features of the '<em>Select Image Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_IMAGE_OPERATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Select Image Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECT_IMAGE_OPERATION_OPERATION_COUNT = 0;
+
+    /**
+     * The meta object id for the
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.RemoveImageOperationImpl <em>Remove Image
+     * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.RemoveImageOperationImpl
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getRemoveImageOperation()
+     * @generated
+     */
+    int REMOVE_IMAGE_OPERATION = 21;
+
+    /**
+     * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REMOVE_IMAGE_OPERATION__BODY = 0;
+
+    /**
+     * The number of structural features of the '<em>Remove Image Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REMOVE_IMAGE_OPERATION_FEATURE_COUNT = 1;
+
+    /**
+     * The number of operations of the '<em>Remove Image Operation</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REMOVE_IMAGE_OPERATION_OPERATION_COUNT = 0;
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.LanguageExpressionWidgetDescription <em>Language
      * Expression Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2296,6 +2499,133 @@ public interface PapyrusWidgetsPackage extends EPackage {
     EReference getContainmentReferenceWidgetDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription <em>Custom Image
+     * Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Custom Image Widget Description</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription
+     * @generated
+     */
+    EClass getCustomImageWidgetDescription();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getAddImageOperation
+     * <em>Add Image Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Add Image Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getAddImageOperation()
+     * @see #getCustomImageWidgetDescription()
+     * @generated
+     */
+    EReference getCustomImageWidgetDescription_AddImageOperation();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getSelectImageOperation
+     * <em>Select Image Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Select Image Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getSelectImageOperation()
+     * @see #getCustomImageWidgetDescription()
+     * @generated
+     */
+    EReference getCustomImageWidgetDescription_SelectImageOperation();
+
+    /**
+     * Returns the meta object for the containment reference
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getRemoveImageOperation
+     * <em>Remove Image Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference '<em>Remove Image Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getRemoveImageOperation()
+     * @see #getCustomImageWidgetDescription()
+     * @generated
+     */
+    EReference getCustomImageWidgetDescription_RemoveImageOperation();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getUuidExpression
+     * <em>Uuid Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Uuid Expression</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.CustomImageWidgetDescription#getUuidExpression()
+     * @see #getCustomImageWidgetDescription()
+     * @generated
+     */
+    EAttribute getCustomImageWidgetDescription_UuidExpression();
+
+    /**
+     * Returns the meta object for class '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation
+     * <em>Add Image Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Add Image Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation
+     * @generated
+     */
+    EClass getAddImageOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.AddImageOperation#getBody()
+     * @see #getAddImageOperation()
+     * @generated
+     */
+    EReference getAddImageOperation_Body();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation <em>Select Image
+     * Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Select Image Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation
+     * @generated
+     */
+    EClass getSelectImageOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.SelectImageOperation#getBody()
+     * @see #getSelectImageOperation()
+     * @generated
+     */
+    EReference getSelectImageOperation_Body();
+
+    /**
+     * Returns the meta object for class
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation <em>Remove Image
+     * Operation</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Remove Image Operation</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation
+     * @generated
+     */
+    EClass getRemoveImageOperation();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation#getBody <em>Body</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Body</em>'.
+     * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.RemoveImageOperation#getBody()
+     * @see #getRemoveImageOperation()
+     * @generated
+     */
+    EReference getRemoveImageOperation_Body();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -3034,6 +3364,106 @@ public interface PapyrusWidgetsPackage extends EPackage {
          * @generated
          */
         EReference CONTAINMENT_REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getContainmentReferenceWidgetDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.CustomImageWidgetDescriptionImpl
+         * <em>Custom Image Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.CustomImageWidgetDescriptionImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getCustomImageWidgetDescription()
+         * @generated
+         */
+        EClass CUSTOM_IMAGE_WIDGET_DESCRIPTION = eINSTANCE.getCustomImageWidgetDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Add Image Operation</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CUSTOM_IMAGE_WIDGET_DESCRIPTION__ADD_IMAGE_OPERATION = eINSTANCE.getCustomImageWidgetDescription_AddImageOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Select Image Operation</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CUSTOM_IMAGE_WIDGET_DESCRIPTION__SELECT_IMAGE_OPERATION = eINSTANCE.getCustomImageWidgetDescription_SelectImageOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Remove Image Operation</b></em>' containment reference feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference CUSTOM_IMAGE_WIDGET_DESCRIPTION__REMOVE_IMAGE_OPERATION = eINSTANCE.getCustomImageWidgetDescription_RemoveImageOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Uuid Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CUSTOM_IMAGE_WIDGET_DESCRIPTION__UUID_EXPRESSION = eINSTANCE.getCustomImageWidgetDescription_UuidExpression();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.AddImageOperationImpl <em>Add Image
+         * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.AddImageOperationImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getAddImageOperation()
+         * @generated
+         */
+        EClass ADD_IMAGE_OPERATION = eINSTANCE.getAddImageOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference ADD_IMAGE_OPERATION__BODY = eINSTANCE.getAddImageOperation_Body();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.SelectImageOperationImpl <em>Select Image
+         * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.SelectImageOperationImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getSelectImageOperation()
+         * @generated
+         */
+        EClass SELECT_IMAGE_OPERATION = eINSTANCE.getSelectImageOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SELECT_IMAGE_OPERATION__BODY = eINSTANCE.getSelectImageOperation_Body();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.RemoveImageOperationImpl <em>Remove Image
+         * Operation</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.RemoveImageOperationImpl
+         * @see org.eclipse.papyrus.web.custom.widgets.papyruswidgets.impl.PapyrusWidgetsPackageImpl#getRemoveImageOperation()
+         * @generated
+         */
+        EClass REMOVE_IMAGE_OPERATION = eINSTANCE.getRemoveImageOperation();
+
+        /**
+         * The meta object literal for the '<em><b>Body</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference REMOVE_IMAGE_OPERATION__BODY = eINSTANCE.getRemoveImageOperation_Body();
 
     }
 
