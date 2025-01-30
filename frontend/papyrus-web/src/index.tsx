@@ -34,7 +34,6 @@ import { tableRegistry } from '@eclipse-sirius/sirius-web-table';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ReactDOM from 'react-dom';
 import { Help } from './core/Help';
-import { PapyrusIcon } from './core/PapyrusIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { CuboidNode } from './nodes/cuboid/CuboidNode';
 import { CuboidNodeConverter } from './nodes/cuboid/CuboidNodeConverter';
@@ -94,6 +93,7 @@ import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidge
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
+import { PapyrusNavigationBarIcon } from './core/PapyrusNavigationBarIcon';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -275,7 +275,7 @@ extensionRegistry.addComponent(footerExtensionPoint, {
 // Main icon contribution
 extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
   identifier: 'papyrusweb_navigationbar#icon',
-  Component: PapyrusIcon,
+  Component: PapyrusNavigationBarIcon,
 });
 
 // Table contribution

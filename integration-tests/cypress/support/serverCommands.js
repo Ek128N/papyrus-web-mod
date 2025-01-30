@@ -21,24 +21,24 @@ const url = Cypress.env('baseAPIUrl') + '/api/graphql';
  */
 Cypress.Commands.add('deleteProjectByName', (projectName) => {
   const getProjectsQuery = `
-  query getProjects($page: Int!) {
-    viewer {
-      projects(page: $page, limit:50) {
-        edges {
-          node {
-            id,
-            name
+    query getProjects($after: String, $before: String, $first: Int, $last: Int) {
+      viewer {
+        projects(after: $after, before: $before, first: $first, last: $last) {
+          edges {
+            node {
+              id
+              name
+            }
           }
         }
       }
     }
-  }
   `;
   cy.request({
     method: 'POST',
     mode: 'cors',
     url,
-    body: { query: getProjectsQuery, variables: { page: 0 } },
+    body: { query: getProjectsQuery, variables: { first: 20 } },
   }).then((res) => {
     const projectIds = res.body.data.viewer.projects.edges
       .filter((edge) => edge.node.name == projectName)

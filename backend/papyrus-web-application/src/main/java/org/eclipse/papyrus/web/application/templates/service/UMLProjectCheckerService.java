@@ -13,8 +13,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.templates.service;
 
-import java.util.UUID;
-
 import org.eclipse.papyrus.web.application.templates.projects.PapyrusUMLNatures;
 import org.eclipse.papyrus.web.application.templates.service.api.IUMLProjectCheckerService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -39,8 +37,8 @@ public class UMLProjectCheckerService implements IUMLProjectCheckerService {
     @Override
     public boolean isPapyrusProject(String editingContextId) {
         try {
-            return this.projectSeachService.findById(UUID.fromString(editingContextId))
-                    .map(p -> this.hasUMLNature(p))
+            return this.projectSeachService.findById(editingContextId)
+                    .map(this::hasUMLNature)
                     .orElse(false);
         } catch (IllegalStateException e) {
             return false;

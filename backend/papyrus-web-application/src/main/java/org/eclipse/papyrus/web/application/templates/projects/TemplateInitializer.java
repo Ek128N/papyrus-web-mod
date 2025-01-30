@@ -98,7 +98,7 @@ public class TemplateInitializer {
             });
             try (var inputStream = new ByteArrayInputStream(jsonContents.getBytes())) {
                 resource.load(inputStream, null);
-                this.semanticDataUpdateService.updateDocuments(cause, AggregateReference.to(editingContextUUID), Collections.singleton(document), resourceSet.getPackageRegistry().keySet());
+                this.semanticDataUpdateService.updateDocuments(cause, AggregateReference.to(editingContextUUID.toString()), Collections.singleton(document), resourceSet.getPackageRegistry().keySet());
                 return Optional.of(resource);
             }
 

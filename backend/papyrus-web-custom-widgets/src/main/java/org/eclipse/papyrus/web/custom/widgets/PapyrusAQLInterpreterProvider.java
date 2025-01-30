@@ -36,15 +36,15 @@ import org.springframework.stereotype.Service;
  * @author Jerome Gout
  */
 @Service
-public class AQLInterpreterProvider implements IAQLInterpreterProvider {
+public class PapyrusAQLInterpreterProvider implements IAQLInterpreterProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AQLInterpreterProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PapyrusAQLInterpreterProvider.class);
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
     private final ApplicationContext applicationContext;
 
-    public AQLInterpreterProvider(List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
+    public PapyrusAQLInterpreterProvider(List<IJavaServiceProvider> javaServiceProviders, ApplicationContext applicationContext) {
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.applicationContext = Objects.requireNonNull(applicationContext);
     }

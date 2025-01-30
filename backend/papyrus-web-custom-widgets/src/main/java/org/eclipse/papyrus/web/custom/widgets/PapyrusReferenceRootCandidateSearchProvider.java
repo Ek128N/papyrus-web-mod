@@ -52,9 +52,9 @@ public class PapyrusReferenceRootCandidateSearchProvider implements IReferenceWi
 
     private final IViewFormDescriptionSearchService formViewSearchService;
 
-    private final AQLInterpreterProvider interpreterProvider;
+    private final PapyrusAQLInterpreterProvider interpreterProvider;
 
-    public PapyrusReferenceRootCandidateSearchProvider(IViewFormDescriptionSearchService formViewSearchService, AQLInterpreterProvider interpreterProvider) {
+    public PapyrusReferenceRootCandidateSearchProvider(IViewFormDescriptionSearchService formViewSearchService, PapyrusAQLInterpreterProvider interpreterProvider) {
         super();
         this.formViewSearchService = Objects.requireNonNull(formViewSearchService);
         this.interpreterProvider = Objects.requireNonNull(interpreterProvider);

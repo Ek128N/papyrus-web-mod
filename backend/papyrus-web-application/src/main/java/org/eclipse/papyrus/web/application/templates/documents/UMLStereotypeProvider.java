@@ -48,7 +48,7 @@ public class UMLStereotypeProvider implements IStereotypeProvider {
     @Override
     public List<Stereotype> getStereotypes(IEditingContext editingContext) {
         var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(this.projectSearchService::findById)
+                .flatMap(uuid -> this.projectSearchService.findById(uuid.toString()))
                 .filter(project -> project.getNatures().stream()
                         .map(Nature::name)
                         .anyMatch(PapyrusUMLNatures.UML::equals))

@@ -268,7 +268,7 @@ public class UMLDefaultTreeServices {
 
         if (optionalProjectId.isPresent()) {
             var projectId = optionalProjectId.get();
-            var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), elementId));
+            var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId.toString()), elementId));
             representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
             return representationMetadata;
         }
@@ -345,7 +345,7 @@ public class UMLDefaultTreeServices {
         if (optionalEditingContextId.isPresent()) {
             var projectId = optionalEditingContextId.get();
             String id = this.objectService.getId(self);
-            hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
+            hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId.toString()), id);
         }
         return hasChildren;
     }
