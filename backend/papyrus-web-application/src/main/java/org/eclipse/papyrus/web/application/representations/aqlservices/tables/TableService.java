@@ -14,6 +14,10 @@
 
 package org.eclipse.papyrus.web.application.representations.aqlservices.tables;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +26,17 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.papyrus.web.application.tables.comment.UMLCommentTableRepresentationDescriptionBuilder;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.tables.ColumnFilter;
+import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,8 +48,16 @@ public class TableService {
 
     private final IObjectService objectService;
 
-    public TableService(IObjectService objectService) {
+    private final CursorBasedNavigationServices cursorBasedNavigationServices;
+
+    private final ObjectMapper objectMapper;
+
+    private final Logger logger = LoggerFactory.getLogger(TableService.class);
+
+    public TableService(IObjectService objectService, ObjectMapper objectMapper) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.objectMapper = Objects.requireNonNull(objectMapper);
+        this.cursorBasedNavigationServices = new CursorBasedNavigationServices();
     }
 
     /**
@@ -159,29 +177,42 @@ public class TableService {
     }
 
     /**
-     *  Returns the list of semantic objects of the given self element through its feature given by name.
-     * @param self an UML element
-     * @param featureName the structural feature that holds the semantic objects
-     * @param globalFilter the global text that can filter semantic objects
-     * @param columnFilters the column specific filters that can filter semantic objects
-     * @return the list of semantic objects of the given self element through its feature given by name.
+     * Returns the list of semantic objects of the given self element through its feature given by name.
+     *
+     * @param self
+     *         an UML element
+     * @param featureName
+     *         the structural feature that holds the semantic objects
+     * @param globalFilter
+     *         the global text that can filter semantic objects
+     * @param columnFilters
+     *         the column specific filters that can filter semantic objects
+     * @param cursor
+     *         last element rendered in the current page (last row if forward and first if backward)
+     * @param direction
+     *         the direction of the navigation
+     * @param size
+     *         the size of the table page (number of row chosen in the navigation control)
+     * @return the list of semantic objects of the given self element through its feature given by name
+     * this list is wrapped inside a pagination mechanism.
      */
-    public List<EObject> getSemanticObjectsFromFeatureName(EObject self, String featureName, String globalFilter, List<ColumnFilter> columnFilters) {
-        var result = new ArrayList<EObject>();
+    public PaginatedData getSemanticObjectsFromFeatureName(EObject self, String featureName, String globalFilter, List<ColumnFilter> columnFilters, EObject cursor, String direction, int size) {
+        var result = new ArrayList<Object>();
 
         Predicate<EObject> predicate = this.getValidCommentCandidatePredicate(self, globalFilter, columnFilters);
-        var feature = self.eClass().getEStructuralFeature(featureName);
-        if (feature.isMany()) {
-            result.addAll(((List<EObject>) self.eGet(feature)).stream()
-                    .filter(predicate)
-                    .toList());
-        } else {
-            EObject object = (EObject) self.eGet(feature);
-            if (predicate.test(object)) {
-                result.add(object);
-            }
-        }
-        return result;
+        return this.cursorBasedNavigationServices.collect(self, cursor, direction, size, predicate);
+    }
+
+    /**
+     * Delete the given UML element.
+     *
+     * @param self
+     *         an element to delete
+     * @return the deleted element
+     */
+    public EObject deleteElement(EObject self) {
+        EcoreUtil.delete(self);
+        return self;
     }
 
     private Predicate<EObject> getValidCommentCandidatePredicate(EObject self, String globalFilter, List<ColumnFilter> columnFilters) {
@@ -195,16 +226,27 @@ public class TableService {
                 }
                 isValidCandidate = isValidCandidate && columnFilters.stream().allMatch(columnFilter -> {
                     boolean isCandidate = true;
-                    if (columnFilter.id().equals(this.objectService.getId(UMLPackage.eINSTANCE.getComment_Body()))) {
-                        isCandidate = comment.getBody() != null && comment.getBody().contains(columnFilter.value());
-                    } else if (columnFilter.id().equals(this.objectService.getId(UMLPackage.eINSTANCE.getComment_AnnotatedElement()))) {
+                    String columnFilterValue = this.getColumnFilterValue(columnFilter);
+                    if (columnFilter.id().equals(UMLCommentTableRepresentationDescriptionBuilder.COMMENT_COLUMN_BODY)) {
+                        isCandidate = comment.getBody() != null && comment.getBody().contains(columnFilterValue);
+                    } else if (columnFilter.id().equals(UMLCommentTableRepresentationDescriptionBuilder.COMMENT_COLUMN_ANNOTATED_ELEMENTS)) {
                         String annotatedElementNames = this.getCommentAnnotatedElementLabels(comment, "");
-                        isCandidate = !annotatedElementNames.isBlank() && annotatedElementNames.contains(columnFilter.value());
+                        isCandidate = !annotatedElementNames.isBlank() && annotatedElementNames.contains(columnFilterValue);
                     }
                     return isCandidate;
                 });
             }
             return isValidCandidate;
         };
+    }
+
+    private String getColumnFilterValue(ColumnFilter columnFilter) {
+        try {
+            return this.objectMapper.readValue(columnFilter.value(), new TypeReference<>() {
+            });
+        } catch (JsonProcessingException exception) {
+            this.logger.warn(exception.getMessage(), exception);
+        }
+        return "";
     }
 }

@@ -36,6 +36,11 @@ import org.eclipse.uml2.uml.UMLPackage;
 public class UMLCommentTableRepresentationDescriptionBuilder {
 
     public static final String AQL_TRUE = "aql:true";
+
+    public static final String COMMENT_COLUMN_BODY = "Body";
+
+    public static final String COMMENT_COLUMN_ANNOTATED_ELEMENTS = "Annotated Elements";
+
     /**
      * Name of the table.
      */
@@ -79,14 +84,24 @@ public class UMLCommentTableRepresentationDescriptionBuilder {
     }
 
     private RowDescription buildRowDescription() {
+
+        var deleteAction = new TableBuilders().newRowContextMenuEntry()
+                .name("comment-delete")
+                .labelExpression("Delete this comment")
+                .preconditionExpression("aql:true")
+                .iconURLExpression("aql:Sequence{'/images/row-delete.svg'}")
+                .body(new ViewBuilders().newChangeContext()
+                        .expression("aql:self.deleteElement()").build())
+                .build();
+
         return new TableBuilders().newRowDescription()
                 .name("Comment")
-                .domainType("uml::Comment")
-                .semanticCandidatesExpression("aql:self.getSemanticObjectsFromFeatureName('" + UMLPackage.eINSTANCE.getElement_OwnedComment().getName() + "', globalFilterData, columnFilters)")
+                .semanticCandidatesExpression("aql:self.getSemanticObjectsFromFeatureName('" + UMLPackage.eINSTANCE.getElement_OwnedComment().getName() + "', globalFilterData, columnFilters, cursor,direction,size)")
                 .initialHeightExpression("aql:53")
                 .isResizableExpression(AQL_TRUE)
                 .headerIconExpression("aql:self.getElementIconPath()")
                 .headerIndexLabelExpression("aql:rowIndex + 1")
+                .contextMenuEntries(deleteAction)
                 .build();
     }
 
@@ -95,19 +110,26 @@ public class UMLCommentTableRepresentationDescriptionBuilder {
                 .name("comment features")
                 .isResizableExpression(AQL_TRUE)
                 .initialWidthExpression("aql:200")
-                .headerLabelExpression("aql:self.getCommentColumnLabel()")
+                .headerLabelExpression("aql:self")
                 .headerIndexLabelExpression("aql:columnIndex.alphabetic()")
-                .semanticCandidatesExpression("aql:self.getCommentColumns()")
+                .semanticCandidatesExpression("aql:Sequence{'" + COMMENT_COLUMN_BODY + "', '" + COMMENT_COLUMN_ANNOTATED_ELEMENTS + "'}")
                 .filterWidgetExpression("text")
                 .build();
         return List.of(comment);
     }
 
     private List<CellDescription> buildCellDescriptions() {
-        return List.of(new TableBuilders().newCellDescription()
-                .valueExpression("aql:self.getCommentCellValue(columTargetObject)")
+        var bodyCellDescription = new TableBuilders().newCellDescription()
+                .preconditionExpression("aql:columnTargetObject.equals('" + COMMENT_COLUMN_BODY + "')")
+                .valueExpression("aql:self.body")
+                .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
+                .build();
+
+        var annotatedElementsCellDescription = new TableBuilders().newCellDescription()
+                .preconditionExpression("aql:columnTargetObject.equals('" + COMMENT_COLUMN_ANNOTATED_ELEMENTS + "')")
+                .valueExpression("aql:self.getCommentAnnotatedElementLabels(', ')")
                 .cellWidgetDescription(new TableBuilders().newCellLabelWidgetDescription().build())
-                .build()
-                );
+                .build();
+        return List.of(bodyCellDescription, annotatedElementsCellDescription);
     }
 }
