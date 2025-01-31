@@ -31,17 +31,20 @@ import {
   convertInsideLabel,
   convertLineStyle,
   convertOutsideLabels,
+  defaultHeight,
+  defaultWidth,
   isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 import { EllipseNodeData, GQLEllipseNodeStyle } from './EllipseNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
+
 const toEllipseNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLEllipseNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
 ): Node<EllipseNodeData> => {
@@ -129,6 +132,9 @@ const toEllipseNode = (
       width: `${node.width}px`,
       height: `${node.height}px`,
     };
+  } else {
+    node.height = data.defaultHeight ?? defaultHeight;
+    node.width = data.defaultWidth ?? defaultWidth;
   }
 
   return node;
@@ -151,7 +157,10 @@ export class EllipseNodeConverter implements INodeConverter {
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription ?? undefined, isBorderNode, gqlEdges));
+    if (nodeDescription) {
+      nodes.push(toEllipseNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
+
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
       (nodeDescriptionId) =>
         diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
@@ -160,6 +169,7 @@ export class EllipseNodeConverter implements INodeConverter {
       (nodeDescriptionId) =>
         diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
     );
+
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],

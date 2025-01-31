@@ -26,24 +26,27 @@ import {
   computePreviousPosition,
   computePreviousSize,
   findNodeIndex,
+  getBorderNodeExtent,
   getChildNodePosition,
-  getEastBorderNodeFootprintHeight,
-  getHeaderHeightFootprint,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
+  getEastBorderNodeFootprintHeight,
+  getHeaderHeightFootprint,
   getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
-  getBorderNodeExtent,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeHandle } from '@xyflow/system';
 
 const borderNodeOffset = 5;
 
-const findBorderNodePosition = (borderNodePosition: XYPosition | undefined, parentNode: Node | undefined): number => {
+const findBorderNodePosition = (
+  borderNodePosition: XYPosition | undefined,
+  parentNode: Node | undefined
+): number | null => {
   if (borderNodePosition && parentNode?.width && parentNode.height) {
     if (borderNodePosition.y < parentNode.height / 2) {
       return borderNodePosition.x < parentNode.width / 2 ? 0 : 1;
@@ -176,8 +179,8 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     handlePosition: Position,
     handle: NodeHandle
   ): XYPosition {
-    let offsetX = handle.width / 2;
-    let offsetY = handle.height / 2;
+    let offsetX = handle?.width ?? 0 / 2;
+    let offsetY = handle?.height ?? 0 / 2;
     const nodeWidth: number = node.width ?? 0;
     const nodeHeight: number = node.height ?? 0;
     const a: number = nodeWidth / 2;
@@ -221,7 +224,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const parentNodeHeight: number = parentNode.height ?? 0;
     const a: number = parentNodeWidth / 2;
     const b: number = parentNodeHeight / 2;
-    const pos: number = findBorderNodePosition(borderNode, parentNode);
+    const pos: number | null = findBorderNodePosition(borderNode, parentNode);
     let realY: number = borderNode.y;
     let realX: number;
     if (borderNode.x < 0) {
