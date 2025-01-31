@@ -109,12 +109,12 @@ export const RectangleWithExternalLabelNode = memo(
 
     return (
       <>
-        {data.nodeDescription?.userResizable && !readOnly ? (
+        {data.nodeDescription?.userResizable !== 'NONE' && !readOnly ? (
           <NodeResizer
             handleStyle={{ ...resizeHandleStyle(theme) }}
             lineStyle={{ ...resizeLineStyle(theme) }}
             color={theme.palette.selected}
-            isVisible={selected}
+            isVisible={!!selected}
             // Force false here to handle mutualized NodeDescriptions for SMD PseudoStates.
             // The other nodes need to have the aspect ratio, but RectanguleWithExternalLabelNodes
             // should not have it.
@@ -123,7 +123,7 @@ export const RectangleWithExternalLabelNode = memo(
         ) : null}
         <div
           style={{
-            ...rectangleWithExternalLabelNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+            ...rectangleWithExternalLabelNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
@@ -131,19 +131,25 @@ export const RectangleWithExternalLabelNode = memo(
           onDrop={handleOnDrop}
           data-testid={`RectangleWithExternalLabel - ${data?.insideLabel?.text}`}>
           {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
-          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
           <div
             style={{
-              ...rectangleWithExternalLabelInnerRectangleStyle(theme, data.style, selected, data.isHovered, data.faded),
+              ...rectangleWithExternalLabelInnerRectangleStyle(
+                theme,
+                data.style,
+                !!selected,
+                data.isHovered,
+                data.faded
+              ),
               ...connectionFeedbackStyle,
               ...dropFeedbackStyle,
             }}
             onDragOver={onDragOver}
             onDrop={handleOnDrop}
             data-testid={`RectangleWithExternalLabel - ${data?.insideLabel?.text}`}>
-            {selected ? (
+            {!!selected ? (
               <DiagramElementPalette
                 diagramElementId={id}
                 targetObjectId={data.targetObjectId}

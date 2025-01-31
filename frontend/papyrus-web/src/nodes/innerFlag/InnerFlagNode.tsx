@@ -112,18 +112,18 @@ export const InnerFlagNode = memo(({ data, id, selected, dragging }: NodeProps<N
 
   return (
     <>
-      {data.nodeDescription?.userResizable && !readOnly ? (
+      {data.nodeDescription?.userResizable !== 'NONE' && !readOnly ? (
         <NodeResizer
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
-          isVisible={selected}
+          isVisible={!!selected}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
       ) : null}
       <div
         style={{
-          ...innerFlagNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+          ...innerFlagNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
@@ -133,14 +133,14 @@ export const InnerFlagNode = memo(({ data, id, selected, dragging }: NodeProps<N
         <div style={{ position: 'absolute', inset: '0px' }}>
           {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
         </div>
-        {selected ? (
+        {!!selected ? (
           <DiagramElementPalette
             diagramElementId={id}
             targetObjectId={data.targetObjectId}
             labelId={data.insideLabel ? data.insideLabel.id : null}
           />
         ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+        {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <svg viewBox={`0 0 ${node.width} ${node.height}`}>
