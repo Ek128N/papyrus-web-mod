@@ -413,4 +413,34 @@ public class TableService {
                 .findFirst()
                 .orElse(null);
     }
+
+    /**
+     * Returns the element to select when user selects a cell content in a Stereotype table.
+     * @param self the row element
+     * @param columnFeature the structural feature associated to the cell (via its column)
+     * @return if the cell contains referenced element return the first (or unique) element, otherwise self itself.
+     */
+    public EObject getStereotypeSelectedTargetObject(Element self, EStructuralFeature columnFeature) {
+        EObject result = self;
+        if (columnFeature instanceof EReference) {
+            var cellObject = this.getStereotypeCellValue(self, columnFeature);
+            if (cellObject instanceof List list && !list.isEmpty()) {
+                result = (EObject) list.get(0);
+            } else if (cellObject instanceof EObject eObject) {
+                result = eObject;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the first annotated element to be selected.
+     * @param self an UML comment element
+     * @return the first element in the annotated element of the given comment or self argument if no annotated elements.
+     */
+    public EObject getFirstAnnotatedElement(Comment self) {
+        return self.getAnnotatedElements().stream()
+                .findFirst()
+                .orElse(self);
+    }
 }

@@ -128,6 +128,7 @@ public class UMLCommentTableRepresentationDescriptionBuilder {
         var annotatedElementsCellDescription = new TableBuilders().newCellDescription()
                 .preconditionExpression("aql:columnTargetObject.equals('" + COMMENT_COLUMN_ANNOTATED_ELEMENTS + "')")
                 .valueExpression("aql:self.getCommentAnnotatedElementLabels(', ')")
+                .selectedTargetObjectExpression("aql:self.getFirstAnnotatedElement()")
                 .cellWidgetDescription(new TableBuilders().newCellLabelWidgetDescription().build())
                 .build();
         return List.of(bodyCellDescription, annotatedElementsCellDescription);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -321,6 +321,8 @@ describe('Stereotype application page tests', () => {
   const refreshView = () => {
     cy.getByTestId('«Stereotype2» Activity').click();
     cy.getByTestId('«Stereotype1» Class').click();
+    // wait until selection on Class is complete
+    cy.getByTestId(`page-tab-UML`).should('have.class', 'Mui-selected');
     cy.activateDetailsTab('Stereotype1');
   };
 
