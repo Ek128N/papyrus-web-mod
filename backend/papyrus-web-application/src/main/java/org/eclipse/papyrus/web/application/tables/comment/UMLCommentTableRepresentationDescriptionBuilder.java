@@ -16,7 +16,9 @@ package org.eclipse.papyrus.web.application.tables.comment;
 import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
@@ -53,6 +55,10 @@ public class UMLCommentTableRepresentationDescriptionBuilder {
                 .newView()
                 .descriptions(umlCommentTableRepresentationDescription)
                 .build();
+
+        umlCommentTableView.eAllContents().forEachRemaining(eObject -> {
+            eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
+        });
 
         UUID resourceId = UUID.nameUUIDFromBytes(UML_COMMENT_TABLE.getBytes());
         String resourcePath = resourceId.toString();
@@ -120,12 +126,14 @@ public class UMLCommentTableRepresentationDescriptionBuilder {
 
     private List<CellDescription> buildCellDescriptions() {
         var bodyCellDescription = new TableBuilders().newCellDescription()
+                .name("bodyCell")
                 .preconditionExpression("aql:columnTargetObject.equals('" + COMMENT_COLUMN_BODY + "')")
                 .valueExpression("aql:self.body")
                 .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
                 .build();
 
         var annotatedElementsCellDescription = new TableBuilders().newCellDescription()
+                .name("annotatedElementsCell")
                 .preconditionExpression("aql:columnTargetObject.equals('" + COMMENT_COLUMN_ANNOTATED_ELEMENTS + "')")
                 .valueExpression("aql:self.getCommentAnnotatedElementLabels(', ')")
                 .selectedTargetObjectExpression("aql:self.getFirstAnnotatedElement()")

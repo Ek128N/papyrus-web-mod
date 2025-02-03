@@ -13,8 +13,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.tables;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.papyrus.web.application.tables.comment.UMLCommentTableRepresentationDescriptionBuilder;
@@ -35,18 +33,17 @@ import org.springframework.stereotype.Service;
 public class UMLTableViewDescriptionsInstaller implements IEditingContextProcessor {
     private final IUMLProjectCheckerService umlChecker;
 
-    private final List<View> views;
+    private final View view;
 
     public UMLTableViewDescriptionsInstaller(IUMLProjectCheckerService umlChecker, ITreeIdProvider treeIdProvider) {
         this.umlChecker = Objects.requireNonNull(umlChecker);
-        this.views = new ArrayList<>();
-        this.views.add(new UMLCommentTableRepresentationDescriptionBuilder().createView());
+        this.view = new UMLCommentTableRepresentationDescriptionBuilder().createView();
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext && this.umlChecker.isPapyrusProject(editingContext.getId())) {
-            siriusWebEditingContext.getViews().addAll(this.views);
+            siriusWebEditingContext.getViews().add(this.view);
         }
     }
 }
