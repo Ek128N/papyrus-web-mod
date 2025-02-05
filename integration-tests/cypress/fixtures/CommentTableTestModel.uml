@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="a17b824a-e256-41c9-a0f5-55673e0372ce" name="Model">
+  <ownedComment xmi:id="f799c96a-ef22-4a12-a51d-200cd30eda5a" annotatedElement="73cf3240-3611-497c-abf7-8bc4f63afb32 a17b824a-e256-41c9-a0f5-55673e0372ce">
+    <body>This is a new comment</body>
+  </ownedComment>
+  <ownedComment xmi:id="135ef4ed-1bdd-409d-bfbd-60acaed72ab5">
+    <body>orphan comment</body>
+  </ownedComment>
+  <ownedComment xmi:id="45d4135c-0e7a-4b90-bb98-c87257108820" annotatedElement="6ffb7fda-60d7-4420-aa61-acec47b12c4c">
+    <body>third one</body>
+  </ownedComment>
+  <ownedComment xmi:id="6ffb7fda-60d7-4420-aa61-acec47b12c4c">
+    <body>4</body>
+  </ownedComment>
+  <ownedComment xmi:id="3d16f8c0-3f86-4d3f-8aa8-ef7f18c5e13e">
+    <body>This is the last row 
+of the first page</body>
+  </ownedComment>
+  <ownedComment xmi:id="96ca6bfb-2b4a-4c0a-b983-9286ebb6c034" annotatedElement="a17b824a-e256-41c9-a0f5-55673e0372ce">
+    <body>we are on second page</body>
+  </ownedComment>
+  <ownedComment xmi:id="b79f6d2a-a3db-4302-9925-4d1898b20ca5">
+    <body>7th one</body>
+  </ownedComment>
+  <packageImport xmi:id="c4d00082-ffbc-463f-a5d6-69aa7942b8be">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="73cf3240-3611-497c-abf7-8bc4f63afb32" name="ClassA"/>
+</uml:Model>

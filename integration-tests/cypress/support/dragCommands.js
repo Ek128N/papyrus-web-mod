@@ -43,3 +43,9 @@ Cypress.Commands.add('dragByTestId', (dragId, dropId, options = undefined) => {
 
   return cy.drag(dragSelector, dropSelector, options);
 });
+
+Cypress.Commands.add('dragTo', { prevSubject: 'element' }, (subject, targetEl) => {
+  const dataTransfer = new DataTransfer();
+  cy.get(subject).trigger('dragstart', { dataTransfer });
+  cy.get(targetEl).trigger('drop', { dataTransfer });
+});
