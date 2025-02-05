@@ -17,7 +17,7 @@ import org.eclipse.papyrus.web.application.representations.view.aql.Services;
 
 /**
  * Services available for the "State Machine" Diagram.
- * 
+ *
  * @author <a href="mailto:jessy.mallet@obeo.fr">Jessy Mallet</a>
  */
 public class StateMachineDiagramServices extends Services {
@@ -36,5 +36,10 @@ public class StateMachineDiagramServices extends Services {
      * The name of the service that create PseudoState.
      */
     public static final String CREATE_PSEUDO_STATE = "createPseudoState";
+
+    /**
+     * The name of the service that checks if the diagram can be created.
+     */
+    public static final String CAN_CREATE_DIAGRAM = "canCreateDiagramSMD";
 
 }
