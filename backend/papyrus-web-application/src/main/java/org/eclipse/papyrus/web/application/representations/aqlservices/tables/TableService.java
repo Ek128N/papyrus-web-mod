@@ -236,17 +236,17 @@ public class TableService {
             if (isValidCandidate) {
                 var comment = (Comment) eObject;
                 if (globalFilter != null && !globalFilter.isBlank()) {
-                    isValidCandidate = comment.getBody() != null && comment.getBody().contains(globalFilter);
-                    isValidCandidate = isValidCandidate || comment.getAnnotatedElements() != null && this.getCommentAnnotatedElementLabels(comment, "").contains(globalFilter);
+                    isValidCandidate = comment.getBody() != null && this.contains(comment.getBody(), globalFilter);
+                    isValidCandidate = isValidCandidate || comment.getAnnotatedElements() != null && this.contains(this.getCommentAnnotatedElementLabels(comment, ""), globalFilter);
                 }
                 isValidCandidate = isValidCandidate && columnFilters.stream().allMatch(columnFilter -> {
                     boolean isCandidate = true;
                     String columnFilterValue = this.getColumnFilterValue(columnFilter);
                     if (columnFilter.id().equals(UMLCommentTableRepresentationDescriptionBuilder.COMMENT_COLUMN_BODY)) {
-                        isCandidate = comment.getBody() != null && comment.getBody().contains(columnFilterValue);
+                        isCandidate = comment.getBody() != null && this.contains(comment.getBody(), columnFilterValue);
                     } else if (columnFilter.id().equals(UMLCommentTableRepresentationDescriptionBuilder.COMMENT_COLUMN_ANNOTATED_ELEMENTS)) {
                         String annotatedElementNames = this.getCommentAnnotatedElementLabels(comment, "");
-                        isCandidate = !annotatedElementNames.isBlank() && annotatedElementNames.contains(columnFilterValue);
+                        isCandidate = !annotatedElementNames.isBlank() && this.contains(annotatedElementNames, columnFilterValue);
                     }
                     return isCandidate;
                 });
@@ -295,14 +295,14 @@ public class TableService {
             boolean isMatching = true;
             String columnFilterValue = this.getColumnFilterValue(columnFilter);
             if (Objects.equals("stereotype", columnFilter.id())) {
-                isMatching = String.join("", this.getStereotypeApplicationLabels(type)).contains(columnFilterValue);
+                isMatching = this.contains(String.join("", this.getStereotypeApplicationLabels(type)), columnFilterValue);
             } else {
                 isMatching = type.getStereotypeApplications().stream()
                         .anyMatch(stereotypeApplication -> {
                             return this.objectService.getObject(editingContext, columnFilter.id()).stream()
                                     .filter(EStructuralFeature.class::isInstance)
                                     .map(EStructuralFeature.class::cast)
-                                    .map(eStructuralFeature -> this.getStereotypeCellValue(type, eStructuralFeature).toString().contains(columnFilterValue))
+                                    .map(eStructuralFeature -> this.contains(this.getStereotypeCellValue(type, eStructuralFeature).toString(), columnFilterValue))
                                     .findFirst()
                                     .orElse(false);
                         });
@@ -314,9 +314,13 @@ public class TableService {
 
     private boolean containsInValue(EObject stereotypeApplication, EStructuralFeature feature, String globalFilter) {
         return Optional.ofNullable(stereotypeApplication.eGet(feature)).stream()
-                .map(o -> o.toString().contains(globalFilter))
+                .map(o -> this.contains(o.toString(), globalFilter))
                 .findFirst()
                 .orElse(false);
+    }
+
+    private boolean contains(String s, String text) {
+        return s.toLowerCase().contains(text.toLowerCase());
     }
 
     /**

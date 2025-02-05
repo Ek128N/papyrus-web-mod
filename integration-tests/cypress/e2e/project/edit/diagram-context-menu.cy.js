@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -42,6 +42,10 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('name').clear();
     cy.getByTestId('name').type('class diagram test');
     cy.getByTestId('create-representation').click();
+    cy.getByTestId('create-representation').should('not.exist');
+    
+    cy.getByTestId('class diagram test').should('be.visible').click();
+    cy.getByTestId('representation-tab-class diagram test').should('be.visible');
 
     cy.getByTestId('explorer://').contains('class diagram test');
 
@@ -50,6 +54,9 @@ describe('/projects/:projectId/edit - Diagram Context Menu', () => {
     cy.getByTestId('confirmation-dialog-button-ok').click();
 
     cy.getByTestId('class diagram test-more').should('not.exist');
-    cy.getByTestId('representation-area').should('be.visible').contains('The representation is not available anymore');
+    cy.getByTestId('representation-area')
+      .should('be.visible')
+      .find('h6')
+      .should('have.text', 'The representation is not available anymore');
   });
 });

@@ -119,7 +119,7 @@ describe('Basic widgets tests', () => {
     checkNumberOfRows(7);
 
     // apply a global filter => only 2 rows are visible now
-    cy.getByTestId('table-representation').findByTestId('SearchIcon').parent().find('input').type('comment{enter}');
+    cy.getByTestId('table-representation').findByTestId('SearchIcon').parent().find('input').type('COMMENT{enter}');
     checkNumberOfRows(2);
 
     // clear global filter => all rows are visible
@@ -131,7 +131,7 @@ describe('Basic widgets tests', () => {
     getColumnHeader('Annotated Elements')
       .find('input')
       .should('have.attr', 'title', 'Filter by Annotated Elements')
-      .type('Model{enter}');
+      .type('MODEL{enter}');
     checkNumberOfRows(2);
 
     // clear column filter
