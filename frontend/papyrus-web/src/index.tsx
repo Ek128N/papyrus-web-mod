@@ -32,7 +32,6 @@ import {
 } from '@eclipse-sirius/sirius-web-application';
 import { tableRegistry } from '@eclipse-sirius/sirius-web-table';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import ReactDOM from 'react-dom';
 import { Help } from './core/Help';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { CuboidNode } from './nodes/cuboid/CuboidNode';
@@ -81,6 +80,9 @@ import './variables.css';
 import { customWidgetsDocumentTransform } from './widgets/CustomWidgetsDocumentTransform';
 
 import { Edge, Node } from '@xyflow/react';
+import { ExtensionRegistryMergeStrategy } from './extensions/ExtensionRegistryMergeStrategy';
+import { createRoot } from 'react-dom/client';
+import { PapyrusNavigationBarIcon } from './core/PapyrusNavigationBarIcon';
 import { PublishProfileTreeItemContextMenuContribution } from './profile/publish-profile/PublishProfileTreeItemContextMenuContribution';
 import { ContainmentReferenceIcon } from './widgets/containmentReference/ContainmentReferenceIcon';
 import { ContainmentReferencePreview } from './widgets/containmentReference/ContainmentReferencePreview';
@@ -93,7 +95,6 @@ import { PrimitiveListSection } from './widgets/primitiveList/PrimitiveListWidge
 import { PrimitiveRadioIcon } from './widgets/primitiveRadio/PrimitiveRadioIcon';
 import { PrimitiveRadioPreview } from './widgets/primitiveRadio/PrimitiveRadioPreview';
 import { PrimitiveRadioSection } from './widgets/primitiveRadio/PrimitiveRadioSection';
-import { PapyrusNavigationBarIcon } from './core/PapyrusNavigationBarIcon';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -281,9 +282,14 @@ extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
 // Table contribution
 extensionRegistry.addAll(tableRegistry, new DefaultExtensionRegistryMergeStrategy());
 
-ReactDOM.render(
-  <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} extensionRegistry={extensionRegistry}>
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(
+  <SiriusWebApplication
+    httpOrigin={httpOrigin}
+    wsOrigin={wsOrigin}
+    extensionRegistry={extensionRegistry}
+    extensionRegistryMergeStrategy={new ExtensionRegistryMergeStrategy()}>
     <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistryValue} />
-  </SiriusWebApplication>,
-  document.getElementById('root')
+  </SiriusWebApplication>
 );

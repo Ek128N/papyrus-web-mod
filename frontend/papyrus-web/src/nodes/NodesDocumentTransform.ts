@@ -91,21 +91,6 @@ export const nodesStyleDocumentTransform = new DocumentTransform((document) => {
           },
         };
 
-        const ellipseNodeStyleInlineFragment: InlineFragmentNode = {
-          kind: Kind.INLINE_FRAGMENT,
-          selectionSet: {
-            kind: Kind.SELECTION_SET,
-            selections: [borderColorField, borderSizeField, borderStyleField, backgroundField],
-          },
-          typeCondition: {
-            kind: Kind.NAMED_TYPE,
-            name: {
-              kind: Kind.NAME,
-              value: 'EllipseNodeStyle',
-            },
-          },
-        };
-
         const innerFlagNodeStyleInlineFragment: InlineFragmentNode = {
           kind: Kind.INLINE_FRAGMENT,
           selectionSet: {
@@ -188,7 +173,6 @@ export const nodesStyleDocumentTransform = new DocumentTransform((document) => {
             selections: [
               ...selections,
               cuboidNodeStyleInlineFragment,
-              ellipseNodeStyleInlineFragment,
               innerFlagNodeStyleInlineFragment,
               noteNodeStyleInlineFragment,
               outerFlagNodeStyleInlineFragment,

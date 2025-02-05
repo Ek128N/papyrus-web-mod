@@ -69,41 +69,6 @@ export const customWidgetsDocumentTransform = new DocumentTransform((document) =
           return undefined;
         }
 
-        const referenceWidgetInlineFragment: InlineFragmentNode = {
-          kind: Kind.INLINE_FRAGMENT,
-          selectionSet: {
-            kind: Kind.SELECTION_SET,
-            selections: [
-              fieldBuilder('label'),
-              fieldBuilder('iconURL'),
-              fieldBuilder('ownerId'),
-              fieldBuilder('descriptionId'),
-              fieldBuilder('hasHelpText'),
-              fieldBuilder('readOnly'),
-              structuredFieldBuilder('reference', [
-                fieldBuilder('ownerKind'),
-                fieldBuilder('referenceKind'),
-                fieldBuilder('containment'),
-                fieldBuilder('manyValued'),
-              ]),
-              structuredFieldBuilder('referenceValues', [
-                fieldBuilder('id'),
-                fieldBuilder('label'),
-                fieldBuilder('kind'),
-                fieldBuilder('iconURL'),
-              ]),
-              styleField,
-            ],
-          },
-          typeCondition: {
-            kind: Kind.NAMED_TYPE,
-            name: {
-              kind: Kind.NAME,
-              value: 'ReferenceWidget',
-            },
-          },
-        };
-
         const primitiveListInlineFragment: InlineFragmentNode = {
           kind: Kind.INLINE_FRAGMENT,
           selectionSet: {
@@ -218,7 +183,6 @@ export const customWidgetsDocumentTransform = new DocumentTransform((document) =
               containmentReferenceWidgetInlineFragment,
               primitiveListInlineFragment,
               languageExpressionInlineFragment,
-              referenceWidgetInlineFragment,
               primitiveRadioInlineFragment,
             ],
           },
