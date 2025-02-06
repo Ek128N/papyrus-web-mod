@@ -231,6 +231,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
      */
     private UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
+    private NodeDescription symbolNodeDescription;
+
     /**
      * The list of semantic types that are represented as border nodes.
      * <p>
@@ -263,19 +265,6 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
     protected void fillDescription(DiagramDescription diagramDescription) {
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(ActivityDiagramServices.CAN_CREATE_DIAGRAM));
 
-        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
-        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
-        this.createHideSymbolTool(diagramDescription,
-                SHOW_HIDE);
-        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
-        this.createHideAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
-        this.createShowAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
-
-        this.createActivityTopNodeDescription(diagramDescription);
-        this.createObjectFlowEdgeDescription(diagramDescription);
-        this.createControlFlowEdgeDescription(diagramDescription);
-        this.createSharedNodeDescriptions(diagramDescription);
-
         List<EClass> symbolOwners = List.of(
                 this.umlPackage.getAction(),
                 this.umlPackage.getActivity(),
@@ -290,8 +279,24 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getAcceptEventAction(),
                 this.umlPackage.getSendSignalAction(),
                 this.umlPackage.getActivityParameterNode());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.adSharedDescription, symbolOwners, forbiddenOwners, SYMBOLS_COMPARTMENT_SUFFIX);
+        this.adSharedDescription = this.createSharedDescription(diagramDescription);
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, forbiddenOwners, SYMBOLS_COMPARTMENT_SUFFIX);
 
+        DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
+        diagramDescription.getPalette().getToolSections().add(showHideToolSection);
+        this.createHideSymbolTool(diagramDescription,
+                SHOW_HIDE);
+        this.createShowSymbolTool(diagramDescription, SHOW_HIDE);
+        this.createHideAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
+        this.createShowAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
+
+        this.createActivityTopNodeDescription(diagramDescription);
+        this.createObjectFlowEdgeDescription(diagramDescription);
+        this.createControlFlowEdgeDescription(diagramDescription);
+
+        this.createSharedNodeDescriptions(diagramDescription);
+
+        this.adSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 
@@ -310,7 +315,6 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 this.umlPackage.getLoopNode(), //
                 this.umlPackage.getSequenceNode(), //
                 this.umlPackage.getStructuredActivityNode());
-        this.adSharedDescription = this.createSharedDescription(diagramDescription);
         this.createCommentSubNodeDescription(diagramDescription, this.adSharedDescription, NODES,
                 this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX),
                 commentOwners);
@@ -388,7 +392,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .build();
 
         NodeDescription adActivityContentTopNodeDescription = this.createContentNodeDescription(activityEClass, false);
-        this.addContent(activityEClass, false, adActivityHolderTopNodeDescription, adActivityContentTopNodeDescription);
+        this.addContent(activityEClass, false, adActivityHolderTopNodeDescription, adActivityContentTopNodeDescription, this.symbolNodeDescription);
 
         adActivityHolderTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
         adActivityHolderTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
@@ -640,7 +644,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adActivityPartitionHolderSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adActivityPartitionHolderSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
         this.copyDimension(adActivityPartitionHolderSharedNodeDescription, adActivityPartitionContentSharedNodeDescription);
-        this.addContent(activityPartitionEClass, true, adActivityPartitionHolderSharedNodeDescription, adActivityPartitionContentSharedNodeDescription);
+        this.addContent(activityPartitionEClass, true, adActivityPartitionHolderSharedNodeDescription, adActivityPartitionContentSharedNodeDescription, this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adActivityPartitionHolderSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adActivityPartitionContentSharedNodeDescription);
         this.addToolSections(adActivityPartitionContentSharedNodeDescription, ACTIVITY_GROUP, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE,
@@ -674,7 +678,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         EClass addStructuralFeatureValueAction = this.umlPackage.getAddStructuralFeatureValueAction();
         NodeDescription adAddStructuralFeatureValueActionHolderSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(addStructuralFeatureValueAction);
         NodeDescription adAddStructuralFeatureValueActionContentSharedNodeDescription = this.createContentNodeDescription(addStructuralFeatureValueAction, true);
-        this.addContent(addStructuralFeatureValueAction, true, adAddStructuralFeatureValueActionHolderSharedNodeDescription, adAddStructuralFeatureValueActionContentSharedNodeDescription);
+        this.addContent(addStructuralFeatureValueAction, true, adAddStructuralFeatureValueActionHolderSharedNodeDescription, adAddStructuralFeatureValueActionContentSharedNodeDescription,
+                this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adAddStructuralFeatureValueActionHolderSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adAddStructuralFeatureValueActionContentSharedNodeDescription);
         this.addToolSections(adAddStructuralFeatureValueActionContentSharedNodeDescription, PIN);
@@ -697,7 +702,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         NodeDescription adBroadcastSignalActionHolderSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(broadcastSignalAction);
         NodeDescription adBroadcastSignalActionContentSharedNodeDescription = this.createContentNodeDescription(broadcastSignalAction, true);
-        this.addContent(broadcastSignalAction, true, adBroadcastSignalActionHolderSharedNodeDescription, adBroadcastSignalActionContentSharedNodeDescription);
+        this.addContent(broadcastSignalAction, true, adBroadcastSignalActionHolderSharedNodeDescription, adBroadcastSignalActionContentSharedNodeDescription, this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adBroadcastSignalActionHolderSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adBroadcastSignalActionContentSharedNodeDescription);
         this.addToolSections(adBroadcastSignalActionContentSharedNodeDescription, PIN);
@@ -720,7 +725,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         NodeDescription adCallBehaviorActionHolderSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(this.umlPackage.getCallBehaviorAction());
         NodeDescription adCallBehaviorActionContentSharedNodeDescription = this.createContentNodeDescription(callBehaviorAction, true);
-        this.addContent(callBehaviorAction, true, adCallBehaviorActionHolderSharedNodeDescription, adCallBehaviorActionContentSharedNodeDescription);
+        this.addContent(callBehaviorAction, true, adCallBehaviorActionHolderSharedNodeDescription, adCallBehaviorActionContentSharedNodeDescription, this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adCallBehaviorActionHolderSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adCallBehaviorActionContentSharedNodeDescription);
         this.addToolSections(adCallBehaviorActionContentSharedNodeDescription, PIN);
@@ -743,7 +748,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
 
         NodeDescription adCallOperationActionHolderSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(callOperationAction);
         NodeDescription adCallOperationActionContentSharedNodeDescription = this.createContentNodeDescription(callOperationAction, true);
-        this.addContent(callOperationAction, true, adCallOperationActionHolderSharedNodeDescription, adCallOperationActionContentSharedNodeDescription);
+        this.addContent(callOperationAction, true, adCallOperationActionHolderSharedNodeDescription, adCallOperationActionContentSharedNodeDescription, this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adCallOperationActionHolderSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adCallOperationActionContentSharedNodeDescription);
         this.addToolSections(adCallOperationActionContentSharedNodeDescription, PIN);
@@ -765,7 +770,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         EClass clearAssociationAction = this.umlPackage.getClearAssociationAction();
         NodeDescription adClearAssociationActionHolderSharedNodeDescription = this.createSharedRoundedRectangleActionNodeDescription(clearAssociationAction);
         NodeDescription adClearAssociationActionContentSharedNodeDescription = this.createContentNodeDescription(clearAssociationAction, true);
-        this.addContent(clearAssociationAction, true, adClearAssociationActionHolderSharedNodeDescription, adClearAssociationActionContentSharedNodeDescription);
+        this.addContent(clearAssociationAction, true, adClearAssociationActionHolderSharedNodeDescription, adClearAssociationActionContentSharedNodeDescription, this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adClearAssociationActionHolderSharedNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adClearAssociationActionContentSharedNodeDescription);
@@ -790,7 +795,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adClearStructuralFeatureActionHolderSharedNodeDescription);
 
         NodeDescription adClearStructuralFeatureActionContentSharedNodeDescription = this.createContentNodeDescription(clearStructuralFeatureAction, true);
-        this.addContent(clearStructuralFeatureAction, true, adClearStructuralFeatureActionHolderSharedNodeDescription, adClearStructuralFeatureActionContentSharedNodeDescription);
+        this.addContent(clearStructuralFeatureAction, true, adClearStructuralFeatureActionHolderSharedNodeDescription, adClearStructuralFeatureActionContentSharedNodeDescription,
+                this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adClearStructuralFeatureActionContentSharedNodeDescription);
         this.addToolSections(adClearStructuralFeatureActionContentSharedNodeDescription, PIN);
@@ -824,7 +830,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adConditionalNodeHolderSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
 
         NodeDescription adConditionalNodeContentSharedNodeDescription = this.createContentNodeDescription(conditionalNodeEClass, true);
-        this.addContent(conditionalNodeEClass, true, adConditionalNodeHolderSharedNodeDescription, adConditionalNodeContentSharedNodeDescription);
+        this.addContent(conditionalNodeEClass, true, adConditionalNodeHolderSharedNodeDescription, adConditionalNodeContentSharedNodeDescription, this.symbolNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adConditionalNodeHolderSharedNodeDescription);
         this.copyDimension(adConditionalNodeHolderSharedNodeDescription, adConditionalNodeContentSharedNodeDescription);
 
@@ -859,7 +865,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adCreateObjectActionHolderSharedNodeDescription);
 
         NodeDescription adCreateObjectActionContentSharedNodeDescription = this.createContentNodeDescription(createObjectAction, true);
-        this.addContent(createObjectAction, true, adCreateObjectActionHolderSharedNodeDescription, adCreateObjectActionContentSharedNodeDescription);
+        this.addContent(createObjectAction, true, adCreateObjectActionHolderSharedNodeDescription, adCreateObjectActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adCreateObjectActionContentSharedNodeDescription);
         this.addToolSections(adCreateObjectActionContentSharedNodeDescription, PIN);
@@ -966,7 +972,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adDestroyObjectActionHolderSharedNodeDescription);
 
         NodeDescription adDestroyObjectActionContentSharedNodeDescription = this.createContentNodeDescription(destroyObjectAction, true);
-        this.addContent(destroyObjectAction, true, adDestroyObjectActionHolderSharedNodeDescription, adDestroyObjectActionContentSharedNodeDescription);
+        this.addContent(destroyObjectAction, true, adDestroyObjectActionHolderSharedNodeDescription, adDestroyObjectActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adDestroyObjectActionContentSharedNodeDescription);
         this.addToolSections(adDestroyObjectActionContentSharedNodeDescription, PIN);
@@ -999,7 +1005,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adExpansionRegionHolderSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
 
         NodeDescription adExpansionRegionContentSharedNodeDescription = this.createContentNodeDescription(expansionRegionEClass, true);
-        this.addContent(expansionRegionEClass, true, adExpansionRegionHolderSharedNodeDescription, adExpansionRegionContentSharedNodeDescription);
+        this.addContent(expansionRegionEClass, true, adExpansionRegionHolderSharedNodeDescription, adExpansionRegionContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(adExpansionRegionHolderSharedNodeDescription, adExpansionRegionContentSharedNodeDescription);
 
         this.adSharedDescription.getChildrenDescriptions().add(adExpansionRegionHolderSharedNodeDescription);
@@ -1205,7 +1211,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adInterruptibleActivityRegionHolderSharedNodeDescription);
 
         NodeDescription adInterruptibleActivityRegionContentSharedNodeDescription = this.createContentNodeDescription(interruptibleActivityRegionEClass, true);
-        this.addContent(interruptibleActivityRegionEClass, true, adInterruptibleActivityRegionHolderSharedNodeDescription, adInterruptibleActivityRegionContentSharedNodeDescription);
+        this.addContent(interruptibleActivityRegionEClass, true, adInterruptibleActivityRegionHolderSharedNodeDescription, adInterruptibleActivityRegionContentSharedNodeDescription,
+                this.symbolNodeDescription);
         this.copyDimension(adInterruptibleActivityRegionHolderSharedNodeDescription, adInterruptibleActivityRegionContentSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adInterruptibleActivityRegionContentSharedNodeDescription);
         this.addToolSections(adInterruptibleActivityRegionContentSharedNodeDescription, ACTIVITY_NODE, EXPANSION_REGION, INVOCATION_ACTION, CREATE_OBJECT_ACTION, STRUCTURED_ACTIVITY_NODE,
@@ -1278,7 +1285,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adLoopNodeSharedHolderNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
 
         NodeDescription adLoopNodeSharedContentNodeDescription = this.createContentNodeDescription(loopNodeEClass, true);
-        this.addContent(loopNodeEClass, true, adLoopNodeSharedHolderNodeDescription, adLoopNodeSharedContentNodeDescription);
+        this.addContent(loopNodeEClass, true, adLoopNodeSharedHolderNodeDescription, adLoopNodeSharedContentNodeDescription, this.symbolNodeDescription);
         this.copyDimension(adLoopNodeSharedHolderNodeDescription, adLoopNodeSharedContentNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adLoopNodeSharedHolderNodeDescription);
 
@@ -1323,7 +1330,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adOpaqueActionHolderSharedNodeDescription);
 
         NodeDescription adOpaqueActionContentSharedNodeDescription = this.createContentNodeDescription(opaqueAction, true);
-        this.addContent(opaqueAction, true, adOpaqueActionHolderSharedNodeDescription, adOpaqueActionContentSharedNodeDescription);
+        this.addContent(opaqueAction, true, adOpaqueActionHolderSharedNodeDescription, adOpaqueActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adOpaqueActionContentSharedNodeDescription);
         this.addToolSections(adOpaqueActionContentSharedNodeDescription, PIN);
@@ -1409,7 +1416,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adReadExtentActionHolderSharedNodeDescription);
 
         NodeDescription adReadExtentActionContentSharedNodeDescription = this.createContentNodeDescription(readExtentAction, true);
-        this.addContent(readExtentAction, true, adReadExtentActionHolderSharedNodeDescription, adReadExtentActionContentSharedNodeDescription);
+        this.addContent(readExtentAction, true, adReadExtentActionHolderSharedNodeDescription, adReadExtentActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adReadExtentActionContentSharedNodeDescription);
         this.addToolSections(adReadExtentActionContentSharedNodeDescription, PIN);
@@ -1432,7 +1439,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adReadIsClassifiedObjectHolderActionSharedNodeDescription);
 
         NodeDescription adReadIsClassifiedObjectContentActionSharedNodeDescription = this.createContentNodeDescription(readIsClassifiedObjectAction, true);
-        this.addContent(readIsClassifiedObjectAction, true, adReadIsClassifiedObjectHolderActionSharedNodeDescription, adReadIsClassifiedObjectContentActionSharedNodeDescription);
+        this.addContent(readIsClassifiedObjectAction, true, adReadIsClassifiedObjectHolderActionSharedNodeDescription, adReadIsClassifiedObjectContentActionSharedNodeDescription,
+                this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adReadIsClassifiedObjectContentActionSharedNodeDescription);
         this.addToolSections(adReadIsClassifiedObjectContentActionSharedNodeDescription, PIN);
@@ -1455,7 +1463,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adReadSelfActionHolderSharedNodeDescription);
 
         NodeDescription adReadSelfActionContentSharedNodeDescription = this.createContentNodeDescription(readSelfAction, true);
-        this.addContent(readSelfAction, true, adReadSelfActionHolderSharedNodeDescription, adReadSelfActionContentSharedNodeDescription);
+        this.addContent(readSelfAction, true, adReadSelfActionHolderSharedNodeDescription, adReadSelfActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adReadSelfActionContentSharedNodeDescription);
         this.addToolSections(adReadSelfActionContentSharedNodeDescription, PIN);
@@ -1479,7 +1487,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adReadStructuralFeatureActionHolderSharedNodeDescription);
 
         NodeDescription adReadStructuralFeatureActionContentSharedNodeDescription = this.createContentNodeDescription(readStructuralFeatureAction, true);
-        this.addContent(readStructuralFeatureAction, true, adReadStructuralFeatureActionHolderSharedNodeDescription, adReadStructuralFeatureActionContentSharedNodeDescription);
+        this.addContent(readStructuralFeatureAction, true, adReadStructuralFeatureActionHolderSharedNodeDescription, adReadStructuralFeatureActionContentSharedNodeDescription,
+                this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adReadStructuralFeatureActionContentSharedNodeDescription);
         this.addToolSections(adReadStructuralFeatureActionContentSharedNodeDescription, PIN);
@@ -1502,7 +1511,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adReclassifyObjectActionHolderSharedNodeDescription);
 
         NodeDescription adReclassifyObjectActionContentSharedNodeDescription = this.createContentNodeDescription(reclassifyObjectAction, true);
-        this.addContent(reclassifyObjectAction, true, adReclassifyObjectActionHolderSharedNodeDescription, adReclassifyObjectActionContentSharedNodeDescription);
+        this.addContent(reclassifyObjectAction, true, adReclassifyObjectActionHolderSharedNodeDescription, adReclassifyObjectActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adReclassifyObjectActionContentSharedNodeDescription);
         this.addToolSections(adReclassifyObjectActionContentSharedNodeDescription, PIN);
@@ -1525,7 +1534,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adReduceActionHolderSharedNodeDescription);
 
         NodeDescription adReduceActionContentSharedNodeDescription = this.createContentNodeDescription(reduceAction, true);
-        this.addContent(reduceAction, true, adReduceActionHolderSharedNodeDescription, adReduceActionContentSharedNodeDescription);
+        this.addContent(reduceAction, true, adReduceActionHolderSharedNodeDescription, adReduceActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adReduceActionContentSharedNodeDescription);
         this.addToolSections(adReduceActionContentSharedNodeDescription, PIN);
@@ -1572,7 +1581,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adSendObjectActionHolderSharedNodeDescription);
 
         NodeDescription adSendObjectActionContentSharedNodeDescription = this.createContentNodeDescription(sendObjectAction, true);
-        this.addContent(sendObjectAction, true, adSendObjectActionHolderSharedNodeDescription, adSendObjectActionContentSharedNodeDescription);
+        this.addContent(sendObjectAction, true, adSendObjectActionHolderSharedNodeDescription, adSendObjectActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adSendObjectActionContentSharedNodeDescription);
         this.addToolSections(adSendObjectActionContentSharedNodeDescription, PIN);
@@ -1634,7 +1643,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .build();
 
         NodeDescription adSequenceNodeContentSharedNodeDescription = this.createContentNodeDescription(sequenceNodeEClass, true);
-        this.addContent(sequenceNodeEClass, true, adSequenceNodeHolderSharedNodeDescription, adSequenceNodeContentSharedNodeDescription);
+        this.addContent(sequenceNodeEClass, true, adSequenceNodeHolderSharedNodeDescription, adSequenceNodeContentSharedNodeDescription, this.symbolNodeDescription);
 
         adSequenceNodeHolderSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adSequenceNodeHolderSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
@@ -1681,7 +1690,8 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adStartClassifierBehaviorActionHolderSharedNodeDescription);
 
         NodeDescription adStartClassifierBehaviorActionContentSharedNodeDescription = this.createContentNodeDescription(startClassifierBehaviorAction, true);
-        this.addContent(startClassifierBehaviorAction, true, adStartClassifierBehaviorActionHolderSharedNodeDescription, adStartClassifierBehaviorActionContentSharedNodeDescription);
+        this.addContent(startClassifierBehaviorAction, true, adStartClassifierBehaviorActionHolderSharedNodeDescription, adStartClassifierBehaviorActionContentSharedNodeDescription,
+                this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adStartClassifierBehaviorActionContentSharedNodeDescription);
         this.addToolSections(adStartClassifierBehaviorActionContentSharedNodeDescription, PIN);
@@ -1704,7 +1714,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adStartObjectBehaviorActionHolderSharedNodeDescription);
 
         NodeDescription adStartObjectBehaviorActionContentSharedNodeDescription = this.createContentNodeDescription(startObjectBehaviorAction, true);
-        this.addContent(startObjectBehaviorAction, true, adStartObjectBehaviorActionHolderSharedNodeDescription, adStartObjectBehaviorActionContentSharedNodeDescription);
+        this.addContent(startObjectBehaviorAction, true, adStartObjectBehaviorActionHolderSharedNodeDescription, adStartObjectBehaviorActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adStartObjectBehaviorActionContentSharedNodeDescription);
         this.addToolSections(adStartObjectBehaviorActionContentSharedNodeDescription, PIN);
@@ -1752,7 +1762,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
                 .build();
 
         NodeDescription adStructuredActivityNodeContentSharedNodeDescription = this.createContentNodeDescription(structuredActivityNodeEClass, true);
-        this.addContent(structuredActivityNodeEClass, true, adStructuredActivityNodeHolderSharedNodeDescription, adStructuredActivityNodeContentSharedNodeDescription);
+        this.addContent(structuredActivityNodeEClass, true, adStructuredActivityNodeHolderSharedNodeDescription, adStructuredActivityNodeContentSharedNodeDescription, this.symbolNodeDescription);
 
         adStructuredActivityNodeHolderSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adStructuredActivityNodeHolderSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
@@ -1803,7 +1813,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         adActivityHolderSharedNodeDescription.setDefaultWidthExpression(CONTAINER_NODE_SIZE);
         adActivityHolderSharedNodeDescription.setDefaultHeightExpression(CONTAINER_NODE_SIZE);
         NodeDescription adActivityContentSharedNodeDescription = this.createContentNodeDescription(activityEClass, true);
-        this.addContent(activityEClass, true, adActivityHolderSharedNodeDescription, adActivityContentSharedNodeDescription);
+        this.addContent(activityEClass, true, adActivityHolderSharedNodeDescription, adActivityContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(adActivityHolderSharedNodeDescription, adActivityContentSharedNodeDescription);
         this.adSharedDescription.getChildrenDescriptions().add(adActivityHolderSharedNodeDescription);
 
@@ -1841,7 +1851,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adTestIdentityActionHolderSharedNodeDescription);
 
         NodeDescription adTestIdentityActionContentSharedNodeDescription = this.createContentNodeDescription(testIdentityAction, true);
-        this.addContent(testIdentityAction, true, adTestIdentityActionHolderSharedNodeDescription, adTestIdentityActionContentSharedNodeDescription);
+        this.addContent(testIdentityAction, true, adTestIdentityActionHolderSharedNodeDescription, adTestIdentityActionContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(adTestIdentityActionHolderSharedNodeDescription, adTestIdentityActionContentSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(adTestIdentityActionContentSharedNodeDescription);
         this.addToolSections(adTestIdentityActionContentSharedNodeDescription, PIN);
@@ -1929,7 +1939,7 @@ public class ADDiagramDescriptionBuilder extends AbstractRepresentationDescripti
         this.adSharedDescription.getChildrenDescriptions().add(adValueSpecificationActionHolderSharedNodeDescription);
 
         NodeDescription adValueSpecificationActionContentSharedNodeDescription = this.createContentNodeDescription(valueSpecificationAction, true);
-        this.addContent(valueSpecificationAction, true, adValueSpecificationActionHolderSharedNodeDescription, adValueSpecificationActionContentSharedNodeDescription);
+        this.addContent(valueSpecificationAction, true, adValueSpecificationActionHolderSharedNodeDescription, adValueSpecificationActionContentSharedNodeDescription, this.symbolNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(adValueSpecificationActionContentSharedNodeDescription);
         this.addToolSections(adValueSpecificationActionContentSharedNodeDescription, PIN);

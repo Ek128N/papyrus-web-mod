@@ -106,6 +106,8 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private NodeDescription cdSharedDescription;
 
+    private NodeDescription symbolNodeDescription;
+
     public CDDiagramDescriptionBuilder() {
         super(CD_PREFIX, CD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
@@ -116,6 +118,18 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
+
+        this.cdSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.pack.getClass_(),
+                this.pack.getInterface(),
+                this.pack.getPrimitiveType(),
+                this.pack.getDataType(),
+                this.pack.getSignal(),
+                this.pack.getEnumeration(),
+                this.pack.getPackage());
+
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         this.createModelTopNodeDescription(diagramDescription);
         this.createPackageTopNodeDescription(diagramDescription);
@@ -138,8 +152,6 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createConstraintTopNodeDescription(diagramDescription, NODES);
 
         // create shared node descriptions with their tools
-        this.cdSharedDescription = this.createSharedDescription(diagramDescription);
-
         this.createAttributeSharedNodeDescription(diagramDescription);
         this.createOperationSharedNodeDescription(diagramDescription);
         this.createNestedClassifierSharedNodeDescription(diagramDescription);
@@ -196,17 +208,6 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createClassifierContainmentLink(diagramDescription);
         this.createPackageContainmentLink(diagramDescription);
 
-        List<EClass> symbolOwners = List.of(
-                this.pack.getClass_(),
-                this.pack.getInterface(),
-                this.pack.getPrimitiveType(),
-                this.pack.getDataType(),
-                this.pack.getSignal(),
-                this.pack.getEnumeration(),
-                this.pack.getPackage());
-
-        this.createSymbolSharedNodeDescription(diagramDescription, this.cdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
-
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
         DropNodeTool cddGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
@@ -216,6 +217,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
             List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, children, List.of());
             cddGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
+
+        this.cdSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
+
         diagramDescription.getPalette().setDropNodeTool(cddGraphicalDropTool);
     }
     // CHECKSTYLE:ON
@@ -306,14 +310,13 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createModelTopNodeDescription(DiagramDescription diagramDescription) {
         EClass modelEClass = this.pack.getModel();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription cdModelHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
                 this.getQueryBuilder().queryAllReachableExactType(modelEClass));
         cdModelHolderTopNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
         cdModelHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription cdModelContentTopNodeDescription = this.createContentNodeDescription(modelEClass, false);
-        this.addContent(modelEClass, false, cdModelHolderTopNodeDescription, cdModelContentTopNodeDescription);
+        this.addContent(modelEClass, false, cdModelHolderTopNodeDescription, cdModelContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cdModelHolderTopNodeDescription, cdModelContentTopNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(cdModelHolderTopNodeDescription);
@@ -353,7 +356,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         cdPackageHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription cdPackageContentTopNodeDescription = this.createContentNodeDescription(packageEClass, false);
-        this.addContent(packageEClass, false, cdPackageHolderTopNodeDescription, cdPackageContentTopNodeDescription);
+        this.addContent(packageEClass, false, cdPackageHolderTopNodeDescription, cdPackageContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cdPackageHolderTopNodeDescription, cdPackageContentTopNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(cdPackageHolderTopNodeDescription);
@@ -642,7 +645,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         cdModelHolderSharedNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
         NodeDescription cdModelContentSharedNodeDescription = this.createContentNodeDescription(modelEClass, true);
-        this.addContent(modelEClass, true, cdModelHolderSharedNodeDescription, cdModelContentSharedNodeDescription);
+        this.addContent(modelEClass, true, cdModelHolderSharedNodeDescription, cdModelContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cdModelHolderSharedNodeDescription, cdModelContentSharedNodeDescription);
         this.cdSharedDescription.getChildrenDescriptions().add(cdModelHolderSharedNodeDescription);
         cdModelHolderSharedNodeDescription.getChildrenDescriptions().add(cdModelContentSharedNodeDescription);

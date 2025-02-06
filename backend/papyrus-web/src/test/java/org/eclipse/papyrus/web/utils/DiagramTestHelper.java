@@ -244,7 +244,7 @@ public class DiagramTestHelper {
     }
 
     /**
-     * Find a NodeDescription if it exist
+     * Find a NodeDescription if it exists.
      *
      * @param nodeDescriptionName
      *            the name of the description

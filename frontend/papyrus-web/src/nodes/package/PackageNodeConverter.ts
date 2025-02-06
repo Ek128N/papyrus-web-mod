@@ -29,6 +29,7 @@ import {
   convertLineStyle,
   convertOutsideLabels,
   isListLayoutStrategy,
+  NodeData,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLPackageNodeStyle, PackageNodeData } from './PackageNode.types';
@@ -90,9 +91,15 @@ const toPackageNode = (
     isNew,
     resizedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
+      ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
+      : true,
     isDropNodeTarget: false,
     isDropNodeCandidate: false,
     isHovered: false,
+    growableNodeIds: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
+      ? gqlNode.childrenLayoutStrategy.growableNodeIds
+      : [],
   };
 
   data.insideLabel = convertInsideLabel(
@@ -132,9 +139,37 @@ const toPackageNode = (
       width: `${node.width}px`,
       height: `${node.height}px`,
     };
+  } else {
+    node.height = data.defaultHeight;
+    node.width = data.defaultWidth;
   }
-
   return node;
+};
+
+const adaptChildrenBorderNodes = (nodes: Node<NodeData>[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
+  const visibleChildrenNodes = nodes
+    .filter(
+      (child) =>
+        gqlChildrenNodes.map((gqlChild) => gqlChild.id).find((gqlChildId) => gqlChildId === child.id) !== undefined
+    )
+    .filter((child) => !child.hidden);
+  visibleChildrenNodes.forEach((child, index) => {
+    // Hide children node borders to prevent a 'bold' aspect, except for the bottom one to mark the separation between child
+    child.data.style = {
+      ...child.data.style,
+      borderTopWidth: '1',
+      borderLeftWidth: '1',
+      borderRightWidth: '1',
+      borderBottomWidth: '1',
+    };
+
+    if (index === visibleChildrenNodes.length - 1) {
+      child.data.style = {
+        ...child.data.style,
+        borderBottomWidth: '1',
+      };
+    }
+  });
 };
 
 export class PackageNodeConverter implements INodeConverter {
@@ -149,7 +184,7 @@ export class PackageNodeConverter implements INodeConverter {
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[],
+    nodes: Node<NodeData>[],
     diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
@@ -181,5 +216,6 @@ export class PackageNodeConverter implements INodeConverter {
       diagramDescription,
       childNodeDescriptions
     );
+    adaptChildrenBorderNodes(nodes, gqlNode.childNodes ?? []);
   }
 }

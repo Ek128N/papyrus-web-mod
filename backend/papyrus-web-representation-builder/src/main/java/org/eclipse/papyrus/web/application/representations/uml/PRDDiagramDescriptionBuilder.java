@@ -120,6 +120,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private Predicate<NodeDescription> excludeMetaclassNodeDescription = nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS);
 
+    private NodeDescription symbolNodeDescription;
+
     /**
      * Initializes the builder.
      */
@@ -129,6 +131,17 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
+
+        this.prdSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getClass_(),
+                this.umlPackage.getDataType(),
+                this.umlPackage.getEnumeration(),
+                this.umlPackage.getStereotype(),
+                this.umlPackage.getPrimitiveType(),
+                this.umlPackage.getProfile(),
+                this.umlPackage.getPackage());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         // create diagram tool sections
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
@@ -162,7 +175,6 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createStereotypeTopNodeDescription(diagramDescription);
 
         // create shared node descriptions with their tools
-        this.prdSharedDescription = this.createSharedDescription(diagramDescription);
         this.createAttributeSharedNodeDescription(diagramDescription);
         this.createClassSharedNodeDescription(diagramDescription);
         this.createCommentSubNodeDescription(diagramDescription, this.prdSharedDescription, NODES,
@@ -200,15 +212,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createExtensionEdgeDescription(diagramDescription);
         this.createGeneralizationEdgeDescription(diagramDescription);
 
-        List<EClass> symbolOwners = List.of(
-                this.umlPackage.getClass_(),
-                this.umlPackage.getDataType(),
-                this.umlPackage.getEnumeration(),
-                this.umlPackage.getStereotype(),
-                this.umlPackage.getPrimitiveType(),
-                this.umlPackage.getProfile(),
-                this.umlPackage.getPackage());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.prdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+        this.prdSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
@@ -286,7 +290,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
 
         NodeDescription prdMetaclassContentTopNodeDescription = this.createContentNodeDescription(metaclassEClass, false);
-        this.addContent(metaclassEClass, false, prdMetaclassHolderTopNodeDescription, prdMetaclassContentTopNodeDescription);
+        this.addContent(metaclassEClass, false, prdMetaclassHolderTopNodeDescription, prdMetaclassContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(prdMetaclassHolderTopNodeDescription, prdMetaclassContentTopNodeDescription);
 
         prdMetaclassHolderTopNodeDescription.setName(PRD_METACLASS + UNDERSCORE + HOLDER_SUFFIX);
@@ -506,7 +510,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .build();
 
         NodeDescription prdMetaclassContentSharedNodeDescription = this.createContentNodeDescription(metaclassEClass, true);
-        this.addContent(metaclassEClass, true, prdMetaclassHolderSharedNodeDescription, prdMetaclassContentSharedNodeDescription);
+        this.addContent(metaclassEClass, true, prdMetaclassHolderSharedNodeDescription, prdMetaclassContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(prdMetaclassHolderSharedNodeDescription, prdMetaclassContentSharedNodeDescription);
 
         // Metaclass names should be different from Class ones.
@@ -560,7 +564,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         NodeDescription prdPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
         this.copyDimension(prdPackageHolderSharedNodeDescription, prdPackageContentSharedNodeDescription);
-        this.addContent(packageEClass, true, prdPackageHolderSharedNodeDescription, prdPackageContentSharedNodeDescription);
+        this.addContent(packageEClass, true, prdPackageHolderSharedNodeDescription, prdPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.prdSharedDescription.getChildrenDescriptions().add(prdPackageHolderSharedNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(prdPackageContentSharedNodeDescription);

@@ -75,6 +75,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.Tool;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -1339,11 +1340,13 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param forbiddenOwners
      * @param compartmentName
      */
-    public void createSymbolSharedNodeDescription(DiagramDescription dd, NodeDescription shared, List<EClass> owners, List<EClass> forbiddenOwners, String compartmentName) {
+    public NodeDescription createSymbolSharedNodeDescription(DiagramDescription dd, List<EClass> owners, List<EClass> forbiddenOwners, String compartmentName) {
         NodeDescription nd = this.getViewBuilder().createSymbolNodeDescription();
         nd.setName(this.getIdBuilder().getSpecializedCompartmentDomainNodeName(this.pack.getElement(), compartmentName, SHARED_SUFFIX));
-        shared.getChildrenDescriptions().add(nd);
+        nd.setUserResizable(UserResizableDirection.VERTICAL);
+        nd.setKeepAspectRatio(true);
         this.reuseNodeWithoutContent(nd, dd, owners, forbiddenOwners);
+        return nd;
     }
 
     /**
@@ -1417,7 +1420,7 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param contentNodeDescription
      */
     protected void addContent(EClass eClass, Boolean isShared, NodeDescription holderNodeDescription,
-            NodeDescription contentNodeDescription) {
+            NodeDescription contentNodeDescription, NodeDescription symbolNodeDescription) {
         String suffix = HOLDER_SUFFIX;
         if (isShared) {
             suffix = SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX;
@@ -1426,7 +1429,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         this.copyDimension(holderNodeDescription, contentNodeDescription);
         ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         holderNodeDescription.setChildrenLayoutStrategy(llsd);
+        llsd.setAreChildNodesDraggableExpression("aql:false");
         llsd.getGrowableNodes().add(contentNodeDescription);
+        llsd.getGrowableNodes().add(symbolNodeDescription);
         holderNodeDescription.getChildrenDescriptions().add(contentNodeDescription);
     }
 

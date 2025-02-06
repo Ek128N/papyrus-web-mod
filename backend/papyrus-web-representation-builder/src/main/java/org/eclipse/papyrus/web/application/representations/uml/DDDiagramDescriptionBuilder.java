@@ -91,12 +91,24 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private NodeDescription ddSharedDescription;
 
+    private NodeDescription symbolNodeDescription;
+
     public DDDiagramDescriptionBuilder() {
         super(DD_PREFIX, DD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
+
+        this.ddSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getArtifact(),
+                this.umlPackage.getDeploymentSpecification(),
+                this.umlPackage.getExecutionEnvironment(),
+                this.umlPackage.getPackage(),
+                this.umlPackage.getNode(),
+                this.umlPackage.getDevice());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         // create diagram tool sections
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
@@ -122,7 +134,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createPackageTopNodeDescription(diagramDescription);
 
         // create shared node descriptions with their tools
-        this.ddSharedDescription = this.createSharedDescription(diagramDescription);
         this.createArtifactSharedNodeDescription(diagramDescription);
         this.createCommentSubNodeDescription(diagramDescription, this.ddSharedDescription, NODES,
                 this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX), List.of(this.umlPackage.getPackage()));
@@ -142,15 +153,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.createGeneralizationEdgeDescription(diagramDescription);
         this.createManifestationEdgeDescription(diagramDescription);
 
-        List<EClass> symbolOwners = List.of(
-                this.umlPackage.getArtifact(),
-                this.umlPackage.getDeploymentSpecification(),
-                this.umlPackage.getExecutionEnvironment(),
-                this.umlPackage.getPackage(),
-                this.umlPackage.getNode(),
-                this.umlPackage.getDevice());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.ddSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
-
+        this.ddSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
         // Add dropped tool on diagram
@@ -182,7 +185,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 .build();
 
         NodeDescription ddArtifactContentTopNodeDescription = this.createContentNodeDescription(artifactEClass, false);
-        this.addContent(artifactEClass, false, ddArtifactHolderTopNodeDescription, ddArtifactContentTopNodeDescription);
+        this.addContent(artifactEClass, false, ddArtifactHolderTopNodeDescription, ddArtifactContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(ddArtifactHolderTopNodeDescription, ddArtifactContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(ddArtifactHolderTopNodeDescription);
 
@@ -336,7 +339,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         ddModelHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription ddModelContentTopNodeDescription = this.createContentNodeDescription(modelEClass, false);
-        this.addContent(modelEClass, false, ddModelHolderTopNodeDescription, ddModelContentTopNodeDescription);
+        this.addContent(modelEClass, false, ddModelHolderTopNodeDescription, ddModelContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(ddModelHolderTopNodeDescription, ddModelContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(ddModelHolderTopNodeDescription);
 
@@ -460,7 +463,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddArtifactContentSharedNodeDescription = this.createContentNodeDescription(artifactEClass, true);
         this.copyDimension(ddArtifactHolderSharedNodeDescription, ddArtifactContentSharedNodeDescription);
-        this.addContent(artifactEClass, true, ddArtifactHolderSharedNodeDescription, ddArtifactContentSharedNodeDescription);
+        this.addContent(artifactEClass, true, ddArtifactHolderSharedNodeDescription, ddArtifactContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddArtifactHolderSharedNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ddArtifactContentSharedNodeDescription);
@@ -749,7 +752,7 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddModelContentSharedNodeDescription = this.createContentNodeDescription(modelEClass, true);
         this.copyDimension(ddModelHolderSharedNodeDescription, ddModelContentSharedNodeDescription);
-        this.addContent(modelEClass, true, ddModelHolderSharedNodeDescription, ddModelContentSharedNodeDescription);
+        this.addContent(modelEClass, true, ddModelHolderSharedNodeDescription, ddModelContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddModelHolderSharedNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(ddModelContentSharedNodeDescription);

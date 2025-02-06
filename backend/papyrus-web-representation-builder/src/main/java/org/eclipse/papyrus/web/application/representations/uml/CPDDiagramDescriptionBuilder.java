@@ -135,12 +135,23 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private NodeDescription cpdSharedDescription;
 
+    private NodeDescription symbolNodeDescription;
+
     public CPDDiagramDescriptionBuilder() {
         super(CPD_PREFIX, CPD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
+
+        this.cpdSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getComponent(),
+                this.umlPackage.getInterface(),
+                this.umlPackage.getProperty(),
+                this.umlPackage.getPackage());
+
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         // create diagram tool sections
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
@@ -164,7 +175,6 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createPackageTopNodeDescription(diagramDescription);
 
         // create shared node descriptions with their tools
-        this.cpdSharedDescription = this.createSharedDescription(diagramDescription);
         this.createCommentSubNodeDescription(diagramDescription, this.cpdSharedDescription, NODES,
                 this.getIdBuilder().getSpecializedDomainNodeName(this.umlPackage.getComment(), SHARED_SUFFIX), List.of(this.umlPackage.getPackage()));
         this.createConstraintSubNodeDescription(diagramDescription, this.cpdSharedDescription, NODES,
@@ -196,14 +206,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createSubstitutionEdgeDescription(diagramDescription);
         this.createUsageEdgeDescription(diagramDescription);
 
-        List<EClass> symbolOwners = List.of(
-                this.umlPackage.getComponent(),
-                this.umlPackage.getInterface(),
-                this.umlPackage.getProperty(),
-                this.umlPackage.getPackage());
-
-        this.createSymbolSharedNodeDescription(diagramDescription, this.cpdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
-
+        this.cpdSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
         // Add dropped tool on diagram
@@ -235,7 +238,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
 
         NodeDescription cpdComponentContentTopNodeDescription = this.createContentNodeDescription(componentEClass, false);
-        this.addContent(componentEClass, false, cpdComponentHolderTopNodeDescription, cpdComponentContentTopNodeDescription);
+        this.addContent(componentEClass, false, cpdComponentHolderTopNodeDescription, cpdComponentContentTopNodeDescription, this.symbolNodeDescription);
         diagramDescription.getNodeDescriptions().add(cpdComponentHolderTopNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(cpdComponentHolderTopNodeDescription);
@@ -293,7 +296,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         cpdModelHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription cpdModelContentTopNodeDescription = this.createContentNodeDescription(modelEClass, false);
-        this.addContent(modelEClass, false, cpdModelHolderTopNodeDescription, cpdModelContentTopNodeDescription);
+        this.addContent(modelEClass, false, cpdModelHolderTopNodeDescription, cpdModelContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdModelHolderTopNodeDescription, cpdModelContentTopNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(cpdModelHolderTopNodeDescription);
@@ -330,7 +333,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         cpdPackageHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription cpdPackageContentTopNodeDescription = this.createContentNodeDescription(packageEClass, false);
-        this.addContent(packageEClass, false, cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription);
+        this.addContent(packageEClass, false, cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(cpdPackageHolderTopNodeDescription);
@@ -375,7 +378,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
 
         NodeDescription cpdComponentContentSharedNodeDescription = this.createContentNodeDescription(componentEClass, true);
-        this.addContent(componentEClass, true, cpdComponentHolderSharedNodeDescription, cpdComponentContentSharedNodeDescription);
+        this.addContent(componentEClass, true, cpdComponentHolderSharedNodeDescription, cpdComponentContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdComponentHolderSharedNodeDescription, cpdComponentContentSharedNodeDescription);
         this.cpdSharedDescription.getChildrenDescriptions().add(cpdComponentHolderSharedNodeDescription);
         this.createDefaultToolSectionsInNodeDescription(cpdComponentContentSharedNodeDescription);

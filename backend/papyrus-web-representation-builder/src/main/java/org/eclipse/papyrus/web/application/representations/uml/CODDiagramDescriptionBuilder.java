@@ -86,6 +86,8 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private NodeDescription codSharedDescription;
 
+    private NodeDescription symbolNodeDescription;
+
     /**
      * Initializes the builder.
      */
@@ -96,6 +98,12 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(CommunicationDiagramServices.CAN_CREATE_DIAGRAM));
+
+        this.codSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getInteraction(),
+                this.umlPackage.getLifeline());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         DiagramToolSection showHideToolSection = this.getViewBuilder().createDiagramToolSection(SHOW_HIDE);
         diagramDescription.getPalette().getToolSections().add(showHideToolSection);
@@ -116,11 +124,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createConstraintSubNodeDescription(diagramDescription, codInteractionDescription, NODES, this.getIdBuilder().getDomainNodeName(this.umlPackage.getConstraint()),
                 List.of(this.umlPackage.getInteraction()));
 
-        this.codSharedDescription = this.createSharedDescription(diagramDescription);
-        List<EClass> symbolOwners = List.of(
-                this.umlPackage.getInteraction(),
-                this.umlPackage.getLifeline());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.codSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+        this.codSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
@@ -145,7 +149,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
         NodeDescription codInteractionContentTopNodeDescription = this.createContentNodeDescription(interactionEClass, false);
-        this.addContent(interactionEClass, false, codInteractionHolderTopNodeDescription, codInteractionContentTopNodeDescription);
+        this.addContent(interactionEClass, false, codInteractionHolderTopNodeDescription, codInteractionContentTopNodeDescription, this.symbolNodeDescription);
         codInteractionHolderTopNodeDescription.setDefaultWidthExpression(ROOT_ELEMENT_WIDTH);
         codInteractionHolderTopNodeDescription.setDefaultHeightExpression(ROOT_ELEMENT_HEIGHT);
         this.copyDimension(codInteractionHolderTopNodeDescription, codInteractionContentTopNodeDescription);
@@ -177,7 +181,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
 
         NodeDescription codLifelineSubNodeDescriptionContent = this.createContentNodeDescription(lifelineEClass, false);
-        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionContent, codLifelineSubNodeDescriptionHolder);
+        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionContent, codLifelineSubNodeDescriptionHolder, this.symbolNodeDescription);
         this.copyDimension(codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent);
         parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescriptionHolder);
         // create Lifeline tool sections

@@ -115,12 +115,23 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
      */
     private NodeDescription ucdSharedDescription;
 
+    private NodeDescription symbolNodeDescription;
+
     public UCDDiagramDescriptionBuilder() {
         super(UCD_PREFIX, UCD_REP_NAME, UMLPackage.eINSTANCE.getPackage());
     }
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
+
+        this.ucdSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getActivity(),
+                this.umlPackage.getClass_(),
+                this.umlPackage.getInteraction(),
+                this.umlPackage.getStateMachine(),
+                this.umlPackage.getPackage());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         // create diagram tool sections
         this.createToolSectionsWithSubjectInDiagramDescription(diagramDescription);
@@ -154,7 +165,6 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 this.umlPackage.getComponent(), //
                 this.umlPackage.getInteraction(), //
                 this.umlPackage.getStateMachine());
-        this.ucdSharedDescription = this.createSharedDescription(diagramDescription);
         this.createPackageSharedNodeDescription(diagramDescription);
         this.createActivityAsSubjectSharedNodeDescription(diagramDescription);
         this.createActorSharedNodeDescription(diagramDescription);
@@ -180,13 +190,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.createRealizationEdgeDescription(diagramDescription);
         this.createUsageEdgeDescription(diagramDescription);
 
-        List<EClass> symbolOwners = List.of(
-                this.umlPackage.getActivity(),
-                this.umlPackage.getClass_(),
-                this.umlPackage.getInteraction(),
-                this.umlPackage.getStateMachine(),
-                this.umlPackage.getPackage());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.ucdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+        this.ucdSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
 
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
 
@@ -287,7 +291,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         cpdPackageHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription cpdPackageContentTopNodeDescription = this.createContentNodeDescription(packageEClass, false);
-        this.addContent(packageEClass, false, cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription);
+        this.addContent(packageEClass, false, cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(cpdPackageHolderTopNodeDescription);
 
@@ -377,7 +381,7 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         cpdPackageHolderSharedNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
         NodeDescription cpdPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
-        this.addContent(packageEClass, true, cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription);
+        this.addContent(packageEClass, true, cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription);
         this.ucdSharedDescription.getChildrenDescriptions().add(cpdPackageHolderSharedNodeDescription);
 

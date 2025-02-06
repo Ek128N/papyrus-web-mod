@@ -97,8 +97,11 @@ const toPackageListNode = (
     areChildNodesDraggable: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
       ? gqlNode.childrenLayoutStrategy.areChildNodesDraggable
       : true,
-    topGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.topGap : 0,
-    bottomGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.bottomGap : 0,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 10,
+    topGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.topGap : 1,
+    bottomGap: isListLayoutStrategy(gqlNode.childrenLayoutStrategy) ? gqlNode.childrenLayoutStrategy.bottomGap : 1,
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
     resizedByUser,
     growableNodeIds: isListLayoutStrategy(gqlNode.childrenLayoutStrategy)
@@ -174,7 +177,7 @@ const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNo
     if (index === visibleChildrenNodes.length - 1) {
       child.style = {
         ...child.style,
-        borderBottomWidth: '0',
+        borderBottomWidth: '10',
       };
     }
   });

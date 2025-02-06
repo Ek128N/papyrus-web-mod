@@ -71,6 +71,8 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     private final UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
+    private NodeDescription symbolNodeDescription;
+
     /**
      * The <i>shared</i> {@link NodeDescription} for the diagram.
      */
@@ -86,6 +88,11 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
 
         this.smSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.umlPackage.getRegion(),
+                this.umlPackage.getState(),
+                this.umlPackage.getStateMachine());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
         NodeDescription stateMachineNodeDescription = this.createStateMachineNodeDescription(diagramDescription);
         this.createTransitionEdgeDescription(diagramDescription);
@@ -111,11 +118,7 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createHideAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
         this.createShowAllNonSymbolCompartmentTool(diagramDescription, SHOW_HIDE);
 
-        List<EClass> symbolOwners = List.of(
-                this.umlPackage.getRegion(),
-                this.umlPackage.getState(),
-                this.umlPackage.getStateMachine());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.smSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+        this.smSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
 
         // There is a unique DropTool for the DiagramDescription
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));

@@ -65,6 +65,8 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
+    private NodeDescription symbolNodeDescription;
+
     /**
      * The <i>shared</i> {@link NodeDescription} for the diagram.
      */
@@ -78,12 +80,18 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     protected void fillDescription(DiagramDescription diagramDescription) {
 
         diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(Services.IS_NOT_PROFILE_MODEL));
+
+        this.csdSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.pack.getClassifier(),
+                this.pack.getProperty());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
 
         this.createCommentTopNodeDescription(diagramDescription, NODES);
         this.createClassTopNodeDescription(diagramDescription);
 
-        this.csdSharedDescription = this.createSharedDescription(diagramDescription);
         this.createClassSharedDescription(diagramDescription);
         this.createPropertyOnClassifierSharedDescription(diagramDescription);
         this.createPropertyOnPropertySharedDescription(diagramDescription);
@@ -114,11 +122,8 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         });
 
         diagramDescription.getPalette().setDropNodeTool(csdGraphicalDropTool);
-        List<EClass> symbolOwners = List.of(
-                this.pack.getClassifier(),
-                this.pack.getProperty());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.csdSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
 
+        this.csdSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 

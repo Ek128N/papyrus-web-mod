@@ -63,6 +63,8 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private NodeDescription padSharedDescription;
 
+    private NodeDescription symbolNodeDescription;
+
     private final UMLPackage pack = UMLPackage.eINSTANCE;
 
     public PADDiagramDescriptionBuilder() {
@@ -74,13 +76,16 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
 
+        // create shared node descriptions with their tools
+        this.padSharedDescription = this.createSharedDescription(diagramDescription);
+        List<EClass> symbolOwners = List.of(
+                this.pack.getPackage());
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+
         this.createModelTopNodeDescription(diagramDescription);
         this.createPackageTopNodeDescription(diagramDescription);
         this.createCommentTopNodeDescription(diagramDescription, NODES);
         this.createConstraintTopNodeDescription(diagramDescription, NODES);
-
-        // create shared node descriptions with their tools
-        this.padSharedDescription = this.createSharedDescription(diagramDescription);
 
         this.createPackageSharedNodeDescription(diagramDescription);
         this.createModelSharedNodeDescription(diagramDescription);
@@ -103,6 +108,8 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.createDependencyDescription(diagramDescription);
         this.createContainmentLink(diagramDescription);
 
+        this.padSharedDescription.getChildrenDescriptions().add(this.symbolNodeDescription);
+
         DropNodeTool padGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getDiagramGraphicalDropToolName());
         List<EClass> children = List.of(this.pack.getModel(), this.pack.getPackage(), this.pack.getComment(), this.pack.getConstraint());
         this.registerCallback(diagramDescription, () -> {
@@ -110,11 +117,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
             padGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         diagramDescription.getPalette().setDropNodeTool(padGraphicalDropTool);
-
-        List<EClass> symbolOwners = List.of(
-                this.pack.getPackage());
-        this.createSymbolSharedNodeDescription(diagramDescription, this.padSharedDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
-
         diagramDescription.getPalette().setDropTool(this.getViewBuilder().createGenericSemanticDropTool(this.getIdBuilder().getDiagramSemanticDropToolName()));
     }
 
@@ -137,7 +139,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         padModelHolderSharedNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
         NodeDescription padModelContentSharedNodeDescription = this.createContentNodeDescription(modelEClass, true);
-        this.addContent(modelEClass, true, padModelHolderSharedNodeDescription, padModelContentSharedNodeDescription);
+        this.addContent(modelEClass, true, padModelHolderSharedNodeDescription, padModelContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(padModelHolderSharedNodeDescription, padModelContentSharedNodeDescription);
 
         this.padSharedDescription.getChildrenDescriptions().add(padModelHolderSharedNodeDescription);
@@ -182,7 +184,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         padPackageHolderSharedNodeDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
 
         NodeDescription padPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
-        this.addContent(packageEClass, true, padPackageHolderSharedNodeDescription, padPackageContentSharedNodeDescription);
+        this.addContent(packageEClass, true, padPackageHolderSharedNodeDescription, padPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(padPackageHolderSharedNodeDescription, padPackageContentSharedNodeDescription);
         this.padSharedDescription.getChildrenDescriptions().add(padPackageHolderSharedNodeDescription);
 
@@ -213,7 +215,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
      *            the {@link DiagramDescription} containing the created {@link NodeDescription}
      */
     private void createPackageTopNodeDescription(DiagramDescription diagramDescription) {
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         EClass packageEClass = this.pack.getPackage();
         NodeDescription padPackageHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
                 this.getQueryBuilder().queryAllReachableExactType(packageEClass));
@@ -224,7 +225,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         NodeDescription padPackageContentTopNodeDescription = this.createContentNodeDescription(packageEClass, false);
         this.copyDimension(padPackageHolderTopNodeDescription, padPackageContentTopNodeDescription);
-        this.addContent(packageEClass, false, padPackageHolderTopNodeDescription, padPackageContentTopNodeDescription);
+        this.addContent(packageEClass, false, padPackageHolderTopNodeDescription, padPackageContentTopNodeDescription, this.symbolNodeDescription);
         diagramDescription.getNodeDescriptions().add(padPackageHolderTopNodeDescription);
 
         // create Package tool sections
@@ -253,7 +254,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createModelTopNodeDescription(DiagramDescription diagramDescription) {
         EClass modelEClass = this.pack.getModel();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription padModelHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
                 this.getQueryBuilder().queryAllReachableExactType(modelEClass));
         padModelHolderTopNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(modelEClass, HOLDER_SUFFIX));
@@ -261,7 +261,7 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         padModelHolderTopNodeDescription.setStyle(this.getViewBuilder().createPackageNodeStyle());
 
         NodeDescription padModelContentTopNodeDescription = this.createContentNodeDescription(modelEClass, false);
-        this.addContent(modelEClass, false, padModelHolderTopNodeDescription, padModelContentTopNodeDescription);
+        this.addContent(modelEClass, false, padModelHolderTopNodeDescription, padModelContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(padModelHolderTopNodeDescription, padModelContentTopNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(padModelHolderTopNodeDescription);
