@@ -181,7 +181,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
 
         NodeDescription codLifelineSubNodeDescriptionContent = this.createContentNodeDescription(lifelineEClass, false);
-        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionContent, codLifelineSubNodeDescriptionHolder, this.symbolNodeDescription);
+        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent, this.symbolNodeDescription);
         this.copyDimension(codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent);
         parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescriptionHolder);
         // create Lifeline tool sections
