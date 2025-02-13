@@ -14,7 +14,6 @@
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.nodes;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.papyrus.web.custom.widgets.IAQLInterpreterProvider;
@@ -41,14 +40,8 @@ public class CustomImageNodeStyleProvider implements INodeStyleProvider {
 
     public static final String NODE_CUSTOM_IMAGE = "customnode:customimage";
 
-    private IEditingContextSearchService editingContextSearchService;
-
-    private IAQLInterpreterProvider interpreterProvider;
-
     public CustomImageNodeStyleProvider(@Lazy IEditingContextSearchService editingContextSearchService,
             IAQLInterpreterProvider interpreterProvider) {
-        this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
-        this.interpreterProvider = Objects.requireNonNull(interpreterProvider);
     }
 
     @Override
@@ -109,12 +102,5 @@ public class CustomImageNodeStyleProvider implements INodeStyleProvider {
 
         return iNodeStyle;
     }
-
-    /*
-     * private AQLInterpreter createInterpreter(Optional<String> optionalEditingContextId) { Optional<IEditingContext>
-     * editingContext = this.editingContextSearchService.findById(optionalEditingContextId.get()); return
-     * this.interpreterProvider.createInterpreter(org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createView(),
-     * editingContext.get()); }
-     */
 
 }
