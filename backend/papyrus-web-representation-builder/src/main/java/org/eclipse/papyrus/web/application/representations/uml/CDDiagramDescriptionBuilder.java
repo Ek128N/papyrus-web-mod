@@ -658,7 +658,7 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 cdModelSharedNodeCreationTool, NODES, owners, List.of());
 
         // Add dropped tool on Shared Package container
-        DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdModelContentSharedNodeDescription));
+        DropNodeTool cdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cdModelHolderSharedNodeDescription));
         List<EClass> children = List.of(this.pack.getClass_(), this.pack.getInterface(), this.pack.getDataType(), this.pack.getEnumeration(), this.pack.getPrimitiveType(), this.pack.getComment(),
                 this.pack.getConstraint(), this.pack.getDataType(), this.pack.getPackage(), this.pack.getModel(), this.pack.getSignal());
         this.registerCallback(cdModelContentSharedNodeDescription, () -> {

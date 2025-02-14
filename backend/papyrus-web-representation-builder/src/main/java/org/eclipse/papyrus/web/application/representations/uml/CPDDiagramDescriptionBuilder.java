@@ -239,6 +239,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         NodeDescription cpdComponentContentTopNodeDescription = this.createContentNodeDescription(componentEClass, false);
         this.addContent(componentEClass, false, cpdComponentHolderTopNodeDescription, cpdComponentContentTopNodeDescription, this.symbolNodeDescription);
+        this.copyDimension(cpdComponentHolderTopNodeDescription, cpdComponentContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(cpdComponentHolderTopNodeDescription);
 
         this.createDefaultToolSectionsInNodeDescription(cpdComponentHolderTopNodeDescription);
@@ -464,7 +465,7 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         cpdModelHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
 
         // Add dropped tool on Shared Package container
-        DropNodeTool cpdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cpdModelContentSharedNodeDescription));
+        DropNodeTool cpdModelGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(cpdModelHolderSharedNodeDescription));
         List<EClass> children = List.of(this.umlPackage.getComponent(), this.umlPackage.getComment(), this.umlPackage.getConstraint(), this.umlPackage.getInterface(), this.umlPackage.getModel(),
                 this.umlPackage.getPackage());
         this.registerCallback(cpdModelContentSharedNodeDescription, () -> {
