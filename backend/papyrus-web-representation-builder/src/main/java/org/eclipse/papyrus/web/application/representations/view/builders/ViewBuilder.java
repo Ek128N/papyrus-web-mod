@@ -298,6 +298,23 @@ public class ViewBuilder {
         return this.createCreationTool(name, selfValue, containementRef, this.metamodelHelper.getDomain(newType));
     }
 
+    /**
+     * Create a creation tool to create a unsynchronized {@link NodeDescription}.
+     *
+     * @param name
+     *            the name of the tool
+     * @param selfValue
+     *            the self expression
+     * @param containementRef
+     *            the containment reference used to contained the new element
+     * @param newType
+     *            the type of the element to create
+     * @return a new {@link NodeTool}
+     */
+    public NodeTool createCreationToolInHolder(String name, String selfValue, EReference containementRef, EClass newType) {
+        return this.createCreationToolInHolder(name, selfValue, containementRef, this.metamodelHelper.getDomain(newType));
+    }
+
     private NodeTool createCreationTool(String name, String selfValue, EReference containementRef, String newType) {
         NodeTool nodeTool = DiagramFactory.eINSTANCE.createNodeTool();
         nodeTool.setName(name);
