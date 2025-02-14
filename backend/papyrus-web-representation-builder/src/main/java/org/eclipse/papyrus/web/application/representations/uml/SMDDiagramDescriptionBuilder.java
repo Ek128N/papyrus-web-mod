@@ -32,8 +32,10 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -89,10 +91,9 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
 
         this.smSharedDescription = this.createSharedDescription(diagramDescription);
         List<EClass> symbolOwners = List.of(
-                this.umlPackage.getRegion(),
                 this.umlPackage.getState(),
                 this.umlPackage.getStateMachine());
-        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(), SYMBOLS_COMPARTMENT_SUFFIX);
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(this.umlPackage.getRegion()), SYMBOLS_COMPARTMENT_SUFFIX);
 
         NodeDescription stateMachineNodeDescription = this.createStateMachineNodeDescription(diagramDescription);
         this.createTransitionEdgeDescription(diagramDescription);
@@ -140,12 +141,14 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
         ListLayoutStrategyDescription listLayoutStrategyDescription = this.createListLayoutStrategy();
+        InsideLabelStyle createDefaultInsideLabelStyle = this.getViewBuilder().createDefaultInsideLabelStyle(false, true);
+        createDefaultInsideLabelStyle.setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS);
         NodeDescription smdStateMachineNodeDesc = this.newNodeBuilder(this.umlPackage.getStateMachine(), rectangularNodeStyle)//
                 .layoutStrategyDescription(listLayoutStrategyDescription)//
                 .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getStateMachine().getName()))//
-                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyle(false, true))
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), createDefaultInsideLabelStyle)
                 .build();
         diagramDescription.getNodeDescriptions().add(smdStateMachineNodeDesc);
 
@@ -313,6 +316,8 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getPseudostate().getName()))//
                 .addOutsideLabelDescription(labelStyle) //
                 .build();
+
+        // HANDLE SYMBOL HERE.
 
         for (PseudostateKind pseudostateKind : pseudostateKinds) {
             String condition = "aql:self.kind = uml::PseudostateKind::" + pseudostateKind.getLiteral();
