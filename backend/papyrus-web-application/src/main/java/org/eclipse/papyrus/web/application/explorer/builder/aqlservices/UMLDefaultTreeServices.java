@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -49,6 +49,8 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.uml2.uml.Element;
@@ -111,15 +113,18 @@ public class UMLDefaultTreeServices {
 
     private final IURLParser urlParser;
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     public UMLDefaultTreeServices(List<IRepresentationImageProvider> representationImageProviders, IObjectService objectService,
             IRepresentationMetadataSearchService representationMetadataSearchService, IPapyrusReadOnlyChecker readOnlyChecker,
-            IURLParser urlParser) {
+            IURLParser urlParser, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         super();
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.objectService = Objects.requireNonNull(objectService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.readOnlyChecker = Objects.requireNonNull(readOnlyChecker);
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     /**
@@ -264,11 +269,14 @@ public class UMLDefaultTreeServices {
      * @return a list of representation
      */
     private List<RepresentationMetadata> getRepresentations(String elementId, IEditingContext editingContext) {
-        var optionalProjectId = Optional.of(editingContext).map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
+        var optionalProjectId = new UUIDParser().parse(editingContext.getId())
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId);
 
         if (optionalProjectId.isPresent()) {
             var projectId = optionalProjectId.get();
-            var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId.toString()), elementId));
+            var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), elementId));
             representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
             return representationMetadata;
         }

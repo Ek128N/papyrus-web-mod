@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.uml.domain.services.profile.StereotypeUtil;
-import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
-import org.eclipse.sirius.components.collaborative.widget.reference.browser.ModelBrowsersDescriptionProvider;
-import org.eclipse.sirius.components.collaborative.widget.reference.browser.ReferenceWidgetDefaultCandidateSearchProvider;
+import org.eclipse.sirius.components.collaborative.browser.ModelBrowserDefaultCandidateSearchProvider;
+import org.eclipse.sirius.components.collaborative.browser.ModelBrowserDescriptionProvider;
+import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -84,21 +84,21 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     private final IObjectService objectService;
 
-    private final ReferenceWidgetDefaultCandidateSearchProvider defaultCandidateProvider;
+    private final ModelBrowserDefaultCandidateSearchProvider defaultCandidateProvider;
 
     private final IEMFKindService emfKindService;
 
-    private final List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders;
+    private final List<IModelBrowserRootCandidateSearchProvider> candidateProviders;
 
-    private ModelBrowsersDescriptionProvider modelBrowserDescriptionProvider;
+    private ModelBrowserDescriptionProvider modelBrowserDescriptionProvider;
 
     private IURLParser urlParser = new URLParser();
 
-    public ReferenceModelBrowerDescriptionOverrider(IObjectService objectService, IEMFKindService emfKindService, List<IReferenceWidgetRootCandidateSearchProvider> candidateProviders,
-            ModelBrowsersDescriptionProvider modelBrowserDescriptionProvider) {
+    public ReferenceModelBrowerDescriptionOverrider(IObjectService objectService, IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders,
+            ModelBrowserDescriptionProvider modelBrowserDescriptionProvider) {
         super();
         this.objectService = objectService;
-        this.defaultCandidateProvider = new ReferenceWidgetDefaultCandidateSearchProvider();
+        this.defaultCandidateProvider = new ModelBrowserDefaultCandidateSearchProvider();
         this.emfKindService = emfKindService;
         this.candidateProviders = candidateProviders;
         this.modelBrowserDescriptionProvider = Objects.requireNonNull(modelBrowserDescriptionProvider);
@@ -106,7 +106,7 @@ public class ReferenceModelBrowerDescriptionOverrider implements IRepresentation
 
     @Override
     public List<IRepresentationDescription> getOverridedDescriptions() {
-        TreeDescription description = this.getModelBrowserDescription(ModelBrowsersDescriptionProvider.REFERENCE_DESCRIPTION_ID, variableManager -> this.canCreateModelBrowser(variableManager),
+        TreeDescription description = this.getModelBrowserDescription(ModelBrowserDescriptionProvider.REFERENCE_DESCRIPTION_ID, variableManager -> this.canCreateModelBrowser(variableManager),
                 this.browserIsSelectableProvider(), this::getSearchScopeElements, MODEL_BROWSER_REFERENCE_PREFIX);
         return List.of(description);
     }

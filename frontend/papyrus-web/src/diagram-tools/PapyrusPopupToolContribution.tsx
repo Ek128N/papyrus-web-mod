@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -19,9 +19,11 @@ import {
   DiagramPaletteToolContributionComponentProps,
   NodeData,
 } from '@eclipse-sirius/sirius-components-diagrams';
+import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
+import { Node, useNodes } from '@xyflow/react';
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { EditProjectViewParams, GQLGetProjectQueryData, GQLGetProjectQueryVariables } from './EditProjectView.types';
@@ -33,7 +35,6 @@ import {
   GQLGetMetaclassesQueryVariables,
 } from './PapyrusPopupToolContribution.types';
 import { TransferModal } from './TransferModal';
-import { Node, useNodes } from '@xyflow/react';
 
 type Modal = 'dialog';
 
@@ -107,7 +108,9 @@ export const PapyrusPopupToolContribution = ({
     createMetaclassImport({ variables });
   };
 
-  const { projectId: editingContextId, representationId } = useParams<EditProjectViewParams>();
+  const { projectId, representationId } = useParams<EditProjectViewParams>();
+  const { project } = useCurrentProject();
+  const editingContextId = project.currentEditingContext.id;
 
   const [isProfileDiagram, setIsProfileDIagram] = useState(false);
   const [metaclasses, setMetaclasses] = useState([{ id: '0', name: 'Loading...', imagePath: '' }]);
@@ -118,12 +121,11 @@ export const PapyrusPopupToolContribution = ({
     error: errorRepresentationQuery,
   } = useQuery<GQLGetProjectQueryData, GQLGetProjectQueryVariables>(getProjectQuery, {
     variables: {
-      projectId: editingContextId,
+      projectId,
       representationId: representationId ?? '',
       includeRepresentation: !!representationId,
     },
   });
-
   useEffect(() => {
     if (!loadingRepresentationQuery) {
       if (errorRepresentationQuery) {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -22,7 +22,7 @@ import org.eclipse.papyrus.uml.domain.services.EMFUtils;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MonoReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.MultiReferenceWidgetDescription;
 import org.eclipse.papyrus.web.custom.widgets.papyruswidgets.PapyrusWidgetsPackage;
-import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
+import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -37,14 +37,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of {@link IReferenceWidgetRootCandidateSearchProvider} for {@link MonoReferenceWidgetDescription} and
+ * Implementation of {@link IModelBrowserRootCandidateSearchProvider} for {@link MonoReferenceWidgetDescription} and
  * {@link MultiReferenceWidgetDescription}.
  *
  * @author Jerome Gout
  */
 @Service
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class PapyrusReferenceRootCandidateSearchProvider implements IReferenceWidgetRootCandidateSearchProvider {
+public class PapyrusReferenceRootCandidateSearchProvider implements IModelBrowserRootCandidateSearchProvider {
 
     private static final String MULTI_REF_DESCRIPTION = PapyrusWidgetsPackage.eINSTANCE.getMultiReferenceWidgetDescription().getName();
 

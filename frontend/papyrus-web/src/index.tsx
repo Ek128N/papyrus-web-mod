@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2019, 2025 CEA LIST, Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import {
   NodeTypeRegistry,
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
-import { tableRegistry } from '@eclipse-sirius/sirius-web-table';
+import { forkRegistry } from '@eclipse-sirius/sirius-web-view-fork';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { Help } from './core/Help';
 import { httpOrigin, wsOrigin } from './core/URL';
@@ -280,7 +280,7 @@ extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
 });
 
 // Table contribution
-extensionRegistry.addAll(tableRegistry, new DefaultExtensionRegistryMergeStrategy());
+extensionRegistry.addAll(forkRegistry, new DefaultExtensionRegistryMergeStrategy());
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

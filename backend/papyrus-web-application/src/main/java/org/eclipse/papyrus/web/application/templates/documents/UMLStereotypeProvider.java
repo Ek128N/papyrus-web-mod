@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST, Obeo.
+ * Copyright (c) 2024, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -23,6 +23,9 @@ import org.eclipse.sirius.web.application.document.dto.Stereotype;
 import org.eclipse.sirius.web.application.document.services.api.IStereotypeProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Nature;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,26 +44,34 @@ public class UMLStereotypeProvider implements IStereotypeProvider {
 
     private final IProjectSearchService projectSearchService;
 
-    public UMLStereotypeProvider(IProjectSearchService projectSearchService) {
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    public UMLStereotypeProvider(IProjectSearchService projectSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.projectSearchService = Objects.requireNonNull(projectSearchService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
     public List<Stereotype> getStereotypes(IEditingContext editingContext) {
-        var isFlowProject = new UUIDParser().parse(editingContext.getId())
-                .flatMap(uuid -> this.projectSearchService.findById(uuid.toString()))
-                .filter(project -> project.getNatures().stream()
-                        .map(Nature::name)
-                        .anyMatch(PapyrusUMLNatures.UML::equals))
-                .isPresent();
-
-        if (isFlowProject) {
+        if (this.isUMLProject(editingContext.getId())) {
             return List.of(
                     new Stereotype(EMPTY_UML, "Empty UML"),
                     new Stereotype(MODEL_UML, "Model UML"),
                     new Stereotype(PROFILE_UML, "Profile UML"));
         }
         return List.of();
+    }
+
+    private boolean isUMLProject(String editingContextId) {
+        return new UUIDParser().parse(editingContextId)
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId)
+                .flatMap(this.projectSearchService::findById)
+                .filter(project -> project.getNatures().stream()
+                        .map(Nature::name)
+                        .anyMatch(PapyrusUMLNatures.UML::equals))
+                .isPresent();
     }
 
 }

@@ -115,7 +115,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-table</artifactId>
+			<artifactId>sirius-web-view-fork</artifactId>
 		</dependency>
 
 		<dependency>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -98,7 +98,7 @@ public class TemplateInitializer {
             });
             try (var inputStream = new ByteArrayInputStream(jsonContents.getBytes())) {
                 resource.load(inputStream, null);
-                this.semanticDataUpdateService.updateDocuments(cause, AggregateReference.to(editingContextUUID.toString()), Collections.singleton(document), resourceSet.getPackageRegistry().keySet());
+                this.semanticDataUpdateService.updateDocuments(cause, AggregateReference.to(editingContextUUID), Collections.singleton(document), resourceSet.getPackageRegistry().keySet());
                 return Optional.of(resource);
             }
 
