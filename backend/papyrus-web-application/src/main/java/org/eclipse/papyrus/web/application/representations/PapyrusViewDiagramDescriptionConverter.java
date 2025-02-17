@@ -107,6 +107,10 @@ import org.springframework.stereotype.Service;
  * This class is copied and adapted from
  * {@link org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter}.
  *
+ * The
+ * {@link #convert(org.eclipse.sirius.components.view.diagram.NodeDescription, ViewDiagramDescriptionConverterContext, StylesFactory)}
+ * method has been modified to use an AQL string interpreter to get the path of Image for CustomImage.
+ *
  * @author tiboue
  */
 @Service
