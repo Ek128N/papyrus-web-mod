@@ -274,6 +274,7 @@ public class ProfileDiagramService extends AbstractDiagramService {
         return result;
     }
 
+
     /**
      * Create a Metaclass node in given {@code ParentNodeQuery} representing the imported element of given
      * {@code elementImport}.
@@ -293,9 +294,9 @@ public class ProfileDiagramService extends AbstractDiagramService {
 
         IViewHelper createViewHelper = ViewHelper.create(this.getObjectService(), this.getViewDiagramService(), this.getDiagramOperationsService(), diagramContext, convertedNodes);
         if (parentNode == null) {
-            result = createViewHelper.createRootView(elementImport.getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS);
+            result = createViewHelper.createRootView(elementImport.getImportedElement(), PRDDiagramDescriptionBuilder.PRD_METACLASS + PRDDiagramDescriptionBuilder.HOLDER);
         } else {
-            result = createViewHelper.createChildView(elementImport.getImportedElement(), parentNode, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
+            result = createViewHelper.createChildView(elementImport.getImportedElement(), parentNode, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS + PRDDiagramDescriptionBuilder.HOLDER);
         }
         return result;
     }

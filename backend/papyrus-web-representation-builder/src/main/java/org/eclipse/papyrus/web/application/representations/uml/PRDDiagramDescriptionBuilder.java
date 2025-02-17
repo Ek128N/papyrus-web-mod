@@ -108,6 +108,16 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     public static final String PRD_SHARED_METACLASS = PRD_METACLASS + UNDERSCORE + SHARED_SUFFIX;
 
+    /**
+     * The suffix for Holder compartement.
+     */
+    public static final String HOLDER = UNDERSCORE + HOLDER_SUFFIX;
+
+    /**
+     * The suffix for Content compartement.
+     */
+    public static final String CONTENT = UNDERSCORE + CONTENT_SUFFIX;
+
     private UMLPackage umlPackage = UMLPackage.eINSTANCE;
 
     /**
@@ -118,7 +128,8 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     /**
      * Predicate used to exclude Metaclass Node Description.
      */
-    private Predicate<NodeDescription> excludeMetaclassNodeDescription = nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS);
+    private Predicate<NodeDescription> excludeMetaclassNodeDescription = nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS + HOLDER)
+            && !nodeDescription.getName().equals(PRD_SHARED_METACLASS + HOLDER);
 
     private NodeDescription symbolNodeDescription;
 
@@ -283,21 +294,14 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         EClass metaclassEClass = this.umlPackage.getClass_();
 
         NodeDescription prdMetaclassHolderTopNodeDescription = this.newNodeBuilder(metaclassEClass, this.getViewBuilder().createRectangularNodeStyle())//
-                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription())//
+                .layoutStrategyDescription(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription())//
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(ProfileDiagramServices.GET_METACLASS_CANDIDATES)) //
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
                 .build();
 
-        NodeDescription prdMetaclassContentTopNodeDescription = this.createContentNodeDescription(metaclassEClass, false);
-        this.addContent(metaclassEClass, false, prdMetaclassHolderTopNodeDescription, prdMetaclassContentTopNodeDescription, this.symbolNodeDescription);
-        this.copyDimension(prdMetaclassHolderTopNodeDescription, prdMetaclassContentTopNodeDescription);
-
-        prdMetaclassHolderTopNodeDescription.setName(PRD_METACLASS + UNDERSCORE + HOLDER_SUFFIX);
-        prdMetaclassContentTopNodeDescription.setName(PRD_METACLASS + UNDERSCORE + CONTENT_SUFFIX);
-
+        prdMetaclassHolderTopNodeDescription.setName(PRD_METACLASS + HOLDER);
         diagramDescription.getNodeDescriptions().add(prdMetaclassHolderTopNodeDescription);
-        this.createDefaultToolSectionsInNodeDescription(prdMetaclassContentTopNodeDescription);
 
         // Custom tool is defined from Frontend nodules :
         // /frontend/src/views/edit-project/EditProjectView.tsx/diagramPaletteToolContributions
@@ -823,6 +827,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
                 .createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(prdLiteralsCompartmentSharedNodeDescription));
         this.registerCallback(prdLiteralsCompartmentSharedNodeDescription, () -> {
             List<NodeDescription> droppedNodeDescriptions = List.of(enumerationLiteralsSubNodeDescription);
+
             prdLiteralsCompartmentGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         prdLiteralsCompartmentSharedNodeDescription.getPalette().setDropNodeTool(prdLiteralsCompartmentGraphicalDropTool);
@@ -879,7 +884,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createAssociationEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceAndTargetDescriptionSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.umlPackage.getClassifier()).stream()
-                .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS)).toList();
+                .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS + HOLDER) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS + HOLDER)).toList();
 
         EClass associationEClass = this.umlPackage.getAssociation();
         EdgeDescription prdAssociationEdgeDescription = this.getViewBuilder().createDefaultSynchonizedDomainBaseEdgeDescription(associationEClass,
@@ -938,7 +943,7 @@ public class PRDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private void createGeneralizationEdgeDescription(DiagramDescription diagramDescription) {
         Supplier<List<NodeDescription>> sourceDescriptionSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.umlPackage.getClassifier()).stream()
-                .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS)).toList();
+                .filter(nodeDescription -> !nodeDescription.getName().equals(PRD_METACLASS + HOLDER) && !nodeDescription.getName().equals(PRD_SHARED_METACLASS + HOLDER)).toList();
         Supplier<List<NodeDescription>> targetDescriptionSupplier = () -> this.collectNodesWithDomainAndWithoutContent(diagramDescription, this.umlPackage.getClassifier());
 
         EClass generalizationEClass = this.umlPackage.getGeneralization();

@@ -207,7 +207,8 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             }
         } else {
             // default case when no dropChecker neither dropProvider are defined
-            // ex. : org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericWebExternalDropBehaviorProvider
+            // ex. :
+            // org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericWebExternalDropBehaviorProvider
             isDragAndDropValid = this.createDefaultView(elementImport);
         }
         return isDragAndDropValid;
@@ -227,7 +228,8 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
             }
         } else {
             // default case when no dropChecker neither dropProvider are defined
-            // ex. : org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericWebExternalDropBehaviorProvider
+            // ex. :
+            // org.eclipse.papyrus.web.application.representations.aqlservices.utils.GenericWebExternalDropBehaviorProvider
             isDragAndDropValid = this.createDefaultView(object);
         }
         return isDragAndDropValid;
@@ -278,10 +280,10 @@ public final class SemanticDropSwitch extends AbstractDropSwitch {
                     this.logger.log(status.getMessage(), ILogLevel.WARNING);
                 } else if (this.targetNode != null) {
                     // case DnD on Node
-                    isDragAndDropValid = isDragAndDropValid && this.createChildView(importedElement, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS);
+                    isDragAndDropValid = isDragAndDropValid && this.createChildView(importedElement, PRDDiagramDescriptionBuilder.PRD_SHARED_METACLASS + PRDDiagramDescriptionBuilder.HOLDER);
                 } else {
                     // case DnD on Diagram
-                    isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(importedElement, PRDDiagramDescriptionBuilder.PRD_METACLASS);
+                    isDragAndDropValid = isDragAndDropValid && this.viewHelper.createRootView(importedElement, PRDDiagramDescriptionBuilder.PRD_METACLASS + PRDDiagramDescriptionBuilder.HOLDER);
                 }
             }
         }
