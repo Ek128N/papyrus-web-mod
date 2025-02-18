@@ -27,6 +27,7 @@ import {
   setBorderNodesPosition,
   ForcedDimensions,
   getHeaderHeightFootprint,
+  getInsideLabelWidthConstraint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from '@xyflow/react';
 import { InnerFlagNodeData } from './InnerFlagNode.types';
@@ -54,7 +55,7 @@ export class InnerFlagNodeLayoutHandler implements INodeLayoutHandler<NodeData> 
 
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
     // 16px for left and right padding, 20px for the left gap corresponding to the inner flag shape.
-    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 16 + 20;
+    const labelWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) + borderWidth * 2 + 16 + 20;
     const labelHeight = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);

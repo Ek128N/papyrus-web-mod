@@ -24,6 +24,7 @@ import {
   getDefaultOrMinWidth,
   ForcedDimensions,
   getHeaderHeightFootprint,
+  getInsideLabelWidthConstraint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node } from '@xyflow/react';
 import { NoteNodeData } from './NoteNode.types';
@@ -48,7 +49,8 @@ export class NoteNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
     const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    const labelWidth = (labelElement?.getBoundingClientRect().width ?? 0) + borderWidth * 2 + 8 + 20;
+    const labelWidth =
+      getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) + borderWidth * 2 + borderWidth * 2 + 8 + 20;
     const labelHeight = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP');
 
     const nodeMinComputeWidth = labelWidth;
