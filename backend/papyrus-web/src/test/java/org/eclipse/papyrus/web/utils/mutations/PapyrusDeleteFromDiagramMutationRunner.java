@@ -57,7 +57,7 @@ public class PapyrusDeleteFromDiagramMutationRunner {
                 }
               }
             }
-                         """;
+            """;
 
     private GraphQL graphQL;
 
@@ -67,9 +67,9 @@ public class PapyrusDeleteFromDiagramMutationRunner {
      * Initializes the runner with the provided {@code graphQL} and {@code objectMapper}.
      *
      * @param graphQL
-     *            the GraphQL execution engine
+     *         the GraphQL execution engine
      * @param objectMapper
-     *            the object mapper
+     *         the object mapper
      */
     public PapyrusDeleteFromDiagramMutationRunner(GraphQL graphQL, ObjectMapper objectMapper) {
         this.graphQL = graphQL;
@@ -82,16 +82,16 @@ public class PapyrusDeleteFromDiagramMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element on which the tool is invoked
+     * @param editingContextId
+     *         the project containing the element on which the tool is invoked
      * @param representationId
-     *            the representation containing the element
+     *         the representation containing the element
      * @param diagramElementId
-     *            the graphical identifier of the element to delete
+     *         the graphical identifier of the element to delete
      * @param deletionPolicy
      */
-    public void semanticDeleteNodeFromDiagram(String projectId, String representationId, String diagramElementId) {
-        this.deleteFromDiagram(projectId, representationId, diagramElementId, DeletionPolicy.SEMANTIC, List.of(diagramElementId), List.of());
+    public void semanticDeleteNodeFromDiagram(String editingContextId, String representationId, String diagramElementId) {
+        this.deleteFromDiagram(editingContextId, representationId, diagramElementId, DeletionPolicy.SEMANTIC, List.of(diagramElementId), List.of());
     }
 
     /**
@@ -100,16 +100,16 @@ public class PapyrusDeleteFromDiagramMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element on which the tool is invoked
+     * @param editingContextId
+     *         the project containing the element on which the tool is invoked
      * @param representationId
-     *            the representation containing the element
+     *         the representation containing the element
      * @param diagramElementId
-     *            the graphical identifier of the element to delete
+     *         the graphical identifier of the element to delete
      * @param deletionPolicy
      */
-    public void semanticDeleteEdgeFromDiagram(String projectId, String representationId, String diagramElementId) {
-        this.deleteFromDiagram(projectId, representationId, diagramElementId, DeletionPolicy.SEMANTIC, List.of(), List.of(diagramElementId));
+    public void semanticDeleteEdgeFromDiagram(String editingContextId, String representationId, String diagramElementId) {
+        this.deleteFromDiagram(editingContextId, representationId, diagramElementId, DeletionPolicy.SEMANTIC, List.of(), List.of(diagramElementId));
     }
 
     /**
@@ -118,23 +118,24 @@ public class PapyrusDeleteFromDiagramMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element on which the tool is invoked
+     * @param editingContextId
+     *         the project containing the element on which the tool is invoked
      * @param representationId
-     *            the representation containing the element
+     *         the representation containing the element
      * @param diagramElementId
-     *            the graphical identifier of the element to delete
+     *         the graphical identifier of the element to delete
      * @param deletionPolicy
      */
-    public void graphicalDeleteNodeFromDiagram(String projectId, String representationId, String diagramElementId) {
-        this.deleteFromDiagram(projectId, representationId, diagramElementId, DeletionPolicy.GRAPHICAL, List.of(diagramElementId), List.of());
+    public void graphicalDeleteNodeFromDiagram(String editingContextId, String representationId, String diagramElementId) {
+        this.deleteFromDiagram(editingContextId, representationId, diagramElementId, DeletionPolicy.GRAPHICAL, List.of(diagramElementId), List.of());
     }
 
-    private void deleteFromDiagram(String projectId, String representationId, String diagramElementId, DeletionPolicy deletionPolicy, List<String> nodeIds, List<String> edgeIds) {
-        DeleteFromDiagramInput deleteFromDiagramInput = new DeleteFromDiagramInput(UUID.randomUUID(), projectId, representationId, nodeIds, edgeIds, deletionPolicy);
+    private void deleteFromDiagram(String editingContextId, String representationId, String diagramElementId, DeletionPolicy deletionPolicy, List<String> nodeIds, List<String> edgeIds) {
+        DeleteFromDiagramInput deleteFromDiagramInput = new DeleteFromDiagramInput(UUID.randomUUID(), editingContextId, representationId, nodeIds, edgeIds, deletionPolicy);
         ExecutionInput executionInput = ExecutionInput.newExecutionInput(DELETE_FROM_DIAGRAM_QUERY) //
                 .variables(Map.of("input", this.objectMapper.convertValue(deleteFromDiagramInput, new TypeReference<Map<String, Object>>() {
-                    /**/ }))) //
+                    /**/
+                }))) //
                 .build();
         ExecutionResult executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();

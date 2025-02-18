@@ -27,8 +27,8 @@ import org.springframework.stereotype.Service;
 /**
  * Service used to invoke a tool on two elements.
  * <p>
- * This class instantiates and runs the {@code invokeSingleClickOnTwoDiagramElementsTool}. The invoked tool can be
- * retrieved via {@link PapyrusPaletteToolQueryRunner#getTool(UUID, UUID, UUID, String, String)}.
+ * This class instantiates and runs the {@code invokeSingleClickOnTwoDiagramElementsTool}. The invoked tool can be retrieved via
+ * {@link PapyrusPaletteToolQueryRunner#getTool(UUID, UUID, UUID, String, String)}.
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -41,9 +41,9 @@ public class PapyrusInvokeSingleClickOnTwoDiagramElementsToolRunner {
      * Initializes the runner with the provided {@code graphQL} and {@code objectMapper}.
      *
      * @param graphQL
-     *            the GraphQL execution engine
+     *         the GraphQL execution engine
      * @param objectMapper
-     *            the object mapper
+     *         the object mapper
      */
     public PapyrusInvokeSingleClickOnTwoDiagramElementsToolRunner(InvokeSingleClickOnTwoDiagramElementsToolMutationRunner runner) {
         this.runner = runner;
@@ -52,27 +52,26 @@ public class PapyrusInvokeSingleClickOnTwoDiagramElementsToolRunner {
     /**
      * Invokes the {@code toolId} tool on {@code diagramSourceElementId} and {@code diagramTargetElementId} elements.
      * <p>
-     * This method invokes the given tool on two elements, see {@link #invokeTool(String, String, String, String, String)} ()} to invoke a
-     * tool on a single element.
+     * This method invokes the given tool on two elements, see {@link #invokeTool(String, String, String, String, String)} ()} to invoke a tool on a single element.
      * </p>
      * <p>
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element on which the tool is invoked
+     * @param editingContextId
+     *         the project containing the element on which the tool is invoked
      * @param representationId
-     *            the representation containing the elements
+     *         the representation containing the elements
      * @param diagramSourceElementId
-     *            the graphical identifier of the source element on which the tool is invoked
+     *         the graphical identifier of the source element on which the tool is invoked
      * @param diagramTargetElementId
-     *            the graphical identifier of the target element on which the tool is invoked
+     *         the graphical identifier of the target element on which the tool is invoked
      * @param toolId
-     *            the identifier of the tool to invoke
+     *         the identifier of the tool to invoke
      */
-    public void invokeTool(String projectId, String representationId, String diagramSourceElementId, String diagramTargetElementId, String toolId) {
+    public void invokeTool(String editingContextId, String representationId, String diagramSourceElementId, String diagramTargetElementId, String toolId) {
         // Source and target positions aren't relevant when invoking the tool manually, so we set them to 0
-        InvokeSingleClickOnTwoDiagramElementsToolInput invokeSingleClickOnTwoDiagramElementsToolInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(UUID.randomUUID(), projectId,
+        InvokeSingleClickOnTwoDiagramElementsToolInput invokeSingleClickOnTwoDiagramElementsToolInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(UUID.randomUUID(), editingContextId,
                 representationId, diagramSourceElementId, diagramTargetElementId, 0, 0, 0, 0, toolId, List.of());
 
         String jsonResult = this.runner.run(invokeSingleClickOnTwoDiagramElementsToolInput);

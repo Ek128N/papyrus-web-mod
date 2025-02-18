@@ -43,13 +43,13 @@ public class PapyrusCreateProjectMutationRunner {
 
         var input = new CreateProjectInput(UUID.randomUUID(), projectName, natures);
 
-        String projectId = null;
+        String editingContextId = null;
         var jsonResult = this.runner.run(input);
         String responseTypeName = JsonPath.read(jsonResult, "$.data.createProject.__typename");
         assertThat(responseTypeName).isEqualTo("CreateProjectSuccessPayload");
 
-        projectId = JsonPath.read(jsonResult, "$.data.createProject.project.id");
-        return projectId;
+        editingContextId = JsonPath.read(jsonResult, "$.data.createProject.project.id");
+        return editingContextId;
     }
 
 }

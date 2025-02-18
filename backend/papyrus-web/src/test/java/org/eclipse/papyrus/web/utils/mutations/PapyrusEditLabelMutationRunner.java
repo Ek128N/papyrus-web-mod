@@ -31,8 +31,7 @@ import graphql.GraphQL;
 /**
  * Service used to edit a label.
  * <p>
- * This class instantiates and runs the {@code editLabel} mutation. Note that the mutation takes a graphical label
- * identifier as input, but performs both graphical and semantic label edition.
+ * This class instantiates and runs the {@code editLabel} mutation. Note that the mutation takes a graphical label identifier as input, but performs both graphical and semantic label edition.
  * </p>
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
@@ -57,7 +56,7 @@ public class PapyrusEditLabelMutationRunner {
                 }
               }
             }
-                        """;
+            """;
 
     private GraphQL graphQL;
 
@@ -67,9 +66,9 @@ public class PapyrusEditLabelMutationRunner {
      * Initializes the runner with the provided {@code graphQL} and {@code objectMapper}.
      *
      * @param graphQL
-     *            the GraphQL execution engine
+     *         the GraphQL execution engine
      * @param objectMapper
-     *            the object mapper
+     *         the object mapper
      */
     public PapyrusEditLabelMutationRunner(GraphQL graphQL, ObjectMapper objectMapper) {
         this.graphQL = graphQL;
@@ -82,20 +81,21 @@ public class PapyrusEditLabelMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the label to edit
+     * @param editingContextId
+     *         the project containing the label to edit
      * @param representationId
-     *            the representation containing the label
+     *         the representation containing the label
      * @param labelId
-     *            the identifier of the label to edit
+     *         the identifier of the label to edit
      * @param newLabel
-     *            the new value to set for the edited label
+     *         the new value to set for the edited label
      */
-    public void editLabel(String projectId, String representationId, String labelId, String newLabel) {
-        EditLabelInput editLabelInput = new EditLabelInput(UUID.randomUUID(), projectId, representationId, labelId, newLabel);
+    public void editLabel(String editingContextId, String representationId, String labelId, String newLabel) {
+        EditLabelInput editLabelInput = new EditLabelInput(UUID.randomUUID(), editingContextId, representationId, labelId, newLabel);
         ExecutionInput executionInput = ExecutionInput.newExecutionInput(query)//
                 .variables(Map.of("input", this.objectMapper.convertValue(editLabelInput, new TypeReference<Map<String, Object>>() {
-                    /**/ }))) //
+                    /**/
+                }))) //
                 .build();
         ExecutionResult executionResult = this.graphQL.execute(executionInput);
         assertThat(executionResult.getErrors()).isEmpty();

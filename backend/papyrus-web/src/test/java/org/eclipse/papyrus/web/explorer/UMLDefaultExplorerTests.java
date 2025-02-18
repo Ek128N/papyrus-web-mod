@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -104,7 +104,7 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
         TestTransaction.start();
 
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", SimpleUMLProjectIdentifiers.UML_DEFAULT_PROJECT.toString());
+                "editingContextId", SimpleUMLProjectIdentifiers.UML_DEFAULT_EDITING_CONTEXT_ID.toString());
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(2);
@@ -126,7 +126,7 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
                 List.of(SimpleUMLProjectIdentifiers.MODEL_DOCUMENT_ID.toString()), List.of());
 
-        var input = new ExplorerEventInput(UUID.randomUUID(), SimpleUMLProjectIdentifiers.UML_DEFAULT_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SimpleUMLProjectIdentifiers.UML_DEFAULT_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
@@ -179,7 +179,7 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
                         SimpleUMLProjectIdentifiers.PACKAGE_IMPORT_ELEMENT_ID.toString()),
                 List.of(PapyrusTreeFilterProvider.HIDE_PATHMAP_URI_TREE_ITEM_FILTER_ID));
 
-        var input = new ExplorerEventInput(UUID.randomUUID(), SimpleUMLProjectIdentifiers.UML_DEFAULT_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SimpleUMLProjectIdentifiers.UML_DEFAULT_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         var initialTreeContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

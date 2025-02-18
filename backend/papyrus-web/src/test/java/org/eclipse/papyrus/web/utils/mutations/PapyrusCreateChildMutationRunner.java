@@ -32,8 +32,7 @@ import org.springframework.stereotype.Service;
 /**
  * Service used to create a semantic element inside a given container.
  * <p>
- * This class instantiates and runs the {@code createChild} mutation. Note that this mutation only performs semantic
- * operations, and doesn't perform any graphical operation.
+ * This class instantiates and runs the {@code createChild} mutation. Note that this mutation only performs semantic operations, and doesn't perform any graphical operation.
  * </p>
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
@@ -49,9 +48,9 @@ public class PapyrusCreateChildMutationRunner {
      * Initializes the runner with the provided {@code graphQL} and {@code objectMapper}.
      *
      * @param graphQL
-     *            the GraphQL execution engine
+     *         the GraphQL execution engine
      * @param objectMapper
-     *            the object mapper
+     *         the object mapper
      */
     public PapyrusCreateChildMutationRunner(CreateChildMutationRunner runner) {
         this.runner = runner;
@@ -63,20 +62,20 @@ public class PapyrusCreateChildMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element the create
+     * @param editingContextId
+     *         the project containing the element the create
      * @param parentElementId
-     *            the identifier of the semantic parent of the element to create
+     *         the identifier of the semantic parent of the element to create
      * @param containmentReference
-     *            the containment reference of the element to create
+     *         the containment reference of the element to create
      * @param childType
-     *            the type of the element to create
+     *         the type of the element to create
      */
-    public void createChild(String projectId, String parentElementId, EReference containmentReference, EClass childType) {
+    public void createChild(String editingContextId, String parentElementId, EReference containmentReference, EClass childType) {
         // Build the childCreationDescriptionId with the following pattern: referenceName - type. This pattern is
         // required by the backend.
         String childCreationDescriptionId = containmentReference.getName() + "-" + childType.getName();
-        CreateChildInput createChildInput = new CreateChildInput(UUID.randomUUID(), projectId, parentElementId, childCreationDescriptionId);
+        CreateChildInput createChildInput = new CreateChildInput(UUID.randomUUID(), editingContextId, parentElementId, childCreationDescriptionId);
 
         String jsonResult = this.runner.run(createChildInput);
         String responseTypeName = JsonPath.read(jsonResult, "$.data.createChild.__typename");

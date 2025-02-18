@@ -60,15 +60,15 @@ public class PapyrusCreateRepresentationMutationRunner {
         this.graphQLRequestor = graphQLRequestor;
     }
 
-    public String createRepresentation(String projectId, String targetObject, String representationDescriptionName, String representationName) {
+    public String createRepresentation(String editingContextId, String targetObject, String representationDescriptionName, String representationName) {
 
-        Map<String, Object> parameters = Map.of("editingContextId", projectId, "objectId", targetObject);
+        Map<String, Object> parameters = Map.of("editingContextId", editingContextId, "objectId", targetObject);
         String jsonResult0 = this.graphQLRequestor.execute(representationQuery, parameters);
 
         var matches = (JSONArray) JsonPath.read(jsonResult0, "$.data.viewer.editingContext.representationDescriptions.edges[?(@.node.label=='" + representationDescriptionName + "')].node.id");
         String representationDescriptionId = (String) matches.get(0);
 
-        var input = new CreateRepresentationInput(UUID.randomUUID(), projectId, representationDescriptionId, targetObject, representationName);
+        var input = new CreateRepresentationInput(UUID.randomUUID(), editingContextId, representationDescriptionId, targetObject, representationName);
 
         var jsonResult = this.runner.run(input);
         String representationId = JsonPath.read(jsonResult, "$.data.createRepresentation.representation.id");

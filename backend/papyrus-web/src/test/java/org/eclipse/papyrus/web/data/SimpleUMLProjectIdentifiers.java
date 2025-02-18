@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -18,12 +18,13 @@ import java.util.UUID;
 /**
  * Identifier of elements inserted in the database with the script "uml-model-import-and-profile.sql".
  *
- *
  * @author Arthur Daussy
  */
 public class SimpleUMLProjectIdentifiers {
 
     public static final UUID UML_DEFAULT_PROJECT = UUID.fromString("c87b6af4-7f3b-4802-9497-94bc5219d5f6");
+
+    public static final UUID UML_DEFAULT_EDITING_CONTEXT_ID = UUID.fromString("cbf34577-d7fb-4d12-a096-27d0d1f9164e");
 
     public static final UUID MODEL_DOCUMENT_ID = UUID.fromString("b6270893-90c6-4184-9d2c-235c0d5b53b4");
 

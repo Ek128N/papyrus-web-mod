@@ -39,9 +39,9 @@ public class PapyrusCreateDocumentMutationRunner {
         this.siriusDocumentMutationRunner = siriusDocumentMutationRunner;
     }
 
-    public String createDocument(String projectId, String documentName, String stereotypeId) {
+    public String createDocument(String editingContextId, String documentName, String stereotypeId) {
 
-        var createDocumentInput = new CreateDocumentInput(UUID.randomUUID(), projectId, stereotypeId, documentName);
+        var createDocumentInput = new CreateDocumentInput(UUID.randomUUID(), editingContextId, stereotypeId, documentName);
 
         var jsonResult = this.siriusDocumentMutationRunner.run(createDocumentInput);
         String responseTypeName = JsonPath.read(jsonResult, "$.data.createDocument.__typename");

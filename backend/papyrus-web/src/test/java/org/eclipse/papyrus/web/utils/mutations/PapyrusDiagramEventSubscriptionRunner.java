@@ -22,9 +22,8 @@ import org.springframework.stereotype.Service;
 /**
  * Service used to create a subscription on a given diagram.
  * <p>
- * Creating a subscription allows to perform graphical-level operations via GraphQL mutations. Tests that require such
- * graphical operation need to create the subscription before performing any graphical-level operation (see
- * {@link #createSubscription(String, String)}).
+ * Creating a subscription allows to perform graphical-level operations via GraphQL mutations. Tests that require such graphical operation need to create the subscription before performing any
+ * graphical-level operation (see {@link #createSubscription(String, String)}).
  * </p>
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
@@ -38,9 +37,9 @@ public class PapyrusDiagramEventSubscriptionRunner {
      * Initializes the runner with the provided {@code graphQL} and {@code objectMapper}.
      *
      * @param graphQL
-     *            the GraphQL execution engine
+     *         the GraphQL execution engine
      * @param objectMapper
-     *            the object mapper
+     *         the object mapper
      */
     public PapyrusDiagramEventSubscriptionRunner(DiagramEventSubscriptionRunner runner) {
         this.runner = runner;
@@ -52,13 +51,13 @@ public class PapyrusDiagramEventSubscriptionRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the diagram on which to open a subscription
+     * @param editingContextId
+     *         the project containing the diagram on which to open a subscription
      * @param diagramId
-     *            the identifier of the diagram to open a subscription from
+     *         the identifier of the diagram to open a subscription from
      */
-    public void createSubscription(String projectId, String diagramId) {
-        DiagramEventInput diagramEventInput = new DiagramEventInput(UUID.randomUUID(), projectId, diagramId);
+    public void createSubscription(String editingContextId, String diagramId) {
+        DiagramEventInput diagramEventInput = new DiagramEventInput(UUID.randomUUID(), editingContextId, diagramId);
 
         this.runner.run(diagramEventInput);
     }

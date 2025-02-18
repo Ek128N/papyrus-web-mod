@@ -38,9 +38,9 @@ public class PapyrusCreateRootObjectCreateMutationRunner {
         this.createRootObjectMutationRunner = createRootObjectMutationRunner;
     }
 
-    public String createRootObject(String ePackageNsURI, String type, String documentId, String projectId) {
+    public String createRootObject(String ePackageNsURI, String type, String documentId, String editingContextId) {
 
-        var createRootObjectInput = new CreateRootObjectInput(UUID.randomUUID(), projectId, UUID.fromString(documentId), ePackageNsURI, type);
+        var createRootObjectInput = new CreateRootObjectInput(UUID.randomUUID(), editingContextId, UUID.fromString(documentId), ePackageNsURI, type);
         String rootObjectId = null;
         var jsonResult = this.createRootObjectMutationRunner.run(createRootObjectInput);
         String responseTypeName = JsonPath.read(jsonResult, "$.data.createRootObject.__typename");

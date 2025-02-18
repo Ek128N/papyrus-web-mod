@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -28,8 +28,7 @@ import net.minidev.json.JSONArray;
 /**
  * Service used to retrieve a palette tool on a given element.
  * <p>
- * This class instantiates and runs the {@code getPalette} query. The content of the palette is then processed to
- * retrieve the desired tool.
+ * This class instantiates and runs the {@code getPalette} query. The content of the palette is then processed to retrieve the desired tool.
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -51,16 +50,16 @@ public class PapyrusPaletteToolQueryRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element to retrieve the palette from
+     * @param editingContextId
+     *         the project containing the element to retrieve the palette from
      * @param representationId
-     *            the representation containing the element
+     *         the representation containing the element
      * @param diagramElementId
-     *            the graphical identifier of the element to retrieve the palette from
+     *         the graphical identifier of the element to retrieve the palette from
      * @return the raw JSON of the palette
      */
-    private String getPalette(String projectId, String representationId, String diagramElementId) {
-        Map<String, Object> parameters = Map.of("editingContextId", projectId, "representationId", representationId, "diagramElementId", diagramElementId);
+    private String getPalette(String editingContextId, String representationId, String diagramElementId) {
+        Map<String, Object> parameters = Map.of("editingContextId", editingContextId, "representationId", representationId, "diagramElementId", diagramElementId);
         return this.runner.run(parameters);
     }
 
@@ -70,22 +69,22 @@ public class PapyrusPaletteToolQueryRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the element to retrieve the palette tool from
+     * @param editingContextId
+     *         the project containing the element to retrieve the palette tool from
      * @param representationId
-     *            the representation containing the element
+     *         the representation containing the element
      * @param diagramElementId
-     *            the graphical identifier of the element to retrieve the palette tool from
+     *         the graphical identifier of the element to retrieve the palette tool from
      * @param toolSectionName
-     *            the name of the tool section containing the tool
+     *         the name of the tool section containing the tool
      * @param toolName
-     *            the name of the tool
+     *         the name of the tool
      * @return the identifier of the tool if it exists, or an {@code empty} {@link Optional}
      */
-    public Optional<String> getTool(String projectId, String representationId, String diagramElementId, String toolSectionName, String toolName) {
-        String rawPalette = this.getPalette(projectId, representationId, diagramElementId);
+    public Optional<String> getTool(String editingContextId, String representationId, String diagramElementId, String toolSectionName, String toolName) {
+        String rawPalette = this.getPalette(editingContextId, representationId, diagramElementId);
         Object palette = JsonPath.read(rawPalette,
-                "$.data.viewer.editingContext.representation.description.palette.toolSections[?(@.label=='" + toolSectionName + "')].tools[?(@.label=='" + toolName + "')]");
+                "$.data.viewer.editingContext.representation.description.palette.paletteEntries[?(@.label=='" + toolSectionName + "')].tools[?(@.label=='" + toolName + "')]");
         assertThat(palette).isInstanceOf(JSONArray.class);
         Optional<String> result = Optional.empty();
         JSONArray array = (JSONArray) palette;

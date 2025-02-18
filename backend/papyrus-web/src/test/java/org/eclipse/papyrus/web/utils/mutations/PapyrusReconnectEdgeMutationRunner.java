@@ -27,8 +27,7 @@ import org.springframework.stereotype.Service;
 /**
  * Service used to reconnect the source or target of an edge.
  * <p>
- * This class instantiates and runs the {@code reconnectEdge} mutation. Node that this mutation performs both graphical
- * and semantic operations.
+ * This class instantiates and runs the {@code reconnectEdge} mutation. Node that this mutation performs both graphical and semantic operations.
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
  */
@@ -39,7 +38,6 @@ public class PapyrusReconnectEdgeMutationRunner {
 
     /**
      * Initializes the runner with the provided {@code graphQL} and {@code objectMapper}.
-     *
      */
     public PapyrusReconnectEdgeMutationRunner(ReconnectEdgeMutationRunner runner) {
         this.runner = runner;
@@ -51,17 +49,17 @@ public class PapyrusReconnectEdgeMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the elements
+     * @param editingContextId
+     *         the project containing the elements
      * @param representationId
-     *            the representation containing the elements
+     *         the representation containing the elements
      * @param edgeId
-     *            the graphical identifier of the edge to reconnect the source from
+     *         the graphical identifier of the edge to reconnect the source from
      * @param newEdgeEndId
-     *            the graphical identifier of the new source of the edge
+     *         the graphical identifier of the new source of the edge
      */
-    public void reconnectEdgeSource(String projectId, String representationId, String edgeId, String newEdgeEndId) {
-        this.reconnectEdge(projectId, representationId, edgeId, newEdgeEndId, ReconnectEdgeKind.SOURCE);
+    public void reconnectEdgeSource(String editingContextId, String representationId, String edgeId, String newEdgeEndId) {
+        this.reconnectEdge(editingContextId, representationId, edgeId, newEdgeEndId, ReconnectEdgeKind.SOURCE);
     }
 
     /**
@@ -70,17 +68,17 @@ public class PapyrusReconnectEdgeMutationRunner {
      * This method produces a test failure if the underlying GraphQL query returns an error.
      * </p>
      *
-     * @param projectId
-     *            the project containing the elements
+     * @param editingContextId
+     *         the project containing the elements
      * @param representationId
-     *            the representation containing the elements
+     *         the representation containing the elements
      * @param edgeId
-     *            the graphical identifier of the edge to reconnect the target from
+     *         the graphical identifier of the edge to reconnect the target from
      * @param newEdgeEndId
-     *            the graphical identifier of the new target of the edge
+     *         the graphical identifier of the new target of the edge
      */
-    public void reconnectEdgeTarget(String projectId, String representationId, String edgeId, String newEdgeEndId) {
-        this.reconnectEdge(projectId, representationId, edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET);
+    public void reconnectEdgeTarget(String editingContextId, String representationId, String edgeId, String newEdgeEndId) {
+        this.reconnectEdge(editingContextId, representationId, edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET);
     }
 
     public void reconnectEdge(String editingContext, String representationId, String edgeId, String newEdgeEndId, ReconnectEdgeKind reconnectEdgeKind) {

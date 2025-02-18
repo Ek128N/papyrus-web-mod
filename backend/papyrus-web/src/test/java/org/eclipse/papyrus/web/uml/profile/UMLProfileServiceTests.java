@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -51,7 +51,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tests the services in charge of using UML Profiles.
@@ -60,7 +59,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @SpringBootTest
 @WebAppConfiguration
-@Transactional
 public class UMLProfileServiceTests extends AbstractWebUMLTest {
 
     @Autowired

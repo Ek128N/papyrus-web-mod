@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST, Obeo.
+ * Copyright (c) 2024, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -133,7 +133,7 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
      * </p>
      *
      * @param elementLabels
-     *            the labels of the {@link ObjectNode}s to configure
+     *         the labels of the {@link ObjectNode}s to configure
      */
     private void setIsControlType(List<String> elementLabels) {
         EditingContext editingContext = (EditingContext) this.getEditingContext();
@@ -144,7 +144,7 @@ public class ADReconnectEdgeTargetTest extends ReconnectEdgeTargetTest {
         }
         this.persistenceService.persist(new ICause.NoOp(), editingContext);
         this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
-        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
     }
 
     @ParameterizedTest

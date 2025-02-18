@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -65,6 +65,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.junit.jupiter.api.AfterEach;
@@ -77,9 +78,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * Abstract class to define integration tests of tools in Papyrus Web.
  * <p>
- * This class defined high-level utility methods that can be reused in concrete Papyrus Web tests to apply tools and
- * search graphical/semantic elements. It also performs a minimal environment initialization (creation of a project,
- * root element, initialization of a diagram).
+ * This class defined high-level utility methods that can be reused in concrete Papyrus Web tests to apply tools and search graphical/semantic elements. It also performs a minimal environment
+ * initialization (creation of a project, root element, initialization of a diagram).
  * </p>
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
@@ -92,7 +92,7 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
 
     protected static final UMLPackage UML = UMLPackage.eINSTANCE;
 
-    protected String projectId;
+    protected String editingContextId;
 
     protected String rootObjectId;
 
@@ -168,22 +168,22 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     @Autowired
     private PapyrusRepresentationDescriptionRegistry papyrusRepresentationDescriptionRegistry;
 
+    @Autowired
+    private IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private Map<String, IEditingContext> editingContextCache;
 
     /**
-     * Initializes the test with the provided {@code documentName}, {@code representationName}, and
-     * {@code rootElementEClass}.
+     * Initializes the test with the provided {@code documentName}, {@code representationName}, and {@code rootElementEClass}.
      * <p>
-     * The provided {@documentName}, {@code representationName}, and {@code rootElementEClass} are used by the
-     * {@link #setUp()} method to initialize the test environment.
+     * The provided {@documentName}, {@code representationName}, and {@code rootElementEClass} are used by the {@link #setUp()} method to initialize the test environment.
      *
      * @param documentName
-     *            the name of the document to create
+     *         the name of the document to create
      * @param representationName
-     *            the name of the representation to create
+     *         the name of the representation to create
      * @param rootElementEClass
-     *            the type of the root semantic element to create
-     *
+     *         the type of the root semantic element to create
      * @see #setUp()
      */
     public AbstractPapyrusWebTest(String documentName, String representationName, EClass rootElementEClass) {
@@ -196,9 +196,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * Computes the cartesian product of {@code list1} and {@code list2}.
      *
      * @param list1
-     *            the first list to compute the cartesian product of
+     *         the first list to compute the cartesian product of
      * @param list2
-     *            the second list to compute the cartesian product of
+     *         the second list to compute the cartesian product of
      * @return the cartesian product of {@code list1} and {@code list2}
      */
     protected static Stream<Arguments> cartesianProduct(List<?> list1, List<?> list2) {
@@ -212,16 +212,14 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     }
 
     /**
-     * Initializes the test environment for the provided {@code documentName}, {@code representationName}, and
-     * {@code rootElementEClass}.
+     * Initializes the test environment for the provided {@code documentName}, {@code representationName}, and {@code rootElementEClass}.
      * <p>
-     * This method creates a new project, document, and root semantic element. The representation matching
-     * {@code representationName} is created on the root semantic element. This method also opens the
+     * This method creates a new project, document, and root semantic element. The representation matching {@code representationName} is created on the root semantic element. This method also opens
+     * the
      * <i>subscription</i> for the created diagram, allowing to invoke tools performing graphical operations.
      * </p>
      * <p>
-     * The {@code documentName}, {@code representationName}, and {@code rootElementEClass} are provided in this class'
-     * constructor.
+     * The {@code documentName}, {@code representationName}, and {@code rootElementEClass} are provided in this class' constructor.
      * </p>
      *
      * @see #AbstractPapyrusWebTest(String, String, EClass)
@@ -229,8 +227,8 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     @BeforeEach
     public void setUp() {
         this.setUpWithoutRepresentation();
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId, this.representationName, this.representationName);
-        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.representationId = this.representationCreator.createRepresentation(this.editingContextId, this.rootObjectId, this.representationName, this.representationName);
+        this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
     }
 
     @Override
@@ -249,51 +247,53 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     }
 
     /**
-     * Initializes the test environment and creates an {@code intermediateRootType} element with the given
-     * {@code intermediateRootName} label.
+     * Initializes the test environment and creates an {@code intermediateRootType} element with the given {@code intermediateRootName} label.
      * <p>
      * This method creates an {@code intermediateRootType} element and adds it in the root element of the model.
      * </p>
      * <p>
-     * This method is typically used to test setup test environment of diagrams that can't be created on the root
-     * element of their semantic model.
+     * This method is typically used to test setup test environment of diagrams that can't be created on the root element of their semantic model.
      * </p>
      *
      * @param intermediateRootName
-     *            the label of the intermediate element
+     *         the label of the intermediate element
      * @param intermediateRootType
-     *            the type of the intermediate element to create
+     *         the type of the intermediate element to create
      */
     public void setUpWithIntermediateRoot(String intermediateRootName, EClass intermediateRootType) {
-        this.projectId = this.projectCreator.createProject("Instance", List.of(PapyrusUMLNatures.UML));
+        String projectId = this.projectCreator.createProject("Instance", List.of(PapyrusUMLNatures.UML));
+
+        this.editingContextId = getEditingContext(projectId).getId();
+
         ProjectInitializerInput input = new ProjectInitializerInput(UUID.randomUUID());
-        this.editingContextEventProcessorRegistry.dispatchEvent(this.projectId, input);
+        this.editingContextEventProcessorRegistry.dispatchEvent(this.editingContextId, input);
         this.editingContextCache = input.getEditingContextCache();
         this.registerClasspathURIHandler();
-        this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeProvider.EMPTY_UML);
-        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
+        this.documentId = this.documentCreator.createDocument(this.editingContextId, this.documentName, UMLStereotypeProvider.EMPTY_UML);
+        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.editingContextId.toString());
         EObject intermediateRoot = this.createSemanticElement(this.getRootSemanticElement(), UML.getPackage_PackagedElement(), intermediateRootType, intermediateRootType.getName());
         this.intermediateRootObjectId = this.getObjectService().getId(intermediateRoot);
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.intermediateRootObjectId, this.representationName, this.representationName);
-        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.representationId = this.representationCreator.createRepresentation(this.editingContextId, this.intermediateRootObjectId, this.representationName, this.representationName);
+        this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
         this.applyEditLabelTool(this.getDiagram().getNodes().get(0).getInsideLabel().getId(), intermediateRootName);
     }
 
     /**
      * Initializes the test environment without a representation.
      * <p>
-     * This method is typically used to test diagram creations (see {@link DiagramCreationTest}) where the creation of
-     * the representation is the critical part of the test.
+     * This method is typically used to test diagram creations (see {@link DiagramCreationTest}) where the creation of the representation is the critical part of the test.
      * </p>
      */
     public void setUpWithoutRepresentation() {
-        this.projectId = this.projectCreator.createProject("Instance", List.of(PapyrusUMLNatures.UML));
+        String projectId = this.projectCreator.createProject("Instance", List.of(PapyrusUMLNatures.UML));
+        this.editingContextId = getEditingContext(projectId).getId();
+
         ProjectInitializerInput input = new ProjectInitializerInput(UUID.randomUUID());
-        this.editingContextEventProcessorRegistry.dispatchEvent(this.projectId, input);
+        this.editingContextEventProcessorRegistry.dispatchEvent(this.editingContextId, input);
         this.editingContextCache = input.getEditingContextCache();
         this.registerClasspathURIHandler();
-        this.documentId = this.documentCreator.createDocument(this.projectId, this.documentName, UMLStereotypeProvider.EMPTY_UML);
-        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.projectId.toString());
+        this.documentId = this.documentCreator.createDocument(this.editingContextId, this.documentName, UMLStereotypeProvider.EMPTY_UML);
+        this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, this.rootElementEClass.getName(), this.documentId, this.editingContextId.toString());
     }
 
     /**
@@ -308,60 +308,58 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Creates a {@code representationName} representation on the given {@code semanticElementId}.
      * <p>
-     * The {@code representationName} to create is configured by the {@code representationName} argument of this class'
-     * constructor. This method invokes the {@code createRepresentation} GraphQL mutation to perform the representation
-     * creation.
+     * The {@code representationName} to create is configured by the {@code representationName} argument of this class' constructor. This method invokes the {@code createRepresentation} GraphQL
+     * mutation to perform the representation creation.
      * </p>
      *
      * @param semanticElementId
-     *            the semantic element on which the representation is created
-     *
+     *         the semantic element on which the representation is created
      * @see PapyrusCreateRepresentationMutationRunner
      */
     protected void createRepresentation(String semanticElementId) {
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, semanticElementId, this.representationName, this.representationName);
-        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.representationId = this.representationCreator.createRepresentation(this.editingContextId, semanticElementId, this.representationName, this.representationName);
+        this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
     }
 
     /**
      * Creates a node in {@code parentDiagramElementId}.
      * <p>
-     * This method invokes the {@code invokeSingleClickOnDiagramElementTool} GraphQL mutation to perform the node
-     * creation.
+     * This method invokes the {@code invokeSingleClickOnDiagramElementTool} GraphQL mutation to perform the node creation.
      *
      * @param parentDiagramElementId
-     *            the graphical identifier of the parent element of the node to create
+     *         the graphical identifier of the parent element of the node to create
      * @param nodeCreationTool
-     *            the {@link CreationTool} specifying the tool section and name in the palette
+     *         the {@link CreationTool} specifying the tool section and name in the palette
      * @see CreationTool
      * @see PapyrusInvokeSingleClickOnDiagramElementToolRunner
      */
     protected void applyNodeCreationTool(String parentDiagramElementId, CreationTool nodeCreationTool) {
-        Optional<String> toolId = this.getPaletteQueryRunner.getTool(this.projectId, this.representationId, parentDiagramElementId, nodeCreationTool.getToolSection(), nodeCreationTool.getToolName());
+        Optional<String> toolId = this.getPaletteQueryRunner.getTool(this.editingContextId, this.representationId, parentDiagramElementId, nodeCreationTool.getToolSection(),
+                nodeCreationTool.getToolName());
         assertThat(toolId).as(MessageFormat.format("The tool {0} | {1} doesn't exist", nodeCreationTool.getToolSection(), nodeCreationTool.getToolName())).isPresent();
-        this.invokeToolOnOneElementRunner.invokeTool(this.projectId, this.representationId, parentDiagramElementId, toolId.get());
+        this.invokeToolOnOneElementRunner.invokeTool(this.editingContextId, this.representationId, parentDiagramElementId, toolId.get());
     }
 
     /**
      * Creates an edge between {@code sourceDiagramElementId} and {@code targetDiagramElementId}.
      * <p>
-     * This method invokes the {@code invokeSingleClickOnTwoDiagramElementsTool} GraphQL mutation to perform the edge
-     * creation.
+     * This method invokes the {@code invokeSingleClickOnTwoDiagramElementsTool} GraphQL mutation to perform the edge creation.
      * </p>
      *
      * @param sourceDiagramElementId
-     *            the graphical identifier of the source element of the edge
+     *         the graphical identifier of the source element of the edge
      * @param targetDiagramElementId
-     *            the graphical identifier of the target element of the edge
+     *         the graphical identifier of the target element of the edge
      * @param edgeCreationTool
-     *            the {@link CreationTool} specifying the tool section and name in the palette
+     *         the {@link CreationTool} specifying the tool section and name in the palette
      * @see CreationTool
      * @see PapyrusInvokeSingleClickOnTwoDiagramElementsToolRunner
      */
     protected void applyEdgeCreationTool(String sourceDiagramElementId, String targetDiagramElementId, CreationTool edgeCreationTool) {
-        Optional<String> toolId = this.getPaletteQueryRunner.getTool(this.projectId, this.representationId, sourceDiagramElementId, edgeCreationTool.getToolSection(), edgeCreationTool.getToolName());
+        Optional<String> toolId = this.getPaletteQueryRunner.getTool(this.editingContextId, this.representationId, sourceDiagramElementId, edgeCreationTool.getToolSection(),
+                edgeCreationTool.getToolName());
         assertThat(toolId).isPresent();
-        this.invokeToolOnTwoElementsRunner.invokeTool(this.projectId, this.representationId, sourceDiagramElementId, targetDiagramElementId, toolId.get());
+        this.invokeToolOnTwoElementsRunner.invokeTool(this.editingContextId, this.representationId, sourceDiagramElementId, targetDiagramElementId, toolId.get());
     }
 
     /**
@@ -370,11 +368,11 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * This method invokes the {@code deleteFromDiagram} GraphQL mutation to perform the node deletion.
      *
      * @param diagramElementToDeleteId
-     *            the graphical identifier of the element to delete
+     *         the graphical identifier of the element to delete
      * @see GraphicalDeleteNodeFromDiagramMutationRunner
      */
     protected void applyNodeGraphicalDeletionTool(String diagramElementToDeleteId) {
-        this.deleteFromDiagramMutationRunner.graphicalDeleteNodeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
+        this.deleteFromDiagramMutationRunner.graphicalDeleteNodeFromDiagram(this.editingContextId, this.representationId, diagramElementToDeleteId);
     }
 
     /**
@@ -383,11 +381,11 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * This method invokes the {@code deleteFromDiagram} GraphQL mutation to perform the node deletion.
      *
      * @param diagramElementToDeleteId
-     *            the graphical identifier of the element to delete
+     *         the graphical identifier of the element to delete
      * @see PapyrusDeleteFromDiagramMutationRunner
      */
     protected void applyNodeSemanticDeletionTool(String diagramElementToDeleteId) {
-        this.deleteFromDiagramMutationRunner.semanticDeleteNodeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
+        this.deleteFromDiagramMutationRunner.semanticDeleteNodeFromDiagram(this.editingContextId, this.representationId, diagramElementToDeleteId);
     }
 
     /**
@@ -396,11 +394,11 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * This method invokes the {@code deleteFromDiagram} GraphQL mutation to perform the node deletion.
      *
      * @param diagramElementToDeleteId
-     *            the graphical identifier of the element to delete
+     *         the graphical identifier of the element to delete
      * @see PapyrusDeleteFromDiagramMutationRunner
      */
     protected void applyEdgeSemanticDeletionTool(String diagramElementToDeleteId) {
-        this.deleteFromDiagramMutationRunner.semanticDeleteEdgeFromDiagram(this.projectId, this.representationId, diagramElementToDeleteId);
+        this.deleteFromDiagramMutationRunner.semanticDeleteEdgeFromDiagram(this.editingContextId, this.representationId, diagramElementToDeleteId);
     }
 
     /**
@@ -410,16 +408,15 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param labelId
-     *            the identifier of the label to edit
+     *         the identifier of the label to edit
      * @param newLabel
-     *            the new value to set for the edited label
-     *
+     *         the new value to set for the edited label
      * @see Node#getLabel()
      * @see Edge#getCenterLabel()
      * @see PapyrusEditLabelMutationRunner
      */
     protected void applyEditLabelTool(String labelId, String newLabel) {
-        this.editLabelRunner.editLabel(this.projectId, this.representationId, labelId, newLabel);
+        this.editLabelRunner.editLabel(this.editingContextId, this.representationId, labelId, newLabel);
     }
 
     /**
@@ -429,14 +426,14 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param edgeId
-     *            the graphical identifier of the edge to reconnect the source from
+     *         the graphical identifier of the edge to reconnect the source from
      * @param newSourceElementId
-     *            the graphical identifier of the new source of the edge
+     *         the graphical identifier of the new source of the edge
      * @see #applyReconnectEdgeTargetTool(String, String) to reconnect the target of an edge
      * @see PapyrusReconnectEdgeMutationRunner
      */
     protected void applyReconnectEdgeSourceTool(String edgeId, String newSourceElementId) {
-        this.reconnectEdgeRunner.reconnectEdgeSource(this.projectId, this.representationId, edgeId, newSourceElementId);
+        this.reconnectEdgeRunner.reconnectEdgeSource(this.editingContextId, this.representationId, edgeId, newSourceElementId);
     }
 
     /**
@@ -446,14 +443,14 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param edgeId
-     *            the graphical identifier of the edge to reconnect the target from
+     *         the graphical identifier of the edge to reconnect the target from
      * @param newTargetElementId
-     *            the graphical identifier of the new target of the edge
+     *         the graphical identifier of the new target of the edge
      * @see #applyReconnectEdgeSourceTool(String, String) to reconnect the source of an edge
      * @see PapyrusReconnectEdgeMutationRunner
      */
     protected void applyReconnectEdgeTargetTool(String edgeId, String newTargetElementId) {
-        this.reconnectEdgeRunner.reconnectEdgeTarget(this.projectId, this.representationId, edgeId, newTargetElementId);
+        this.reconnectEdgeRunner.reconnectEdgeTarget(this.editingContextId, this.representationId, edgeId, newTargetElementId);
     }
 
     /**
@@ -463,13 +460,13 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param targetElementId
-     *            the graphical identifier of the target container element
+     *         the graphical identifier of the target container element
      * @param droppedElementIds
-     *            the semantic identifiers of the elements to drop
+     *         the semantic identifiers of the elements to drop
      * @see PapyrusDropOnDiagramMutationRunner
      */
     protected void applyDropOnDiagramTool(String targetElementId, List<String> droppedElementIds) {
-        this.dropOnDiagramRunner.dropOnDiagram(this.projectId, this.representationId, targetElementId, droppedElementIds);
+        this.dropOnDiagramRunner.dropOnDiagram(this.editingContextId, this.representationId, targetElementId, droppedElementIds);
     }
 
     /**
@@ -479,12 +476,12 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param droppedElementId
-     *            the graphical identifier of the element to drop
+     *         the graphical identifier of the element to drop
      * @param targetElementId
-     *            the graphical identifier of the target container element
+     *         the graphical identifier of the target container element
      */
     protected void applyDropNodeTool(String droppedElementId, String targetElementId) {
-        this.dropNodeRunner.dropNode(this.projectId, this.representationId, droppedElementId, targetElementId);
+        this.dropNodeRunner.dropNode(this.editingContextId, this.representationId, droppedElementId, targetElementId);
     }
 
     /**
@@ -494,23 +491,22 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param parentElementId
-     *            the identifier of the semantic parent of the element to create
+     *         the identifier of the semantic parent of the element to create
      * @param containmentReference
-     *            the containment reference of the element to create
+     *         the containment reference of the element to create
      * @param childType
-     *            the type of the element to create
+     *         the type of the element to create
      * @see PapyrusCreateChildMutationRunner
      */
     protected void applyCreateChildTool(String parentElementId, EReference containmentReference, EClass childType) {
-        this.childCreationRunner.createChild(this.projectId, parentElementId, containmentReference, childType);
+        this.childCreationRunner.createChild(this.editingContextId, parentElementId, containmentReference, childType);
     }
 
     /**
      * Returns the current {@link Diagram}.
      * <p>
-     * This method reloads the {@link Diagram} from the backend to ensure that the latest persisted changes are
-     * accessible to callers. Note that this method cannot search for a particular {@link Diagram}, it reloads the
-     * representation built by the {@link #setUp()} method.
+     * This method reloads the {@link Diagram} from the backend to ensure that the latest persisted changes are accessible to callers. Note that this method cannot search for a particular
+     * {@link Diagram}, it reloads the representation built by the {@link #setUp()} method.
      *
      * @return the current {@link Diagram}
      */
@@ -523,15 +519,14 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the current {@link IEditingContext}.
      * <p>
-     * This method reloads the {@link IEditingContext} from the backend to ensure that the latest persisted changes are
-     * accessible to callers.
+     * This method reloads the {@link IEditingContext} from the backend to ensure that the latest persisted changes are accessible to callers.
      * </p>
      *
      * @return the current {@link IEditingContext}
      */
     @Override
     public IEditingContext getEditingContext() {
-        return this.editingContextCache.get(this.projectId.toString());
+        return this.editingContextCache.get(this.editingContextId.toString());
     }
 
     /**
@@ -557,17 +552,14 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the {@link NamedElement} in the semantic model with the provided {@code semanticElementName}.
      * <p>
-     * This method searches for {@link NamedElement} in the semantic model. It cannot find UML elements that aren't
-     * subclasses of {@link NamedElement} (e.g. Comment).
+     * This method searches for {@link NamedElement} in the semantic model. It cannot find UML elements that aren't subclasses of {@link NamedElement} (e.g. Comment).
      * </p>
      * <p>
-     * This method produces a test failure if the semantic model contains multiple element with the provided
-     * {@code semanticElementName}.
+     * This method produces a test failure if the semantic model contains multiple element with the provided {@code semanticElementName}.
      * </p>
      *
-     *
      * @param semanticElementName
-     *            the name of the element to search for
+     *         the name of the element to search for
      * @return the {@link NamedElement} with the provided name
      */
     public NamedElement findSemanticElementByName(String semanticElementName) {
@@ -598,12 +590,11 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the {@link EObject} in the semantic model with the provided {@code semanticId}.
      * <p>
-     * This method produces a test failure if the semantic model doesn't contain an element with the provided
-     * {@code semanticId}.
+     * This method produces a test failure if the semantic model doesn't contain an element with the provided {@code semanticId}.
      * </p>
      *
      * @param semanticId
-     *            the semantic identifier to search for
+     *         the semantic identifier to search for
      * @return the {@link EObject} with the provided {@code semanticId}
      */
     public EObject findSemanticElementById(String semanticId) {
@@ -616,11 +607,10 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the {@link IDiagramElement} in the graphical model with the provided {@code graphicalElementLabel}.
      * <p>
-     * This method produces a test failure if the graphical model contains multiple elements with the provided
-     * {@code graphicalElementLabel}.
+     * This method produces a test failure if the graphical model contains multiple elements with the provided {@code graphicalElementLabel}.
      *
      * @param graphicalElementLabel
-     *            the label of the graphical element to search for
+     *         the label of the graphical element to search for
      * @return the {@link IDiagramElement} with the provided label
      */
     public IDiagramElement findGraphicalElementByLabel(String graphicalElementLabel) {
@@ -642,17 +632,17 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the list of {@link IDiagramElement} contained in {@code node} with the provided {@code label}.
      * <p>
-     * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the
-     * provided {@code node}) is part of the list if its label matches the provided {@code label}.
+     * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the provided {@code node}) is part of the list if its label matches the provided
+     * {@code label}.
      * </p>
      * <p>
      * This method ignores compartment nodes, but look into the compartment children to find matching elements.
      * </p>
      *
      * @param node
-     *            the root of the sub-tree of elements to search into
+     *         the root of the sub-tree of elements to search into
      * @param label
-     *            the label of the graphical element to search for
+     *         the label of the graphical element to search for
      * @return the list of {@link IDiagramElement} contained in {@code node} with the provided {@code label}
      */
     private List<IDiagramElement> findGraphicalElementByLabel(Node node, String label) {
@@ -678,7 +668,7 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param node
-     *            the {@link Node} to retrieve the description from
+     *         the {@link Node} to retrieve the description from
      * @return the description of the {@link Node}
      */
     protected NodeDescription getNodeDescription(Node node) {
@@ -690,17 +680,15 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     }
 
     /**
-     * Returns the sub-node with the given {@code mapping} in the {@link Node} with the provided
-     * {@code parentNodeLabel}.
+     * Returns the sub-node with the given {@code mapping} in the {@link Node} with the provided {@code parentNodeLabel}.
      * <p>
-     * This method checks the {@link NodeDescription} of the children nodes to find the one with the appropriate
-     * mapping.
+     * This method checks the {@link NodeDescription} of the children nodes to find the one with the appropriate mapping.
      * </p>
      *
      * @param parentNodeLabel
-     *            the label of the parent {@link Node} to retrieve the sub-node from
+     *         the label of the parent {@link Node} to retrieve the sub-node from
      * @param mapping
-     *            the mapping of the sub-node to retrieve
+     *         the mapping of the sub-node to retrieve
      * @return the sub-node if it exists, or {@code null} otherwise
      */
     protected Node getSubNode(String parentNodeLabel, String mapping) {
@@ -712,14 +700,13 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the sub-node in the provided {@code parentNode} with the given {@code mapping}.
      * <p>
-     * This method checks the {@link NodeDescription} of the {@code parentNode}'s children to find the one with the
-     * appropriate mapping.
+     * This method checks the {@link NodeDescription} of the {@code parentNode}'s children to find the one with the appropriate mapping.
      * </p>
      *
      * @param parentNode
-     *            the parent node to retrieve the sub-node from
+     *         the parent node to retrieve the sub-node from
      * @param mapping
-     *            the mapping of the sub-node to retrieve
+     *         the mapping of the sub-node to retrieve
      * @return the sub-node if it exists, or {@code null} otherwise
      */
     protected Node getSubNode(Node parentNode, String mapping) {
@@ -735,12 +722,11 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the {@link IDiagramElement} in the graphical model with the provided {@code graphicalId}.
      * <p>
-     * This method produces a test failure if the graphical model doesn't contain an element with the provided
-     * {@code graphicalId}.
+     * This method produces a test failure if the graphical model doesn't contain an element with the provided {@code graphicalId}.
      * </p>
      *
      * @param graphicalId
-     *            the graphical identifier to search for
+     *         the graphical identifier to search for
      * @return the {@link IDiagramElement} with the provided graphical {@code graphicalId}
      */
     public IDiagramElement findGraphicalElementById(String graphicalId) {
@@ -761,14 +747,14 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the list of {@link IDiagramElement} contained in {@code node} with the provided {@code graphicalId}.
      * <p>
-     * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the
-     * provided {@code node}) is part of the list if its id matches the provided {@code graphicalId}.
+     * This method searches in all the sub-tree of elements below {@code node}. Note that the root of the sub-tree (the provided {@code node}) is part of the list if its id matches the provided
+     * {@code graphicalId}.
      * </p>
      *
      * @param node
-     *            the root of the sub-tree of elements to search into
+     *         the root of the sub-tree of elements to search into
      * @param graphicalId
-     *            the graphical identifier to search for
+     *         the graphical identifier to search for
      * @return the list of {@link IDiagramElement} contained in {@code node} with the provided {@code graphicalId}
      */
     private List<IDiagramElement> findGraphicalElementById(Node node, String graphicalId) {
@@ -788,8 +774,7 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Returns the root semantic element of the current {@link IEditingContext}.
      * <p>
-     * This method reloads the {@link IEditingContext} to ensure that the latest version of the semantic model is
-     * processed.
+     * This method reloads the {@link IEditingContext} to ensure that the latest version of the semantic model is processed.
      * </p>
      *
      * @return the root semantic element of the current {@link IEditingContext}
@@ -806,16 +791,15 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Creates a source and target node with the provided {@code creationTool} in the diagram.
      * <p>
-     * This method creates two nodes and sets their label with {@code elementType + "Source"} for the source one, and
-     * {@code elementType + "Target"} for the target one, where {@code elementType} is the type of the created element.
+     * This method creates two nodes and sets their label with {@code elementType + "Source"} for the source one, and {@code elementType + "Target"} for the target one, where {@code elementType} is
+     * the type of the created element.
      * </p>
      * <p>
      * This method is typically used in edge-based tests to initialize the diagram with source and target nodes.
      * </p>
      *
      * @param creationTool
-     *            the tool to use to create the source and target nodes
-     *
+     *         the tool to use to create the source and target nodes
      * @see #createSourceAndTargetNodes(String, CreationTool) to create a source and target node in a given parent
      */
     protected void createSourceAndTargetTopNodes(CreationTool creationTool) {
@@ -825,18 +809,17 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Creates a source and target node with the provided {@code creationTool} in the provided {@code parentElementId}.
      * <p>
-     * This method creates two nodes and sets their label with {@code elementType + "Source"} for the source one, and
-     * {@code elementType + "Target"} for the target one, where {@code elementType} is the type of the created element.
+     * This method creates two nodes and sets their label with {@code elementType + "Source"} for the source one, and {@code elementType + "Target"} for the target one, where {@code elementType} is
+     * the type of the created element.
      * </p>
      * <p>
      * This method is typically used in edge-based tests to initialize the diagram with source and target nodes.
      * </p>
      *
      * @param parentElementId
-     *            the identifier of the graphical parent to create the nodes into
+     *         the identifier of the graphical parent to create the nodes into
      * @param creationTool
-     *            the tool to use to create the source and target nodes
-     *
+     *         the tool to use to create the source and target nodes
      * @see #createSourceAndTargetTopNodes(CreationTool) to create a source and target node in the diagram
      */
     protected void createSourceAndTargetNodes(String parentElementId, CreationTool creationTool) {
@@ -848,14 +831,13 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Creates a node with the provided {@code creationTool} in the given {@code parentElementId}.
      * <p>
-     * This method doesn't set the label of the created element, which will have its default label. See
-     * {@link #createNodeWithLabel(String, CreationTool, String)} to create a node and set its label.
+     * This method doesn't set the label of the created element, which will have its default label. See {@link #createNodeWithLabel(String, CreationTool, String)} to create a node and set its label.
      * </p>
      *
      * @param parentElementId
-     *            the identifier of the graphical parent to create the node into
+     *         the identifier of the graphical parent to create the node into
      * @param creationTool
-     *            the tool to use to create the node
+     *         the tool to use to create the node
      * @return the created node
      */
     protected Node createNode(String parentElementId, CreationTool creationTool) {
@@ -866,17 +848,16 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Creates a node with the provided {@code creationTool} in the given {@code parentElementId}.
      * <p>
-     * The label of the created node is set to {@code label}. This method assumes that the diagram doesn't already
-     * contain an element named {@code elementType + "1"} (the default name for elements), where {@code elementType} is
-     * the type of the created element. This method produces a test failure if such element exists.
+     * The label of the created node is set to {@code label}. This method assumes that the diagram doesn't already contain an element named {@code elementType + "1"} (the default name for elements),
+     * where {@code elementType} is the type of the created element. This method produces a test failure if such element exists.
      * </p>
      *
      * @param parentElementId
-     *            the identifier of the graphical parent to create the node into
+     *         the identifier of the graphical parent to create the node into
      * @param creationTool
-     *            the tool to use to create the node
+     *         the tool to use to create the node
      * @param label
-     *            the label to set in the created node
+     *         the label to set in the created node
      * @return the created node
      */
     protected Node createNodeWithLabel(String parentElementId, CreationTool creationTool, String label) {
@@ -896,13 +877,12 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     /**
      * Creates an edge with the provided {@code edgeCreationTool} between {@code sourceLabel} and {@code targetLabel}.
      *
-     *
      * @param sourceLabel
-     *            the label of the source graphical element
+     *         the label of the source graphical element
      * @param targetLabel
-     *            the label of the target graphical element
+     *         the label of the target graphical element
      * @param edgeCreationTool
-     *            the creation tool to use to create the edge
+     *         the creation tool to use to create the edge
      * @return the created edge
      */
     protected String createEdge(String sourceLabel, String targetLabel, CreationTool edgeCreationTool) {
@@ -915,11 +895,9 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
     }
 
     /**
-     * Creates a semantic element of the given {@code type} in the given {@code parentElement}, with the given
-     * {@code name}.
+     * Creates a semantic element of the given {@code type} in the given {@code parentElement}, with the given {@code name}.
      * <p>
-     * This method operates at the semantic level. It doesn't create a graphical element. The created element is
-     * contained in {@code parentElement} through the {@code containmentReference} reference.
+     * This method operates at the semantic level. It doesn't create a graphical element. The created element is contained in {@code parentElement} through the {@code containmentReference} reference.
      * </p>
      * <p>
      * <b>Note:</b> this method doesn't set the name of the element if {@code type} isn't a sub-type of
@@ -930,13 +908,13 @@ public abstract class AbstractPapyrusWebTest extends AbstractWebUMLTest {
      * </p>
      *
      * @param parentElement
-     *            the semantic element containing the created element
+     *         the semantic element containing the created element
      * @param containmentReference
-     *            the reference containing the created element
+     *         the reference containing the created element
      * @param type
-     *            the type of the created element
+     *         the type of the created element
      * @param name
-     *            the name of the created element
+     *         the name of the created element
      * @return the created element
      */
     protected EObject createSemanticElement(EObject parentElement, EReference containmentReference, EClass type, String name) {

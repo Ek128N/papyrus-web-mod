@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -48,8 +48,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests for the Primitive List custom widget. Depends on
- * {@link PrimitiveListViewRepresentationDescriptionProvider} to register the "Primitive Widget Test" form description.
+ * Integration tests for the Primitive List custom widget. Depends on {@link PrimitiveListViewRepresentationDescriptionProvider} to register the "Primitive Widget Test" form description.
  *
  * @author Arthur Daussy
  */
@@ -79,7 +78,7 @@ public class PrimitiveListWidgetIntegrationTests extends AbstractWebUMLTest {
     @Autowired
     private IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    private String projectId;
+    private String editingContextId;
 
     private String rootObjectId;
 
@@ -89,11 +88,12 @@ public class PrimitiveListWidgetIntegrationTests extends AbstractWebUMLTest {
 
     @BeforeEach
     public void setup() {
-        this.projectId = this.projectCreator.createProject("Instance", List.of(PapyrusUMLNatures.UML));
-        this.documentId = this.documentCreator.createDocument(this.projectId, "test.uml", UMLStereotypeProvider.EMPTY_UML);
+        String projectId = this.projectCreator.createProject("Instance", List.of(PapyrusUMLNatures.UML));
+        this.editingContextId = getEditingContext(projectId).getId();
+        this.documentId = this.documentCreator.createDocument(this.editingContextId, "test.uml", UMLStereotypeProvider.EMPTY_UML);
         this.rootObjectId = this.rootElementCreator.createRootObject(UMLPackage.eNS_URI, "Model", this.documentId,
-                this.projectId.toString());
-        this.representationId = this.representationCreator.createRepresentation(this.projectId, this.rootObjectId,
+                this.editingContextId.toString());
+        this.representationId = this.representationCreator.createRepresentation(this.editingContextId, this.rootObjectId,
                 "PrimitiveListe.view", "Form");
     }
 
@@ -106,9 +106,9 @@ public class PrimitiveListWidgetIntegrationTests extends AbstractWebUMLTest {
     @Test
     @DisplayName("Can instanciate a View-based FormDescription which uses the Primitive List custom widget")
     public void simpleFormWithPrimitiveList() {
-        var input = new FormEventInput(UUID.randomUUID(), this.projectId, this.representationId);
+        var input = new FormEventInput(UUID.randomUUID(), this.editingContextId, this.representationId);
 
-        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.projectId, this.representationId.toString(), input);
+        var payloadFlux = this.eventProcessorSubscriptionProvider.getSubscription(this.editingContextId, this.representationId.toString(), input);
         Predicate<IPayload> isFormWithPrimitiveListRefreshedEventPayload = payload -> {
             if (payload instanceof FormRefreshedEventPayload formRefreshedEventPayload) {
                 return this.checkEvent(formRefreshedEventPayload);

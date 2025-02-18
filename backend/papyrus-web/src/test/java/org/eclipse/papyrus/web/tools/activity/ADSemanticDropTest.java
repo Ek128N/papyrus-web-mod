@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST, Obeo.
+ * Copyright (c) 2024, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -49,8 +49,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Tests semantic drop tools in the Activity Diagram.
  * <p>
- * This class doesn't test the semantic drag & drop of {@link Pin} elements since these elements are synchronized, and
- * will always be displayed on the diagram if their container is visible.
+ * This class doesn't test the semantic drag & drop of {@link Pin} elements since these elements are synchronized, and will always be displayed on the diagram if their container is visible.
  * </p>
  *
  * @author <a href="mailto:gwendal.daniel@obeosoft.com">Gwendal Daniel</a>
@@ -529,23 +528,21 @@ public class ADSemanticDropTest extends SemanticDropTest {
     }
 
     /**
-     * Creates a semantic element of the given {@code type} in the given {@code parentElement}, and adds it to the
-     * provided {@code activityGroup}.
+     * Creates a semantic element of the given {@code type} in the given {@code parentElement}, and adds it to the provided {@code activityGroup}.
      * <p>
-     * This method is similar to {@link #createSemanticElement(EObject, EReference, EClass, String)}, but it also adds
-     * the created element to the provided {@code activityGroup}.
+     * This method is similar to {@link #createSemanticElement(EObject, EReference, EClass, String)}, but it also adds the created element to the provided {@code activityGroup}.
      * </p>
      *
      * @param parentElement
-     *            the semantic element containing the created element
+     *         the semantic element containing the created element
      * @param containmentReference
-     *            the reference containing the created element
+     *         the reference containing the created element
      * @param type
-     *            the type of the created element
+     *         the type of the created element
      * @param name
-     *            the name of the created element
+     *         the name of the created element
      * @param activityGroup
-     *            the activity group to set for the created element
+     *         the activity group to set for the created element
      * @return the created element
      */
     protected EObject createSemanticElementInActivityGroup(EObject parentElement, EReference containmentReference, EClass type, String name, ActivityGroup activityGroup) {
@@ -564,7 +561,7 @@ public class ADSemanticDropTest extends SemanticDropTest {
             }
             this.persistenceService.persist(new ICause.NoOp(), editingContext);
             this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
-            this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+            this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
 
         } else {
             fail(MessageFormat.format("Cannot create a {0} in ActivityPartition", type.getName()));
@@ -575,9 +572,8 @@ public class ADSemanticDropTest extends SemanticDropTest {
     /**
      * {@inheritDoc}
      * <p>
-     * This method also handles the creation of {@link ExpansionNode} inside {@link ExpansionRegion}: the created
-     * {@link ExpansionNode#setRegionAsInput(ExpansionRegion)} is set with the {@link ExpansionRegion} to enable its
-     * semantic drag & drop.
+     * This method also handles the creation of {@link ExpansionNode} inside {@link ExpansionRegion}: the created {@link ExpansionNode#setRegionAsInput(ExpansionRegion)} is set with the
+     * {@link ExpansionRegion} to enable its semantic drag & drop.
      * </p>
      */
     @Override
@@ -598,7 +594,7 @@ public class ADSemanticDropTest extends SemanticDropTest {
             this.persistenceService.persist(new ICause.NoOp(), editingContext);
             if (createdObject instanceof ExpansionNode && parentElement instanceof ExpansionRegion) {
                 this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
-                this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+                this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
             }
         }
         return createdObject;

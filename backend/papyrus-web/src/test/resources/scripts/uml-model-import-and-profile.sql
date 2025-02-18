@@ -15,9 +15,12 @@ INSERT INTO nature (
 		'c87b6af4-7f3b-4802-9497-94bc5219d5f6',
 		'papyrusweb://nature?kind=uml'
 		);
-		
-INSERT INTO semantic_data (id,project_id,created_on,last_modified_on) VALUES
-	 ('cbf34577-d7fb-4d12-a096-27d0d1f9164e','c87b6af4-7f3b-4802-9497-94bc5219d5f6','2024-10-03 15:49:21.789378+02','2024-10-03 15:50:47.926621+02');
+
+INSERT INTO semantic_data (id,created_on,last_modified_on) VALUES
+	 ('cbf34577-d7fb-4d12-a096-27d0d1f9164e','2024-10-03 15:49:21.789378+02','2024-10-03 15:50:47.926621+02');
+
+INSERT INTO project_semantic_data (id,project_id,semantic_data_id,name,created_on,last_modified_on) VALUES
+	 ('e74318a6-a0be-4366-95da-6d2a41850a7f','c87b6af4-7f3b-4802-9497-94bc5219d5f6','cbf34577-d7fb-4d12-a096-27d0d1f9164e','main','2024-10-03 15:49:21.789378+02','2024-10-03 15:50:47.926621+02');
 
 
 INSERT INTO semantic_data_domain (semantic_data_id,uri) VALUES

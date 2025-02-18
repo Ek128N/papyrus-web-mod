@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo.
+ * Copyright (c) 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -186,7 +186,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         // This implies to re-create the event subscription runner, which has been deleted when disposing the editing
         // context event processor.
         this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
-        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
 
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, null, PRDMappingTypes.PRD_METACLASS, this.getCapturedNodes());
         this.semanticDropOnDiagram(this.getObjectService().getId(elementToDrop), graphicalChecker);
@@ -253,7 +253,7 @@ public class PRDSemanticDropTest extends SemanticDropTest {
         // This implies to re-create the event subscription runner, which has been deleted when disposing the editing
         // context event processor.
         this.editingContextEventProcessorRegistry.disposeEditingContextEventProcessor(editingContext.getId());
-        this.diagramEventSubscriptionRunner.createSubscription(this.projectId, this.representationId);
+        this.diagramEventSubscriptionRunner.createSubscription(this.editingContextId, this.representationId);
 
         NodeCreationGraphicalChecker graphicalChecker = new NodeCreationGraphicalChecker(this::getDiagram, () -> this.findGraphicalElementByLabel(PROFILE_CONTAINER),
                 PRDMappingTypes.PRD_METACLASS_SHARED, this.getCapturedNodes());

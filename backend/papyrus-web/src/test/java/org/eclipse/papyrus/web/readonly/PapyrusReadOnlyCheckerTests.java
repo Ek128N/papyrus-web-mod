@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -74,7 +74,7 @@ public class PapyrusReadOnlyCheckerTests extends AbstractIntegrationTest {
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void checkReadOnlyService() {
 
-        Optional<IEditingContext> editingContext = this.editingContextSearchService.findById(SimpleUMLProjectIdentifiers.UML_DEFAULT_PROJECT.toString());
+        Optional<IEditingContext> editingContext = this.editingContextSearchService.findById(SimpleUMLProjectIdentifiers.UML_DEFAULT_EDITING_CONTEXT_ID.toString());
         assertTrue(editingContext.isPresent());
         assertTrue(editingContext.get() instanceof EditingContext);
 
