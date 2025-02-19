@@ -524,12 +524,12 @@ public class ViewHelper implements IViewHelper {
             } else {
                 byDefault = candidates.get(0);
             }
-            if (candidates.size() > 1) {
+            if (candidates.size() > 1 && perfectCandidate.isEmpty()) {
                 LOGGER.info(
-                        MessageFormat.format("More than one candidate for children of type {0} on {1}. By default use the more specific type {2}", eClass.getName(), parentName, byDefault.getName()));
+                        MessageFormat.format("More than one candidate for children of type {0} on {1}. By default use the first one {2}", eClass.getName(), parentName,
+                                byDefault.getName()));
             }
             return byDefault;
-
         }
     }
 
