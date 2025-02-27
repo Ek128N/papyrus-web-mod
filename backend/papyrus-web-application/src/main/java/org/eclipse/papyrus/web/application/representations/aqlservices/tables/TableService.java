@@ -429,7 +429,7 @@ public class TableService {
     }
 
     private boolean belongsTo(EStructuralFeature columnFeature, Element element) {
-        boolean belongs = Objects.equals(columnFeature.getEContainingClass(), element.eClass());
+        boolean belongs = element.eClass().getEAllStructuralFeatures().contains(columnFeature);
         if (!belongs && element instanceof Type type) {
             belongs = this.getStereotypeClasses(type).contains(columnFeature.getEContainingClass());
         }
@@ -455,7 +455,7 @@ public class TableService {
     private EObject getStereotypeApplicationAppliedOn(Element self, EStructuralFeature columnFeature) {
         EClass stereotypeApplicationEClass = columnFeature.getEContainingClass();
         return self.getStereotypeApplications().stream()
-                .filter(eObject -> Objects.equals(eObject.eClass(), stereotypeApplicationEClass))
+                .filter(eObject -> Objects.equals(eObject.eClass(), stereotypeApplicationEClass) || eObject.eClass().getEAllSuperTypes().contains(stereotypeApplicationEClass))
                 .findFirst()
                 .orElse(null);
     }
