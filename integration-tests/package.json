@@ -1,6 +1,6 @@
 {
   "name": "papyrus-web-integration-tests",
-  "version": "2024.10.0",
+  "version": "2025.1.7-SNAPSHOT",
   "license": "EPL-2.0",
   "private": true,
   "devDependencies": {

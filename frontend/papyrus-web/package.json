@@ -1,7 +1,7 @@
 {
   "name": "@eclipse-sirius/papyrus-web",
   "author": "Eclipse Sirius",
-  "version": "2024.10.0",
+  "version": "2025.1.7-SNAPSHOT",
   "license": "EPL-2.0",
   "repository": {
     "type": "git",
