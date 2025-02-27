@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesStereotypeApplicationServices;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -396,12 +397,53 @@ public class TableService {
      * @return the textual value of the given structural feature or "N/A" if this feature is not available on the given element.
      */
     public Object getStereotypeCellValue(Element self, EStructuralFeature columnFeature) {
-        EObject stereotypeApplication = this.getStereotypeApplicationAppliedOn(self, columnFeature);
-        if (stereotypeApplication != null) {
-            return this.stereotypeApplicationServices.getStereotypeFeatureValue(stereotypeApplication, columnFeature);
-        } else {
-            return "N/A";
+        String result = "N/A";
+        if (this.belongsTo(columnFeature, self)) {
+            EObject stereotypeApplication = this.getStereotypeApplicationAppliedOn(self, columnFeature);
+            if (stereotypeApplication != null) {
+                Object value = this.getStereotypeFeatureContent(stereotypeApplication, columnFeature);
+                if (value instanceof List<?> list) {
+                    result = "[" + String.join(", ", list.stream()
+                            .map(this::getLabel)
+                            .toList()) + "]";
+                } else {
+                    result = this.getLabel(value);
+                }
+            }
         }
+        return result;
+    }
+
+    private Object getStereotypeFeatureContent(EObject stereotypeApplication, EStructuralFeature columnFeature) {
+        Object value = this.stereotypeApplicationServices.getStereotypeFeatureValue(stereotypeApplication, columnFeature);
+        if (columnFeature.isMany() && value instanceof List<?> list) {
+            if (list.stream().anyMatch(DynamicEObjectImpl.class::isInstance) && columnFeature instanceof EReference reference) {
+                value = this.stereotypeApplicationServices.getStereotypeFeatureBaseElementValue(stereotypeApplication, reference);
+            }
+        } else {
+            if (value instanceof DynamicEObjectImpl && columnFeature instanceof EReference reference) {
+                value = this.stereotypeApplicationServices.getStereotypeFeatureBaseElementValue(stereotypeApplication, reference);
+            }
+        }
+        return value;
+    }
+
+    private boolean belongsTo(EStructuralFeature columnFeature, Element element) {
+        boolean belongs = Objects.equals(columnFeature.getEContainingClass(), element.eClass());
+        if (!belongs && element instanceof Type type) {
+            belongs = this.getStereotypeClasses(type).contains(columnFeature.getEContainingClass());
+        }
+        return belongs;
+    }
+
+    private String getLabel(Object value) {
+        String result = "";
+        if (value instanceof EObject) {
+            result = this.objectService.getLabel(value);
+        } else if (value != null) {
+            result = value.toString();
+        }
+        return result;
     }
 
     /**
