@@ -40,7 +40,7 @@ From the root folder of the project (`papyrus`) run the following commands:
 
  1. `mkdir -p backend/papyrus-web-frontend/src/main/resources/static`
  2. `cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resources/static`
- 3. `mvn -U -B clean verify -f backend/pom.xml`
+ 3. `mvn -U -B clean verify -f backend/pom.xml` (others commands allows to run more tests or to ignore the tests). See **Maven tests** chapters for more details
 
 ==== Step 2 Prepare and run the Docker image
 
@@ -61,5 +61,11 @@ From the integration tests folder (`papyrus-web/integration-tests`) run the fina
 Cypress is running tests on `8080` port to reach papyrus-web server.
 
 
+=== Maven tests
+The previous chapters indicate how to build Papyrus-Web given you a maven command. Here we propose you 2 others versions of this command, to execute more tests or to ignore them
+From the root folder of the project (`papyrus`) run the following commands:
+ - `mvn -U -B clean verify -f backend/pom.xml` : launch some quick tests (this is the command indicated previously)
+ - `mvn -U -B clean verify -DskipTests -f backend/pom.xml` : allow to skip all the tests execution
+ - `mvn -U -B clean verify -DallTests -f backend/pom.xml` : launch all tests (this build takes around 7 hours)
 
 

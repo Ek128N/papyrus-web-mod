@@ -167,7 +167,16 @@ cp -R frontend/papyrus-web/dist/* backend/papyrus-web-frontend/src/main/resource
 ----
 mvn clean verify
 ----
+or to ignore the basic tests: 
+----
+mvn clean verify -DskipTests
+----
+or to launch all tests (take around 7 hours):
+----
+mvn clean verify -DallTests
+----
 +
+
 The result is a ready-to-run, Spring Boot "fat JAR" in backend/papyrus-web/target/papyrus-web-<VERSION>.jar. Refer to the instructions in the "Quick Start" section above to launch it.
 
 [Dev-env]
