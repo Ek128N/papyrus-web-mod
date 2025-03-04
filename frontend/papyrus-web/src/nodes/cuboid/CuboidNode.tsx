@@ -108,13 +108,13 @@ export const CuboidNode = memo(({ data, id, selected, dragging }: NodeProps<Node
           handleStyle={{ ...resizeHandleStyle(theme) }}
           lineStyle={{ ...resizeLineStyle(theme) }}
           color={theme.palette.selected}
-          isVisible={selected}
+          isVisible={!!selected}
           keepAspectRatio={data.nodeDescription?.keepAspectRatio}
         />
       ) : null}
       <div
         style={{
-          ...cuboidNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+          ...cuboidNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
           ...connectionFeedbackStyle,
           ...dropFeedbackStyle,
         }}
@@ -139,14 +139,14 @@ export const CuboidNode = memo(({ data, id, selected, dragging }: NodeProps<Node
             {/* Children */}
           </div>
         </div>
-        {selected ? (
+        {!!selected ? (
           <DiagramElementPalette
             diagramElementId={id}
             targetObjectId={data.targetObjectId}
             labelId={data.insideLabel ? data.insideLabel.id : null}
           />
         ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+        {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <svg viewBox={`0 0 ${node.width} ${node.height}`}>
