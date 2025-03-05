@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2023 CEA LIST, Obeo.
+ * Copyright (c) 2022, 2023, 2025 CEA LIST, Obeo.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -10,6 +10,7 @@
  *
  * Contributors:
  *  Obeo - Initial API and implementation
+ *  Dilan EESHVARAN (CEA LIST) dilan.eeshvaran@cea.fr - https://gitlab.eclipse.org/eclipse/papyrus/org.eclipse.papyrus-web/-/issues/125
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.templates.projects;
 
@@ -97,17 +98,16 @@ public class UMLProjectTemplateInitializer implements IProjectTemplateInitialize
     private Optional<RepresentationMetadata> initializeUMLWithPrimitivesProjectContents(IEditingContext editingContext, ICause cause) {
         try {
             Optional<Resource> resource = this.initializerHelper.initializeResourceFromClasspathFile(editingContext, UML_MODEL_TITLE, "DefaultUMLWithPrimitive.uml", cause);
-            var optionalDiagram = resource.flatMap(r -> this.createPackageDiagram(editingContext, r, cause));
-            if (optionalDiagram.isPresent()) {
-                var diagram = optionalDiagram.get();
-                Object semanticTarget = resource.map(r -> r.getContents().get(0)).orElse(null);
-                var optionalRepresentationMetadata = this.createRepresentationMetadata(editingContext, diagram, semanticTarget);
-                optionalRepresentationMetadata.ifPresent(rm -> {
-                    this.representationMetadataPersistenceService.save(cause, editingContext, rm, diagram.getTargetObjectId());
-                    this.representationPersistenceService.save(cause, editingContext, diagram);
-                });
-                return optionalRepresentationMetadata;
-            }
+            // var optionalDiagram = resource.flatMap(r -> this.createPackageDiagram(editingContext, r, cause));
+            /*
+             * if (optionalDiagram.isPresent()) { var diagram = optionalDiagram.get(); Object semanticTarget =
+             * resource.map(r -> r.getContents().get(0)).orElse(null); var optionalRepresentationMetadata =
+             * this.createRepresentationMetadata(editingContext, diagram, semanticTarget);
+             * optionalRepresentationMetadata.ifPresent(rm -> {
+             * this.representationMetadataPersistenceService.save(cause, editingContext, rm,
+             * diagram.getTargetObjectId()); this.representationPersistenceService.save(cause, editingContext, diagram);
+             * }); return optionalRepresentationMetadata; }
+             */
         } catch (IOException e) {
             this.logger.error("Error while creating template", e);
         }
