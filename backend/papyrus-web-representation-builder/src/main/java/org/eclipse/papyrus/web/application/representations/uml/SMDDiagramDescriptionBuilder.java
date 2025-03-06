@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2022, 2024 CEA LIST, Obeo, Artal Technologies.
+ * Copyright (c) 2022, 2024, 2025 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 199, Issue 190
+ *  Dilan EESHVARAN (CEA LIST) - Issue 232
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.uml;
 
@@ -70,16 +71,21 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
      */
     private NodeDescription smSharedDescription;
 
+    private NodeDescription stateSharedDescription;
+
     public SMDDiagramDescriptionBuilder() {
-        super(SMD_PREFIX, SMD_REP_NAME, UMLPackage.eINSTANCE.getStateMachine());
+        super(SMD_PREFIX, SMD_REP_NAME, UMLPackage.eINSTANCE.getNamedElement());
     }
 
     @Override
     protected void fillDescription(DiagramDescription diagramDescription) {
 
+        diagramDescription.setPreconditionExpression(CallQuery.queryServiceOnSelf(StateMachineDiagramServices.CAN_CREATE_DIAGRAM));
+
         this.createDefaultToolSectionInDiagramDescription(diagramDescription);
 
         this.smSharedDescription = this.createSharedDescription(diagramDescription);
+        this.stateSharedDescription = this.createStateDescription(diagramDescription);
 
         NodeDescription stateMachineNodeDescription = this.createStateMachineNodeDescription(diagramDescription);
         this.createTransitionEdgeDescription(diagramDescription);
@@ -138,6 +144,34 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
             smGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
         });
         return smdStateMachineNodeDesc;
+    }
+
+    private NodeDescription createStateDescription(DiagramDescription diagramDescription) {
+        RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
+        rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
+        ListLayoutStrategyDescription listLayoutStrategyDescription = DiagramFactory.eINSTANCE.createListLayoutStrategyDescription();
+
+        NodeDescription stateSharedNodeDesc = this.newNodeBuilder(this.umlPackage.getState(), rectangularNodeStyle)//
+                .layoutStrategyDescription(listLayoutStrategyDescription)//
+                .semanticCandidateExpression(this.getQueryBuilder().querySelf())//
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)//
+                .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getState().getName()))//
+                .insideLabelDescription(this.getQueryBuilder().queryRenderLabel(), this.getViewBuilder().createDefaultInsideLabelStyle(false, true))
+                .build();
+
+        diagramDescription.getNodeDescriptions().add(stateSharedNodeDesc);
+
+        // Workaround to handle delete tool
+        stateSharedNodeDesc.getPalette().setDeleteTool(DiagramFactory.eINSTANCE.createDeleteTool());
+
+        DropNodeTool stateGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(stateSharedNodeDesc));
+        List<EClass> children = List.of(this.umlPackage.getRegion(), this.umlPackage.getPseudostate());
+        this.registerCallback(stateSharedNodeDesc, () -> {
+            List<NodeDescription> droppedNodeDescriptions = this.collectNodesWithDomainAndFilter(diagramDescription, children, List.of());
+            stateGraphicalDropTool.getAcceptedNodeTypes().addAll(droppedNodeDescriptions);
+        });
+
+        return stateSharedNodeDesc;
     }
 
     private NodeDescription createRegionSharedNodeDescription(DiagramDescription diagramDescription) {

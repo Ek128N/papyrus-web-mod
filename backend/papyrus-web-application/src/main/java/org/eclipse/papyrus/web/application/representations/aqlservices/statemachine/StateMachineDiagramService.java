@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2023, 2024 CEA LIST, Obeo, Artal Technologies.
+ * Copyright (c) 2023, 2024, 2025 CEA LIST, Obeo, Artal Technologies.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
@@ -11,6 +11,7 @@
  * Contributors:
  *  Obeo - Initial API and implementation
  *  Aurelien Didier (Artal Technologies) - Issue 190
+ *  Dilan EESHVARAN (CEA LIST) dilan.eeshvaran@cea.fr
  *****************************************************************************/
 package org.eclipse.papyrus.web.application.representations.aqlservices.statemachine;
 
@@ -34,9 +35,13 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.uml2.uml.BehavioredClassifier;
+import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
+import org.eclipse.uml2.uml.State;
 import org.springframework.stereotype.Service;
 
 /**
@@ -147,5 +152,21 @@ public class StateMachineDiagramService extends AbstractDiagramService {
         self.setName(null);
         self.setName(new ElementDefaultNameProvider().getDefaultName(self, self.eContainer()));
         return self;
+    }
+
+    /**
+     * Checks if an StateMachine diagram can be created from the given {@code context}.
+     *
+     * @param context
+     *            the target element used to create the StateMachine description
+     * @return {@code true} if the StateMachine diagram can be created, {@code false} otherwise
+     */
+    public boolean canCreateDiagramSMD(EObject context) {
+        boolean isValidType = context instanceof Package
+                || context instanceof BehavioredClassifier
+                || context instanceof State
+                || context instanceof Interface;
+
+        return !this.isContainedInProfileResource(context) && isValidType;
     }
 }
