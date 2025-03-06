@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.2333332 4.2333333"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="property-no-type.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="33.058631"
+     inkscape:cx="15.608632"
+     inkscape:cy="17.090847"
+     inkscape:window-width="3200"
+     inkscape:window-height="1711"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       d="m 4.0063514,2.535278 q 0,0.3457366 -0.2790884,0.5068025 -0.2096635,0.1194115 -0.227714,0.241599 -0.00417,0.031935 -0.00694,0.063871 -0.00971,0.029158 -0.049987,0.029158 -0.1402386,0 -0.2013326,0.016661 -0.0125,0.00417 -0.019438,0.00417 -0.049987,0 -0.049987,-0.136073 0,-0.118023 0.136073,-0.291585 0.1374615,-0.174951 0.1374615,-0.2929735 0,-0.1791165 -0.1902245,-0.1791165 -0.1207988,0 -0.313801,0.094418 -0.059705,0 -0.059705,-0.3540677 0,-0.038878 0.00417,-0.058317 0.019438,-0.093029 0.2318795,-0.1444039 0.1541235,-0.03749 0.297139,-0.03749 0.2513185,0 0.41655,0.1402385 0.1749508,0.1485698 0.1749508,0.3971113 z M 3.630068,3.729388 q 0,0.1069146 -0.074979,0.1846705 -0.073591,0.077756 -0.1805049,0.077756 -0.1069146,0 -0.1818935,-0.077756 -0.073591,-0.077756 -0.073591,-0.1846705 0,-0.1069145 0.073591,-0.1818935 0.074979,-0.076368 0.1818935,-0.076368 0.1069145,0 0.1805049,0.076368 0.074979,0.074979 0.074979,0.1818935 z"
+       id="text1"
+       style="font-size:7.05556px;line-height:1.25;font-family:'Berlin Sans FB Demi';-inkscape-font-specification:'Berlin Sans FB Demi';fill:#ff8a00;fill-opacity:1;stroke-width:0.106637"
+       aria-label="?" />
+  </g>
+</svg>

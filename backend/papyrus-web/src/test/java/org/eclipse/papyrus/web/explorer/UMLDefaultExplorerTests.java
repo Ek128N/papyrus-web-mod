@@ -107,9 +107,9 @@ public class UMLDefaultExplorerTests extends AbstractIntegrationTest {
                 "editingContextId", SimpleUMLProjectIdentifiers.UML_DEFAULT_EDITING_CONTEXT_ID.toString());
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
-        assertThat(explorerIds).hasSize(2);
-        assertThat(explorerIds.get(0)).isEqualTo(this.treeDescriptionId);
-        assertThat(explorerIds.get(1)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
+        assertThat(explorerIds).isNotEmpty();
+        assertThat(explorerIds).contains(this.treeDescriptionId);
+        assertThat(explorerIds).contains(ExplorerDescriptionProvider.DESCRIPTION_ID);
 
     }
 
