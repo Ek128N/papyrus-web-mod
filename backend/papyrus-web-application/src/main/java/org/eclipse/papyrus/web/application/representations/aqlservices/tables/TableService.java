@@ -30,18 +30,22 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.uml.domain.services.properties.ILogger;
 import org.eclipse.papyrus.uml.domain.services.properties.PropertiesStereotypeApplicationServices;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.papyrus.web.application.tables.comment.UMLCommentTableRepresentationDescriptionBuilder;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.eclipse.sirius.components.tables.descriptions.PaginatedData;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -53,6 +57,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TableService {
+
+    public static final String VIRTUAL_ROW_PREFIX = "PackageTableTree";
+    public static final String ID_SEPARATOR = "_";
+
+    private static final String OWNED_ATTRIBUTES = VIRTUAL_ROW_PREFIX + "ownedAttributes";
+    private static final String OWNED_OPERATIONS = VIRTUAL_ROW_PREFIX + "ownedOperations";
+    private static final String OWNED_NESTED_CLASSES = VIRTUAL_ROW_PREFIX + "ownedNestedClasses";
+    private static final String OWNED_PARAMETERS = VIRTUAL_ROW_PREFIX + "ownedParameters";
 
     private final ILogger logger;
 
@@ -488,5 +500,158 @@ public class TableService {
         return self.getAnnotatedElements().stream()
                 .findFirst()
                 .orElse(self);
+    }
+
+    public List<Object> getPackageTableTreeSemanticElements(Package self, IEditingContext editingContext, String globalFilter, List<ColumnFilter> columnFilters, List<String> expandedIds) {
+        Predicate<Object> predicate = object -> {
+            boolean isValidCandidate = true;
+            if (object instanceof NamedElement element) {
+                isValidCandidate = this.isValidElement(element, globalFilter, columnFilters);
+            } else if (object instanceof String id) {
+                // virtual rows are displayed only if the parent element is displayed
+                isValidCandidate = this.getVirtualRowTargetObject(editingContext, id).stream()
+                        .map(parent -> this.isValidElement(parent, globalFilter, columnFilters))
+                        .findFirst()
+                        .orElse(false);
+            }
+            return isValidCandidate;
+        };
+        return this.getSemanticElements(self, expandedIds).stream()
+                .filter(predicate)
+                .toList();
+    }
+
+    private boolean isValidElement(EObject object, String globalFilter, List<ColumnFilter> columnFilters) {
+        if (object instanceof NamedElement element) {
+            boolean isValidCandidate = true;
+            if (globalFilter != null && !globalFilter.isBlank()) {
+                isValidCandidate = element.getName() != null && element.getName().contains(globalFilter);
+                isValidCandidate = isValidCandidate || element.getQualifiedName().contains(globalFilter);
+            }
+            return isValidCandidate && columnFilters.stream().allMatch(new UMLPackageTableTreeColumnFilterPredicate(this.objectMapper, element));
+        }
+        return false;
+    }
+
+    private List<Object> getSemanticElements(Package pack, List<String> expandedIds) {
+        return new ArrayList<>(pack.getPackagedElements().stream()
+                .flatMap(pe -> this.getSemanticElements(pe, expandedIds).stream())
+                .toList());
+    }
+
+    private List<Object> getSemanticElements(PackageableElement element, List<String> expandedIds) {
+        var classElements = new ArrayList<>();
+        if (element instanceof Class clazz) {
+            classElements.add(clazz);
+            String classId = this.objectService.getId(clazz);
+            if (expandedIds.contains(classId)) {
+                String ownedAttributesId = this.getVirtualRowId(OWNED_ATTRIBUTES, clazz);
+                classElements.add(ownedAttributesId);
+                if (expandedIds.contains(ownedAttributesId)) {
+                    classElements.addAll(clazz.getOwnedAttributes());
+                }
+                String ownedOperationsId = this.getVirtualRowId(OWNED_OPERATIONS, clazz);
+                classElements.add(ownedOperationsId);
+                if (expandedIds.contains(ownedOperationsId)) {
+                    classElements.addAll(clazz.getOperations().stream().flatMap(operation -> this.getSemanticElements(operation, expandedIds).stream()).toList());
+                }
+                String ownedNestedClassesId = this.getVirtualRowId(OWNED_NESTED_CLASSES, clazz);
+                classElements.add(ownedNestedClassesId);
+                if (expandedIds.contains(ownedNestedClassesId)) {
+                    classElements.addAll(clazz.getNestedClassifiers().stream().flatMap(nestedClass -> this.getSemanticElements(nestedClass, expandedIds).stream()).toList());
+                }
+            }
+        }
+        return classElements;
+    }
+
+    private List<Object> getSemanticElements(Operation operation, List<String> expandedIds) {
+        var operationElements = new ArrayList<>();
+        operationElements.add(operation);
+        String operationId = this.objectService.getId(operation);
+        if (expandedIds.contains(operationId)) {
+            String ownedParametersId = this.getVirtualRowId(OWNED_PARAMETERS, operation);
+            operationElements.add(ownedParametersId);
+            if (expandedIds.contains(ownedParametersId)) {
+                operationElements.addAll(operation.getOwnedParameters());
+            }
+        }
+        return operationElements;
+    }
+
+    private String getVirtualRowId(String radical, EObject parentElement) {
+        return radical + ID_SEPARATOR + this.objectService.getId(parentElement);
+    }
+
+    private Optional<EObject> getVirtualRowTargetObject(IEditingContext editingContext, String objectId) {
+        String id = objectId.substring(TableService.VIRTUAL_ROW_PREFIX.length());
+        return this.objectService.getObject(editingContext, id.substring(id.indexOf(ID_SEPARATOR) + ID_SEPARATOR.length())).stream()
+                .filter(EObject.class::isInstance)
+                .map(EObject.class::cast)
+                .findFirst();
+    }
+
+    public String getPackageTableTreeRowLabel(Object self) {
+        String result = "N/A";
+        if (self instanceof NamedElement namedElement) {
+            result = this.getElementLabel(namedElement);
+        } else if (self instanceof String id) {
+            result = this.getVirtualRowLabel(id);
+        }
+        return result;
+    }
+
+    private String getVirtualRowLabel(String id) {
+        String result = "";
+        if (id.startsWith(OWNED_ATTRIBUTES)) {
+            result = "Owned Attributes";
+        } else if (id.startsWith(OWNED_OPERATIONS)) {
+            result = "Owned Operations";
+        } else if (id.startsWith(OWNED_PARAMETERS)) {
+            result = "Owned Parameters";
+        } else if (id.startsWith(OWNED_NESTED_CLASSES)) {
+            result = "Owned Classes";
+        }
+        return result;
+    }
+
+    public String getPackageTableTreeCellValue(Object self, String columnId, IEditingContext editingContext) {
+        String result = "";
+        if (self instanceof NamedElement element && "name".equals(columnId)) {
+            result = element.getName();
+        } else if (self instanceof NamedElement element && "qualified-name".equals(columnId)) {
+            result = element.getQualifiedName();
+        }
+        return result;
+    }
+
+    public Object getPackageTableTreeTargetObject(Object self, IEditingContext editingContext) {
+        Object result = null;
+        if (self instanceof NamedElement element) {
+            result = element;
+        } else if (self instanceof String id) {
+            result = this.getVirtualRowTargetObject(editingContext, id).orElse(null);
+        }
+        return result;
+    }
+
+    public Integer getPackageTableTreeRowDepthLevel(Object self, IEditingContext editingContext) {
+        Integer result = null;
+        if (self instanceof NamedElement element) {
+            result = this.getEObjectDepthLevel(element);
+        } else if (self instanceof String id) {
+            result = this.getVirtualRowTargetObject(editingContext, id)
+                    .map(this::getEObjectDepthLevel)
+                    .orElse(-1) + 1;
+        }
+        return result;
+    }
+
+    private Integer getEObjectDepthLevel(EObject eObject) {
+        if (eObject instanceof Package) {
+            return -2;
+        } else {
+            return 2 + this.getEObjectDepthLevel(eObject.eContainer());
+        }
     }
 }

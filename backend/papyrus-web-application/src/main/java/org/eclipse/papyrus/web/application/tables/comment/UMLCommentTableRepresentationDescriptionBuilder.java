@@ -125,11 +125,17 @@ public class UMLCommentTableRepresentationDescriptionBuilder {
     }
 
     private List<CellDescription> buildCellDescriptions() {
+        var setBodyOperation = new ViewBuilders().newSetValue()
+                .featureName("body")
+                .valueExpression("aql:newValue");
+        
         var bodyCellDescription = new TableBuilders().newCellDescription()
                 .name("bodyCell")
                 .preconditionExpression("aql:columnTargetObject.equals('" + COMMENT_COLUMN_BODY + "')")
                 .valueExpression("aql:self.body")
-                .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription().build())
+                .cellWidgetDescription(new TableBuilders().newCellTextareaWidgetDescription()
+                        .body(setBodyOperation.build())
+                        .build())
                 .build();
 
         var annotatedElementsCellDescription = new TableBuilders().newCellDescription()

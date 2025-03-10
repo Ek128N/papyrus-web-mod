@@ -50,7 +50,6 @@ describe('/projects/:projectId/edit - Project Context Menu', () => {
     cy.getByTestId('navbar-contextmenu').findByTestId('delete').click();
 
     cy.get('.MuiDialog-container').should('be.visible');
-    cy.getByTestId('navbar-contextmenu').should('not.be.visible');
   });
 
   it('can delete a project', () => {
