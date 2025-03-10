@@ -88,6 +88,33 @@ The constraintSpecification informations shall display only the first language i
 
 image::Shared/Constraint.png[title="Representation Constraint"]
 
+
+
+=== Collaboration Use
+
+==== On Creation
+Nothing special.
+
+==== Can Create
+Nothing special.
+
+==== Can Reconnect
+Nothing special.
+
+==== On Deletion
+ See org.eclipse.papyrus.uml.service.types.helper.advice.CollaborationUseHelperAdvice: if we are trying to remove one or many roleBindings, removes them. There is nothing to do in Papyrus-UML Services because this behavior is already managed by default in org.eclipse.papyrus.uml.domain.services.modify.ElementFeatureModifier.ElementFeatureModifierSwitch.genericSet(EObject, EStructuralFeature, Object). Add a test with CollaborationUse to ensures it's OK.
+ When changing the type of a CollaborationUse, clear the roleBinding feature.
+
+==== On Semantic DnD
+ Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+ <visibility character> <label>: <type label>. For example ~ My CollaborationUse: MyCollaborationChildren1
+
+
 === DurationObservation
 Can be created under an Interaction.
 
@@ -116,6 +143,57 @@ Nothing special.
 Nothing special.
  
 image::CommunicationDiagram/DurationObservation.png[title="Representation DurationObservation"]
+
+
+=== InteractionOperand
+
+==== On Creation
+ When we are trying to create an InteractionOperand "io2" under an other InteractionOperand "io1", create "io2" under the container of "io1" (i.e. "io2" becomes a sibling of "io1").
+ Create an InteractionConstraint named "guard" and set it to the "guard" feature.
+
+==== Can create
+
+==== OnSet
+TODO
+
+==== On Deletion
+ If the deleted InteractionOperand was the last remaining in the CombinedFragment, delete the CombinedFragment (even if there were other objects under the CombinedFragment...).
+
+==== On Semantic DnD
+Doesn't seem to be allowed
+
+==== On Direct Edit
+TODO
+
+==== Label
+No label
+
+
+
+=== InteractionFragment
+
+==== On Creation
+ Graphically, lifelines covered by the created element are added to the feature covered. This point cannot be implemented in Papyrus-UML Services
+
+==== Can create
+always
+
+==== OnSet
+Nothing to do
+
+==== On Deletion
+Nothing to do
+
+==== On Semantic DnD
+InteractionFragment is an abstract type, it cannot be displayed or D&D directly on the diagram, see CombinedFragment, Interaction and others instead ...
+
+==== On Direct Edit
+Nothing to do
+
+==== Label
+Nothing to do
+
+
 
 === Lifeline
 Can be created under an Interaction.

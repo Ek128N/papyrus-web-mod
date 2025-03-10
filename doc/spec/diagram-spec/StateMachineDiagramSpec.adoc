@@ -61,7 +61,7 @@ Can be created in a State Machine Diagram and under a Region.
 Nothing special.
 
 ==== Can create
-Nothing special.
+Always
 
 ==== OnSet
 Nothing special.
@@ -73,15 +73,16 @@ Nothing special.
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+Display the view
 
 ==== On Direct Edit
 Edit the body of the Comment.
 
 ==== Label
-Nothing special.
+The body
 
 image::Shared/Comment.png[title="Representation Comment"]
+In Papyrus the comments can be created on regions (In state machine and in states)
 
 === DeepHistory
 Can be created in a Region.
@@ -186,16 +187,16 @@ Nothing special.
 Nothing special.
 
 ==== On Deletion
-Nothing special.
+It deletes all ingoing and outgoing Transitions
 
 ==== On Semantic DnD
-Nothing special.
+The drop tool will create the view
 
 ==== On Direct Edit
 Nothing special.
 
 ==== Label
-Nothing special.
+The name is displayed
 
 image::StateMachineDiagram/FinalState.png[title="Representation FinalState"]
 
@@ -315,6 +316,34 @@ Nothing special.
 
 image::StateMachineDiagram/Junction.png[title="Representation Junction"]
 
+
+=== PseudoState
+
+==== On Creation
+The Pseudostate kind is initialized with the correct value
+==== Can Create
+
+Nothing special
+
+==== On Deletion
+It deletes all ingoing and outgoing Transitions
+
+==== On Set
+Nothing special
+
+==== On Semantic DnD
+The drop tool will create the view
+
+==== On Graphic DnD
+NA
+
+==== On Direct Edit
+
+==== Label
+The label is initialized with "New <max numbre+1>"
+The name is displayed
+
+
 === Region
 Can be created in StateMachine or under a State.
 
@@ -334,7 +363,7 @@ Nothing special.
 Shall not be deletable if there is only one Region. Also delete all elements contained in the Region.
 
 ==== On Semantic DnD
-Nothing special.
+Nothing is done because the node is synchronized
 
 ==== On Direct Edit
 Nothing special.
@@ -391,10 +420,10 @@ Nothing special.
 Nothing special.
 
 ==== On Deletion
-Nothing special.
+It deletes all ingoing and outgoing Transitions
 
 ==== On Semantic DnD
-Nothing special.
+The drop tool will create the view
 
 ==== On Direct Edit
 Nothing special.
@@ -403,6 +432,53 @@ Nothing special.
 Nothing special.
 
 image::StateMachineDiagram/State.png[title="Representation State"]
+
+=== StateMachine
+
+==== NodeDescription
+State in Papyrus legacy
+In Papyrus legacy, there is two cases to represent StateMachine in a StateMachine diagram.
+
+The StateMachine diagram is created under a Package
+In this case, many StateMachine can be dropped in this diagram
+The StateMachine diagram is created under a StateMachine
+inconsistency 1: Many StateMachine can be dropped in this diagram which is not logical
+inconsistency 2: Only the StateMachine associated to the diagram is correctly managed: the other StateMachine dropped in this diagram can not be edited (it is then not possible to add region or drop region)
+inconsistency 3: We can remove from diagram the StateMachine which is not logical
+
+==== Proposal
+In Papyrus web, we propose to manage the case 2 : associate the StateMachine diagram to a StateMachine
+The StateMachine will be the only root node in this diagram
+The StateMachine node is synchronized so that it is always displayed as root element. So the drop of StateMachine is not necessary.
+
+==== On Creation
+The StateMachine can not be created with a tool because the diagram is associated with the StateMachine
+The only way to create a StateMachine is to create it from the explorer
+(out of scope) Enhancement: The Region could be created at the same time the StateMachine is created. Core developement needed.
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+It is not possible to delete the StateMachine from the StateMachine diagram because the diagram represents the StateMachine itself.
+A delete tool has been added that does NOTHING.
+(out of scope) Enhancement: It should be possible to specify that no delete tool is available on the StateMachine node.
+
+==== On Set
+Nothing special
+
+==== On Semantic DnD
+Nothing because the node is synchronized.
+
+==== On Graphic DnD
+Not implemented
+
+==== On Direct Edit
+Nothing special
+
+==== Label
+Displays the feature name
+ The label should be displayed in italic if the element is abstract
 
 === Terminate
 Can be created in a Region.
@@ -468,6 +544,7 @@ image::StateMachineDiagram/Link_Comment.png[title="Representation Link (from Com
 
 === Transition
 Can be created in a Region.
+source and target Vertex are set
 
 ==== On Creation
 Nothing special.
@@ -479,16 +556,16 @@ Source and Target must be State, a Final State or a PseudoState (Choice, DeepHis
 Nothing special.
 
 ==== On Reconnect
-Nothing special.
+It is possible to reconnect the source or the target of the Transition
 
 ==== On Deletion
 Nothing special.
 
 ==== On Semantic DnD
-Nothing special.
+Nothing because the edge is synchronized
 
 ==== On Direct Edit
-Nothing special.
+Theere is no direct edit on Transition (required XText editor)
 
 ==== Label
 Transition labels shall be composed the following way: +

@@ -60,7 +60,7 @@ Can be created in an Use Case Diagram and under Package.
 Nothing special.
 
 ==== Can create
-Nothing special.
+Always
 
 ==== OnSet
 Nothing special.
@@ -78,7 +78,7 @@ Nothing special.
 Nothing special.
 
 ==== Label
-Nothing special.
+The label should be displayed in italic if the element is abstract
 
 image::UseCaseDiagram/Actor.png[title="Representation Actor"]
 
@@ -203,6 +203,28 @@ The constraintSpecification informations shall display only the first language i
 
 image::Shared/Constraint.png[title="Representation Constraint"]
 
+=== ExtensionPoint
+
+==== On Creation
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+Nothing special
+
+==== On Set
+
+==== On Semantic DnD
+Display the view.
+
+==== On Graphic DnD
+Nothing special
+
+==== On Direct Edit
+
+==== Label
+
 === Interaction as Subject
 Can be created in an Use Case Diagram and under Package.
 
@@ -263,6 +285,31 @@ Nothing special.
 
 image::UseCaseDiagram/Package.png[title="Representation Package"]
 
+=== Reception
+
+==== On Creation
+Nothing special
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+Nothing special
+
+==== On Set
+Nothing special
+
+==== On Semantic DnD
+Nothing special
+
+==== On Direct Edit
+Nothing special
+
+==== Label
+ The label should be displayed in italic if the element is abstract
+ The label should be underlined if the element is static
+ prefix with «Signal»
+
 === StateMachine as subject
 Can be created in an Use Case Diagram and under Package.
 
@@ -297,6 +344,7 @@ image::UseCaseDiagram/StateMachine.png[title="Representation StateMachine"]
 Can be created in an Use Case Diagram, under Package, a StateMachine, a Component, an Activity and a Class.
 
 ==== On Creation
+If owner is classifier, useCase feature of the Classifier is completed with the useCase
 When the Usecase is created inside an Activity, a Class, a Component, an Interaction, or a StateMachine, its feature subject is set pointing on its owner.
 
 ==== Can create
@@ -309,10 +357,15 @@ Nothing special.
 Nothing special.
 
 ==== On Deletion
-Nothing special.
+ Delete includes
+ Delete Extend
 
 ==== On Semantic DnD
 Nothing special.
+
+==== On DnD
+ semantic DnD is authorized only on its container
+ graphical DnD is authorized if new container is a Package or a Classifier. If it is Classifier, subject feature should be updated
 
 ==== On Direct Edit
 Nothing special.
@@ -428,15 +481,33 @@ Can be created in an Use Case Diagram and under Package.
 
 ==== On Creation
 An ExtensionPoint is created under the target semantic element and an Extend link created under the source semantic element.
+ The source element should be added to the extension feature
+ The target element should be a created extension point added to the extendedCase feature
+ Add the created extension point as extensionLocations target references
+ The creation tool should forbid the creation of an Extend from and to the same element
 
 ==== Can create
 Source and target must be two use cases.
-
+ Source and target should be a non null UseCase.
+ Source and target should be different
+ 
 ==== OnSet
 Nothing special.
 
+==== Container
+The container is:
+The source node
+
 ==== On Reconnect
 Extend link is relocated under the new source semantic element, and extension point is moved under the new target.
+
+==== Can Reconnect
+ reconnect source is authorized on UseCase different from the target and new source should be editable to contain Extend
+ reconnect target is authorized on UseCase different from the source
+(cf org.eclipse.papyrus.uml.service.types.command.ExtendReorientCommand)
+
+==== Delete tool
+No special deletion behavior for this element.
 
 ==== On Deletion
 Nothing special.
@@ -486,6 +557,9 @@ Can be created in an Use Case Diagram and under Package.
 
 ==== On Creation
 Include link is stored under the source semantic element.
+ The source element should be added to the includingCase feature
+ The target element should be added to the addition feature
+ The creation tool should forbid the creation of an Include from and to the same element
 
 ==== Can create
 Source and target must be two use cases.
@@ -496,11 +570,17 @@ Nothing special.
 ==== On Reconnect
 Relocate link under the new source semantic element.
 
+==== Delete tool
+No special deletion behavior for this element.
+
 ==== On Deletion
 Nothing special.
 
 ==== On Semantic DnD
 Nothing special.
+
+==== Reconnect tool
+ The container change according to the new source of reconnection
 
 ==== On Direct Edit
 Nothing special.

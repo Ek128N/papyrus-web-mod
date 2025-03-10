@@ -27,7 +27,7 @@ Nothing special.
 Can be created in an Deployment Diagram, under a Model, under a Package and under an Artifact.
 
 ==== On Creation
-Nothing special.
+When the Artifact is created in another Artifact, the field nestedArtifact in the parent Artifact must be set.
 
 ==== Can create
 Nothing special.
@@ -147,6 +147,7 @@ image::DeploymentDiagram/DeploymentSpecification.png[title="Representation Deplo
 
 === Device
 Can be created in an Deployment Diagram, under a Model, under a Package, a Device and a Node.
+If a Node is created inside a Device or a Node, the field nestedNode must be filled.
 
 ==== On Creation
 Nothing special.
@@ -171,11 +172,13 @@ Nothing special.
 
 ==== Label
 Label shall be prefixed with &laquo;device&raquo;
- 
+* italic when abstract
+
 image::DeploymentDiagram/Device.png[title="Representation Device"]
 
 === ExecutionEnvironment
 Can be created in an Deployment Diagram, under a Model, under a Package, a Device, an ExecutionEnvironment and a Node.
+If a ExecutionEnvironment is created inside a Device, an ExecutionEnvironment or a Node, the field nestedNode must be filled.
 
 ==== On Creation
 Nothing special.
@@ -200,7 +203,8 @@ Nothing special.
 
 ==== Label
 Label shall be prefixed with &laquo;executionEnvironment&raquo;
- 
+* italic when abstract
+
 image::DeploymentDiagram/ExecutionEnvironment.png[title="Representation ExecutionEnvironment"]
 
 === Model
@@ -234,6 +238,7 @@ image::DeploymentDiagram/Model.png[title="Representation Model"]
 
 === Node
 Can be created in an Deployment Diagram, under a Model, under a Package, a Device and a Node.
+If a Node is created inside a Device or a Node, the field nestedNode must be filled.
 
 ==== On Creation
 Nothing special.
@@ -295,6 +300,7 @@ image::DeploymentDiagram/Package.png[title="Representation Package"]
 
 === CommunicationPath
 Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
+(the CommunicationPath extends Association)
 
 ==== On Creation
 Create an CommunicationPath link stored under the root of the Diagram. +
@@ -365,12 +371,15 @@ image::DeploymentDiagram/Dependency.png[title="Representation Dependency"]
 === Deployment
 Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.
 
+The Deployment link extends Dependency.
 ==== On Creation
 Nothing special.
 
 ==== Can create
 Source shall be an Artifact or a DeploymentSpecification. +
 Target shall be a Node or an ExecutionEnvironment.
+* feature configuration -> NOT USED in Papyrus diagram... -> to confirm with Papyrus TEAM
+* source!=target
 
 ==== OnSet
 Nothing special.
@@ -389,8 +398,45 @@ Nothing special.
 
 ==== Label
 Label shall be prefixed with &laquo;manifest&raquo;.
+* keyword 'deploy'
 
 image::DeploymentDiagram/Deployment.png[title="Representation Deployment"]
+
+
+=== Deployment
+In a Deployment Diagram, a Deployment can be created between an Artifact and an InstanceSpecification.
+
+==== On Creation
+See org.eclipse.papyrus.uml.service.types.helper.DeploymentEditHelper:
+
+ The source element should be added to the UMLPackage.eINSTANCE.getDeployment_DeployedArtifact() feature
+ The target element should be added to the UMLPackage.eINSTANCE.getDeployment_Location() feature
+ The Deployment element is contained in the target element
+
+==== Can create
+See org.eclipse.papyrus.uml.service.types.helper.DeploymentEditHelper:
+
+ Source should be a DeployedArtifact.
+ Target should be a DeploymentTarget
+ Source and Target should be different.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+ Maybe something in org.eclipse.papyrus.uml.service.types.command.DeploymentReorientCommand
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+TODO
+
+==== Label
+ The edge has the label «deploy». An other label is created after setting the name/label.
 
 === Generalization
 Can be created in an Deployment Diagram, under a Model, a Package, a Node, an ExecutionEnvironment, an Artifact or a Device.

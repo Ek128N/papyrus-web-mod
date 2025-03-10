@@ -22,6 +22,57 @@ Can be created under a Package and under a Model (but not inside a Profile).
 Nothing special.
 
 == Nodes
+=== Abstraction
+
+==== On Creation
+The source element should be added to the clients feature
+The source element should be added to the supplier feature
+
+==== Can Create
+Source and target should be a NamedElement.
+
+==== Container
+The container is:
+The source node if it can contains the Abstraction
+The most common Package between the source and the target otherwise
+
+==== On Deletion
+No special deletion behavior for this element.
+
+==== On Semantic DnD
+
+==== On Direct Edit
+
+==== Label
+Prefix «abstraction» should appear
+
+=== Activity 
+
+==== On Creation
+Nothing special
+
+==== On Move
+See org.eclipse.papyrus.uml.service.types.helper.ActivityNodeHelper.getMoveOutFromPartitionCommand(MoveRequest). This Helper is related to ActivityNode, there is no specific behavior for the Activity concept. See [Concept] ActivityNode #229.
+
+==== Can create
+Always
+
+==== OnSet
+Nothing special
+
+==== On Deletion
+Nothing special
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Edit the name
+
+==== Label
+ The label should be displayed in italic if the element is abstract
+ Prefix "Activity"
+
 
 === Class
 Can be created in a Composite structure Diagram and under a Class.
@@ -52,6 +103,88 @@ Label should be in italic if isAbstract is set to true.
  
 image::CompositeStructureDiagram/Class.png[title="Representation Class"]
 
+
+=== Constraint  
+
+==== On Creation
+ OK : An opaqueExpression is created during creation of Constraint. This OpaqueExpression is named "constraintSpec", its language is "OCL" and its body is "true". This opaqueExpression is then setted as specification on the constraint.
+ TODO : If the constraint is created under Action, LocalPrecondition and LocalPostcondition features of Action should be set with the constraint (cf org.eclipse.papyrus.uml.diagram.activity.edit.advices.ConditionConstraintEditHelperAdvice.getBeforeConfigureCommand(ConfigureRequest)
+
+==== Can create
+Always
+
+==== On Deletion
+Nothing special
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Direct edit should modify the first body.
+
+==== Label
+It displays the label of the constraint.
+Label should also display value of specification.
+
+ OK : if there is no value specification
+Label should also display "<NULL Constraint>"
+ OK : If its value specification is an opaque expression :
+the first language and the first body if there is at least one language.
+Otherwise it displays "{{NATURAL} }"
+ TODO : if its value specification is a literalString
+the value of the literalString is also diplayed
+ TODO : if its value specification is a TimeInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is a DurationInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is an interval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+
+⚠️ No implémentation of a specific language DSL is planned for this node at the moment
+
+Feature edge
+This task should implement the contrainedElement feature edge. All node representing an element can be targeted.
+Containment
+As root node
+Child of:
+Activity
+Class
+FunctionBehavior
+Interaction
+OpaqueBehavior
+ProtocolStateMachine
+StateMachine
+
+=== Collaboration
+ Can be created in a CompositeStructure diagram.
+
+==== On Creation
+Nothing special
+
+==== Can Create
+Always
+
+==== On Set
+ if collaborationRole feature of collaboration is setted with a connectable reference all other roles are removed
+ if collaborationRole feature of collaboration is setted with a list, all other roles are removed
+(org.eclipse.papyrus.uml.service.types.helper.advice.CollaborationHelperAdvice.getBeforeSetCommand(SetRequest))
+ When removing a ConnectableElement from the Collaboration#collaborationRole feature, destroy the related role bindings. See org.eclipse.papyrus.uml.service.types.helper.advice.CollaborationHelperAdvice.getBeforeSetCommand(SetRequest)
+ 
+==== On Deletion
+ Delete all roles binding to the collaboration (org.eclipse.papyrus.uml.service.types.helper.advice.CollaborationHelperAdvice.getBeforeDestroyDependentsCommand(DestroyDependentsRequest)) (Missing test)
+
+==== On Semantic DnD
+Display the view
+
+ In CSD, when dropped onto a CollaborationUse, the type of the target element should be set to the dropped collaboration
+
+==== On Direct Edit
+Edit the name
+
+==== Label
+ Prefix « Collaboration » + newline + label
+ The label should be displayed in italic if the element is abstract
+
 === Comment
 Can be created under a Composite Structure Diagram and under a Class.
 
@@ -80,6 +213,389 @@ Edit the body of the Comment.
 Nothing special.
 
 image::Shared/Comment.png[title="Representation Comment"]
+
+=== Dependency
+
+==== On Creation
+The source element should be added to the clients feature
+The source element should be added to the supplier feature
+
+==== Can Create
+(source or target) !=null
+
+The container is:
+The source node if it can contains this element
+The most common Package between the source and the target otherwise
+
+==== On Deletion
+
+==== On Semantic DnD
+
+==== On Direct Edit
+
+==== Label
+
+=== Duration
+
+Can be created under a DurationInterval.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+ Display the label + "=" + value of the ValueSpecification set in expr feature
+
+=== DurationConstraint
+Can be created in a Timing diagram (for example under an Interaction and a Lifeline)
+The edge representation can be observed in a Sequence Diagram, between two messages.
+
+==== On Creation
+ A DurationInterval is created and set as specification. This DurationInterval has a Duration as min, which has a LiteralInteger with 0 value. The DurationInterval has also a Duration as max, which has a LiteralInteger with 0 value. See org.eclipse.papyrus.uml.service.types.helper.advice.DurationConstraintEditHelperAdvice.initDurationInterval(DurationInterval)
+ Created with the palette as an edge, the source and target are added to the DurationConstraint#constrainedElements feature and the DurationConstraint#firstEvents feature is initialized with true at first index and false at second index. See org.eclipse.papyrus.uml.diagram.timing.custom.edit.commands.CustomDurationConstraintCreateCommand
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+ Can have 1 or 2 linked elements. They are added to the constrainedElement feature. See org.eclipse.papyrus.uml.service.types.helper.DurationConstraintEditHelper
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+ Edit the value of the Duration#Min and Duration#Max. There are restrictions to the user input. (The user should type a correct multiplicity ?)
+
+==== Label
+ See [Concept] Constraint #37
+It displays the label of the constraint.
+Label should also display value of specification.
+
+ OK : if there is no value specification
+Label should also display "<NULL Constraint>"
+ OK : If its value specification is an opaque expression :
+the first language and the first body if there is at least one language.
+Otherwise it displays "{{NATURAL} }"
+ TODO : if its value specification is a literalString
+the value of the literalString is also diplayed
+ TODO : if its value specification is a TimeInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is a DurationInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is an interval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+
+
+
+
+=== DurationInterval
+Can be created under a DurationConstraint.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Display the label. Nothing special.
+
+=== DurationObservation
+Can be created under a TimeExpression.
+
+==== On Creation
+If the specified container is not a Package, DurationObservation is created under the nearest Package.
+See org.eclipse.papyrus.uml.service.types.helper.ObservationEditHelper. See also [Concept] TimeObservation #204
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+ See org.eclipse.papyrus.uml.service.types.helper.advice.DurationObservationEventEditHelperAdvice. I didn't find any edge graphical representation, but this edge should have a DurationObservation as source and a NamedElement as target. BUT in org.eclipse.papyrus.uml.service.types.helper.advice.DurationObservationEditHelperAdvice.getSourceElement(AbstractEditCommandRequest) there is a constraint which indicates that the source must be a NamedElement.
+ Seems like a DurationObservation can be attached to only one element. See comments in org.eclipse.papyrus.uml.service.types.helper.DurationObservationEditHelper
+ Occurrences are added to the event feature. See org.eclipse.papyrus.uml.service.types.helper.advice.DurationObservationEditHelperAdvice.getAfterReorientRelationshipCommand(ReorientRelationshipRequest)
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+==== Feature edge
+None
+
+==== Containment
+As root node
+
+Do not forget to add the JUnit test concerning Constraint link to this element.
+Create a test checkLinkFromConstraintToDurationObservation in order to test the link between a Constraint and a DurationObservation
+
+
+
+
+=== EncapsulatedClassifier 
+
+==== On Creation
+Nothing special.
+
+==== Can Create
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Set
+On Semantic DnD
+Nothing special.
+
+==== On graphical DnD
+- [ ] When changing the container of a Port, remove its ConnectorEnd. See related issue #69 ->DnD impossible graphically, we can only change container by using DnD from ModelExplorer
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+
+
+
+
+
+=== FunctionBehavior
+
+==== On Creation
+BehavioredClassifier#ownedBehavior on BehavioredClassifier kind element
+Package::packagedElement on a Package kind element
+No UML service implemented for that. Handled on the VSM side in Papyrus-Desktop
+
+==== Can create
+Nothing special
+
+==== OnSet
+On Deletion
+Nothing special
+
+==== On Semantic DnD
+Nothing special
+
+==== On Direct Edit
+Nothing special
+
+==== Label
+ functionBehavior keyword
+Todo
+
+
+
+=== Interaction 
+
+==== On Creation
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+Nothing special
+
+==== On Set
+
+==== On Semantic DnD
+Display the view.
+
+==== On Graphic DnD
+Nothing special
+
+==== On Direct Edit
+
+==== Label
+ The label should be displayed in italic if the element is abstract
+
+
+
+=== InformationItem
+Can be created in a Class diagram
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+ Keyword « Information » + newline + label.
+ The label should be displayed in italic if the element is abstract
+
+==== Containment
+As root node
+Child of:
+Activity
+Class
+FunctionBehavior
+Interaction
+OpaqueBehavior
+ProtocolStateMachine
+StateMachine
+
+
+=== IntervalConstraint
+No graphical representation has been found
+
+==== On Creation
+ An Interval is created and set as specification. See org.eclipse.papyrus.uml.service.types.helper.IntervalConstraintEditHelper
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+ No graphical representation found. The features Interval#min and Interval#max may be updated like [Concept] DurationConstraint #191 and [Concept] TimeConstraint #194
+
+==== Label
+ See [Concept] Constraint #37
+It displays the label of the constraint.
+Label should also display value of specification.
+
+ OK : if there is no value specification
+Label should also display "<NULL Constraint>"
+ OK : If its value specification is an opaque expression :
+the first language and the first body if there is at least one language.
+Otherwise it displays "{{NATURAL} }"
+ TODO : if its value specification is a literalString
+the value of the literalString is also diplayed
+ TODO : if its value specification is a TimeInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is a DurationInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is an interval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+
+
+
+
+
+=== Manifestation
+
+==== On Creation
+ The source element should be added to the clients feature
+ The target element should be added to the UtilizedElement feature (which complete supplier feature)
+
+==== Can Create
+ Source should be a NamedElement and Target should be a PackageableElement
+ Source and target should be different
+
+==== On Reconnection
+ org.eclipse.papyrus.uml.service.types.command.ManifestationReorientCommand PR 166
+
+==== On Deletion
+No special deletion behavior for this element.
+
+==== On Semantic DnD
+No DnD tool since all edges are synchronized
+
+==== On Direct Edit
+
+==== Label
+Prefix «manifest» should appear
+
+
+
+=== OpaqueBehavior
+
+==== On Creation
+BehavioredClassifier#ownedBehavior on BehavioredClassifier kind element
+Package::packagedElement on a Package kind element
+No UML service implemented for that. Handled on the VSM side in Papyrus-Desktop
+
+==== Can create
+Nothing special
+
+==== OnSet
+On Deletion
+Nothing special
+
+==== On Semantic DnD
+Nothing special
+
+==== On Direct Edit
+Nothing special
+
+==== Label
+ functionBehavior keyword
+Todo
+
+
 
 === Port
 Can be created on a Class or under a typed Property.
@@ -119,6 +635,43 @@ image::CompositeStructureDiagram/Port.png[title="Representation Port"]
 
 image::CompositeStructureDiagram/PortOnProperty.png[title="Representation Port on Property"]
 
+
+=== Parameter
+
+==== On Creation
+TODO
+
+==== Can create
+TODO
+
+==== OnSet
+TODO
+
+==== On Deletion
+TODO
+
+==== On Semantic DnD
+TODO
+
+==== On Direct Edit
+TODO
+
+==== Label
+ label to display : «Stereotype appliqué» + direction + name+ type |
+(no visibility, no multiplicity)
+
+==== Feature edge
+None
+
+==== Containment
+Bordered node of:
+Activity
+FunctionBehavior
+Interaction
+OpaqueBehavior
+ProtocolStateMachine
+StateMachine
+
 === Property
 Can be created under a Class or under a typed Property.
 
@@ -157,6 +710,279 @@ Label should be in underlined if isStatic is set to true.
 image::CompositeStructureDiagram/Property.png[title="Representation Property"]
 
 image::CompositeStructureDiagram/PropertyOnProperty.png[title="Representation Property on Property"]
+
+
+
+=== ProtocolStateMachine
+
+==== On Creation
+BehavioredClassifier#ownedBehavior on BehavioredClassifier kind element
+Package::packagedElement on a Package kind element
+No UML service implemented for that. Handled on the VSM side in Papyrus-Desktop
+
+==== Can create
+Nothing special
+
+==== OnSet
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Nothing special
+
+==== On Direct Edit
+Nothing special
+
+==== Label
+ protocol keyword
+
+==== Todo
+
+
+
+=== StateMachine
+
+==== NodeDescription
+State in Papyrus legacy
+In Papyrus legacy, there is two cases to represent StateMachine in a StateMachine diagram.
+
+The StateMachine diagram is created under a Package
+In this case, many StateMachine can be dropped in this diagram
+The StateMachine diagram is created under a StateMachine
+inconsistency 1: Many StateMachine can be dropped in this diagram which is not logical
+inconsistency 2: Only the StateMachine associated to the diagram is correctly managed: the other StateMachine dropped in this diagram can not be edited (it is then not possible to add region or drop region)
+inconsistency 3: We can remove from diagram the StateMachine which is not logical
+
+==== Proposal
+In Papyrus web, we propose to manage the case 2 : associate the StateMachine diagram to a StateMachine
+The StateMachine will be the only root node in this diagram
+The StateMachine node is synchronized so that it is always displayed as root element. So the drop of StateMachine is not necessary.
+
+==== On Creation
+The StateMachine can not be created with a tool because the diagram is associated with the StateMachine
+The only way to create a StateMachine is to create it from the explorer
+(out of scope) Enhancement: The Region could be created at the same time the StateMachine is created. Core developement needed.
+
+==== Can Create
+Nothing special
+
+==== On Deletion
+It is not possible to delete the StateMachine from the StateMachine diagram because the diagram represents the StateMachine itself.
+A delete tool has been added that does NOTHING.
+(out of scope) Enhancement: It should be possible to specify that no delete tool is available on the StateMachine node.
+
+==== On Set
+Nothing special
+
+==== On Semantic DnD
+Nothing because the node is synchronized.
+
+==== On Graphic DnD
+Not implemented
+
+==== On Direct Edit
+Nothing special
+
+==== Label
+Displays the feature name
+ The label should be displayed in italic if the element is abstract
+
+ 
+=== StructuredClassifier 
+
+==== On Creation
+Nothing special.
+
+==== Can Create
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Set
+Nothing special.
+
+==== On Semantic DnD
+Nothing special.
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+
+
+=== Substitution
+
+==== On Creation
+ The source element should be added to the SubstitutingClassifier feature (which complete clients feature)
+ The source element should be added to the Contract feature (which complete supplier feature)
+
+==== Can Create
+ Source and target should be a Classifier.
+ Source and target should be different.
+
+==== On Reconnect
+ New Source or new target should be a Classifier.
+ new Source and target should be different.
+ new Target and source should be different.
+ new source should be editable to contain the substitution
+ new source is reconnected by using case Dependency
+ new Target is reconnected by setting contract with new target
+
+==== On Deletion
+No special deletion behavior for this element.
+
+==== On Semantic DnD
+Nothing
+
+==== On Direct Edit
+Edit the name
+
+==== Label
+ Prefix «substitute» should appear
+
+
+=== TimeExpression
+Can be created under a TimeInterval.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+ Display the label + "=" + value of the ValueSpecification set in expr feature
+
+
+=== TimeConstraint 
+Can be created in a Timing diagram (for example under an Interaction and a Lifeline)
+
+==== On Creation
+ A TimeInterval is created and set as specification. This TimeInterval has a TimeExpression as min, which has a LiteralInteger with 0 value. The TimeInterval has also a TimeExpression as max, which has a LiteralInteger with 0 value. See org.eclipse.papyrus.uml.diagram.timing.custom.edit.commands.CustomTimeConstraintCreateCommand
+ Add the target element to the TimeConstraint#constrainedElements feature after clear. See also org.eclipse.papyrus.uml.diagram.timing.custom.edit.commands.CustomTimeConstraintCreateCommand
+ Add the nearest occurrence spezcification to constrained elements. See org.eclipse.papyrus.uml.service.types.helper.advice.TimeConstraintHelperAdvice. See also [Concept] TimeObservation #204
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+ Edit the value of the TimeInterval#Min and TimeInterval#Max. There are restrictions to the user input. (The user should type a correct multiplicity ?)
+
+==== Label
+ See [Concept] Constraint #37
+It displays the label of the constraint.
+Label should also display value of specification.
+
+ OK : if there is no value specification
+Label should also display "<NULL Constraint>"
+ OK : If its value specification is an opaque expression :
+the first language and the first body if there is at least one language.
+Otherwise it displays "{{NATURAL} }"
+ TODO : if its value specification is a literalString
+the value of the literalString is also diplayed
+ TODO : if its value specification is a TimeInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is a DurationInterval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+ TODO : if its value specification is an interval
+it return "minValue..maxValue" if minValue and maxValue are != null else "0..0"
+------------------------------------------------------------------------
+
+=== TimeInterval
+Can be created under a TimeConstraint.
+
+==== On Creation
+Nothing special.
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+Nothing special.
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Display the label. Nothing special.
+
+
+------------------------------------------------------------------------
+
+=== TimeObservation 
+Can be created under a TimeExpression.
+
+==== On Creation
+If the specified container is not a Package, TimeObservation is created under the nearest Package. See org.eclipse.papyrus.uml.service.types.helper.ObservationEditHelper. See also [Concept] DurationObservation #205
+ Set the nearest Occurrence Specification to the event feature. See org.eclipse.papyrus.uml.service.types.helper.advice.TimeObservationEditHelperAdvice. See also [Concept] TimeConstraint #194
+
+==== Can create
+Nothing special.
+
+==== OnSet
+Nothing special.
+
+==== On Reconnect
+ See org.eclipse.papyrus.uml.service.types.helper.advice.TimeObservationEventEditHelperAdvice. I didn't find any edge graphical representation, but this edge should have a TimeObservation as source and a NamedElement as target (the event of the TimeObservation?)
+
+==== On Deletion
+Nothing special.
+
+==== On Semantic DnD
+Display the view
+
+==== On Direct Edit
+Nothing special.
+
+==== Label
+Nothing special.
+
+==== Feature edge
+None
+
+==== Containment
+As root node
+
+Do not forget to add the JUnit test concerning Constraint link to this element.
+Create a test checkLinkFromConstraintToTimeObservation in order to test the link between a Constraint and a TimeObservation
 
 == Edges
 
@@ -248,6 +1074,60 @@ Not available. Nothing to edit.
 No label.
 
 image::CompositeStructureDiagram/Link_Comment.png[title="Representation Link (from Comment)"]
+
+
+=== InformationFlow
+
+==== On Creation
+ The source element should be added to the informationSources feature
+ The source element should be added to the informationTargets feature
+This element should not have a default name.
+
+==== Can Create
+ Source and target should be a non null NamedElement.
+==== Can Reconnect
+ org.eclipse.papyrus.uml.service.types.command.InformationFlowReorientCommand PR 166
+
+==== Container
+The container is:
+
+ The source node if it can contains the Dependency (already implemented)
+ The most common Package between the source and the target otherwise (already implemented)
+
+==== On Deletion
+Nothing
+
+==== On Semantic DnD
+Nothing
+
+==== On Direct Edit
+
+==== Label
+ label composed with keyword «flow » and the list of conveyed
+elements (see feature InformationFlow#conveyed)
+
+
+
+=== Realization
+
+==== On Creation
+The source element should be added to the clients feature
+The source element should be added to the supplier feature
+
+==== Can Create
+Source and target should be a NamedElement.
+
+==== On Deletion
+No special deletion behavior for this element.
+
+==== On Semantic DnD
+No DnD tool since all edges are synchronized
+
+==== On Direct Edit
+
+==== Label
+None prefix should appear
+
 
 === Usage
 Can be created on a Composite Structure Diagram or under a Class.
