@@ -63,6 +63,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -1433,6 +1434,9 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         llsd.getGrowableNodes().add(contentNodeDescription);
         llsd.getGrowableNodes().add(symbolNodeDescription);
         holderNodeDescription.getChildrenDescriptions().add(contentNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(holderNodeDescription);
+        this.createDefaultToolSectionsInNodeDescription(contentNodeDescription);
+
     }
 
     protected void addToolSections(NodeDescription parentNodeDescription, String... toolSectionNames) {
@@ -1471,4 +1475,11 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         content.setDefaultWidthExpression(holder.getDefaultWidthExpression());
         content.getStyle().setBorderRadius(holder.getStyle().getBorderRadius());
     }
+
+    protected void allowSymbol(NodeDescription symbolOwnerDescroption) {
+        symbolOwnerDescroption.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
+        symbolOwnerDescroption.getInsideLabel().getStyle().setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN);
+        symbolOwnerDescroption.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
+    }
+
 }

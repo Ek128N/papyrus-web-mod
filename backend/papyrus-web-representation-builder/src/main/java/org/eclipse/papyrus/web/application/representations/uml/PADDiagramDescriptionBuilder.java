@@ -145,8 +145,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.padSharedDescription.getChildrenDescriptions().add(padModelHolderSharedNodeDescription);
         padModelHolderSharedNodeDescription.getChildrenDescriptions().add(padModelContentSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(padModelContentSharedNodeDescription);
-
         NodeTool padModelSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), modelEClass);
         List<EClass> owners = List.of(this.pack.getPackage(), this.pack.getModel());
         this.reuseNodeAndCreateTool(padModelHolderSharedNodeDescription, diagramDescription,
@@ -188,8 +186,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.copyDimension(padPackageHolderSharedNodeDescription, padPackageContentSharedNodeDescription);
         this.padSharedDescription.getChildrenDescriptions().add(padPackageHolderSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(padPackageContentSharedNodeDescription);
-
         NodeTool padPackageSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.pack.getPackage(), this.pack.getModel());
         this.reuseNodeAndCreateTool(padPackageHolderSharedNodeDescription, diagramDescription,
@@ -228,9 +224,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.addContent(packageEClass, false, padPackageHolderTopNodeDescription, padPackageContentTopNodeDescription, this.symbolNodeDescription);
         diagramDescription.getNodeDescriptions().add(padPackageHolderTopNodeDescription);
 
-        // create Package tool sections
-        this.createDefaultToolSectionsInNodeDescription(padPackageHolderTopNodeDescription);
-
         NodeTool padPackageTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, padPackageTopNodeCreationTool, NODES);
 
@@ -265,9 +258,6 @@ public class PADDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.copyDimension(padModelHolderTopNodeDescription, padModelContentTopNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(padModelHolderTopNodeDescription);
-
-        // create tool
-        this.createDefaultToolSectionsInNodeDescription(padModelHolderTopNodeDescription);
 
         NodeTool padProfileTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), modelEClass);
         this.addDiagramToolInToolSection(diagramDescription, padProfileTopNodeCreationTool, NODES);

@@ -23,22 +23,10 @@ import {
 import { Theme, useTheme } from '@mui/material/styles';
 // import { ResizeControlVariant } from '@xyflow/system';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, NodeProps, useStoreApi, NodeResizer } from '@xyflow/react';
+import { Edge, Node, NodeProps, useStoreApi } from '@xyflow/react';
 import { memo, useContext, useEffect, useState } from 'react';
 import { CustomImageNodeData, NodeComponentsMap } from './CustomImageNode.types';
 import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-
-const resizeLineStyle = (theme: Theme): React.CSSProperties => {
-  return { borderWidth: theme.spacing(0.15) };
-};
-
-const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
-  return {
-    width: theme.spacing(1),
-    height: theme.spacing(1),
-    borderRadius: '100%',
-  };
-};
 
 // const customImageStyle = (theme: Theme, style: React.CSSProperties): React.CSSProperties => {
 //   return {
@@ -65,7 +53,6 @@ interface CustomImageNodeState {
 const customImageNodeStyle = (
   theme: Theme,
   style: React.CSSProperties,
-  selected: boolean,
   hovered: boolean,
   faded: boolean
 ): React.CSSProperties => {
@@ -84,14 +71,11 @@ const customImageNodeStyle = (
     justifyContent: 'center',
   };
 
-  if (!!selected || hovered) {
-    customImageNodeStyle.outline = `${theme.palette.selected} solid 1px`;
-  }
   return customImageNodeStyle;
 };
 
 export const CustomImageNode: NodeComponentsMap['customImageNode'] = memo(
-  ({ data, id, selected, dragging }: NodeProps<Node<CustomImageNodeData>>) => {
+  ({ data, id, dragging }: NodeProps<Node<CustomImageNodeData>>) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
     const { addErrorMessage } = useMultiToast();
@@ -123,22 +107,10 @@ export const CustomImageNode: NodeComponentsMap['customImageNode'] = memo(
 
     return (
       <>
-        {!readOnly ? (
-          <>
-            <NodeResizer
-              handleStyle={{ ...resizeHandleStyle(theme) }}
-              lineStyle={{ ...resizeLineStyle(theme) }}
-              color={theme.palette.selected}
-              isVisible={!!selected}
-              shouldResize={() => !data.isBorderNode}
-              keepAspectRatio={false}
-            />
-            {}
-          </>
-        ) : null}
+        {!readOnly ? <>{}</> : null}
         <div
           style={{
-            ...customImageNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
+            ...customImageNodeStyle(theme, data.style, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}>
@@ -153,7 +125,6 @@ export const CustomImageNode: NodeComponentsMap['customImageNode'] = memo(
               justify-content={'center'}
               object-fit={'contain'}
               onError={onErrorLoadingImage}
-              // style={{ ...customImageStyle }}
             />
           ) : (
             <Typography data-testid="custom-image-node-no-image" variant="caption">

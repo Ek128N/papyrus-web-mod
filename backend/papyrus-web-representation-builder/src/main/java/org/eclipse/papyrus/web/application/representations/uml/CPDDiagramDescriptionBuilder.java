@@ -242,8 +242,6 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.copyDimension(cpdComponentHolderTopNodeDescription, cpdComponentContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(cpdComponentHolderTopNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(cpdComponentHolderTopNodeDescription);
-
         NodeTool cpdComponentTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getComponent_PackagedElement(), componentEClass);
         this.addDiagramToolInToolSection(diagramDescription, cpdComponentTopNodeCreationTool, NODES);
 
@@ -302,8 +300,6 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         diagramDescription.getNodeDescriptions().add(cpdModelHolderTopNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(cpdModelHolderTopNodeDescription);
-
         NodeTool cpdProfileTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), modelEClass);
         this.addDiagramToolInToolSection(diagramDescription, cpdProfileTopNodeCreationTool, NODES);
 
@@ -339,9 +335,6 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         diagramDescription.getNodeDescriptions().add(cpdPackageHolderTopNodeDescription);
         cpdPackageHolderTopNodeDescription.getChildrenDescriptions().add(cpdPackageContentTopNodeDescription);
-
-        // create Package tool sections
-        this.createDefaultToolSectionsInNodeDescription(cpdPackageHolderTopNodeDescription);
 
         NodeTool cpdPackageTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, cpdPackageTopNodeCreationTool, NODES);
@@ -382,7 +375,6 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.addContent(componentEClass, true, cpdComponentHolderSharedNodeDescription, cpdComponentContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdComponentHolderSharedNodeDescription, cpdComponentContentSharedNodeDescription);
         this.cpdSharedDescription.getChildrenDescriptions().add(cpdComponentHolderSharedNodeDescription);
-        this.createDefaultToolSectionsInNodeDescription(cpdComponentContentSharedNodeDescription);
 
         NodeTool cpdComponentSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getComponent_PackagedElement(), componentEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage(), this.umlPackage.getModel(),
@@ -451,10 +443,9 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         NodeDescription cpdModelContentSharedNodeDescription = this.createContentNodeDescription(modelEClass, true);
         this.copyDimension(cpdModelHolderSharedNodeDescription, cpdModelContentSharedNodeDescription);
+        this.addContent(modelEClass, true, cpdModelHolderSharedNodeDescription, cpdModelContentSharedNodeDescription, this.symbolNodeDescription);
         this.cpdSharedDescription.getChildrenDescriptions().add(cpdModelHolderSharedNodeDescription);
         cpdModelHolderSharedNodeDescription.getChildrenDescriptions().add(cpdModelContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(cpdModelContentSharedNodeDescription);
 
         NodeTool cpdModelSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), modelEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage(), this.umlPackage.getModel());
@@ -495,10 +486,9 @@ public final class CPDDiagramDescriptionBuilder extends AbstractRepresentationDe
 
         NodeDescription cpdPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
         this.copyDimension(cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription);
+        this.addContent(packageEClass, true, cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.cpdSharedDescription.getChildrenDescriptions().add(cpdPackageHolderSharedNodeDescription);
         cpdPackageHolderSharedNodeDescription.getChildrenDescriptions().add(cpdPackageContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(cpdPackageContentSharedNodeDescription);
 
         NodeTool cpdPackageSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage(), this.umlPackage.getModel());

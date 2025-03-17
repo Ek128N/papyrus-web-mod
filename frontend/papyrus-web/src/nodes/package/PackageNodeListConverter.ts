@@ -30,13 +30,15 @@ import {
   INodeConverter,
   isListLayoutStrategy,
   NodeData,
+  defaultHeight,
+  defaultWidth,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from '@xyflow/react';
 import { GQLPackageNodeStyle, PackageNodeListData } from './PackageNode.types';
 
 const defaultPosition: XYPosition = { x: 0, y: 0 };
 
-const toPackageListNode = (
+const toListNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLPackageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
@@ -115,13 +117,9 @@ const toPackageListNode = (
   data.insideLabel = convertInsideLabel(
     insideLabel,
     data,
-    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
+    gqlNode.childNodes?.some((child) => child.state !== GQLViewModifier.Hidden)
   );
-
-  if (data.insideLabel) {
-    data.insideLabel.isHeader = true;
-    data.insideLabel.headerPosition = 'TOP';
-  }
 
   const node: Node<PackageNodeListData> = {
     id,
@@ -150,14 +148,14 @@ const toPackageListNode = (
       height: `${node.height}px`,
     };
   } else {
-    node.height = data.defaultHeight ?? 150;
-    node.width = data.defaultWidth ?? 70;
+    node.height = data.defaultHeight ?? defaultHeight;
+    node.width = data.defaultWidth ?? defaultWidth;
   }
 
   return node;
 };
 
-const adaptChildrenBorderNodes = (nodes: Node[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
+const adaptChildrenBorderNodes = (nodes: Node<NodeData>[], gqlChildrenNodes: GQLNode<GQLNodeStyle>[]): void => {
   const visibleChildrenNodes = nodes
     .filter(
       (child) =>
@@ -195,13 +193,13 @@ export class PackageNodeListConverter implements INodeConverter {
     gqlEdges: GQLEdge[],
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
-    nodes: Node[],
+    nodes: Node<NodeData>[],
     diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
     const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
     if (nodeDescription) {
-      nodes.push(toPackageListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+      nodes.push(toListNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
     }
 
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(

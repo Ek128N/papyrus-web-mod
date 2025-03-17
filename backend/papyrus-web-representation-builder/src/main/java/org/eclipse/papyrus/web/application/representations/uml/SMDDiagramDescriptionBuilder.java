@@ -93,8 +93,9 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         List<EClass> symbolOwners = List.of(
                 this.umlPackage.getState(),
                 this.umlPackage.getStateMachine());
-        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(this.umlPackage.getRegion()), SYMBOLS_COMPARTMENT_SUFFIX);
 
+        // DOIT ON INVERSER OU PAS AVEC LE SYMBOL ?
+        this.symbolNodeDescription = this.createSymbolSharedNodeDescription(diagramDescription, symbolOwners, List.of(this.umlPackage.getRegion()), SYMBOLS_COMPARTMENT_SUFFIX);
         NodeDescription stateMachineNodeDescription = this.createStateMachineNodeDescription(diagramDescription);
         this.createTransitionEdgeDescription(diagramDescription);
         this.createCommentTopNodeDescription(diagramDescription, NODES);
@@ -207,23 +208,12 @@ public class SMDDiagramDescriptionBuilder extends AbstractRepresentationDescript
     private NodeDescription createStateSharedNodeDescription(DiagramDescription diagramDescription) {
         RectangularNodeStyleDescription rectangularNodeStyle = this.getViewBuilder().createRectangularNodeStyle();
         rectangularNodeStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
-        InsideLabelDescription labelDescription = this.getViewBuilder().createDefaultInsideLabelDescription(false, false);
-
-        // Display the header separator only if there is a region in the state
-        String condition = "aql:self.region->size() > 0";
-        labelDescription.getConditionalStyles()
-                .add(this.getViewBuilder().createConditionalInsideLabelStyle(condition, this.getViewBuilder().createDefaultInsideLabelStyle(false, true)));
-
-        RectangularNodeStyleDescription headerStyle = this.getViewBuilder().createRectangularNodeStyle();
-        headerStyle.setBorderRadius(STATEMACHINE_NODE_BORDER_RADIUS);
-
-        ConditionalNodeStyle conditionalHeaderStyle = this.getViewBuilder().createConditionalNodeStyle(condition, headerStyle);
+        InsideLabelDescription labelDescription = this.getViewBuilder().createDefaultInsideLabelDescription(false, true);
 
         NodeDescription stateNodeDesc = this.newNodeBuilder(this.umlPackage.getState(), rectangularNodeStyle)//
                 .layoutStrategyDescription(this.createListLayoutStrategy())//
                 .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(this.umlPackage.getRegion_Subvertex()))//
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)//
-                .conditionalStyles(List.of(conditionalHeaderStyle)) //
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(this.umlPackage.getState().getName()))//
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(this.umlPackage.getState().getName()))//
                 .insideLabelDescription(labelDescription)

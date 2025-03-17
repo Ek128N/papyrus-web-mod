@@ -144,8 +144,6 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.addContent(classEClass, true, csdClassifierHolderSharedNodeDescription, csdClassifierContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(csdClassifierHolderSharedNodeDescription, csdClassifierContentSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(csdClassifierHolderSharedNodeDescription);
-
         NodeTool cdClassifierSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getClass_NestedClassifier(), classEClass);
         List<EClass> owners = List.of(classEClass);
         this.reuseNodeAndCreateTool(csdClassifierHolderSharedNodeDescription, diagramDescription, cdClassifierSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
@@ -181,7 +179,6 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         csdPropertyHolderSharedNodeDescription.setName(CSD_PREFIX + propertyEClass.getName() + UNDERSCORE + IN_CLASSIFIER + UNDERSCORE + SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX);
         csdPropertyContentSharedNodeDescription.setName(CSD_PREFIX + propertyEClass.getName() + UNDERSCORE + IN_CLASSIFIER + UNDERSCORE + SHARED_SUFFIX + UNDERSCORE + CONTENT_SUFFIX);
 
-        this.createDefaultToolSectionsInNodeDescription(csdPropertyHolderSharedNodeDescription);
         NodeTool cdClassifierSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getInterface_OwnedAttribute(), propertyEClass);
         List<EClass> owners = List.of(this.pack.getClass_());
         this.reuseNodeAndCreateTool(csdPropertyHolderSharedNodeDescription, diagramDescription, cdClassifierSharedNodeCreationTool, NODES, owners.toArray(EClass[]::new));
@@ -266,8 +263,6 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         this.addContent(classEClass, false, classHolderTopNodeDescription, classContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(classHolderTopNodeDescription, classContentTopNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(classHolderTopNodeDescription);
-
         NodeTool creationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), classEClass);
         this.addDiagramToolInToolSection(diagramDescription, creationTool, NODES);
 
@@ -345,7 +340,6 @@ public class CSDDiagramDescriptionBuilder extends AbstractRepresentationDescript
         propertyOnPropertyHolderDescription.setName(CSD_PREFIX + propertyEClass.getName() + UNDERSCORE + IN_PROPERTY + UNDERSCORE + SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX);
         propertyOnPropertyContentDescription.setName(CSD_PREFIX + propertyEClass.getName() + UNDERSCORE + IN_PROPERTY + UNDERSCORE + SHARED_SUFFIX + UNDERSCORE + CONTENT_SUFFIX);
 
-        this.createDefaultToolSectionsInNodeDescription(propertyOnPropertyHolderDescription);
         String propertyTypeVariable = IfQuery.ifExpression("self.oclIsKindOf(uml::Property) and self.type!=null")
                 .then(queryAttributeOnSelf(this.pack.getTypedElement_Type()))
                 .orElse(Variables.SELF).toQuery();

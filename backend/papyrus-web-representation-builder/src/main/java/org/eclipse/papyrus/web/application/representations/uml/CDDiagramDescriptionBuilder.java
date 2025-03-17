@@ -322,9 +322,6 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         diagramDescription.getNodeDescriptions().add(cdModelHolderTopNodeDescription);
         cdModelHolderTopNodeDescription.getChildrenDescriptions().add(cdModelContentTopNodeDescription);
 
-        // create tool
-        this.createDefaultToolSectionsInNodeDescription(cdModelHolderTopNodeDescription);
-
         NodeTool cdProfileTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), modelEClass);
         this.addDiagramToolInToolSection(diagramDescription, cdProfileTopNodeCreationTool, NODES);
 
@@ -361,9 +358,6 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         diagramDescription.getNodeDescriptions().add(cdPackageHolderTopNodeDescription);
         cdPackageHolderTopNodeDescription.getChildrenDescriptions().add(cdPackageContentTopNodeDescription);
-
-        // create Package tool sections
-        this.createDefaultToolSectionsInNodeDescription(cdPackageHolderTopNodeDescription);
 
         NodeTool cdPackageTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, cdPackageTopNodeCreationTool, NODES);
@@ -650,8 +644,6 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.cdSharedDescription.getChildrenDescriptions().add(cdModelHolderSharedNodeDescription);
         cdModelHolderSharedNodeDescription.getChildrenDescriptions().add(cdModelContentSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(cdModelContentSharedNodeDescription);
-
         NodeTool cdModelSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), modelEClass);
         List<EClass> owners = List.of(this.pack.getPackage(), this.pack.getModel());
         this.reuseNodeAndCreateTool(cdModelHolderSharedNodeDescription, diagramDescription,
@@ -719,10 +711,9 @@ public final class CDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription cdPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
         this.copyDimension(cdPackageHolderSharedNodeDescription, cdPackageContentSharedNodeDescription);
+        this.addContent(packageEClass, true, cdPackageHolderSharedNodeDescription, cdPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.cdSharedDescription.getChildrenDescriptions().add(cdPackageHolderSharedNodeDescription);
         cdPackageHolderSharedNodeDescription.getChildrenDescriptions().add(cdPackageContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(cdPackageContentSharedNodeDescription);
 
         NodeTool cdPackageSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.pack.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.pack.getPackage(), this.pack.getModel());

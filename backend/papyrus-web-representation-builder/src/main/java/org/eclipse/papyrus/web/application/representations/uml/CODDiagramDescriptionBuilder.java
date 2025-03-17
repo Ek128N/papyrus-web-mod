@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -155,9 +156,6 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.copyDimension(codInteractionHolderTopNodeDescription, codInteractionContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(codInteractionHolderTopNodeDescription);
 
-        // create Interaction tool sections
-        this.createDefaultToolSectionsInNodeDescription(codInteractionContentTopNodeDescription);
-
         return codInteractionContentTopNodeDescription;
     }
 
@@ -173,19 +171,22 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
         EClass lifelineEClass = this.umlPackage.getLifeline();
 
         NodeDescription codLifelineSubNodeDescriptionHolder = this.newNodeBuilder(lifelineEClass, rectangularNodeStyle) //
-                .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getInteraction_Lifeline())).synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
+                .layoutStrategyDescription(this.createListLayoutStrategy())//
+                .semanticCandidateExpression(CallQuery.queryAttributeOnSelf(UMLPackage.eINSTANCE.getInteraction_Lifeline()))
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED) //
                 .labelEditTool(this.getViewBuilder().createDirectEditTool(lifelineEClass.getName())) //
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(lifelineEClass, HOLDER_SUFFIX))
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(lifelineEClass.getName())) //
-                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, false))
+                .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
 
-        NodeDescription codLifelineSubNodeDescriptionContent = this.createContentNodeDescription(lifelineEClass, false);
-        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent, this.symbolNodeDescription);
+        NodeDescription codLifelineSubNodeDescriptionContent = this.createContentNodeDescription(lifelineEClass,
+                false);
+        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionHolder,
+                codLifelineSubNodeDescriptionContent, this.symbolNodeDescription);
         this.copyDimension(codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent);
+        codLifelineSubNodeDescriptionHolder.getInsideLabel().getStyle().setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER);
         parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescriptionHolder);
-        // create Lifeline tool sections
-        this.createDefaultToolSectionsInNodeDescription(codLifelineSubNodeDescriptionContent);
 
         NodeTool codLifelineSubNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getInteraction_Lifeline(), lifelineEClass);
         this.addNodeToolInToolSection(List.of(parentNodeDescription), codLifelineSubNodeCreationTool, NODES);

@@ -36,7 +36,6 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -174,7 +173,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createArtifactTopNodeDescription(DiagramDescription diagramDescription) {
         EClass artifactEClass = this.umlPackage.getArtifact();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddArtifactHolderTopNodeDescription = this.newNodeBuilder(artifactEClass, this.getViewBuilder().createRectangularNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(artifactEClass, HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(artifactEClass))//
@@ -188,8 +186,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.addContent(artifactEClass, false, ddArtifactHolderTopNodeDescription, ddArtifactContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(ddArtifactHolderTopNodeDescription, ddArtifactContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(ddArtifactHolderTopNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddArtifactHolderTopNodeDescription);
 
         // create tool
         NodeTool ddArtifactTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), artifactEClass);
@@ -241,7 +237,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDeviceTopNodeDescription(DiagramDescription diagramDescription) {
         EClass deviceEClass = this.umlPackage.getDevice();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddDeviceHolderTopNodeDescription = this.newNodeBuilder(deviceEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(deviceEClass, HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(deviceEClass))//
@@ -254,14 +249,11 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         ddDeviceHolderTopNodeDescription.setDefaultHeightExpression(SIZE_100);
 
         NodeDescription ddDeviceContentTopNodeDescription = this.createContentNodeDescription(deviceEClass, false);
+        this.addContent(deviceEClass, false, ddDeviceHolderTopNodeDescription, ddDeviceContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(ddDeviceHolderTopNodeDescription, ddDeviceContentTopNodeDescription);
-        llsd.getGrowableNodes().add(ddDeviceContentTopNodeDescription);
-        ddDeviceHolderTopNodeDescription.setChildrenLayoutStrategy(llsd);
 
         diagramDescription.getNodeDescriptions().add(ddDeviceHolderTopNodeDescription);
         ddDeviceHolderTopNodeDescription.getChildrenDescriptions().add(ddDeviceContentTopNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddDeviceHolderTopNodeDescription);
 
         // create tools
         NodeTool ddDeviceTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), deviceEClass);
@@ -285,7 +277,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createExecutionEnvironmentTopNodeDescription(DiagramDescription diagramDescription) {
         EClass executionEnvironmentEClass = this.umlPackage.getExecutionEnvironment();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddExecutionEnvironmentEClassHolderTopNodeDescription = this.newNodeBuilder(executionEnvironmentEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(executionEnvironmentEClass, HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(executionEnvironmentEClass))//
@@ -298,14 +289,9 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         ddExecutionEnvironmentEClassHolderTopNodeDescription.setDefaultHeightExpression(SIZE_100);
 
         NodeDescription ddExecutionEnvironmentContentTopNodeDescription = this.createContentNodeDescription(executionEnvironmentEClass, false);
+        this.addContent(executionEnvironmentEClass, false, ddExecutionEnvironmentEClassHolderTopNodeDescription, ddExecutionEnvironmentContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(ddExecutionEnvironmentEClassHolderTopNodeDescription, ddExecutionEnvironmentContentTopNodeDescription);
-        llsd.getGrowableNodes().add(ddExecutionEnvironmentContentTopNodeDescription);
-        ddExecutionEnvironmentEClassHolderTopNodeDescription.setChildrenLayoutStrategy(llsd);
-
         diagramDescription.getNodeDescriptions().add(ddExecutionEnvironmentEClassHolderTopNodeDescription);
-        ddExecutionEnvironmentEClassHolderTopNodeDescription.getChildrenDescriptions().add(ddExecutionEnvironmentContentTopNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddExecutionEnvironmentEClassHolderTopNodeDescription);
 
         // create tools
         NodeTool ddExecutionEnvironmentTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), executionEnvironmentEClass);
@@ -331,7 +317,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createModelTopNodeDescription(DiagramDescription diagramDescription) {
         EClass modelEClass = this.umlPackage.getModel();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddModelHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
                 this.getQueryBuilder().queryAllReachableExactType(modelEClass));
         ddModelHolderTopNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(modelEClass, HOLDER_SUFFIX));
@@ -342,9 +327,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.addContent(modelEClass, false, ddModelHolderTopNodeDescription, ddModelContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(ddModelHolderTopNodeDescription, ddModelContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(ddModelHolderTopNodeDescription);
-
-        // create tool
-        this.createDefaultToolSectionsInNodeDescription(ddModelHolderTopNodeDescription);
 
         NodeTool ddModelTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), modelEClass);
         this.addDiagramToolInToolSection(diagramDescription, ddModelTopNodeCreationTool, NODES);
@@ -367,7 +349,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createNodeTopNodeDescription(DiagramDescription diagramDescription) {
         EClass nodeEClass = this.umlPackage.getNode();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddNodeHolderTopNodeDescription = this.newNodeBuilder(nodeEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(nodeEClass, HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(this.getQueryBuilder().queryAllReachableExactType(nodeEClass))//
@@ -381,13 +362,10 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddNodeContentTopNodeDescription = this.createContentNodeDescription(nodeEClass, false);
         this.copyDimension(ddNodeHolderTopNodeDescription, ddNodeContentTopNodeDescription);
-        llsd.getGrowableNodes().add(ddNodeContentTopNodeDescription);
-        ddNodeHolderTopNodeDescription.setChildrenLayoutStrategy(llsd);
+        this.addContent(nodeEClass, false, ddNodeHolderTopNodeDescription, ddNodeContentTopNodeDescription, this.symbolNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(ddNodeHolderTopNodeDescription);
         ddNodeHolderTopNodeDescription.getChildrenDescriptions().add(ddNodeContentTopNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddNodeHolderTopNodeDescription);
 
         // create tools
         NodeTool ddNodeTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), nodeEClass);
@@ -411,7 +389,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createPackageTopNodeDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.umlPackage.getPackage();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddPackageHolderTopNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
                 this.getQueryBuilder().queryAllReachableExactType(packageEClass));
         ddPackageHolderTopNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, HOLDER_SUFFIX));
@@ -420,14 +397,9 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddPackageContentTopNodeDescription = this.createContentNodeDescription(packageEClass, false);
         this.copyDimension(ddPackageHolderTopNodeDescription, ddPackageContentTopNodeDescription);
-        llsd.getGrowableNodes().add(ddPackageContentTopNodeDescription);
-        ddPackageHolderTopNodeDescription.setChildrenLayoutStrategy(llsd);
+        this.addContent(packageEClass, false, ddPackageHolderTopNodeDescription, ddPackageContentTopNodeDescription, this.symbolNodeDescription);
 
         diagramDescription.getNodeDescriptions().add(ddPackageHolderTopNodeDescription);
-        ddPackageHolderTopNodeDescription.getChildrenDescriptions().add(ddPackageContentTopNodeDescription);
-
-        // create Package tool sections
-        this.createDefaultToolSectionsInNodeDescription(ddPackageHolderTopNodeDescription);
 
         NodeTool ddPackageTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, ddPackageTopNodeCreationTool, NODES);
@@ -465,8 +437,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.copyDimension(ddArtifactHolderSharedNodeDescription, ddArtifactContentSharedNodeDescription);
         this.addContent(artifactEClass, true, ddArtifactHolderSharedNodeDescription, ddArtifactContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddArtifactHolderSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddArtifactContentSharedNodeDescription);
 
         // create tools
         NodeTool ddArtifactSharedNodeCreationTool = this.getViewBuilder().createCreationTool(artifactEClass.getName(), this.getIdBuilder().getCreationToolId(artifactEClass),
@@ -540,7 +510,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createDeviceSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass deviceEClass = this.umlPackage.getDevice();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddDeviceHolderSharedNodeDescription = this.newNodeBuilder(deviceEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(deviceEClass, SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_DEVICE_NODE_CANDIDATES))//
@@ -554,10 +523,9 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddDeviceContentSharedNodeDescription = this.createContentNodeDescription(deviceEClass, true);
         this.copyDimension(ddDeviceHolderSharedNodeDescription, ddDeviceContentSharedNodeDescription);
+        this.addContent(deviceEClass, true, ddDeviceHolderSharedNodeDescription, ddDeviceContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddDeviceHolderSharedNodeDescription);
         ddDeviceHolderSharedNodeDescription.getChildrenDescriptions().add(ddDeviceContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddDeviceContentSharedNodeDescription);
 
         // create tools
         NodeTool ddDeviceSharedNodeCreationTool = this.getViewBuilder().createCreationTool(deviceEClass.getName(), this.getIdBuilder().getCreationToolId(deviceEClass),
@@ -567,9 +535,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(ddDeviceHolderSharedNodeDescription, diagramDescription, ddDeviceSharedNodeCreationTool, NODES, owners,
                 List.of(this.umlPackage.getExecutionEnvironment()));
-
-        llsd.getGrowableNodes().add(ddDeviceContentSharedNodeDescription);
-        ddDeviceHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
 
         // Add dropped tool on Shared Device container
         DropNodeTool ddDeviceSharedGraphicalDropTool = this.getViewBuilder()
@@ -593,7 +558,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createExecutionEnvironmentSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass executionEnvironmentEClass = this.umlPackage.getExecutionEnvironment();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddExecutionEnvironmentHolderSharedNodeDescription = this.newNodeBuilder(executionEnvironmentEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(executionEnvironmentEClass, SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_EXECUTION_ENVIRONMENT_NODE_CANDIDATES))//
@@ -607,10 +571,8 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddExecutionEnvironmentContentSharedNodeDescription = this.createContentNodeDescription(executionEnvironmentEClass, true);
         this.copyDimension(ddExecutionEnvironmentHolderSharedNodeDescription, ddExecutionEnvironmentContentSharedNodeDescription);
+        this.addContent(executionEnvironmentEClass, true, ddExecutionEnvironmentHolderSharedNodeDescription, ddExecutionEnvironmentContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddExecutionEnvironmentHolderSharedNodeDescription);
-        ddExecutionEnvironmentHolderSharedNodeDescription.getChildrenDescriptions().add(ddExecutionEnvironmentContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddExecutionEnvironmentContentSharedNodeDescription);
 
         // create tools
         NodeTool ddExecutionEnvironmentSharedNodeCreationTool = this.getViewBuilder().createCreationTool(executionEnvironmentEClass.getName(),
@@ -618,12 +580,9 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 DeploymentDiagramServices.CREATE_NODE,
                 List.of(this.getQueryBuilder().aqlString(executionEnvironmentEClass.getName()), SELECTED_NODE, DIAGRAM_CONTEXT, CONVERTED_NODES));
         List<EClass> owners = List.of(this.umlPackage.getNode(), //
-                this.umlPackage.getPackage());
+                this.umlPackage.getPackage(), this.umlPackage.getExecutionEnvironment());
         this.reuseNodeAndCreateTool(ddExecutionEnvironmentHolderSharedNodeDescription, diagramDescription, ddExecutionEnvironmentSharedNodeCreationTool, NODES, owners,
-                List.of(this.umlPackage.getExecutionEnvironment()));
-
-        llsd.getGrowableNodes().add(ddExecutionEnvironmentContentSharedNodeDescription);
-        ddExecutionEnvironmentHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
+                List.of());
 
         // Add dropped tool on Shared Device container
         DropNodeTool ddExecutionEnvironmentSharedNodeGraphicalDropTool = this.getViewBuilder()
@@ -647,7 +606,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createNodeSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass nodeEClass = this.umlPackage.getNode();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddNodeHolderSharedNodeDescription = this.newNodeBuilder(nodeEClass, this.getViewBuilder().createCuboidNodeStyle())//
                 .name(this.getIdBuilder().getSpecializedDomainNodeName(nodeEClass, SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX)) //
                 .semanticCandidateExpression(CallQuery.queryServiceOnSelf(DeploymentDiagramServices.GET_NODE_NODE_CANDIDATES))//
@@ -661,10 +619,9 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddNodeContentSharedNodeDescription = this.createContentNodeDescription(nodeEClass, true);
         this.copyDimension(ddNodeHolderSharedNodeDescription, ddNodeContentSharedNodeDescription);
+        this.addContent(nodeEClass, true, ddNodeHolderSharedNodeDescription, ddNodeContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddNodeHolderSharedNodeDescription);
         ddNodeHolderSharedNodeDescription.getChildrenDescriptions().add(ddNodeContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddNodeContentSharedNodeDescription);
 
         // create tools
         NodeTool ddNodeSharedNodeCreationTool = this.getViewBuilder().createCreationTool(nodeEClass.getName(), this.getIdBuilder().getCreationToolId(nodeEClass),
@@ -674,9 +631,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
                 this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(ddNodeHolderSharedNodeDescription, diagramDescription, ddNodeSharedNodeCreationTool, NODES, owners,
                 List.of(this.umlPackage.getExecutionEnvironment()));
-
-        llsd.getGrowableNodes().add(ddNodeContentSharedNodeDescription);
-        ddNodeHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
 
         // Add dropped tool on Shared Device container
         DropNodeTool ddNodeSharedGraphicalDropTool = this.getViewBuilder()
@@ -700,7 +654,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createPackageSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass packageEClass = this.umlPackage.getPackage();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddPackageHolderSharedNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(packageEClass,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
         ddPackageHolderSharedNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(packageEClass, SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX));
@@ -709,18 +662,14 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
 
         NodeDescription ddPackageContentSharedNodeDescription = this.createContentNodeDescription(packageEClass, true);
         this.copyDimension(ddPackageHolderSharedNodeDescription, ddPackageContentSharedNodeDescription);
+        this.addContent(packageEClass, true, ddPackageHolderSharedNodeDescription, ddPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddPackageHolderSharedNodeDescription);
         ddPackageHolderSharedNodeDescription.getChildrenDescriptions().add(ddPackageContentSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(ddPackageContentSharedNodeDescription);
 
         NodeTool ddPackageSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(ddPackageHolderSharedNodeDescription, diagramDescription,
                 ddPackageSharedNodeCreationTool, NODES, owners, List.of());
-
-        llsd.getGrowableNodes().add(ddPackageContentSharedNodeDescription);
-        ddPackageHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
 
         // Add dropped tool on Shared Package container
         DropNodeTool ddPackageGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ddPackageContentSharedNodeDescription));
@@ -743,7 +692,6 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
      */
     private void createModelSharedNodeDescription(DiagramDescription diagramDescription) {
         EClass modelEClass = this.umlPackage.getModel();
-        ListLayoutStrategyDescription llsd = this.createListLayoutStrategy();
         NodeDescription ddModelHolderSharedNodeDescription = this.getViewBuilder().createPackageStyleUnsynchonizedNodeDescription(modelEClass,
                 CallQuery.queryAttributeOnSelf(this.umlPackage.getPackage_PackagedElement()));
         ddModelHolderSharedNodeDescription.setName(this.getIdBuilder().getSpecializedDomainNodeName(modelEClass, SHARED_SUFFIX + UNDERSCORE + HOLDER_SUFFIX));
@@ -755,15 +703,10 @@ public final class DDDiagramDescriptionBuilder extends AbstractRepresentationDes
         this.addContent(modelEClass, true, ddModelHolderSharedNodeDescription, ddModelContentSharedNodeDescription, this.symbolNodeDescription);
         this.ddSharedDescription.getChildrenDescriptions().add(ddModelHolderSharedNodeDescription);
 
-        this.createDefaultToolSectionsInNodeDescription(ddModelContentSharedNodeDescription);
-
         NodeTool ddModelSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), modelEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
         this.reuseNodeAndCreateTool(ddModelHolderSharedNodeDescription, diagramDescription,
                 ddModelSharedNodeCreationTool, NODES, owners, List.of());
-
-        llsd.getGrowableNodes().add(ddModelContentSharedNodeDescription);
-        ddModelHolderSharedNodeDescription.setChildrenLayoutStrategy(llsd);
 
         // Add dropped tool on Shared Package container
         DropNodeTool ddModelSharedGraphicalDropTool = this.getViewBuilder().createGraphicalDropTool(this.getIdBuilder().getNodeGraphicalDropToolName(ddModelHolderSharedNodeDescription));

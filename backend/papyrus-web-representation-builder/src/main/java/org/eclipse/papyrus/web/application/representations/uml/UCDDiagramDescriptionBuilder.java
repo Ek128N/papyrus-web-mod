@@ -294,10 +294,10 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.addContent(packageEClass, false, cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdPackageHolderTopNodeDescription, cpdPackageContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(cpdPackageHolderTopNodeDescription);
+        this.createToolSectionsWithSubjectInNodeDescription(cpdPackageHolderTopNodeDescription);
+        this.createToolSectionsWithSubjectInNodeDescription(cpdPackageContentTopNodeDescription);
 
         // create Package tool sections
-        this.createDefaultToolSectionsInNodeDescription(cpdPackageHolderTopNodeDescription);
-
         NodeTool cpdPackageTopNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         this.addDiagramToolInToolSection(diagramDescription, cpdPackageTopNodeCreationTool, NODES);
 
@@ -384,8 +384,8 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
         this.addContent(packageEClass, true, cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription, this.symbolNodeDescription);
         this.copyDimension(cpdPackageHolderSharedNodeDescription, cpdPackageContentSharedNodeDescription);
         this.ucdSharedDescription.getChildrenDescriptions().add(cpdPackageHolderSharedNodeDescription);
-
-        this.createDefaultToolSectionsInNodeDescription(cpdPackageContentSharedNodeDescription);
+        this.createToolSectionsWithSubjectInNodeDescription(cpdPackageHolderSharedNodeDescription);
+        this.createToolSectionsWithSubjectInNodeDescription(cpdPackageContentSharedNodeDescription);
 
         NodeTool cpdPackageSharedNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getPackage_PackagedElement(), packageEClass);
         List<EClass> owners = List.of(this.umlPackage.getPackage(), this.umlPackage.getModel());
@@ -761,10 +761,9 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
 
         NodeDescription ucdClassifierContentTopNodeDescription = this.createContentNodeDescription(classifierAsSubject, false);
-        llsd.getGrowableNodes().add(ucdClassifierContentTopNodeDescription);
+        this.addContent(classifierAsSubject, false, ucdClassifierHolderTopNodeDescription, ucdClassifierContentTopNodeDescription, this.symbolNodeDescription);
+        this.copyDimension(ucdClassifierHolderTopNodeDescription, ucdClassifierContentTopNodeDescription);
         diagramDescription.getNodeDescriptions().add(ucdClassifierHolderTopNodeDescription);
-        ucdClassifierHolderTopNodeDescription.getChildrenDescriptions().add(ucdClassifierContentTopNodeDescription);
-        this.createDefaultToolSectionsInNodeDescription(ucdClassifierContentTopNodeDescription);
 
         NodeTool ucdClassifierTopNodeCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
         this.addDiagramToolInToolSection(diagramDescription, ucdClassifierTopNodeCreationTool, SUBJECT);
@@ -804,11 +803,10 @@ public final class UCDDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .build();
 
         NodeDescription ucdClassifierContentSharedNodeDescription = this.createContentNodeDescription(classifierAsSubject, true);
-        llsd.getGrowableNodes().add(ucdClassifierContentSharedNodeDescription);
+        this.addContent(classifierAsSubject, true, ucdClassifierHolderSharedNodeDescription, ucdClassifierContentSharedNodeDescription, this.symbolNodeDescription);
+        this.copyDimension(ucdClassifierHolderSharedNodeDescription, ucdClassifierContentSharedNodeDescription);
 
-        ucdClassifierHolderSharedNodeDescription.getChildrenDescriptions().add(ucdClassifierContentSharedNodeDescription);
         this.ucdSharedDescription.getChildrenDescriptions().add(ucdClassifierHolderSharedNodeDescription);
-        this.createDefaultToolSectionsInNodeDescription(ucdClassifierContentSharedNodeDescription);
 
         NodeTool ucdClassifierSharedNodeCreationTool = this.createAsSubjectCreationTool(this.umlPackage.getPackage_PackagedElement(), classifierAsSubject);
         List<EClass> owners = List.of(this.umlPackage.getPackage());
