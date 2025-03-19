@@ -27,7 +27,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -179,13 +178,7 @@ public final class CODDiagramDescriptionBuilder extends AbstractRepresentationDe
                 .deleteTool(this.getViewBuilder().createNodeDeleteTool(lifelineEClass.getName())) //
                 .insideLabelDescription(this.getViewBuilder().createDefaultInsideLabelDescription(true, true))
                 .build();
-
-        NodeDescription codLifelineSubNodeDescriptionContent = this.createContentNodeDescription(lifelineEClass,
-                false);
-        this.addContent(lifelineEClass, false, codLifelineSubNodeDescriptionHolder,
-                codLifelineSubNodeDescriptionContent, this.symbolNodeDescription);
-        this.copyDimension(codLifelineSubNodeDescriptionHolder, codLifelineSubNodeDescriptionContent);
-        codLifelineSubNodeDescriptionHolder.getInsideLabel().getStyle().setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER);
+        this.allowSymbol(codLifelineSubNodeDescriptionHolder);
         parentNodeDescription.getChildrenDescriptions().add(codLifelineSubNodeDescriptionHolder);
 
         NodeTool codLifelineSubNodeCreationTool = this.getViewBuilder().createCreationTool(this.umlPackage.getInteraction_Lifeline(), lifelineEClass);

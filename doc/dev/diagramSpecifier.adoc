@@ -66,6 +66,10 @@ image::symbol_on_model.png[Symbol on model, align="center"]
 
 ===== Adding symbol
 
+====== On leaf nodes (nodes without other children than symbol)
+
+To add symbol on leaf nodes, simply call the allowSymbol(nodeDescription) on this node, this will initialize a label, with a style and the good LayoutStrategy and HeaderSeparatorDisplayMode.
+
 ====== On list layout
 
 To add symbol on Node that already use a ListLayout strategy such as Class on class diagram. It is only needed to use the createSymbolSharedNodeDescription with the eClass contains is the symbolOwners list as follow: 

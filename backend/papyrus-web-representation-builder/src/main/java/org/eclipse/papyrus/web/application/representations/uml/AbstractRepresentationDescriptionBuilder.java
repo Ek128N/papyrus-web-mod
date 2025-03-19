@@ -858,6 +858,15 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         });
     }
 
+    public void reuseNodeWithoutContent(NodeDescription nodeDescription, DiagramDescription diagramDescription, List<EClass> owners,
+            List<EClass> forbiddenOwners, Predicate<NodeDescription> filter) {
+        this.registerCallback(nodeDescription, () -> {
+            Supplier<List<NodeDescription>> ownerNodeDescriptions = () -> this.collectNodesWithDomainAndFilterWithoutContent(diagramDescription, owners, forbiddenOwners).stream().filter(filter)
+                    .collect(toList());
+            this.reusedNodeDescriptionInOwners(nodeDescription, ownerNodeDescriptions.get());
+        });
+    }
+
     public void reuseNodeWithoutHolder(NodeDescription nodeDescription, DiagramDescription diagramDescription, List<EClass> owners,
             List<EClass> forbiddenOwners) {
         this.registerCallback(nodeDescription, () -> {
@@ -1340,6 +1349,26 @@ public abstract class AbstractRepresentationDescriptionBuilder {
      * @param owners
      * @param forbiddenOwners
      * @param compartmentName
+     * @param filter
+     *            predicate on the {@link NodeDescription} to exclude
+     */
+    public NodeDescription createSymbolSharedNodeDescription(DiagramDescription dd, List<EClass> owners, List<EClass> forbiddenOwners, String compartmentName, Predicate<NodeDescription> filter) {
+        NodeDescription nd = this.getViewBuilder().createSymbolNodeDescription();
+        nd.setName(this.getIdBuilder().getSpecializedCompartmentDomainNodeName(this.pack.getElement(), compartmentName, SHARED_SUFFIX));
+        nd.setUserResizable(UserResizableDirection.VERTICAL);
+        nd.setKeepAspectRatio(true);
+        this.reuseNodeWithoutContent(nd, dd, owners, forbiddenOwners, filter);
+        return nd;
+    }
+
+    /**
+     * Create a Symbol NodeDescription and add it to the the SharedNodeDescription.
+     *
+     * @param dd
+     * @param shared
+     * @param owners
+     * @param forbiddenOwners
+     * @param compartmentName
      */
     public NodeDescription createSymbolSharedNodeDescription(DiagramDescription dd, List<EClass> owners, List<EClass> forbiddenOwners, String compartmentName) {
         NodeDescription nd = this.getViewBuilder().createSymbolNodeDescription();
@@ -1476,10 +1505,12 @@ public abstract class AbstractRepresentationDescriptionBuilder {
         content.getStyle().setBorderRadius(holder.getStyle().getBorderRadius());
     }
 
-    protected void allowSymbol(NodeDescription symbolOwnerDescroption) {
-        symbolOwnerDescroption.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
-        symbolOwnerDescroption.getInsideLabel().getStyle().setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN);
-        symbolOwnerDescroption.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
+    protected void allowSymbol(NodeDescription symbolOwnerDescription) {
+        if (symbolOwnerDescription.getInsideLabel() == null || symbolOwnerDescription.getInsideLabel().getStyle() == null) {
+            symbolOwnerDescription.setInsideLabel(this.getViewBuilder().createDefaultInsideLabelDescription(true, true));
+        }
+        symbolOwnerDescription.getInsideLabel().getStyle().setHeaderSeparatorDisplayMode(HeaderSeparatorDisplayMode.IF_CHILDREN);
+        symbolOwnerDescription.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createListLayoutStrategyDescription());
     }
 
 }
