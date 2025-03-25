@@ -49,7 +49,6 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -269,14 +268,11 @@ public class UMLDefaultTreeServices {
      * @return a list of representation
      */
     private List<RepresentationMetadata> getRepresentations(String elementId, IEditingContext editingContext) {
-        var optionalProjectId = new UUIDParser().parse(editingContext.getId())
-                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
-                .map(ProjectSemanticData::getProject)
-                .map(AggregateReference::getId);
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
 
-        if (optionalProjectId.isPresent()) {
-            var projectId = optionalProjectId.get();
-            var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllMetadataByProjectAndTargetObjectId(AggregateReference.to(projectId), elementId));
+        if (optionalSemanticDataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadata = new ArrayList<>(this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(AggregateReference.to(semanticDataId), elementId));
             representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
             return representationMetadata;
         }
@@ -351,9 +347,9 @@ public class UMLDefaultTreeServices {
         boolean hasChildren = false;
         var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
         if (optionalEditingContextId.isPresent()) {
-            var projectId = optionalEditingContextId.get();
+            var semanticDataId = optionalEditingContextId.get();
             String id = this.objectService.getId(self);
-            hasChildren = this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId.toString()), id);
+            hasChildren = this.representationMetadataSearchService.existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference.to(semanticDataId), id);
         }
         return hasChildren;
     }
